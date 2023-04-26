@@ -1,0 +1,23 @@
+{
+    "name": "@squide/react-router",
+    "author": "Workleap",
+    "version": "0.0.0",
+    "description": "Adding support to the @squide federated application shell for React Router.",
+    "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Workleap/wl-squide.git",
+        "directory": "core"
+    },
+    "publishConfig": {
+        "access": "public",
+        "provenance": true
+    },
+    "type": "module",
+    "main": "./dist/index.js",
+    "scripts": {
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}

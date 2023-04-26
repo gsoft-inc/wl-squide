@@ -1,0 +1,29 @@
+{
+    "name": "@squide/core",
+    "author": "Workleap",
+    "version": "0.0.0",
+    "description": "The core package of @squide federated application shell.",
+    "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/workleap/wl-squide.git",
+        "directory": "core"
+    },
+    "publishConfig": {
+        "access": "public",
+        "provenance": true
+    },
+    "type": "module",
+    "main": "./dist/index.js",
+    "scripts": {
+        "dev": "tsup --config ./tsup.dev.js",
+        "build": "tsup --config ./tsup.build.js"
+    },
+    "devDependencies": {
+        "@workleap/typescript-configs": "2.0.1",
+        "tsup": "6.7.0"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}

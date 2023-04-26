@@ -1,0 +1,31 @@
+{
+    "editor.minimap.enabled": false,
+    "editor.wordWrap": "off",
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true,
+        "source.organizeImports": false
+    },
+    "editor.formatOnSave": true,
+    "[html]": {
+        "editor.formatOnSave": false
+    },
+    "javascript.format.enable": false,
+    "javascript.validate.enable": true,
+    "javascript.preferences.useAliasesForRenames": false,
+    "typescript.preferences.useAliasesForRenames": false,
+    "json.format.enable": false,
+    "css.validate": false,
+    "eslint.packageManager": "pnpm",
+    "eslint.validate": ["javascript", "javascriptreact", "mdx"],
+    "stylelint.autoFixOnSave": true,
+    "stylelint.useLocal": true,
+    "files.associations": {
+        "*.snap": "javascriptreact"
+    },
+    "breadcrumbs.enabled": true,
+    "search.exclude": {
+        "**/node_modules*": true,
+        "**/dist*": true
+    },
+    "typescript.tsdk": "node_modules\\typescript\\lib"
+}

@@ -1,0 +1,38 @@
+{
+    "name": "wl-squide",
+    "author": "Workleap",
+    "description": "A federated web application shell.",
+    "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/workleap/wl-squide.git"
+    },
+    "scripts": {
+        "dev": "pnpm -r --parallel dev",
+
+        "lint": "run-p lint:*",
+        "lint:eslint": "eslint --ext .js,.ts,.tsx . --max-warnings=-1 --cache --cache-location node_modules/.cache/eslint",
+        "lint:types": "tsc",
+
+        "release": "",
+
+        "clean": "pnpm -r --include-workspace-root --parallel exec pnpm dlx rimraf dist node_modules/.cache",
+        "reset": "run-s clean reset:modules",
+        "reset:modules": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf node_modules pnpm-lock.yaml",
+
+        "test": "jest"
+    },
+    "devDependencies": {
+        "@workleap/eslint-plugin": "1.1.1",
+        "@workleap/typescript-configs": "2.0.1",
+        "@types/jest": "29.5.0",
+        "eslint": "8.37.0",
+        "prettier": "2.8.7",
+        "npm-run-all": "4.1.5",
+        "stylelint": "15.5.0",
+        "typescript": "5.0.3"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}

@@ -9,6 +9,7 @@
     },
     "scripts": {
         "dev": "pnpm -r --parallel dev",
+        "build": "pnpm -r --parallel build",
 
         "lint": "run-p lint:*",
         "lint:eslint": "eslint --ext .js,.ts,.tsx . --max-warnings=-1 --cache --cache-location node_modules/.cache/eslint",

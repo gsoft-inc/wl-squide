@@ -4,9 +4,10 @@ export default defineConfig({
     clean: true,
     treeshake: true,
     dts: true,
-    minify: "terser",
-    entry: ["./src/index.ts"],
+    minify: true,
+    entry: ["./src"],
     outDir: "./dist",
     format: ["esm"],
+    target: "esnext",
     platform: "browser"
 });

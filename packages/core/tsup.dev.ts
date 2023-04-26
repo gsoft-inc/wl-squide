@@ -5,8 +5,9 @@ export default defineConfig({
     watch: true,
     dts: true,
     sourcemap: "inline",
-    entry: ["./src/index.ts"],
+    entry: ["./src"],
     outDir: "./dist",
     format: ["esm"],
+    target: "esnext",
     platform: "browser"
 });

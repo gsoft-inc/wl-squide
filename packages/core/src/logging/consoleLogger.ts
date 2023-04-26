@@ -1,5 +1,5 @@
-import { LogLevel } from "./logger";
-import type { Logger } from "./logger";
+import { LogLevel } from "./logger.ts";
+import type { Logger } from "./logger.ts";
 
 export class ConsoleLogger implements Logger {
     private _logLevel: LogLevel;

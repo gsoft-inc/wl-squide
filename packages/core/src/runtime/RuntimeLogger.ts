@@ -1,4 +1,4 @@
-import type { Logger } from "../logging";
+import type { Logger } from "../logging/index.ts";
 
 export class RuntimeLogger {
     private loggers: Logger[];

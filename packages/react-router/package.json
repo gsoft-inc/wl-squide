@@ -16,6 +16,26 @@
     "type": "module",
     "main": "./dist/index.js",
     "scripts": {
+        "dev": "tsup --config ./tsup.dev.ts",
+        "build": "tsup --config ./tsup.build.ts"
+    },
+    "peerDependencies": {
+        "react": "18.2.0",
+        "react-dom": "18.2.0",
+        "react-router": "6.11.1",
+        "react-router-dom": "6.11.1"
+    },
+    "devDependencies": {
+        "@types/jest": "29.5.0",
+        "@types/react": "18.2.0",
+        "@types/react-dom": "18.2.0",
+        "@workleap/eslint-plugin": "1.2.0",
+        "@workleap/typescript-configs": "2.1.0",
+        "jest": "29.5.0",
+        "tsup": "6.7.0"
+    },
+    "dependencies": {
+        "@squide/core": "workspace:*"
     },
     "sideEffects": false,
     "engines": {

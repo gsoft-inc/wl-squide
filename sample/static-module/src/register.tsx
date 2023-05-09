@@ -4,6 +4,7 @@ import type { Runtime } from "@squide/react-router";
 import { lazy } from "react";
 
 const About = lazy(() => import("./About.tsx"));
+const Message = lazy(() => import("./Message.tsx"));
 
 export const register: ModuleRegisterFunction = (runtime: Runtime, context: AppContext) => {
     console.log("Context: ", context);
@@ -12,6 +13,10 @@ export const register: ModuleRegisterFunction = (runtime: Runtime, context: AppC
         {
             path: "/about",
             element: <About />
+        },
+        {
+            path: "/message",
+            element: <Message />
         }
     ]);
 
@@ -19,6 +24,14 @@ export const register: ModuleRegisterFunction = (runtime: Runtime, context: AppC
         {
             to: "/about",
             content: "About"
+        },
+        {
+            to: "/message",
+            content: "Message",
+            priority: 999,
+            additionalProps: {
+                highlight: true
+            }
         }
     ]);
 };

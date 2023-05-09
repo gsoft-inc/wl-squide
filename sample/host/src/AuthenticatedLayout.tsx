@@ -1,12 +1,18 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import type { RenderItemFunction, RenderSectionFunction } from "@squide/react-router";
 import { Suspense, useCallback } from "react";
-import { useNavigationItems, useRenderedNavigationItems } from "@squide/react-router";
+import { useEventBusListener, useNavigationItems, useRenderedNavigationItems } from "@squide/react-router";
 
 import { sessionManager } from "./session.ts";
 
 export default function AuthenticatedLayout() {
     const navigate = useNavigate();
+
+    const handleModulesMessage = useCallback((data: unknown) => {
+        console.log("[sample] Message received from a module: ", data);
+    }, []);
+
+    useEventBusListener("speak-to-host", handleModulesMessage);
 
     const handleDisconnect = useCallback(() => {
         sessionManager.clearSession();
@@ -28,7 +34,7 @@ export default function AuthenticatedLayout() {
 
     const renderSection: RenderSectionFunction = useCallback((itemElements, index, level) => {
         return (
-            <ul key={`${level}-${index}`} style={{ padding: 0 }}>
+            <ul key={`${level}-${index}`} style={{ display: "flex", gap: "10px", padding: 0 }}>
                 {itemElements}
             </ul>
         );
@@ -39,7 +45,7 @@ export default function AuthenticatedLayout() {
     return (
         <>
             <div style={{ display: "flex", alignItems: "center" }}>
-                <nav style={{ display: "flex", flexGrow: 1 }}>
+                <nav style={{ width: "100%" }}>
                     {renderedNavigationItems}
                 </nav>
                 <div>

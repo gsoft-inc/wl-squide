@@ -17,37 +17,32 @@ export function App() {
 
     const wrapManagedRoutes = useCallback((managedRoutes: Route[]) => {
         return {
-            // Pathless route to set an unmanaged error boundary at the root of the application.
+            // Pathless route to set a root layout and a root error boundary.
+            element: <RootLayout />,
             errorElement: <RootErrorBoundary />,
             children: [
                 {
-                    // Pathless route to set a root layout.
-                    element: <RootLayout />,
+                    path: "/login",
+                    element: <Login />
+                },
+                {
+                    // Pathless route to set an authenticated boundary.
+                    element: <AuthenticationBoundary />,
                     children: [
                         {
-                            path: "/login",
-                            element: <Login />
-                        },
-                        {
-                            // Pathless route to set an authenticated boundary.
-                            element: <AuthenticationBoundary />,
+                            // Pathless route to set an authenticated layout.
+                            element: <AuthenticatedLayout />,
                             children: [
                                 {
-                                    // Pathless route to set an authenticated layout.
-                                    element: <AuthenticatedLayout />,
+                                    // Pathless route to set an error boundary inside the layout instead of outside.
+                                    // It's quite useful to prevent losing the layout when an unmanaged error occurs.
+                                    errorElement: <ModuleErrorBoundary />,
                                     children: [
                                         {
-                                            // Pathless route to set an error boundary inside the layout instead of outside.
-                                            // It's quite useful to prevent losing the layout when an unmanaged error occurs.
-                                            errorElement: <ModuleErrorBoundary />,
-                                            children: [
-                                                {
-                                                    index: true,
-                                                    element: <Home />
-                                                },
-                                                ...managedRoutes
-                                            ]
-                                        }
+                                            index: true,
+                                            element: <Home />
+                                        },
+                                        ...managedRoutes
                                     ]
                                 }
                             ]

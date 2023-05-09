@@ -20,10 +20,10 @@
         "build": "tsup --config ./tsup.build.ts"
     },
     "peerDependencies": {
-        "react": "18.2.0",
-        "react-dom": "18.2.0",
-        "react-router": "6.11.1",
-        "react-router-dom": "6.11.1"
+        "react": "*",
+        "react-dom": "*",
+        "react-router": "*",
+        "react-router-dom": "*"
     },
     "devDependencies": {
         "@types/jest": "29.5.0",

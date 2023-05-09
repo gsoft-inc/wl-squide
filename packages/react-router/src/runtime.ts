@@ -13,7 +13,7 @@ export class Runtime extends AbstractRuntime<RootRoute, RootNavigationItem> {
         if (!isNil(routes)) {
             this._routeRegistry.add(routes);
 
-            super._logger.debug(`[squide] The following route${routes.length > 1 ? "s" : ""} has been registered.`, routes);
+            this._logger.debug(`[squide] The following route${routes.length > 1 ? "s" : ""} has been registered.`, routes);
         }
     }
 
@@ -25,7 +25,7 @@ export class Runtime extends AbstractRuntime<RootRoute, RootNavigationItem> {
         if (!isNil(navigationItems)) {
             this._navigationItemRegistry.add(navigationItems);
 
-            super._logger.debug(`[squide] The following navigation item${navigationItems.length > 1 ? "s" : ""} has been registered.`, navigationItems);
+            this._logger.debug(`[squide] The following navigation item${navigationItems.length > 1 ? "s" : ""} has been registered.`, navigationItems);
         }
     }
 

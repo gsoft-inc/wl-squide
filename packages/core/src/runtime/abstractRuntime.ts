@@ -16,7 +16,7 @@ export abstract class AbstractRuntime<TRoute = unknown, TNavigationItem = unknow
     protected _services: Record<string, unknown>;
     protected _sessionAccessor?: SessionAccessorFunction;
 
-    constructor({ loggers = [], services = {}, sessionAccessor }: RuntimeOptions = {}) {
+    constructor({ loggers, services = {}, sessionAccessor }: RuntimeOptions = {}) {
         this._logger = new RuntimeLogger(loggers);
         this._eventBus = new EventBus({ logger: this._logger });
         this._services = services;

@@ -3,7 +3,9 @@ import { defineConfig } from "tsup";
 export default defineConfig({
     clean: true,
     treeshake: true,
-    dts: true,
+    dts: {
+        only: true
+    },
     minify: true,
     entry: ["./src"],
     outDir: "./dist",

@@ -1,3 +1,5 @@
+export * from "@squide/core";
+
 export * from "./runtime.ts";
 
 export * from "./routeRegistry.ts";

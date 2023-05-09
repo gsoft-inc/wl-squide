@@ -7,6 +7,7 @@ import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 
 const AuthenticatedLayout = lazy(() => import("./AuthenticatedLayout.tsx"));
+const ModuleErrorBoundary = lazy(() => import("./ModuleErrorBoundary.tsx"));
 
 const Home = lazy(() => import("./Home.tsx"));
 const Login = lazy(() => import("./Login.tsx"));
@@ -16,29 +17,37 @@ export function App() {
 
     const wrapManagedRoutes = useCallback((managedRoutes: Route[]) => {
         return {
-            element: <RootLayout />,
+            // Pathless route to set an unmanaged error boundary at the root of the application.
+            errorElement: <RootErrorBoundary />,
             children: [
                 {
-                    path: "/login",
-                    element: <Login />
-                },
-                {
-                    // Pathless route to set an authenticated boundary at the root of the application.
-                    element: <AuthenticationBoundary />,
+                    // Pathless route to set a root layout.
+                    element: <RootLayout />,
                     children: [
                         {
-                            element: <AuthenticatedLayout />,
+                            path: "/login",
+                            element: <Login />
+                        },
+                        {
+                            // Pathless route to set an authenticated boundary.
+                            element: <AuthenticationBoundary />,
                             children: [
                                 {
-                                    // Pathless route to set an error boundary inside the layout instead of outside.
-                                    // It's quite useful to prevent losing the layout when an unmanaged error occurs.
-                                    errorElement: <RootErrorBoundary />,
+                                    // Pathless route to set an authenticated layout.
+                                    element: <AuthenticatedLayout />,
                                     children: [
                                         {
-                                            path: "/",
-                                            element: <Home />
-                                        },
-                                        ...managedRoutes
+                                            // Pathless route to set an error boundary inside the layout instead of outside.
+                                            // It's quite useful to prevent losing the layout when an unmanaged error occurs.
+                                            errorElement: <ModuleErrorBoundary />,
+                                            children: [
+                                                {
+                                                    index: true,
+                                                    element: <Home />
+                                                },
+                                                ...managedRoutes
+                                            ]
+                                        }
                                     ]
                                 }
                             ]

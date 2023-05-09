@@ -1,4 +1,4 @@
-import { Link, isRouteErrorResponse, useLocation, useRouteError } from "react-router-dom";
+import { isRouteErrorResponse, useLocation, useRouteError } from "react-router-dom";
 
 import { useLogger } from "@squide/react-router";
 
@@ -12,28 +12,17 @@ function getErrorMessage(error: unknown) {
         : JSON.stringify(error);
 }
 
-export function RootErrorBoundary() {
+export default function ModuleErrorBoundary() {
     const error = useRouteError();
     const location = useLocation();
     const logger = useLogger();
-
-    if (isRouteErrorResponse(error)) {
-        if (error.status === 404) {
-            return (
-                <div>
-                    <h2>404 not found!</h2>
-                    <Link to="/">Go back to home</Link>
-                </div>
-            );
-        }
-    }
 
     logger.error(`[sample] An unmanaged error occured while rendering the route with path ${location.pathname}`, error);
 
     return (
         <div style={{ color: "red" }}>
             <h2>Unmanaged error</h2>
-            <p>An unmanaged error occured and the application is broken, try refreshing your browser.</p>
+            <p>An unmanaged error occured inside a module. Still, other parts of the application are fully functional!</p>
             <span role="img" aria-label="pointer">👉</span> {getErrorMessage(error)}
         </div>
     );

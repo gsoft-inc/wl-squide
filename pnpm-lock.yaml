@@ -54,6 +54,28 @@ importers:
         specifier: 6.7.0
         version: 6.7.0(typescript@5.0.3)
 
+  packages/fakes:
+    dependencies:
+      '@squide/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@types/jest':
+        specifier: 29.5.0
+        version: 29.5.0
+      '@workleap/eslint-plugin':
+        specifier: 1.2.0
+        version: 1.2.0(@typescript-eslint/parser@5.59.1)(eslint@8.37.0)(jest@29.5.0)(typescript@5.0.3)
+      '@workleap/typescript-configs':
+        specifier: 2.1.0
+        version: 2.1.0
+      jest:
+        specifier: 29.5.0
+        version: 29.5.0
+      tsup:
+        specifier: 6.7.0
+        version: 6.7.0(typescript@5.0.3)
+
   packages/react-router:
     dependencies:
       '@squide/core':
@@ -99,6 +121,9 @@ importers:
       '@squide/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@squide/fakes':
+        specifier: workspace:*
+        version: link:../../packages/fakes
       '@squide/react-router':
         specifier: workspace:*
         version: link:../../packages/react-router

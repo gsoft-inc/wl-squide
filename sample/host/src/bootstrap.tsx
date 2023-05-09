@@ -5,9 +5,11 @@ import { App } from "./App.tsx";
 import type { AppContext } from "shared";
 import { createRoot } from "react-dom/client";
 import { register } from "static-module";
+import { sessionAccessor } from "./session.ts";
 
 const runtime = new Runtime({
-    loggers: [new ConsoleLogger()]
+    loggers: [new ConsoleLogger()],
+    sessionAccessor
 });
 
 const context: AppContext = {

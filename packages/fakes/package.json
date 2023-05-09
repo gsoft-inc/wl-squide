@@ -1,0 +1,36 @@
+{
+    "name": "@squide/fakes",
+    "author": "Workleap",
+    "version": "0.0.0",
+    "description": "Fake implementations to faciliate the development of federated modules in isolation with @squide.",
+    "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/workleap/wl-squide.git",
+        "directory": "packages/core"
+    },
+    "publishConfig": {
+        "access": "public",
+        "provenance": true
+    },
+    "type": "module",
+    "main": "./dist/index.js",
+    "scripts": {
+        "dev": "tsup --config ./tsup.dev.ts",
+        "build": "tsup --config ./tsup.build.ts"
+    },
+    "devDependencies": {
+        "@types/jest": "29.5.0",
+        "@workleap/eslint-plugin": "1.2.0",
+        "@workleap/typescript-configs": "2.1.0",
+        "jest": "29.5.0",
+        "tsup": "6.7.0"
+    },
+    "dependencies": {
+        "@squide/core": "workspace:*"
+    },
+    "sideEffects": false,
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}

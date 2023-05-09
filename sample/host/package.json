@@ -29,6 +29,7 @@
     "dependencies": {
         "@squide/core": "workspace:*",
         "@squide/react-router": "workspace:*",
+        "@squide/fakes": "workspace:*",
         "shared": "workspace:*",
         "static-module": "workspace:*"
     }

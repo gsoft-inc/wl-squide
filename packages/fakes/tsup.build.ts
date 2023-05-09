@@ -1,13 +1,12 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-    watch: true,
+    clean: true,
+    treeshake: true,
     dts: {
-        compilerOptions: {
-            noUnusedLocals: false
-        }
+        only: true
     },
-    sourcemap: "inline",
+    minify: true,
     entry: ["./src"],
     outDir: "./dist",
     format: ["esm"],

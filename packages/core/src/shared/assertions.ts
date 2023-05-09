@@ -14,6 +14,6 @@ export function isNil(value: unknown): value is null | undefined {
     return isNull(value) || isUndefined(value);
 }
 
-export function isNilOrEmpty(value: unknown) {
+export function isNilOrEmpty(value: unknown): value is null | undefined | "" {
     return isNil(value) || value === "";
 }

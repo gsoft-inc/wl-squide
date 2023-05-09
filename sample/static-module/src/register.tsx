@@ -28,7 +28,9 @@ export const register: ModuleRegisterFunction = (runtime: Runtime, context: AppC
         {
             to: "/message",
             content: "Message",
+            // Higher numbers gets rendered first.
             priority: 999,
+            // Will be forwarded to the host application render function.
             additionalProps: {
                 highlight: true
             }

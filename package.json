@@ -16,7 +16,8 @@
         "lint:eslint": "eslint --ext .js,.ts,.tsx . --max-warnings=-1 --cache --cache-location node_modules/.cache/eslint",
         "lint:types": "pnpm -r --parallel --include-workspace-root exec tsc",
 
-        "release": "",
+        "changeset": "changeset",
+        "release": "pnpm build && changeset publish",
 
         "clean": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf dist node_modules/.cache",
         "reset": "pnpm run clean && reset:modules",

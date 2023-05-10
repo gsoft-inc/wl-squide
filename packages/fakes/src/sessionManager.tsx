@@ -5,7 +5,7 @@ export interface SessionManagerOptions {
 }
 
 export class SessionManager<T = unknown> {
-    private _key: string;
+    private readonly _key: string;
     private _cache?: T = undefined;
 
     constructor({ key = "app-session" }: SessionManagerOptions = {}) {

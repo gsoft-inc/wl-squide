@@ -13,18 +13,18 @@ export type RootNavigationItem = NavigationItem & {
 };
 
 export class NavigationItemRegistry {
-    private _items: RootNavigationItem[];
+    #items: RootNavigationItem[];
 
     constructor() {
-        this._items = [];
+        this.#items = [];
     }
 
     add(navigationItems: RootNavigationItem[]) {
         // Create a new array so the navigation items array is immutable.
-        this._items = [...this._items, ...navigationItems];
+        this.#items = [...this.#items, ...navigationItems];
     }
 
     get items() {
-        return this._items;
+        return this.#items;
     }
 }

@@ -7,18 +7,18 @@ export type RootRoute = Route & {
 };
 
 export class RouteRegistry {
-    private _routes: RootRoute[];
+    #routes: RootRoute[];
 
     constructor() {
-        this._routes = [];
+        this.#routes = [];
     }
 
     add(routes: RootRoute[]) {
         // Create a new array so the routes array is immutable.
-        this._routes = [...this._routes, ...routes];
+        this.#routes = [...this.#routes, ...routes];
     }
 
     get routes() {
-        return this._routes;
+        return this.#routes;
     }
 }

@@ -11,8 +11,8 @@ export interface RuntimeOptions {
 }
 
 export abstract class AbstractRuntime<TRoute = unknown, TNavigationItem = unknown> {
-    protected _logger: RuntimeLogger;
-    protected _eventBus: EventBus;
+    protected readonly _logger: RuntimeLogger;
+    protected readonly _eventBus: EventBus;
     protected _services: Record<string, unknown>;
     protected _sessionAccessor?: SessionAccessorFunction;
 

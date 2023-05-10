@@ -5,42 +5,42 @@ export interface SessionManagerOptions {
 }
 
 export class SessionManager<T = unknown> {
-    private readonly _key: string;
-    private _cache?: T = undefined;
+    readonly #key: string;
+    #cache?: T = undefined;
 
     constructor({ key = "app-session" }: SessionManagerOptions = {}) {
-        this._key = key;
+        this.#key = key;
     }
 
     setSession(session: T) {
         if (isNil(session)) {
-            window.localStorage.removeItem(this._key);
+            window.localStorage.removeItem(this.#key);
         } else {
-            window.localStorage.setItem(this._key, JSON.stringify(session));
+            window.localStorage.setItem(this.#key, JSON.stringify(session));
         }
 
-        this._cache = undefined;
+        this.#cache = undefined;
     }
 
     getSession() {
-        if (this._cache) {
-            return this._cache;
+        if (!isNil(this.#cache)) {
+            return this.#cache;
         }
 
-        const rawSession = window.localStorage.getItem(this._key);
+        const rawSession = window.localStorage.getItem(this.#key);
 
         if (!isNilOrEmpty(rawSession)) {
-            this._cache = JSON.parse(rawSession);
+            this.#cache = JSON.parse(rawSession);
 
-            return this._cache;
+            return this.#cache;
         }
 
         return undefined;
     }
 
     clearSession() {
-        this._cache = undefined;
+        this.#cache = undefined;
 
-        window.localStorage.removeItem(this._key);
+        window.localStorage.removeItem(this.#key);
     }
 }

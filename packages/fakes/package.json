@@ -2,12 +2,12 @@
     "name": "@squide/fakes",
     "author": "Workleap",
     "version": "0.0.0",
-    "description": "Fake implementations to faciliate the development of federated modules in isolation with @squide.",
+    "description": "Fake implementations to facilitate the development of federated modules in isolation with @squide.",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/workleap/wl-squide.git",
-        "directory": "packages/core"
+        "directory": "packages/fakes"
     },
     "publishConfig": {
         "access": "public",

@@ -2,7 +2,7 @@ import { LogLevel } from "./logger.ts";
 import type { Logger } from "./logger.ts";
 
 export class ConsoleLogger implements Logger {
-    private _logLevel: LogLevel;
+    private readonly _logLevel: LogLevel;
 
     constructor(logLevel: LogLevel = LogLevel.critical) {
         this._logLevel = logLevel;

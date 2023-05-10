@@ -30,7 +30,6 @@ function toRenderItem(item: NavigationItem) {
 }
 
 function renderItems(navigationItems: NavigationItem[], renderItem: RenderItemFunction, renderSection: RenderSectionFunction, index: number, level: number) {
-    const itemElements = navigationItems.map((x: (NavigationItem), itemIndex: number) => {
     const itemElements = navigationItems.map((x, itemIndex) => {
         const itemElement = renderItem(toRenderItem(x), itemIndex, level);
 

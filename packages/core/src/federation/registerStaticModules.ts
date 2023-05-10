@@ -7,12 +7,12 @@ export interface RegisterStaticModulesOptions {
 
 let isRegistered = false;
 
-export async function registerStaticModules(registerFunctions: ModuleRegisterFunction[], runtime: AbstractRuntime, { context }: RegisterStaticModulesOptions = {}) {
+export function registerStaticModules(registerFunctions: ModuleRegisterFunction[], runtime: AbstractRuntime, { context }: RegisterStaticModulesOptions = {}) {
     if (isRegistered) {
         throw new Error("[squide] The \"registerRemoteModules\" function can only be called once.");
     }
 
-    runtime.logger.information(`[squide] Found ${registerFunctions.length} static module${registerFunctions.length > 1 ? "s" : ""} to register.`);
+    runtime.logger.information(`[squide] Found ${registerFunctions.length} static module${registerFunctions.length !== 1 ? "s" : ""} to register.`);
 
     registerFunctions.forEach((x, index) => {
         runtime.logger.information(`[squide] ${index + 1}/${registerFunctions.length} Registering static module.`);

@@ -20,14 +20,9 @@
         "@types/react-dom": "18.2.0",
         "@workleap/eslint-plugin": "1.2.0",
         "@workleap/typescript-configs": "2.1.0",
-        "react": "18.2.0",
-        "react-dom": "18.2.0",
-        "react-router": "6.11.1",
-        "react-router-dom": "6.11.1",
         "tsup": "6.7.0"
     },
     "dependencies": {
-        "@squide/core": "workspace:*",
         "@squide/react-router": "workspace:*"
     }
 }

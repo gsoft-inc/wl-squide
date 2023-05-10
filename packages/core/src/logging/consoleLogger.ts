@@ -8,7 +8,7 @@ export class ConsoleLogger implements Logger {
         this._logLevel = logLevel;
     }
 
-    debug(log: string, ...rest: unknown[]): Promise<unknown> {
+    debug(log: string, ...rest: unknown[]) {
         if (this._logLevel >= LogLevel.debug) {
             console.log(log, ...rest);
         }
@@ -16,7 +16,7 @@ export class ConsoleLogger implements Logger {
         return Promise.resolve();
     }
 
-    information(log: string, ...rest: unknown[]): Promise<unknown> {
+    information(log: string, ...rest: unknown[]) {
         if (this._logLevel >= LogLevel.information) {
             console.info(log, ...rest);
         }
@@ -24,7 +24,7 @@ export class ConsoleLogger implements Logger {
         return Promise.resolve();
     }
 
-    warning(log: string, ...rest: unknown[]): Promise<unknown> {
+    warning(log: string, ...rest: unknown[]) {
         if (this._logLevel >= LogLevel.warning) {
             console.warn(log, ...rest);
         }
@@ -32,7 +32,7 @@ export class ConsoleLogger implements Logger {
         return Promise.resolve();
     }
 
-    error(log: string, ...rest: unknown[]): Promise<unknown> {
+    error(log: string, ...rest: unknown[]) {
         if (this._logLevel >= LogLevel.error) {
             console.error(log, ...rest);
         }
@@ -40,7 +40,7 @@ export class ConsoleLogger implements Logger {
         return Promise.resolve();
     }
 
-    critical(log: string, ...rest: unknown[]): Promise<unknown> {
+    critical(log: string, ...rest: unknown[]) {
         if (this._logLevel >= LogLevel.critical) {
             console.error(log, ...rest);
         }

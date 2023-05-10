@@ -1,5 +1,4 @@
-import { AbstractRuntime, isNil } from "@squide/core";
-
+import { AbstractRuntime } from "@squide/core";
 import { NavigationItemRegistry } from "./navigationItemRegistry.ts";
 import type { RootNavigationItem } from "./navigationItemRegistry.ts";
 import type { RootRoute } from "./routeRegistry.ts";
@@ -10,11 +9,9 @@ export class Runtime extends AbstractRuntime<RootRoute, RootNavigationItem> {
     protected _navigationItemRegistry = new NavigationItemRegistry();
 
     registerRoutes(routes: RootRoute[]) {
-        if (!isNil(routes)) {
-            this._routeRegistry.add(routes);
+        this._routeRegistry.add(routes);
 
-            this._logger.debug(`[squide] The following route${routes.length > 1 ? "s" : ""} has been registered.`, routes);
-        }
+        this._logger.debug(`[squide] The following route${routes.length !== 1 ? "s" : ""} has been registered.`, routes);
     }
 
     get routes() {
@@ -22,11 +19,9 @@ export class Runtime extends AbstractRuntime<RootRoute, RootNavigationItem> {
     }
 
     registerNavigationItems(navigationItems: RootNavigationItem[]) {
-        if (!isNil(navigationItems)) {
-            this._navigationItemRegistry.add(navigationItems);
+        this._navigationItemRegistry.add(navigationItems);
 
-            this._logger.debug(`[squide] The following navigation item${navigationItems.length > 1 ? "s" : ""} has been registered.`, navigationItems);
-        }
+        this._logger.debug(`[squide] The following navigation item${navigationItems.length !== 1 ? "s" : ""} has been registered.`, navigationItems);
     }
 
     get navigationItems() {

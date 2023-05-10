@@ -1,4 +1,9 @@
 {
     "extends": "@workleap/typescript-configs/library.json",
+    "compilerOptions": {
+        "paths": {
+            "@squide/core": ["../core/src/index.ts"]
+        }
+    },
     "exclude": ["dist", "node_modules"]
 }

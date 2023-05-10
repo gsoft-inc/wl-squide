@@ -1,4 +1,12 @@
 {
     "extends": "@workleap/typescript-configs/web-application.json",
+    "compilerOptions": {
+        "paths": {
+            "@squide/react-router": ["../../packages/react-router/src/index.ts"],
+            "@squide/fakes": ["../../packages/fakes/src/index.ts"],
+            "shared": ["../shared/src/index.ts"],
+            "static-module": ["../static-module/src/index.ts"]
+        }
+    },
     "exclude": ["dist", "node_modules"]
 }

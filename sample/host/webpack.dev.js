@@ -12,7 +12,7 @@ import path from "path";
 export default {
     mode: "development",
     target: "web",
-    devtool: "inline-source-map",
+    devtool: "eval-cheap-module-source-map",
     devServer: {
         port: 8080,
         historyApiFallback: true,

@@ -7,27 +7,27 @@ export class RuntimeLogger {
         this.loggers = loggers;
     }
 
-    private log(action: (logger: Logger) => Promise<unknown>): Promise<PromiseSettledResult<unknown>[]> {
-        return Promise.allSettled(this.loggers.map((x: Logger) => action(x)));
+    private log(action: (logger: Logger) => Promise<unknown>) {
+        return Promise.allSettled(this.loggers.map(x => action(x)));
     }
 
-    debug(log: string, ...rest: unknown[]): Promise<PromiseSettledResult<unknown>[]> {
-        return this.log((x: Logger) => x.debug(log, ...rest));
+    debug(log: string, ...rest: unknown[]) {
+        return this.log(x => x.debug(log, ...rest));
     }
 
-    information(log: string, ...rest: unknown[]): Promise<PromiseSettledResult<unknown>[]> {
-        return this.log((x: Logger) => x.information(log, ...rest));
+    information(log: string, ...rest: unknown[]) {
+        return this.log(x => x.information(log, ...rest));
     }
 
-    warning(log: string, ...rest: unknown[]): Promise<PromiseSettledResult<unknown>[]> {
-        return this.log((x: Logger) => x.warning(log, ...rest));
+    warning(log: string, ...rest: unknown[]) {
+        return this.log(x => x.warning(log, ...rest));
     }
 
-    error(log: string, ...rest: unknown[]): Promise<PromiseSettledResult<unknown>[]> {
-        return this.log((x: Logger) => x.error(log, ...rest));
+    error(log: string, ...rest: unknown[]) {
+        return this.log(x => x.error(log, ...rest));
     }
 
-    critical(log: string, ...rest: unknown[]): Promise<PromiseSettledResult<unknown>[]> {
-        return this.log((x: Logger) => x.critical(log, ...rest));
+    critical(log: string, ...rest: unknown[]) {
+        return this.log(x => x.critical(log, ...rest));
     }
 }

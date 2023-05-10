@@ -3,10 +3,8 @@ import { useMemo, useState } from "react";
 
 import { isNil } from "@squide/core";
 
-export type WrapManagedRoutesFunction = (routes: Route[]) => Route;
-
 export interface UseHoistedRoutesOptions {
-    wrapManagedRoutes?: WrapManagedRoutesFunction;
+    wrapManagedRoutes?: (routes: Route[]) => Route;
     allowedPaths?: string[];
 }
 

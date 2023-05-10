@@ -4,7 +4,9 @@ export default defineConfig({
     clean: true,
     treeshake: true,
     dts: {
-        only: true
+        compilerOptions: {
+            noUnusedLocals: false
+        }
     },
     minify: true,
     entry: ["./src"],

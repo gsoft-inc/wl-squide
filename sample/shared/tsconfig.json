@@ -1,0 +1,9 @@
+{
+    "extends": "@workleap/typescript-configs/library.json",
+    "compilerOptions": {
+        "paths": {
+            "@squide/react-router": ["../../packages/react-router/src/index.ts"]
+        }
+    },
+    "exclude": ["dist", "node_modules"]
+}

@@ -3,10 +3,15 @@ import { defineConfig } from "tsup";
 export default defineConfig({
     clean: true,
     treeshake: true,
-    dts: true,
-    minify: "terser",
-    entry: ["./src/index.ts"],
+    dts: {
+        compilerOptions: {
+            noUnusedLocals: false
+        }
+    },
+    minify: true,
+    entry: ["./src"],
     outDir: "./dist",
     format: ["esm"],
+    target: "esnext",
     platform: "browser"
 });

@@ -1,6 +1,4 @@
 {
     "extends": "@workleap/typescript-configs/library.json",
-    "compilerOptions": {
-        "allowImportingTsExtensions": true
-    }
+    "exclude": ["dist", "node_modules"]
 }

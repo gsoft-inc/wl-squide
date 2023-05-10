@@ -1,13 +1,13 @@
 {
-    "name": "@squide/core",
+    "name": "@squide/fakes",
     "author": "Workleap",
     "version": "0.0.0",
-    "description": "The core package of @squide federated application shell.",
+    "description": "Fake implementations to facilitate the development of federated modules in isolation with @squide.",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/workleap/wl-squide.git",
-        "directory": "packages/core"
+        "directory": "packages/fakes"
     },
     "publishConfig": {
         "access": "public",
@@ -20,21 +20,15 @@
         "dev": "tsup --config ./tsup.dev.ts",
         "build": "tsup --config ./tsup.build.ts"
     },
-    "peerDependencies": {
-        "react": "*",
-        "react-dom": "*"
-    },
     "devDependencies": {
         "@types/jest": "29.5.0",
-        "@types/react": "18.2.0",
-        "@types/react-dom": "18.2.0",
         "@workleap/eslint-plugin": "1.3.0",
         "@workleap/typescript-configs": "2.1.0",
         "jest": "29.5.0",
         "tsup": "6.7.0"
     },
     "dependencies": {
-        "eventemitter3": "5.0.1"
+        "@squide/core": "workspace:*"
     },
     "sideEffects": false,
     "engines": {

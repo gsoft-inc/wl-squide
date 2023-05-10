@@ -1,12 +1,16 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-    clean: true,
     watch: true,
-    dts: true,
+    dts: {
+        compilerOptions: {
+            noUnusedLocals: false
+        }
+    },
     sourcemap: "inline",
-    entry: ["./src/index.ts"],
+    entry: ["./src"],
     outDir: "./dist",
     format: ["esm"],
+    target: "esnext",
     platform: "browser"
 });

@@ -15,7 +15,7 @@ export class RouteRegistry {
 
     add(routes: RootRoute[]) {
         // Create a new array so the routes array is immutable.
-        this._routes = [...this._routes, ...routes.filter(x => x)];
+        this._routes = [...this._routes, ...routes];
     }
 
     get routes() {

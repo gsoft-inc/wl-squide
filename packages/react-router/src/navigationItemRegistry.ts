@@ -21,7 +21,7 @@ export class NavigationItemRegistry {
 
     add(navigationItems: RootNavigationItem[]) {
         // Create a new array so the navigation items array is immutable.
-        this._items = [...this._items, ...navigationItems.filter(x => x)];
+        this._items = [...this._items, ...navigationItems];
     }
 
     get items() {

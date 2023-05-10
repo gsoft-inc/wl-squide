@@ -17,7 +17,7 @@ export type RenderItemFunction = (item: NavigationItemProps, index: number, leve
 
 export type RenderSectionFunction = (itemElements: ReactElement[], index: number, level: number) => ReactElement;
 
-function toRenderItem(item: NavigationItem) {
+function toRenderItem(item: NavigationItem): NavigationItemProps {
     // children is intentionally omitted.
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { children, content, additionalProps, ...linkProps } = item;
@@ -26,7 +26,7 @@ function toRenderItem(item: NavigationItem) {
         content,
         linkProps,
         additionalProps: additionalProps ?? {}
-    } as NavigationItemProps;
+    };
 }
 
 function renderItems(navigationItems: NavigationItem[], renderItem: RenderItemFunction, renderSection: RenderSectionFunction, index: number, level: number) {

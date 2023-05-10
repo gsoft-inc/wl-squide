@@ -2,14 +2,14 @@ import { LogLevel } from "./logger.ts";
 import type { Logger } from "./logger.ts";
 
 export class ConsoleLogger implements Logger {
-    private readonly _logLevel: LogLevel;
+    readonly #logLevel: LogLevel;
 
     constructor(logLevel: LogLevel = LogLevel.critical) {
-        this._logLevel = logLevel;
+        this.#logLevel = logLevel;
     }
 
     debug(log: string, ...rest: unknown[]) {
-        if (this._logLevel >= LogLevel.debug) {
+        if (this.#logLevel >= LogLevel.debug) {
             console.log(log, ...rest);
         }
 
@@ -17,7 +17,7 @@ export class ConsoleLogger implements Logger {
     }
 
     information(log: string, ...rest: unknown[]) {
-        if (this._logLevel >= LogLevel.information) {
+        if (this.#logLevel >= LogLevel.information) {
             console.info(log, ...rest);
         }
 
@@ -25,7 +25,7 @@ export class ConsoleLogger implements Logger {
     }
 
     warning(log: string, ...rest: unknown[]) {
-        if (this._logLevel >= LogLevel.warning) {
+        if (this.#logLevel >= LogLevel.warning) {
             console.warn(log, ...rest);
         }
 
@@ -33,7 +33,7 @@ export class ConsoleLogger implements Logger {
     }
 
     error(log: string, ...rest: unknown[]) {
-        if (this._logLevel >= LogLevel.error) {
+        if (this.#logLevel >= LogLevel.error) {
             console.error(log, ...rest);
         }
 
@@ -41,7 +41,7 @@ export class ConsoleLogger implements Logger {
     }
 
     critical(log: string, ...rest: unknown[]) {
-        if (this._logLevel >= LogLevel.critical) {
+        if (this.#logLevel >= LogLevel.critical) {
             console.error(log, ...rest);
         }
 

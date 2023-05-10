@@ -6,13 +6,13 @@
     "license": "Apache-2.0",
     "type": "module",
     "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "scripts": {
         "dev": "tsup --config ./tsup.dev.ts"
     },
     "peerDependencies": {
         "react": "*",
         "react-dom": "*",
-        "react-router": "*",
         "react-router-dom": "*"
     },
     "devDependencies": {

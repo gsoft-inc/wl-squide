@@ -28,7 +28,7 @@ export function RootErrorBoundary() {
         }
     }
 
-    logger.error(`[sample] An unmanaged error occured while rendering the route with path ${location.pathname}`, error);
+    logger.error(`[sample] An unmanaged error occurred while rendering the route with path ${location.pathname}`, error);
 
     return (
         <div style={{ color: "red" }}>

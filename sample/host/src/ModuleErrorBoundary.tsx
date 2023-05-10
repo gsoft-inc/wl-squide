@@ -22,7 +22,7 @@ export default function ModuleErrorBoundary() {
     return (
         <div style={{ color: "red" }}>
             <h2>Unmanaged error</h2>
-            <p>An unmanaged error occured inside a module. Still, other parts of the application are fully functional!</p>
+            <p>An unmanaged error occurred inside a module. Still, other parts of the application are fully functional!</p>
             <span role="img" aria-label="pointer">👉</span> {getErrorMessage(error)}
         </div>
     );

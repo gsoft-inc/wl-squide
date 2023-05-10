@@ -33,7 +33,7 @@ export function RootErrorBoundary() {
     return (
         <div style={{ color: "red" }}>
             <h2>Unmanaged error</h2>
-            <p>An unmanaged error occured and the application is broken, try refreshing your browser.</p>
+            <p>An unmanaged error occurred and the application is broken, try refreshing your browser.</p>
             <span role="img" aria-label="pointer">👉</span> {getErrorMessage(error)}
         </div>
     );

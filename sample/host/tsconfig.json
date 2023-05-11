@@ -2,6 +2,7 @@
     "extends": "@workleap/typescript-configs/web-application.json",
     "compilerOptions": {
         "paths": {
+            "@squide/core": ["../../packages/core/src/index.ts"],
             "@squide/react-router": ["../../packages/react-router/src/index.ts"],
             "@squide/fakes": ["../../packages/fakes/src/index.ts"],
             "shared": ["../shared/src/index.ts"],

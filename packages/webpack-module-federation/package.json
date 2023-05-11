@@ -7,7 +7,7 @@
     "repository": {
         "type": "git",
         "url": "git+https://github.com/workleap/wl-squide.git",
-        "directory": "packages/module-federation"
+        "directory": "packages/webpack-module-federation"
     },
     "publishConfig": {
         "access": "public",

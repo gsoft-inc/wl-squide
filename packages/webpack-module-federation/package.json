@@ -1,13 +1,13 @@
 {
-    "name": "@squide/react-router",
+    "name": "@squide/webpack-module-federation",
     "author": "Workleap",
     "version": "0.0.0",
-    "description": "Add support for React Router to @squide federated application shell.",
+    "description": "Add support for Webpack Module Federation to @squide federated application shell.",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Workleap/wl-squide.git",
-        "directory": "packages/react-router"
+        "url": "git+https://github.com/workleap/wl-squide.git",
+        "directory": "packages/module-federation"
     },
     "publishConfig": {
         "access": "public",
@@ -23,7 +23,7 @@
     "peerDependencies": {
         "react": "*",
         "react-dom": "*",
-        "react-router-dom": "*"
+        "webpack": ">=5.0.0"
     },
     "devDependencies": {
         "@types/jest": "29.5.0",
@@ -35,7 +35,8 @@
         "tsup": "6.7.0"
     },
     "dependencies": {
-        "@squide/core": "workspace:*"
+        "@squide/core": "workspace:*",
+        "deepmerge": "4.3.1"
     },
     "sideEffects": false,
     "engines": {

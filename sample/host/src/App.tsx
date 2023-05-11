@@ -8,9 +8,9 @@ import { RootLayout } from "./RootLayout.tsx";
 
 const AuthenticatedLayout = lazy(() => import("./AuthenticatedLayout.tsx"));
 const ModuleErrorBoundary = lazy(() => import("./ModuleErrorBoundary.tsx"));
-
 const Home = lazy(() => import("./Home.tsx"));
 const Login = lazy(() => import("./Login.tsx"));
+const NoMatch = lazy(() => import("./NoMatch.tsx"));
 
 export function App() {
     const routes = useRoutes();
@@ -48,6 +48,10 @@ export function App() {
                             ]
                         }
                     ]
+                },
+                {
+                    path: "*",
+                    element: <NoMatch path={location.pathname} />
                 }
             ]
         };

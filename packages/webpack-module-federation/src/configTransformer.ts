@@ -1,5 +1,5 @@
 /*
-TODO: Add snapshot test with at least those use cases:
+TODO: Add snapshot tests with at least those use cases:
     - plugins array doesn't exist
     - ModuleFederationPlugin has already been configured
     - pluginOptions already contains a "shared" section

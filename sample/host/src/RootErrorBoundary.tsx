@@ -1,4 +1,4 @@
-import { Link, isRouteErrorResponse, useLocation, useRouteError } from "react-router-dom";
+import { isRouteErrorResponse, useLocation, useRouteError } from "react-router-dom";
 
 import { useLogger } from "@squide/react-router";
 
@@ -16,17 +16,6 @@ export function RootErrorBoundary() {
     const error = useRouteError();
     const location = useLocation();
     const logger = useLogger();
-
-    if (isRouteErrorResponse(error)) {
-        if (error.status === 404) {
-            return (
-                <div>
-                    <h2>404 not found!</h2>
-                    <Link to="/">Go back to home</Link>
-                </div>
-            );
-        }
-    }
 
     logger.error(`[sample] An unmanaged error occurred while rendering the route with path ${location.pathname}`, error);
 

@@ -10,22 +10,19 @@ TODO: Add snapshot tests with at least those use cases:
     - with a different filename for a remote
 */
 
-import type { ModuleFederationPluginOptions, SharedObject } from "./ModuleFederationPlugin.d.ts";
 import { RemoteEntryPoint, RemoteModuleName } from "./remoteDefinition.ts";
-
-import type { Configuration } from "webpack";
-// Types are not exported by webpack.
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import ModuleFederationPlugin from "webpack/lib/container/ModuleFederationPlugin.js";
+import { container, type Configuration } from "webpack";
 import merge from "deepmerge";
+
+type ModuleFederationPluginOptions = ConstructorParameters<typeof container.ModuleFederationPlugin>[0];
+type Shared = ModuleFederationPluginOptions["shared"];
 
 export interface ModuleFederationOptions {
     router?: "react-router";
     pluginOptions?: ModuleFederationPluginOptions;
 }
 
-const DefaultSharedDependencies: SharedObject = {
+const DefaultSharedDependencies: Shared = {
     "react": {
         singleton: true
     },
@@ -40,7 +37,7 @@ const DefaultSharedDependencies: SharedObject = {
     }
 };
 
-const ReactRouterSharedDependencies: SharedObject = {
+const ReactRouterSharedDependencies: Shared = {
     "react-router-dom": {
         singleton: true
     },
@@ -49,12 +46,12 @@ const ReactRouterSharedDependencies: SharedObject = {
     }
 };
 
-function createSharedObject({ router = "react-router", pluginOptions = {} }: ModuleFederationOptions): SharedObject {
-    return merge.all([
+function createSharedObject({ router = "react-router", pluginOptions = {} }: ModuleFederationOptions) {
+    return merge.all<Shared>([
         DefaultSharedDependencies,
         router === "react-router" ? ReactRouterSharedDependencies : {},
         pluginOptions.shared ?? {}
-    ]) as SharedObject;
+    ]);
 }
 
 export function hostTransformer(config: Configuration, name: string, options: ModuleFederationOptions = {}) {
@@ -64,7 +61,7 @@ export function hostTransformer(config: Configuration, name: string, options: Mo
     };
 
     config.plugins = config.plugins ?? [];
-    config.plugins.push(new ModuleFederationPlugin(pluginOptions));
+    config.plugins.push(new container.ModuleFederationPlugin(pluginOptions));
 
     return config;
 }
@@ -80,7 +77,7 @@ export function remoteTransformer(config: Configuration, name: string, options: 
     };
 
     config.plugins = config.plugins ?? [];
-    config.plugins.push(new ModuleFederationPlugin(pluginOptions));
+    config.plugins.push(new container.ModuleFederationPlugin(pluginOptions));
 
     return config;
 }

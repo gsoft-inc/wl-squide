@@ -32,7 +32,7 @@ function loadRemoteScript(url: string, { timeoutDelay = 2000 }: LoadRemoteScript
         }
 
         element.onload = () => {
-            clearTimeout(timeoutId);
+            window.clearTimeout(timeoutId);
 
             element?.parentElement?.removeChild(element);
             resolve({});
@@ -40,7 +40,7 @@ function loadRemoteScript(url: string, { timeoutDelay = 2000 }: LoadRemoteScript
 
         element.onerror = (error: unknown) => {
             if (!hasCanceled) {
-                clearTimeout(timeoutId);
+                window.clearTimeout(timeoutId);
 
                 element?.parentElement?.removeChild(element);
 
@@ -54,7 +54,7 @@ function loadRemoteScript(url: string, { timeoutDelay = 2000 }: LoadRemoteScript
         document.head.appendChild(element);
 
         // Eagerly reject the loading of a script, it's too long when a remote is unavailable.
-        timeoutId = setTimeout(() => {
+        timeoutId = window.setTimeout(() => {
             cancel(new Error(`[squide] Remote script "${url}" time-outed.`));
         }, timeoutDelay);
     });

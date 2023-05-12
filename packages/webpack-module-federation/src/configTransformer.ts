@@ -15,14 +15,14 @@ import { container, type Configuration } from "webpack";
 import merge from "deepmerge";
 
 type ModuleFederationPluginOptions = ConstructorParameters<typeof container.ModuleFederationPlugin>[0];
-type Shared = ModuleFederationPluginOptions["shared"];
+type SharedDependency = ModuleFederationPluginOptions["shared"];
 
 export interface ModuleFederationOptions {
     router?: "react-router";
     pluginOptions?: ModuleFederationPluginOptions;
 }
 
-const DefaultSharedDependencies: Shared = {
+const DefaultSharedDependencies: SharedDependency = {
     "react": {
         singleton: true
     },
@@ -37,7 +37,7 @@ const DefaultSharedDependencies: Shared = {
     }
 };
 
-const ReactRouterSharedDependencies: Shared = {
+const ReactRouterSharedDependencies: SharedDependency = {
     "react-router-dom": {
         singleton: true
     },
@@ -47,7 +47,7 @@ const ReactRouterSharedDependencies: Shared = {
 };
 
 function createSharedObject({ router = "react-router", pluginOptions = {} }: ModuleFederationOptions) {
-    return merge.all<Shared>([
+    return merge.all<SharedDependency>([
         DefaultSharedDependencies,
         router === "react-router" ? ReactRouterSharedDependencies : {},
         pluginOptions.shared ?? {}

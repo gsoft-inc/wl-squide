@@ -11,7 +11,11 @@ export class Runtime extends AbstractRuntime<RootRoute, RootNavigationItem> {
     registerRoutes(routes: RootRoute[]) {
         this.#routeRegistry.add(routes);
 
-        this._logger.debug(`[squide] The following route${routes.length !== 1 ? "s" : ""} has been registered for a total of ${this.#routeRegistry.routes.length} route${this.#routeRegistry.routes.length !== 1 ? "s" : ""}.`, routes);
+        this._logger.debug(
+            `[squide] The following route${routes.length !== 1 ? "s" : ""} has been registered for a total of ${this.#routeRegistry.routes.length} route${this.#routeRegistry.routes.length !== 1 ? "s" : ""}.`,
+            routes,
+            this.#routeRegistry.routes
+        );
     }
 
     get routes() {
@@ -21,7 +25,11 @@ export class Runtime extends AbstractRuntime<RootRoute, RootNavigationItem> {
     registerNavigationItems(navigationItems: RootNavigationItem[]) {
         this.#navigationItemRegistry.add(navigationItems);
 
-        this._logger.debug(`[squide] The following navigation item${navigationItems.length !== 1 ? "s" : ""} has been registered for a total of ${this.#navigationItemRegistry.items.length} item${this.#navigationItemRegistry.items.length !== 1 ? "s" : ""}.`, navigationItems);
+        this._logger.debug(
+            `[squide] The following navigation item${navigationItems.length !== 1 ? "s" : ""} has been registered for a total of ${this.#navigationItemRegistry.items.length} item${this.#navigationItemRegistry.items.length !== 1 ? "s" : ""}.`,
+            navigationItems,
+            this.#navigationItemRegistry.items
+        );
     }
 
     get navigationItems() {

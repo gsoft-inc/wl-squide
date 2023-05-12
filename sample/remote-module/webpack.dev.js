@@ -3,7 +3,6 @@
 // Added for TSC, otherwise the "devServer" section is unknown.
 import "webpack-dev-server";
 
-import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 
 // import { fileURLToPath } from "url";
@@ -17,7 +16,6 @@ const config = {
     devServer: {
         port: 8081,
         historyApiFallback: true,
-        hot: true,
         // Otherwise hot reload in the host failed with a CORS error.
         headers: {
             "Access-Control-Allow-Origin": "*"
@@ -61,10 +59,7 @@ const config = {
     resolve: {
         // Must add ".js" for files imported from node_modules.
         extensions: [".js", ".ts", ".tsx"]
-    },
-    plugins: [
-        new ReactRefreshWebpackPlugin({ overlay: false })
-    ]
+    }
 };
 
 const federatedConfig = remoteTransformer(config, "remote1", {

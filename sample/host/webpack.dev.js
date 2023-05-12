@@ -4,7 +4,6 @@
 import "webpack-dev-server";
 
 import HtmlWebpackPlugin from "html-webpack-plugin";
-import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 
 // import { fileURLToPath } from "url";
@@ -17,8 +16,7 @@ const config = {
     devtool: "eval-cheap-module-source-map",
     devServer: {
         port: 8080,
-        historyApiFallback: true,
-        hot: true
+        historyApiFallback: true
     },
     entry: "./src/index.ts",
     output: {
@@ -62,8 +60,7 @@ const config = {
     plugins: [
         new HtmlWebpackPlugin({
             template: "./public/index.html"
-        }),
-        new ReactRefreshWebpackPlugin({ overlay: false })
+        })
     ]
 };
 

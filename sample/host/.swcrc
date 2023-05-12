@@ -12,10 +12,7 @@
                 // Use "react/jsx-runtime".
                 "runtime": "automatic",
                 // Use the native "Object.assign()" instead of "_extends".
-                "useBuiltins": true,
-                // Enable React experimental "fast-refresh" feature.
-                // Also need to install @pmmmwh/react-refresh-webpack-plugin.
-                "refresh": true
+                "useBuiltins": true
             }
         },
         // Import shims from an external module rather than inlining them in bundle files to greatly reduce the bundles size.

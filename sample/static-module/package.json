@@ -7,7 +7,9 @@
     "type": "module",
     "main": "./dist/register.js",
     "scripts": {
-        "dev": "tsup --config ./tsup.dev.ts"
+        "dev": "tsup --config ./tsup.dev.ts",
+        "build": "tsup --config ./tsup.build.ts",
+        "serve-build": "pnpm build"
     },
     "peerDependencies": {
         "react": "*",

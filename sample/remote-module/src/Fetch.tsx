@@ -10,8 +10,9 @@ export default function Fetch() {
     const characters = useLoaderData() as Character[];
 
     return (
-        <main>
+        <div>
             <h2>Fetch</h2>
+            <p>An example fetching data with React Router loaders.</p>
             <div>
                 {characters.map(x => {
                     return (
@@ -25,6 +26,6 @@ export default function Fetch() {
                     );
                 })}
             </div>
-        </main>
+        </div>
     );
 }

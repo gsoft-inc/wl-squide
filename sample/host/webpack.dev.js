@@ -6,9 +6,6 @@ import "webpack-dev-server";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 
-// import { fileURLToPath } from "url";
-// import path from "path";
-
 /** @type {import("webpack").Configuration} */
 const config = {
     mode: "development",
@@ -23,14 +20,6 @@ const config = {
         // The trailing / is very important, otherwise paths will ne be resolved correctly.
         publicPath: "http://localhost:8080/"
     },
-    // cache: {
-    //     type: "filesystem",
-    //     allowCollectingMemory: true,
-    //     buildDependencies: {
-    //         config: [fileURLToPath(import.meta.url)]
-    //     },
-    //     cacheDirectory: path.resolve("node_modules/.cache/webpack")
-    // },
     module: {
         rules: [
             {

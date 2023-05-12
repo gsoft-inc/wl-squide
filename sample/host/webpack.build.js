@@ -1,27 +1,35 @@
 // @ts-check
 
-// Added for TSC, otherwise the "devServer" section is unknown.
-import "webpack-dev-server";
-
-import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import TerserPlugin from "terser-webpack-plugin";
+import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";
+import path from "path";
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    mode: "development",
+    mode: "production",
     target: "web",
-    devtool: "eval-cheap-module-source-map",
-    devServer: {
-        port: 8081,
-        historyApiFallback: true,
-        // Otherwise hot reload in the host failed with a CORS error.
-        headers: {
-            "Access-Control-Allow-Origin": "*"
-        }
-    },
-    entry: "./src/register.tsx",
+    entry: "./src/index.ts",
     output: {
+        path: path.resolve("dist"),
         // The trailing / is very important, otherwise paths will ne be resolved correctly.
-        publicPath: "http://localhost:8081/"
+        publicPath: "http://localhost:8080/",
+        clean: true
+    },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            // Allow us to use SWC for package optimization, which is way faster than the default minimizer
+            new TerserPlugin({
+                minify: TerserPlugin.swcMinify,
+                // `terserOptions` options will be passed to `swc` (`@swc/core`)
+                // Link to options - https://swc.rs/docs/config-js-minify
+                terserOptions: {
+                    compress: true,
+                    mangle: true
+                }
+            })
+        ]
     },
     module: {
         rules: [
@@ -48,10 +56,15 @@ const config = {
     resolve: {
         // Must add ".js" for files imported from node_modules.
         extensions: [".js", ".ts", ".tsx"]
-    }
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: "./public/index.html"
+        })
+    ]
 };
 
-const federatedConfig = remoteTransformer(config, "remote1", {
+const federatedConfig = hostTransformer(config, "host", {
     pluginOptions: {
         shared: {
             "shared": {

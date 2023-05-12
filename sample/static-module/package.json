@@ -5,7 +5,8 @@
     "description": "Static module to showcase @squide.",
     "license": "Apache-2.0",
     "type": "module",
-    "main": "./dist/register.js",
+    "exports": "./dist/register.js",
+    "types": "./dist/register.d.ts",
     "scripts": {
         "dev": "tsup --config ./tsup.dev.ts",
         "build": "tsup --config ./tsup.build.ts",

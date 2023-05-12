@@ -5,7 +5,7 @@
     "description": "Shared package to showcase @squide.",
     "license": "Apache-2.0",
     "type": "module",
-    "main": "./dist/index.js",
+    "exports": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "scripts": {
         "dev": "tsup --config ./tsup.dev.ts",

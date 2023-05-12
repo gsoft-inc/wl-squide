@@ -3,9 +3,8 @@
 // Added for TSC, otherwise the "devServer" section is unknown.
 import "webpack-dev-server";
 
-import HtmlWebpackPlugin from "html-webpack-plugin";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
-import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";
+import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 
 // import { fileURLToPath } from "url";
 // import path from "path";
@@ -16,14 +15,18 @@ const config = {
     target: "web",
     devtool: "eval-cheap-module-source-map",
     devServer: {
-        port: 8080,
+        port: 8081,
         historyApiFallback: true,
-        hot: true
+        hot: true,
+        // Otherwise hot reload in the host failed with a CORS error.
+        headers: {
+            "Access-Control-Allow-Origin": "*"
+        }
     },
-    entry: "./src/index.ts",
+    entry: "./src/register.tsx",
     output: {
         // The trailing / is very important, otherwise paths will ne be resolved correctly.
-        publicPath: "http://localhost:8080/"
+        publicPath: "http://localhost:8081/"
     },
     // cache: {
     //     type: "filesystem",
@@ -60,14 +63,11 @@ const config = {
         extensions: [".js", ".ts", ".tsx"]
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: "./public/index.html"
-        }),
         new ReactRefreshWebpackPlugin({ overlay: false })
     ]
 };
 
-const federatedConfig = hostTransformer(config, "host", {
+const federatedConfig = remoteTransformer(config, "remote1", {
     pluginOptions: {
         shared: {
             "shared": {

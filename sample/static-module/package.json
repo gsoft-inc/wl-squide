@@ -5,7 +5,7 @@
     "description": "Static module to showcase @squide.",
     "license": "Apache-2.0",
     "type": "module",
-    "main": "./dist/index.js",
+    "main": "./dist/register.js",
     "scripts": {
         "dev": "tsup --config ./tsup.dev.ts"
     },
@@ -21,7 +21,6 @@
         "@workleap/typescript-configs": "2.1.0",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "react-router": "6.11.1",
         "react-router-dom": "6.11.1",
         "tsup": "6.7.0"
     },

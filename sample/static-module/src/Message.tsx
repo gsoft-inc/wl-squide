@@ -13,7 +13,8 @@ export default function Message() {
     const dispatch = useEventBusDispatcher();
 
     const handleSendMessage = useCallback(() => {
-        dispatch("speak-to-host", message);
+        dispatch("write-to-host", message);
+        setMessage("");
     }, [message]);
 
     return (

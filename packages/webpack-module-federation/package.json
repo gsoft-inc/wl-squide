@@ -16,6 +16,11 @@
     "type": "module",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
+    "files": [
+        "/dist",
+        "configTransformer.js",
+        "configTransformer.d.ts"
+    ],
     "scripts": {
         "dev": "tsup --config ./tsup.dev.ts",
         "build": "tsup --config ./tsup.build.ts"

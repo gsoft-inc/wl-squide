@@ -12,7 +12,7 @@ export default function AuthenticatedLayout() {
         console.log("[sample] Message received from a module: ", data);
     }, []);
 
-    useEventBusListener("speak-to-host", handleModulesMessage);
+    useEventBusListener("write-to-host", handleModulesMessage);
 
     const handleDisconnect = useCallback(() => {
         sessionManager.clearSession();
@@ -52,7 +52,7 @@ export default function AuthenticatedLayout() {
                     <button type="button" onClick={handleDisconnect}>Disconnect</button>
                 </div>
             </div>
-            <Suspense fallback="Loading...">
+            <Suspense fallback={<div>Loading...</div>}>
                 <Outlet />
             </Suspense>
         </>

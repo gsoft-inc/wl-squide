@@ -52,7 +52,7 @@ export async function registerRemoteModules(remotes: RemoteDefinition[], runtime
 
             registerModule(module.register, runtime, context);
 
-            runtime.logger.information(`[squide] ${index + 1}/${remotes.length} container "${containerName}" of remote "${remoteUrl}" registration completed".`);
+            runtime.logger.information(`[squide] ${index + 1}/${remotes.length} container "${containerName}" of remote "${remoteUrl}" has been registered".`);
         } catch (error: unknown) {
             runtime.logger.error(`[squide] An error occured while registering module "${RemoteModuleName}" from container "${containerName}" of remote "${remoteUrl}".`, error);
 

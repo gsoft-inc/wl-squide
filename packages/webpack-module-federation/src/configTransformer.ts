@@ -6,19 +6,22 @@ TODO: Add snapshot tests with at least those use cases:
     - pluginOptions doesn't contains a "shared" section
     - with additional shared dependencies
     - with reactOptions (and all the other similar options)
+    - with additional "exposes" for a remote
+    - with a different filename for a remote
 */
 
 import type { ModuleFederationPluginOptions, SharedObject } from "./ModuleFederationPlugin.d.ts";
 import { RemoteEntryPoint, RemoteModuleName } from "./remoteDefinition.ts";
 
 import type { Configuration } from "webpack";
+// Types are not exported by webpack.
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import ModuleFederationPlugin from "webpack/lib/container/ModuleFederationPlugin.js";
 import merge from "deepmerge";
 
 export interface ModuleFederationOptions {
-    router: "react-router";
+    router?: "react-router";
     pluginOptions?: ModuleFederationPluginOptions;
 }
 
@@ -46,7 +49,7 @@ const ReactRouterSharedDependencies: SharedObject = {
     }
 };
 
-function createSharedObject({ router, pluginOptions = {} }: ModuleFederationOptions): SharedObject {
+function createSharedObject({ router = "react-router", pluginOptions = {} }: ModuleFederationOptions): SharedObject {
     return merge.all([
         DefaultSharedDependencies,
         router === "react-router" ? ReactRouterSharedDependencies : {},
@@ -54,19 +57,21 @@ function createSharedObject({ router, pluginOptions = {} }: ModuleFederationOpti
     ]) as SharedObject;
 }
 
-export function hostTransformer(config: Configuration, moduleName: string, options: ModuleFederationOptions = { router: "react-router" }) {
+export function hostTransformer(config: Configuration, name: string, options: ModuleFederationOptions = {}) {
     const pluginOptions: ModuleFederationPluginOptions = {
-        name: moduleName,
+        name,
         shared: createSharedObject(options)
     };
 
     config.plugins = config.plugins ?? [];
     config.plugins.push(new ModuleFederationPlugin(pluginOptions));
+
+    return config;
 }
 
-export function remoteTransformer(config: Configuration, moduleName: string, options: ModuleFederationOptions = { router: "react-router" }) {
+export function remoteTransformer(config: Configuration, name: string, options: ModuleFederationOptions = {}) {
     const pluginOptions: ModuleFederationPluginOptions = {
-        name: moduleName,
+        name,
         filename: RemoteEntryPoint,
         exposes: {
             [RemoteModuleName]: "./src/register"
@@ -76,4 +81,6 @@ export function remoteTransformer(config: Configuration, moduleName: string, opt
 
     config.plugins = config.plugins ?? [];
     config.plugins.push(new ModuleFederationPlugin(pluginOptions));
+
+    return config;
 }

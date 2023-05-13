@@ -11,11 +11,12 @@ TODO: Add snapshot tests with at least those use cases:
 */
 
 import { RemoteEntryPoint, RemoteModuleName } from "./remoteDefinition.ts";
-import { container, type Configuration } from "webpack";
-import merge from "deepmerge";
 
-type ModuleFederationPluginOptions = ConstructorParameters<typeof container.ModuleFederationPlugin>[0];
-type SharedDependency = ModuleFederationPluginOptions["shared"];
+import merge from "deepmerge";
+import webpack from "webpack";
+
+export type ModuleFederationPluginOptions = ConstructorParameters<typeof webpack.container.ModuleFederationPlugin>[0];
+export type SharedDependency = ModuleFederationPluginOptions["shared"];
 
 export interface ModuleFederationOptions {
     router?: "react-router";
@@ -24,25 +25,31 @@ export interface ModuleFederationOptions {
 
 const DefaultSharedDependencies: SharedDependency = {
     "react": {
-        singleton: true
+        singleton: true,
+        eager: true
     },
     "react-dom": {
-        singleton: true
+        singleton: true,
+        eager: true
     },
     "@squide/core": {
-        singleton: true
+        singleton: true,
+        eager: true
     },
     "@squide/webpack-module-federation": {
-        singleton: true
+        singleton: true,
+        eager: true
     }
 };
 
 const ReactRouterSharedDependencies: SharedDependency = {
     "react-router-dom": {
-        singleton: true
+        singleton: true,
+        eager: true
     },
     "@squide/react-router": {
-        singleton: true
+        singleton: true,
+        eager: true
     }
 };
 
@@ -54,19 +61,19 @@ function createSharedObject({ router = "react-router", pluginOptions = {} }: Mod
     ]);
 }
 
-export function hostTransformer(config: Configuration, name: string, options: ModuleFederationOptions = {}) {
+export function hostTransformer(config: webpack.Configuration, name: string, options: ModuleFederationOptions = {}) {
     const pluginOptions: ModuleFederationPluginOptions = {
         name,
         shared: createSharedObject(options)
     };
 
     config.plugins = config.plugins ?? [];
-    config.plugins.push(new container.ModuleFederationPlugin(pluginOptions));
+    config.plugins.push(new webpack.container.ModuleFederationPlugin(pluginOptions));
 
     return config;
 }
 
-export function remoteTransformer(config: Configuration, name: string, options: ModuleFederationOptions = {}) {
+export function remoteTransformer(config: webpack.Configuration, name: string, options: ModuleFederationOptions = {}) {
     const pluginOptions: ModuleFederationPluginOptions = {
         name,
         filename: RemoteEntryPoint,
@@ -77,7 +84,7 @@ export function remoteTransformer(config: Configuration, name: string, options: 
     };
 
     config.plugins = config.plugins ?? [];
-    config.plugins.push(new container.ModuleFederationPlugin(pluginOptions));
+    config.plugins.push(new webpack.container.ModuleFederationPlugin(pluginOptions));
 
     return config;
 }

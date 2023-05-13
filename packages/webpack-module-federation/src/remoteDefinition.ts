@@ -8,8 +8,5 @@ export interface RemoteDefinition {
     name: string;
 }
 
-// By conventions, the remote:
-//    - filename is always: "remoteEntry.js"
-//    - only expose a single module named "./register"
 export const RemoteEntryPoint = "remoteEntry.js";
 export const RemoteModuleName = "./register";

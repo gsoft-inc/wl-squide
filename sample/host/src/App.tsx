@@ -1,18 +1,24 @@
-import { Route, useHoistedRoutes, useRoutes } from "@squide/react-router";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { lazy, useCallback, useMemo } from "react";
+import { useHoistedRoutes, useRoutes } from "@squide/react-router";
 
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
+import type { Route } from "@squide/react-router";
+import { useAreRemotesReady } from "@squide/webpack-module-federation";
 
 const AuthenticatedLayout = lazy(() => import("./AuthenticatedLayout.tsx"));
 const ModuleErrorBoundary = lazy(() => import("./ModuleErrorBoundary.tsx"));
-
 const Home = lazy(() => import("./Home.tsx"));
 const Login = lazy(() => import("./Login.tsx"));
+const NoMatch = lazy(() => import("./NoMatch.tsx"));
 
 export function App() {
+    // Re-render the app once all the remotes are registered.
+    // Otherwise, the remotes routes won't be added to the router.
+    const isReady = useAreRemotesReady();
+
     const routes = useRoutes();
 
     const wrapManagedRoutes = useCallback((managedRoutes: Route[]) => {
@@ -48,6 +54,10 @@ export function App() {
                             ]
                         }
                     ]
+                },
+                {
+                    path: "*",
+                    element: <NoMatch path={location.pathname} />
                 }
             ]
         };
@@ -63,10 +73,14 @@ export function App() {
         return createBrowserRouter(hoistedRoutes);
     }, [hoistedRoutes]);
 
+    if (!isReady) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <RouterProvider
             router={router}
-            fallbackElement="Loading..."
+            fallbackElement={<div>Loading...</div>}
         />
     );
 }

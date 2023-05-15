@@ -1,24 +1,34 @@
 // @ts-check
 
-// Added for TSC, otherwise the "devServer" section is unknown.
-import "webpack-dev-server";
-
-import HtmlWebpackPlugin from "html-webpack-plugin";
-import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";
+import TerserPlugin from "terser-webpack-plugin";
+import path from "path";
+import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    mode: "development",
+    mode: "production",
     target: "web",
-    devtool: "eval-cheap-module-source-map",
-    devServer: {
-        port: 8080,
-        historyApiFallback: true
-    },
-    entry: "./src/index.ts",
+    entry: "./src/register.tsx",
     output: {
+        path: path.resolve("dist"),
         // The trailing / is very important, otherwise paths will ne be resolved correctly.
-        publicPath: "http://localhost:8080/"
+        publicPath: "http://localhost:8081/",
+        clean: true
+    },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            // Allow us to use SWC for package optimization, which is way faster than the default minimizer
+            new TerserPlugin({
+                minify: TerserPlugin.swcMinify,
+                // `terserOptions` options will be passed to `swc` (`@swc/core`)
+                // Link to options - https://swc.rs/docs/config-js-minify
+                terserOptions: {
+                    compress: true,
+                    mangle: true
+                }
+            })
+        ]
     },
     module: {
         rules: [
@@ -45,15 +55,10 @@ const config = {
     resolve: {
         // Must add ".js" for files imported from node_modules.
         extensions: [".js", ".ts", ".tsx"]
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: "./public/index.html"
-        })
-    ]
+    }
 };
 
-const federatedConfig = hostTransformer(config, "host", {
+const federatedConfig = remoteTransformer(config, "remote1", {
     pluginOptions: {
         shared: {
             "shared": {

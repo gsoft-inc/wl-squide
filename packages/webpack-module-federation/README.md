@@ -1,0 +1,1 @@
+# @squide/webpack-module-federation

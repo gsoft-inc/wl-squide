@@ -1,24 +1,35 @@
 // @ts-check
 
-// Added for TSC, otherwise the "devServer" section is unknown.
-import "webpack-dev-server";
-
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import TerserPlugin from "terser-webpack-plugin";
 import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";
+import path from "path";
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    mode: "development",
+    mode: "production",
     target: "web",
-    devtool: "eval-cheap-module-source-map",
-    devServer: {
-        port: 8080,
-        historyApiFallback: true
-    },
     entry: "./src/index.ts",
     output: {
+        path: path.resolve("dist"),
         // The trailing / is very important, otherwise paths will ne be resolved correctly.
-        publicPath: "http://localhost:8080/"
+        publicPath: "http://localhost:8080/",
+        clean: true
+    },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            // Allow us to use SWC for package optimization, which is way faster than the default minimizer
+            new TerserPlugin({
+                minify: TerserPlugin.swcMinify,
+                // `terserOptions` options will be passed to `swc` (`@swc/core`)
+                // Link to options - https://swc.rs/docs/config-js-minify
+                terserOptions: {
+                    compress: true,
+                    mangle: true
+                }
+            })
+        ]
     },
     module: {
         rules: [

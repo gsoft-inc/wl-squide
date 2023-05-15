@@ -5,10 +5,12 @@
     "description": "Shared package to showcase @squide.",
     "license": "Apache-2.0",
     "type": "module",
-    "main": "./dist/index.js",
+    "exports": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "scripts": {
-        "dev": "tsup --config ./tsup.dev.ts"
+        "dev": "tsup --config ./tsup.dev.ts",
+        "build": "tsup --config ./tsup.build.ts",
+        "serve-build": "pnpm build"
     },
     "peerDependencies": {
         "react": "*",
@@ -18,8 +20,8 @@
     "devDependencies": {
         "@types/react": "18.2.0",
         "@types/react-dom": "18.2.0",
-        "@workleap/eslint-plugin": "1.3.0",
-        "@workleap/typescript-configs": "2.1.0",
+        "@workleap/eslint-plugin": "1.5.0",
+        "@workleap/typescript-configs": "2.2.0",
         "tsup": "6.7.0"
     },
     "dependencies": {

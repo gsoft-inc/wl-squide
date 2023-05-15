@@ -45,7 +45,7 @@ export abstract class AbstractRuntime<TRoute = unknown, TNavigationItem = unknow
 
     getSession() {
         if (!this._sessionAccessor) {
-            throw new Error("[shell] Cannot retrieve the session because no session accessor has been provided");
+            throw new Error("[squide] Cannot retrieve the session because no session accessor has been provided");
         }
 
         return this._sessionAccessor();

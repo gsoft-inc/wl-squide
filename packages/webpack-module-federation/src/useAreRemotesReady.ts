@@ -9,14 +9,14 @@ export interface UseAreRemotesReadyOptions {
 
 export function useAreRemotesReady({ interval = 10 }: UseAreRemotesReadyOptions = {}) {
     // Using a state hook to force a rerender once ready.
-    const [, isReady] = useState(false);
+    const [, setIsReady] = useState(false);
 
     // Perform a reload once the modules are registered.
     useEffect(() => {
         const intervalId = setInterval(() => {
             if (registrationStatus === "ready") {
                 clearInterval(intervalId);
-                isReady(true);
+                setIsReady(true);
             }
         }, interval);
 

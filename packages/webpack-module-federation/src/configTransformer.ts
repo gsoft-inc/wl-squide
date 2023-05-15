@@ -15,6 +15,7 @@ import { RemoteEntryPoint, RemoteModuleName } from "./remoteDefinition.ts";
 import merge from "deepmerge";
 import webpack from "webpack";
 
+// Webpack doesn't export ModuleFederationPlugin typings.
 export type ModuleFederationPluginOptions = ConstructorParameters<typeof webpack.container.ModuleFederationPlugin>[0];
 export type SharedDependency = ModuleFederationPluginOptions["shared"];
 
@@ -67,10 +68,13 @@ export function hostTransformer(config: webpack.Configuration, name: string, opt
         shared: createSharedObject(options)
     };
 
-    config.plugins = config.plugins ?? [];
-    config.plugins.push(new webpack.container.ModuleFederationPlugin(pluginOptions));
-
-    return config;
+    return {
+        ...config,
+        plugins: [
+            ...(config.plugins ?? []),
+            new webpack.container.ModuleFederationPlugin(pluginOptions)
+        ]
+    };
 }
 
 export function remoteTransformer(config: webpack.Configuration, name: string, options: ModuleFederationOptions = {}) {
@@ -83,8 +87,11 @@ export function remoteTransformer(config: webpack.Configuration, name: string, o
         shared: createSharedObject(options)
     };
 
-    config.plugins = config.plugins ?? [];
-    config.plugins.push(new webpack.container.ModuleFederationPlugin(pluginOptions));
-
-    return config;
+    return {
+        ...config,
+        plugins: [
+            ...(config.plugins ?? []),
+            new webpack.container.ModuleFederationPlugin(pluginOptions)
+        ]
+    };
 }

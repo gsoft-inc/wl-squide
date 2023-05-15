@@ -2,7 +2,7 @@ import { isNil } from "@squide/core";
 
 // Webpack globals we need to access when loading Federated Modules dynamically
 // See: https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers.
-declare function __webpack_init_sharing__(arg: unknown): Promise<void>;
+declare let __webpack_init_sharing__: (scope: string) => Promise<void>;
 declare let __webpack_share_scopes__: { default: unknown };
 
 interface LoadRemoteScriptOptions {
@@ -20,7 +20,7 @@ function loadRemoteScript(url: string, { timeoutDelay = 2000 }: LoadRemoteScript
         let timeoutId: number | undefined = undefined;
         let hasCanceled = false;
 
-        function cancel(error: unknown) {
+        function cancel(error: Error) {
             hasCanceled = true;
 
             element?.parentElement?.removeChild(element);

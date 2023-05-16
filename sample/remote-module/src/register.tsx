@@ -49,6 +49,7 @@ export const register: ModuleRegisterFunction = (runtime: Runtime) => {
         },
         {
             to: "/hoisted",
+            // content: (<span>Hoisted</span>) as ReactNode
             content: "Hoisted"
         }
     ]);

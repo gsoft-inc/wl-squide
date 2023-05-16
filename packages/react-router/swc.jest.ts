@@ -26,4 +26,4 @@ export const config: Config = {
         // Prevent SWC from exporting the `__esModule` property.
         strict: true
     }
-}
+};

@@ -65,9 +65,7 @@ export function App() {
 
     // Using the useHoistedRoutes hook allow routes hoisted by modules to be rendered at the root of the router instead of under the root layout.
     // To disallow the hoisting functionality, remove this hook and add the routes directly.
-    const hoistedRoutes = useHoistedRoutes(routes, {
-        wrapManagedRoutes
-    });
+    const hoistedRoutes = useHoistedRoutes(routes, wrapManagedRoutes);
 
     const router = useMemo(() => {
         return createBrowserRouter(hoistedRoutes);

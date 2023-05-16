@@ -1,13 +1,13 @@
 import type { ReactNode } from "react";
 import type { RenderHookOptions } from "@testing-library/react";
-import type { RootRoute } from "../src/routeRegistry.ts";
+import type { RootNavigationItem } from "../src/navigationItemRegistry.ts";
 import { Runtime } from "../src/runtime.ts";
 import { RuntimeContext } from "@squide/core";
 import { renderHook } from "@testing-library/react";
-import { useRoutes } from "../src/useRoutes.ts";
+import { useNavigationItems } from "../src/useNavigationItems.ts";
 
 function renderWithRuntime<TProps>(runtime: Runtime, additionalProps: RenderHookOptions<TProps> = {}) {
-    return renderHook<RootRoute[], TProps>(() => useRoutes(), {
+    return renderHook<RootNavigationItem[], TProps>(() => useNavigationItems(), {
         wrapper: ({ children }: { children?: ReactNode }) => (
             <RuntimeContext.Provider value={runtime}>
                 {children}
@@ -20,9 +20,9 @@ function renderWithRuntime<TProps>(runtime: Runtime, additionalProps: RenderHook
 test("returns all the registered routes", () => {
     const runtime = new Runtime();
 
-    runtime.registerRoutes([
-        { path: "/foo", element: <div>Foo</div> },
-        { path: "/bar", element: <div>Bar</div> }
+    runtime.registerNavigationItems([
+        { to: "/foo", content: "Foo" },
+        { to: "/bar", content: "Bar" }
     ]);
 
     const { result } = renderWithRuntime(runtime);
@@ -33,26 +33,26 @@ test("returns all the registered routes", () => {
 test("returned array is immutable", () => {
     const runtime = new Runtime();
 
-    runtime.registerRoutes([
-        { path: "/foo", element: <div>Foo</div> }
+    runtime.registerNavigationItems([
+        { to: "/foo", content: "Foo" }
     ]);
 
     const { result, rerender } = renderWithRuntime(runtime);
 
     const array1 = result.current;
 
-    // Haven't added any routes, the returned array should be "array1".
+    // Haven't added any navigation items, the returned array should be "array1".
     rerender();
 
     const array2 = result.current;
 
     expect(array1).toEqual(array2);
 
-    runtime.registerRoutes([
-        { path: "/bar", element: <div>Bar</div> }
+    runtime.registerNavigationItems([
+        { to: "/bar", content: "Bar" }
     ]);
 
-    // Added a new route, the returned array should be a new instance.
+    // Added a new navigation item, the returned array should be a new instance.
     rerender();
 
     const array3 = result.current;

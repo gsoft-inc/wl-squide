@@ -62,7 +62,7 @@ function createSharedObject({ router = "react-router", pluginOptions = {} }: Mod
     ]);
 }
 
-export function hostTransformer(config: webpack.Configuration, name: string, options: ModuleFederationOptions = {}) {
+export function hostTransformer(config: webpack.Configuration, name: string, options: ModuleFederationOptions = {}): webpack.Configuration {
     const pluginOptions: ModuleFederationPluginOptions = {
         name,
         shared: createSharedObject(options)
@@ -77,7 +77,7 @@ export function hostTransformer(config: webpack.Configuration, name: string, opt
     };
 }
 
-export function remoteTransformer(config: webpack.Configuration, name: string, options: ModuleFederationOptions = {}) {
+export function remoteTransformer(config: webpack.Configuration, name: string, options: ModuleFederationOptions = {}): webpack.Configuration {
     const pluginOptions: ModuleFederationPluginOptions = {
         name,
         filename: RemoteEntryPoint,

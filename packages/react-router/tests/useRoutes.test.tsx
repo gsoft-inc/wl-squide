@@ -1,10 +1,9 @@
-import type { ReactNode } from "react";
-import type { RenderHookOptions } from "@testing-library/react";
-import type { RootRoute } from "../src/routeRegistry.ts";
+import { type RootRoute } from "../src/routeRegistry.ts";
 import { Runtime } from "../src/runtime.ts";
 import { RuntimeContext } from "@squide/core";
-import { renderHook } from "@testing-library/react";
+import { renderHook, type RenderHookOptions } from "@testing-library/react";
 import { useRoutes } from "../src/useRoutes.ts";
+import { type ReactNode } from "react";
 
 function renderWithRuntime<TProps>(runtime: Runtime, additionalProps: RenderHookOptions<TProps> = {}) {
     return renderHook<RootRoute[], TProps>(() => useRoutes(), {
@@ -41,12 +40,10 @@ test("returned array is immutable", () => {
 
     const array1 = result.current;
 
-    // Haven't added any routes, the returned array should be "array1".
+    // Haven't updated the routes, the returned array should be "array1".
     rerender();
 
     const array2 = result.current;
-
-    expect(array1).toEqual(array2);
 
     runtime.registerRoutes([
         { path: "/bar", element: <div>Bar</div> }
@@ -57,5 +54,6 @@ test("returned array is immutable", () => {
 
     const array3 = result.current;
 
+    expect(array1).toEqual(array2);
     expect(array1).not.toEqual(array3);
 });

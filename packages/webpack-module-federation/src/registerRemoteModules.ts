@@ -1,8 +1,5 @@
-import { RemoteEntryPoint, RemoteModuleName } from "./remoteDefinition.ts";
-import { isNil, registerModule } from "@squide/core";
-
-import type { AbstractRuntime } from "@squide/core";
-import type { RemoteDefinition } from "./remoteDefinition.ts";
+import { RemoteEntryPoint, RemoteModuleName, type RemoteDefinition } from "./remoteDefinition.ts";
+import { isNil, registerModule, type AbstractRuntime } from "@squide/core";
 import { loadRemote } from "./loadRemote.ts";
 
 export type RegistrationStatus = "none" | "in-progress" | "ready";

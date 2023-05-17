@@ -1,4 +1,4 @@
-import type { EventName } from "./eventBus.ts";
+import { type EventName } from "./eventBus.ts";
 import { useEventBus } from "../runtime/useEventBus.ts";
 
 export function useEventBusDispatcher() {

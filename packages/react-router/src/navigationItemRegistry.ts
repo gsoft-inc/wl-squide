@@ -1,11 +1,26 @@
-import type { LinkProps } from "react-router-dom";
-import type { ReactNode } from "react";
+import { type LinkProps } from "react-router-dom";
+import { type ReactNode } from "react";
+import { isNil } from "@squide/core";
 
-export type NavigationItem = Omit<LinkProps, "children"> & {
-    content: ReactNode;
-    children?: NavigationItem[];
+export interface NavigationLink extends Omit<LinkProps, "children"> {
+    label: ReactNode;
     additionalProps?: Record<string, unknown>;
-};
+    children?: never;
+}
+
+export interface NavigationSection {
+    label: ReactNode;
+    children: NavigationItem[];
+    additionalProps?: Record<string, unknown>;
+    to?: never;
+}
+
+export type NavigationItem = NavigationLink | NavigationSection;
+
+// Will be exposed externally but is only expected to be used internally.
+export function isLinkItem(item: NavigationItem): item is NavigationLink {
+    return !isNil((item as NavigationLink).to);
+}
 
 export type RootNavigationItem = NavigationItem & {
     // Highest priority is rendered first.

@@ -1,9 +1,8 @@
-import type { ReactNode } from "react";
-import type { RenderHookOptions } from "@testing-library/react";
-import type { RootNavigationItem } from "../src/navigationItemRegistry.ts";
+import { type ReactNode } from "react";
+import { type RootNavigationItem } from "../src/navigationItemRegistry.ts";
 import { Runtime } from "../src/runtime.ts";
 import { RuntimeContext } from "@squide/core";
-import { renderHook } from "@testing-library/react";
+import { renderHook, type RenderHookOptions } from "@testing-library/react";
 import { useNavigationItems } from "../src/useNavigationItems.ts";
 
 function renderWithRuntime<TProps>(runtime: Runtime, additionalProps: RenderHookOptions<TProps> = {}) {
@@ -21,8 +20,8 @@ test("returns all the registered routes", () => {
     const runtime = new Runtime();
 
     runtime.registerNavigationItems([
-        { to: "/foo", content: "Foo" },
-        { to: "/bar", content: "Bar" }
+        { to: "/foo", label: "Foo" },
+        { to: "/bar", label: "Bar" }
     ]);
 
     const { result } = renderWithRuntime(runtime);
@@ -34,22 +33,20 @@ test("returned array is immutable", () => {
     const runtime = new Runtime();
 
     runtime.registerNavigationItems([
-        { to: "/foo", content: "Foo" }
+        { to: "/foo", label: "Foo" }
     ]);
 
     const { result, rerender } = renderWithRuntime(runtime);
 
     const array1 = result.current;
 
-    // Haven't added any navigation items, the returned array should be "array1".
+    // Haven't updated the navigation items, the returned array should be "array1".
     rerender();
 
     const array2 = result.current;
 
-    expect(array1).toEqual(array2);
-
     runtime.registerNavigationItems([
-        { to: "/bar", content: "Bar" }
+        { to: "/bar", label: "Bar" }
     ]);
 
     // Added a new navigation item, the returned array should be a new instance.
@@ -57,5 +54,6 @@ test("returned array is immutable", () => {
 
     const array3 = result.current;
 
+    expect(array1).toEqual(array2);
     expect(array1).not.toEqual(array3);
 });

@@ -1,11 +1,10 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { lazy, useCallback, useMemo } from "react";
-import { useHoistedRoutes, useRoutes } from "@squide/react-router";
+import { useHoistedRoutes, useRoutes, type Route } from "@squide/react-router";
 
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
-import type { Route } from "@squide/react-router";
 import { useAreRemotesReady } from "@squide/webpack-module-federation";
 
 const AuthenticatedLayout = lazy(() => import("./AuthenticatedLayout.tsx"));

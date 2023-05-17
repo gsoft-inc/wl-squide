@@ -1,4 +1,4 @@
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import { type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
 
 import { lazy } from "react";
 
@@ -41,16 +41,28 @@ export const register: ModuleRegisterFunction = (runtime: Runtime) => {
     runtime.registerNavigationItems([
         {
             to: "/remote",
-            content: "Remote"
+            label: "Remote"
         },
         {
             to: "/fetch",
-            content: "Fetch"
+            label: "Fetch"
         },
         {
             to: "/hoisted",
-            // content: (<span>Hoisted</span>) as ReactNode
-            content: "Hoisted"
+            label: <strong>Hoisted</strong>
+        },
+        {
+            label: "Section",
+            children: [
+                {
+                    to: "#",
+                    label: "Child 1"
+                },
+                {
+                    to: "#",
+                    label: "Child 2"
+                }
+            ]
         }
     ]);
 };

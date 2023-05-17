@@ -1,4 +1,4 @@
-import type { RootRoute, Route } from "./routeRegistry.ts";
+import { type RootRoute, type Route } from "./routeRegistry.ts";
 import { useMemo, useState } from "react";
 
 import { isNil } from "@squide/core";
@@ -50,7 +50,7 @@ export function useHoistedRoutes(routes: RootRoute[], wrapManagedRoutes: (routes
                 const restrictedPaths = allRoutePaths.filter(y => !memoizedAllowedPaths.includes(y));
 
                 if (restrictedPaths.length > 0) {
-                    throw new Error(`[squide] A module is hoisting the following routes [${restrictedPaths.map(y => `"${y}"`).join(", ")}] which are not included in the provided "allowedRoutes" option.`);
+                    throw new Error(`[squide] A module is hoisting the following routes [${restrictedPaths.map(y => `"${y}"`).join(", ")}] which are not included in the provided "allowedRoutes" option: [${allowedPaths?.map(y => `"${y}"`).join(", ")}].`);
                 }
             });
         }

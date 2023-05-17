@@ -1,5 +1,5 @@
 import { EventEmitter } from "eventemitter3";
-import type { Logger } from "../logging/logger.ts";
+import { type Logger } from "../logging/logger.ts";
 
 export type EventName = string | symbol;
 

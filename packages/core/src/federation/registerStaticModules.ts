@@ -1,5 +1,5 @@
-import type { AbstractRuntime } from "../runtime/abstractRuntime.ts";
-import type { ModuleRegisterFunction } from "./registerModule.ts";
+import { type AbstractRuntime } from "../runtime/abstractRuntime.ts";
+import { type ModuleRegisterFunction } from "./registerModule.ts";
 
 export interface RegisterStaticModulesOptions {
     context?: unknown;

@@ -1,7 +1,7 @@
 import { type NavigationItem, type RootNavigationItem, isLinkItem, type NavigationLink, type NavigationSection } from "./navigationItemRegistry.ts";
 import { useMemo, type ReactElement, type ReactNode } from "react";
 
-import { type LinkProps } from "react-router-dom";
+import type { LinkProps } from "react-router-dom";
 import { isNil } from "@squide/core";
 
 export interface NavigationLinkRenderProps {
@@ -22,9 +22,9 @@ export function isNavigationLink(item: NavigationItemRenderProps): item is Navig
     return !isNil((item as NavigationLinkRenderProps).linkProps);
 }
 
-export type RenderItemFunction = (item: NavigationItemRenderProps, index: number, level: number) => ReactElement;
+export type RenderItemFunction = (item: NavigationItemRenderProps, index: number, level: number) => ReactNode;
 
-export type RenderSectionFunction = (elements: ReactElement[], index: number, level: number) => ReactElement;
+export type RenderSectionFunction = (elements: ReactElement[], index: number, level: number) => ReactNode;
 
 function toLinkProps({ label, additionalProps, ...linkProps }: NavigationLink): NavigationLinkRenderProps {
     return {

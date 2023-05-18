@@ -1,4 +1,4 @@
-import { type RootRoute, type Route } from "../src/routeRegistry.ts";
+import type { RootRoute, Route } from "../src/routeRegistry.ts";
 
 import { renderHook } from "@testing-library/react";
 import { type UseHoistedRoutesOptions, useHoistedRoutes } from "../src/useHoistedRoutes.ts";

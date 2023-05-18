@@ -1,5 +1,5 @@
-import { type LinkProps } from "react-router-dom";
-import { type ReactNode } from "react";
+import type { LinkProps } from "react-router-dom";
+import type { ReactNode } from "react";
 import { isNil } from "@squide/core";
 
 export interface NavigationLink extends Omit<LinkProps, "children"> {

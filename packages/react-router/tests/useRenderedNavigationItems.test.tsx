@@ -1,5 +1,5 @@
 import renderer from "react-test-renderer";
-import { type RootNavigationItem } from "../src/navigationItemRegistry.ts";
+import type { RootNavigationItem } from "../src/navigationItemRegistry.ts";
 import { useRenderedNavigationItems, type RenderItemFunction, type RenderSectionFunction, isNavigationLink, type NavigationLinkRenderProps, type NavigationSectionRenderProps } from "../src/useRenderedNavigationItems.tsx";
 import { useCallback, type ReactElement } from "react";
 import { renderHook } from "@testing-library/react";

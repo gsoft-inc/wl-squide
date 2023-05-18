@@ -1,12 +1,12 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { type ReactElement, Suspense, useCallback } from "react";
-import { useEventBusListener, useNavigationItems, useRenderedNavigationItems, type RenderItemFunction, type RenderSectionFunction, isNavigationLink, NavigationLinkRenderProps, NavigationSectionRenderProps } from "@squide/react-router";
+import { useEventBusListener, useNavigationItems, useRenderedNavigationItems, type RenderItemFunction, type RenderSectionFunction, isNavigationLink, type NavigationLinkRenderProps, type NavigationSectionRenderProps } from "@squide/react-router";
 
 import { sessionManager } from "./session.ts";
 
-type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactElement;
+type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
 
-type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactElement;
+type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactNode;
 
 const renderLink: RenderLinkItemFunction = ({ label, linkProps, additionalProps: { highlight, ...additionalProps } }, index, level) => {
     return (

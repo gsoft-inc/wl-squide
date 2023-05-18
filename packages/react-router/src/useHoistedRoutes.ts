@@ -1,4 +1,4 @@
-import { type RootRoute, type Route } from "./routeRegistry.ts";
+import type { RootRoute, Route } from "./routeRegistry.ts";
 import { useMemo, useState } from "react";
 
 import { isNil } from "@squide/core";

@@ -81,7 +81,7 @@ test("when a restricted route is hoisted, throw an error", () => {
                 allowedPaths: [
                     "/hoisted"
                 ]
-            } as UseHoistedRoutesOptions
+            } satisfies UseHoistedRoutesOptions
         }
     })).toThrow(/\/bar/);
 

@@ -1,18 +1,6 @@
-import { hostTransformer, remoteTransformer } from "../src/configTransformer.ts";
+import { hostTransformer, remoteTransformer, type ModuleFederationOptions } from "../src/configTransformer.ts";
 
 import webpack from "webpack";
-
-/*
-TODO: Add snapshot tests with at least those use cases:
-    - pluginOptions already contains a "shared" section
-    - pluginOptions doesn't contains a "shared" section
-    - with additional shared dependencies
-    - with reactOptions (and all the other similar options)
-    - with additional "exposes" for a remote
-    - with a different filename for a remote
-
-    - with pluginOptions that are not "shared" values
-*/
 
 class DummyPlugin {
     _options: unknown;
@@ -27,11 +15,29 @@ class DummyPlugin {
 }
 
 describe("host", () => {
-    test("default configuration", () => {
+    test("default transformation includes shared dependencies", () => {
         expect(hostTransformer({}, "host")).toMatchSnapshot();
     });
 
-    test("merge with existing config values", () => {
+    test("when the plugins array already exist, append ModuleFederationPlugin to the existing plugins array", () => {
+        const userConfig: webpack.Configuration = {
+            plugins: [new DummyPlugin({})]
+        };
+
+        expect(hostTransformer(userConfig, "host")).toMatchSnapshot();
+    });
+
+    test("when a ModuleFederationPlugin instance has already been added to the plugins array, throw an error", () => {
+        const userConfig: webpack.Configuration = {
+            plugins: [
+                new webpack.container.ModuleFederationPlugin({})
+            ]
+        };
+
+        expect(() => hostTransformer(userConfig, "host")).toThrow(/ModuleFederationPlugin/);
+    });
+
+    test("when the consumer config already contains fields, do not alter those fields", () => {
         const userConfig: webpack.Configuration = {
             mode: "development",
             target: "web",
@@ -41,28 +47,164 @@ describe("host", () => {
         expect(hostTransformer(userConfig, "host")).toMatchSnapshot();
     });
 
-    test("when the plugins array already exist, append to the existing plugins array", () => {
+    test("when pluginOptions contains additional shared dependencies, merge them with the default shared dependencies", () => {
+        const transformerOptions: ModuleFederationOptions = {
+            pluginOptions: {
+                shared: {
+                    "useless-lib": {
+                        singleton: true
+                    }
+                }
+            }
+        };
+
+        expect(hostTransformer({}, "host", transformerOptions)).toMatchSnapshot();
+    });
+
+    test("when pluginOptions contains additional options for a default shared dependencies, merge consumer options with the default options", () => {
+        const transformerOptions: ModuleFederationOptions = {
+            pluginOptions: {
+                shared: {
+                    "react": {
+                        requiredVersion: "1.2.3"
+                    }
+                }
+            }
+        };
+
+        expect(hostTransformer({}, "host", transformerOptions)).toMatchSnapshot();
+    });
+
+    test("when pluginOptions contains options overriding the default options of a default shared dependencies, use the consumer options", () => {
+        const transformerOptions: ModuleFederationOptions = {
+            pluginOptions: {
+                shared: {
+                    "react": {
+                        singleton: false
+                    }
+                }
+            }
+        };
+
+        expect(hostTransformer({}, "host", transformerOptions)).toMatchSnapshot();
+    });
+
+    test("when the router is not react-router, do not add react-router shared dependencies", () => {
+        const transformerOptions: ModuleFederationOptions = {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            router: "tanstack-router"
+        };
+
+        expect(hostTransformer({}, "host", transformerOptions)).toMatchSnapshot();
+    });
+});
+
+describe("remote", () => {
+    test("default transformation includes shared dependencies", () => {
+        expect(remoteTransformer({}, "remote")).toMatchSnapshot();
+    });
+
+    test("when the plugins array already exist, append ModuleFederationPlugin to the existing plugins array", () => {
         const userConfig: webpack.Configuration = {
             plugins: [new DummyPlugin({})]
         };
 
-        expect(hostTransformer(userConfig, "host")).toMatchSnapshot();
+        expect(remoteTransformer(userConfig, "remote")).toMatchSnapshot();
     });
 
-    test("when a ModuleFederationPlugin instance has already been added to the plugins, throw an error", () => {
+    test("when a ModuleFederationPlugin instance has already been added to the plugins array, throw an error", () => {
         const userConfig: webpack.Configuration = {
             plugins: [
                 new webpack.container.ModuleFederationPlugin({})
             ]
         };
 
-        expect(() => hostTransformer(userConfig, "host")).toThrow(/ModuleFederationPlugin/);
+        expect(() => remoteTransformer(userConfig, "remote")).toThrow(/ModuleFederationPlugin/);
     });
-});
 
-describe("remote", () => {
-    test("default configuration", () => {
-        expect(remoteTransformer({}, "remote")).toMatchSnapshot();
+    test("when the consumer config already contains fields, do not alter those fields", () => {
+        const userConfig: webpack.Configuration = {
+            mode: "development",
+            target: "web",
+            devtool: "eval-cheap-module-source-map"
+        };
+
+        expect(remoteTransformer(userConfig, "remote")).toMatchSnapshot();
+    });
+
+    test("when pluginOptions contains additional shared dependencies, merge them with the default shared dependencies", () => {
+        const transformerOptions: ModuleFederationOptions = {
+            pluginOptions: {
+                shared: {
+                    "useless-lib": {
+                        singleton: true
+                    }
+                }
+            }
+        };
+
+        expect(remoteTransformer({}, "remote", transformerOptions)).toMatchSnapshot();
+    });
+
+    test("when pluginOptions contains additional options for a default shared dependencies, merge consumer options with the default options", () => {
+        const transformerOptions: ModuleFederationOptions = {
+            pluginOptions: {
+                shared: {
+                    "react": {
+                        requiredVersion: "1.2.3"
+                    }
+                }
+            }
+        };
+
+        expect(remoteTransformer({}, "remote", transformerOptions)).toMatchSnapshot();
+    });
+
+    test("when pluginOptions contains options overriding the default options of a default shared dependencies, use the consumer options", () => {
+        const transformerOptions: ModuleFederationOptions = {
+            pluginOptions: {
+                shared: {
+                    "react": {
+                        singleton: false
+                    }
+                }
+            }
+        };
+
+        expect(remoteTransformer({}, "remote", transformerOptions)).toMatchSnapshot();
+    });
+
+    test("when pluginOptions contains additional remotes to expose, merge consumer options with the default options", () => {
+        const transformerOptions: ModuleFederationOptions = {
+            pluginOptions: {
+                exposes: {
+                    "./toto": "./src/toto"
+                }
+            }
+        };
+
+        expect(remoteTransformer({}, "remote", transformerOptions)).toMatchSnapshot();
+    });
+
+    test("when pluginOptions contains a filename, use the consumer filename instead of the default one", () => {
+        const transformerOptions: ModuleFederationOptions = {
+            pluginOptions: {
+                filename: "toto"
+            }
+        };
+
+        expect(remoteTransformer({}, "remote", transformerOptions)).toMatchSnapshot();
+    });
+
+    test("when the router is not react-router, do not add react-router shared dependencies", () => {
+        const transformerOptions: ModuleFederationOptions = {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            router: "tanstack-router"
+        };
+
+        expect(remoteTransformer({}, "remote", transformerOptions)).toMatchSnapshot();
     });
 });
 

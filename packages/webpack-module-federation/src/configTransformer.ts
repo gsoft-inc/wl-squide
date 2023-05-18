@@ -13,41 +13,46 @@ export interface ModuleFederationOptions {
     pluginOptions?: ModuleFederationPluginOptions;
 }
 
-const DefaultSharedDependencies: SharedDependency = {
-    "react": {
-        singleton: true,
-        eager: true
-    },
-    "react-dom": {
-        singleton: true,
-        eager: true
-    },
-    "@squide/core": {
-        singleton: true,
-        eager: true
-    },
-    "@squide/webpack-module-federation": {
-        singleton: true,
-        eager: true
+const DefaultSharedDependencies: ModuleFederationPluginOptions = {
+    shared: {
+        "react": {
+            singleton: true,
+            eager: true
+        },
+        "react-dom": {
+            singleton: true,
+            eager: true
+        },
+        "@squide/core": {
+            singleton: true,
+            eager: true
+        },
+        "@squide/webpack-module-federation": {
+            singleton: true,
+            eager: true
+        }
     }
 };
 
-const ReactRouterSharedDependencies: SharedDependency = {
-    "react-router-dom": {
-        singleton: true,
-        eager: true
-    },
-    "@squide/react-router": {
-        singleton: true,
-        eager: true
+const ReactRouterSharedDependencies: ModuleFederationPluginOptions = {
+    shared: {
+        "react-router-dom": {
+            singleton: true,
+            eager: true
+        },
+        "@squide/react-router": {
+            singleton: true,
+            eager: true
+        }
     }
 };
 
-function createSharedObject({ router = "react-router", pluginOptions = {} }: ModuleFederationOptions) {
-    return merge.all<SharedDependency>([
+function mergeOptions(targetOptions: ModuleFederationPluginOptions, { router = "react-router", pluginOptions = {} }: ModuleFederationOptions) {
+    return merge.all<ModuleFederationPluginOptions>([
+        targetOptions,
         DefaultSharedDependencies,
         router === "react-router" ? ReactRouterSharedDependencies : {},
-        pluginOptions.shared ?? {}
+        pluginOptions
     ]);
 }
 
@@ -60,10 +65,7 @@ function validateConfig(config: webpack.Configuration) {
 export function hostTransformer(config: webpack.Configuration, name: string, options: ModuleFederationOptions = {}): webpack.Configuration {
     validateConfig(config);
 
-    const pluginOptions: ModuleFederationPluginOptions = {
-        name,
-        shared: createSharedObject(options)
-    };
+    const pluginOptions = mergeOptions({ name }, options);
 
     return {
         ...config,
@@ -77,14 +79,13 @@ export function hostTransformer(config: webpack.Configuration, name: string, opt
 export function remoteTransformer(config: webpack.Configuration, name: string, options: ModuleFederationOptions = {}): webpack.Configuration {
     validateConfig(config);
 
-    const pluginOptions: ModuleFederationPluginOptions = {
+    const pluginOptions = mergeOptions({
         name,
         filename: RemoteEntryPoint,
         exposes: {
             [RemoteModuleName]: "./src/register"
-        },
-        shared: createSharedObject(options)
-    };
+        }
+    }, options);
 
     return {
         ...config,

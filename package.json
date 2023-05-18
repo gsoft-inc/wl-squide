@@ -26,7 +26,7 @@
         "reset": "pnpm run clean && pnpm run reset:modules",
         "reset:modules": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf node_modules pnpm-lock.yaml",
 
-        "test-all": "pnpm run /^test:.*/",
+        "test": "pnpm run /^test:.*/",
         "test:react-router": "cd packages/react-router && pnpm exec jest",
         "test:wmf": "cd packages/webpack-module-federation && pnpm exec jest"
     },

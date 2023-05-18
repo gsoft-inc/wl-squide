@@ -1,17 +1,6 @@
-/*
-TODO: Add snapshot tests with at least those use cases:
-    - plugins array doesn't exist
-    - ModuleFederationPlugin has already been configured
-    - pluginOptions already contains a "shared" section
-    - pluginOptions doesn't contains a "shared" section
-    - with additional shared dependencies
-    - with reactOptions (and all the other similar options)
-    - with additional "exposes" for a remote
-    - with a different filename for a remote
-*/
-
 import { RemoteEntryPoint, RemoteModuleName } from "./remoteDefinition.ts";
 
+import { isNil } from "@squide/core";
 import merge from "deepmerge";
 import webpack from "webpack";
 
@@ -62,7 +51,15 @@ function createSharedObject({ router = "react-router", pluginOptions = {} }: Mod
     ]);
 }
 
+function validateConfig(config: webpack.Configuration) {
+    if (!isNil(config.plugins) && config.plugins.some(x => x.constructor.name === webpack.container.ModuleFederationPlugin.name)) {
+        throw new Error("ModuleFederationPlugin has already been configured. Please remove ModuleFederationPlugin from your configuration plugins before calling this function.");
+    }
+}
+
 export function hostTransformer(config: webpack.Configuration, name: string, options: ModuleFederationOptions = {}): webpack.Configuration {
+    validateConfig(config);
+
     const pluginOptions: ModuleFederationPluginOptions = {
         name,
         shared: createSharedObject(options)
@@ -78,6 +75,8 @@ export function hostTransformer(config: webpack.Configuration, name: string, opt
 }
 
 export function remoteTransformer(config: webpack.Configuration, name: string, options: ModuleFederationOptions = {}): webpack.Configuration {
+    validateConfig(config);
+
     const pluginOptions: ModuleFederationPluginOptions = {
         name,
         filename: RemoteEntryPoint,

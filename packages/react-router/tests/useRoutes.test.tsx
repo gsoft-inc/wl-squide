@@ -1,13 +1,11 @@
-import { type RootRoute } from "../src/routeRegistry.ts";
 import { Runtime } from "../src/runtime.ts";
 import { RuntimeContext } from "@squide/core";
 import { renderHook, type RenderHookOptions } from "@testing-library/react";
 import { useRoutes } from "../src/useRoutes.ts";
-import { type ReactNode } from "react";
 
 function renderWithRuntime<TProps>(runtime: Runtime, additionalProps: RenderHookOptions<TProps> = {}) {
-    return renderHook<RootRoute[], TProps>(() => useRoutes(), {
-        wrapper: ({ children }: { children?: ReactNode }) => (
+    return renderHook(() => useRoutes(), {
+        wrapper: ({ children }) => (
             <RuntimeContext.Provider value={runtime}>
                 {children}
             </RuntimeContext.Provider>

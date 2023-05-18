@@ -1,0 +1,163 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`host default configuration 1`] = `
+{
+  "plugins": [
+    ModuleFederationPlugin {
+      "_options": {
+        "name": "host",
+        "shared": {
+          "@squide/core": {
+            "eager": true,
+            "singleton": true,
+          },
+          "@squide/react-router": {
+            "eager": true,
+            "singleton": true,
+          },
+          "@squide/webpack-module-federation": {
+            "eager": true,
+            "singleton": true,
+          },
+          "react": {
+            "eager": true,
+            "singleton": true,
+          },
+          "react-dom": {
+            "eager": true,
+            "singleton": true,
+          },
+          "react-router-dom": {
+            "eager": true,
+            "singleton": true,
+          },
+        },
+      },
+    },
+  ],
+}
+`;
+
+exports[`host merge with existing config values 1`] = `
+{
+  "devtool": "eval-cheap-module-source-map",
+  "mode": "development",
+  "plugins": [
+    ModuleFederationPlugin {
+      "_options": {
+        "name": "remote",
+        "shared": {
+          "@squide/core": {
+            "eager": true,
+            "singleton": true,
+          },
+          "@squide/react-router": {
+            "eager": true,
+            "singleton": true,
+          },
+          "@squide/webpack-module-federation": {
+            "eager": true,
+            "singleton": true,
+          },
+          "react": {
+            "eager": true,
+            "singleton": true,
+          },
+          "react-dom": {
+            "eager": true,
+            "singleton": true,
+          },
+          "react-router-dom": {
+            "eager": true,
+            "singleton": true,
+          },
+        },
+      },
+    },
+  ],
+  "target": "web",
+}
+`;
+
+exports[`host when the plugins array already exist, append to the existing plugins 1`] = `
+{
+  "plugins": [
+    DummyPlugin {
+      "_options": {},
+    },
+    ModuleFederationPlugin {
+      "_options": {
+        "name": "remote",
+        "shared": {
+          "@squide/core": {
+            "eager": true,
+            "singleton": true,
+          },
+          "@squide/react-router": {
+            "eager": true,
+            "singleton": true,
+          },
+          "@squide/webpack-module-federation": {
+            "eager": true,
+            "singleton": true,
+          },
+          "react": {
+            "eager": true,
+            "singleton": true,
+          },
+          "react-dom": {
+            "eager": true,
+            "singleton": true,
+          },
+          "react-router-dom": {
+            "eager": true,
+            "singleton": true,
+          },
+        },
+      },
+    },
+  ],
+}
+`;
+
+exports[`remote default configuration 1`] = `
+{
+  "plugins": [
+    ModuleFederationPlugin {
+      "_options": {
+        "exposes": {
+          "./register": "./src/register",
+        },
+        "filename": "remoteEntry.js",
+        "name": "remote",
+        "shared": {
+          "@squide/core": {
+            "eager": true,
+            "singleton": true,
+          },
+          "@squide/react-router": {
+            "eager": true,
+            "singleton": true,
+          },
+          "@squide/webpack-module-federation": {
+            "eager": true,
+            "singleton": true,
+          },
+          "react": {
+            "eager": true,
+            "singleton": true,
+          },
+          "react-dom": {
+            "eager": true,
+            "singleton": true,
+          },
+          "react-router-dom": {
+            "eager": true,
+            "singleton": true,
+          },
+        },
+      },
+    },
+  ],
+}
+`;

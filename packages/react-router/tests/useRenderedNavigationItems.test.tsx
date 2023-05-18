@@ -53,11 +53,7 @@ function TestComponent({ navigationItems }: TestComponentProps) {
     }, []);
 
     // eslint-disable-next-line testing-library/render-result-naming-convention
-    const renderedNavigationItems = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
-
-    return (
-        <>{renderedNavigationItems}</>
-    );
+    return useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 }
 
 test("highest priority goes first", () => {

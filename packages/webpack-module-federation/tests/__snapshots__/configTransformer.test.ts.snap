@@ -45,7 +45,7 @@ exports[`host merge with existing config values 1`] = `
   "plugins": [
     ModuleFederationPlugin {
       "_options": {
-        "name": "remote",
+        "name": "host",
         "shared": {
           "@squide/core": {
             "eager": true,
@@ -79,7 +79,7 @@ exports[`host merge with existing config values 1`] = `
 }
 `;
 
-exports[`host when the plugins array already exist, append to the existing plugins 1`] = `
+exports[`host when the plugins array already exist, append to the existing plugins array 1`] = `
 {
   "plugins": [
     DummyPlugin {
@@ -87,7 +87,7 @@ exports[`host when the plugins array already exist, append to the existing plugi
     },
     ModuleFederationPlugin {
       "_options": {
-        "name": "remote",
+        "name": "host",
         "shared": {
           "@squide/core": {
             "eager": true,

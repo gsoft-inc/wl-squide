@@ -1,12 +1,12 @@
 import renderer from "react-test-renderer";
 import type { RootNavigationItem } from "../src/navigationItemRegistry.ts";
 import { useRenderedNavigationItems, type RenderItemFunction, type RenderSectionFunction, isNavigationLink, type NavigationLinkRenderProps, type NavigationSectionRenderProps } from "../src/useRenderedNavigationItems.tsx";
-import { useCallback, type ReactElement } from "react";
+import { useCallback, type ReactNode } from "react";
 import { renderHook } from "@testing-library/react";
 
-type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactElement;
+type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
 
-type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactElement;
+type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactNode;
 
 interface TestComponentProps {
     navigationItems: RootNavigationItem[];
@@ -53,7 +53,11 @@ function TestComponent({ navigationItems }: TestComponentProps) {
     }, []);
 
     // eslint-disable-next-line testing-library/render-result-naming-convention
-    return useRenderedNavigationItems(navigationItems, renderItem, renderSection);
+    const renderedNavigationItems = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
+
+    return (
+        <>{renderedNavigationItems}</>
+    );
 }
 
 test("highest priority goes first", () => {

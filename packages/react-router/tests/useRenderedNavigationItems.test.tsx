@@ -21,7 +21,7 @@ function Link(props: Record<string, unknown>) {
 }
 
 function TestComponent({ navigationItems }: TestComponentProps) {
-    const renderLink: RenderLinkItemFunction = useCallback(({ label, linkProps, additionalProps }, index, level) => {
+    const renderLinkItem: RenderLinkItemFunction = useCallback(({ label, linkProps, additionalProps }, index, level) => {
         return (
             <li key={`${level}-${index}`} {...additionalProps}>
                 <Link {...linkProps}>
@@ -31,7 +31,7 @@ function TestComponent({ navigationItems }: TestComponentProps) {
         );
     }, []);
 
-    const renderMenu: RenderSectionItemFunction = useCallback(({ label, section, additionalProps }, index, level) => {
+    const renderLinkSection: RenderSectionItemFunction = useCallback(({ label, section, additionalProps }, index, level) => {
         return (
             <li key={`${level}-${index}`} {...additionalProps}>
                 {label}
@@ -41,8 +41,8 @@ function TestComponent({ navigationItems }: TestComponentProps) {
     }, []);
 
     const renderItem: RenderItemFunction = useCallback((item, index, level) => {
-        return isNavigationLink(item) ? renderLink(item, index, level) : renderMenu(item, index, level);
-    }, [renderLink, renderMenu]);
+        return isNavigationLink(item) ? renderLinkItem(item, index, level) : renderLinkSection(item, index, level);
+    }, [renderLinkItem, renderLinkSection]);
 
     const renderSection: RenderSectionFunction = useCallback((elements, index, level) => {
         return (

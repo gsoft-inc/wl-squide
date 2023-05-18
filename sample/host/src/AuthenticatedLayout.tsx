@@ -8,7 +8,7 @@ type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, l
 
 type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactNode;
 
-const renderLink: RenderLinkItemFunction = ({ label, linkProps, additionalProps: { highlight, ...additionalProps } }, index, level) => {
+const renderLinkItem: RenderLinkItemFunction = ({ label, linkProps, additionalProps: { highlight, ...additionalProps } }, index, level) => {
     return (
         <li key={`${level}-${index}`} style={{ fontWeight: highlight ? "bold" : "normal", listStyleType: "none" }}>
             <Link {...linkProps} {...additionalProps}>
@@ -18,7 +18,7 @@ const renderLink: RenderLinkItemFunction = ({ label, linkProps, additionalProps:
     );
 };
 
-const renderMenu: RenderSectionItemFunction = ({ label, section }, index, level) => {
+const renderSectionItem: RenderSectionItemFunction = ({ label, section }, index, level) => {
     return (
         <li key={`${level}-${index}`} style={{ listStyleType: "none", display: "flex", gap: "5px" }}>
             {label}
@@ -30,7 +30,7 @@ const renderMenu: RenderSectionItemFunction = ({ label, section }, index, level)
 };
 
 const renderItem: RenderItemFunction = (item, index, level) => {
-    return isNavigationLink(item) ? renderLink(item, index, level) : renderMenu(item, index, level);
+    return isNavigationLink(item) ? renderLinkItem(item, index, level) : renderSectionItem(item, index, level);
 };
 
 const renderSection: RenderSectionFunction = (elements, index, level) => {

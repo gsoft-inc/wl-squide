@@ -1,7 +1,19 @@
-import { isNil } from "@squide/core";
+import { type ModuleRegisterFunction, isNil } from "@squide/core";
+
+// The interface of a module that can be loaded dynamically.
+interface Module {
+    register?: ModuleRegisterFunction;
+}
 
 // Webpack globals we need to access when loading Federated Modules dynamically
 // See: https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers.
+type Factory = () => Module;
+
+interface Container {
+    init: (shareScope: unknown) => void;
+    get: (module: string) => Factory;
+}
+
 declare let __webpack_init_sharing__: (scope: string) => Promise<void>;
 declare let __webpack_share_scopes__: { default: unknown };
 
@@ -72,7 +84,7 @@ export async function loadRemote(url: string, containerName: string, moduleName:
 
     // Retrieve the module federation container.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const container = (window as any)[containerName];
+    const container: Container = (window as any)[containerName];
 
     if (isNil(container)) {
         throw new Error(`[squide] Container "${containerName}" is not available for remote "${url}".`);

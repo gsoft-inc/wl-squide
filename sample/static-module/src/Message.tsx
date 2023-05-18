@@ -1,7 +1,7 @@
 import { ChangeEvent, useCallback, useState } from "react";
 
 import { Link } from "react-router-dom";
-import { useEventBusDispatcher } from "@squide/react-router";
+import { useApplicationEventBusDispatcher } from "shared";
 
 export default function Message() {
     const [message, setMessage] = useState("");
@@ -10,7 +10,7 @@ export default function Message() {
         setMessage(event.target.value);
     }, []);
 
-    const dispatch = useEventBusDispatcher();
+    const dispatch = useApplicationEventBusDispatcher();
 
     const handleSendMessage = useCallback(() => {
         dispatch("write-to-host", message);

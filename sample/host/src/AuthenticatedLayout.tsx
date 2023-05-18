@@ -4,6 +4,7 @@ import { Suspense, useCallback } from "react";
 import { useEventBusListener, useNavigationItems, useRenderedNavigationItems } from "@squide/react-router";
 
 import { sessionManager } from "./session.ts";
+import { useApplicationEventBusListener } from "shared";
 
 export default function AuthenticatedLayout() {
     const navigate = useNavigate();
@@ -12,7 +13,7 @@ export default function AuthenticatedLayout() {
         console.log("[sample] Message received from a module: ", data);
     }, []);
 
-    useEventBusListener("write-to-host", handleModulesMessage);
+    useApplicationEventBusListener("write-to-host", handleModulesMessage);
 
     const handleDisconnect = useCallback(() => {
         sessionManager.clearSession();

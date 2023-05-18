@@ -22,7 +22,7 @@ export function isNavigationLink(item: NavigationItemRenderProps): item is Navig
     return !isNil((item as NavigationLinkRenderProps).linkProps);
 }
 
-export type RenderItemFunction = (item: NavigationItemRenderProps, index: number, level: number) => ReactElement;
+export type RenderItemFunction = (item: NavigationItemRenderProps, index: number, level: number) => ReactNode;
 
 export type RenderSectionFunction = (elements: ReactElement[], index: number, level: number) => ReactElement;
 

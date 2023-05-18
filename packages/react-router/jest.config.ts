@@ -1,4 +1,4 @@
-import { type Config } from "jest";
+import type { Config } from "jest";
 import { config as swcConfig } from "./swc.jest.ts";
 
 const config: Config = {

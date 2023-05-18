@@ -1,7 +1,7 @@
 import { type NavigationItem, type RootNavigationItem, isLinkItem, type NavigationLink, type NavigationSection } from "./navigationItemRegistry.ts";
 import { useMemo, type ReactElement, type ReactNode } from "react";
 
-import { type LinkProps } from "react-router-dom";
+import type { LinkProps } from "react-router-dom";
 import { isNil } from "@squide/core";
 
 export interface NavigationLinkRenderProps {

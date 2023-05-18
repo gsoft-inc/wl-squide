@@ -1,4 +1,4 @@
-import { type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 
 import { lazy } from "react";
 

@@ -6,7 +6,7 @@ import { sessionManager } from "./session.ts";
 
 type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactElement;
 
-type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactElement;
+type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactNode;
 
 export default function AuthenticatedLayout() {
     const navigate = useNavigate();

@@ -4,7 +4,7 @@ import { useEventBusListener, useNavigationItems, useRenderedNavigationItems, ty
 
 import { sessionManager } from "./session.ts";
 
-type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactElement;
+type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
 
 type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactNode;
 

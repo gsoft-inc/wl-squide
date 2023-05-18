@@ -1,5 +1,4 @@
-import { LogLevel } from "./logger.ts";
-import type { Logger } from "./logger.ts";
+import { LogLevel, type Logger } from "./logger.ts";
 
 export class ConsoleLogger implements Logger {
     readonly #logLevel: LogLevel;

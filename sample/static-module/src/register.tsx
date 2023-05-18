@@ -1,6 +1,5 @@
-import type { AppContext } from "shared";
-import { ModuleRegisterFunction } from "@squide/react-router";
-import type { Runtime } from "@squide/react-router";
+import { type AppContext } from "shared";
+import { ModuleRegisterFunction, type Runtime } from "@squide/react-router";
 import { lazy } from "react";
 
 const About = lazy(() => import("./About.tsx"));
@@ -23,11 +22,11 @@ export const register: ModuleRegisterFunction = (runtime: Runtime, context: AppC
     runtime.registerNavigationItems([
         {
             to: "/about",
-            content: "About"
+            label: "About"
         },
         {
             to: "/message",
-            content: "Message",
+            label: "Message",
             // Higher numbers gets rendered first.
             priority: 999,
             // Will be forwarded to the host application render function.

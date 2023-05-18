@@ -41,15 +41,28 @@ export const register: ModuleRegisterFunction = (runtime: Runtime) => {
     runtime.registerNavigationItems([
         {
             to: "/remote",
-            content: "Remote"
+            label: "Remote"
         },
         {
             to: "/fetch",
-            content: "Fetch"
+            label: "Fetch"
         },
         {
             to: "/hoisted",
-            content: "Hoisted"
+            label: <strong>Hoisted</strong>
+        },
+        {
+            label: "Section",
+            children: [
+                {
+                    to: "#",
+                    label: "Child 1"
+                },
+                {
+                    to: "#",
+                    label: "Child 2"
+                }
+            ]
         }
     ]);
 };

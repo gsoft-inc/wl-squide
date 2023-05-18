@@ -6,7 +6,6 @@ import webpack from "webpack";
 
 // Webpack doesn't export ModuleFederationPlugin typings.
 export type ModuleFederationPluginOptions = ConstructorParameters<typeof webpack.container.ModuleFederationPlugin>[0];
-export type SharedDependency = ModuleFederationPluginOptions["shared"];
 
 export interface ModuleFederationOptions {
     router?: "react-router";

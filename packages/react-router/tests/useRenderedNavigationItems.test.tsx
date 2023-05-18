@@ -12,8 +12,8 @@ interface TestComponentProps {
     navigationItems: RootNavigationItem[];
 }
 
-// Not the prettiest mock but it's easier than simpler than using createMemoryRouter and
-// it provides the required level of testing when combined with snapshot tests.
+// Not the prettiest mock but it's simpler than using createMemoryRouter and
+// it provides an adequate testing when combined with snapshot tests.
 function Link(props: Record<string, unknown>) {
     return (
         <div {...props} />

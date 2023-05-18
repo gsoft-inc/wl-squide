@@ -1,13 +1,13 @@
 import type { AbstractRuntime } from "../runtime/abstractRuntime.ts";
 import type { ModuleRegisterFunction } from "./registerModule.ts";
 
-export interface RegisterStaticModulesOptions {
-    context?: unknown;
+export interface RegisterStaticModulesOptions<TAppContext = unknown> {
+    context?: TAppContext;
 }
 
 let isRegistered = false;
 
-export function registerStaticModules(registerFunctions: ModuleRegisterFunction[], runtime: AbstractRuntime, { context }: RegisterStaticModulesOptions = {}) {
+export function registerStaticModules<TRuntime extends AbstractRuntime = AbstractRuntime, TAppContext = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TAppContext>[], runtime: TRuntime, { context }: RegisterStaticModulesOptions<TAppContext> = {}) {
     if (isRegistered) {
         throw new Error("[squide] The \"registerRemoteModules\" function can only be called once.");
     }

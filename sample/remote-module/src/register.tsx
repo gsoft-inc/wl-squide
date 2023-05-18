@@ -7,7 +7,7 @@ const Remote = lazy(() => import("./Remote.tsx"));
 const Fetch = lazy(() => import("./Fetch.tsx"));
 const Hoisted = lazy(() => import("./Hoisted.tsx"));
 
-export const register: ModuleRegisterFunction = (runtime: Runtime) => {
+export const register: ModuleRegisterFunction<Runtime> = runtime => {
     runtime.registerRoutes([
         {
             path: "/remote",

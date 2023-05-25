@@ -27,7 +27,7 @@ This project is split into two major sections, [packages/](packages/) and [sampl
 
 Under [packages/](packages/) are the actual packages composing the federated application shell.
 
-[@squide/core](packages/core/) is a package including the core functionalities of the shell, like the runtime and the messaging infrastructure. The shell architecture is very similar to an [hexagonal architecture](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)), whereas the ports are mostly what consistitute the core package.
+[@squide/core](packages/core/) is a package including the core functionalities of the shell, like the runtime and the messaging infrastructure. The shell architecture is very similar to an [hexagonal architecture](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)), whereas the ports are mostly what constitutes the core package.
 
 [@squide/react-router](packages/react-router/) is a [React Router](https://reactrouter.com/en/main) implementation of the shell routing capabilities. This implementation is offered as a standalone package because the shell could eventually support alternative routing libraries like [TanStack router](https://tanstack.com/router/v1).
 

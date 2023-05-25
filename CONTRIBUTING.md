@@ -27,11 +27,11 @@ This project is split into two major sections, [packages/](packages/) and [sampl
 
 Under [packages/](packages/) are the actual packages composing the federated application shell.
 
-[@squide/core](packages/core/) is a package including the core functionalities of the shell, like the runtime and the messaging infrastructure. The shell architecture is very similar to an [hexagonal architecture](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)), whereas the ports are mostly what consistitute the core package.
+[@squide/core](packages/core/) is a package including the core functionalities of the shell, like the runtime and the messaging infrastructure. The shell architecture is very similar to an [hexagonal architecture](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)), whereas the ports are mostly what constitutes the core package.
 
 [@squide/react-router](packages/react-router/) is a [React Router](https://reactrouter.com/en/main) implementation of the shell routing capabilities. This implementation is offered as a standalone package because the shell could eventually support alternative routing libraries like [TanStack router](https://tanstack.com/router/v1).
 
-[@squide/webpack-module-federation](packages/webpack-module-federation/) is module federation implementation for [Webpack](https://webpack.js.org/concepts/module-federation/). This implementation is offered as a standalone package because not all application configuration will require module federation and the shell could eventually support alternative module federation application like [Rspack](https://www.rspack.dev/).
+[@squide/webpack-module-federation](packages/webpack-module-federation/) is module federation implementation for [Webpack](https://webpack.js.org/concepts/module-federation/). This implementation is offered as a standalone package because not all application configurations will require module federation and the shell could eventually support alternative module federation application like [Rspack](https://www.rspack.dev/).
 
 [@squide/fakes](packages/fakes/) is a collection of fake implementations to facilitate the development of federated modules in isolation.
 
@@ -191,7 +191,7 @@ We currently have 2 builds configured:
 
 ### Changesets
 
-This build run on a push on the `main` branch, and if theirs a file present in the `.changeset` folder, will publish the new package version on npm.
+This build runs on a push on the `main` branch, and if theirs a file present in the `.changeset` folder, will publish the new package version on npm.
 
 ### CI
 

@@ -5,7 +5,7 @@ The following documentation is only for the maintainers of this repository.
 - [Monorepo setup](#monorepo-setup)
 - [Project overview](#project-overview)
 - [Installation](#installation)
-- [Develop the CLI packages](#Develop-the-CLI-packages)
+- [Develop the shell packages](#develop-the-shell-packages)
 - [Release the packages](#release-the-packages)
 - [Available commands](#commands)
 - [CI](#ci)

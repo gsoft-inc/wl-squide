@@ -1,10 +1,8 @@
 import { EventEmitter } from "eventemitter3";
 import type { Logger } from "../logging/logger.ts";
 
-export type ValidEventTypes = EventEmitter.ValidEventTypes;
-export type EventNames<EventTypes extends ValidEventTypes> = EventEmitter.EventNames<EventTypes>;
-export type EventArgs<EventTypes extends ValidEventTypes> = EventEmitter.EventArgs<EventTypes, EventNames<EventTypes>>;
-export type EventListener<EventTypes extends ValidEventTypes> = EventEmitter.EventListener<EventTypes, EventNames<EventTypes>>;
+export type EventBusPayload = Record<string, unknown> | string;
+export type EventBusListener = (data?: EventBusPayload) => void;
 
 export interface EventBusOptions {
     logger?: Logger;
@@ -18,16 +16,16 @@ export interface RemoveListenerOptions {
     once?: boolean;
 }
 
-export class EventBus<EventTypes extends ValidEventTypes = string | symbol> {
-    readonly #eventEmitter: EventEmitter<EventTypes>;
+export class EventBus<EventNames extends string = string> {
+    readonly #eventEmitter: EventEmitter;
     #logger?: Logger;
 
     constructor({ logger }: EventBusOptions = {}) {
-        this.#eventEmitter = new EventEmitter<EventTypes>();
+        this.#eventEmitter = new EventEmitter();
         this.#logger = logger;
     }
 
-    addListener(eventName: EventNames<EventTypes>, callback: EventListener<EventTypes>, { once }: AddListenerOptions = {}) {
+    addListener(eventName: EventNames, callback: EventBusListener, { once }: AddListenerOptions = {}) {
         if (once === true) {
             this.#eventEmitter.once(eventName, callback);
         } else {
@@ -35,11 +33,11 @@ export class EventBus<EventTypes extends ValidEventTypes = string | symbol> {
         }
     }
 
-    removeListener(eventName: EventNames<EventTypes>, callback: EventListener<EventTypes>, { once }: RemoveListenerOptions = {}) {
+    removeListener(eventName: EventNames, callback: EventBusListener, { once }: RemoveListenerOptions = {}) {
         this.#eventEmitter.removeListener(eventName, callback, once);
     }
 
-    dispatch(eventName: EventNames<EventTypes>, ...data: EventArgs<EventTypes>) {
+    dispatch(eventName: EventNames, ...data: EventBusPayload[]) {
         this.#logger?.debug(`[squide] - Dispatching event "${String(eventName)}"`, data);
 
         this.#eventEmitter.emit(eventName, ...data);

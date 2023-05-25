@@ -1,7 +1,6 @@
 import { useEventBus } from "../runtime/useEventBus.ts";
-import type { ValidEventTypes } from "./eventBus.ts";
 
-export function useEventBusDispatcher<EventTypes extends ValidEventTypes>() {
+export function useEventBusDispatcher<EventTypes extends string>() {
     const eventBus = useEventBus<EventTypes>();
 
     return eventBus.dispatch;

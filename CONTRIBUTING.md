@@ -191,7 +191,7 @@ We currently have 2 builds configured:
 
 ### Changesets
 
-This build run on a push on the `main` branch, and if theirs a file present in the `.changeset` folder, will publish the new package version on npm.
+This build runs on a push on the `main` branch, and if theirs a file present in the `.changeset` folder, will publish the new package version on npm.
 
 ### CI
 

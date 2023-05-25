@@ -7,11 +7,9 @@ interface Module {
 
 // Webpack globals we need to access when loading Federated Modules dynamically
 // See: https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers.
-type Factory = () => Module;
-
 interface Container {
     init: (shareScope: unknown) => void;
-    get: (module: string) => Factory;
+    get: (module: string) => () => Module;
 }
 
 declare let __webpack_init_sharing__: (scope: string) => Promise<void>;

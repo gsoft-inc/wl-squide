@@ -1,7 +1,7 @@
 import type { AbstractRuntime } from "../runtime/abstractRuntime.ts";
 import type { ModuleRegisterFunction } from "./registerModule.ts";
 
-export interface RegisterStaticModulesOptions<TAppContext = unknown> {
+export interface RegisterStaticModulesOptions<TAppContext> {
     context?: TAppContext;
 }
 

@@ -1,8 +1,8 @@
-import type { EventBus } from "../index.ts";
+import type { EventBus, EventTypes } from "../messaging/eventBus.ts";
 import { useRuntime } from "./RuntimeContext.ts";
 
-export function useEventBus<EventTypes extends string>() {
+export function useEventBus<EventNames extends EventTypes>() {
     const runtime = useRuntime();
 
-    return runtime.eventBus as unknown as EventBus<EventTypes>;
+    return runtime.eventBus as unknown as EventBus<EventNames>;
 }

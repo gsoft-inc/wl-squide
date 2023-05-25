@@ -1,6 +1,7 @@
 import { EventEmitter } from "eventemitter3";
 import type { Logger } from "../logging/logger.ts";
 
+export type EventTypes = string | symbol;
 export type EventCallbackFunction = (data?: unknown) => void;
 
 export interface EventBusOptions {
@@ -15,7 +16,7 @@ export interface RemoveListenerOptions {
     once?: boolean;
 }
 
-export class EventBus<EventNames extends string = string> {
+export class EventBus<EventNames extends EventTypes = EventTypes> {
     readonly #eventEmitter: EventEmitter;
     #logger?: Logger;
 

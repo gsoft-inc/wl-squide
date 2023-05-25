@@ -3,10 +3,9 @@ import { Runtime } from "../src/runtime.ts";
 import { RuntimeContext } from "@squide/core";
 import { renderHook, type RenderHookOptions } from "@testing-library/react";
 import { useNavigationItems } from "../src/useNavigationItems.ts";
-import type { RootNavigationItem } from "../src/navigationItemRegistry.ts";
 
 function renderWithRuntime<TProps>(runtime: Runtime, additionalProps: RenderHookOptions<TProps> = {}) {
-    return renderHook<RootNavigationItem[], TProps>(() => useNavigationItems(), {
+    return renderHook(() => useNavigationItems(), {
         wrapper: ({ children }: { children?: ReactNode }) => (
             <RuntimeContext.Provider value={runtime}>
                 {children}

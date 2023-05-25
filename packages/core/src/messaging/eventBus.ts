@@ -1,8 +1,7 @@
 import { EventEmitter } from "eventemitter3";
 import type { Logger } from "../logging/logger.ts";
 
-export type EventBusPayload = Record<string, unknown> | string;
-export type EventBusListener = (data?: EventBusPayload) => void;
+export type EventCallbackFunction = (data?: unknown) => void;
 
 export interface EventBusOptions {
     logger?: Logger;
@@ -25,7 +24,7 @@ export class EventBus<EventName extends string = string> {
         this.#logger = logger;
     }
 
-    addListener(eventName: EventName, callback: EventBusListener, { once }: AddListenerOptions = {}) {
+    addListener(eventName: EventName, callback: EventCallbackFunction, { once }: AddListenerOptions = {}) {
         if (once === true) {
             this.#eventEmitter.once(eventName, callback);
         } else {
@@ -33,13 +32,13 @@ export class EventBus<EventName extends string = string> {
         }
     }
 
-    removeListener(eventName: EventName, callback: EventBusListener, { once }: RemoveListenerOptions = {}) {
+    removeListener(eventName: EventName, callback: EventCallbackFunction, { once }: RemoveListenerOptions = {}) {
         this.#eventEmitter.removeListener(eventName, callback, once);
     }
 
-    dispatch(eventName: EventName, ...data: EventBusPayload[]) {
+    dispatch(eventName: EventName, data: unknown) {
         this.#logger?.debug(`[squide] - Dispatching event "${String(eventName)}"`, data);
 
-        this.#eventEmitter.emit(eventName, ...data);
+        this.#eventEmitter.emit(eventName, data);
     }
 }

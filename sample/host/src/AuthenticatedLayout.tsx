@@ -1,8 +1,8 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { type RenderItemFunction, type RenderSectionFunction, type NavigationLinkRenderProps, type NavigationSectionRenderProps, useNavigationItems, useRenderedNavigationItems, isNavigationLink } from "@squide/react-router";
 import { type ReactNode, Suspense, useCallback } from "react";
-import { useEventBusListener, useNavigationItems, useRenderedNavigationItems, type RenderItemFunction, type RenderSectionFunction, isNavigationLink, type NavigationLinkRenderProps, type NavigationSectionRenderProps } from "@squide/react-router";
-
 import { sessionManager } from "./session.ts";
+import { useApplicationEventBusListener } from "shared";
 
 type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
 
@@ -48,7 +48,7 @@ export default function AuthenticatedLayout() {
         console.log("[sample] Message received from a module: ", data);
     }, []);
 
-    useEventBusListener("write-to-host", handleModulesMessage);
+    useApplicationEventBusListener("write-to-host", handleModulesMessage);
 
     const handleDisconnect = useCallback(() => {
         sessionManager.clearSession();

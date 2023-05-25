@@ -1,10 +1,8 @@
-import type { EventName } from "./eventBus.ts";
 import { useEventBus } from "../runtime/useEventBus.ts";
+import type { EventTypes } from "./eventBus.ts";
 
-export function useEventBusDispatcher() {
-    const eventBus = useEventBus();
+export function useEventBusDispatcher<EventNames extends EventTypes>() {
+    const eventBus = useEventBus<EventNames>();
 
-    return (eventName: EventName, data?: unknown) => {
-        eventBus.dispatch(eventName, data);
-    };
+    return eventBus.dispatch;
 }

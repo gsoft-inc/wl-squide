@@ -1,10 +1,9 @@
-import type { AddListenerOptions, EventCallbackFunction, EventName } from "./eventBus.ts";
-
+import type { AddListenerOptions, EventCallbackFunction, EventTypes } from "./eventBus.ts";
 import { useEffect } from "react";
 import { useEventBus } from "../runtime/useEventBus.ts";
 
-export function useEventBusListener(eventName: EventName, callback: EventCallbackFunction, { once }: AddListenerOptions = {}) {
-    const eventBus = useEventBus();
+export function useEventBusListener<EventNames extends EventTypes = EventTypes>(eventName: EventNames, callback: EventCallbackFunction, { once }: AddListenerOptions = {}) {
+    const eventBus = useEventBus<EventNames>();
 
     return useEffect(() => {
         eventBus.addListener(eventName, callback, { once });

@@ -1,9 +1,4 @@
-import { type ModuleRegisterFunction, isNil } from "@squide/core";
-
-// The interface of a module that can be loaded dynamically.
-interface Module {
-    register?: ModuleRegisterFunction;
-}
+import { isNil } from "@squide/core";
 
 // Webpack globals we need to access when loading Federated Modules dynamically
 // See: https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers.
@@ -69,7 +64,7 @@ export type LoadRemoteOptions = LoadRemoteScriptOptions;
 
 // Implementation of https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers.
 // It's done this way rather than using the managed mecanism provided with ModuleFederationPlugin config because it's doesn't throw an error if a module is not available.
-export async function loadRemote(url: string, containerName: string, moduleName: string, options: LoadRemoteOptions = {}): Promise<Module> {
+export async function loadRemote(url: string, containerName: string, moduleName: string, options: LoadRemoteOptions = {}) {
     await loadRemoteScript(url, options);
 
     // Initializes the share scope. It fills the scope with known provided modules from this build and all remotes.

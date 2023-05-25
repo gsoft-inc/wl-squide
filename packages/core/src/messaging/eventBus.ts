@@ -16,7 +16,7 @@ export interface RemoveListenerOptions {
     once?: boolean;
 }
 
-export class EventBus<EventNames extends string = string> {
+export class EventBus<EventName extends string = string> {
     readonly #eventEmitter: EventEmitter;
     #logger?: Logger;
 
@@ -25,7 +25,7 @@ export class EventBus<EventNames extends string = string> {
         this.#logger = logger;
     }
 
-    addListener(eventName: EventNames, callback: EventBusListener, { once }: AddListenerOptions = {}) {
+    addListener(eventName: EventName, callback: EventBusListener, { once }: AddListenerOptions = {}) {
         if (once === true) {
             this.#eventEmitter.once(eventName, callback);
         } else {
@@ -33,11 +33,11 @@ export class EventBus<EventNames extends string = string> {
         }
     }
 
-    removeListener(eventName: EventNames, callback: EventBusListener, { once }: RemoveListenerOptions = {}) {
+    removeListener(eventName: EventName, callback: EventBusListener, { once }: RemoveListenerOptions = {}) {
         this.#eventEmitter.removeListener(eventName, callback, once);
     }
 
-    dispatch(eventName: EventNames, ...data: EventBusPayload[]) {
+    dispatch(eventName: EventName, ...data: EventBusPayload[]) {
         this.#logger?.debug(`[squide] - Dispatching event "${String(eventName)}"`, data);
 
         this.#eventEmitter.emit(eventName, ...data);

@@ -1,11 +1,10 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { lazy, useCallback, useMemo } from "react";
-import { useHoistedRoutes, useRoutes } from "@squide/react-router";
+import { useHoistedRoutes, useRoutes, type Route } from "@squide/react-router";
 
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
-import type { Route } from "@squide/react-router";
 import { useAreRemotesReady } from "@squide/webpack-module-federation";
 
 const AuthenticatedLayout = lazy(() => import("./AuthenticatedLayout.tsx"));
@@ -65,9 +64,7 @@ export function App() {
 
     // Using the useHoistedRoutes hook allow routes hoisted by modules to be rendered at the root of the router instead of under the root layout.
     // To disallow the hoisting functionality, remove this hook and add the routes directly.
-    const hoistedRoutes = useHoistedRoutes(routes, {
-        wrapManagedRoutes
-    });
+    const hoistedRoutes = useHoistedRoutes(routes, wrapManagedRoutes);
 
     const router = useMemo(() => {
         return createBrowserRouter(hoistedRoutes);

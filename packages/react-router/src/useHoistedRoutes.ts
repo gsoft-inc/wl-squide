@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import { isNil } from "@squide/core";
 
 export interface UseHoistedRoutesOptions {
-    wrapManagedRoutes?: (routes: Route[]) => Route;
     allowedPaths?: string[];
 }
 
@@ -28,7 +27,7 @@ function getAllRoutePaths(route: Route) {
     return !isNil(current) ? [current] : [];
 }
 
-export function useHoistedRoutes(routes: RootRoute[], { wrapManagedRoutes, allowedPaths }: UseHoistedRoutesOptions = {}) {
+export function useHoistedRoutes(routes: RootRoute[], wrapManagedRoutes: (routes: Route[]) => Route, { allowedPaths }: UseHoistedRoutesOptions = {}) {
     // Hack to reuse the same array reference through re-renders.
     const [memoizedAllowedPaths] = useState(allowedPaths);
 
@@ -51,7 +50,7 @@ export function useHoistedRoutes(routes: RootRoute[], { wrapManagedRoutes, allow
                 const restrictedPaths = allRoutePaths.filter(y => !memoizedAllowedPaths.includes(y));
 
                 if (restrictedPaths.length > 0) {
-                    throw new Error(`[squide] A module is hoisting the following routes [${restrictedPaths.map(y => `"${y}"`).join(", ")}] which are not included in the provided "allowedRoutes" option.`);
+                    throw new Error(`[squide] A module is hoisting the following routes [${restrictedPaths.map(y => `"${y}"`).join(", ")}] which are not included in the provided "allowedRoutes" option: [${allowedPaths?.map(y => `"${y}"`).join(", ")}].`);
                 }
             });
         }

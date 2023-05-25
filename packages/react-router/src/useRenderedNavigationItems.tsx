@@ -1,61 +1,67 @@
-// TODO: Create a snapshot test to validate the ouput of different scenarios
-
-import type { NavigationItem, RootNavigationItem } from "./navigationItemRegistry.ts";
-import type { ReactElement, ReactNode } from "react";
-import { cloneElement, useMemo } from "react";
+import { type NavigationItem, type RootNavigationItem, isLinkItem, type NavigationLink, type NavigationSection } from "./navigationItemRegistry.ts";
+import { useMemo, type ReactNode } from "react";
 
 import type { LinkProps } from "react-router-dom";
 import { isNil } from "@squide/core";
 
-export interface NavigationItemProps {
-    content: ReactNode;
+export interface NavigationLinkRenderProps {
+    label: ReactNode;
     linkProps: Omit<LinkProps, "children">;
     additionalProps: Record<string, unknown>;
 }
 
-export type RenderItemFunction = (item: NavigationItemProps, index: number, level: number) => ReactElement;
+export interface NavigationSectionRenderProps {
+    label: ReactNode;
+    section: ReactNode;
+    additionalProps: Record<string, unknown>;
+}
 
-export type RenderSectionFunction = (itemElements: ReactElement[], index: number, level: number) => ReactElement;
+export type NavigationItemRenderProps = NavigationLinkRenderProps | NavigationSectionRenderProps;
 
-function toRenderItem(item: NavigationItem): NavigationItemProps {
-    // children is intentionally omitted.
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { children, content, additionalProps, ...linkProps } = item;
+export function isNavigationLink(item: NavigationItemRenderProps): item is NavigationLinkRenderProps {
+    return !isNil((item as NavigationLinkRenderProps).linkProps);
+}
 
+export type RenderItemFunction = (item: NavigationItemRenderProps, index: number, level: number) => ReactNode;
+
+export type RenderSectionFunction = (elements: ReactNode[], index: number, level: number) => ReactNode;
+
+function toLinkProps({ label, additionalProps, ...linkProps }: NavigationLink): NavigationLinkRenderProps {
     return {
-        content,
+        label,
         linkProps,
         additionalProps: additionalProps ?? {}
     };
 }
 
-function renderItems(navigationItems: NavigationItem[], renderItem: RenderItemFunction, renderSection: RenderSectionFunction, index: number, level: number) {
-    const itemElements = navigationItems.map((x, itemIndex) => {
-        const itemElement = renderItem(toRenderItem(x), itemIndex, level);
+function toMenuProps({ label, additionalProps }: NavigationSection, sectionElement: ReactNode): NavigationSectionRenderProps {
+    return {
+        label,
+        section: sectionElement,
+        additionalProps: additionalProps ?? {}
+    };
+}
 
-        if (!isNil(x.children)) {
-            const childrenElement = renderItems(x.children, renderItem, renderSection, 0, level + 1);
+function renderItems(items: NavigationItem[], renderItem: RenderItemFunction, renderSection: RenderSectionFunction, index: number, level: number) {
+    const itemElements = items.map((x, itemIndex) => {
+        let itemElement: ReactNode;
 
-            return cloneElement(itemElement, {
-                children: (
-                    <>
-                        {itemElement.props.children}
-                        {childrenElement}
-                    </>
-                )
-            });
+        if (isLinkItem(x)) {
+            itemElement = renderItem(toLinkProps(x), itemIndex, level);
+        } else {
+            const sectionElement = renderItems(x.children, renderItem, renderSection, 0, level + 1);
+
+            itemElement = renderItem(toMenuProps(x, sectionElement), itemIndex, level);
         }
 
         return itemElement;
     });
 
-    const section = renderSection(itemElements, index, level);
-
-    return section;
+    return renderSection(itemElements, index, level);
 }
 
 export function useRenderedNavigationItems(
-    navigationItems: Readonly<RootNavigationItem[]>,
+    navigationItems: RootNavigationItem[],
     renderItem: RenderItemFunction,
     renderSection: RenderSectionFunction
 ) {

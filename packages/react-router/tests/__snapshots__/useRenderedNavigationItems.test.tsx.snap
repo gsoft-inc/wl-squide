@@ -1,0 +1,149 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Link item additionalProps are rendered 1`] = `
+<ul>
+  <li
+    style={
+      {
+        "color": "red",
+      }
+    }
+  >
+    <div
+      to="/foo"
+    >
+      Foo
+    </div>
+  </li>
+  <li>
+    <div
+      to="/bar"
+    >
+      Bar
+    </div>
+  </li>
+</ul>
+`;
+
+exports[`Section item additionalProps are rendered 1`] = `
+<ul>
+  <li
+    style={
+      {
+        "color": "red",
+      }
+    }
+  >
+    Foo
+    <ul>
+      <li>
+        <div
+          to="/bar"
+        >
+          Bar
+        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+`;
+
+exports[`highest priority goes first 1`] = `
+<ul>
+  <li>
+    <div
+      to="/toto"
+    >
+      Toto
+    </div>
+  </li>
+  <li>
+    <div
+      to="/bar"
+    >
+      Bar
+    </div>
+  </li>
+  <li>
+    <div
+      to="/foo"
+    >
+      Foo
+    </div>
+  </li>
+  <li>
+    <div
+      to="/tutu"
+    >
+      Tutu
+    </div>
+  </li>
+</ul>
+`;
+
+exports[`support 2 section levels 1`] = `
+<ul>
+  <li>
+    <div
+      to="/foo"
+    >
+      Foo
+    </div>
+  </li>
+  <li>
+    Bar
+    <ul>
+      <li>
+        <div
+          to="/toto"
+        >
+          Toto
+        </div>
+      </li>
+      <li>
+        <div
+          to="/tutu"
+        >
+          Tutu
+        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+`;
+
+exports[`support 3 section levels 1`] = `
+<ul>
+  <li>
+    <div
+      to="/foo"
+    >
+      Foo
+    </div>
+  </li>
+  <li>
+    Bar
+    <ul>
+      <li>
+        <div
+          to="/toto"
+        >
+          Toto
+        </div>
+      </li>
+      <li>
+        Tutu
+        <ul>
+          <li>
+            <div
+              to="/titi"
+            >
+              Titi
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+`;

@@ -1,4 +1,4 @@
-import { Runtime } from "./runtime.ts";
+import type { Runtime } from "./runtime.ts";
 import { useRuntime } from "@squide/core";
 
 export function useRoutes() {

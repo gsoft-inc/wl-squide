@@ -1,6 +1,5 @@
-import type { ChangeEvent, MouseEvent } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { useCallback, useState } from "react";
+import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 
 import { sessionManager } from "./session.ts";
 import { useIsAuthenticated } from "@squide/react-router";

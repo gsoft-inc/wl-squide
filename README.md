@@ -19,7 +19,7 @@ This repository is managed as a monorepo that is composed of many npm packages.
 ## Blabla
 
 -> 2 biggest problems with frontend federated apps are:
-    - How to offer a cohesive experience which doesn't feels "modular"
+    - How to offer a cohesive experience that doesn't feels "modular"
     - How to not load the same large dependencies twice when switching between "modules"
 
 -> Webpack Module Federation helps with that but there's a cost

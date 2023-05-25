@@ -37,6 +37,6 @@ TBD
 
 ## 🤝 Contributing
 
-View the [contributors documentation](./CONTRIBUTING.md).
+View the [contributor's documentation](./CONTRIBUTING.md).
 
 

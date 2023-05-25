@@ -7,11 +7,6 @@ interface Module {
 
 // Webpack globals we need to access when loading Federated Modules dynamically
 // See: https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers.
-interface Container {
-    init: (shareScope: unknown) => void;
-    get: (module: string) => () => Module;
-}
-
 declare let __webpack_init_sharing__: (scope: string) => Promise<void>;
 declare let __webpack_share_scopes__: { default: unknown };
 
@@ -74,7 +69,7 @@ export type LoadRemoteOptions = LoadRemoteScriptOptions;
 
 // Implementation of https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers.
 // It's done this way rather than using the managed mecanism provided with ModuleFederationPlugin config because it's doesn't throw an error if a module is not available.
-export async function loadRemote(url: string, containerName: string, moduleName: string, options: LoadRemoteOptions = {}) {
+export async function loadRemote(url: string, containerName: string, moduleName: string, options: LoadRemoteOptions = {}): Promise<Module> {
     await loadRemoteScript(url, options);
 
     // Initializes the share scope. It fills the scope with known provided modules from this build and all remotes.
@@ -82,7 +77,7 @@ export async function loadRemote(url: string, containerName: string, moduleName:
 
     // Retrieve the module federation container.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const container: Container = (window as any)[containerName];
+    const container = (window as any)[containerName];
 
     if (isNil(container)) {
         throw new Error(`[squide] Container "${containerName}" is not available for remote "${url}".`);

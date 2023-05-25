@@ -1,19 +1,19 @@
 import renderer from "react-test-renderer";
 import type { RootNavigationItem } from "../src/navigationItemRegistry.ts";
 import { useRenderedNavigationItems, type RenderItemFunction, type RenderSectionFunction, isNavigationLink, type NavigationLinkRenderProps, type NavigationSectionRenderProps } from "../src/useRenderedNavigationItems.tsx";
-import { useCallback, type ReactElement } from "react";
+import { useCallback, type ReactNode } from "react";
 import { renderHook } from "@testing-library/react";
 
-type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactElement;
+type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
 
-type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactElement;
+type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactNode;
 
 interface TestComponentProps {
     navigationItems: RootNavigationItem[];
 }
 
-// Not the prettiest mock but it's easier than simpler than using createMemoryRouter and
-// it provides the required level of testing when combined with snapshot tests.
+// Not the prettiest mock but it's simpler than using createMemoryRouter and
+// it provides an adequate testing when combined with snapshot tests.
 function Link(props: Record<string, unknown>) {
     return (
         <div {...props} />
@@ -21,7 +21,7 @@ function Link(props: Record<string, unknown>) {
 }
 
 function TestComponent({ navigationItems }: TestComponentProps) {
-    const renderLink: RenderLinkItemFunction = useCallback(({ label, linkProps, additionalProps }, index, level) => {
+    const renderLinkItem: RenderLinkItemFunction = useCallback(({ label, linkProps, additionalProps }, index, level) => {
         return (
             <li key={`${level}-${index}`} {...additionalProps}>
                 <Link {...linkProps}>
@@ -31,7 +31,7 @@ function TestComponent({ navigationItems }: TestComponentProps) {
         );
     }, []);
 
-    const renderMenu: RenderSectionItemFunction = useCallback(({ label, section, additionalProps }, index, level) => {
+    const renderLinkSection: RenderSectionItemFunction = useCallback(({ label, section, additionalProps }, index, level) => {
         return (
             <li key={`${level}-${index}`} {...additionalProps}>
                 {label}
@@ -41,8 +41,8 @@ function TestComponent({ navigationItems }: TestComponentProps) {
     }, []);
 
     const renderItem: RenderItemFunction = useCallback((item, index, level) => {
-        return isNavigationLink(item) ? renderLink(item, index, level) : renderMenu(item, index, level);
-    }, [renderLink, renderMenu]);
+        return isNavigationLink(item) ? renderLinkItem(item, index, level) : renderLinkSection(item, index, level);
+    }, [renderLinkItem, renderLinkSection]);
 
     const renderSection: RenderSectionFunction = useCallback((elements, index, level) => {
         return (

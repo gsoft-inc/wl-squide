@@ -1,5 +1,4 @@
 import type { RootRoute, Route } from "../src/routeRegistry.ts";
-
 import { renderHook } from "@testing-library/react";
 import { type UseHoistedRoutesOptions, useHoistedRoutes } from "../src/useHoistedRoutes.ts";
 
@@ -56,7 +55,7 @@ test("managed routes are wrapped", () => {
 
 test("when a restricted route is hoisted, throw an error", () => {
     // Prevent the expected exception from printing in the console.
-    jest.spyOn(console, "error").mockImplementation(jest.fn());
+    const consoleMock = jest.spyOn(console, "error").mockImplementation(jest.fn());
 
     const routes: RootRoute[] = [
         { path: "/foo", element: <div>Foo</div> },
@@ -81,9 +80,11 @@ test("when a restricted route is hoisted, throw an error", () => {
                 allowedPaths: [
                     "/hoisted"
                 ]
-            } as UseHoistedRoutesOptions
+            } satisfies UseHoistedRoutesOptions
         }
     })).toThrow(/\/bar/);
+
+    consoleMock.mockRestore();
 });
 
 test("returned array is immutable", () => {

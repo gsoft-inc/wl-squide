@@ -5,7 +5,7 @@ import { lazy } from "react";
 const About = lazy(() => import("./About.tsx"));
 const Message = lazy(() => import("./Message.tsx"));
 
-export const register: ModuleRegisterFunction = (runtime: Runtime, context: AppContext) => {
+export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, context) => {
     console.log("Context: ", context);
 
     runtime.registerRoutes([

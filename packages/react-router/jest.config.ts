@@ -1,17 +1,18 @@
 import type { Config } from "jest";
+import { compilerOptions } from "./tsconfig.json";
+import { pathsToModuleNameMapper } from "ts-jest";
 import { config as swcConfig } from "./swc.jest.ts";
 
 const config: Config = {
     testEnvironment: "jsdom",
-    testRegex: "/tests/*/.*\\.test\\.(ts|tsx)$",
-    testPathIgnorePatterns: ["/node_modules/", "/dist/"],
     transform: {
         "^.+\\.(js|ts|tsx)$": ["@swc/jest", swcConfig as Record<string, unknown>]
     },
     moduleNameMapper: {
-        "@squide/core(.*)$": "../../../packages/core/src/$1"
-    },
-    verbose: true
+        ...pathsToModuleNameMapper(compilerOptions.paths, {
+            prefix: "<rootDir>"
+        })
+    }
 };
 
 export default config;

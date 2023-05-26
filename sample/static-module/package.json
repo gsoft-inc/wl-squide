@@ -3,6 +3,7 @@
     "author": "Workleap",
     "version": "0.0.0",
     "description": "Static module to showcase @squide.",
+    "private": true,
     "license": "Apache-2.0",
     "type": "module",
     "exports": "./dist/register.js",

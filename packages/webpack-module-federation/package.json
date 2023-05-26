@@ -1,7 +1,7 @@
 {
     "name": "@squide/webpack-module-federation",
     "author": "Workleap",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "description": "Add support for Webpack Module Federation to @squide federated application shell.",
     "license": "Apache-2.0",
     "repository": {

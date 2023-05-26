@@ -1,5 +1,5 @@
 {
-    "name": "shared",
+    "name": "@sample/shared",
     "author": "Workleap",
     "version": "0.0.0",
     "description": "Shared package to showcase @squide.",

@@ -1,4 +1,4 @@
-import type { Session } from "shared";
+import type { Session } from "@sample/shared";
 import type { SessionAccessorFunction } from "@squide/react-router";
 import { SessionManager } from "@squide/fakes";
 

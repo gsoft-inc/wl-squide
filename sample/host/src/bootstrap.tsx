@@ -2,9 +2,9 @@ import { ConsoleLogger, Runtime, RuntimeContext, registerStaticModules } from "@
 import { StrictMode, Suspense } from "react";
 
 import { App } from "./App.tsx";
-import type { AppContext } from "shared";
+import type { AppContext } from "@sample/shared";
 import { createRoot } from "react-dom/client";
-import { register } from "static-module";
+import { register } from "@sample/static-module";
 import { registerRemoteModules } from "@squide/webpack-module-federation";
 import { sessionAccessor } from "./session.ts";
 

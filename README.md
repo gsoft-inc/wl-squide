@@ -16,7 +16,7 @@ This repository is managed as a monorepo that is composed of many npm packages.
 | [@squide/webpack-module-federation](packages/webpack-module-federation/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/webpack-module-federation)](https://www.npmjs.com/package/@squide/webpack-module-federation) |
 | [@squide/fakes](packages/fakes/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/fakes)](https://www.npmjs.com/package/@squide/fakes) |
 
-## Blabla
+## Motivation
 
 -> 2 biggest problems with frontend federated apps are:
     - How to offer a cohesive experience that doesn't feels "modular"

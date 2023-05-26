@@ -1,7 +1,8 @@
 import { EventEmitter } from "eventemitter3";
 import type { Logger } from "../logging/logger.ts";
 
-export type EventTypes = string | symbol;
+export type EventName = string | symbol;
+
 export type EventCallbackFunction = (data?: unknown) => void;
 
 export interface EventBusOptions {
@@ -16,7 +17,7 @@ export interface RemoveListenerOptions {
     once?: boolean;
 }
 
-export class EventBus<EventNames extends EventTypes = EventTypes> {
+export class EventBus<TEventNames extends EventName = EventName> {
     readonly #eventEmitter: EventEmitter;
     #logger?: Logger;
 
@@ -25,7 +26,7 @@ export class EventBus<EventNames extends EventTypes = EventTypes> {
         this.#logger = logger;
     }
 
-    addListener(eventName: EventNames, callback: EventCallbackFunction, { once }: AddListenerOptions = {}) {
+    addListener(eventName: TEventNames, callback: EventCallbackFunction, { once }: AddListenerOptions = {}) {
         if (once === true) {
             this.#eventEmitter.once(eventName, callback);
         } else {
@@ -33,11 +34,11 @@ export class EventBus<EventNames extends EventTypes = EventTypes> {
         }
     }
 
-    removeListener(eventName: EventNames, callback: EventCallbackFunction, { once }: RemoveListenerOptions = {}) {
+    removeListener(eventName: TEventNames, callback: EventCallbackFunction, { once }: RemoveListenerOptions = {}) {
         this.#eventEmitter.removeListener(eventName, callback, once);
     }
 
-    dispatch(eventName: EventNames, data?: unknown) {
+    dispatch(eventName: TEventNames, data?: unknown) {
         this.#logger?.debug(`[squide] - Dispatching event "${String(eventName)}"`, data);
 
         this.#eventEmitter.emit(eventName, data);

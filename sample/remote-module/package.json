@@ -1,8 +1,9 @@
 {
-    "name": "remote-module",
+    "name": "@sample/remote-module",
     "author": "Workleap",
     "version": "0.0.0",
     "description": "Remote module to showcase @squide.",
+    "private": true,
     "license": "Apache-2.0",
     "type": "module",
     "scripts": {
@@ -25,11 +26,11 @@
         "webpack-dev-server": "4.13.3"
     },
     "dependencies": {
+        "@sample/shared": "workspace:*",
         "@squide/react-router": "workspace:*",
         "@squide/webpack-module-federation": "workspace:*",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "react-router-dom": "6.11.1",
-        "shared": "workspace:*"
+        "react-router-dom": "6.11.1"
     }
 }

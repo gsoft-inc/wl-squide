@@ -2,7 +2,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { type RenderItemFunction, type RenderSectionFunction, type NavigationLinkRenderProps, type NavigationSectionRenderProps, useNavigationItems, useRenderedNavigationItems, isNavigationLink } from "@squide/react-router";
 import { type ReactNode, Suspense, useCallback } from "react";
 import { sessionManager } from "./session.ts";
-import { useApplicationEventBusListener } from "shared";
+import { useApplicationEventBusListener } from "@sample/shared";
 
 type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
 

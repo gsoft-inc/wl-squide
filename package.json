@@ -2,6 +2,7 @@
     "name": "wl-squide",
     "author": "Workleap",
     "description": "A federated web application shell.",
+    "private": true,
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
@@ -30,6 +31,8 @@
         "reset:modules": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf node_modules pnpm-lock.yaml"
     },
     "devDependencies": {
+        "@changesets/cli": "2.26.1",
+        "@changesets/changelog-github": "0.4.8",
         "@workleap/eslint-plugin": "1.6.0",
         "@workleap/typescript-configs": "2.3.0",
         "eslint": "8.37.0",

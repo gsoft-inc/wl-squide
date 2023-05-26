@@ -1,7 +1,7 @@
 import { ChangeEvent, useCallback, useState } from "react";
 
 import { Link } from "react-router-dom";
-import { useApplicationEventBusDispatcher } from "shared";
+import { useApplicationEventBusDispatcher } from "@sample/shared";
 
 export default function Message() {
     const [message, setMessage] = useState("");

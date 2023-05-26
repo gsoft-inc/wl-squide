@@ -79,7 +79,7 @@ When you are ready to release the packages, you must follow the following steps:
 1. Run `pnpm changeset` and follow the prompt. For versioning, always follow the [SemVer standard](https://semver.org/).
 2. Commit the newly generated file in your branch and submit a new Pull Request(PR). Changesets will automatically detect the changes and post a message in your pull request telling you that once the PR closes, the versions will be released.
 3. Find someone to review your PR.
-4. Merge the Pull request into main. A GitHub action will automatically trigger and update the version of the packages and publish them to [npm]https://www.npmjs.com/). A tag will also be created on GitHub tagging your PR merge commit.
+4. Merge the Pull request into `main`. A GitHub action will automatically trigger and update the version of the packages and publish them to [npm]https://www.npmjs.com/). A tag will also be created on GitHub tagging your PR merge commit.
 
 ### Troubleshooting
 
@@ -167,7 +167,7 @@ pnpm changeset
 
 ### clean
 
-Clean the shell packages and the sample application (delete dist folder, clear caches, etc..)
+Clean the shell packages and the sample application (delete `dist` folder, clear caches, etc..)
 
 ```bash
 pnpm clean

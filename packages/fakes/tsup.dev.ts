@@ -1,12 +1,9 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
+    dts: true,
+    splitting: false,
     watch: true,
-    dts: {
-        compilerOptions: {
-            noUnusedLocals: false
-        }
-    },
     sourcemap: "inline",
     entry: ["./src"],
     outDir: "./dist",

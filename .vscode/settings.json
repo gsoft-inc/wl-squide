@@ -1,31 +1,36 @@
 {
-    "editor.minimap.enabled": false,
-    "editor.wordWrap": "off",
+    "javascript.preferences.useAliasesForRenames": false, // useAliasesForRenames is not the behavior we want from vscode
+    "typescript.preferences.useAliasesForRenames": false, // useAliasesForRenames is not the behavior we want from vscode
+    "search.exclude": {
+        "**/node_modules*": true,
+        "**/dist*": true
+    },
+
+    // Formatters settings
     "editor.codeActionsOnSave": {
-        "source.fixAll": true,
+        "source.fixAll": true, // this makes sure eslint and stylelint are run on save
         "source.organizeImports": false
     },
     "editor.formatOnSave": true,
     "[html]": {
         "editor.formatOnSave": false
     },
-    "javascript.format.enable": false,
-    "javascript.validate.enable": true,
-    "javascript.preferences.useAliasesForRenames": false,
-    "typescript.preferences.useAliasesForRenames": false,
-    "json.format.enable": false,
-    "css.validate": false,
-    "eslint.packageManager": "pnpm",
-    "eslint.validate": ["javascript", "javascriptreact", "mdx"],
-    "stylelint.autoFixOnSave": true,
-    "stylelint.useLocal": true,
+
+    // Formatters - Eslint plugin - dbaeumer.vscode-eslint
+    "javascript.format.enable": false, // disables the default formatter, we use eslint instead
+    "json.format.enable": false, // disables the default formatter, we use eslint instead
+
+    // Formatters - Stylelint - stylelint.vscode-stylelint
+    "css.validate": false, // disables the default formatter, we use stylelint instead
+    "less.validate": false, // disables the default formatter, we use stylelint instead
+    "scss.validate": false, // disables the default formatter, we use stylelint instead
+
+    // Settings for third parties we frequently use
+    // Third party - Jest
     "files.associations": {
         "*.snap": "javascriptreact"
     },
-    "breadcrumbs.enabled": true,
-    "search.exclude": {
-        "**/node_modules*": true,
-        "**/dist*": true
-    },
+
+    // Settings for TypeScript integrations
     "typescript.tsdk": "node_modules\\typescript\\lib"
 }

@@ -6,6 +6,7 @@
 
 #### class Runtime({ loggers, services, sessionAccessor })
 
+{% code title="boostrap.ts" overflow="wrap" lineNumbers="true" %}
 ```ts
 import { Runtime } from "@squide/react-router";
 

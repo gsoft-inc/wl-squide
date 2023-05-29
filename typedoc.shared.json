@@ -1,0 +1,8 @@
+{
+    "$schema": "https://typedoc.org/schema.json",
+    "excludeInternal": true,
+    "excludePrivate": true,
+    "excludeReferences": true,
+    "includeVersion": true,
+    "searchInComments": true
+}

@@ -5,7 +5,7 @@ import { isNil } from "@squide/core";
 declare let __webpack_init_sharing__: (scope: string) => Promise<void>;
 declare let __webpack_share_scopes__: { default: unknown };
 
-interface LoadRemoteScriptOptions {
+export interface LoadRemoteScriptOptions {
     timeoutDelay?: number;
 }
 

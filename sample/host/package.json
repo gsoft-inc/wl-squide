@@ -29,7 +29,7 @@
     },
     "dependencies": {
         "@sample/shared": "workspace:*",
-        "@sample/static-module": "workspace:*",
+        "@sample/local-module": "workspace:*",
         "@squide/react-router": "workspace:*",
         "@squide/webpack-module-federation": "workspace:*",
         "@squide/fakes": "workspace:*",

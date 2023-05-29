@@ -8,7 +8,7 @@
             "@squide/webpack-module-federation/configTransformer.js": ["../../packages/webpack-module-federation/src/configTransformer.ts"],
             "@squide/fakes": ["../../packages/fakes/src/index.ts"],
             "@sample/shared": ["../shared/src/index.ts"],
-            "@sample/static-module": ["../static-module/src/register.ts"]
+            "@sample/local-module": ["../local-module/src/register.ts"]
         }
     },
     "exclude": ["dist", "node_modules"]

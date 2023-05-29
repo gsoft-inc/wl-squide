@@ -1,0 +1,15 @@
+{
+    "$schema": "https://typedoc.org/schema.json",
+    "name": "@squide",
+    "entryPoints": [
+        "packages/react-router",
+        "packages/webpack-module-federation",
+        "packages/fakes"
+    ],
+    "entryPointStrategy": "packages",
+    "out": "./public/typedoc",
+    "readme": "none",
+    "treatWarningsAsErrors": true,
+    "treatValidationWarningsAsErrors": true,
+    "logLevel": "Verbose"
+}

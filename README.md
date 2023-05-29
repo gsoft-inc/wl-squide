@@ -65,21 +65,9 @@ pnpm add @squide/core @squide/react-router
 
 ## Guides
 
-TBD
-
 ## API
 
-### @squide/core
-
-#### Runtime
-
-##### class Runtime({ loggers, services, sessionAccessor })
-
-### @squide/react-router
-
-### @squide/webpack-module-federation
-
-### @squide/fake
+View the [API's documentation](./docs/api.md).
 
 ## 🤝 Contributing
 

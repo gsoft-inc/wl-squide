@@ -42,6 +42,7 @@ const service = runtime.getService("serviceName") as TService;
 
 const session = runtime.getSession() as TSession;
 ```
+{% endcode %}
 
 ## @squide/webpack-module-federation
 

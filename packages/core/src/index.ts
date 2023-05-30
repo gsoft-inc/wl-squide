@@ -17,4 +17,4 @@ export * from "./messaging/useEventBusDispatcher.ts";
 export * from "./messaging/useEventBusListener.ts";
 
 export * from "./federation/registerModule.ts";
-export * from "./federation/registerStaticModules.ts";
+export * from "./federation/registerLocalModules.ts";

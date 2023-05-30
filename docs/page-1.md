@@ -5,3 +5,21 @@
 // toto
 ```
 {% endcode %}
+
+{% tabs %}
+{% tab title="TS" %}
+```
+// TS
+```
+{% endtab %}
+
+{% tab title="JS" %}
+```
+// JS
+```
+{% endtab %}
+
+{% tab title="Other" %}
+
+{% endtab %}
+{% endtabs %}

@@ -2,8 +2,7 @@ name: Publish documentation website to GitHub Pages
 on:
   workflow_dispatch:
   push:
-    branches:
-      - origin/docs/usage-documentation
+    branches: ["main"]
 
 jobs:
   publish:
@@ -16,9 +15,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
       - uses: retypeapp/action-build@latest
-
       - uses: retypeapp/action-github-pages@latest
         with:
           update-branch: true

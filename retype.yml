@@ -1,11 +1,39 @@
 input: ./docs
 output: .retype
+
 edit:
-  repo: "https://github.com/workleap/wl-squide"
-  branch: main
-url: # Add your website address here
+    repo: "https://github.com/workleap/wl-squide"
+    branch: main
+
+url: https://workleap.github.io/wl-squide/
+
 branding:
-  title: "@squide"
-  label: 0.0.1
+    title: "🦑 @squide"
+    label: 0.0.1
+
+links:
+    - text: Home
+      icon: home
+      link: /wl-squide/
+
+    - text: Github
+      icon: mark-github
+      link: https://github.com/workleap/wl-squide
+      target: blank
+
+    - text: NPM
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 0H24V24H0V0Z" fill="#CC0000"/><path d="M11.9184 2.57758H2.57764V21.4214H11.9175V7.32958H16.6695V21.4214H21.4215V2.57758H11.9184Z" fill="white"/></svg>
+      link: https://www.npmjs.com/settings/squide/packages
+      target: blank
+
 footer:
-  copyright: "&copy; Copyright {{ year }}. All rights reserved."
+    copyright: "&copy; Copyright {{ year }} - [Workleap](https://www.workleap.com/) - All rights reserved."
+    links:
+        - text: About
+          icon: question
+          link: about.md
+
+        - text: License
+          icon: shield-check
+          link: https://github.com/workleap/wl-squide/blob/main/LICENSE
+          target: blank

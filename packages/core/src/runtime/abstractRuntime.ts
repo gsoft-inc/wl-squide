@@ -39,6 +39,10 @@ export abstract class AbstractRuntime<TRoute = unknown, TNavigationItem = unknow
         return this._eventBus;
     }
 
+    get services() {
+        return this._services;
+    }
+
     getService(serviceName: string) {
         return this._services[serviceName];
     }

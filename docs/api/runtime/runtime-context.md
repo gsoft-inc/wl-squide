@@ -1,10 +1,10 @@
 ---
-label: RuntimeContext
+order: 90
 ---
 
 # RuntimeContext
 
-React context to share a [Runtime](/api/runtime.md) instance between an host application and the application modules.
+React context to share a `Runtime` instance between an host application and the application modules.
 
 ## Reference
 

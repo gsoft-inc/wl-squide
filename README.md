@@ -12,9 +12,13 @@ A federated web application shell built on top of [Webpack Module Federation](ht
 | [@squide/webpack-module-federation](packages/webpack-module-federation/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/webpack-module-federation)](https://www.npmjs.com/package/@squide/webpack-module-federation) |
 | [@squide/fakes](packages/fakes/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/fakes)](https://www.npmjs.com/package/@squide/fakes) |
 
+## Have a question or found an issue?
+
+To ask a question or propose an idea, feel free to start a new [discussion](https://github.com/workleap/wl-squide/discussions). If you found a bug, please open an [issue](https://github.com/workleap/wl-squide/issues).
+
 ## Documentation
 
-TBD
+View the [user's documentation](https://workleap.github.io/wl-squide/).
 
 ## 🤝 Contributing
 

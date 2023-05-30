@@ -1,5 +1,5 @@
 ---
-label: Runtime
+order: 100
 ---
 
 # Runtime
@@ -9,12 +9,12 @@ A runtime instance gives modules access to functionalities such as routing and n
 ## Reference
 
 ```ts
-const runtime = new Runtime({ loggers?: [], services?: {}, sessionAccessor?: () => {} });
+new Runtime(options?: { loggers?: [], services?: {}, sessionAccessor?: () => {} })
 ```
 
 ### Parameters
 
-- `options`: An optional object of options.
+- `options`: An optional object literal of options.
     - `loggers`: An optional array of `Logger` instances.
     - `services`: An optional string-keyed object literal of custom service instances.
     - `sessionAccessor`: An optional function returning the current session.
@@ -22,7 +22,7 @@ const runtime = new Runtime({ loggers?: [], services?: {}, sessionAccessor?: () 
 ## Usage
 
 !!!info Info
-Also have a look at [useRuntime](), [useRoutes](), [useNavigationItems](), [useLogger](), [useService]().
+Also have a look at [useRuntime](useRuntime.md), [useRoutes](useRoutes.md), [useNavigationItems](useNavigationItems.md), [useLogger](useLogger.md), [useServices](useServices.md) and [useService](useService.md).
 !!!
 
 ### Create a Runtime instance
@@ -30,12 +30,12 @@ Also have a look at [useRuntime](), [useRoutes](), [useNavigationItems](), [useL
 ```ts
 import { ConsoleLogger, Runtime } from "@squide/react-router";
 import { SessionManager } from "@squide/fakes";
-import { TrackingService } from "@sample/shared";
+import { UserService, type UserService, type AppSession } from "@sample/shared";
 
 const runtime = new Runtime({
     loggers: [new ConsoleLogger()],
     services: {
-        "userService": new UserService()
+        "user-service": new UserService()
     },
     sessionAccessor: () => {
         return sessionManager.getSession();
@@ -94,13 +94,13 @@ runtime.eventBus.dispatch("write-to-host", "Hello host!");
 ### Retrieve a service
 
 ```ts
-// If the service isn't registered, an Error instance will be thrown.
-const service = runtime.getService("userService") as TService;
+// If the service isn't registered, undefined will be returned.
+const service = runtime.getService("user-service") as UserService;
 ```
 
 ### Retrive the current session
 
 ```ts
 // If no sessionAccessor has been provided, an Error instance will be thrown.
-const session = runtime.getSession() as TSession;
+const session = runtime.getSession() as AppSession;
 ```

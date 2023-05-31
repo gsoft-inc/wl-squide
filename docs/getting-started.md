@@ -39,7 +39,9 @@ We believe [Webpack Module Federation](https://webpack.js.org/concepts/module-fe
 
 With this mecanism in place, all federated parts of an application can now be loaded in the same [browsing context](https://developer.mozilla.org/en-US/docs/Glossary/Browsing_context) instead of nested browsing contexts (like [iframes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe)). 
 
-By sharing the same browsing context (e.g. the same [Document](https://developer.mozilla.org/en-US/docs/Web/API/Document), the same [Window object](https://developer.mozilla.org/en-US/docs/Web/API/Window), and the same [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)), federated parts are now unified and **form a single application**, which also solves the second issues.
+By sharing the same browsing context (e.g. the same [Document](https://developer.mozilla.org/en-US/docs/Web/API/Document), the same [Window object](https://developer.mozilla.org/en-US/docs/Web/API/Window), and the same [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)), federated parts are now unified and **form a single application**, which solves the second issues.
+
+With [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/), we think that we have the possibility of developing federated applications that feels like monolithic applications from a user perspective.
 
 #### Why React Router?
 

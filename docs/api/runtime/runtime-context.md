@@ -23,8 +23,8 @@ React context to share a `Runtime` instance between an host application and the 
 ### Provide a Runtime instance
 
 ```tsx !#9-11
-import { Runtime, RuntimeContext } from "@squide/react-router";
 import { createRoot } from "react-dom/client";
+import { Runtime, RuntimeContext } from "@squide/react-router";
 
 const runtime = new Runtime();
 
@@ -39,10 +39,12 @@ root.render(
 
 ### Retrieve a Runtime instance
 
-```ts
+```ts !#3
 import { useRuntime } from "@squide/react-router";
 
 const runtime = useRuntime();
+
+runtime.logger.debug("Hello!");
 ```
 
 

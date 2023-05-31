@@ -33,3 +33,18 @@ const runtime = useRuntime();
 
 runtime.logger.debug("Hello!");
 ```
+
+```tsx bootstrap.tsx
+import { createRoot } from "react-dom/client";
+import { Runtime, RuntimeContext } from "@squide/react-router";
+
+const runtime = new Runtime();
+
+const root = createRoot(document.getElementById("root"));
+
+root.render(
+    <RuntimeContext.Provider value={runtime}>
+        <App />
+    </RuntimeContext.Provider>
+);
+```

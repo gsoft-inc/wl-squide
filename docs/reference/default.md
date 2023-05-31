@@ -40,3 +40,9 @@ icon: gear
 - [EventBus](messaging/EventBus.md)
 - [useEventBusDispatcher](messaging/useEventBusDispatcher.md)
 - [useEventBusListener](messaging/useEventBusListener.md)
+
+### Fakes
+
+The `@squide/fakes` package is a collection of fake implementations offered to accelerate the setup of an environment to develop a module in isolation.
+
+- [SessionManager](fakes/SessionManager.md)

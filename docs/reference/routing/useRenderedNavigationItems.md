@@ -20,18 +20,24 @@ An array of `ReactElement`.
 
 ## Usage
 
-### Render nested navigation items
-
-```tsx host/RootLayout.tsx
+```tsx !#52 host/RootLayout.tsx
 import { Link, Outlet } from "react-router-dom";
-import { type RenderItemFunction, type RenderSectionFunction, type NavigationLinkRenderProps, type NavigationSectionRenderProps, useNavigationItems, useRenderedNavigationItems, isNavigationLink } from "@squide/react-router";
+import { 
+    type RenderItemFunction, 
+    type RenderSectionFunction, 
+    type NavigationLinkRenderProps, 
+    type NavigationSectionRenderProps, 
+    useNavigationItems, 
+    useRenderedNavigationItems, 
+    isNavigationLink 
+} from "@squide/react-router";
 import type { ReactNode } from "react";
 
 type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
 
 type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactNode;
 
-const renderLinkItem: RenderLinkItemFunction = ({ label, linkProps, additionalProps: { highlight, ...additionalProps } }, index, level) => {
+const renderLinkItem: RenderLinkItemFunction = ({ label, linkProps, additionalProps }, index, level) => {
     return (
         <li key={`${level}-${index}`}>
             <Link {...linkProps} {...additionalProps}>
@@ -66,7 +72,6 @@ const renderSection: RenderSectionFunction = (elements, index, level) => {
 
 export default function RootLayout() {
     const navigationItems = useNavigationItems();
-
     const renderedNavigationItems = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (
@@ -79,33 +84,3 @@ export default function RootLayout() {
     );
 }
 ```
-
-```tsx remote-module/register.tsx
-export const register: ModuleRegisterFunction<Runtime> = runtime => {
-    runtime.registerNavigationItems([
-        {
-            label: "Section",
-            children: [
-                {
-                    to: "#",
-                    label: "Nested 1",
-                    children: [
-                        {
-                            to: "#",
-                            label: "Nested 1 Nested",
-                        }
-                    ]
-                },
-                {
-                    to: "#",
-                    label: "Nested 2"
-                }
-            ]
-        }
-    ]);
-}
-```
-
-### Sort navigation items by priority
-
-### Render additional props on a navigation item

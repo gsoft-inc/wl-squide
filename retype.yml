@@ -13,7 +13,7 @@ branding:
 links:
     - text: Home
       icon: home
-      link: /wl-squide/
+      link: welcome
 
     - text: Guides
       icon: book
@@ -44,3 +44,5 @@ footer:
           icon: shield-check
           link: https://github.com/workleap/wl-squide/blob/main/LICENSE
           target: blank
+
+verbose: true

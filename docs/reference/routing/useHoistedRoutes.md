@@ -89,7 +89,7 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
         {
             path: "/about",
             element: <About />,
-            hoisted: true
+            hoist: true
         }
     ]);
 
@@ -146,7 +146,7 @@ export function App() {
 }
 ```
 
-```tsx !#11-20 remote-module/register.tsx
+```tsx !#11,14-20 remote-module/register.tsx
 import { lazy } from "react";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 
@@ -157,7 +157,7 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
     runtime.registerRoutes([
         {
             path: "/about",
-            hoisted: true,
+            hoist: true,
             // Will render the "About" page with using the "RemoteLayout" rather than "RootLayout".
             // Fore more information about nested routes, view https://reactrouter.com/en/main/start/tutorial#nested-routes.
             element: <RemoteLayout />,
@@ -235,7 +235,7 @@ export function App() {
 }
 ```
 
-```tsx !#11-13 remote-module/register.tsx
+```tsx !#13 remote-module/register.tsx
 import { lazy } from "react";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 
@@ -248,7 +248,7 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
             element: <About />,
             // By hoisting the "About" page, it will now be rendered outside of the default 
             // authenticated boundary and will therefore be public.
-            hoisted: true
+            hoist: true
         }
     ]);
 
@@ -263,7 +263,7 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
 
 ### Allowing an exclusive set of routes to be hoisted
 
-```tsx !#24-28 host/App.tsx
+```tsx !#26-29 host/App.tsx
 import { useCallback, useMemo } from "react";
 import { useAreRemotesReady } from "@squide/webpack-module-federation";
 import { useRoutes, useHoistedRoutes, type Route } from "@squide/react-router";

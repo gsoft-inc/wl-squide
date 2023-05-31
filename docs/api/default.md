@@ -1,9 +1,10 @@
 ---
-order: 100
-label: Reference
+order: 70
+label: API
+icon: gear
 ---
 
-# API reference
+# API
 
 ### Runtime
 
@@ -25,3 +26,6 @@ label: Reference
 - [useAreRemotesReady](registration/useAreRemotesReady.md)
 
 ### Routing
+
+- [useHoistedRoutes](routing/useHoistedRoutes.md)
+- [useRenderedNavigationItems](routing/useRenderedNavigationItems.md)

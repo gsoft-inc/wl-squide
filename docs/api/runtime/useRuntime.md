@@ -7,7 +7,7 @@ order: 80
 Retrive a shared `Runtime` instance.
 
 !!!info Info
-When possible, prefer [useRoutes](useRoutes.md), [useNavigationItems](useNavigationItems.md), [useLogger](useLogger.md), [useServices](useServices.md) and [useService](useService.md) to `useRuntime`.
+When possible, prefer [useRoutes](useRoutes.md), [useNavigationItems](useNavigationItems.md), [useLogger](useLogger.md), [useServices](useServices.md), [useService](useService.md) to `useRuntime`.
 !!!
 
 ## Reference
@@ -26,25 +26,10 @@ A `Runtime` instance.
 
 ## Usage
 
-```ts !#3
+```ts
 import { useRuntime } from "@squide/react-router";
 
 const runtime = useRuntime();
 
 runtime.logger.debug("Hello!");
-```
-
-```tsx bootstrap.tsx
-import { createRoot } from "react-dom/client";
-import { Runtime, RuntimeContext } from "@squide/react-router";
-
-const runtime = new Runtime();
-
-const root = createRoot(document.getElementById("root"));
-
-root.render(
-    <RuntimeContext.Provider value={runtime}>
-        <App />
-    </RuntimeContext.Provider>
-);
 ```

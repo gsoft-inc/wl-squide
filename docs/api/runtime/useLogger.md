@@ -18,27 +18,10 @@ A `RuntimeLogger` instance.
 
 ## Usage
 
-```ts !#3
+```ts
 import { useLogger } from "@squide/react-router";
 
 const logger = useLogger();
 
 logger.debug("Hello!");
-```
-
-```tsx !#5 bootstrap.tsx
-import { createRoot } from "react-dom/client";
-import { ConsoleLogger, Runtime, RuntimeContext } from "@squide/react-router";
-
-const runtime = new Runtime({
-    loggers: [new ConsoleLogger()]
-});
-
-const root = createRoot(document.getElementById("root"));
-
-root.render(
-    <RuntimeContext.Provider value={runtime}>
-        <App />
-    </RuntimeContext.Provider>
-);
 ```

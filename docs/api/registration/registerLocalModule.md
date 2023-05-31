@@ -37,7 +37,7 @@ const context: AppContext = {
 registerLocalModules([register], runtime, { context });
 ```
 
-```tsx !#7-21 @sample/local-module/register.ts
+```tsx !#7-21 local-module/register.tsx
 import { lazy } from "react";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import type { AppContext } from "@sample/shared";
@@ -56,7 +56,7 @@ export function register: ModuleRegisterFunction<Runtime, AppContext>(runtime, c
         {
             to: "/about",
             label: "About"
-        },
+        }
     ]);
 }
 ```

@@ -16,6 +16,14 @@ links:
       icon: home
       link: /wl-squide/
 
+    - text: Guides
+      icon: book
+      link: guides
+
+    - text: API
+      icon: gear
+      link: api
+
     - text: Github
       icon: mark-github
       link: https://github.com/workleap/wl-squide
@@ -27,7 +35,7 @@ links:
       target: blank
 
 footer:
-    copyright: "&copy; Copyright {{ year }} - [Workleap](https://www.workleap.com/) - All rights reserved."
+    copyright: "&copy; Copyright {{ year }} - Workleap"
     links:
         - text: About
           icon: question

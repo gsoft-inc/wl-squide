@@ -4,7 +4,7 @@ order: 100
 
 # Runtime
 
-A runtime instance gives modules access to functionalities such as routing and navigation.
+A runtime instance give modules access to functionalities such as routing, navigation and logging.
 
 ## Reference
 
@@ -20,10 +20,6 @@ new Runtime(options?: { loggers?: [], services?: {}, sessionAccessor?: () => {} 
     - `sessionAccessor`: An optional function returning the current session.
 
 ## Usage
-
-!!!info Info
-Also have a look at [useRuntime](useRuntime.md), [useRoutes](useRoutes.md), [useNavigationItems](useNavigationItems.md), [useLogger](useLogger.md), [useServices](useServices.md) and [useService](useService.md).
-!!!
 
 ### Create a Runtime instance
 

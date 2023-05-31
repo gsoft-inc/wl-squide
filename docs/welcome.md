@@ -34,7 +34,7 @@ layout: central
 
     .squide-buttons p {
         display: inline-flex;
-        column-gap: 12px;
+        column-gap: 18px;
     }
 </style>
 
@@ -44,8 +44,8 @@ layout: central
 :::squide-tagline
 The federated application shell for Workleap apps
 :::squide-buttons
-[!button Learn @squide](/getting-started.md)
-[!button variant="secondary" text="API reference"](/api/reference.md)
+[!button icon="rocket" text="Get started"](/getting-started.md)
+[!button variant="info" icon="arrow-right" iconAlign="right" text="API reference"](/api)
 :::
 :::
 

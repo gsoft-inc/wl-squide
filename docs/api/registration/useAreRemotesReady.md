@@ -19,21 +19,22 @@ Nothing
 
 ## Usage
 
-```tsx !#9,17-19 host/App.tsx
+```tsx !#10,18-20 host/App.tsx
 import { useMemo } from "react";
 import { useAreRemotesReady } from "@squide/webpack-module-federation";
 import { useRoutes } from "@squide/react-router";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 export function App() {
-    // Re-render the app once all the remotes are registered.
-    // Otherwise, the remotes routes won't be added to the router.
+    // Re-render the application once all the remotes are registered.
+    // Otherwise, the remotes routes won't be added to the router as the router will be
+    // rendered before the remote modules registered their routes.
     const isReady = useAreRemotesReady();
 
     const routes = useRoutes();
 
     const router = useMemo(() => {
-        return createBrowserRouter(hoistedRoutes);
+        return createBrowserRouter(routes);
     }, [routes]);
 
     if (!isReady) {

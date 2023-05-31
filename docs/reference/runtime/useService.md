@@ -5,7 +5,7 @@ Retrieve a custom service from the `Runtime` instance provided by `RuntimeContex
 ## Reference
 
 ```ts
-useService(name)
+const service = useService(name)
 ```
 
 ### Parameters

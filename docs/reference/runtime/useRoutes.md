@@ -9,7 +9,7 @@ Retrieve the registered routes from the `Runtime` instance provided by `RuntimeC
 ## Reference
 
 ```ts
-useRoutes()
+const routes = useRoutes()
 ```
 
 ### Parameters

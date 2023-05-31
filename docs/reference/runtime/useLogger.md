@@ -5,7 +5,7 @@ Retrieve a `RuntimeLogger` instance from the `Runtime` instance provided by `Run
 ## Reference
 
 ```ts
-useLogger()
+const logger = useLogger()
 ```
 
 ### Parameters

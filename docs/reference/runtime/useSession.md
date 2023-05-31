@@ -5,7 +5,7 @@ Retrieve the current session from the `Runtime` instance provided by `RuntimeCon
 ## Reference
 
 ```ts
-useSession()
+const session = useSession()
 ```
 
 ### Parameters

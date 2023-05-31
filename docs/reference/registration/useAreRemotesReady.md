@@ -9,7 +9,7 @@ Only use this hook if your application has remote modules.
 ## Reference
 
 ```ts
-useAreRemotesReady(options?: { interval? })
+const isReady = useAreRemotesReady(options?: { interval? })
 ```
 
 ### Parameters
@@ -19,7 +19,7 @@ useAreRemotesReady(options?: { interval? })
 
 ### Returns
 
-Nothing
+A boolean indicating if the registration is completed.
 
 ## Usage
 

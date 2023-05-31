@@ -11,7 +11,7 @@ By declaring a page as hoisted, other parts of the application will not be isola
 ## Reference
 
 ```ts
-useHoistedRoutes(routes: [], wrapManagedRoutes: () => {}, options?: { allowedPaths?: [] })
+const hoistedRoutes = useHoistedRoutes(routes: [], wrapManagedRoutes: () => {}, options?: { allowedPaths?: [] })
 ```
 
 ### Parameters

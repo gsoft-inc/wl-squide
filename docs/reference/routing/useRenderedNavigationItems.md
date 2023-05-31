@@ -9,7 +9,7 @@ Recursively parse a navigation items structure to transform the items into React
 ## Reference
 
 ```ts
-useRenderedNavigationItems(navigationItems: [], renderItem: () => {}, renderSection: () => {})
+const elements = useRenderedNavigationItems(navigationItems: [], renderItem: () => {}, renderSection: () => {})
 ```
 
 ### Parameters
@@ -76,12 +76,12 @@ const renderSection: RenderSectionFunction = (elements, index, level) => {
 
 export default function RootLayout() {
     const navigationItems = useNavigationItems();
-    const renderedNavigationItems = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
+    const navigationElements = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (
         <>
             <nav>
-                {renderedNavigationItems}
+                {navigationElements}
             </nav>
             <Outlet />
         </>

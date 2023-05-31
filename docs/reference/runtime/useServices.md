@@ -5,7 +5,7 @@ Retrieve a string-keyed object literal of custom service instances from the `Run
 ## Reference
 
 ```ts
-useServices()
+const services = useServices()
 ```
 
 ### Parameters

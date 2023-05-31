@@ -9,7 +9,7 @@ Retrieve the registered navigation items from the `Runtime` instance provided by
 ## Reference
 
 ```ts
-useNavigationItems()
+const navigationItems = useNavigationItems()
 ```
 
 ### Parameters

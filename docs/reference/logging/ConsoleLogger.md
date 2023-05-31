@@ -5,12 +5,12 @@ A basic console logger.
 ## Reference
 
 ```ts
-new ConsoleLogger(logLevel?)
+const logger = new ConsoleLogger(logLevel?)
 ```
 
 ### Parameters
 
-- `logLevel`: The minimum level for the logger to output a log entry to the console (default is `LogLevel.critical`).
+- `logLevel`: An optional minimum level for the logger to output a log entry to the console (default is `LogLevel.critical`).
 
 ## Usage
 

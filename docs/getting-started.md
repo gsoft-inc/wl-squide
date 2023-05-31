@@ -29,7 +29,7 @@ We built this shell to facilitate the adoption of federated applications at [Wor
 
 The shell itself is a very thin [API layer](/reference) on top of [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) and [React Router](https://reactrouter.com) with the goal of maximizing both libraries forces and staying as most as possible out of their ways.
 
-#### Why Webpack Module Federation?
+### Why Webpack Module Federation?
 
 We identified **2 major problems** with frontend federated applications:
 1. How to prevent loading the same large dependencies twice when switching between *modules*?
@@ -43,9 +43,18 @@ By sharing the same browsing context (e.g. the same [Document](https://developer
 
 With [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/), we think that we have the possibility of developing federated applications that feels like monolithic applications from a user perspective.
 
-#### Why React Router?
+### Why React Router?
 
 Well, what would you rather use? Joking aside, [React Router](https://reactrouter.com) version 6 nesting routing feature is ideal for federated application as it makes the UI heavily composable and decoupled.
+
+## Guiding principles
+
+While developing the [API](/reference) of `@squide`, we had a few guiding principles in mind. Those principles are not settled stones, you might want to diverge from them from time to time, but adhering to those will make your experience more enjoyable.
+
+1. A module should always match a subdomain of the application business domain and should only export pages.
+2. A module should be fully autonomous. It shouldn't have to coordinate with other parts of the application for things as trivial as navigation links.
+3. A federated application should feel homogenous. Different parts of a federation application should have the ability to communicate with each others and react to changes happening outside of their boundaries.
+4. Data and state should never be shared between parts of a federated application. Even if two parts needs the same data or the same state values, they should load, store and manage those independently.
 
 ## Quick start
 

@@ -9,7 +9,7 @@ A runtime instance give modules access to functionalities such as routing, navig
 ## Reference
 
 ```ts
-new Runtime(options?: { loggers?: [], services?: {}, sessionAccessor?: () => {} })
+const runtime = new Runtime(options?: { loggers?: [], services?: {}, sessionAccessor?: () => {} })
 ```
 
 ### Parameters

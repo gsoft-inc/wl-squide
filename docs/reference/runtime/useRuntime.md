@@ -13,7 +13,7 @@ When possible, prefer [useRoutes](useRoutes.md), [useNavigationItems](useNavigat
 ## Reference
 
 ```ts
-useRuntime()
+const runtime = useRuntime()
 ```
 
 ### Parameters

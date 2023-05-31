@@ -1,6 +1,10 @@
 # useRenderedNavigationItems
 
-Recursively parse a navigation items structure to transform the items into actual React elements.
+Recursively parse a navigation items structure to transform the items into React Elements.
+
+> The `useNavigationItems` hook returns the navigation items tree structure as is, meaning you'll still have to recursively parse the structure to transform the items into actual React Elements.
+>
+> As it's a non-trivial process, the shell provides this utility hook to help with that.
 
 ## Reference
 
@@ -11,8 +15,8 @@ useRenderedNavigationItems(navigationItems: [], renderItem: () => {}, renderSect
 ### Parameters
 
 - `navigationItems`: An array of `NavigationItem` to render.
-- `renderItem`: A function to render a regular navigation item.
-- `renderSection`: A function to render a section navigation item.
+- `renderItem`: A function to render a single link from a navigation item
+- `renderSection`: A function to render a section from a collection of items.
 
 ### Returns
 
@@ -20,7 +24,7 @@ An array of `ReactElement`.
 
 ## Usage
 
-```tsx !#52 host/RootLayout.tsx
+```tsx !#38-40,42-48,52 host/RootLayout.tsx
 import { Link, Outlet } from "react-router-dom";
 import { 
     type RenderItemFunction, 

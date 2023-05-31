@@ -29,3 +29,8 @@ icon: gear
 
 - [useHoistedRoutes](routing/useHoistedRoutes.md)
 - [useRenderedNavigationItems](routing/useRenderedNavigationItems.md)
+
+### Logging
+
+- [Logger](logging/Logger.md)
+- [ConsoleLogger](logging/ConsoleLogger.md)

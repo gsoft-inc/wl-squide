@@ -6,7 +6,7 @@ order: 80
 
 Retrive a shared `Runtime` instance.
 
-!!!info Info
+!!!info
 When possible, prefer [useRoutes](useRoutes.md), [useNavigationItems](useNavigationItems.md), [useLogger](useLogger.md), [useServices](useServices.md), [useService](useService.md) to `useRuntime`.
 !!!
 

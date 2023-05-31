@@ -18,7 +18,7 @@ None
 
 ### Returns
 
-An array of `RootNavigationItem`.
+An array of `NavigationItem`.
 
 ## Usage
 

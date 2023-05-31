@@ -18,7 +18,7 @@ None
 
 ### Returns
 
-An array of `RootRoute`.
+An array of `Route`.
 
 ## Usage
 

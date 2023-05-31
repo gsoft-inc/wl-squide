@@ -1,10 +1,10 @@
 ---
 order: 70
-label: API
+label: Reference
 icon: gear
 ---
 
-# API
+# Reference
 
 ### Runtime
 

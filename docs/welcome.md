@@ -45,7 +45,7 @@ layout: central
 The federated application shell for Workleap apps
 :::squide-buttons
 [!button icon="rocket" text="Get started"](/getting-started.md)
-[!button variant="info" icon="arrow-right" iconAlign="right" text="API reference"](/api)
+[!button variant="info" icon="arrow-right" iconAlign="right" text="API reference"](/reference)
 :::
 :::
 

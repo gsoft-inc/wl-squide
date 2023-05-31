@@ -1,6 +1,12 @@
 # useHoistedRoutes
 
-Let modules register pages outside of the default application layout, error boundary and authentication boundary.
+Let modules register pages outside of the default application layout, error boundary or authentication boundary.
+
+Unlike a regular page, a hoisted page is added at the root of the router, outside of the boundaries of the host application's root layout. This means that a hoisted page has full control over its rendering.
+
+!!!warning
+By declaring a page as hoisted, other parts of the application will not be isolated anymore from this page's failures as the page will be rendered outside of the host application's root error boundary. To avoid breaking the entire application when an hoisted page cause unmanaged errors, it is highly recommended to set a React Router [errorElement](https://reactrouter.com/en/main/route/error-element) property for every hoisted page.
+!!!
 
 ## Reference
 
@@ -10,7 +16,7 @@ useHoistedRoutes(routes: [], wrapManagedRoutes: () => {}, options?: { allowedPat
 
 ### Parameters
 
-- `routes`: An array of `RootRoute`.
+- `routes`: An array of `Route` to process.
 - `wrapManagedRoutes`: A function nesting the managed routes under React elements such as a layout, an error boundary or an authentication boundary.
 - `options`: An optional object literal of options.
     - `allowedPaths`: An optional array of exclusive route paths available for hosting.

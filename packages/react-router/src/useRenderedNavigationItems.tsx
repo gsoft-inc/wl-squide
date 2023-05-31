@@ -2,7 +2,7 @@ import { type NavigationItem, type RootNavigationItem, isLinkItem, type Navigati
 import { useMemo, type ReactNode } from "react";
 
 import type { LinkProps } from "react-router-dom";
-import { isNil } from "@squide/core";
+import { isNil, isUndefined } from "@squide/core";
 
 export interface NavigationLinkRenderProps {
     label: ReactNode;
@@ -66,8 +66,18 @@ export function useRenderedNavigationItems(
     renderSection: RenderSectionFunction
 ) {
     return useMemo(() => {
+        const clonedItems = [...navigationItems];
+
         // Highest priority is rendered first.
-        const sortedItems = [...navigationItems]
+        const sortedItems = clonedItems
+            .map(x => {
+                // Default an item priority to 0.
+                if (isUndefined(x.priority)) {
+                    x.priority = 0;
+                }
+
+                return x;
+            })
             .sort((x, y) => {
                 if (x.priority === y.priority) {
                     return 0;

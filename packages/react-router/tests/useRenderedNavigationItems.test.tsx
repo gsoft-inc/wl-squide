@@ -89,6 +89,34 @@ test("highest priority goes first", () => {
     expect(tree).toMatchSnapshot();
 });
 
+test("negative priority goes last", () => {
+    const navigationItems: RootNavigationItem[] = [
+        {
+            to: "/foo",
+            label: "Foo"
+        },
+        {
+            to: "/bar",
+            label: "Bar"
+        },
+        {
+            to: "/toto",
+            label: "Toto",
+            priority: -1
+        },
+        {
+            to: "/tutu",
+            label: "Tutu"
+        }
+    ];
+
+    const tree = renderer
+        .create(<TestComponent navigationItems={navigationItems} />)
+        .toJSON();
+
+    expect(tree).toMatchSnapshot();
+});
+
 test("support 2 section levels", () => {
     const navigationItems: RootNavigationItem[] = [
         {

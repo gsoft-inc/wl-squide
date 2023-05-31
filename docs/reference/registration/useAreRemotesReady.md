@@ -19,6 +19,29 @@ Nothing
 
 ## Usage
 
+```tsx !#12 host/bootstrap.tsx
+import { createRoot } from "react";
+import { Runtime } from "@squide/react-router";
+import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import { App } from "./App.tsx";
+
+const runtime = new Runtime();
+
+const Remotes: RemoteDefinition = [
+    { name: "remote1", url: "http://localhost:8081" }
+];
+
+registerRemoteModules(Remotes, runtime);
+
+const root = createRoot(document.getElementById("root")!);
+
+root.render(
+    <RuntimeContext.Provider value={runtime}>
+        <App />
+    </RuntimeContext.Provider>
+);
+```
+
 ```tsx !#10,18-20 host/App.tsx
 import { useMemo } from "react";
 import { useAreRemotesReady } from "@squide/webpack-module-federation";
@@ -48,27 +71,4 @@ export function App() {
         />
     );
 }
-```
-
-```tsx !#12 host/bootstrap.tsx
-import { createRoot } from "react";
-import { Runtime } from "@squide/react-router";
-import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
-import { App } from "./App.tsx";
-
-const runtime = new Runtime();
-
-const Remotes: RemoteDefinition = [
-    { name: "remote1", url: "http://localhost:8081" }
-];
-
-registerRemoteModules(Remotes, runtime);
-
-const root = createRoot(document.getElementById("root")!);
-
-root.render(
-    <RuntimeContext.Provider value={runtime}>
-        <App />
-    </RuntimeContext.Provider>
-);
 ```

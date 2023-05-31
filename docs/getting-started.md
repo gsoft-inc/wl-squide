@@ -27,7 +27,7 @@ npm create @workleap/project@latest <output-directory>
 
 We built this shell to facilitate the adoption of federated applications at [Workleap](https://workleap.com/) by **enforcing patterns** that we believe will help feature teams successfully implement a distributed architecture.
 
-The shell itself is a very thin [API layer](/api) on top of [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) and [React Router](https://reactrouter.com) with the goal of maximizing both libraries forces and staying as most as possible out of their ways.
+The shell itself is a very thin [API layer](/reference) on top of [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) and [React Router](https://reactrouter.com) with the goal of maximizing both libraries forces and staying as most as possible out of their ways.
 
 #### Why Webpack Module Federation?
 

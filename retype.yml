@@ -9,7 +9,6 @@ url: https://workleap.github.io/wl-squide/
 
 branding:
     title: "🦑 @squide"
-    label: 0.0.1
 
 links:
     - text: Home
@@ -20,9 +19,9 @@ links:
       icon: book
       link: guides
 
-    - text: API
+    - text: Reference
       icon: gear
-      link: api
+      link: reference
 
     - text: Github
       icon: mark-github

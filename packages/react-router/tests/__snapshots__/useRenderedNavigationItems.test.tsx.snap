@@ -81,6 +81,39 @@ exports[`highest priority goes first 1`] = `
 </ul>
 `;
 
+exports[`negative priority goes last 1`] = `
+<ul>
+  <li>
+    <div
+      to="/foo"
+    >
+      Foo
+    </div>
+  </li>
+  <li>
+    <div
+      to="/bar"
+    >
+      Bar
+    </div>
+  </li>
+  <li>
+    <div
+      to="/tutu"
+    >
+      Tutu
+    </div>
+  </li>
+  <li>
+    <div
+      to="/toto"
+    >
+      Toto
+    </div>
+  </li>
+</ul>
+`;
+
 exports[`support 2 section levels 1`] = `
 <ul>
   <li>

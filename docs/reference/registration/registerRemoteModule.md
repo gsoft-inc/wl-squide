@@ -2,10 +2,6 @@
 
 Register one or many remote module(s). During registration, the module `register` function will be called with a `Runtime` instance and an optional `context` object.
 
-By convention, a remote module must:
-- Expose a `/remoteEntry.js` entry point.
-- Export a `register.js` module with a signature matching `ModuleRegisterFunction` typing.
-
 ## Reference
 
 ```ts
@@ -22,6 +18,14 @@ registerRemoteModule(remotes: [], runtime, options?: { context? })
 ### Returns
 
 A `Promise` object with an array of [RegistrationError] if any happens during the registration.
+
+## Conventions
+
+By convention, a remote module must:
+- Expose a `/remoteEntry.js` entry point.
+- Export a `register.js` module with a signature matching `ModuleRegisterFunction` typing.
+
+[!ref To help with that use the `remoteTransformer` function](/reference/webpack/remoteTransformer.md)
 
 ## Usage
 

@@ -75,3 +75,15 @@ root.render(
 );
 ```
 
+```tsx !#4 remote-module/UserProfile.tsx
+import { useSession } from "@squide/react-router";
+
+export function UserProfile() {
+    const session = useSession();
+
+    return (
+        <span>{session.userName}</span>
+    );
+}
+```
+

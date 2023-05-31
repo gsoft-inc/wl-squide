@@ -41,8 +41,13 @@ icon: gear
 - [useEventBusDispatcher](messaging/useEventBusDispatcher.md)
 - [useEventBusListener](messaging/useEventBusListener.md)
 
+### Webpack
+
+- [hostTransformer](webpack/hostTransformer.md)
+- [remoteTransformer](webpack/remoteTransformer.md)
+
 ### Fakes
 
-The `@squide/fakes` package is a collection of fake implementations offered to accelerate the setup of an environment to develop a module in isolation.
+The `@squide/fakes` package is a collection of fake implementations offered to accelerate the setup of an isolated enviroment to develop a module.
 
 - [SessionManager](fakes/SessionManager.md)

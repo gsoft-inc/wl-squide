@@ -69,25 +69,19 @@ export function useRenderedNavigationItems(
         // Highest priority is rendered first.
         const sortedItems = [...navigationItems]
             .sort((x, y) => {
-                if (x.priority === y.priority) {
+                // Default an item priority to 0 to support negative priority.
+                const xp = x.priority ?? 0;
+                const yp = y.priority ?? 0;
+
+                if (xp === yp) {
                     return 0;
                 }
 
-                if (isNil(x.priority) && y.priority) {
-                    return 1;
-                }
-
-                if (x.priority && isNil(y.priority)) {
-                    return -1;
-                }
-
-                return x.priority! > y.priority! ? -1 : 1;
+                return xp! > yp! ? -1 : 1;
             })
             // priority is intentionally omitted.
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            .map(({ priority, ...itemProps }) => ({
-                ...itemProps
-            }));
+            .map(({ priority, ...itemProps }) => itemProps);
 
         return renderItems(sortedItems, renderItem, renderSection, 0, 0);
     }, [navigationItems, renderItem, renderSection]);

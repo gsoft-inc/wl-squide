@@ -1,17 +1,5 @@
 import { LogLevel, type Logger } from "./logger.ts";
 
-/**
- * @example
- * import { ConsoleLogger, LogLevel } from "wmfnext-shell";
- *
- * const logger = new ConsoleLogger(Loglevel.debug);
- *
- * logger.debug2("Debug log", { foo: "bar" });
- * logger.information("Info log");
- * logger.warning("Warning log");
- * logger.error("Error log");
- * logger.critical("Critical log");
- */
 export class ConsoleLogger implements Logger {
     readonly #logLevel: LogLevel;
 

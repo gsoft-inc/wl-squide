@@ -10,7 +10,7 @@ pnpm add @squide/fakes
 
 ## Usage
 
-Full documentation available at [https://github.com/workleap/wl-squide](https://github.com/workleap/wl-squide).
+View the [user's documentation](https://workleap.github.io/wl-squide/).
 
 ## 🤝 Contributing
 

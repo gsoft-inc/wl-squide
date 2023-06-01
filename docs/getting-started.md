@@ -92,10 +92,10 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation
 ```
 +++
 
-### Configure the shell
+### Configure the host application
 
 TBD
 
-### Transient setup with local modules
+### Configure a remote application
 
 TBD

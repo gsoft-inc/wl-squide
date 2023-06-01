@@ -1,11 +1,11 @@
 # hostTransformer
 
-Add a [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) plugin instance configured with `@squide` conventions to a Webpack [configuration object](https://webpack.js.org/concepts/configuration/).
+Add to an existing Webpack [configuration object](https://webpack.js.org/concepts/configuration/) a [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) plugin instance pre-configured for a `@squide` host application.
 
 ## Reference
 
 ```ts
-hostTransformer(config, name, options?: { router?, pluginOptions? })
+const federatedConfig = hostTransformer(config, name, options?: { router?, pluginOptions? })
 ```
 
 ### Parameters
@@ -13,12 +13,12 @@ hostTransformer(config, name, options?: { router?, pluginOptions? })
 - `config`: A Webpack [configuration object](https://webpack.js.org/concepts/configuration/).
 - `name`: The host application name.
 - `options`: An optional object literal of options.
-    - `router`: An optional router identifier (default to `"react-router"`).
+    - `router`: An optional router identifier (default is `"react-router"`).
     - `pluginOptions`: An optional object literal of [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) options.
 
 ### Returns
 
-A transformed Webpack [configuration object](https://webpack.js.org/concepts/configuration/) bonified with a [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) plugin instance.
+A Webpack [configuration object](https://webpack.js.org/concepts/configuration/) enriched with a [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) plugin instance.
 
 ## Default shared dependencies
 
@@ -30,19 +30,20 @@ The `hostTransformer` function will add the following shared dependencies as `si
 - [@squide/react-router](https://www.npmjs.com/package/@squide/react-router)
 - [@squide/webpack-module-federation](https://www.npmjs.com/package/@squide/webpack-module-federation)
 
-For their detailed configuration, have a look at the [configTransformer.ts](https://github.com/workleap/wl-squide/blob/main/packages/webpack-module-federation/src/configTransformer.ts){target="_blank"} file on Github.
+For the full shared dependencies configuration, have a look at the [configTransformer.ts](https://github.com/workleap/wl-squide/blob/main/packages/webpack-module-federation/src/configTransformer.ts){target="_blank"} file on Github.
 
 ## Usage
 
 ### Transform a Webpack config
 
-```js !#9 webpack.config.js
+```js !#10 webpack.config.js
 import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 
 /** @type {import("webpack").Configuration} */
-const config = {
+const webpackConfig = {
     target: "web",
     entry: "./src/index.ts",
+    ...
 };
 
 const federatedConfig = hostTransformer(config, "host");
@@ -52,13 +53,18 @@ export default federatedConfig;
 
 ### Specify additional shared dependencies
 
-```js !#10-16 webpack.config.js
+!!!info
+Additional shared dependencies must be configured on the host application as well as every remote module.
+!!!
+
+```js !#11-17 webpack.config.js
 import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 
 /** @type {import("webpack").Configuration} */
 const config = {
     target: "web",
     entry: "./src/index.ts",
+    ...
 };
 
 const federatedConfig = hostTransformer(config, "host", {
@@ -74,15 +80,16 @@ const federatedConfig = hostTransformer(config, "host", {
 export default federatedConfig;
 ```
 
-### Override a pre-configured shared dependency
+### Override a default shared dependency
 
-```js !#12-14 webpack.config.js
+```js !#13-15 webpack.config.js
 import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 
 /** @type {import("webpack").Configuration} */
 const config = {
     target: "web",
     entry: "./src/index.ts",
+    ...
 };
 
 const federatedConfig = hostTransformer(config, "host", {

@@ -139,7 +139,7 @@ runtime.registerNavigationItems([
 ]);
 ```
 
-### Navigation items rendering order
+### Sort registered navigation items
 
 A `priority` property can be added to a navigation item to affect it's position in the menu. The priority algorithm is as follow:
 
@@ -246,7 +246,7 @@ runtime.eventBus.dispatch("write-to-host", "Hello host!");
 const service = runtime.getService("user-service") as UserService;
 ```
 
-### Retrive the current session
+### Retrieve the current session
 
 ```ts
 // If no sessionAccessor has been provided, an Error instance will be thrown.

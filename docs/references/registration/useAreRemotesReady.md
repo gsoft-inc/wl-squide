@@ -3,7 +3,7 @@
 Force the application to re-render once the remote modules are registered. Without this hook, the page is rendered with an empty router as it happens before the remote modules registered their routes and navigation items.
 
 !!!info
-Only use this hook if your application has remote modules.
+Only use this hook if your application load remote modules.
 !!!
 
 ## Reference

@@ -25,17 +25,17 @@ An array of `ReactElement`.
 ## Usage
 
 ```tsx !#38-40,42-48,52 host/RootLayout.tsx
+import type { ReactNode } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { 
+    useNavigationItems, 
+    useRenderedNavigationItems, 
+    isNavigationLink,
     type RenderItemFunction, 
     type RenderSectionFunction, 
     type NavigationLinkRenderProps, 
-    type NavigationSectionRenderProps, 
-    useNavigationItems, 
-    useRenderedNavigationItems, 
-    isNavigationLink 
+    type NavigationSectionRenderProps
 } from "@squide/react-router";
-import type { ReactNode } from "react";
 
 type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
 

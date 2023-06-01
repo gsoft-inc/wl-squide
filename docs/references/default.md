@@ -1,10 +1,10 @@
 ---
 order: 70
-label: Reference
+label: References
 icon: gear
 ---
 
-# Reference
+# References
 
 ### Runtime
 
@@ -20,8 +20,8 @@ icon: gear
 
 ### Registration
 
-- [registerLocalModule](registration/registerLocalModule.md)
-- [registerRemoteModule](registration/registerRemoteModule.md)
+- [registerLocalModules](registration/registerLocalModules.md)
+- [registerRemoteModules](registration/registerRemoteModules.md)
 - [registrationStatus](registration/registrationStatus.md)
 - [useAreRemotesReady](registration/useAreRemotesReady.md)
 

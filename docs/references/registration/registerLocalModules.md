@@ -1,4 +1,4 @@
-# registerLocalModule
+# registerLocalModules
 
 Register one or many local module(s). During registration, the provided registration function will be called with a `Runtime` instance and an optional `context` object.
 

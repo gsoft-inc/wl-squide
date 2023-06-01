@@ -106,7 +106,7 @@ runtime.registerNavigationItems([
 ### Register nested navigation items
 
 ```ts
-// Registering the following menu hierarchy:
+// Register the following menu hierarchy:
 //
 //  Section
 //  --- Nested Section
@@ -158,8 +158,8 @@ runtime.registerNavigationItems([
     {
         to: "/home",
         label: "Home",
-        // Because the 'Home" navigation item has an high priority, it will be rendered
-        // before the "About" navigation item
+        // Because the "Home" navigation item has an higher priority, it will be rendered
+        // before the "About" navigation item.
         priority: 100
     }
 ]);

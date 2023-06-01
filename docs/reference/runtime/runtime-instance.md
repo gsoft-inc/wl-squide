@@ -141,7 +141,7 @@ runtime.registerNavigationItems([
 
 ### Sort registered navigation items
 
-A `priority` property can be added to a navigation item to affect it's position in the menu. The priority algorithm is as follow:
+A `priority` property can be added to a navigation item to affect it's position in the menu. The sorting algorithm is as follow:
 
 - By default a navigation item have a priority of `0`.
 - If no navigation item have a priority, the items are positioned according to their registration order.

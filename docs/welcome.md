@@ -40,7 +40,7 @@ layout: central
 
 :::squide-container
 :::squide-inner
-# 🦑 @squide (with a "e")
+# 🦑 @squide (with an "e")
 :::squide-tagline
 The federated application shell for Workleap apps
 :::squide-buttons

@@ -81,9 +81,7 @@ export function useRenderedNavigationItems(
             })
             // priority is intentionally omitted.
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            .map(({ priority, ...itemProps }) => ({
-                ...itemProps
-            }));
+            .map(({ priority, ...itemProps }) => itemProps);
 
         return renderItems(sortedItems, renderItem, renderSection, 0, 0);
     }, [navigationItems, renderItem, renderSection]);

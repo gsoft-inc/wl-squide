@@ -15,6 +15,7 @@
         "dev": "pnpm --filter ./packages/** -r --parallel dev",
         "dev-sample": "pnpm --filter ./sample/** -r --parallel dev",
         "build": "pnpm --filter ./packages/** -r --parallel build",
+        "build-sample": "pnpm --filter ./sample/** -r --parallel build",
         "serve-sample": "pnpm --filter ./sample/** -r --parallel serve-build",
 
         "test": "jest",

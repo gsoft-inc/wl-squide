@@ -1,11 +1,13 @@
-# registerRemoteModule
+# registerRemoteModules
 
 Register one or many remote module(s). During registration, the module `register` function will be called with a `Runtime` instance and an optional `context` object.
+
+> A *remote module* a module that is not part of the current build but is **loaded at runtime** from a remote container.
 
 ## Reference
 
 ```ts
-registerRemoteModule(remotes: [], runtime, options?: { context? })
+registerRemoteModules(remotes: [], runtime, options?: { context? })
 ```
 
 ### Parameters
@@ -79,7 +81,7 @@ const Remotes: RemoteDefinition = [
 
 The `name` property of a remote definition **must match** the `name` property defined in the remote module [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) configuration.
 
-If you are using `@squide` [remoteTransformer](/reference/webpack/remoteTransformer.md) function to add the `ModuleFederationPlugin` to the remote module Webpack [configuration object](https://webpack.js.org/concepts/configuration/), the remote module `name` is the second argument of the `remoteTransformer` function.
+If you are using `@squide` [remoteTransformer](/references/webpack/remoteTransformer.md) function to add the `ModuleFederationPlugin` to the remote module Webpack [configuration object](https://webpack.js.org/concepts/configuration/), the remote module `name` is the second argument of the `remoteTransformer` function.
 
 In the following exemple, the remote module `name` is `remote1`.
 
@@ -102,7 +104,7 @@ const federatedConfig = remoteTransformer(
 export default federatedConfig;
 ```
 
-[!ref Have a look at the `remoteTransformer` function](/reference/webpack/remoteTransformer.md)
+[!ref Have a look at the `remoteTransformer` function](/references/webpack/remoteTransformer.md)
 
 ### Url
 

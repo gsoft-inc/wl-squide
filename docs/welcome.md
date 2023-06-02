@@ -28,7 +28,7 @@ layout: central
         display: none !important;
     }
 
-    .squide-tagline p {
+    .squide-tagline > p {
         font-size: 1.5rem;
     }
 
@@ -44,8 +44,8 @@ layout: central
 :::squide-tagline
 The federated application shell for Workleap apps
 :::squide-buttons
-[!button icon="rocket" text="Get started"](/getting-started.md)
-[!button variant="info" icon="arrow-right" iconAlign="right" text="API reference"](/reference)
+[!button size="l" icon="rocket" text="Get started"](/getting-started)
+[!button size="l" variant="info" icon="arrow-right" iconAlign="right" text="API reference"](/references)
 :::
 :::
 

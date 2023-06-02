@@ -7,6 +7,7 @@ The following documentation is only for the maintainers of this repository.
 - [Installation](#installation)
 - [Develop the shell packages](#develop-the-shell-packages)
 - [Release the packages](#release-the-packages)
+- [Deploy the sample application](#deploy-the-sample-application)
 - [Available commands](#commands)
 - [CI](#ci)
 - [Add a new package to the monorepo](#add-a-new-package-to-the-monorepo)
@@ -104,6 +105,18 @@ By default, packages compilation output will be in their respective *dist* direc
 #### Linting errors
 
 If you got linting error, most of the time, they can be fixed automatically using `eslint . --fix`, if not, follow the report provided by `pnpm lint`.
+
+## Deploy the sample application
+
+The sample application is hosted on [Netlify](https://www.netlify.com/). 2 sites are available, one for the host application (https://squide-host.netlify.app/) and one for the remote module application (https://squide-remote-module.netlify.app).
+
+To deploy both websites, open a terminal at the root of the repository and execute the following script:
+
+```bash
+deploy-sample
+```
+
+It will automatically deploy both sites to production.
 
 ## Commands
 

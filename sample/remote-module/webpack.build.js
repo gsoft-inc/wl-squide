@@ -12,7 +12,7 @@ const config = {
     output: {
         path: path.resolve("dist"),
         // The trailing / is very important, otherwise paths will ne be resolved correctly.
-        publicPath: "http://localhost:8081/",
+        publicPath: "https://squide-remote-module.netlify.app/",
         clean: true
     },
     optimization: {

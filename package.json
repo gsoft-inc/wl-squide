@@ -13,10 +13,7 @@
         "temporary-script-until-build-order-topology-is-fixed": "pnpm build",
 
         "dev": "pnpm --filter ./packages/** -r --parallel dev",
-        "dev-sample": "pnpm --filter ./sample/** -r --parallel dev",
         "build": "pnpm --filter ./packages/** -r --parallel build",
-        "build-sample": "pnpm build && pnpm --filter ./sample/** -r --parallel build",
-        "serve-sample": "pnpm --filter ./sample/** -r --parallel serve-build",
 
         "test": "jest",
 
@@ -31,6 +28,13 @@
         "reset": "pnpm clean && pnpm reset:modules",
         "reset:modules": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf node_modules pnpm-lock.yaml",
 
+        "dev-sample": "pnpm --filter ./sample/** -r --parallel dev",
+        "build-sample": "pnpm --filter ./sample/** -r --parallel build",
+        "serve-sample": "pnpm --filter ./sample/** -r --parallel serve-build",
+        "deploy-sample": "cross-env NETLIFY=true pnpm build-sample && pnpm run /^deploy-sample:.*/",
+        "deploy-sample:host": "netlify deploy --dir=sample/host/dist --site=ae684cea-e6b1-4293-95d6-fc82462654c8 --prod",
+        "deploy-sample:remote-module": "netlify deploy --dir=sample/remote-module/dist --site=43234f6e-a884-410e-9b4d-f290459f841f --prod",
+
         "dev-docs": "retype start"
     },
     "devDependencies": {
@@ -38,8 +42,10 @@
         "@changesets/changelog-github": "0.4.8",
         "@workleap/eslint-plugin": "1.6.0",
         "@workleap/typescript-configs": "2.3.0",
+        "cross-env": "7.0.3",
         "eslint": "8.37.0",
         "jest": "29.5.0",
+        "netlify-cli": "15.2.0",
         "retypeapp": "3.0.0",
         "ts-node": "10.9.1",
         "typescript": "5.0.3"

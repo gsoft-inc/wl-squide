@@ -4,5 +4,7 @@ import { useEventBus } from "../runtime/useEventBus.ts";
 export function useEventBusDispatcher<TEventNames extends EventName>() {
     const eventBus = useEventBus<TEventNames>();
 
-    return eventBus.dispatch;
+    return (eventName: TEventNames, data?: unknown) => {
+        eventBus.dispatch(eventName, data);
+    }
 }

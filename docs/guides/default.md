@@ -10,4 +10,4 @@ expanded: true
 - [Isolate module failures](isolate-module-failures.md)
 - [Add authentication](add-authentication.md)
 - [Implement a custom logger](implement-a-custom-logger.md)
-- [Migrating a distributed architecture](migration-to-a-distributed-architecture.md)
+- [Migrating a distributed architecture](migrating.md)

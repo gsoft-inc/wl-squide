@@ -15,7 +15,7 @@ export default function Message() {
     const handleSendMessage = useCallback(() => {
         dispatch("write-to-host", message);
         setMessage("");
-    }, [message]);
+    }, [dispatch, setMessage, message]);
 
     return (
         <div>

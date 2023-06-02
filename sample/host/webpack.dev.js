@@ -5,6 +5,9 @@ import "webpack-dev-server";
 
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";
+import webpack from "webpack";
+
+const DefinePlugin = webpack.DefinePlugin;
 
 /** @type {import("webpack").Configuration} */
 const config = {
@@ -49,6 +52,9 @@ const config = {
     plugins: [
         new HtmlWebpackPlugin({
             template: "./public/index.html"
+        }),
+        new DefinePlugin({
+            "process.env": JSON.stringify(process.env)
         })
     ]
 };

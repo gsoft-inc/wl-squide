@@ -4,6 +4,9 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import TerserPlugin from "terser-webpack-plugin";
 import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 import path from "path";
+import webpack from "webpack";
+
+const DefinePlugin = webpack.DefinePlugin;
 
 /** @type {import("webpack").Configuration} */
 const config = {
@@ -13,7 +16,7 @@ const config = {
     output: {
         path: path.resolve("dist"),
         // The trailing / is very important, otherwise paths will ne be resolved correctly.
-        publicPath: "http://localhost:8080/",
+        publicPath: "https://squide-host.netlify.app/",
         clean: true
     },
     optimization: {
@@ -60,6 +63,9 @@ const config = {
     plugins: [
         new HtmlWebpackPlugin({
             template: "./public/index.html"
+        }),
+        new DefinePlugin({
+            "process.env": JSON.stringify(process.env)
         })
     ]
 };

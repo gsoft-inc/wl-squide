@@ -49,7 +49,7 @@ React Router [nested routes](https://reactrouter.com/en/main/start/tutorial#nest
 
 ### Module's registration
 
-The most distinctive aspect of this shell is the conventions it enforce to load and register remote modules. Here's a rough idea of the flow:
+The most distinctive aspect of this shell is the conventions it enforces to load and register remote modules. Here's a rough idea of the flow:
 
 1. At bootstrap, the host application will try to [load predefined modules](/references/registration/registerRemoteModules.md) and call a registration function matching a specific name and signature for each module that is successfully loaded.
 

@@ -75,10 +75,11 @@ While developing the [API](/references) of `@squide`, we had a few guiding princ
 
 ### Prerequisites
 
-BLABLA
+Before going further make sure you:
 
-- Create an host application and at least one remote application.
-
+- Installed at least the latest LTS version of [Node.js](https://nodejs.org/)
+- Created a project for an host application (we'll call ours `host` in this tutorial)
+- Created a project for a remote module application (we'll call ours `remote-module` in this tutorial)
 
 ### Install the packages
 
@@ -294,7 +295,7 @@ const federatedConfig = hostTransformer(config, "host");
 export default federatedConfig;
 ```
 
-[!ref target="blank" text="Full development Webpack configuration file on Github"](https://github.com/workleap/wl-squide/blob/main/sample/host/webpack.dev.js)
+[!ref target="blank" text="View a full webpack.config.js on Github"](https://github.com/workleap/wl-squide/blob/main/sample/host/webpack.dev.js)
 
 ### Configure a remote application
 
@@ -358,4 +359,4 @@ const federatedConfig = remoteTransformer(config, "remote1");
 export default federatedConfig;
 ```
 
-[!ref target="blank" text="Full development Webpack configuration file on Github"](https://github.com/workleap/wl-squide/blob/main/sample/remote-module/webpack.dev.js)
+[!ref target="blank" text="View a full webpack.config.js on Github"](https://github.com/workleap/wl-squide/blob/main/sample/remote-module/webpack.dev.js)

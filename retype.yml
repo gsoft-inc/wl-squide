@@ -24,10 +24,6 @@ links:
       icon: gear
       link: references
 
-    - text: Samples
-      icon: browser
-      link: samples
-
     - text: Github
       icon: mark-github
       link: https://github.com/workleap/wl-squide

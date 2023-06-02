@@ -1,7 +1,7 @@
 ---
 order: 70
-label: References
 icon: gear
+expanded: true
 ---
 
 # References

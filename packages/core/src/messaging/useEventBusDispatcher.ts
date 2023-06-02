@@ -6,5 +6,5 @@ export function useEventBusDispatcher<TEventNames extends EventName>() {
 
     return (eventName: TEventNames, data?: unknown) => {
         eventBus.dispatch(eventName, data);
-    }
+    };
 }

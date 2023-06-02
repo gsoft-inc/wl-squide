@@ -2,7 +2,7 @@ import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@s
 import { StrictMode, Suspense } from "react";
 
 import { App } from "./App.tsx";
-import { AppContext, isNetlify } from "@sample/shared";
+import { type AppContext, isNetlify } from "@sample/shared";
 import { createRoot } from "react-dom/client";
 import { register } from "@sample/local-module";
 import { type RemoteDefinition, registerRemoteModules } from "@squide/webpack-module-federation";
@@ -13,7 +13,7 @@ const Remotes: RemoteDefinition[] = [
         name: "remote1",
         url: isNetlify ? "https://squide-remote-module.netlify.app" : "http://localhost:8081"
     }
-]
+];
 
 const runtime = new Runtime({
     loggers: [new ConsoleLogger()],

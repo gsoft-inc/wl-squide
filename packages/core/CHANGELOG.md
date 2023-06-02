@@ -1,5 +1,11 @@
 # @squide/core
 
+## 1.0.0
+
+### Major Changes
+
+- [#30](https://github.com/workleap/wl-squide/pull/30) [`edcd948`](https://github.com/workleap/wl-squide/commit/edcd948fa942a36fa77b05459722e91fa2f80f11) Thanks [@patricklafrance](https://github.com/patricklafrance)! - First stable release of @squide
+
 ## 0.0.1
 
 ### Patch Changes

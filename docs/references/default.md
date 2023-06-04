@@ -6,9 +6,15 @@ expanded: true
 
 # References
 
+## Artefacts
+
+- [Packages](packages.md)
+
+## API
+
 ### Runtime
 
-- [Runtime](runtime/runtime-instance.md)
+- [Runtime class](runtime/runtime-class.md)
 - [RuntimeContext](runtime/runtime-context.md)
 - [useRuntime](runtime/useRuntime.md)
 - [useRoutes](runtime/useRoutes.md)
@@ -48,6 +54,6 @@ expanded: true
 
 ### Fakes
 
-The `@squide/fakes` package is a collection of fake implementations offered to accelerate the setup of an isolated enviroment to develop a module.
+`@squide` offers a collection of fake implementations to facilitate the development of modules in isolation from the other parts of the application.
 
 - [SessionManager](fakes/SessionManager.md)

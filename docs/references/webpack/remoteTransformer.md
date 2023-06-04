@@ -59,7 +59,7 @@ For the detailed configuration of the shared dependencies, have a look at the [c
 
 ### Transform a Webpack config
 
-```js !#10 webpack.config.js
+```js !#10 remote-module/webpack.config.js
 import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 
 /** @type {import("webpack").Configuration} */
@@ -80,7 +80,7 @@ export default federatedConfig;
 Additional shared dependencies must be configured on the host application as well as every remote module.
 !!!
 
-```js !#11-17 webpack.config.js
+```js !#11-17 remote-module/webpack.config.js
 import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 
 /** @type {import("webpack").Configuration} */
@@ -105,7 +105,7 @@ export default federatedConfig;
 
 ### Override a default shared dependency
 
-```js !#13-15 webpack.config.js
+```js !#13-15 remote-module/webpack.config.js
 import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 
 /** @type {import("webpack").Configuration} */
@@ -128,7 +128,7 @@ const federatedConfig = remoteTransformer(config, "remote1", {
 
 ### Expose an additional module
 
-```js # webpack.config.js
+```js !# remote-module/webpack.config.js
 import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 
 /** @type {import("webpack").Configuration} */

@@ -2,7 +2,7 @@
 order: 100
 ---
 
-# Runtime
+# Runtime class
 
 A runtime instance give modules access to functionalities such as routing, navigation and logging.
 
@@ -148,7 +148,7 @@ A `priority` property can be added to a navigation item to affect it's position 
 - If an item have a priority `> 0`, the item will be positioned before any other items with a lower priority (or without an explicit priority value).
 - If an item have a priority `< 0`, the item will be positioned after any other items with a higher priority (or without an explicit priority value).
 
-```ts #5,12
+```ts !#5,12
 runtime.registerNavigationItems([
     {
         to: "/about",

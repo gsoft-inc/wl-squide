@@ -23,7 +23,7 @@ Nothing
 
 ## Usage
 
-```tsx !#11 host/bootstrap.tsx
+```tsx !#11 host/src/bootstrap.tsx
 import { registerLocalModules, Runtime } from "@squide/react-router";
 import { register } from "@sample/local-module";
 import type { AppContext } from "@sample/shared";
@@ -37,7 +37,7 @@ const context: AppContext = {
 registerLocalModules([register], runtime, { context });
 ```
 
-```tsx !#7-21 local-module/register.tsx
+```tsx !#7-21 local-module/src/register.tsx
 import { lazy } from "react";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import type { AppContext } from "@sample/shared";

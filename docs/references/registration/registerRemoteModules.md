@@ -23,7 +23,7 @@ A `Promise` object with an array of [RegistrationError] if any happens during th
 
 ## Usage
 
-```tsx !#11-13,15 host/bootstrap.tsx
+```tsx !#11-13,15 host/src/bootstrap.tsx
 import { Runtime } from "@squide/react-router";
 import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
 import type { AppContext } from "@sample/shared";
@@ -41,7 +41,7 @@ const Remotes: RemoteDefinition = [
 registerRemoteModules(Remotes, runtime, { context });
 ```
 
-```tsx !#7-21 remote-module/register.tsx
+```tsx !#7-21 remote-module/src/register.tsx
 import { lazy } from "react";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import type { AppContext } from "@sample/shared";
@@ -85,13 +85,13 @@ If you are using `@squide` [remoteTransformer](/references/webpack/remoteTransfo
 
 In the following exemple, the remote module `name` is `remote1`.
 
-```ts !#2 host/bootstrap.tsx
+```ts !#2 host/src/bootstrap.tsx
 const Remotes: RemoteDefinition = [
     { name: "remote1", url: "REMOTE_URL" }
 ];
 ```
 
-```js !#7 remote-module/webpack.config.js
+```js !#7 remote-module/src/webpack.config.js
 import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 
 const webpackConfig = { ... };
@@ -104,7 +104,7 @@ const federatedConfig = remoteTransformer(
 export default federatedConfig;
 ```
 
-[!ref Have a look at the `remoteTransformer` function](/references/webpack/remoteTransformer.md)
+[!ref View the `remoteTransformer` function](/references/webpack/remoteTransformer.md)
 
 ### Url
 
@@ -112,7 +112,7 @@ The `url` property of a remote definition **must match** the [publicPath](https:
 
 In the following exemple, the remote module `publicPath` is `http://localhost:8081`.
 
-```ts !#2 host/bootstrap.tsx
+```ts !#2 host/src/bootstrap.tsx
 const Remotes: RemoteDefinition = [
     { name: "REMOTE_NAME", url: "http://localhost:8081" }
 ];

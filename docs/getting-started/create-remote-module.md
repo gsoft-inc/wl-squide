@@ -1,6 +1,5 @@
 ---
 order: 90
-label: Create remote module
 ---
 
 # Create a remote module
@@ -37,11 +36,11 @@ remote-module
 ├── webpack.config.js
 ```
 
-Then, register the remote module [routes](/references/runtime/runtime-instance.md#register-routes) and [navigation items](/references/runtime/runtime-instance.md#register-navigation-items):
+Then, register the remote module [routes](/references/runtime/runtime-class.md#register-routes) and [navigation items](/references/runtime/runtime-class.md#register-navigation-items):
 
 ```tsx !#7-19 remote-module/src/register.tsx
 import { lazy } from "react";
-import { registerRoutes, registerNavigationItems, type ModuleRegisterFunction, type Runtime } from "wmfnext-shell";
+import { registerRoutes, registerNavigationItems, type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
 
 const Page = lazy(() => import("./Page"));
 

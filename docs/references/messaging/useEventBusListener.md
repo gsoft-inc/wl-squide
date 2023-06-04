@@ -20,8 +20,8 @@ Nothing
 ## Usage
 
 ```ts
-import { useEventBusListener } from "wmfnext-shell";
 import { useCallback } from "react";
+import { useEventBusListener } from "@squide/react-router";
 
 const handleFoo = useCallback((data, context) => {
     // do something...

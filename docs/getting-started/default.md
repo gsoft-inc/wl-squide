@@ -54,7 +54,7 @@ The most distinctive aspect of this shell is the conventions it enforces to load
 
 1. At bootstrap, the host application will try to [load predefined modules](/references/registration/registerRemoteModules.md) and call a registration function matching a specific name and signature for each module that is successfully loaded.
 
-2. During it's registration, a module will receive [the shared services](/references/runtime/runtime-instance.md) of the federation application and use them to dynamically register its [routes](/references/runtime/runtime-instance.md#register-routes) and [navigation items](/references/runtime/runtime-instance.md#register-navigation-items).
+2. During it's registration, a module will receive [the shared services](/references/runtime/runtime-class.md) of the federation application and use them to dynamically register its [routes](/references/runtime/runtime-class.md#register-routes) and [navigation items](/references/runtime/runtime-class.md#register-navigation-items).
 
 3. Once [all the remote modules are registered](/references/registration/useAreRemotesReady.md), the host application will create a React Router instance with the registered routes and [render a navigation menu](/references/routing/useRenderedNavigationItems.md) with the registered navigation items.
 

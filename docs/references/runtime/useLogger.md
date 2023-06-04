@@ -23,5 +23,5 @@ import { useLogger } from "@squide/react-router";
 
 const logger = useLogger();
 
-logger.debug("Hello!");
+logger.debug("Hello", { world: "!" });
 ```

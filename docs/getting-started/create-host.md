@@ -1,6 +1,6 @@
 ---
 order: 100
-label: Create host
+label: Create an host
 ---
 
 # Create an host application
@@ -42,7 +42,7 @@ host
 
 Then, use a dynamic import to add an async boundary:
 
-```ts host/src.index.ts
+```ts host/src/index.ts
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore doesn't support file extension.
 import("./bootstrap");
@@ -56,7 +56,7 @@ export {};
 To learn more about this async boundary and the `bootstrap.tsx` file, read the following [article](https://dev.to/infoxicator/module-federation-shared-api-ach#using-an-async-boundary).
 !!!
 
-Then, instanciate the shell [Runtime](/references/runtime/runtime-instance.md) and [register the remote module](/references/registration/registerRemoteModules.md) (the remote module application will be configured in the [next section](create-remote-module.md)):
+Then, instanciate the shell [Runtime](/references/runtime/runtime-class.md) and [register the remote module](/references/registration/registerRemoteModules.md) (the remote module application will be configured in the [next section](create-remote-module.md)):
 
 ```tsx !#12-14,17 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";

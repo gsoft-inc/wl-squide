@@ -24,7 +24,7 @@ An array of `ReactElement`.
 
 ## Usage
 
-```tsx !#38-40,42-48,52 host/RootLayout.tsx
+```tsx !#38-40,42-48,52 host/src/RootLayout.tsx
 import type { ReactNode } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { 

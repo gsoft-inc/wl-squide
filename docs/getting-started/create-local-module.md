@@ -4,19 +4,19 @@ order: 80
 
 # Create a local module
 
-Local modules are useful when migrating from a monolithic application to a distributed application or when launching a new product with a small team and an unrefined business domain.
+Local modules are regular modules which are part of the **host application build**. It's an independent module exposing a `registration` function to the host application boostrapping code. It can be a standalone package, a sibling project (when in a monorepo setup), or even a local folder of the host application.
+
+Local modules are useful when migrating from a monolithic application to a distributed application or when launching a new product with an unrefined business domain.
 
 Let's add one to show how it's done!
 
-> Loading *remote modules* at runtime with [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) is the reason why this shell exists and it is what we recommend products to aim for. It enables teams to be **fully autonomous** by **deploying** their modules **independently** from the other parts of the application.
+> Loading remote modules at runtime with [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) is the reason why this shell exists and it is what we recommend products to aim for. It enables teams to be **fully autonomous** by **deploying** their modules **independently** from the other parts of the application.
 >
 > However, we understand that teams working on mature products will most likely prefer to **gradually migrate** towards a distributed architecture by first extracting subdomains into independent modules in their current monolithic setup before fully committing to remote modules loaded at runtime.
 >
-> To facilitate the transition, this shell also supports *local modules* loaded at build time.
+> To facilitate the transition, this shell also supports local modules loaded at build time.
 >
-> A *local module* is a regular module which is part of the **current build** and expose a `registration` function. A registration function could be imported from a standalone package, a sibling project in a monorepo setup, or even a local folder of the host application.
->
-> Both remote and local modules can be used in the same application as this shell supports dual bootstrapping. For example, an application could be configured to load a few *remote modules* at runtime and also load a few *local modules* at build time.
+> Both remote and local modules can be used in the same application as this shell supports dual bootstrapping. For example, an application could be configured to load a few remote modules at runtime and also load a few local modules at build time.
 
 ## Install the packages
 

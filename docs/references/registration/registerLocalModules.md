@@ -2,7 +2,7 @@
 
 Register one or many local module(s). During registration, the provided registration function will be called with a `Runtime` instance and an optional `context` object.
 
-> A *local module* is a regular module which is part of the **current build** and is bundled at build time rather than runtime like a *remote module*. Local modules are useful while **migrating** from a monolithic application to a distributed application or **launching new products**.
+> A *local module* is a regular module which is part of the **host application build** and is bundled at build time rather than runtime like a *remote module*. Local modules are useful while **migrating** from a monolithic application to a distributed application or **launching a new product** with an unrefined business domain.
 
 ## Reference
 

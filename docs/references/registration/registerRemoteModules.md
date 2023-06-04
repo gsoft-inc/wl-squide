@@ -2,7 +2,7 @@
 
 Register one or many remote module(s). During registration, the module `register` function will be called with a `Runtime` instance and an optional `context` object.
 
-> A *remote module* a module that is not part of the current build but is **loaded at runtime** from a remote container.
+> A *remote module* is a module that is not part of the current build but is **loaded at runtime** from a remote server.
 
 ## Reference
 

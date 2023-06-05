@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.2.739293329411">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.2.739313950393">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.0.2">
@@ -31,12 +31,12 @@
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../resources/css/retype.css?v=3.0.2.739293329411" rel="stylesheet" />
+    <link href="../resources/css/retype.css?v=3.0.2.739313950393" rel="stylesheet" />
 
-    <script type="text/javascript" src="../resources/js/config.js?v=3.0.2.739293329411" data-turbo-eval="false" defer></script>
+    <script type="text/javascript" src="../resources/js/config.js?v=3.0.2.739313950393" data-turbo-eval="false" defer></script>
     <script type="text/javascript" src="../resources/js/retype.js?v=3.0.2" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" type="text/javascript" src="../resources/js/lunr.js?v=3.0.2.739293329411" data-turbo-eval="false" defer></script>
-    <script id="prism-js" type="text/javascript" src="../resources/js/prism.js?v=3.0.2.739293329411" defer></script>
+    <script id="lunr-js" type="text/javascript" src="../resources/js/lunr.js?v=3.0.2.739313950393" data-turbo-eval="false" defer></script>
+    <script id="prism-js" type="text/javascript" src="../resources/js/prism.js?v=3.0.2.739313950393" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -358,7 +358,7 @@
     </h3>
 </doc-anchor-target>
 <p>While developing the <a href="../references/">API</a> of <code v-pre>@squide</code>, we had a few guiding principles in mind. Those principles are not settled stones, you might want to diverge from them from time to time, but adhering to those will make your experience more enjoyable:</p>
-<ol>
+<ul>
 <li><p>A module should always match a subdomain of the application business domain and should only export pages.</p>
 </li>
 <li><p>A module should be fully autonomous. It shouldn&#x27;t have to coordinate with other parts of the application for things as trivial as navigation links.</p>
@@ -367,7 +367,23 @@
 </li>
 <li><p>Data and state should never be shared between parts of a federated application. Even if two parts needs the same data or the same state values, they should load, store and manage those independently.</p>
 </li>
-</ol>
+</ul>
+<doc-anchor-target id="limitations">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#limitations">#</doc-anchor-trigger>
+        <span>Limitations</span>
+    </h3>
+</doc-anchor-target>
+<p><a href="https://webpack.js.org/concepts/module-federation/">Webpack Module Federation</a> comes with a few limitations that are manageable, but important to consider when architecturing your distributed application:</p>
+<ul>
+<li><p>A <a href="https://webpack.js.org/plugins/module-federation-plugin/#sharing-hints">shared dependency</a> cannot be tree-shaken. Since remote modules are loaded at runtime, <a href="https://webpack.js.org/plugins/module-federation-plugin">ModuleFederationPlugin</a> can&#x27;t infer which parts of a shared dependency will be used by the application modules. Therefore, tree-shaking is disabled for shared dependencies.</p>
+</li>
+<li><p>React&#x27;s <a href="https://github.com/pmmmwh/react-refresh-webpack-plugin">Fast Refresh</a> is not supported by <a href="https://webpack.js.org/concepts/module-federation/">Webpack Module Federation</a>. It does support <a href="https://webpack.js.org/concepts/hot-module-replacement/">Webpack Hot Module Replacement</a> thought.</p>
+</li>
+</ul>
+<blockquote>
+<p>Those limitations are not specific to <code v-pre>@squide</code>, they are specific to <a href="https://webpack.js.org/concepts/module-federation/">Webpack Module Federation</a>.</p>
+</blockquote>
 
                                 
                                 <!-- Required only on API pages -->

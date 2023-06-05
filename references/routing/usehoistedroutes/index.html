@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.2.739245507895">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.2.739293329411">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.0.2">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>useHoistedRoutes</title>
     <meta name="title" content="useHoistedRoutes">
-    <meta name="description" content="Let modules register pages outside of the default application layout, error boundary or authentication boundary." />
+    <meta name="description" content="Allow modules to register pages outside of the host application's pages boundaries." />
 
     <!-- Canonical -->
     <link rel="canonical" href="https://workleap.github.io/wl-squide/references/routing/usehoistedroutes/" />
@@ -21,22 +21,22 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://workleap.github.io/wl-squide/references/routing/usehoistedroutes/">
     <meta property="og:title" content="useHoistedRoutes">
-    <meta property="og:description" content="Let modules register pages outside of the default application layout, error boundary or authentication boundary.">
+    <meta property="og:description" content="Allow modules to register pages outside of the host application's pages boundaries.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://workleap.github.io/wl-squide/references/routing/usehoistedroutes/">
     <meta property="twitter:title" content="useHoistedRoutes">
-    <meta property="twitter:description" content="Let modules register pages outside of the default application layout, error boundary or authentication boundary.">
+    <meta property="twitter:description" content="Allow modules to register pages outside of the host application's pages boundaries.">
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../../resources/css/retype.css?v=3.0.2.739245507895" rel="stylesheet" />
+    <link href="../../../resources/css/retype.css?v=3.0.2.739293329411" rel="stylesheet" />
 
-    <script type="text/javascript" src="../../../resources/js/config.js?v=3.0.2.739245507895" data-turbo-eval="false" defer></script>
+    <script type="text/javascript" src="../../../resources/js/config.js?v=3.0.2.739293329411" data-turbo-eval="false" defer></script>
     <script type="text/javascript" src="../../../resources/js/retype.js?v=3.0.2" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" type="text/javascript" src="../../../resources/js/lunr.js?v=3.0.2.739245507895" data-turbo-eval="false" defer></script>
-    <script id="prism-js" type="text/javascript" src="../../../resources/js/prism.js?v=3.0.2.739245507895" defer></script>
+    <script id="lunr-js" type="text/javascript" src="../../../resources/js/lunr.js?v=3.0.2.739293329411" data-turbo-eval="false" defer></script>
+    <script id="prism-js" type="text/javascript" src="../../../resources/js/prism.js?v=3.0.2.739293329411" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -268,8 +268,7 @@
         <span>useHoistedRoutes</span>
     </h1>
 </doc-anchor-target>
-<p>Let modules register pages outside of the default application layout, error boundary or authentication boundary.</p>
-<p>Unlike a regular page, a hoisted page is added at the root of the router, outside of the boundaries of the host application&#x27;s root layout. This means that a hoisted page has full control over its rendering.</p>
+<p>Allow modules to register pages outside of the host application&#x27;s pages boundaries. Unlike a regular page, an hoisted page is added at the root of the router, meaning before the host application root layout, root error boundary and even root authentication boundary. Thus, an hoisted page has full control over its rendering.</p>
 <div class="flex mb-6">
     <div class="shrink-0 w-1 rounded-tl rounded-bl bg-yellow-500"></div>
     <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
@@ -282,7 +281,7 @@
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>By declaring a page as hoisted, other parts of the application will not be isolated anymore from this page&#x27;s failures as the page will be rendered outside of the host application&#x27;s root error boundary. To avoid breaking the entire application when an hoisted page cause unmanaged errors, it is highly recommended to set a React Router <a href="https://reactrouter.com/en/main/route/error-element">errorElement</a> property for every hoisted page.</p>
+<p>By declaring a page as hoisted, other parts of the application will not be isolated anymore from this page&#x27;s failures as the page will be rendered outside of the host application&#x27;s root error boundary. To avoid breaking the entire application when an hoisted page cause unmanaged errors, it is highly recommended to declare a React Router <a href="https://reactrouter.com/en/main/route/error-element">errorElement</a> property on every hoisted page.</p>
         </div>
     </div>
 </div>
@@ -330,7 +329,7 @@
     </h3>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">host/App.tsx</div>
+<div class="codeblock-title">host/src/App.tsx</div>
 <pre class="language-tsx" data-line="16-26,30,33"><code v-pre class="language-tsx">import { useCallback, useMemo } from &quot;react&quot;;
 import { useAreRemotesReady } from &quot;@squide/webpack-module-federation&quot;;
 import { useRoutes, useHoistedRoutes, type Route } from &quot;@squide/react-router&quot;;
@@ -379,7 +378,7 @@ export function App() {
 }</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">remote-module/register.tsx</div>
+<div class="codeblock-title">remote-module/src/register.tsx</div>
 <pre class="language-tsx" data-line="11"><code v-pre class="language-tsx">import { lazy } from &quot;react&quot;;
 import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 
@@ -409,7 +408,7 @@ export function register: ModuleRegisterFunction&lt;Runtime&gt;(runtime) {
     </h3>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">host/App.tsx</div>
+<div class="codeblock-title">host/src/App.tsx</div>
 <pre class="language-tsx" data-line="15,16"><code v-pre class="language-tsx">import { useCallback, useMemo } from &quot;react&quot;;
 import { useAreRemotesReady } from &quot;@squide/webpack-module-federation&quot;;
 import { useRoutes, useHoistedRoutes, type Route } from &quot;@squide/react-router&quot;;
@@ -451,7 +450,7 @@ export function App() {
 }</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">remote-module/register.tsx</div>
+<div class="codeblock-title">remote-module/src/register.tsx</div>
 <pre class="language-tsx" data-line="11,14-20"><code v-pre class="language-tsx">import { lazy } from &quot;react&quot;;
 import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 
@@ -490,7 +489,7 @@ export function register: ModuleRegisterFunction&lt;Runtime&gt;(runtime) {
     </h3>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">host/App.tsx</div>
+<div class="codeblock-title">host/src/App.tsx</div>
 <pre class="language-tsx" data-line="19-31"><code v-pre class="language-tsx">import { useCallback, useMemo } from &quot;react&quot;;
 import { useAreRemotesReady } from &quot;@squide/webpack-module-federation&quot;;
 import { useRoutes, useHoistedRoutes, type Route } from &quot;@squide/react-router&quot;;
@@ -544,7 +543,7 @@ export function App() {
 }</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">remote-module/register.tsx</div>
+<div class="codeblock-title">remote-module/src/register.tsx</div>
 <pre class="language-tsx" data-line="13"><code v-pre class="language-tsx">import { lazy } from &quot;react&quot;;
 import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 
@@ -576,7 +575,7 @@ export function register: ModuleRegisterFunction&lt;Runtime&gt;(runtime) {
     </h3>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">host/App.tsx</div>
+<div class="codeblock-title">host/src/App.tsx</div>
 <pre class="language-tsx" data-line="26-29"><code v-pre class="language-tsx">import { useCallback, useMemo } from &quot;react&quot;;
 import { useAreRemotesReady } from &quot;@squide/webpack-module-federation&quot;;
 import { useRoutes, useHoistedRoutes, type Route } from &quot;@squide/react-router&quot;;

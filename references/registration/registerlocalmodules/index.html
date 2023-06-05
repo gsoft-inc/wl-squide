@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.2.739245507895">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.2.739293329411">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.0.2">
@@ -31,12 +31,12 @@
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../../resources/css/retype.css?v=3.0.2.739245507895" rel="stylesheet" />
+    <link href="../../../resources/css/retype.css?v=3.0.2.739293329411" rel="stylesheet" />
 
-    <script type="text/javascript" src="../../../resources/js/config.js?v=3.0.2.739245507895" data-turbo-eval="false" defer></script>
+    <script type="text/javascript" src="../../../resources/js/config.js?v=3.0.2.739293329411" data-turbo-eval="false" defer></script>
     <script type="text/javascript" src="../../../resources/js/retype.js?v=3.0.2" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" type="text/javascript" src="../../../resources/js/lunr.js?v=3.0.2.739245507895" data-turbo-eval="false" defer></script>
-    <script id="prism-js" type="text/javascript" src="../../../resources/js/prism.js?v=3.0.2.739245507895" defer></script>
+    <script id="lunr-js" type="text/javascript" src="../../../resources/js/lunr.js?v=3.0.2.739293329411" data-turbo-eval="false" defer></script>
+    <script id="prism-js" type="text/javascript" src="../../../resources/js/prism.js?v=3.0.2.739293329411" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -270,7 +270,7 @@
 </doc-anchor-target>
 <p>Register one or many local module(s). During registration, the provided registration function will be called with a <code v-pre>Runtime</code> instance and an optional <code v-pre>context</code> object.</p>
 <blockquote>
-<p>A <em>local module</em> is a regular module which is part of the <strong>current build</strong> and is bundled at build time rather than runtime like a <em>remote module</em>. Local modules are useful while <strong>migrating</strong> from a monolithic application to a distributed application or <strong>launching new products</strong>.</p>
+<p>A <em>local module</em> is a regular module which is part of the <strong>host application build</strong> and is bundled at build time rather than runtime like a <em>remote module</em>. Local modules are useful while <strong>migrating</strong> from a monolithic application to a distributed application or <strong>launching a new product</strong> with an unrefined business domain.</p>
 </blockquote>
 <doc-anchor-target id="reference">
     <h2>
@@ -310,7 +310,7 @@
     </h2>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">host/bootstrap.tsx</div>
+<div class="codeblock-title">host/src/bootstrap.tsx</div>
 <pre class="language-tsx" data-line="11"><code v-pre class="language-tsx">import { registerLocalModules, Runtime } from &quot;@squide/react-router&quot;;
 import { register } from &quot;@sample/local-module&quot;;
 import type { AppContext } from &quot;@sample/shared&quot;;
@@ -324,7 +324,7 @@ const context: AppContext = {
 registerLocalModules([register], runtime, { context });</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">local-module/register.tsx</div>
+<div class="codeblock-title">local-module/src/register.tsx</div>
 <pre class="language-tsx" data-line="7-21"><code v-pre class="language-tsx">import { lazy } from &quot;react&quot;;
 import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import type { AppContext } from &quot;@sample/shared&quot;;

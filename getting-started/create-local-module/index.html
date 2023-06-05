@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.2.739245507895">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.2.739293329411">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.0.2">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Create a local module</title>
     <meta name="title" content="Create a local module">
-    <meta name="description" content="Local modules are useful when migrating from a monolithic application to a distributed application or when launching a new product with a small team..." />
+    <meta name="description" content="Local modules are regular modules that are part of the host application build. It's an independent module exposing a " />
 
     <!-- Canonical -->
     <link rel="canonical" href="https://workleap.github.io/wl-squide/getting-started/create-local-module/" />
@@ -21,22 +21,22 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://workleap.github.io/wl-squide/getting-started/create-local-module/">
     <meta property="og:title" content="Create a local module">
-    <meta property="og:description" content="Local modules are useful when migrating from a monolithic application to a distributed application or when launching a new product with a small team...">
+    <meta property="og:description" content="Local modules are regular modules that are part of the host application build. It's an independent module exposing a ">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://workleap.github.io/wl-squide/getting-started/create-local-module/">
     <meta property="twitter:title" content="Create a local module">
-    <meta property="twitter:description" content="Local modules are useful when migrating from a monolithic application to a distributed application or when launching a new product with a small team...">
+    <meta property="twitter:description" content="Local modules are regular modules that are part of the host application build. It's an independent module exposing a ">
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.0.2.739245507895" rel="stylesheet" />
+    <link href="../../resources/css/retype.css?v=3.0.2.739293329411" rel="stylesheet" />
 
-    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.2.739245507895" data-turbo-eval="false" defer></script>
+    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.2.739293329411" data-turbo-eval="false" defer></script>
     <script type="text/javascript" src="../../resources/js/retype.js?v=3.0.2" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.2.739245507895" data-turbo-eval="false" defer></script>
-    <script id="prism-js" type="text/javascript" src="../../resources/js/prism.js?v=3.0.2.739245507895" defer></script>
+    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.2.739293329411" data-turbo-eval="false" defer></script>
+    <script id="prism-js" type="text/javascript" src="../../resources/js/prism.js?v=3.0.2.739293329411" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -268,14 +268,14 @@
         <span>Create a local module</span>
     </h1>
 </doc-anchor-target>
-<p>Local modules are useful when migrating from a monolithic application to a distributed application or when launching a new product with a small team and an unrefined business domain.</p>
+<p>Local modules are regular modules that are part of the <strong>host application build</strong>. It&#x27;s an independent module exposing a <code v-pre>registration</code> function to the host application bootstrapping code. It can be a standalone package, a sibling project (when in a monorepo setup), or even a local folder of the host application.</p>
+<p>Local modules are useful when migrating from a monolithic application to a distributed application or when launching a new product with an unrefined business domain.</p>
 <p>Let&#x27;s add one to show how it&#x27;s done!</p>
 <blockquote>
-<p>Loading <em>remote modules</em> at runtime with <a href="https://webpack.js.org/concepts/module-federation/">Webpack Module Federation</a> is the reason why this shell exists and it is what we recommend products to aim for. It enables teams to be <strong>fully autonomous</strong> by <strong>deploying</strong> their modules <strong>independently</strong> from the other parts of the application.</p>
+<p>Loading remote modules at runtime with <a href="https://webpack.js.org/concepts/module-federation/">Webpack Module Federation</a> is the reason why this shell exists and it is what we recommend products to aim for. It enables teams to be <strong>fully autonomous</strong> by <strong>deploying</strong> their modules <strong>independently</strong> from the other parts of the application.</p>
 <p>However, we understand that teams working on mature products will most likely prefer to <strong>gradually migrate</strong> towards a distributed architecture by first extracting subdomains into independent modules in their current monolithic setup before fully committing to remote modules loaded at runtime.</p>
-<p>To facilitate the transition, this shell also supports <em>local modules</em> loaded at build time.</p>
-<p>A <em>local module</em> is a regular module which is part of the <strong>current build</strong> and expose a <code v-pre>registration</code> function. A registration function could be imported from a standalone package, a sibling project in a monorepo setup, or even a local folder of the host application.</p>
-<p>Both remote and local modules can be used in the same application as this shell supports dual bootstrapping. For example, an application could be configured to load a few <em>remote modules</em> at runtime and also load a few <em>local modules</em> at build time.</p>
+<p>To facilitate the transition, this shell also supports local modules loaded at build time.</p>
+<p>Both remote and local modules can be used in the same application as this shell supports dual bootstrapping. For example, an application could be configured to load a few remote modules at runtime and also load a few local modules at build time.</p>
 </blockquote>
 <doc-anchor-target id="install-the-packages">
     <h2>
@@ -327,11 +327,11 @@
     &quot;main&quot;: &quot;dist/register.js&quot;
 }</code></pre>
 </doc-codeblock></div>
-<p>Then, register the local module <a href="../../references/runtime/runtime-instance/#register-routes">routes</a> and <a href="../../references/runtime/runtime-instance/#register-navigation-items">navigation items</a>:</p>
+<p>Then, register the local module <a href="../../references/runtime/runtime-class/#register-routes">routes</a> and <a href="../../references/runtime/runtime-class/#register-navigation-items">navigation items</a>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/src/register.tsx</div>
 <pre class="language-tsx" data-line="7-19"><code v-pre class="language-tsx">import { lazy } from &quot;react&quot;;
-import { registerRoutes, registerNavigationItems, type ModuleRegisterFunction, type Runtime } from &quot;wmfnext-shell&quot;;
+import { registerRoutes, registerNavigationItems, type ModuleRegisterFunction, type Runtime } from &quot;@squide/react-router&quot;;
 
 const Page = lazy(() =&gt; import(&quot;./Page&quot;));
 
@@ -424,16 +424,16 @@ root.render(
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                             <span>
                                                 <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
-                                                <span class="block mt-1">Create remote module</span>
+                                                <span class="block mt-1">Create a remote module</span>
                                             </span>
                                         </a>
                                     </div>
                             
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../getting-started/deploy/">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../getting-started/learn-the-api/">
                                             <span>
                                                 <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                                                <span class="block mt-1">Deploy</span>
+                                                <span class="block mt-1">Learn the API</span>
                                             </span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                         </a>

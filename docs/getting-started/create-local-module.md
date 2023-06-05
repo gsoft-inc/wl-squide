@@ -50,9 +50,9 @@ local-modules
 
 Then, add the following fields to the `package.json` files:
 
-```json
+```json !#2,4 local-module/package.json
 {
-    "name": "@sample/local-modules",
+    "name": "@sample/local-module",
     "version": "0.0.1",
     "main": "dist/register.js"
 }
@@ -60,7 +60,7 @@ Then, add the following fields to the `package.json` files:
 
 Then, register the local module [routes](/references/runtime/runtime-instance.md#register-routes) and [navigation items](/references/runtime/runtime-instance.md#register-navigation-items):
 
-```tsx !#7-19 remote-module/src/register.tsx
+```tsx !#7-19 local-module/src/register.tsx
 import { lazy } from "react";
 import { registerRoutes, registerNavigationItems, type ModuleRegisterFunction, type Runtime } from "wmfnext-shell";
 
@@ -83,7 +83,7 @@ export const register: ModuleRegisterFunction = (runtime: Runtime) => {
 }
 ```
 
-```tsx remote-module/src/Page.tsx
+```tsx local-module/src/Page.tsx
 export default function Page() {
     return (
         <div>Hello from Local/Page!</div>
@@ -95,11 +95,11 @@ export default function Page() {
 
 Go back to the `host` application and [load the local module](/references/registration/registerLocalModules.md). Don't forget to add a dependency in the host application `package.json` file.
 
-```tsx !#21 host/src/bootstrap.tsx
+```tsx !#4,21 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, Runtime } from "@squide/react-router";
 import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
-import { register as registerLocalModule } from "@sample/local-modules";
+import { register as registerLocalModule } from "@sample/local-module";
 import { App } from "./App.tsx";
 
 // Define the remote modules.

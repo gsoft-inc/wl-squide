@@ -44,7 +44,7 @@ sessionManager.clearSession();
 
 ### Integrate with a Runtime instance
 
-```ts !#7-9 host/session.ts
+```ts !#7-9 host/src/session.ts
 import type { SessionAccessorFunction } from "@squide/react-router";
 import { SessionManager } from "@squide/fakes";
 import type { Session } from "@sample/share";
@@ -56,7 +56,7 @@ export const sessionAccessor: SessionAccessorFunction = () => {
 };
 ```
 
-```tsx !#4,6-8 host/bootstrap.tsx
+```tsx !#4,6-8 host/src/bootstrap.tsx
 import { createRoot } from "react";
 import { Runtime, RuntimeContext } from "@squide/react-router";
 import { App } from "./App";
@@ -75,7 +75,7 @@ root.render(
 );
 ```
 
-```tsx !#4 remote-module/UserProfile.tsx
+```tsx !#4 remote-module/src/UserProfile.tsx
 import { useSession } from "@squide/react-router";
 
 export function UserProfile() {

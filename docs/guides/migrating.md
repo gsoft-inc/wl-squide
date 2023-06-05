@@ -1,5 +1,6 @@
 ---
-label: Migrating
+order: 40
+label: Migrating to @squide
 ---
 
-# Migrating to a distributed architecture
+# Migrating from a monolithic application

@@ -2,7 +2,7 @@
 
 Recursively parse a navigation items structure to transform the items into React Elements.
 
-> The `useNavigationItems` hook returns the navigation items tree structure as is, meaning you'll still have to recursively parse the structure to transform the items into actual React Elements.
+> The `useNavigationItems` hook returns the navigation items tree structure as is, meaning the consumer has to recursively parse the structure to transform the items into actual React Elements.
 >
 > As it's a non-trivial process, the shell provides this utility hook to help with that.
 
@@ -24,7 +24,7 @@ An array of `ReactElement`.
 
 ## Usage
 
-```tsx !#38-40,42-48,52 host/RootLayout.tsx
+```tsx !#38-40,42-48,52 host/src/RootLayout.tsx
 import type { ReactNode } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { 

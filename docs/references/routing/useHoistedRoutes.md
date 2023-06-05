@@ -1,11 +1,9 @@
 # useHoistedRoutes
 
-Let modules register pages outside of the default application layout, error boundary or authentication boundary.
-
-Unlike a regular page, a hoisted page is added at the root of the router, outside of the boundaries of the host application's root layout. This means that a hoisted page has full control over its rendering.
+Allow modules to register pages outside of the host application's pages boundaries. Unlike a regular page, an hoisted page is added at the root of the router, meaning before the host application root layout, root error boundary and even root authentication boundary. Thus, an hoisted page has full control over its rendering.
 
 !!!warning
-By declaring a page as hoisted, other parts of the application will not be isolated anymore from this page's failures as the page will be rendered outside of the host application's root error boundary. To avoid breaking the entire application when an hoisted page cause unmanaged errors, it is highly recommended to set a React Router [errorElement](https://reactrouter.com/en/main/route/error-element) property for every hoisted page.
+By declaring a page as hoisted, other parts of the application will not be isolated anymore from this page's failures as the page will be rendered outside of the host application's root error boundary. To avoid breaking the entire application when an hoisted page cause unmanaged errors, it is highly recommended to declare a React Router [errorElement](https://reactrouter.com/en/main/route/error-element) property on every hoisted page.
 !!!
 
 ## Reference
@@ -29,7 +27,7 @@ An array of `Route`.
 
 ### Hoist a module page
 
-```tsx !#16-26,30,33 host/App.tsx
+```tsx !#16-26,30,33 host/src/App.tsx
 import { useCallback, useMemo } from "react";
 import { useAreRemotesReady } from "@squide/webpack-module-federation";
 import { useRoutes, useHoistedRoutes, type Route } from "@squide/react-router";
@@ -78,7 +76,7 @@ export function App() {
 }
 ```
 
-```tsx !#11 remote-module/register.tsx
+```tsx !#11 remote-module/src/register.tsx
 import { lazy } from "react";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 
@@ -104,7 +102,7 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
 
 ### Register a module page with a different layout
 
-```tsx !#15,16 host/App.tsx
+```tsx !#15,16 host/src/App.tsx
 import { useCallback, useMemo } from "react";
 import { useAreRemotesReady } from "@squide/webpack-module-federation";
 import { useRoutes, useHoistedRoutes, type Route } from "@squide/react-router";
@@ -146,7 +144,7 @@ export function App() {
 }
 ```
 
-```tsx !#11,14-20 remote-module/register.tsx
+```tsx !#11,14-20 remote-module/src/register.tsx
 import { lazy } from "react";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 
@@ -181,7 +179,7 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
 
 ### Register a public page
 
-```tsx !#19-31 host/App.tsx
+```tsx !#19-31 host/src/App.tsx
 import { useCallback, useMemo } from "react";
 import { useAreRemotesReady } from "@squide/webpack-module-federation";
 import { useRoutes, useHoistedRoutes, type Route } from "@squide/react-router";
@@ -235,7 +233,7 @@ export function App() {
 }
 ```
 
-```tsx !#13 remote-module/register.tsx
+```tsx !#13 remote-module/src/register.tsx
 import { lazy } from "react";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 
@@ -263,7 +261,7 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
 
 ### Allowing an exclusive set of routes to be hoisted
 
-```tsx !#26-29 host/App.tsx
+```tsx !#26-29 host/src/App.tsx
 import { useCallback, useMemo } from "react";
 import { useAreRemotesReady } from "@squide/webpack-module-federation";
 import { useRoutes, useHoistedRoutes, type Route } from "@squide/react-router";

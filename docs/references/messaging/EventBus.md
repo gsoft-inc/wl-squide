@@ -1,6 +1,6 @@
 # EventBus
 
-A basic implementation of a [pub/sub](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern) mecanism enabling loosely coupled between the host application the remote modules.
+A basic implementation of a [pub/sub](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern) mecanism enabling loosely coupled between the host application and the modules.
 
 ## Reference
 

@@ -4,7 +4,7 @@ order: 90
 
 # RuntimeContext
 
-React context to share a `Runtime` instance between an host application and the application modules.
+[React context](https://react.dev/reference/react/createContext) to share a `Runtime` instance between an host application and the modules.
 
 ## Reference
 

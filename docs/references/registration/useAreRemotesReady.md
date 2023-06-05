@@ -23,7 +23,7 @@ A boolean indicating if the registration is completed.
 
 ## Usage
 
-```tsx !#12 host/bootstrap.tsx
+```tsx !#12 host/src/bootstrap.tsx
 import { createRoot } from "react";
 import { Runtime } from "@squide/react-router";
 import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
@@ -46,7 +46,7 @@ root.render(
 );
 ```
 
-```tsx !#10,18-20 host/App.tsx
+```tsx !#10,18-20 host/src/App.tsx
 import { useMemo } from "react";
 import { useAreRemotesReady } from "@squide/webpack-module-federation";
 import { useRoutes } from "@squide/react-router";

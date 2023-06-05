@@ -1,11 +1,12 @@
 ---
 order: 90
-label: Create remote module
 ---
 
 # Create a remote module
 
-By adding a remote module, we'll transform our existing host application into a truly distributed application.
+Remote modules are modules that are not part of the current build but are **loaded at runtime** from a remote server. They are useful because they enable teams to be **fully autonomous** by **deploying** their modules **independently** from the other parts of the application.
+
+Let's add our first remote module!
 
 ## Install the packages
 
@@ -37,11 +38,11 @@ remote-module
 ├── webpack.config.js
 ```
 
-Then, register the remote module [routes](/references/runtime/runtime-instance.md#register-routes) and [navigation items](/references/runtime/runtime-instance.md#register-navigation-items):
+Then, register the remote module [routes](/references/runtime/runtime-class.md#register-routes) and [navigation items](/references/runtime/runtime-class.md#register-navigation-items):
 
 ```tsx !#7-19 remote-module/src/register.tsx
 import { lazy } from "react";
-import { registerRoutes, registerNavigationItems, type ModuleRegisterFunction, type Runtime } from "wmfnext-shell";
+import { registerRoutes, registerNavigationItems, type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
 
 const Page = lazy(() => import("./Page"));
 

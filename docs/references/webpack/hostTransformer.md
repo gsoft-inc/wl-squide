@@ -36,7 +36,7 @@ For the full shared dependencies configuration, have a look at the [configTransf
 
 ### Transform a Webpack config
 
-```js !#10 webpack.config.js
+```js !#10 host/webpack.config.js
 import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 
 /** @type {import("webpack").Configuration} */
@@ -57,7 +57,7 @@ export default federatedConfig;
 Additional shared dependencies must be configured on the host application as well as every remote module.
 !!!
 
-```js !#11-17 webpack.config.js
+```js !#11-17 host/webpack.config.js
 import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 
 /** @type {import("webpack").Configuration} */
@@ -82,7 +82,7 @@ export default federatedConfig;
 
 ### Override a default shared dependency
 
-```js !#13-15 webpack.config.js
+```js !#13-15 host/webpack.config.js
 import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 
 /** @type {import("webpack").Configuration} */

@@ -67,7 +67,7 @@ The event bus is also available from the [Runtime](/references/runtime/runtime-c
 
 ## Authentication
 
-Most of our applications (if not all) will eventually requires the user to authenticate. To support that, `@squide` [Runtime](/references/runtime/runtime-class.md) class accept a [sessionAccessor](/references/fakes/SessionManager.md#integrate-with-a-runtime-instance) function that will be made available to every parts of the application.
+Most of our applications (if not all) will eventually require the user to authenticate. To support that, `@squide` [Runtime](/references/runtime/runtime-class.md) class accepts a [sessionAccessor](/references/fakes/SessionManager.md#integrate-with-a-runtime-instance) function that will be made available to every part of the application.
 
 First, create a [sessionAccessor](/references/fakes/SessionManager.md#integrate-with-a-runtime-instance) function:
 

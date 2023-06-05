@@ -24,7 +24,7 @@ const runtime = new Runtime({
 });
 ```
 
-Then, log entries from anywhere any part of your federated application with the [useLogger](/references/runtime/useLogger.md) hook:
+Then, log entries any parts of your federated application with the [useLogger](/references/runtime/useLogger.md) hook:
 
 ```ts
 import { useLogger } from "@squide/react-router";

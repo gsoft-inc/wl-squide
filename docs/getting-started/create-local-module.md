@@ -4,7 +4,7 @@ order: 80
 
 # Create a local module
 
-Local modules are regular modules which are part of the **host application build**. It's an independent module exposing a `registration` function to the host application boostrapping code. It can be a standalone package, a sibling project (when in a monorepo setup), or even a local folder of the host application.
+Local modules are regular modules that are part of the **host application build**. It's an independent module exposing a `registration` function to the host application bootstrapping code. It can be a standalone package, a sibling project (when in a monorepo setup), or even a local folder of the host application.
 
 Local modules are useful when migrating from a monolithic application to a distributed application or when launching a new product with an unrefined business domain.
 

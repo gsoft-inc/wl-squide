@@ -64,10 +64,22 @@ That's it in a nutshell. Of course, there's more to it, but those are the main i
 
 While developing the [API](/references) of `@squide`, we had a few guiding principles in mind. Those principles are not settled stones, you might want to diverge from them from time to time, but adhering to those will make your experience more enjoyable:
 
-1. A module should always match a subdomain of the application business domain and should only export pages.
+- A module should always match a subdomain of the application business domain and should only export pages.
 
-2. A module should be fully autonomous. It shouldn't have to coordinate with other parts of the application for things as trivial as navigation links.
+- A module should be fully autonomous. It shouldn't have to coordinate with other parts of the application for things as trivial as navigation links.
 
-3. A federated application should feel homogenous. Different parts of a federation application should have the ability to communicate with each others and react to changes happening outside of their boundaries.
+- A federated application should feel homogenous. Different parts of a federation application should have the ability to communicate with each others and react to changes happening outside of their boundaries.
 
-4. Data and state should never be shared between parts of a federated application. Even if two parts needs the same data or the same state values, they should load, store and manage those independently.
+- Data and state should never be shared between parts of a federated application. Even if two parts needs the same data or the same state values, they should load, store and manage those independently.
+
+### Limitations
+
+[Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) comes with a few limitations that are manageable, but important to consider when architecturing your distributed application:
+
+- A [shared dependency](https://webpack.js.org/plugins/module-federation-plugin/#sharing-hints) cannot be tree-shaken. Since remote modules are loaded at runtime, [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin) can't infer which parts of a shared dependency will be used by the application modules. Therefore, tree-shaking is disabled for shared dependencies.
+
+- React's [Fast Refresh](https://github.com/pmmmwh/react-refresh-webpack-plugin) is not supported by [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/). It does support [Webpack Hot Module Replacement](https://webpack.js.org/concepts/hot-module-replacement/) thought.
+
+> Those limitations are not specific to `@squide`, they are specific to [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/).
+
+

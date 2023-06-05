@@ -4,7 +4,7 @@ order: 90
 
 # Create a remote module
 
-Remote modules are modules that are not part of the current build but are **loaded at runtime** from a remote server. They are useful because they enables teams be **fully autonomous** by **deploying** their modules **independently** from the other parts of the application.
+Remote modules are modules that are not part of the current build but are **loaded at runtime** from a remote server. They are useful because they enable teams to be **fully autonomous** by **deploying** their modules **independently** from the other parts of the application.
 
 Let's add our first remote module!
 

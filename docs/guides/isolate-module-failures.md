@@ -77,7 +77,7 @@ export function RootLayout() {
 
 In the previous code sample, a `RootErrorBoundary` is declared under the `RootLayout` but over the modules routes. By doing so, if a module cause an unmanaged error, the nested error boundary will only replace the section rendered by the `Outlet` component of the `RootLayout` instead of the whole page.
 
-With this mechanism, failure isolation is as good as with an [iframes](https://martinfowler.com/articles/micro-frontends.html#Run-timeIntegrationViaIframes) or subdomains implementation.
+With this mechanism in place, failure isolation is as good as with an [iframes](https://martinfowler.com/articles/micro-frontends.html#Run-timeIntegrationViaIframes) or subdomains implementation.
 
 !!!warning
 [Hoisted pages](/references/routing/useHoistedRoutes.md) are rendered outside of the *host* application root error boundary. If your modules are hoisting pages, to avoid breaking the entire application when an hoisted page cause unmanaged errors, it is highly recommended to declare a React Router [errorElement](https://reactrouter.com/en/main/route/error-element) property on every hoisted page.

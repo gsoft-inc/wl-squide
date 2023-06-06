@@ -100,7 +100,7 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
 ### Register a module page with a different layout
 
 !!!info
-Detailed information is available in the [Override the host layout](/guides/override-the-host-layout.md) guide.
+For a detailed walkthrough, read [the guide](/guides/override-the-host-layout.md) on how to override the host layout.
 !!!
 
 ```tsx !#15,16 host/src/App.tsx

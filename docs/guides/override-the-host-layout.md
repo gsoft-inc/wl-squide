@@ -162,6 +162,6 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
 }
 ```
 
-[!ref For additional options, go to the `useHoistedRoutes` hook reference page](/references/routing/useHoistedRoutes.md)
+[!ref icon="gear" text="For additional options, go to the `useHoistedRoutes` hook reference page"](/references/routing/useHoistedRoutes.md)
 
 

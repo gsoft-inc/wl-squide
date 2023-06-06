@@ -104,7 +104,7 @@ const federatedConfig = remoteTransformer(
 export default federatedConfig;
 ```
 
-[!ref View the `remoteTransformer` function](/references/webpack/remoteTransformer.md)
+[!ref icon="gear" text="View the `remoteTransformer` function"](/references/webpack/remoteTransformer.md)
 
 ### Url
 

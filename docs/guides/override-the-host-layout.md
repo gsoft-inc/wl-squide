@@ -6,11 +6,12 @@ order: 100
 
 Most application pages usually share a **common layout** with at least: a navigation bar, a user profile menu and a main content section. In a [React Router's](https://reactrouter.com/en/main) application, this common layout is what we call a `RootLayout`:
 
-```tsx !#12,17,23,27 App.tsx
+```tsx !#13,18,21,27,33 App.tsx
 import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useRoutes } from "@squide/react-router";
 import { RootLayout } from "./RootLayout.tsx";
+import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { Home } from "./Home.tsx";
 
@@ -19,17 +20,22 @@ export function App() {
 
     const router = useMemo(() => {
         return createBrowserRouter({
-            // Pathless route to declare an authenticated boundary.
+            // Pathless route to declare an authentication boundary.
             element: <AuthenticationBoundary />,
             children: [
                 // Pathless route to declare the root layout.
                 element: <RootLayout />,
                 children: [
                     {
-                        index: "true",
-                        element: <Home />
-                    },
-                    ...routes
+                        errorElement: <RootErrorBoundary />,
+                        children: [
+                            {
+                                index: "true",
+                                element: <Home />
+                            },
+                            ...routes
+                        ]
+                    }
                 ]
             ]
         });
@@ -71,7 +77,7 @@ export function RootLayout() {
 }
 ```
 
-In this example, the `RootLayout` is the default layout for the *home page* and every page (route) registered by a module.
+In the previous code sample, the `RootLayout` is the default layout for the *home page* and every page (route) registered by a module.
 
 For most pages, this is the behavior expected by the author. However, for pages such as a *login page*, the default `RootLayout` isn't a good fit because a *login page* is not bound to a user session (the user is not even authenticated yet).
 
@@ -79,7 +85,7 @@ Those pages in need of a different layout require a mechanism to pull out their 
 
 ``` !#2
 root
-├── Login page   <---------------- Raise here
+├── Login page   <---------------- Raise the page here
 ├──── Authentication boundary
 ├──────── Root layout
 ├───────────  Home page
@@ -91,7 +97,7 @@ Package managers supporting workspaces such as [Yarn](https://classic.yarnpkg.co
 
 To hoist module pages, first transform the module routes with the [useHoistedRoutes](/references/routing/useHoistedRoutes.md) hook before creating the router instance:
 
-```tsx !#12-26,30,34 App.tsx
+```tsx !#12-31,35,39 App.tsx
 import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useRoutes, useHoistedRoutes, type Route } from "@squide/react-router";
@@ -110,10 +116,15 @@ export function App() {
                 element: <RootLayout />,
                 children: [
                     {
-                        index: "true",
-                        element: <Home />
-                    },
-                    ...managedRoutes
+                        errorElement: <RootErrorBoundary />,
+                        children: [
+                            {
+                                index: "true",
+                                element: <Home />
+                            },
+                            ...routes
+                        ]
+                    }
                 ]
             ]
         };
@@ -138,11 +149,12 @@ export function App() {
 
 Then, mark the pages as hoisted and optionally declare a different layout:
 
-```tsx !#11-12 local-module/src/register.tsx
+```tsx #12-13,16,19-20 local-module/src/register.tsx
 import { lazy } from "react";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 
-const AnotherLayout = lazy(() => import("./AnotherLayout.tsx"));
+const LocalLayout = lazy(() => import("./LocalLayout.tsx"));
+const LocalErrorBoundary = lazy(() => import("./LocalErrorBoundary.tsx"));
 const Login = lazy(() => import("./Login.tsx"));
 
 export function register: ModuleRegisterFunction<Runtime>(runtime) {
@@ -150,11 +162,16 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
         {
             path: "/login",
             hoist: true,
-            element: <AnotherLayout />,
+            element: <LocalLayout />,
             children: [
                 {
-                    index: true,
-                    element: <Login />
+                    errorElement: <LocalErrorBoundary />,
+                    children: [
+                        {
+                            index: true,
+                            element: <Login />
+                        }
+                    ]
                 }
             ]
         }

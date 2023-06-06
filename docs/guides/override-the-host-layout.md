@@ -75,7 +75,7 @@ In this example, the `RootLayout` is the default layout for the *home page* and 
 
 For most pages, this is the behavior expected by the author. However, for pages such as a *login page*, the default `RootLayout` isn't a good fit because a *login page* is not bound to a user session (the user is not even authenticated yet).
 
-Those pages in need of a different layout requires a mecanism to pull out their route declaration at the root of the [React Router's](https://reactrouter.com/en/main) router instance, before the `RootLayout` is declared.
+Those pages in need of a different layout require a mechanism to pull out their route declaration at the root of the [React Router's](https://reactrouter.com/en/main) router instance, before the `RootLayout` is declared.
 
 ``` !#2
 root

@@ -147,7 +147,7 @@ export function App() {
 }
 ```
 
-Then, mark the pages as hoisted and optionally declare a different layout:
+Then, mark the pages as hoisted and optionally use a new layout:
 
 ```tsx #12-13,16,19-20 local-module/src/register.tsx
 import { lazy } from "react";

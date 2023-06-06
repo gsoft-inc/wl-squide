@@ -105,7 +105,7 @@ import { useSession } from "@squide/react-router";
 const session = useSession();
 ```
 
-Or determine if a user is authenticated with the [useIsAuthenticated](/references/session/useIsAuthenticated.md) hook:
+Or determine whether or not the user is authenticated with the [useIsAuthenticated](/references/session/useIsAuthenticated.md) hook:
 
 ```ts
 import { useIsAuthenticated } from "@squide/react-router";

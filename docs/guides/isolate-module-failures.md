@@ -80,5 +80,5 @@ In the previous code sample, a `RootErrorBoundary` is declared under the `RootLa
 With this mechanism, failure isolation is as good as with an [iframes](https://martinfowler.com/articles/micro-frontends.html#Run-timeIntegrationViaIframes) or subdomains implementation.
 
 !!!warning
-If your application is [hoisting page](/references/routing/useHoistedRoutes.md), they will be rendered outside of the host application's root error boundary. To avoid breaking the entire application when an hoisted page cause unmanaged errors, it is highly recommended to declare a React Router [errorElement](https://reactrouter.com/en/main/route/error-element) property on every hoisted page.
+[Hoisted pages](/references/routing/useHoistedRoutes.md) are rendered outside of the *host* application root error boundary. If your modules are hoisting pages, to avoid breaking the entire application when an hoisted page cause unmanaged errors, it is highly recommended to declare a React Router [errorElement](https://reactrouter.com/en/main/route/error-element) property on every hoisted page.
 !!!

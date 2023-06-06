@@ -158,7 +158,7 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
             path: "/about",
             hoist: true,
             // Will render the "About" page inside the "RemoteLayout" rather than the "RootLayout".
-            // Fore more information about React Router's nested routes, view https://reactrouter.com/en/main/start/tutorial#nested-routes.
+            // For more information about React Router's nested routes, view https://reactrouter.com/en/main/start/tutorial#nested-routes.
             element: <RemoteLayout />,
             children: [
                 {

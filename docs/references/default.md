@@ -47,12 +47,16 @@ expanded: true
 - [useEventBusDispatcher](messaging/useEventBusDispatcher.md)
 - [useEventBusListener](messaging/useEventBusListener.md)
 
+### Session
+
+- [useIsAuthenticated](session/useIsAuthenticated.md)
+
 ### Webpack
 
 - [hostTransformer](webpack/hostTransformer.md)
 - [remoteTransformer](webpack/remoteTransformer.md)
 
-### Fakes
+## Fakes
 
 `@squide` offers a collection of fake implementations to facilitate the development of modules in isolation from the other parts of the application.
 

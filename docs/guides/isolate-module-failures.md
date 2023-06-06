@@ -4,14 +4,14 @@ order: 90
 
 # Isolate module failures
 
-One of the key characteristics of micro-frontends implementations like [iframes](https://martinfowler.com/articles/micro-frontends.html#Run-timeIntegrationViaIframes) and subdomains is that a single module failure can't break the whole application.
+One of the key characteristics of micro-frontends implementations like [iframes](https://martinfowler.com/articles/micro-frontends.html#Run-timeIntegrationViaIframes) and subdomains is that a single remote module failure can't break the whole application.
 
-With a [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) implementation, this is not the case as all the modules share the same browsing context (e.g. the same [Document](https://developer.mozilla.org/en-US/docs/Web/API/Document), the same [Window object](https://developer.mozilla.org/en-US/docs/Web/API/Window), and the same [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)).
+With a [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) implementation, this is not the case as all the remote modules share the same browsing context (e.g. the same [Document](https://developer.mozilla.org/en-US/docs/Web/API/Document), the same [Window object](https://developer.mozilla.org/en-US/docs/Web/API/Window), and the same [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)).
 
 Still, we can get very close to iframes failure isolation by leveraging React Router's [Outlet](https://reactrouter.com/en/main/components/outlet) component and routes' [errorElement](https://reactrouter.com/en/main/route/error-element) property:
 
 ```tsx !#16,20 App.tsx
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useAreRemotesReady } from "@squide/webpack-module-federation";
 import { useRoutes } from "@squide/react-router";
@@ -75,10 +75,10 @@ export function RootLayout() {
 }
 ```
 
-In the previous code sample, a `RootErrorBoundary` is declared under the `RootLayout` but over the modules routes. By doing so, if a module cause an unmanaged error, the nested error boundary will only replace the section rendered by the `Outlet` component of the `RootLayout` instead of the whole page.
+In the previous code sample, a `RootErrorBoundary` is declared under the `RootLayout` but over the *remote module* routes. By doing so, if a module cause an unmanaged error, the nested error boundary will only replace the section rendered by the `Outlet` component of the `RootLayout` instead of the whole page.
 
 With this mechanism in place, failure isolation is as good as with an [iframes](https://martinfowler.com/articles/micro-frontends.html#Run-timeIntegrationViaIframes) or subdomains implementation.
 
 !!!warning
-[Hoisted pages](/references/routing/useHoistedRoutes.md) are rendered outside of the *host* application root error boundary. If your modules are hoisting pages, to avoid breaking the entire application when an hoisted page cause unmanaged errors, it is highly recommended to declare a React Router [errorElement](https://reactrouter.com/en/main/route/error-element) property on every hoisted page.
+If your application is [hoisting page](/references/routing/useHoistedRoutes.md), they will be rendered outside of the host application's root error boundary. To avoid breaking the entire application when an hoisted page cause unmanaged errors, it is highly recommended to declare a React Router [errorElement](https://reactrouter.com/en/main/route/error-element) property on every hoisted page.
 !!!

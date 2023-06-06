@@ -65,15 +65,17 @@ dispatch("foo", "bar");
 
 The event bus is also available from the [Runtime](/references/runtime/runtime-class.md) instance.
 
-## Authentication
+## Session
 
-Most of our applications (if not all) will eventually require the user to authenticate. To support that, `@squide` [Runtime](/references/runtime/runtime-class.md) class accepts a [sessionAccessor](/references/fakes/SessionManager.md#integrate-with-a-runtime-instance) function that will be made available to every part of the application.
+Most of our applications (if not all) will eventually require the user to authenticate. To support that, `@squide` [Runtime](/references/runtime/runtime-class.md) class accepts a [sessionAccessor](/references/fakes/SessionManager.md#integrate-with-a-runtime-instance) function that is made available to every module of the application once the registration flow is completed.
 
-First, create a [sessionAccessor](/references/fakes/SessionManager.md#integrate-with-a-runtime-instance) function:
+First, define a [sessionAccessor](/references/fakes/SessionManager.md#integrate-with-a-runtime-instance) function:
 
 ```ts host/src/session.ts
 import type { SessionAccessorFunction } from "@squide/react-router";
 import { SessionManager } from "@squide/fakes";
+
+export const sessionManager = new SessionManager<Session>();
 
 const sessionAccessor: SessionAccessorFunction = () => {
     return sessionManager.getSession();
@@ -95,12 +97,20 @@ const runtime = new Runtime({
 });
 ```
 
-Finally, retrieve the session from any parts of the application with the [useSession](/references/runtime/useSession) hook:
+Finally, retrieve the session from any parts of the application with the [useSession](/references/runtime/useSession.md) hook:
 
 ```ts
 import { useSession } from "@squide/react-router";
 
 const session = useSession();
+```
+
+Or determine whether or not the user is authenticated with the [useIsAuthenticated](/references/session/useIsAuthenticated.md) hook:
+
+```ts
+import { useIsAuthenticated } from "@squide/react-router";
+
+const isAuthenticated = useIsAuthenticated();
 ```
 
 The session is also available from the [Runtime](/references/runtime/runtime-class.md) instance.

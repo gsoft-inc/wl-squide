@@ -48,9 +48,9 @@ root.render(
 
 ```tsx !#10,18-20 host/src/App.tsx
 import { useMemo } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useAreRemotesReady } from "@squide/webpack-module-federation";
 import { useRoutes } from "@squide/react-router";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 export function App() {
     // Re-render the application once all the remotes are registered.

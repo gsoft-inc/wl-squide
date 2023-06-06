@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.2.739394652398">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.2.739401710816">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.0.2">
@@ -12,6 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Add authentication</title>
     <meta name="title" content="Add authentication">
+    <meta name="description" content="Most of our applications (if not all) will eventually require the user to authenticate. To support that, " />
 
     <!-- Canonical -->
     <link rel="canonical" href="https://workleap.github.io/wl-squide/guides/add-authentication/" />
@@ -20,19 +21,22 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://workleap.github.io/wl-squide/guides/add-authentication/">
     <meta property="og:title" content="Add authentication">
+    <meta property="og:description" content="Most of our applications (if not all) will eventually require the user to authenticate. To support that, ">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://workleap.github.io/wl-squide/guides/add-authentication/">
     <meta property="twitter:title" content="Add authentication">
+    <meta property="twitter:description" content="Most of our applications (if not all) will eventually require the user to authenticate. To support that, ">
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.0.2.739394652398" rel="stylesheet" />
+    <link href="../../resources/css/retype.css?v=3.0.2.739401710816" rel="stylesheet" />
 
-    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.2.739394652398" data-turbo-eval="false" defer></script>
+    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.2.739401710816" data-turbo-eval="false" defer></script>
     <script type="text/javascript" src="../../resources/js/retype.js?v=3.0.2" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.2.739394652398" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.2.739401710816" data-turbo-eval="false" defer></script>
+    <script id="prism-js" type="text/javascript" src="../../resources/js/prism.js?v=3.0.2.739401710816" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -264,6 +268,200 @@
         <span>Add authentication</span>
     </h1>
 </doc-anchor-target>
+<p>Most of our applications (if not all) will eventually require the user to authenticate. To support that, <code v-pre>@squide</code> <a href="../../references/runtime/runtime-class/">Runtime</a> class accepts a <a href="../../references/fakes/sessionmanager/#integrate-with-a-runtime-instance">sessionAccessor</a> function that is made available to every module of the application once the registration flow is completed.</p>
+<p>When combined with a <a href="https://reactrouter.com/en/main">React Router&#x27;s</a> authentication boundary and a login page, the shared <code v-pre>sessionAccessor</code> function is a great asset to handle authentication concerns.</p>
+<p>First, define a <a href="../../references/fakes/sessionmanager/#integrate-with-a-runtime-instance">sessionAccessor</a> function:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/src/session.ts</div>
+<pre class="language-typescript"><code v-pre class="language-typescript">import type { SessionAccessorFunction } from &quot;@squide/react-router&quot;;
+import { SessionManager } from &quot;@squide/fakes&quot;;
+
+export const sessionManager = new SessionManager&lt;Session&gt;();
+
+const sessionAccessor: SessionAccessorFunction = () =&gt; {
+    return sessionManager.getSession();
+};</code></pre>
+</doc-codeblock></div>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-yellow-500"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-yellow-500" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M22.48 15.59L14.01 1.45A2.968 2.968 0 0012.16.09c-.78-.19-1.58-.07-2.27.35-.41.25-.76.6-1.01 1.01v.01L.4 15.6c-.83 1.43-.33 3.27 1.1 4.1.45.26.95.4 1.48.4h16.95c.8-.01 1.55-.33 2.11-.9.56-.57.87-1.33.86-2.13a3.04 3.04 0 00-.42-1.48zm-1.87 2.21c-.19.19-.44.3-.69.3H2.99c-.17 0-.34-.05-.49-.13a.992.992 0 01-.37-1.35L10.6 2.48c.08-.14.2-.25.34-.33a.992.992 0 011.37.33l8.46 14.13c.09.15.13.32.13.49 0 .26-.1.51-.29.7z"></path>
+                    <path d="M11.45 12.1c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1s-1 .45-1 1v4c0 .56.45 1 1 1zM11.46 14.1c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>Our security department reminds you to not use a fake <code v-pre>SessionManager</code> in a production application <span class="docs-emoji">&#x1F60A;</span></p>
+        </div>
+    </div>
+</div>
+<p>Then create a <a href="../../references/runtime/runtime-class/">Runtime</a> instance with the new <code v-pre>sessionAccessor</code> function:</p>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">host/src/boostrap.tsx</div>
+<pre class="language-typescript" data-line="5"><code v-pre class="language-typescript">import { Runtime } from &quot;@squide/react-router&quot;;
+import { sessionAccessor } from &quot;./session.ts&quot;;
+
+const runtime = new Runtime({
+    sessionAccessor
+});</code></pre>
+</doc-codeblock></div>
+<p>Then create an authentication boundary component using the <a href="">useIsAuthenticated</a> hook:</p>
+<blockquote>
+<p>Internally, the <code v-pre>useIsAuthenticated</code> hook use the <code v-pre>sessionAccessor</code> function to determine whether or not the user is authenticated.</p>
+</blockquote>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/src/AuthenticationBoundary.tsx</div>
+<pre class="language-tsx" data-line="5"><code v-pre class="language-tsx">import { Navigate, Outlet } from &quot;react-router-dom&quot;;
+import { useIsAuthenticated } from &quot;@squide/react-router&quot;;
+
+export function AuthenticationBoundary() {
+    return useIsAuthenticated() ? &lt;Outlet /&gt; : &lt;Navigate to=&quot;/login&quot; /&gt;;
+}</code></pre>
+</doc-codeblock></div>
+<p>Then, add a login page:</p>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">host/src/Login.tsx</div>
+<pre class="language-tsx" data-line="4,16-20"><code v-pre class="language-tsx">import { useCallback, useState, type ChangeEvent, type MouseEvent } from &quot;react&quot;;
+import { Navigate, useNavigate } from &quot;react-router-dom&quot;;
+import { useIsAuthenticated } from &quot;@squide/react-router&quot;;
+import { sessionManager } from &quot;./session.ts&quot;;
+
+export default function Login() {
+    const [username, setUserName] = useState(&quot;&quot;);
+    const [password, setPassword] = useState(&quot;&quot;);
+
+    const navigate = useNavigate();
+
+    const handleClick = useCallback((event: MouseEvent&lt;HTMLButtonElement&gt;) =&gt; {
+        event.preventDefault();
+
+        // Replace this with a backend authentication system.
+        if (username === &quot;temp&quot; &amp;&amp; password === &quot;temp&quot;) {
+            sessionManager.setSession({
+                user: {
+                    name: username
+                }
+            });
+
+            navigate(&quot;/&quot;);
+        }
+    }, [username, password, navigate]);
+
+    const handleUserNameChange = useCallback((event: ChangeEvent&lt;HTMLInputElement&gt;) =&gt; {
+        setUserName(event.target.value);
+    }, []);
+
+    const handlePasswordChange = useCallback((event: ChangeEvent&lt;HTMLInputElement&gt;) =&gt; {
+        setPassword(event.target.value);
+    }, []);
+
+    const isAuthenticated = useIsAuthenticated();
+
+    if (isAuthenticated) {
+        return &lt;Navigate to=&quot;/&quot; /&gt;;
+    }
+
+    return (
+        &lt;main&gt;
+            &lt;h1&gt;Login&lt;/h1&gt;
+            &lt;form&gt;
+                &lt;div&gt;
+                    &lt;label htmlFor=&quot;username&quot;&gt;Username&lt;/label&gt;
+                    &lt;input id=&quot;username&quot; type=&quot;text&quot; onChange={handleUserNameChange} /&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                    &lt;label htmlFor=&quot;password&quot;&gt;Password&lt;/label&gt;
+                    &lt;input id=&quot;password&quot; type=&quot;password&quot; onChange={handlePasswordChange} /&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                    &lt;button type=&quot;submit&quot; onClick={handleClick}&gt;
+                        Login
+                    &lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/form&gt;
+        &lt;/main&gt;
+    );
+}</code></pre>
+</doc-codeblock></div>
+<p>ANd finally, assemble everything with React Router&#x27;s <a href="https://reactrouter.com/en/main/start/tutorial#nested-routes">nested routes</a>:</p>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">host/src/App.tsx</div>
+<pre class="language-tsx" data-line="29-30,34"><code v-pre class="language-tsx">import { lazy, useMemo } from &quot;react&quot;;
+import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
+import { useRoutes } from &quot;@squide/react-router&quot;;
+import { useAreRemotesReady } from &quot;@squide/webpack-module-federation&quot;;
+import { AuthenticationBoundary } from &quot;./AuthenticationBoundary.tsx&quot;;
+import { RootErrorBoundary } from &quot;./RootErrorBoundary.tsx&quot;;
+import { RootLayout } from &quot;./RootLayout.tsx&quot;;
+
+const AuthenticatedLayout = lazy(() =&gt; import(&quot;./AuthenticatedLayout.tsx&quot;));
+const ModuleErrorBoundary = lazy(() =&gt; import(&quot;./ModuleErrorBoundary.tsx&quot;));
+const Home = lazy(() =&gt; import(&quot;./Home.tsx&quot;));
+const Login = lazy(() =&gt; import(&quot;./Login.tsx&quot;));
+
+export function App() {
+    const isReady = useAreRemotesReady();
+
+    const routes = useRoutes();
+
+    const router = useMemo(() =&gt; {
+        return createBrowserRouter({
+            element: &lt;RootLayout /&gt;,
+            children: [
+                {
+                    errorElement: &lt;RootErrorBoundary /&gt;,
+                    children: [
+                        {
+                            // The login page is declared before the authentication boundary,
+                            // therefore it's a public page.
+                            path: &quot;/login&quot;,
+                            element: &lt;Login /&gt;
+                        },
+                        {
+                            // Every page beyond the authenticated boundary are protected.
+                            element: &lt;AuthenticationBoundary /&gt;,
+                            children: [
+                                {
+                                    element: &lt;AuthenticatedLayout /&gt;,
+                                    children: [
+                                        {
+                                            // By having the error boundary under the authenticated layout, modules unmanaged errors
+                                            // will be displayed inside the layout rather than replacing the whole page.
+                                            errorElement: &lt;ModuleErrorBoundary /&gt;,
+                                            children: [
+                                                {
+                                                    index: true,
+                                                    element: &lt;Home /&gt;
+                                                },
+                                                ...routes
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        });
+    }, [routes]);
+
+    if (!isReady) {
+        return &lt;div&gt;Loading...&lt;/div&gt;;
+    }
+
+    return (
+        &lt;RouterProvider
+            router={router}
+            fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
+        /&gt;
+    );
+}</code></pre>
+</doc-codeblock></div>
+<p>Now, start the application and try navigating to the root page (<code v-pre>/</code>). You should be redirected to the <code v-pre>/login</code> page. Login with <code v-pre>&quot;temp&quot;</code> / <code v-pre>&quot;temp&quot;</code>, you should now be redirected to the root page.</p>
 
                                 
                                 <!-- Required only on API pages -->
@@ -356,6 +554,6 @@
 
     <div id="docs-overlay-target"></div>
 
-    <script>window.__DOCS__ = { "title": "Add authentication", level: 2, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false }</script>
+    <script>window.__DOCS__ = { "title": "Add authentication", level: 2, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false }</script>
 </body>
 </html>

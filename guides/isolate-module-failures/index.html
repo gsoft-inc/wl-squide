@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.2.739394652398">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.2.739401710816">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.0.2">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Isolate module failures</title>
     <meta name="title" content="Isolate module failures">
-    <meta name="description" content="One of the key characteristics of micro-frontends implementations like iframes and subdomains is that a single module failure can't break the whole..." />
+    <meta name="description" content="One of the key characteristics of micro-frontends implementations like iframes and subdomains is that a single remote module failure can't break the..." />
 
     <!-- Canonical -->
     <link rel="canonical" href="https://workleap.github.io/wl-squide/guides/isolate-module-failures/" />
@@ -21,22 +21,22 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://workleap.github.io/wl-squide/guides/isolate-module-failures/">
     <meta property="og:title" content="Isolate module failures">
-    <meta property="og:description" content="One of the key characteristics of micro-frontends implementations like iframes and subdomains is that a single module failure can't break the whole...">
+    <meta property="og:description" content="One of the key characteristics of micro-frontends implementations like iframes and subdomains is that a single remote module failure can't break the...">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://workleap.github.io/wl-squide/guides/isolate-module-failures/">
     <meta property="twitter:title" content="Isolate module failures">
-    <meta property="twitter:description" content="One of the key characteristics of micro-frontends implementations like iframes and subdomains is that a single module failure can't break the whole...">
+    <meta property="twitter:description" content="One of the key characteristics of micro-frontends implementations like iframes and subdomains is that a single remote module failure can't break the...">
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.0.2.739394652398" rel="stylesheet" />
+    <link href="../../resources/css/retype.css?v=3.0.2.739401710816" rel="stylesheet" />
 
-    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.2.739394652398" data-turbo-eval="false" defer></script>
+    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.2.739401710816" data-turbo-eval="false" defer></script>
     <script type="text/javascript" src="../../resources/js/retype.js?v=3.0.2" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.2.739394652398" data-turbo-eval="false" defer></script>
-    <script id="prism-js" type="text/javascript" src="../../resources/js/prism.js?v=3.0.2.739394652398" defer></script>
+    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.2.739401710816" data-turbo-eval="false" defer></script>
+    <script id="prism-js" type="text/javascript" src="../../resources/js/prism.js?v=3.0.2.739401710816" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -268,12 +268,12 @@
         <span>Isolate module failures</span>
     </h1>
 </doc-anchor-target>
-<p>One of the key characteristics of micro-frontends implementations like <a href="https://martinfowler.com/articles/micro-frontends.html#Run-timeIntegrationViaIframes">iframes</a> and subdomains is that a single module failure can&#x27;t break the whole application.</p>
-<p>With a <a href="https://webpack.js.org/concepts/module-federation/">Webpack Module Federation</a> implementation, this is not the case as all the modules share the same browsing context (e.g. the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document">Document</a>, the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window">Window object</a>, and the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model">DOM</a>).</p>
+<p>One of the key characteristics of micro-frontends implementations like <a href="https://martinfowler.com/articles/micro-frontends.html#Run-timeIntegrationViaIframes">iframes</a> and subdomains is that a single remote module failure can&#x27;t break the whole application.</p>
+<p>With a <a href="https://webpack.js.org/concepts/module-federation/">Webpack Module Federation</a> implementation, this is not the case as all the remote modules share the same browsing context (e.g. the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document">Document</a>, the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window">Window object</a>, and the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model">DOM</a>).</p>
 <p>Still, we can get very close to iframes failure isolation by leveraging React Router&#x27;s <a href="https://reactrouter.com/en/main/components/outlet">Outlet</a> component and routes&#x27; <a href="https://reactrouter.com/en/main/route/error-element">errorElement</a> property:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">App.tsx</div>
-<pre class="language-tsx" data-line="16,20"><code v-pre class="language-tsx">import { useCallback, useMemo } from &quot;react&quot;;
+<pre class="language-tsx" data-line="16,20"><code v-pre class="language-tsx">import { useMemo } from &quot;react&quot;;
 import { createBrowserRouter, RouterProvider } from &quot;react-router-dom&quot;;
 import { useAreRemotesReady } from &quot;@squide/webpack-module-federation&quot;;
 import { useRoutes } from &quot;@squide/react-router&quot;;
@@ -336,7 +336,7 @@ export function RootLayout() {
     );
 }</code></pre>
 </doc-codeblock></div>
-<p>In the previous code sample, a <code v-pre>RootErrorBoundary</code> is declared under the <code v-pre>RootLayout</code> but over the modules routes. By doing so, if a module cause an unmanaged error, the nested error boundary will only replace the section rendered by the <code v-pre>Outlet</code> component of the <code v-pre>RootLayout</code> instead of the whole page.</p>
+<p>In the previous code sample, a <code v-pre>RootErrorBoundary</code> is declared under the <code v-pre>RootLayout</code> but over the <em>remote module</em> routes. By doing so, if a module cause an unmanaged error, the nested error boundary will only replace the section rendered by the <code v-pre>Outlet</code> component of the <code v-pre>RootLayout</code> instead of the whole page.</p>
 <p>With this mechanism in place, failure isolation is as good as with an <a href="https://martinfowler.com/articles/micro-frontends.html#Run-timeIntegrationViaIframes">iframes</a> or subdomains implementation.</p>
 <div class="flex mb-6">
     <div class="shrink-0 w-1 rounded-tl rounded-bl bg-yellow-500"></div>
@@ -350,7 +350,7 @@ export function RootLayout() {
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p><a href="../../references/routing/usehoistedroutes/">Hoisted pages</a> are rendered outside of the <em>host</em> application root error boundary. If your modules are hoisting pages, to avoid breaking the entire application when an hoisted page cause unmanaged errors, it is highly recommended to declare a React Router <a href="https://reactrouter.com/en/main/route/error-element">errorElement</a> property on every hoisted page.</p>
+<p>If your application is <a href="../../references/routing/usehoistedroutes/">hoisting page</a>, they will be rendered outside of the host application&#x27;s root error boundary. To avoid breaking the entire application when an hoisted page cause unmanaged errors, it is highly recommended to declare a React Router <a href="https://reactrouter.com/en/main/route/error-element">errorElement</a> property on every hoisted page.</p>
         </div>
     </div>
 </div>

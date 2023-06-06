@@ -4,9 +4,9 @@ order: 90
 
 # Isolate module failures
 
-One of the key characteristics of micro-frontends implementations like [iframes](https://martinfowler.com/articles/micro-frontends.html#Run-timeIntegrationViaIframes) and subdomains is that a single remote module failure can't break the whole application.
+One of the key characteristics of micro-frontends implementations like [iframes](https://martinfowler.com/articles/micro-frontends.html#Run-timeIntegrationViaIframes) and subdomains is that a single module failure can't break the whole application.
 
-With a [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) implementation, this is not the case as all the remote modules share the same browsing context (e.g. the same [Document](https://developer.mozilla.org/en-US/docs/Web/API/Document), the same [Window object](https://developer.mozilla.org/en-US/docs/Web/API/Window), and the same [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)).
+With a [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) implementation, this is not the case as all the modules share the same browsing context (e.g. the same [Document](https://developer.mozilla.org/en-US/docs/Web/API/Document), the same [Window object](https://developer.mozilla.org/en-US/docs/Web/API/Window), and the same [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)).
 
 Still, we can get very close to iframes failure isolation by leveraging React Router's [Outlet](https://reactrouter.com/en/main/components/outlet) component and routes' [errorElement](https://reactrouter.com/en/main/route/error-element) property:
 
@@ -75,7 +75,7 @@ export function RootLayout() {
 }
 ```
 
-In the previous code sample, a `RootErrorBoundary` is declared under the `RootLayout` but over the *remote module* routes. By doing so, if a module cause an unmanaged error, the nested error boundary will only replace the section rendered by the `Outlet` component of the `RootLayout` instead of the whole page.
+In the previous code sample, a `RootErrorBoundary` is declared under the `RootLayout` but over the modules routes. By doing so, if a module cause an unmanaged error, the nested error boundary will only replace the section rendered by the `Outlet` component of the `RootLayout` instead of the whole page.
 
 With this mechanism, failure isolation is as good as with an [iframes](https://martinfowler.com/articles/micro-frontends.html#Run-timeIntegrationViaIframes) or subdomains implementation.
 

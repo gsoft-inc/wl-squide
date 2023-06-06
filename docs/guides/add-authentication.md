@@ -49,7 +49,7 @@ export function AuthenticationBoundary() {
 }
 ```
 
-Then, a login page:
+Then, add a login page:
 
 ```tsx #4,16-20 host/src/Login.tsx
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
@@ -115,7 +115,7 @@ export default function Login() {
 }
 ```
 
-Finally, assemble everything with React Router's [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes):
+ANd finally, assemble everything with React Router's [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes):
 
 ```tsx #29-30,34 host/src/App.tsx
 import { lazy, useMemo } from "react";
@@ -191,7 +191,7 @@ export function App() {
 }
 ```
 
-Now, start the application and try to navigate to the root page (`/`). You should be redirected to the `/login` page. Login with `"temp"` / `"temp"`, you should be redirected to the root page.
+Now, start the application and try navigating to the root page (`/`). You should be redirected to the `/login` page. Login with `"temp"` / `"temp"`, you should now be redirected to the root page.
 
 
 

@@ -80,9 +80,7 @@ export default function RootLayout() {
 
     return (
         <>
-            <nav>
-                {navigationElements}
-            </nav>
+            <nav>{navigationElements}</nav>
             <Outlet />
         </>
     );

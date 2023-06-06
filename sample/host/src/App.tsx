@@ -22,7 +22,7 @@ export function App() {
 
     const wrapManagedRoutes = useCallback((managedRoutes: Route[]) => {
         return {
-            // Pathless route to set a root layout and a root error boundary.
+            // Pathless route to declare a root layout and a root error boundary.
             element: <RootLayout />,
             errorElement: <RootErrorBoundary />,
             children: [
@@ -31,15 +31,15 @@ export function App() {
                     element: <Login />
                 },
                 {
-                    // Pathless route to set an authenticated boundary.
+                    // Pathless route to declare an authenticated boundary.
                     element: <AuthenticationBoundary />,
                     children: [
                         {
-                            // Pathless route to set an authenticated layout.
+                            // Pathless route to declare an authenticated layout.
                             element: <AuthenticatedLayout />,
                             children: [
                                 {
-                                    // Pathless route to set an error boundary inside the layout instead of outside.
+                                    // Pathless route to declare an error boundary inside the layout instead of outside.
                                     // It's quite useful to prevent losing the layout when an unmanaged error occurs.
                                     errorElement: <ModuleErrorBoundary />,
                                     children: [

@@ -36,9 +36,6 @@ import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
 export function App() {
-    // Re-render the application once all the remotes are registered.
-    // Otherwise, the remotes routes won't be added to the router as the router will be 
-    // rendered before the remote modules registered their routes.
     const isReady = useAreRemotesReady();
 
     const routes = useRoutes();
@@ -46,7 +43,7 @@ export function App() {
     const wrapManagedRoutes = useCallback((managedRoutes: Route[]) => {
         return {
             // Default layout and error boundary.
-            // Fore more information about nested routes, view https://reactrouter.com/en/main/start/tutorial#nested-routes.
+            // Fore more information about React Router's nested routes, view https://reactrouter.com/en/main/start/tutorial#nested-routes.
             element: <RootLayout />,
             errorElement: <RootErrorBoundary />,
             children: [
@@ -55,7 +52,7 @@ export function App() {
         };
     }, []);
 
-    // Allow routes hoisted by modules to be rendered at the root of the router rather than 
+    // Allow hoisted routes to be rendered at the root of the router rather than 
     // under the default layout and error boundary.
     const hoistedRoutes = useHoistedRoutes(routes, wrapManagedRoutes);
 
@@ -101,6 +98,10 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
 ```
 
 ### Register a module page with a different layout
+
+!!!info
+For a detailed walkthrough, read [the guide](/guides/override-the-host-layout.md) on how to override the host layout.
+!!!
 
 ```tsx !#15,16 host/src/App.tsx
 import { useCallback, useMemo } from "react";
@@ -156,8 +157,8 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
         {
             path: "/about",
             hoist: true,
-            // Will render the "About" page with using the "RemoteLayout" rather than "RootLayout".
-            // Fore more information about nested routes, view https://reactrouter.com/en/main/start/tutorial#nested-routes.
+            // Will render the "About" page inside the "RemoteLayout" rather than the "RootLayout".
+            // For more information about React Router's nested routes, view https://reactrouter.com/en/main/start/tutorial#nested-routes.
             element: <RemoteLayout />,
             children: [
                 {

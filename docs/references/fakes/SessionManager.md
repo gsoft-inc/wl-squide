@@ -44,7 +44,7 @@ sessionManager.clearSession();
 
 ### Integrate with a Runtime instance
 
-```ts !#7-9 host/src/session.ts
+```ts !#8 host/src/session.ts
 import type { SessionAccessorFunction } from "@squide/react-router";
 import { SessionManager } from "@squide/fakes";
 import type { Session } from "@sample/share";

@@ -11,7 +11,7 @@ With a [Webpack Module Federation](https://webpack.js.org/concepts/module-federa
 Still, we can get very close to iframes failure isolation by leveraging React Router's [Outlet](https://reactrouter.com/en/main/components/outlet) component and routes' [errorElement](https://reactrouter.com/en/main/route/error-element) property:
 
 ```tsx !#16,20 App.tsx
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useAreRemotesReady } from "@squide/webpack-module-federation";
 import { useRoutes } from "@squide/react-router";

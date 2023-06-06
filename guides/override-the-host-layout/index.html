@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.2.739378323623">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.2.739394652398">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.0.2">
@@ -31,12 +31,12 @@
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.0.2.739378323623" rel="stylesheet" />
+    <link href="../../resources/css/retype.css?v=3.0.2.739394652398" rel="stylesheet" />
 
-    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.2.739378323623" data-turbo-eval="false" defer></script>
+    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.2.739394652398" data-turbo-eval="false" defer></script>
     <script type="text/javascript" src="../../resources/js/retype.js?v=3.0.2" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.2.739378323623" data-turbo-eval="false" defer></script>
-    <script id="prism-js" type="text/javascript" src="../../resources/js/prism.js?v=3.0.2.739378323623" defer></script>
+    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.2.739394652398" data-turbo-eval="false" defer></script>
+    <script id="prism-js" type="text/javascript" src="../../resources/js/prism.js?v=3.0.2.739394652398" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -271,10 +271,11 @@
 <p>Most application pages usually share a <strong>common layout</strong> with at least: a navigation bar, a user profile menu and a main content section. In a <a href="https://reactrouter.com/en/main">React Router&#x27;s</a> application, this common layout is what we call a <code v-pre>RootLayout</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">App.tsx</div>
-<pre class="language-tsx" data-line="12,17,23,27"><code v-pre class="language-tsx">import { useMemo } from &quot;react&quot;;
+<pre class="language-tsx" data-line="13,18,21,27,33"><code v-pre class="language-tsx">import { useMemo } from &quot;react&quot;;
 import { createBrowserRouter, RouterProvider } from &quot;react-router-dom&quot;;
 import { useRoutes } from &quot;@squide/react-router&quot;;
 import { RootLayout } from &quot;./RootLayout.tsx&quot;;
+import { RootErrorBoundary } from &quot;./RootErrorBoundary.tsx&quot;;
 import { AuthenticationBoundary } from &quot;./AuthenticationBoundary.tsx&quot;;
 import { Home } from &quot;./Home.tsx&quot;;
 
@@ -283,17 +284,22 @@ export function App() {
 
     const router = useMemo(() =&gt; {
         return createBrowserRouter({
-            // Pathless route to declare an authenticated boundary.
+            // Pathless route to declare an authentication boundary.
             element: &lt;AuthenticationBoundary /&gt;,
             children: [
                 // Pathless route to declare the root layout.
                 element: &lt;RootLayout /&gt;,
                 children: [
                     {
-                        index: &quot;true&quot;,
-                        element: &lt;Home /&gt;
-                    },
-                    ...routes
+                        errorElement: &lt;RootErrorBoundary /&gt;,
+                        children: [
+                            {
+                                index: &quot;true&quot;,
+                                element: &lt;Home /&gt;
+                            },
+                            ...routes
+                        ]
+                    }
                 ]
             ]
         });
@@ -334,12 +340,12 @@ export function RootLayout() {
     );
 }</code></pre>
 </doc-codeblock></div>
-<p>In this example, the <code v-pre>RootLayout</code> is the default layout for the <em>home page</em> and every page (route) registered by a module.</p>
+<p>In the previous code sample, the <code v-pre>RootLayout</code> is the default layout for the <em>home page</em> and every page (route) registered by a module.</p>
 <p>For most pages, this is the behavior expected by the author. However, for pages such as a <em>login page</em>, the default <code v-pre>RootLayout</code> isn&#x27;t a good fit because a <em>login page</em> is not bound to a user session (the user is not even authenticated yet).</p>
 <p>Those pages in need of a different layout require a mechanism to pull out their route declaration at the root of the <a href="https://reactrouter.com/en/main">React Router&#x27;s</a> router instance, before the <code v-pre>RootLayout</code> is declared.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-none" data-line="2"><code v-pre class="language-none">root
-├── Login page   &lt;---------------- Raise here
+├── Login page   &lt;---------------- Raise the page here
 ├──── Authentication boundary
 ├──────── Root layout
 ├───────────  Home page</code></pre>
@@ -349,7 +355,7 @@ export function RootLayout() {
 <p>To hoist module pages, first transform the module routes with the <a href="../../references/routing/usehoistedroutes/">useHoistedRoutes</a> hook before creating the router instance:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">App.tsx</div>
-<pre class="language-tsx" data-line="12-26,30,34"><code v-pre class="language-tsx">import { useMemo } from &quot;react&quot;;
+<pre class="language-tsx" data-line="12-31,35,39"><code v-pre class="language-tsx">import { useMemo } from &quot;react&quot;;
 import { createBrowserRouter, RouterProvider } from &quot;react-router-dom&quot;;
 import { useRoutes, useHoistedRoutes, type Route } from &quot;@squide/react-router&quot;;
 import { RootLayout } from &quot;./RootLayout.tsx&quot;;
@@ -367,10 +373,15 @@ export function App() {
                 element: &lt;RootLayout /&gt;,
                 children: [
                     {
-                        index: &quot;true&quot;,
-                        element: &lt;Home /&gt;
-                    },
-                    ...managedRoutes
+                        errorElement: &lt;RootErrorBoundary /&gt;,
+                        children: [
+                            {
+                                index: &quot;true&quot;,
+                                element: &lt;Home /&gt;
+                            },
+                            ...routes
+                        ]
+                    }
                 ]
             ]
         };
@@ -392,13 +403,14 @@ export function App() {
     );
 }</code></pre>
 </doc-codeblock></div>
-<p>Then, mark the pages as hoisted and optionally declare a different layout:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<p>Then, mark the pages as hoisted and optionally use a new layout:</p>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
 <div class="codeblock-title">local-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="11-12"><code v-pre class="language-tsx">import { lazy } from &quot;react&quot;;
+<pre class="language-tsx" data-line="12-13,16,19-20"><code v-pre class="language-tsx">import { lazy } from &quot;react&quot;;
 import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 
-const AnotherLayout = lazy(() =&gt; import(&quot;./AnotherLayout.tsx&quot;));
+const LocalLayout = lazy(() =&gt; import(&quot;./LocalLayout.tsx&quot;));
+const LocalErrorBoundary = lazy(() =&gt; import(&quot;./LocalErrorBoundary.tsx&quot;));
 const Login = lazy(() =&gt; import(&quot;./Login.tsx&quot;));
 
 export function register: ModuleRegisterFunction&lt;Runtime&gt;(runtime) {
@@ -406,11 +418,16 @@ export function register: ModuleRegisterFunction&lt;Runtime&gt;(runtime) {
         {
             path: &quot;/login&quot;,
             hoist: true,
-            element: &lt;AnotherLayout /&gt;,
+            element: &lt;LocalLayout /&gt;,
             children: [
                 {
-                    index: true,
-                    element: &lt;Login /&gt;
+                    errorElement: &lt;LocalErrorBoundary /&gt;,
+                    children: [
+                        {
+                            index: true,
+                            element: &lt;Login /&gt;
+                        }
+                    ]
                 }
             ]
         }

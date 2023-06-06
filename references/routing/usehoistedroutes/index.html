@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.2.739378323623">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.2.739394652398">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.0.2">
@@ -31,12 +31,12 @@
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../../resources/css/retype.css?v=3.0.2.739378323623" rel="stylesheet" />
+    <link href="../../../resources/css/retype.css?v=3.0.2.739394652398" rel="stylesheet" />
 
-    <script type="text/javascript" src="../../../resources/js/config.js?v=3.0.2.739378323623" data-turbo-eval="false" defer></script>
+    <script type="text/javascript" src="../../../resources/js/config.js?v=3.0.2.739394652398" data-turbo-eval="false" defer></script>
     <script type="text/javascript" src="../../../resources/js/retype.js?v=3.0.2" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" type="text/javascript" src="../../../resources/js/lunr.js?v=3.0.2.739378323623" data-turbo-eval="false" defer></script>
-    <script id="prism-js" type="text/javascript" src="../../../resources/js/prism.js?v=3.0.2.739378323623" defer></script>
+    <script id="lunr-js" type="text/javascript" src="../../../resources/js/lunr.js?v=3.0.2.739394652398" data-turbo-eval="false" defer></script>
+    <script id="prism-js" type="text/javascript" src="../../../resources/js/prism.js?v=3.0.2.739394652398" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -330,10 +330,10 @@
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="16-26,30,33"><code v-pre class="language-tsx">import { useCallback, useMemo } from &quot;react&quot;;
+<pre class="language-tsx" data-line="13-27,31,35"><code v-pre class="language-tsx">import { useCallback, useMemo } from &quot;react&quot;;
+import { createBrowserRouter, RouterProvider } from &quot;react-router-dom&quot;;
 import { useAreRemotesReady } from &quot;@squide/webpack-module-federation&quot;;
 import { useRoutes, useHoistedRoutes, type Route } from &quot;@squide/react-router&quot;;
-import { createBrowserRouter, RouterProvider } from &quot;react-router-dom&quot;;
 import { RootLayout } from &quot;./RootLayout.tsx&quot;;
 import { RootErrorBoundary } from &quot;./RootErrorBoundary.tsx&quot;;
 
@@ -344,12 +344,16 @@ export function App() {
 
     const wrapManagedRoutes = useCallback((managedRoutes: Route[]) =&gt; {
         return {
-            // Default layout and error boundary.
-            // Fore more information about React Router's nested routes, view https://reactrouter.com/en/main/start/tutorial#nested-routes.
+            // Default layout.
             element: &lt;RootLayout /&gt;,
-            errorElement: &lt;RootErrorBoundary /&gt;,
             children: [
-                ...managedRoutes
+                {
+                    // Default error boundary.
+                    errorElement: &lt;RootErrorBoundary /&gt;,
+                    children: [
+                        ...managedRoutes
+                    ]
+                }
             ]
         };
     }, []);
@@ -376,9 +380,10 @@ export function App() {
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="11"><code v-pre class="language-tsx">import { lazy } from &quot;react&quot;;
+<pre class="language-tsx" data-line="11-12"><code v-pre class="language-tsx">import { lazy } from &quot;react&quot;;
 import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 
+const RemoteErrorBoundary = lazy(() =&gt; import(&quot;./RemoteErrorBoundary.tsx&quot;));
 const About = lazy(() =&gt; import(&quot;./About.tsx&quot;));
 
 export function register: ModuleRegisterFunction&lt;Runtime&gt;(runtime) {
@@ -386,6 +391,7 @@ export function register: ModuleRegisterFunction&lt;Runtime&gt;(runtime) {
         {
             path: &quot;/about&quot;,
             element: &lt;About /&gt;,
+            errorElement: &lt;RemoteErrorBoundary /&gt;
             hoist: true
         }
     ]);
@@ -417,16 +423,16 @@ export function register: ModuleRegisterFunction&lt;Runtime&gt;(runtime) {
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>For a detailed walkthrough, read <a href="../../../guides/override-the-host-layout/">the guide</a> on how to override the host layout.</p>
+<p>For a detailed walkthrough, read the guide on <a href="../../../guides/override-the-host-layout/">how to override the host layout</a>.</p>
         </div>
     </div>
 </div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="15,16"><code v-pre class="language-tsx">import { useCallback, useMemo } from &quot;react&quot;;
+<pre class="language-tsx" data-line="15,18"><code v-pre class="language-tsx">import { useCallback, useMemo } from &quot;react&quot;;
+import { createBrowserRouter, RouterProvider } from &quot;react-router-dom&quot;;
 import { useAreRemotesReady } from &quot;@squide/webpack-module-federation&quot;;
 import { useRoutes, useHoistedRoutes, type Route } from &quot;@squide/react-router&quot;;
-import { createBrowserRouter, RouterProvider } from &quot;react-router-dom&quot;;
 import { RootLayout } from &quot;./RootLayout.tsx&quot;;
 import { RootErrorBoundary } from &quot;./RootErrorBoundary.tsx&quot;;
 
@@ -438,98 +444,9 @@ export function App() {
     const wrapManagedRoutes = useCallback((managedRoutes: Route[]) =&gt; {
         return {
             element: &lt;RootLayout /&gt;,
-            errorElement: &lt;RootErrorBoundary /&gt;,
-            children: [
-                ...managedRoutes
-            ]
-        };
-    }, []);
-
-    const hoistedRoutes = useHoistedRoutes(routes, wrapManagedRoutes);
-
-    const router = useMemo(() =&gt; {
-        return createBrowserRouter(hoistedRoutes);
-    }, [hoistedRoutes]);
-
-    if (!isReady) {
-        return &lt;div&gt;Loading...&lt;/div&gt;;
-    }
-
-    return (
-        &lt;RouterProvider
-            router={router}
-            fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
-        /&gt;
-    );
-}</code></pre>
-</doc-codeblock></div>
-<div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">remote-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="11,14-20"><code v-pre class="language-tsx">import { lazy } from &quot;react&quot;;
-import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
-
-const RemoteLayout = lazy(() =&gt; import(&quot;./RemoteLayout.tsx&quot;));
-const About = lazy(() =&gt; import(&quot;./About.tsx&quot;));
-
-export function register: ModuleRegisterFunction&lt;Runtime&gt;(runtime) {
-    runtime.registerRoutes([
-        {
-            path: &quot;/about&quot;,
-            hoist: true,
-            // Will render the &quot;About&quot; page inside the &quot;RemoteLayout&quot; rather than the &quot;RootLayout&quot;.
-            // For more information about React Router's nested routes, view https://reactrouter.com/en/main/start/tutorial#nested-routes.
-            element: &lt;RemoteLayout /&gt;,
             children: [
                 {
-                    index: true,
-                    element: &lt;About /&gt;
-                }
-            ]
-        }
-    ]);
-
-    runtime.registerNavigationItems([
-        {
-            to: &quot;/about&quot;,
-            label: &quot;About&quot;
-        }
-    ]);
-}</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="register-a-public-page">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#register-a-public-page">#</doc-anchor-trigger>
-        <span>Register a public page</span>
-    </h3>
-</doc-anchor-target>
-<div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="19-31"><code v-pre class="language-tsx">import { useCallback, useMemo } from &quot;react&quot;;
-import { useAreRemotesReady } from &quot;@squide/webpack-module-federation&quot;;
-import { useRoutes, useHoistedRoutes, type Route } from &quot;@squide/react-router&quot;;
-import { createBrowserRouter, RouterProvider } from &quot;react-router-dom&quot;;
-import { AuthenticationBoundary } from &quot;./AuthenticationBoundary.tsx&quot;;
-import { Login } from &quot;./Login.tsx&quot;;
-import { RootLayout } from &quot;./RootLayout.tsx&quot;;
-import { RootErrorBoundary } from &quot;./RootErrorBoundary.tsx&quot;;
-
-export function App() {
-    const isReady = useAreRemotesReady();
-
-    const routes = useRoutes();
-
-    const wrapManagedRoutes = useCallback((managedRoutes: Route[]) =&gt; {
-        return {
-            element: &lt;RootLayout /&gt;,
-            errorElement: &lt;RootErrorBoundary /&gt;,
-            children: [
-                {
-                    path: &quot;/login&quot;,
-                    element: &lt;Login /&gt;
-                },
-                {
-                    // Authenticated boundary.
-                    element: &lt;AuthenticationBoundary /&gt;,
+                    errorElement: &lt;RootErrorBoundary /&gt;,
                     children: [
                         ...managedRoutes
                     ]
@@ -558,19 +475,32 @@ export function App() {
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="13"><code v-pre class="language-tsx">import { lazy } from &quot;react&quot;;
+<pre class="language-tsx" data-line="12,15,18,21-22"><code v-pre class="language-tsx">import { lazy } from &quot;react&quot;;
 import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 
+const RemoteLayout = lazy(() =&gt; import(&quot;./RemoteLayout.tsx&quot;));
+const RemoteErrorBoundary = lazy(() =&gt; import(&quot;./RemoteErrorBoundary.tsx&quot;));
 const About = lazy(() =&gt; import(&quot;./About.tsx&quot;));
 
 export function register: ModuleRegisterFunction&lt;Runtime&gt;(runtime) {
     runtime.registerRoutes([
         {
             path: &quot;/about&quot;,
-            element: &lt;About /&gt;,
-            // By hoisting the &quot;About&quot; page, it will now be rendered outside of the default 
-            // authenticated boundary and will therefore be public.
-            hoist: true
+            hoist: true,
+            // Will render the &quot;About&quot; page inside the &quot;RemoteLayout&quot; rather than the &quot;RootLayout&quot;.
+            // For more information about React Router's nested routes, view https://reactrouter.com/en/main/start/tutorial#nested-routes.
+            element: &lt;RemoteLayout /&gt;,
+            children: [
+                {
+                    errorElement: &lt;RemoteErrorBoundary /&gt;,
+                    children: [
+                        {
+                            index: true,
+                            element: &lt;About /&gt;
+                        }
+                    ]
+                }
+            ]
         }
     ]);
 
@@ -578,6 +508,86 @@ export function register: ModuleRegisterFunction&lt;Runtime&gt;(runtime) {
         {
             to: &quot;/about&quot;,
             label: &quot;About&quot;
+        }
+    ]);
+}</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="register-a-public-page">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#register-a-public-page">#</doc-anchor-trigger>
+        <span>Register a public page</span>
+    </h3>
+</doc-anchor-target>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">host/src/App.tsx</div>
+<pre class="language-tsx" data-line="17"><code v-pre class="language-tsx">import { useCallback, useMemo } from &quot;react&quot;;
+import { createBrowserRouter, RouterProvider } from &quot;react-router-dom&quot;;
+import { useAreRemotesReady } from &quot;@squide/webpack-module-federation&quot;;
+import { useRoutes, useHoistedRoutes, type Route } from &quot;@squide/react-router&quot;;
+import { AuthenticationBoundary } from &quot;./AuthenticationBoundary.tsx&quot;;
+import { RootLayout } from &quot;./RootLayout.tsx&quot;;
+import { RootErrorBoundary } from &quot;./RootErrorBoundary.tsx&quot;;
+
+export function App() {
+    const isReady = useAreRemotesReady();
+
+    const routes = useRoutes();
+
+    const wrapManagedRoutes = useCallback((managedRoutes: Route[]) =&gt; {
+        return {
+            // Every pages under the authentication boundary requires authentication.
+            element: &lt;AuthenticationBoundary /&gt;,
+            children: [
+                {
+                    element: &lt;RootLayout /&gt;,
+                    children: [
+                        {
+                            errorElement: &lt;RootErrorBoundary /&gt;,
+                            children: [
+                                ...managedRoutes
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
+    }, []);
+
+    const hoistedRoutes = useHoistedRoutes(routes, wrapManagedRoutes);
+
+    const router = useMemo(() =&gt; {
+        return createBrowserRouter(hoistedRoutes);
+    }, [hoistedRoutes]);
+
+    if (!isReady) {
+        return &lt;div&gt;Loading...&lt;/div&gt;;
+    }
+
+    return (
+        &lt;RouterProvider
+            router={router}
+            fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
+        /&gt;
+    );
+}</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">remote-module/src/register.tsx</div>
+<pre class="language-tsx" data-line="11-12,15"><code v-pre class="language-tsx">import { lazy } from &quot;react&quot;;
+import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+
+const RemoteErrorBoundary = lazy(() =&gt; import(&quot;./RemoteErrorBoundary.tsx&quot;));
+const Login = lazy(() =&gt; import(&quot;./Login.tsx&quot;));
+
+export function register: ModuleRegisterFunction&lt;Runtime&gt;(runtime) {
+    runtime.registerRoutes([
+        {
+            path: &quot;/login&quot;,
+            element: &lt;Login /&gt;,
+            errorElement: &lt;RemoteErrorBoundary /&gt;,
+            // By hoisting the &quot;Login&quot; page, it will now be rendered outside of the default 
+            // authenticated boundary and will therefore be public.
+            hoist: true
         }
     ]);
 }</code></pre>
@@ -591,9 +601,9 @@ export function register: ModuleRegisterFunction&lt;Runtime&gt;(runtime) {
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
 <pre class="language-tsx" data-line="26-29"><code v-pre class="language-tsx">import { useCallback, useMemo } from &quot;react&quot;;
+import { createBrowserRouter, RouterProvider } from &quot;react-router-dom&quot;;
 import { useAreRemotesReady } from &quot;@squide/webpack-module-federation&quot;;
 import { useRoutes, useHoistedRoutes, type Route } from &quot;@squide/react-router&quot;;
-import { createBrowserRouter, RouterProvider } from &quot;react-router-dom&quot;;
 import { RootLayout } from &quot;./RootLayout.tsx&quot;;
 import { RootErrorBoundary } from &quot;./RootErrorBoundary.tsx&quot;;
 

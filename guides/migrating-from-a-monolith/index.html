@@ -4,35 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.2.739401989958">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.3.739464517557">
 
     <!-- See retype.com -->
-    <meta name="generator" content="Retype 3.0.2">
+    <meta name="generator" content="Retype 3.0.3">
 
     <!-- Primary Meta Tags -->
-    <title>Develop a module in isolation</title>
-    <meta name="title" content="Develop a module in isolation">
+    <title>Migrating from a monolithic application</title>
+    <meta name="title" content="Migrating from a monolithic application">
+    <meta name="description" content="It's easier to build a new federated application from scratch than retrofitting an existing monolithic application" />
 
     <!-- Canonical -->
-    <link rel="canonical" href="https://workleap.github.io/wl-squide/guides/develop-in-isolation/" />
+    <link rel="canonical" href="https://workleap.github.io/wl-squide/guides/migrating-from-a-monolith/" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://workleap.github.io/wl-squide/guides/develop-in-isolation/">
-    <meta property="og:title" content="Develop a module in isolation">
+    <meta property="og:url" content="https://workleap.github.io/wl-squide/guides/migrating-from-a-monolith/">
+    <meta property="og:title" content="Migrating from a monolithic application">
+    <meta property="og:description" content="It's easier to build a new federated application from scratch than retrofitting an existing monolithic application">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://workleap.github.io/wl-squide/guides/develop-in-isolation/">
-    <meta property="twitter:title" content="Develop a module in isolation">
+    <meta property="twitter:url" content="https://workleap.github.io/wl-squide/guides/migrating-from-a-monolith/">
+    <meta property="twitter:title" content="Migrating from a monolithic application">
+    <meta property="twitter:description" content="It's easier to build a new federated application from scratch than retrofitting an existing monolithic application">
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.0.2.739401989958" rel="stylesheet" />
+    <link href="../../resources/css/retype.css?v=3.0.3.739464517557" rel="stylesheet" />
 
-    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.2.739401989958" data-turbo-eval="false" defer></script>
-    <script type="text/javascript" src="../../resources/js/retype.js?v=3.0.2" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.2.739401989958" data-turbo-eval="false" defer></script>
+    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.3.739464517557" data-turbo-eval="false" defer></script>
+    <script type="text/javascript" src="../../resources/js/retype.js?v=3.0.3" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.3.739464517557" data-turbo-eval="false" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -258,12 +261,30 @@
                                 <div id="docs-sidebar-right-toggle"></div>
                 
                                 <!-- Page content  -->
-<doc-anchor-target id="develop-a-module-in-isolation" class="break-words">
+<doc-anchor-target id="migrating-from-a-monolithic-application" class="break-words">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#develop-a-module-in-isolation">#</doc-anchor-trigger>
-        <span>Develop a module in isolation</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#migrating-from-a-monolithic-application">#</doc-anchor-trigger>
+        <span>Migrating from a monolithic application</span>
     </h1>
 </doc-anchor-target>
+<p>It&#x27;s easier to build a new federated application from scratch than retrofitting an existing <a href="https://en.wikipedia.org/wiki/Monolithic_application">monolithic application</a> into a distributed architecture.</p>
+<p>However, it&#x27;s also a <strong>bad idea</strong> to <strong>start</strong> a new application <strong>with a distributed architecture</strong> because teams usually don&#x27;t know enough about their business domain at that time. Therefore, it usually makes sense for most applications to <strong>start as monolithic</strong> and later on be transitioned to federated applications.</p>
+<p>With the introduction of <a href="../../references/registration/registerlocalmodules/">local modules</a>, we believe <code v-pre>@squide</code> offer a new proposition which stands right in the middle of prior solutions. Instead of going full steam into Team Topology&#x27;s <a href="https://www.shortform.com/blog/stream-aligned-teams/">stream-aligned teams</a> and targeting full team autonomy across the board, with local modules, teams can start with a <a href="https://en.wikipedia.org/wiki/Monorepo">monorepo</a> setup and add an independent local package (module) per expected <a href="https://en.wikipedia.org/wiki/Value_stream">value stream</a>.</p>
+<p>Since adding/deleting local packages in a monorepo setup is pretty cheap, teams won&#x27;t fear reorganizing their value streams along the way and <strong>won&#x27;t invest preemptively into a distributed</strong> CI/CD <strong>infrastructure</strong> as local modules are part of the host application build. With independent value streams, teams will be well-positioned to transition toward a federated application once they can justify the cost.</p>
+<p>If your project is <strong>already a monolithic application</strong> with a <a href="https://github.com/joelparkerhenderson/monorepo-vs-polyrepo#what-is-polyrepo">polyrepo setup</a> and you are looking to migrate to a distributed architecture, we also recommend a decoupling first strategy with local modules and a monorepo setup.</p>
+<doc-anchor-target id="decoupling-first">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#decoupling-first">#</doc-anchor-trigger>
+        <span>Decoupling first</span>
+    </h2>
+</doc-anchor-target>
+<p>The main obstacle toward migrating to a distributed architecture is coupling. Thus, starting by decoupling the monolith into <strong>composable value streams</strong> could be the right strategy for most applications. It&#x27;s a great way to get into the migration without having to immediately update the CI/CD infrastructure and change developers habits.</p>
+<p>We recommend the following steps:</p>
+<p>1- Transform the codebase into a monorepo setup.</p>
+<p>2- Add independent local packages (modules) for every identified value stream.</p>
+<p>3- Move the monolithic application code to their corresponding newly created value stream local packages and make sure a <strong>value stream can be developed independently</strong> (e.g. without having to start the whole application).</p>
+<p>4- Import and <a href="../../references/registration/registerlocalmodules/">register the local packages</a> (modules) into the host application.</p>
+<p>5- Finally, move from local modules to <a href="../../references/registration/registerremotemodules/">remote modules</a> and update the CI/CD pipelines to start deploying modules independently.</p>
 
                                 
                                 <!-- Required only on API pages -->
@@ -271,7 +292,7 @@
                             </div>
                             <footer class="clear-both">
                                 <div class="flex flex-wrap items-center justify-between mt-14">
-                                    <a class="my-2.5 inline-flex items-center text-sm whitespace-nowrap text-blue-500 dark:text-blue-400 hover:text-blue-700 hover:underline" href="https://github.com/workleap/wl-squide/blob/main/docs/guides/develop-in-isolation.md" target="_blank" rel="noopener">
+                                    <a class="my-2.5 inline-flex items-center text-sm whitespace-nowrap text-blue-500 dark:text-blue-400 hover:text-blue-700 hover:underline" href="https://github.com/workleap/wl-squide/blob/main/docs/guides/migrating-from-a-monolith.md" target="_blank" rel="noopener">
                                         <svg class="mr-1.5" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M20 12c-.55 0-1 .45-1 1v7c0 .55-.45 1-1 1H4c-.55 0-1-.45-1-1V6c0-.55.45-1 1-1h7c.55 0 1-.45 1-1s-.45-1-1-1H4C2.35 3 1 4.35 1 6v14c0 1.65 1.35 3 3 3h14c1.65 0 3-1.35 3-3v-7c0-.55-.45-1-1-1z" /><path d="M22.21 1.79c-1.18-1.18-3.24-1.18-4.41 0l-9.5 9.5c-.13.13-.22.29-.26.46l-1 4c-.08.34.01.7.26.95.18.2.44.3.7.3.08 0 .16-.01.24-.03l4-1c.18-.04.34-.13.46-.26l9.5-9.5c1.22-1.22 1.22-3.2.01-4.42zm-1.42 3l-9.3 9.3-2.11.53.53-2.11 9.3-9.3c.42-.42 1.16-.42 1.59 0 .43.43.43 1.15-.01 1.58z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                         <span>Edit this page</span>
                                     </a>
@@ -289,10 +310,10 @@
                                     </div>
                             
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../guides/migrating/">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../references/">
                                             <span>
                                                 <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                                                <span class="block mt-1">Migrating to @squide</span>
+                                                <span class="block mt-1">References</span>
                                             </span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                         </a>
@@ -356,6 +377,6 @@
 
     <div id="docs-overlay-target"></div>
 
-    <script>window.__DOCS__ = { "title": "Develop a module in isolation", level: 2, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false }</script>
+    <script>window.__DOCS__ = { "title": "Migrating from a monolith", level: 2, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false }</script>
 </body>
 </html>

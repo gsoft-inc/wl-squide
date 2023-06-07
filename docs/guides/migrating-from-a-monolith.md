@@ -25,7 +25,7 @@ We recommend the following steps:
 
 2- Add independent local packages (modules) for every identified value stream.
 
-3- Move the monolithic application code to their corresponding newly created value stream local packages and make sure an **value stream can be developed independently** (e.g. without having to start the whole application).
+3- Move the monolithic application code to their corresponding newly created value stream local packages and make sure a **value stream can be developed independently** (e.g. without having to start the whole application).
 
 4- Import and [register the local packages](/references/registration/registerLocalModules.md) (modules) into the host application.
 

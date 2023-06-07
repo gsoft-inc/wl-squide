@@ -60,7 +60,7 @@ Then, add the following fields to the `package.json` files:
 
 Then, register the local module [routes](/references/runtime/runtime-class.md#register-routes) and [navigation items](/references/runtime/runtime-class.md#register-navigation-items):
 
-```tsx !#7-19 local-module/src/register.tsx
+```tsx #7-12,14-19 local-module/src/register.tsx
 import { lazy } from "react";
 import { registerRoutes, registerNavigationItems, type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
 

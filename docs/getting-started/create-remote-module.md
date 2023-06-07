@@ -40,7 +40,7 @@ remote-module
 
 Then, register the remote module [routes](/references/runtime/runtime-class.md#register-routes) and [navigation items](/references/runtime/runtime-class.md#register-navigation-items):
 
-```tsx !#7-19 remote-module/src/register.tsx
+```tsx #7-12,14-19 remote-module/src/register.tsx
 import { lazy } from "react";
 import { registerRoutes, registerNavigationItems, type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
 
@@ -88,7 +88,7 @@ const federatedConfig = remoteTransformer(config, "remote1");
 export default federatedConfig;
 ```
 
-[!ref icon="mark-github" target="blank" text="View a full webpack.config.js on Github"](https://github.com/workleap/wl-squide/blob/main/sample/remote-module/webpack.dev.js)
+[!ref icon="mark-github" text="View a full webpack.config.js on Github"](https://github.com/workleap/wl-squide/blob/main/sample/remote-module/webpack.dev.js)
 
 ## Try the application :rocket:
 

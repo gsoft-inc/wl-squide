@@ -51,7 +51,7 @@ export function AuthenticationBoundary() {
 
 Then, add a login page:
 
-```tsx #4,16-20 host/src/Login.tsx
+```tsx !#17-21 host/src/Login.tsx
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useIsAuthenticated } from "@squide/react-router";
@@ -115,9 +115,9 @@ export default function Login() {
 }
 ```
 
-ANd finally, assemble everything with React Router's [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes):
+And finally, assemble everything with React Router's [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes):
 
-```tsx #29-30,34 host/src/App.tsx
+```tsx !#29-30,34 host/src/App.tsx
 import { lazy, useMemo } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useRoutes } from "@squide/react-router";

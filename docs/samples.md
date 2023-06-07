@@ -7,7 +7,7 @@ icon: command-palette
 
 ## `@squide` sandbox
 
-- :icon-mark-github: [Host application](https://github.com/workleap/wl-squide/tree/main/sample/host){ target="_blank" }
-- :icon-mark-github: [Remote module](https://github.com/workleap/wl-squide/tree/main/sample/remote-module){ target="_blank" }
-- :icon-mark-github: [Local module](https://github.com/workleap/wl-squide/tree/main/sample/local-module){ target="_blank" }
-- :icon-cloud: [Live sample](https://squide-host.netlify.app/){ target="_blank" }
+- :icon-mark-github: [Host application](https://github.com/workleap/wl-squide/tree/main/sample/host)
+- :icon-mark-github: [Remote module](https://github.com/workleap/wl-squide/tree/main/sample/remote-module)
+- :icon-mark-github: [Local module](https://github.com/workleap/wl-squide/tree/main/sample/local-module)
+- :icon-cloud: [Live sample](https://squide-host.netlify.app/)

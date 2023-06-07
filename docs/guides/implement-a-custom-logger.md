@@ -4,7 +4,7 @@ order: 60
 
 # Implement a custom logger
 
-Many applications must integrates with specific remote logging solutions like [Honeycomb](https://www.honeycomb.io/) and [Azure Application Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview). To help with that, the shell runtime accept any custom loggers that implements the [Logger](/references/logging/Logger.md) interface.
+Many applications must integrate with specific remote logging solutions like [Honeycomb](https://www.honeycomb.io/) and [Azure Application Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview). To help with that, the shell runtime accepts any custom loggers that implement the [Logger](/references/logging/Logger.md) interface.
 
 First, let's define a custom logger:
 

@@ -4,7 +4,7 @@ order: 60
 
 # Implement a custom logger
 
-Many applications must integrate with specific remote logging solutions like [Honeycomb](https://www.honeycomb.io/) and [Azure Application Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview). To help with that, the shell runtime accepts any custom loggers that implement the [Logger](/references/logging/Logger.md) interface.
+Many applications must integrate with specific remote logging solutions such as [Honeycomb](https://www.honeycomb.io/) and [Azure Application Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview). To facilitate this integration, the shell runtime accepts any custom loggers implementing the [Logger](/references/logging/Logger.md) interface.
 
 First, let's define a custom logger:
 
@@ -73,7 +73,7 @@ const runtime = new Runtime({
 });
 ```
 
-Start the applications and open the dev tools. Refresh the page. The console logs should be displayed:
+Start the applications and open the developer tools, then, refresh the page. You should see the following console log message:
 
 ```
 > [custom-logger] [shell] Found 1 remote modules to register.

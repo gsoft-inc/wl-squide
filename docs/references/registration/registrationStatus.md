@@ -1,6 +1,6 @@
 # registrationStatus
 
-Variable indicating whether or not the remote modules registration is completed.
+Variable indicating whether or not the remote modules registration process is completed.
 
 ## Usage
 

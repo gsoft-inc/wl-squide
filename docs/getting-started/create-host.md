@@ -5,11 +5,11 @@ label: Create an host app
 
 # Create an host application
 
-Let's start by creating the application that will act as the entry point of our federated application and host the modules.
+Let's begin by creating the application that will serve as the entry point for our federated application and host the application modules.
 
 ## Install the packages
 
-Create a new project (we'll call ours `host`), then open a terminal at the root of the newly created project and install the following packages:
+Create a new project (we'll refer to ours as `host`), then open a terminal at the root of the newly created project and install the following packages:
 
 +++ pnpm
 ```bash
@@ -56,7 +56,7 @@ export {};
 To learn more about this async boundary and the `bootstrap.tsx` file, read the following [article](https://dev.to/infoxicator/module-federation-shared-api-ach#using-an-async-boundary).
 !!!
 
-Then, instanciate the shell [Runtime](/references/runtime/runtime-class.md) and [register the remote module](/references/registration/registerRemoteModules.md) (the remote module application will be configured in the [next section](create-remote-module.md)):
+Then, instanciate the shell [Runtime](/references/runtime/runtime-class.md) and [register the remote module](/references/registration/registerRemoteModules.md) (the configuration of the remote module will be covered in the [next section](create-remote-module.md)):
 
 ```tsx !#12-14,17 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
@@ -86,7 +86,7 @@ root.render(
 );
 ```
 
-Next, [retrieve the routes](/references/runtime/useRoutes.md) registered by the remote module and create a router instance:
+Then, [retrieve the routes](/references/runtime/useRoutes.md) that have been registered by the remote module and create a router instance:
 
 ```tsx !#10,13,17 host/src/App.tsx
 import { lazy, useMemo } from "react";
@@ -199,7 +199,8 @@ export default function RootLayout() {
 
 ## Configure Webpack
 
-To add Webpack [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) we'll use the [hostTransformer](/references/webpack/hostTransformer.md) function:
+To include the Webpack [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) we'll use the [hostTransformer](/references/webpack/hostTransformer.md) function:
+
 
 ```js !#8 host/webpack.config.js
 import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";
@@ -218,4 +219,4 @@ export default federatedConfig;
 
 ## Try the application :rocket:
 
-Start the application, you should see the home page. Even if the remote module application is not yet available, the host application loads gracefully.
+Start the application, and you should see the home page. Even if the remote module application is not yet available, the host application will gracefully load.

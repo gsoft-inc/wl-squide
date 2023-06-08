@@ -4,7 +4,8 @@ order: 100
 
 # Override the host layout
 
-Most application pages usually share a **common layout** with at least: a navigation bar, a user profile menu and a main content section. In a [React Router's](https://reactrouter.com/en/main) application, this common layout is what we call a `RootLayout`:
+In many applications, multiple pages often share a **common layout** that includes elements such as a navigation bar, a user profile menu, and a main content section. In a [React Router's](https://reactrouter.com/en/main) application, this shared layout is commonly referred to as a `RootLayout`:
+
 
 ```tsx !#16,21,24,30,36 host/src/App.tsx
 import { useMemo } from "react";
@@ -84,11 +85,11 @@ export function RootLayout() {
 }
 ```
 
-In the previous code sample, the `RootLayout` is the default layout for the *home page* and every page (route) registered by a module.
+In the previous code sample, the `RootLayout` serves as the default layout for the *home page* as well as for every page (route) registered by a module.
 
-For most pages, this is the behavior expected by the author. However, for pages such as a *login page*, the default `RootLayout` isn't a good fit because a *login page* is not bound to a user session (the user is not even authenticated yet).
+For most pages, this is the behavior expected by the author. However, for pages such as a *login page*, the default `RootLayout` isn't suitable because the page is not bound to a user session (the user is not even authenticated yet).
 
-Those pages in need of a different layout require a mechanism to pull out their route declaration at the root of the React Router's [router instance](https://reactrouter.com/en/main/routers/create-browser-router), before the `RootLayout` is declared.
+To accomodate pages that require a different layout, a mechanism is needed to move their route declaration at the root of the React Router's [router instance](https://reactrouter.com/en/main/routers/create-browser-router), before the `RootLayout` is declared.
 
 ``` !#2
 root

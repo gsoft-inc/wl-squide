@@ -4,17 +4,17 @@ order: 60
 
 # Learn the API
 
-Now that we've created an host application, loaded a few modules and registered routes and navigation items, let's dive into the APIs that are available with this shell.
+Now that we've created a host application, loaded a few modules and registered routes and navigation items, let's delve into the APIs provided by this shell.
 
 !!!info
-For an exhaustive list of `@squide` API, have a look at the [References](/references#api) section.
+For a comprehensive list of the `@squide` API, refer to the [References](/references#api) section.
 !!!
 
 ## Logging
 
-`@squide` comes with a native logging feature integrated with the [Runtime](/references/runtime/runtime-class.md) class and the [useLogger](/references/runtime/useLogger.md) hook.
+`@squide` includes a built-in logging feature that integrates with the [Runtime](/references/runtime/runtime-class.md) class and the [useLogger](/references/runtime/useLogger.md) hook.
 
-First, register your own custom logger by implementing the [Logger](/references/logging/Logger.md) interface or with `@squide` native [ConsoleLogger](/references/logging/ConsoleLogger):
+First, register your own custom logger by implementing the [Logger](/references/logging/Logger.md) interface or register `@squide` built-in [ConsoleLogger](/references/logging/ConsoleLogger):
 
 ```ts host/src/bootstrap.tsx
 import { Runtime, ConsoleLogger, type LogLevel } from "@squide/react-router";
@@ -24,7 +24,7 @@ const runtime = new Runtime({
 });
 ```
 
-Then, log entries any parts of your federated application with the `useLogger` hook:
+Then, log entries from any parts of your federated application with the `useLogger` hook:
 
 ```ts
 import { useLogger } from "@squide/react-router";
@@ -38,7 +38,7 @@ The logger is also available from the [Runtime](/references/runtime/runtime-clas
 
 ## Messaging
 
-It's important that the parts of a federated application remains loosely coupled. To help with that, `@squide` offers a native [Event Bus](/references/messaging/EventBus.md) functionality.
+It's crucial that the parts of a federated application remains loosely coupled. To help with that, `@squide` offers a built-in [Event Bus](/references/messaging/EventBus.md).
 
 First, listen to an event with the [useEventBusListener](/references/messaging/useEventBusListener.md) hook:
 
@@ -63,13 +63,15 @@ const dispatch = useEventBusDispatcher();
 dispatch("foo", "bar");
 ```
 
+You can use the event bus to enable various communication scenarios, such as notifying components of state changes, broadcasting messages across modules, or triggering actions based on specific events.
+
 The event bus is also available from the [Runtime](/references/runtime/runtime-class.md) instance.
 
 ## Session
 
-Most of our applications (if not all) will eventually require the user to authenticate. To support that, `@squide` [Runtime](/references/runtime/runtime-class.md) class accepts a [sessionAccessor](/references/fakes/SessionManager.md#integrate-with-a-runtime-instance) function that is made available to every module of the application once the registration flow is completed.
+Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the `@squide` [Runtime](/references/runtime/runtime-class.md) class accepts a [sessionAccessor](/references/fakes/SessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
 
-First, define a `sessionAccessor` function:
+First, let's define a `sessionAccessor` function:
 
 ```ts host/src/session.ts
 import type { SessionAccessorFunction } from "@squide/react-router";
@@ -83,7 +85,7 @@ const sessionAccessor: SessionAccessorFunction = () => {
 ```
 
 !!!warning
-Our security department reminds you to not use a fake `SessionManager` in a production application :blush:
+Our security department reminds you to refrain from using a fake `SessionManager` in a production application :blush:
 !!!
 
 Then register the accessor function:
@@ -97,7 +99,7 @@ const runtime = new Runtime({
 });
 ```
 
-Finally, retrieve the session from any parts of the application with the [useSession](/references/runtime/useSession.md) hook:
+Finally, access the session from any parts of the application with the [useSession](/references/runtime/useSession.md) hook:
 
 ```ts
 import { useSession } from "@squide/react-router";
@@ -117,7 +119,7 @@ The session is also available from the [Runtime](/references/runtime/runtime-cla
 
 ## Services
 
-`@squide` offers a few built-in services, however, by no mean these services alone can support the needs of every mature application. That's why custom services can be added to the shell [Runtime](/references/runtime/runtime-class.md).
+While `@squide` provides a range of built-in functionalities, by no mean these alone can support the needs of every mature application. Therefore, the shell [Runtime](/references/runtime/runtime-class.md) allows the addition of custom services.
 
 First, make the service available to every part of the application by passing a service instance to the `Runtime` instance:
 
@@ -132,7 +134,7 @@ const runtime = new Runtime({
 });
 ```
 
-Then, retrieve the service instance from anywhere with the [useService](/references/runtime/useService.md) hook:
+Then, access the service instance from anywhere with the [useService](/references/runtime/useService.md) hook:
 
 ```ts
 import { useService } from "@squide/react-router";

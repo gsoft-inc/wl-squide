@@ -6,7 +6,7 @@ order: 50
 
 To develop their own independent module, a team **shouldn't be required to install the host application** or any **other modules** of the application **they do not own**. However, they should still have a means to integrate their module with the application shell (`RootLayout`, `RootErrorBoundary`, etc..) while working on their module in isolation.
 
-To achieve this, the first step is to extract the application shell from the host application. There are several approaches to accomplish this, but in this guide, we'll transform the host application into a monorepo and introduce a new local package called `@sample/shell` for this purpose:
+To achieve this, the first step is to extract the application shell from the host application. There are several approaches to accomplish this, but in this guide, we'll transform the host application into a monorepo and introduce a new local package named `@sample/shell` for this purpose:
 
 ``` !#4,8
 host

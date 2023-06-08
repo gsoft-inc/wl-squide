@@ -4,13 +4,13 @@ order: 90
 
 # Create a remote module
 
-Remote modules are modules that are not part of the current build but are **loaded at runtime** from a remote server. They are useful because they enable teams to be **fully autonomous** by **deploying** their modules **independently** from the other parts of the application.
+Remote modules are modules that are not included in the host application build but are instead **loaded at runtime** from a remote server. They provide a way for teams to be **fully autonomous** by **independently deploying** their modules without relying on the other parts of the application.
 
 Let's add our first remote module!
 
 ## Install the packages
 
-Create a new project (we'll call ours `remote-module`), then open a terminal at the root of the newly created project and install the following packages:
+Create a new project (we'll refer to ours as `remote-module`), then open a terminal at the root of the newly created project and install the following packages:
 
 +++ pnpm
 ```bash
@@ -92,4 +92,4 @@ export default federatedConfig;
 
 ## Try the application :rocket:
 
-Start both applications, you should now see an additional link in the navigation menu. Click on the link to navigate to your remote module page!
+Start both applications, and you should notice an additional link in the navigation menu. Click on the link to navigate to the page of your new remote module!

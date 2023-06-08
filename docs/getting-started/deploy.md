@@ -4,13 +4,13 @@ order: 10
 
 # Deploy
 
-The deployment of a federated application could vary based on many factors, including the choice of the hosting provider. Therefore, we don't recommend any specific deployment setup.
+The deployment process for a federated application can vary depending on various factors, including the chosen hosting provider. Therefore, we do not recommend any specific deployment setup.
 
-Still, there are a few things that must be configured independently of your deployment choices.
+However, there are a few essential configurations that need to be made regardless of your deployment choices.
 
 ## Default redirect
 
-To support direct page hits, add the following redirect to the host application hosting provider:
+To enable support for direct page hits, you need to add the following redirect rule to your host application's hosting provider:
 
 ```
 /* /index.html 200

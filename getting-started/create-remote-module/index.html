@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.3.739547626776">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.3.739567537894">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.0.3">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Create a remote module</title>
     <meta name="title" content="Create a remote module">
-    <meta name="description" content="Remote modules are modules that are not part of the current build but are loaded at runtime from a remote server." />
+    <meta name="description" content="Remote modules are modules that are not included in the host application build but are instead loaded at runtime" />
 
     <!-- Canonical -->
     <link rel="canonical" href="https://workleap.github.io/wl-squide/getting-started/create-remote-module/" />
@@ -21,22 +21,22 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://workleap.github.io/wl-squide/getting-started/create-remote-module/">
     <meta property="og:title" content="Create a remote module">
-    <meta property="og:description" content="Remote modules are modules that are not part of the current build but are loaded at runtime from a remote server.">
+    <meta property="og:description" content="Remote modules are modules that are not included in the host application build but are instead loaded at runtime">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://workleap.github.io/wl-squide/getting-started/create-remote-module/">
     <meta property="twitter:title" content="Create a remote module">
-    <meta property="twitter:description" content="Remote modules are modules that are not part of the current build but are loaded at runtime from a remote server.">
+    <meta property="twitter:description" content="Remote modules are modules that are not included in the host application build but are instead loaded at runtime">
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.0.3.739547626776" rel="stylesheet" />
+    <link href="../../resources/css/retype.css?v=3.0.3.739567537894" rel="stylesheet" />
 
-    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.3.739547626776" data-turbo-eval="false" defer></script>
+    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.3.739567537894" data-turbo-eval="false" defer></script>
     <script type="text/javascript" src="../../resources/js/retype.js?v=3.0.3" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.3.739547626776" data-turbo-eval="false" defer></script>
-    <script id="prism-js" type="text/javascript" src="../../resources/js/prism.js?v=3.0.3.739547626776" defer></script>
+    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.3.739567537894" data-turbo-eval="false" defer></script>
+    <script id="prism-js" type="text/javascript" src="../../resources/js/prism.js?v=3.0.3.739567537894" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -268,7 +268,7 @@
         <span>Create a remote module</span>
     </h1>
 </doc-anchor-target>
-<p>Remote modules are modules that are not part of the current build but are <strong>loaded at runtime</strong> from a remote server. They are useful because they enable teams to be <strong>fully autonomous</strong> by <strong>deploying</strong> their modules <strong>independently</strong> from the other parts of the application.</p>
+<p>Remote modules are modules that are not included in the host application build but are instead <strong>loaded at runtime</strong> from a remote server. They provide a way for teams to be <strong>fully autonomous</strong> by <strong>independently deploying</strong> their modules without relying on the other parts of the application.</p>
 <p>Let&#x27;s add our first remote module!</p>
 <doc-anchor-target id="install-the-packages">
     <h2>
@@ -276,7 +276,7 @@
         <span>Install the packages</span>
     </h2>
 </doc-anchor-target>
-<p>Create a new project (we&#x27;ll call ours <code v-pre>remote-module</code>), then open a terminal at the root of the newly created project and install the following packages:</p>
+<p>Create a new project (we&#x27;ll refer to ours as <code v-pre>remote-module</code>), then open a terminal at the root of the newly created project and install the following packages:</p>
 <doc-tabs>
 <doc-tab id="pnpm">
 <template #title>pnpm</template>
@@ -383,7 +383,7 @@ export default federatedConfig;</code></pre>
         <span>Try the application <span class="docs-emoji">&#x1F680;</span></span>
     </h2>
 </doc-anchor-target>
-<p>Start both applications, you should now see an additional link in the navigation menu. Click on the link to navigate to your remote module page!</p>
+<p>Start both applications, and you should notice an additional link in the navigation menu. Click on the link to navigate to the page of your new remote module!</p>
 
                                 
                                 <!-- Required only on API pages -->

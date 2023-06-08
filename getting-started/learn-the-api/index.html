@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.3.739547626776">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.3.739567537894">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.0.3">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Learn the API</title>
     <meta name="title" content="Learn the API">
-    <meta name="description" content="Now that we've created an host application, loaded a few modules and registered routes and navigation items, let's dive into the APIs that are..." />
+    <meta name="description" content="Now that we've created a host application, loaded a few modules and registered routes and navigation items, let's delve into the APIs provided by..." />
 
     <!-- Canonical -->
     <link rel="canonical" href="https://workleap.github.io/wl-squide/getting-started/learn-the-api/" />
@@ -21,22 +21,22 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://workleap.github.io/wl-squide/getting-started/learn-the-api/">
     <meta property="og:title" content="Learn the API">
-    <meta property="og:description" content="Now that we've created an host application, loaded a few modules and registered routes and navigation items, let's dive into the APIs that are...">
+    <meta property="og:description" content="Now that we've created a host application, loaded a few modules and registered routes and navigation items, let's delve into the APIs provided by...">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://workleap.github.io/wl-squide/getting-started/learn-the-api/">
     <meta property="twitter:title" content="Learn the API">
-    <meta property="twitter:description" content="Now that we've created an host application, loaded a few modules and registered routes and navigation items, let's dive into the APIs that are...">
+    <meta property="twitter:description" content="Now that we've created a host application, loaded a few modules and registered routes and navigation items, let's delve into the APIs provided by...">
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.0.3.739547626776" rel="stylesheet" />
+    <link href="../../resources/css/retype.css?v=3.0.3.739567537894" rel="stylesheet" />
 
-    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.3.739547626776" data-turbo-eval="false" defer></script>
+    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.3.739567537894" data-turbo-eval="false" defer></script>
     <script type="text/javascript" src="../../resources/js/retype.js?v=3.0.3" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.3.739547626776" data-turbo-eval="false" defer></script>
-    <script id="prism-js" type="text/javascript" src="../../resources/js/prism.js?v=3.0.3.739547626776" defer></script>
+    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.3.739567537894" data-turbo-eval="false" defer></script>
+    <script id="prism-js" type="text/javascript" src="../../resources/js/prism.js?v=3.0.3.739567537894" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -268,7 +268,7 @@
         <span>Learn the API</span>
     </h1>
 </doc-anchor-target>
-<p>Now that we&#x27;ve created an host application, loaded a few modules and registered routes and navigation items, let&#x27;s dive into the APIs that are available with this shell.</p>
+<p>Now that we&#x27;ve created a host application, loaded a few modules and registered routes and navigation items, let&#x27;s delve into the APIs provided by this shell.</p>
 <div class="flex mb-6">
     <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
     <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
@@ -282,7 +282,7 @@
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>For an exhaustive list of <code v-pre>@squide</code> API, have a look at the <a href="../../references/#api">References</a> section.</p>
+<p>For a comprehensive list of the <code v-pre>@squide</code> API, refer to the <a href="../../references/#api">References</a> section.</p>
         </div>
     </div>
 </div>
@@ -292,8 +292,8 @@
         <span>Logging</span>
     </h2>
 </doc-anchor-target>
-<p><code v-pre>@squide</code> comes with a native logging feature integrated with the <a href="../../references/runtime/runtime-class/">Runtime</a> class and the <a href="../../references/runtime/uselogger/">useLogger</a> hook.</p>
-<p>First, register your own custom logger by implementing the <a href="../../references/logging/logger/">Logger</a> interface or with <code v-pre>@squide</code> native <a href="../../references/logging/consolelogger/">ConsoleLogger</a>:</p>
+<p><code v-pre>@squide</code> includes a built-in logging feature that integrates with the <a href="../../references/runtime/runtime-class/">Runtime</a> class and the <a href="../../references/runtime/uselogger/">useLogger</a> hook.</p>
+<p>First, register your own custom logger by implementing the <a href="../../references/logging/logger/">Logger</a> interface or register <code v-pre>@squide</code> built-in <a href="../../references/logging/consolelogger/">ConsoleLogger</a>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { Runtime, ConsoleLogger, type LogLevel } from &quot;@squide/react-router&quot;;
@@ -302,7 +302,7 @@ const runtime = new Runtime({
     loggers: [new ConsoleLogger(LogLevel.debug)]
 });</code></pre>
 </doc-codeblock></div>
-<p>Then, log entries any parts of your federated application with the <code v-pre>useLogger</code> hook:</p>
+<p>Then, log entries from any parts of your federated application with the <code v-pre>useLogger</code> hook:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { useLogger } from &quot;@squide/react-router&quot;;
 
@@ -317,7 +317,7 @@ logger.debug(&quot;Hello&quot;, { world: &quot;!&quot; });</code></pre>
         <span>Messaging</span>
     </h2>
 </doc-anchor-target>
-<p>It&#x27;s important that the parts of a federated application remains loosely coupled. To help with that, <code v-pre>@squide</code> offers a native <a href="../../references/messaging/eventbus/">Event Bus</a> functionality.</p>
+<p>It&#x27;s crucial that the parts of a federated application remains loosely coupled. To help with that, <code v-pre>@squide</code> offers a built-in <a href="../../references/messaging/eventbus/">Event Bus</a>.</p>
 <p>First, listen to an event with the <a href="../../references/messaging/useeventbuslistener/">useEventBusListener</a> hook:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { useCallback } from &quot;react&quot;;
@@ -337,6 +337,7 @@ const dispatch = useEventBusDispatcher();
 
 dispatch(&quot;foo&quot;, &quot;bar&quot;);</code></pre>
 </doc-codeblock></div>
+<p>You can use the event bus to enable various communication scenarios, such as notifying components of state changes, broadcasting messages across modules, or triggering actions based on specific events.</p>
 <p>The event bus is also available from the <a href="../../references/runtime/runtime-class/">Runtime</a> instance.</p>
 <doc-anchor-target id="session">
     <h2>
@@ -344,8 +345,8 @@ dispatch(&quot;foo&quot;, &quot;bar&quot;);</code></pre>
         <span>Session</span>
     </h2>
 </doc-anchor-target>
-<p>Most of our applications (if not all) will eventually require the user to authenticate. To support that, <code v-pre>@squide</code> <a href="../../references/runtime/runtime-class/">Runtime</a> class accepts a <a href="../../references/fakes/sessionmanager/#integrate-with-a-runtime-instance">sessionAccessor</a> function that is made available to every module of the application once the registration flow is completed.</p>
-<p>First, define a <code v-pre>sessionAccessor</code> function:</p>
+<p>Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the <code v-pre>@squide</code> <a href="../../references/runtime/runtime-class/">Runtime</a> class accepts a <a href="../../references/fakes/sessionmanager/#integrate-with-a-runtime-instance">sessionAccessor</a> function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.</p>
+<p>First, let&#x27;s define a <code v-pre>sessionAccessor</code> function:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/session.ts</div>
 <pre class="language-typescript"><code v-pre class="language-typescript">import type { SessionAccessorFunction } from &quot;@squide/react-router&quot;;
@@ -369,7 +370,7 @@ const sessionAccessor: SessionAccessorFunction = () =&gt; {
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>Our security department reminds you to not use a fake <code v-pre>SessionManager</code> in a production application <span class="docs-emoji">&#x1F60A;</span></p>
+<p>Our security department reminds you to refrain from using a fake <code v-pre>SessionManager</code> in a production application <span class="docs-emoji">&#x1F60A;</span></p>
         </div>
     </div>
 </div>
@@ -383,7 +384,7 @@ const runtime = new Runtime({
     sessionAccessor
 });</code></pre>
 </doc-codeblock></div>
-<p>Finally, retrieve the session from any parts of the application with the <a href="../../references/runtime/usesession/">useSession</a> hook:</p>
+<p>Finally, access the session from any parts of the application with the <a href="../../references/runtime/usesession/">useSession</a> hook:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { useSession } from &quot;@squide/react-router&quot;;
 
@@ -402,7 +403,7 @@ const isAuthenticated = useIsAuthenticated();</code></pre>
         <span>Services</span>
     </h2>
 </doc-anchor-target>
-<p><code v-pre>@squide</code> offers a few built-in services, however, by no mean these services alone can support the needs of every mature application. That&#x27;s why custom services can be added to the shell <a href="../../references/runtime/runtime-class/">Runtime</a>.</p>
+<p>While <code v-pre>@squide</code> provides a range of built-in functionalities, by no mean these alone can support the needs of every mature application. Therefore, the shell <a href="../../references/runtime/runtime-class/">Runtime</a> allows the addition of custom services.</p>
 <p>First, make the service available to every part of the application by passing a service instance to the <code v-pre>Runtime</code> instance:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/boostrap.tsx</div>
@@ -415,7 +416,7 @@ const runtime = new Runtime({
     }
 });</code></pre>
 </doc-codeblock></div>
-<p>Then, retrieve the service instance from anywhere with the <a href="../../references/runtime/useservice/">useService</a> hook:</p>
+<p>Then, access the service instance from anywhere with the <a href="../../references/runtime/useservice/">useService</a> hook:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { useService } from &quot;@squide/react-router&quot;;
 import { type UserService } from &quot;@sample/shared&quot;;

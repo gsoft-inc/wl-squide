@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.3.739464517557">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.3.739547626776">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.0.3">
@@ -31,12 +31,12 @@
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.0.3.739464517557" rel="stylesheet" />
+    <link href="../../resources/css/retype.css?v=3.0.3.739547626776" rel="stylesheet" />
 
-    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.3.739464517557" data-turbo-eval="false" defer></script>
+    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.3.739547626776" data-turbo-eval="false" defer></script>
     <script type="text/javascript" src="../../resources/js/retype.js?v=3.0.3" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.3.739464517557" data-turbo-eval="false" defer></script>
-    <script id="prism-js" type="text/javascript" src="../../resources/js/prism.js?v=3.0.3.739464517557" defer></script>
+    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.3.739547626776" data-turbo-eval="false" defer></script>
+    <script id="prism-js" type="text/javascript" src="../../resources/js/prism.js?v=3.0.3.739547626776" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -270,16 +270,19 @@
 </doc-anchor-target>
 <p>Most application pages usually share a <strong>common layout</strong> with at least: a navigation bar, a user profile menu and a main content section. In a <a href="https://reactrouter.com/en/main">React Router&#x27;s</a> application, this common layout is what we call a <code v-pre>RootLayout</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">App.tsx</div>
-<pre class="language-tsx" data-line="13,18,21,27,33"><code v-pre class="language-tsx">import { useMemo } from &quot;react&quot;;
+<div class="codeblock-title">host/src/App.tsx</div>
+<pre class="language-tsx" data-line="16,21,24,30,36"><code v-pre class="language-tsx">import { useMemo } from &quot;react&quot;;
 import { createBrowserRouter, RouterProvider } from &quot;react-router-dom&quot;;
 import { useRoutes } from &quot;@squide/react-router&quot;;
+import { useAreRemotesReady } from &quot;@squide/webpack-module-federation&quot;;
 import { RootLayout } from &quot;./RootLayout.tsx&quot;;
 import { RootErrorBoundary } from &quot;./RootErrorBoundary.tsx&quot;;
 import { AuthenticationBoundary } from &quot;./AuthenticationBoundary.tsx&quot;;
 import { Home } from &quot;./Home.tsx&quot;;
 
 export function App() {
+    const isReady = useAreRemotesReady();
+
     const routes = useRoutes();
 
     const router = useMemo(() =&gt; {
@@ -305,6 +308,10 @@ export function App() {
         });
     }, [routes]);
 
+    if (!isReady) {
+        return &lt;div&gt;Loading...&lt;/div&gt;;
+    }
+
     return (
         &lt;RouterProvider
             router={router}
@@ -314,7 +321,7 @@ export function App() {
 }</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">RootLayout.tsx</div>
+<div class="codeblock-title">host/src/RootLayout.tsx</div>
 <pre class="language-tsx"><code v-pre class="language-tsx">import { Suspense } from &quot;react&quot;;
 import { Outlet } from &quot;react-router-dom&quot;;
 import { useNavigationItems, useRenderedNavigationItems } from &quot;@squide/react-router&quot;;
@@ -342,7 +349,7 @@ export function RootLayout() {
 </doc-codeblock></div>
 <p>In the previous code sample, the <code v-pre>RootLayout</code> is the default layout for the <em>home page</em> and every page (route) registered by a module.</p>
 <p>For most pages, this is the behavior expected by the author. However, for pages such as a <em>login page</em>, the default <code v-pre>RootLayout</code> isn&#x27;t a good fit because a <em>login page</em> is not bound to a user session (the user is not even authenticated yet).</p>
-<p>Those pages in need of a different layout require a mechanism to pull out their route declaration at the root of the <a href="https://reactrouter.com/en/main">React Router&#x27;s</a> router instance, before the <code v-pre>RootLayout</code> is declared.</p>
+<p>Those pages in need of a different layout require a mechanism to pull out their route declaration at the root of the React Router&#x27;s <a href="https://reactrouter.com/en/main/routers/create-browser-router">router instance</a>, before the <code v-pre>RootLayout</code> is declared.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-none" data-line="2"><code v-pre class="language-none">root
 ├── Login page   &lt;---------------- Raise the page here
@@ -352,17 +359,20 @@ export function RootLayout() {
 </doc-codeblock></div>
 <p>Package managers supporting workspaces such as <a href="https://classic.yarnpkg.com/">Yarn</a> and <a href="https://docs.npmjs.com/cli">NPM</a> call this mechanism &quot;hoisting&quot;, which means &quot;raise (something) by means of ropes and pulleys&quot;. This is exactly what we are trying to achieve here.</p>
 <p><code v-pre>@squide</code> has a built-in <a href="../../references/routing/usehoistedroutes/">useHoistedRoutes</a> hook capable of raising module routes marked as <code v-pre>hoist</code> at the root of the routes array, before the <code v-pre>RootLayout</code> declaration. Thus, an hoisted page will not be wrapped by the <code v-pre>RootLayout</code> and will have full control over its rendering.</p>
-<p>To hoist module pages, first transform the module routes with the <a href="../../references/routing/usehoistedroutes/">useHoistedRoutes</a> hook before creating the router instance:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">App.tsx</div>
-<pre class="language-tsx" data-line="12-31,35,39"><code v-pre class="language-tsx">import { useMemo } from &quot;react&quot;;
+<p>To hoist module pages, first transform the module routes with the <code v-pre>useHoistedRoutes</code> hook before creating the router instance:</p>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">host/src/App.tsx</div>
+<pre class="language-tsx" data-line="15-34,38,42"><code v-pre class="language-tsx">import { useMemo } from &quot;react&quot;;
 import { createBrowserRouter, RouterProvider } from &quot;react-router-dom&quot;;
 import { useRoutes, useHoistedRoutes, type Route } from &quot;@squide/react-router&quot;;
+import { useAreRemotesReady } from &quot;@squide/webpack-module-federation&quot;;
 import { RootLayout } from &quot;./RootLayout.tsx&quot;;
 import { AuthenticationBoundary } from &quot;./AuthenticationBoundary.tsx&quot;;
 import { Home } from &quot;./Home.tsx&quot;;
 
 export function App() {
+    const isReady = useAreRemotesReady();
+
     const routes = useRoutes();
 
     // Non hoisted routes will still be bound to the root layout.
@@ -394,6 +404,10 @@ export function App() {
     const router = useMemo(() =&gt; {
         return createBrowserRouter(hoistedRoutes);
     }, [hoistedRoutes]);
+
+    if (!isReady) {
+        return &lt;div&gt;Loading...&lt;/div&gt;;
+    }
 
     return (
         &lt;RouterProvider

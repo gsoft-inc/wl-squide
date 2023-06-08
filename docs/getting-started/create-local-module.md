@@ -4,23 +4,23 @@ order: 80
 
 # Create a local module
 
-Local modules are regular modules that are part of the **host application build**. It's an independent module exposing a `registration` function to the host application bootstrapping code. It can be a standalone package, a sibling project (when in a monorepo setup), or even a local folder of the host application.
+Local modules are regular modules that are part of the **host application build**. They are independent modules that expose a `registration` function to the host application's bootstrapping code. A local module can be a standalone package, a sibling project (in a monorepo setup), or even a local folder within the host application.
 
 Local modules are useful when migrating from a monolithic application to a distributed application or when launching a new product with an unrefined business domain.
 
-Let's add one to show how it's done!
+Let's add a local module to demonstrate how it's done!
 
-> Loading remote modules at runtime with [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) is the reason why this shell exists and it is what we recommend products to aim for. It enables teams to be **fully autonomous** by **deploying** their modules **independently** from the other parts of the application.
+> Loading remote modules at runtime with [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) is the primary focus of this shell and our recommend approach. It empowers teams to be **fully autonomous** by **deploying** their modules **independently** from the other parts of the application.
 >
-> However, we understand that teams working on mature products will most likely prefer to **gradually migrate** towards a distributed architecture by first extracting subdomains into independent modules in their current monolithic setup before fully committing to remote modules loaded at runtime.
+> However, we recognize that teams working on mature products may prefer to **gradually migrate** to a distributed architecture by first extracting subdomains into independent modules within their current monolithic setup before fully committing to remote modules loaded at runtime.
 >
-> To facilitate the transition, this shell also supports local modules loaded at build time.
+> To facilitate this transition, this shell also supports local modules that are loaded at build time.
 >
-> Both remote and local modules can be used in the same application as this shell supports dual bootstrapping. For example, an application could be configured to load a few remote modules at runtime and also load a few local modules at build time.
+> Both remote and local modules can be used within same application as this shell supports dual bootstrapping. For example, an application can be configured to load a few remote modules at runtime while also loading a few local modules at build time.
 
 ## Install the packages
 
-Create a new project (we'll call ours `local-module`), then open a terminal at the root of the newly created project and install the following packages:
+Create a new project (we'll refer to ours as `local-module`), then open a terminal at the root of the newly created project and install the following packages:
 
 +++ pnpm
 ```bash
@@ -129,4 +129,4 @@ root.render(
 
 ## Try the application :rocket:
 
-Start both applications, you should now see a third link in the navigation menu. Click on the link to navigate to your local module page!
+Start both applications, and you should now notice a third link in the navigation menu. Click on the link to navigate to the page of your new local module!

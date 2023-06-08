@@ -4,11 +4,11 @@ order: 80
 
 # Add authentication
 
-Most of our applications (if not all) will eventually require the user to authenticate. To support that, `@squide` [Runtime](/references/runtime/runtime-class.md) class accepts a [sessionAccessor](/references/fakes/SessionManager.md#integrate-with-a-runtime-instance) function that is made available to every module of the application once the registration flow is completed.
+Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the `@squide` [Runtime](/references/runtime/runtime-class.md) class accepts a [sessionAccessor](/references/fakes/SessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
 
-When combined with a [React Router's](https://reactrouter.com/en/main) authentication boundary and a login page, the shared `sessionAccessor` function is a great asset to handle authentication concerns.
+When combined with a [React Router's](https://reactrouter.com/en/main) authentication boundary and a login page, the shared `sessionAccessor` function is a great asset to manage authentication concerns.
 
-First, define a `sessionAccessor` function:
+First, let's define a `sessionAccessor` function:
 
 ```ts host/src/session.ts
 import type { SessionAccessorFunction } from "@squide/react-router";
@@ -22,7 +22,7 @@ const sessionAccessor: SessionAccessorFunction = () => {
 ```
 
 !!!warning
-Our security department reminds you to not use a fake `SessionManager` in a production application :blush:
+Our security department reminds you to refrain from using a fake `SessionManager` in a production application :blush:
 !!!
 
 Then create a [Runtime](/references/runtime/runtime-class.md) instance with the new `sessionAccessor` function:
@@ -191,8 +191,7 @@ export function App() {
 }
 ```
 
-Now, start the application and try navigating to the root page (`/`). You should be redirected to the `/login` page. Login with `"temp"` / `"temp"`, you should now be redirected to the root page.
-
+Now, start the application and attempt navigating to the root page (`/`). You will be redirected to the `/login` page. Login with `"temp"` / `"temp"`, you will be redirected to the root page.
 
 
 

@@ -225,7 +225,7 @@ runtime.registerNavigationItems([
 
 ```ts
 // Write a debug log entry.
-// If the runtime has been instanciated with multiple logger instances, every logger instance will be be called.
+// If the runtime has been instanciated with multiple logger instances, every logger instance will be invoked.
 runtime.logger.debug("Hello!");
 ```
 

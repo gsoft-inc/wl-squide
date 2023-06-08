@@ -1,9 +1,9 @@
 # useHoistedRoutes
 
-Allow modules to register pages outside of the host application's pages boundaries. Unlike a regular page, an hoisted page is added at the root of the router, meaning before the host application root layout, root error boundary and even root authentication boundary. Thus, an hoisted page has full control over its rendering.
+Allow modules to register pages outside of the host application's elements boundary. Unlike a regular page, an hoisted page is added at the root of the router, meaning before the host application root layout, root error boundary and even root authentication boundary. Thus, an hoisted page has full control over its rendering.
 
 !!!warning
-By declaring a page as hoisted, other parts of the application will not be isolated anymore from this page's failures as the page will be rendered outside of the host application's root error boundary. To avoid breaking the entire application when an hoisted page cause unmanaged errors, it is highly recommended to declare a React Router [errorElement](https://reactrouter.com/en/main/route/error-element) property on every hoisted page.
+By declaring a page as hoisted, other parts of the application will not be isolated anymore from this page's failures as the page will be rendered outside of the host application's root error boundary. To avoid breaking the entire application when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router's [errorElement](https://reactrouter.com/en/main/route/error-element) property for each hoisted page.
 !!!
 
 ## Reference

@@ -1,6 +1,6 @@
 # registerRemoteModules
 
-Register one or many remote module(s). During registration, the module `register` function will be called with a `Runtime` instance and an optional `context` object.
+Register one or many remote module(s). During the registration process, the module `register` function will be invoked with a `Runtime` instance and an optional `context` object.
 
 > A *remote module* is a module that is not part of the current build but is **loaded at runtime** from a remote server.
 

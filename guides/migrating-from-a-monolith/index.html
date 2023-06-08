@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.3.739569642172">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.3.739572434883">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.0.3">
@@ -31,11 +31,11 @@
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.0.3.739569642172" rel="stylesheet" />
+    <link href="../../resources/css/retype.css?v=3.0.3.739572434883" rel="stylesheet" />
 
-    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.3.739569642172" data-turbo-eval="false" defer></script>
+    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.3.739572434883" data-turbo-eval="false" defer></script>
     <script type="text/javascript" src="../../resources/js/retype.js?v=3.0.3" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.3.739569642172" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.3.739572434883" data-turbo-eval="false" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -267,15 +267,10 @@
         <span>Migrating from a monolithic application</span>
     </h1>
 </doc-anchor-target>
-<p>Transforming an existing monolithic application into a distributed architecture is often more challenging than building a new federated application from scratch.</p>
-<p>However, it is not advisable to start a new application with a distributed architecture since teams typically lack sufficient understanding of the business domain at that stage. Therefore, for most applications, it makes sense to begin as a monolithic application and transition to a federated architecture later.</p>
-<p>With the introduction of local modules, @squide offers an alternative approach that lies between the previous solutions. Instead of immediately embracing Team Topology&#x27;s stream-aligned teams and striving for full team autonomy across the board, local modules allow teams to start with a monorepo setup and add independent local packages (modules) for each expected value stream.</p>
-<p>By utilizing a monorepo, teams can easily add or remove local packages, enabling reorganization of value streams without fear. Moreover, teams won&#x27;t need to invest prematurely in a distributed CI/CD infrastructure since local modules are built as part of the host application. This approach provides teams with the flexibility to transition to a federated application once the costs can be justified.</p>
-<p>If your project is already a monolithic application with a polyrepo setup and you aim to migrate to a distributed architecture, we recommend a decoupling-first strategy using local modules and a monorepo setup.</p>
-<p>It&#x27;s easier to build a new federated application from scratch than retrofitting an existing <a href="https://en.wikipedia.org/wiki/Monolithic_application">monolithic application</a> into a distributed architecture.</p>
+<p>Transforming an existing <a href="https://en.wikipedia.org/wiki/Monolithic_application">monolithic application</a> into a distributed architecture is often more challenging than building a new federated application from scratch.</p>
 <p>However, it&#x27;s also a <strong>bad idea</strong> to <strong>start</strong> a new application <strong>with a distributed architecture</strong> since teams typically lack sufficient understanding of the business domain at that stage. Therefore, for most applications, it makes sense to <strong>begin as monolithic application</strong> and transition to a distributed architecture later.</p>
 <p>With the introduction of <a href="../../references/registration/registerlocalmodules/">local modules</a>, <code v-pre>@squide</code> offers an alternative approach that lies between prior solutions. Instead of immediately embracing Team Topology&#x27;s <a href="https://www.shortform.com/blog/stream-aligned-teams/">stream-aligned teams</a> and striving for full team autonomy across the board, local modules allow teams to start with a <a href="https://en.wikipedia.org/wiki/Monorepo">monorepo</a> setup and add independent local packages (modules) for each expected <a href="https://en.wikipedia.org/wiki/Value_stream">value stream</a>.</p>
-<p>Since adding/deleting local packages in a monorepo setup is pretty cheap, teams can freely reorganize their value streams along the way and won&#x27;t <strong>preemptively invest into a distributed</strong> CI/CD <strong>infrastructure</strong> as local modules are part of the host application build. With independent value streams, teams will be well-positioned to transition toward a federated application once they can justify the cost.</p>
+<p>Since adding/deleting local packages in a monorepo setup is pretty cheap, teams can freely reorganize their value streams along the way and won&#x27;t <strong>preemptively invest into a distributed</strong> CI/CD <strong>infrastructure</strong> as local modules are part of the host application build. With independent <strong>but local</strong> value streams, teams will be well-positioned to transition toward a federated application once they can justify the cost.</p>
 <p>If your project is <strong>already a monolithic application</strong> with a <a href="https://github.com/joelparkerhenderson/monorepo-vs-polyrepo#what-is-polyrepo">polyrepo setup</a> and you aim to migrate to a distributed architecture, we recommend a decoupling-first strategy using local modules and a monorepo setup.</p>
 <doc-anchor-target id="decoupling-first">
     <h2>

@@ -6,7 +6,7 @@ expanded: true
 
 # Getting started
 
-Welcome to the `@squide` documentation. This section will give you an [overview](#overview) of `@squide` and a [quick start](create-host.md) to create a new federated application from nothing.
+Welcome to the `@squide` documentation. This section will give you an [overview](#overview) of the shell and a [quick start](create-host.md) to create a new federated application from nothing.
 
 !!!warning The prefered way to create a new federated application for the [Workleap](https://workleap.com/) platform is by using our [foundry-cli](https://github.com/workleap/wl-foundry-cli).
 +++ pnpm
@@ -42,7 +42,7 @@ With this mecanism in place, all federated parts of an application can now be lo
 
 By sharing the same browsing context (e.g. the same [Document](https://developer.mozilla.org/en-US/docs/Web/API/Document), the same [Window object](https://developer.mozilla.org/en-US/docs/Web/API/Window), and the same [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)), federated parts are now unified and **form a single application**, which solves the second issues.
 
-With [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/), we believe that we will be able to develop federated applications that feels like monolithic applications :rocket:
+With Webpack Module Federation, we believe that we will be able to develop federated applications that feels like monolithic applications :rocket:
 
 ### React Router
 
@@ -56,7 +56,7 @@ The most distinctive aspect of this shell is the conventions it enforces to load
 
 2. During it's registration, a module will receive [the shared services](/references/runtime/runtime-class.md) of the federation application and use them to dynamically register its [routes](/references/runtime/runtime-class.md#register-routes) and [navigation items](/references/runtime/runtime-class.md#register-navigation-items).
 
-3. Once [all the remote modules are registered](/references/registration/useAreRemotesReady.md), the host application will create a React Router instance with the registered routes and [render a navigation menu](/references/routing/useRenderedNavigationItems.md) with the registered navigation items.
+3. Once [all the remote modules are registered](/references/registration/useAreRemotesReady.md), the host application will create a React Router [instance](https://reactrouter.com/en/main/routers/create-browser-router) with the registered routes and [render a navigation menu](/references/routing/useRenderedNavigationItems.md) with the registered navigation items.
 
 That's it in a nutshell. Of course, there's more to it, but those are the main ideas.
 
@@ -78,8 +78,8 @@ While developing the [API](/references) of `@squide`, we had a few guiding princ
 
 - A [shared dependency](https://webpack.js.org/plugins/module-federation-plugin/#sharing-hints) cannot be tree-shaken. Since remote modules are loaded at runtime, [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin) can't infer which parts of a shared dependency will be used by the application modules. Therefore, tree-shaking is disabled for shared dependencies.
 
-- React's [Fast Refresh](https://github.com/pmmmwh/react-refresh-webpack-plugin) is not supported by [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/). It does support [Webpack Hot Module Replacement](https://webpack.js.org/concepts/hot-module-replacement/) thought.
+- React's [Fast Refresh](https://github.com/pmmmwh/react-refresh-webpack-plugin) is not supported by Webpack Module Federation. It does support [Webpack Hot Module Replacement](https://webpack.js.org/concepts/hot-module-replacement/) thought.
 
-> Those limitations are not specific to `@squide`, they are specific to [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/).
+> Those limitations are not specific to `@squide`, they are specific to Webpack Module Federation.
 
 

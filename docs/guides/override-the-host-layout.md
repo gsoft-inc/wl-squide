@@ -6,16 +6,19 @@ order: 100
 
 Most application pages usually share a **common layout** with at least: a navigation bar, a user profile menu and a main content section. In a [React Router's](https://reactrouter.com/en/main) application, this common layout is what we call a `RootLayout`:
 
-```tsx !#13,18,21,27,33 App.tsx
+```tsx !#16,21,24,30,36 host/src/App.tsx
 import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useRoutes } from "@squide/react-router";
+import { useAreRemotesReady } from "@squide/webpack-module-federation";
 import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { Home } from "./Home.tsx";
 
 export function App() {
+    const isReady = useAreRemotesReady();
+
     const routes = useRoutes();
 
     const router = useMemo(() => {
@@ -41,6 +44,10 @@ export function App() {
         });
     }, [routes]);
 
+    if (!isReady) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <RouterProvider
             router={router}
@@ -50,7 +57,7 @@ export function App() {
 }
 ```
 
-```tsx RootLayout.tsx
+```tsx host/src/RootLayout.tsx
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 import { useNavigationItems, useRenderedNavigationItems } from "@squide/react-router";
@@ -81,7 +88,7 @@ In the previous code sample, the `RootLayout` is the default layout for the *hom
 
 For most pages, this is the behavior expected by the author. However, for pages such as a *login page*, the default `RootLayout` isn't a good fit because a *login page* is not bound to a user session (the user is not even authenticated yet).
 
-Those pages in need of a different layout require a mechanism to pull out their route declaration at the root of the [React Router's](https://reactrouter.com/en/main) router instance, before the `RootLayout` is declared.
+Those pages in need of a different layout require a mechanism to pull out their route declaration at the root of the React Router's [router instance](https://reactrouter.com/en/main/routers/create-browser-router), before the `RootLayout` is declared.
 
 ``` !#2
 root
@@ -95,17 +102,20 @@ Package managers supporting workspaces such as [Yarn](https://classic.yarnpkg.co
 
 `@squide` has a built-in [useHoistedRoutes](/references/routing/useHoistedRoutes.md) hook capable of raising module routes marked as `hoist` at the root of the routes array, before the `RootLayout` declaration. Thus, an hoisted page will not be wrapped by the `RootLayout` and will have full control over its rendering.
 
-To hoist module pages, first transform the module routes with the [useHoistedRoutes](/references/routing/useHoistedRoutes.md) hook before creating the router instance:
+To hoist module pages, first transform the module routes with the `useHoistedRoutes` hook before creating the router instance:
 
-```tsx !#12-31,35,39 App.tsx
+```tsx #15-34,38,42 host/src/App.tsx
 import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useRoutes, useHoistedRoutes, type Route } from "@squide/react-router";
+import { useAreRemotesReady } from "@squide/webpack-module-federation";
 import { RootLayout } from "./RootLayout.tsx";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { Home } from "./Home.tsx";
 
 export function App() {
+    const isReady = useAreRemotesReady();
+
     const routes = useRoutes();
 
     // Non hoisted routes will still be bound to the root layout.
@@ -137,6 +147,10 @@ export function App() {
     const router = useMemo(() => {
         return createBrowserRouter(hoistedRoutes);
     }, [hoistedRoutes]);
+
+    if (!isReady) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <RouterProvider

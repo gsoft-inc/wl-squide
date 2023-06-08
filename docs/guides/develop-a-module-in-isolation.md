@@ -186,6 +186,7 @@ const isLocal = env.LOCAL === "true";
 /** @type {import("webpack").Configuration} */
 let config = {
     entry: isLocal ? "./src/index.tsx" : "./src/register.tsx",
+    ...
 };
 
 if (!isLocal) {
@@ -199,5 +200,19 @@ Start the local application by running the `dev-local` script. The federated app
 
 ## Local module
 
-Similarly to remote modules, the same isolated setup can be achieved for local modules.
+Similarly to remote modules, you can achieve the same isolated setup for local modules. The main difference is that the `webpack.config.js` file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local module do not rely on [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/).
+
+```json local-module/package.json
+{
+    "dev-local": "webpack serve --config webpack.config.js"
+}
+```
+
+```js local-module/webpack.config.js
+/** @type {import("webpack").Configuration} */
+export default {
+    entry: "./src/index.tsx",
+    ...
+};
+```
 

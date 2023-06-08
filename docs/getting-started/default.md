@@ -74,7 +74,7 @@ While developing the [API](/references) of `@squide`, we kept a few guiding prin
 
 ### Limitations
 
-[Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) comes with a few manageable limitations hat are important to consider when architecting your distributed application:
+[Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) comes with a few manageable limitations that are important to consider when architecting your distributed application:
 
 - A [shared dependency](https://webpack.js.org/plugins/module-federation-plugin/#sharing-hints) cannot be tree-shaken. Since remote modules are loaded at runtime, [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin) cannot infer which parts of a shared dependency will be used by the application modules. Therefore, tree-shaking is disabled for shared dependencies.
 

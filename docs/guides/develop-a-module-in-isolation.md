@@ -176,7 +176,7 @@ Next, add a new `dev-local` script to the `package.json` file to start the local
 }
 ```
 
-The `dev-local` script is similar to the `dev` script but introduces a `LOCAL` environment variable. This new environment variable will be utilized by the `webpack.config.js` file to conditionally setup the development server for local development in isolation or to be be consumed by an host application through the `/remoteEntry.js` entry point:
+The `dev-local` script is similar to the `dev` script but introduces a `LOCAL` environment variable. This new environment variable will be utilized by the `webpack.config.js` file to conditionally setup the development server for local development in isolation or to be consumed by a host application through the `/remoteEntry.js` entry point:
 
 ```js # remote-module/webpack.config.js
 import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";

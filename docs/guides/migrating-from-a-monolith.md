@@ -25,8 +25,8 @@ We recommend the following steps:
 
 2- Add independent local packages (modules) for every identified value stream.
 
-3- Move the monolithic application code to their corresponding newly created value stream local packages and make sure a **value stream can be developed independently** (e.g. without having to start the whole application).
+3- Move the monolithic application code to their corresponding newly created value stream local packages and make sure a value stream [can be developed independently](develop-a-module-in-isolation.md) (e.g. without having to start the whole application).
 
 4- Import and [register the local packages](/references/registration/registerLocalModules.md) (modules) into the host application.
 
-5- Finally, move from local modules to [remote modules](/references/registration/registerRemoteModules.md) and update the CI/CD pipelines to start deploying modules independently.
+5- Finally, move from local modules to [remote modules](/references/registration/registerRemoteModules.md) and update your CI/CD pipelines to start deploying modules independently.

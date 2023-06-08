@@ -24,7 +24,7 @@ const runtime = new Runtime({
 });
 ```
 
-Then, log entries any parts of your federated application with the [useLogger](/references/runtime/useLogger.md) hook:
+Then, log entries any parts of your federated application with the `useLogger` hook:
 
 ```ts
 import { useLogger } from "@squide/react-router";
@@ -69,7 +69,7 @@ The event bus is also available from the [Runtime](/references/runtime/runtime-c
 
 Most of our applications (if not all) will eventually require the user to authenticate. To support that, `@squide` [Runtime](/references/runtime/runtime-class.md) class accepts a [sessionAccessor](/references/fakes/SessionManager.md#integrate-with-a-runtime-instance) function that is made available to every module of the application once the registration flow is completed.
 
-First, define a [sessionAccessor](/references/fakes/SessionManager.md#integrate-with-a-runtime-instance) function:
+First, define a `sessionAccessor` function:
 
 ```ts host/src/session.ts
 import type { SessionAccessorFunction } from "@squide/react-router";
@@ -119,7 +119,7 @@ The session is also available from the [Runtime](/references/runtime/runtime-cla
 
 `@squide` offers a few built-in services, however, by no mean these services alone can support the needs of every mature application. That's why custom services can be added to the shell [Runtime](/references/runtime/runtime-class.md).
 
-First, make the service available to every part of the application by passing a service instance to the [Runtime](/references/runtime/runtime-class.md) instance:
+First, make the service available to every part of the application by passing a service instance to the `Runtime` instance:
 
 ```ts host/src/boostrap.tsx
 import { Runtime } from "@squide/react-router";

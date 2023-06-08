@@ -1,0 +1,203 @@
+---
+order: 50
+---
+
+# Develop a module in isolation
+
+To develop their own independent module, a team **shouldn't be required to install the host application** or any **other modules** of the application **they do not own**. However, they should still have a means to integrate their module with the application shell (`RootLayout`, `RootErrorBoundary`, etc..) while working on their module in isolation.
+
+To achieve this, the first step is to extract the application shell from the host application. There are several approaches to accomplish this, but in this guide, we'll transform the host application into a monorepo and introduce a new local packages called `@sample/shell` for this purpose:
+
+``` !#4,8
+host
+├── packages
+├────── app
+├────── shell   <------------ New package
+├───────── src
+├─────────── RootLayout.tsx
+├─────────── RootErrorBoundary.tsx
+├─────────── useAppRouter.ts
+```
+
+## Shell package
+
+> We won't show the implementation details of the `RootLayout` and `RootErrorBoundary` in this guide as it already has been covered many times by other guides.
+
+First, let's add an `appRouter` hook to the shell package. Its purpose is to provide a **reusable router configuration** that can be utilized by both the host application and the isolated modules. By using this hook, modules developed in isolation can utilize the **same application shell and routing configuration** as the host application. 
+
+```ts shell/src/appRouter.ts
+import { useMemo, useState } from "react";
+import { createBrowserRouter } from "react-router-dom";
+import { Route, useRoutes } from "@squide/react-router";
+import { RootErrorBoundary } from "./RootErrorBoundary";
+import { RootLayout } from "./RootLayout";
+
+export interface UseAppRouterOptions {
+    rootRoutes?: Route[];
+}
+
+export function useAppRouter({ rootRoutes = [] }: UseAppRouterOptions = {}) {
+    // Reuse the same array reference through re-renders.
+    const [memoizedRootRoutes] = useState(rootRoutes);
+
+    const routes = useRoutes();
+
+    const router = useMemo(() => {
+        return createBrowserRouter([
+            {
+                element: <RootLayout />,
+                children: [
+                    {
+                        errorElement: <RootErrorBoundary />,
+                        children: [
+                            ...routes
+                        ]
+                    }
+                ]
+            },
+            ...memoizedRootRoutes
+        ]);
+    }, [routes, memoizedRootRoutes]);
+
+    return router;
+}
+```
+
+!!!info
+This guide only covers the `RootLayout` and `RootErrorBoundary` but the same goes for other shell assets such as an `AuthenticationBoundary`.
+!!!
+
+## Host application
+
+Then, let's revisit the host application and incorporate the newly introduced `useAppRouter` hook:
+
+```tsx !#10-17 host/src/App.tsx
+import { RouterProvider } from "react-router-dom";
+import { useAreRemotesReady } from "@squide/webpack-module-federation";
+import { useAppRouter } from "@sample/shell";
+
+const Login = lazy(() => import("./Login.tsx"));
+
+export function App() {
+    const isReady = useAreRemotesReady();
+
+    const router = useAppRouter({
+        rootRoutes: [
+            {
+                path: "/login",
+                element: <Login />
+            }
+        ]
+    });
+
+    if (!isReady) {
+        return <div>Loading...</div>;
+    }
+
+    return (
+        <RouterProvider
+            router={router}
+            fallbackElement={<div>Loading...</div>}
+        />
+    );
+}
+```
+
+## Remote module
+
+With our new setup in place, we can now configure the remote module to be developed in isolation. The goal is to start the module development server and render the module pages with the same layout and functionalities as if it was rendered by the host application.
+
+To begin, let's add an `index.tsx` and `App.tsx` files to the remote module project:
+
+``` !#5,6
+remote-module
+├── src
+├────── register.tsx
+├────── Home.tsx
+├────── index.tsx   <----- New file
+├────── App.tsx   <------- New file
+├── package.json
+├── webpack.config.js
+```
+
+The `index.tsx` file is similar to the `bootstrap.tsx` file of an host application but, tailored for an isolated module. The key distinction is that, since we setup the project for local development, we'll register the module with the [registerLocalModules](/references/registration/registerLocalModules.md) function instead of the [registerRemoteModules](/references/registration/registerRemoteModules.md) function:
+
+```tsx #10-12,16 remote-module/src/index.tsx
+import { createRoot } from "react-dom/client";
+import { ConsoleLogger, RuntimeContext, Runtime } from "@squide/react-router";
+import { registerLocalModules } from "@squide/webpack-module-federation";
+import { App } from "./App.tsx";
+import { register } from "./register.tsx";
+
+// Create the shell runtime.
+// Services, loggers and sessionAccessor could be reuse through a shared packages
+// or faked when in isolation.
+const runtime = new Runtime({
+    loggers: [new ConsoleLogger()]
+});
+
+// Registering the remote module as a static module because the "register" function 
+// is local when developing in isolation.
+registerStaticModules([register], runtime);
+
+const root = createRoot(document.getElementById("root"));
+
+root.render(
+    <RuntimeContext.Provider value={runtime}>
+        <App />
+    </RuntimeContext.Provider>
+);
+```
+
+The `App.tsx` file uses the newly created `useAppRouter` hook to setup [React Router](https://reactrouter.com/):
+
+```tsx !#5 App.tsx
+import { RouterProvider } from "react-router-dom";
+import { useAppRouter } from "@sample/shell";
+
+export function App() {
+    const router = useAppRouter();
+
+    return (
+        <RouterProvider
+            router={router}
+            fallbackElement={<div>Loading...</div>}
+        />
+    );
+}
+```
+
+Next, add a new `dev-local` script to the `package.json` file to start the local development server in "isolation":
+
+```json !#3 remote-module/package.json
+{
+    "dev": "webpack serve --config webpack.config.js",
+    "dev-local": "cross-env LOCAL=true webpack serve --config webpack.config.js",
+}
+```
+
+The `dev-local` script is similar to the `dev` script but introduces a `LOCAL` environment variable. This new environment variable will be utilized by the `webpack.config.js` file to conditionally setup the development server for local development in isolation or to be be consumed by an host application through the `/remoteEntry.js` entry point:
+
+```js # remote-module/webpack.config.js
+import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
+
+const isLocal = env.LOCAL === "true";
+
+/** @type {import("webpack").Configuration} */
+let config = {
+    entry: isLocal ? "./src/index.tsx" : "./src/register.tsx",
+};
+
+if (!isLocal) {
+    config = remoteTransformer(config, "remote1");
+}
+
+export default config;
+```
+
+Start the local application by running the `dev-local` script. The federated application shell should wrap the content of the index route of the module.
+
+## Local module
+
+Similarly to remote modules, the same isolated setup can be achieved for local modules.
+

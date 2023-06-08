@@ -24,39 +24,43 @@ export function App() {
         return {
             // Pathless route to declare a root layout and a root error boundary.
             element: <RootLayout />,
-            errorElement: <RootErrorBoundary />,
             children: [
                 {
-                    path: "/login",
-                    element: <Login />
-                },
-                {
-                    // Pathless route to declare an authenticated boundary.
-                    element: <AuthenticationBoundary />,
+                    errorElement: <RootErrorBoundary />,
                     children: [
                         {
-                            // Pathless route to declare an authenticated layout.
-                            element: <AuthenticatedLayout />,
+                            path: "/login",
+                            element: <Login />
+                        },
+                        {
+                            // Pathless route to declare an authenticated boundary.
+                            element: <AuthenticationBoundary />,
                             children: [
                                 {
-                                    // Pathless route to declare an error boundary inside the layout instead of outside.
-                                    // It's quite useful to prevent losing the layout when an unmanaged error occurs.
-                                    errorElement: <ModuleErrorBoundary />,
+                                    // Pathless route to declare an authenticated layout.
+                                    element: <AuthenticatedLayout />,
                                     children: [
                                         {
-                                            index: true,
-                                            element: <Home />
-                                        },
-                                        ...managedRoutes
+                                            // Pathless route to declare an error boundary inside the layout instead of outside.
+                                            // It's quite useful to prevent losing the layout when an unmanaged error occurs.
+                                            errorElement: <ModuleErrorBoundary />,
+                                            children: [
+                                                {
+                                                    index: true,
+                                                    element: <Home />
+                                                },
+                                                ...managedRoutes
+                                            ]
+                                        }
                                     ]
                                 }
                             ]
+                        },
+                        {
+                            path: "*",
+                            element: <NoMatch path={location.pathname} />
                         }
                     ]
-                },
-                {
-                    path: "*",
-                    element: <NoMatch path={location.pathname} />
                 }
             ]
         };

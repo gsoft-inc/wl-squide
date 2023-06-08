@@ -8,7 +8,7 @@ Most of our applications (if not all) will eventually require the user to authen
 
 When combined with a [React Router's](https://reactrouter.com/en/main) authentication boundary and a login page, the shared `sessionAccessor` function is a great asset to handle authentication concerns.
 
-First, define a [sessionAccessor](/references/fakes/SessionManager.md#integrate-with-a-runtime-instance) function:
+First, define a `sessionAccessor` function:
 
 ```ts host/src/session.ts
 import type { SessionAccessorFunction } from "@squide/react-router";

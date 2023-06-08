@@ -200,7 +200,7 @@ Start the local application by running the `dev-local` script. The federated app
 
 ## Local module
 
-Similarly to remote modules, you can achieve the same isolated setup for local modules. The main difference is that the `webpack.config.js` file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local module do not rely on [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/).
+Similarly to remote modules, you can achieve the same isolated setup for local modules. The main difference is that the `webpack.config.js` file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/).
 
 ```json local-module/package.json
 {

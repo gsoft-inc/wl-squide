@@ -5,7 +5,7 @@ label: Create an host app
 
 # Create an host application
 
-Let's being by creating the application that will serve as the entry point for our federated application and host the application modules.
+Let's begin by creating the application that will serve as the entry point for our federated application and host the application modules.
 
 ## Install the packages
 

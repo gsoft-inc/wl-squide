@@ -6,7 +6,7 @@ order: 90
 
 One of the key characteristics of micro-frontends implementations like [iframes](https://martinfowler.com/articles/micro-frontends.html#Run-timeIntegrationViaIframes) and subdomains is the ability to isolate failures within individual remote modules, preventing them from breaking the entire application.
 
-Howerver, in a [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) implementation, 
+However, in a [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) implementation, 
 
 With a [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) implementation, this is not the case as all the remote modules share the same browsing context (e.g. the same [Document](https://developer.mozilla.org/en-US/docs/Web/API/Document), the same [Window object](https://developer.mozilla.org/en-US/docs/Web/API/Window), and the same [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)). A failure in one remote module can potentially breaks the entire application.
 

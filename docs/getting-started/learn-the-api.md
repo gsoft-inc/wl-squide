@@ -119,7 +119,7 @@ The session is also available from the [Runtime](/references/runtime/runtime-cla
 
 ## Services
 
-While `@squide` provides a range of built-in functionalities, by no mean thes ealone can support the needs of every mature application. Therefore, the shell [Runtime](/references/runtime/runtime-class.md) allows the addition of custom services.
+While `@squide` provides a range of built-in functionalities, by no mean these alone can support the needs of every mature application. Therefore, the shell [Runtime](/references/runtime/runtime-class.md) allows the addition of custom services.
 
 First, make the service available to every part of the application by passing a service instance to the `Runtime` instance:
 

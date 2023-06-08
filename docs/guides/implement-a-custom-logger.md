@@ -73,7 +73,7 @@ const runtime = new Runtime({
 });
 ```
 
-Start the applications and open the developer tools. Then, refresh the page. You should see the following console log message:
+Start the applications and open the developer tools, then, refresh the page. You should see the following console log message:
 
 ```
 > [custom-logger] [shell] Found 1 remote modules to register.

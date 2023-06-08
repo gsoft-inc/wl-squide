@@ -10,7 +10,7 @@ Local modules are useful when migrating from a monolithic application to a distr
 
 Let's add a local module to demonstrate how it's done!
 
-> Loading remote modules at runtime with [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) is the primary focus of this shell and our recommend approach. It empowers teams to be **fully autonomous** by **deploying** their modules **independently** from the other parts of the application.
+> Loading remote modules at runtime with [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) is the primary focus of this shell and our recommended approach. It empowers teams to be **fully autonomous** by **deploying** their modules **independently** from the other parts of the application.
 >
 > However, we recognize that teams working on mature products may prefer to **gradually migrate** to a distributed architecture by first extracting subdomains into independent modules within their current monolithic setup before fully committing to remote modules loaded at runtime.
 >

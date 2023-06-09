@@ -1,5 +1,5 @@
-import { type AppContext } from "@sample/shared";
-import { ModuleRegisterFunction, type Runtime } from "@squide/react-router";
+import type { AppContext } from "@sample/shared";
+import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { lazy } from "react";
 
 const About = lazy(() => import("./About.tsx"));

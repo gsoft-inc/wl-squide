@@ -138,6 +138,14 @@ Build the sample application for development and start the dev servers.
 pnpm dev-sample
 ```
 
+### dev-docs
+
+Build the docs application for development and start the dev servers.
+
+```bash
+pnpm dev-docs
+```
+
 ### build
 
 Build the packages for release.
@@ -192,6 +200,22 @@ Reset the monorepo installation (delete `dist` folders, clear caches, delete `no
 
 ```bash
 pnpm reset
+```
+
+### check-updates
+
+Execute [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) on every package to check for packages to updates.
+
+```bash
+pnpm check-updates
+```
+
+### update-deps
+
+Execute [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) with the `-u` option to update every package dependencies to their latest version.
+
+```bash
+pnpm update-deps
 ```
 
 ## CI

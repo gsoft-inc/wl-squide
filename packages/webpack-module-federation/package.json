@@ -44,6 +44,7 @@
         "@types/react": "18.2.9",
         "@types/react-dom": "18.2.4",
         "@workleap/eslint-plugin": "1.8.1",
+        "@workleap/tsup-configs": "1.0.1",
         "@workleap/typescript-configs": "2.3.1",
         "jest": "29.5.0",
         "npm-check-updates": "16.10.12",

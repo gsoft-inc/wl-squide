@@ -12,7 +12,7 @@ To achieve this, the first step is to extract the application shell from the hos
 host
 ├── packages
 ├────── app
-├────── shell   <------------ New package
+├────── shell
 ├───────── src
 ├─────────── RootLayout.tsx
 ├─────────── RootErrorBoundary.tsx

@@ -114,15 +114,15 @@ remote-module
 ├── src
 ├────── register.tsx
 ├────── Home.tsx
-├────── index.tsx   <----- New file
-├────── App.tsx   <------- New file
+├────── index.tsx
+├────── App.tsx
 ├── package.json
 ├── webpack.config.js
 ```
 
 The `index.tsx` file is similar to the `bootstrap.tsx` file of a host application but, tailored for an isolated module. The key distinction is that, since we set up the project for local development, we'll register the module with the [registerLocalModules](/references/registration/registerLocalModules.md) function instead of the [registerRemoteModules](/references/registration/registerRemoteModules.md) function:
 
-```tsx #10-12,16 remote-module/src/index.tsx
+```tsx !#10-12,16 remote-module/src/index.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, Runtime } from "@squide/react-router";
 import { registerLocalModules } from "@squide/webpack-module-federation";
@@ -178,7 +178,7 @@ Next, add a new `dev-local` script to the `package.json` file to start the local
 
 The `dev-local` script is similar to the `dev` script but introduces a `LOCAL` environment variable. This new environment variable will be utilized by the `webpack.config.js` file to conditionally setup the development server for local development in isolation or to be consumed by a host application through the `/remoteEntry.js` entry point:
 
-```js # remote-module/webpack.config.js
+```js !#3,7,11-13 remote-module/webpack.config.js
 import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 
 const isLocal = env.LOCAL === "true";

@@ -1,16 +1,3 @@
-import { defineConfig } from "tsup";
+import { defineDevConfig } from "@workleap/tsup-configs";
 
-export default defineConfig({
-    watch: true,
-    dts: {
-        compilerOptions: {
-            noUnusedLocals: false
-        }
-    },
-    sourcemap: "inline",
-    entry: ["./src"],
-    outDir: "./dist",
-    format: ["esm"],
-    target: "esnext",
-    platform: "browser"
-});
+export default defineDevConfig();

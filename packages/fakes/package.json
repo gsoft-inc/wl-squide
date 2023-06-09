@@ -31,6 +31,7 @@
     "devDependencies": {
         "@types/jest": "29.5.2",
         "@workleap/eslint-plugin": "1.8.1",
+        "@workleap/tsup-configs": "1.0.1",
         "@workleap/typescript-configs": "2.3.1",
         "jest": "29.5.0",
         "npm-check-updates": "16.10.12",

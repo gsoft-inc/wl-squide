@@ -39,9 +39,9 @@
         "ci-release": "pnpm build && changeset publish",
 
         "check-updates": "pnpm -r check-updates && npm-check-updates",
-        "update-dependencies": "pnpm run /^update-dependencies:.*/",
-        "update-dependencies:update": "pnpm -r --parallel update-dependencies && npm-check-updates -u",
-        "update-dependencies:delete-lock": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf pnpm-lock.yaml"
+        "update-deps": "pnpm run /^update-deps:.*/",
+        "update-deps:npu": "pnpm -r --parallel update-deps && npm-check-updates -u",
+        "update-deps:delete-lock": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf pnpm-lock.yaml"
     },
     "devDependencies": {
         "@changesets/cli": "2.26.1",
@@ -55,7 +55,7 @@
         "npm-check-updates": "16.10.12",
         "retypeapp": "3.0.3",
         "ts-node": "10.9.1",
-        "typescript": "5.1.3"
+        "typescript": "5.0.4"
     },
     "engines": {
         "node": ">=18.0.0"

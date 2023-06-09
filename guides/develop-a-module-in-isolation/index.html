@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.3.739572434883">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.0.3.739648165328">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.0.3">
@@ -31,12 +31,12 @@
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.0.3.739572434883" rel="stylesheet" />
+    <link href="../../resources/css/retype.css?v=3.0.3.739648165328" rel="stylesheet" />
 
-    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.3.739572434883" data-turbo-eval="false" defer></script>
+    <script type="text/javascript" src="../../resources/js/config.js?v=3.0.3.739648165328" data-turbo-eval="false" defer></script>
     <script type="text/javascript" src="../../resources/js/retype.js?v=3.0.3" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.3.739572434883" data-turbo-eval="false" defer></script>
-    <script id="prism-js" type="text/javascript" src="../../resources/js/prism.js?v=3.0.3.739572434883" defer></script>
+    <script id="lunr-js" type="text/javascript" src="../../resources/js/lunr.js?v=3.0.3.739648165328" data-turbo-eval="false" defer></script>
+    <script id="prism-js" type="text/javascript" src="../../resources/js/prism.js?v=3.0.3.739648165328" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -397,13 +397,13 @@ export function App() {
 ├── src
 ├────── register.tsx
 ├────── Home.tsx
-├────── index.tsx   &lt;----- New file
-├────── App.tsx   &lt;------- New file
+├────── index.tsx
+├────── App.tsx
 ├── package.json
 ├── webpack.config.js</code></pre>
 </doc-codeblock></div>
 <p>The <code v-pre>index.tsx</code> file is similar to the <code v-pre>bootstrap.tsx</code> file of a host application but, tailored for an isolated module. The key distinction is that, since we set up the project for local development, we&#x27;ll register the module with the <a href="../../references/registration/registerlocalmodules/">registerLocalModules</a> function instead of the <a href="../../references/registration/registerremotemodules/">registerRemoteModules</a> function:</p>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/index.tsx</div>
 <pre class="language-tsx" data-line="10-12,16"><code v-pre class="language-tsx">import { createRoot } from &quot;react-dom/client&quot;;
 import { ConsoleLogger, RuntimeContext, Runtime } from &quot;@squide/react-router&quot;;
@@ -456,9 +456,9 @@ export function App() {
 }</code></pre>
 </doc-codeblock></div>
 <p>The <code v-pre>dev-local</code> script is similar to the <code v-pre>dev</code> script but introduces a <code v-pre>LOCAL</code> environment variable. This new environment variable will be utilized by the <code v-pre>webpack.config.js</code> file to conditionally setup the development server for local development in isolation or to be consumed by a host application through the <code v-pre>/remoteEntry.js</code> entry point:</p>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/webpack.config.js</div>
-<pre class="language-javascript"><code v-pre class="language-javascript">import { remoteTransformer } from &quot;@squide/webpack-module-federation/configTransformer.js&quot;;
+<pre class="language-javascript" data-line="3,7,11-13"><code v-pre class="language-javascript">import { remoteTransformer } from &quot;@squide/webpack-module-federation/configTransformer.js&quot;;
 
 const isLocal = env.LOCAL === &quot;true&quot;;
 

@@ -1,6 +1,6 @@
-import type { RootRoute, Route } from "../src/routeRegistry.ts";
 import { renderHook } from "@testing-library/react";
-import { type UseHoistedRoutesOptions, useHoistedRoutes } from "../src/useHoistedRoutes.ts";
+import type { RootRoute, Route } from "../src/routeRegistry.ts";
+import { useHoistedRoutes, type UseHoistedRoutesOptions } from "../src/useHoistedRoutes.ts";
 
 test("hoisted routes are at the root", () => {
     const routes: RootRoute[] = [

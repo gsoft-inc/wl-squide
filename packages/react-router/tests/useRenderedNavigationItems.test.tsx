@@ -1,8 +1,8 @@
+import { renderHook } from "@testing-library/react";
+import { useCallback, type ReactNode } from "react";
 import renderer from "react-test-renderer";
 import type { RootNavigationItem } from "../src/navigationItemRegistry.ts";
-import { useRenderedNavigationItems, type RenderItemFunction, type RenderSectionFunction, isNavigationLink, type NavigationLinkRenderProps, type NavigationSectionRenderProps } from "../src/useRenderedNavigationItems.tsx";
-import { useCallback, type ReactNode } from "react";
-import { renderHook } from "@testing-library/react";
+import { isNavigationLink, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "../src/useRenderedNavigationItems.tsx";
 
 type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
 

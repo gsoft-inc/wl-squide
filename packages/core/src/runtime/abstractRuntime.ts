@@ -1,5 +1,5 @@
-import { EventBus } from "../messaging/eventBus.ts";
 import type { Logger } from "../logging/logger.ts";
+import { EventBus } from "../messaging/eventBus.ts";
 import { RuntimeLogger } from "./RuntimeLogger.ts";
 
 export type SessionAccessorFunction = () => unknown;

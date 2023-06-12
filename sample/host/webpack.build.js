@@ -1,9 +1,9 @@
 // @ts-check
 
-import HtmlWebpackPlugin from "html-webpack-plugin";
-import TerserPlugin from "terser-webpack-plugin";
 import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";
+import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
+import TerserPlugin from "terser-webpack-plugin";
 import webpack from "webpack";
 
 const DefinePlugin = webpack.DefinePlugin;

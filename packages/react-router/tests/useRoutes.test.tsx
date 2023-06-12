@@ -1,6 +1,6 @@
-import { Runtime } from "../src/runtime.ts";
 import { RuntimeContext } from "@squide/core";
 import { renderHook, type RenderHookOptions } from "@testing-library/react";
+import { Runtime } from "../src/runtime.ts";
 import { useRoutes } from "../src/useRoutes.ts";
 
 function renderWithRuntime<TProps>(runtime: Runtime, additionalProps: RenderHookOptions<TProps> = {}) {

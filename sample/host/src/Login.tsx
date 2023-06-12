@@ -1,8 +1,8 @@
-import { Navigate, useNavigate } from "react-router-dom";
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
-import { sessionManager } from "./session.ts";
 import { useIsAuthenticated } from "@squide/react-router";
+import { sessionManager } from "./session.ts";
 
 export default function Login() {
     const [username, setUserName] = useState("");

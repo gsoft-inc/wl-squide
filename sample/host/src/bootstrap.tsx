@@ -1,11 +1,11 @@
 import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
 import { StrictMode, Suspense } from "react";
 
-import { App } from "./App.tsx";
-import { type AppContext, isNetlify } from "@sample/shared";
-import { createRoot } from "react-dom/client";
 import { register } from "@sample/local-module";
-import { type RemoteDefinition, registerRemoteModules } from "@squide/webpack-module-federation";
+import { isNetlify, type AppContext } from "@sample/shared";
+import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import { createRoot } from "react-dom/client";
+import { App } from "./App.tsx";
 import { sessionAccessor } from "./session.ts";
 
 const Remotes: RemoteDefinition[] = [

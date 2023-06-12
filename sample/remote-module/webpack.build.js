@@ -1,8 +1,8 @@
 // @ts-check
 
-import TerserPlugin from "terser-webpack-plugin";
-import path from "path";
 import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
+import path from "path";
+import TerserPlugin from "terser-webpack-plugin";
 
 /** @type {import("webpack").Configuration} */
 const config = {

@@ -1,6 +1,6 @@
 import { AbstractRuntime } from "@squide/core";
 import { NavigationItemRegistry, type RootNavigationItem } from "./navigationItemRegistry.ts";
-import { type RootRoute, RouteRegistry } from "./routeRegistry.ts";
+import { RouteRegistry, type RootRoute } from "./routeRegistry.ts";
 
 export class Runtime extends AbstractRuntime<RootRoute, RootNavigationItem> {
     readonly #routeRegistry = new RouteRegistry();

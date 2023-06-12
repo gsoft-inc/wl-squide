@@ -1,5 +1,5 @@
-import type { RootRoute, Route } from "./routeRegistry.ts";
 import { useMemo, useState } from "react";
+import type { RootRoute, Route } from "./routeRegistry.ts";
 
 import { isNil } from "@squide/core";
 

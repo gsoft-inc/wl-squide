@@ -3,8 +3,8 @@
 // Added for TSC, otherwise the "devServer" section is unknown.
 import "webpack-dev-server";
 
-import HtmlWebpackPlugin from "html-webpack-plugin";
 import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";
+import HtmlWebpackPlugin from "html-webpack-plugin";
 import webpack from "webpack";
 
 const DefinePlugin = webpack.DefinePlugin;

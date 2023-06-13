@@ -40,13 +40,14 @@ remote-module
 
 Then, register the remote module [routes](/references/runtime/runtime-class.md#register-routes) and [navigation items](/references/runtime/runtime-class.md#register-navigation-items):
 
-```tsx #7-12,14-19 remote-module/src/register.tsx
+```tsx !#8-13,15-20 remote-module/src/register.tsx
 import { lazy } from "react";
 import { registerRoutes, registerNavigationItems, type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
+import type { AppContext } from "@sample/shared";
 
 const Page = lazy(() => import("./Page"));
 
-export const register: ModuleRegisterFunction = (runtime: Runtime) => {
+export const register: ModuleRegisterFunction = (runtime: Runtime, context: AppContext) => {
     runtime.registerRoutes([
         {
             path: "/remote/page",

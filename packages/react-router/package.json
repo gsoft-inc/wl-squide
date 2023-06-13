@@ -54,8 +54,7 @@
         "react-test-renderer": "18.2.0",
         "ts-node": "10.9.1",
         "ts-jest": "29.1.0",
-        "tsup": "6.7.0",
-        "typescript": "5.0.4"
+        "tsup": "6.7.0"
     },
     "dependencies": {
         "@squide/core": "workspace:*"

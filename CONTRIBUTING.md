@@ -154,6 +154,14 @@ Build the packages for release.
 pnpm build
 ```
 
+### build-sample
+
+Build the sample application for release.
+
+```bash
+pnpm build-sample
+```
+
 ### serve-sample
 
 Build the sample application for deployment and start a local web server to serve the application.

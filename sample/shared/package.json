@@ -18,8 +18,7 @@
     },
     "peerDependencies": {
         "react": "*",
-        "react-dom": "*",
-        "react-router-dom": "*"
+        "react-dom": "*"
     },
     "devDependencies": {
         "@types/react": "18.2.9",
@@ -30,9 +29,7 @@
         "npm-check-updates": "16.10.12",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "react-router-dom": "6.12.1",
-        "tsup": "6.7.0",
-        "typescript": "5.0.4"
+        "tsup": "6.7.0"
     },
     "dependencies": {
         "@squide/react-router": "workspace:*"

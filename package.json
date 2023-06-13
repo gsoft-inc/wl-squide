@@ -22,6 +22,7 @@
         "lint:types": "pnpm -r --parallel --include-workspace-root exec tsc",
 
         "changeset": "changeset",
+        "ci-release": "pnpm build && changeset publish",
 
         "clean": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf dist node_modules/.cache",
         "reset": "pnpm clean && pnpm reset:modules",
@@ -35,8 +36,6 @@
         "deploy-sample:remote-module": "netlify deploy --dir=sample/remote-module/dist --site=43234f6e-a884-410e-9b4d-f290459f841f --prod",
 
         "dev-docs": "retype start",
-
-        "ci-release": "pnpm build && changeset publish",
 
         "check-updates": "pnpm -r check-updates && npm-check-updates",
         "update-deps": "pnpm run /^update-deps:.*/",

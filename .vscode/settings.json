@@ -7,7 +7,7 @@
     // Formatters settings
     "editor.codeActionsOnSave": {
         "source.fixAll": true, // this makes sure eslint and stylelint are run on save
-        "source.organizeImports": true
+        "source.sortImports": true // we want vscode to handle import sorting. It's snappier and more reliable than eslint
     },
     "editor.formatOnSave": true,
     "[html]": {

@@ -1,5 +1,5 @@
 {
     "$schema": "https://json.schemastore.org/eslintrc",
     "root": true,
-    "extends": "plugin:@workleap/typescript-library"
+    "extends": "plugin:@workleap/react-library"
 }

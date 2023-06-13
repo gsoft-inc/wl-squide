@@ -53,7 +53,10 @@ jobs:
       - name: Build packages
         run: pnpm build
 
-      - name: Lint packages
+      - name: Build sample
+        run: pnpm build-sample
+
+      - name: Lint packages & sample
         run: pnpm lint
 
       - name: Test packages

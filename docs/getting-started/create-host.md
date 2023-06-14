@@ -58,10 +58,11 @@ To learn more about this async boundary and the `bootstrap.tsx` file, read the f
 
 Then, instanciate the shell [Runtime](/references/runtime/runtime-class.md) and [register the remote module](/references/registration/registerRemoteModules.md) (the configuration of the remote module will be covered in the [next section](create-remote-module.md)):
 
-```tsx !#12-14,17 host/src/bootstrap.tsx
+```tsx !#23,13-15,18-20 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, Runtime } from "@squide/react-router";
 import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import type { AppContext} from "@sample/shared";
 import { App } from "./App.tsx";
 
 // Define the remote modules.
@@ -74,8 +75,13 @@ const runtime = new Runtime({
     loggers: [new ConsoleLogger()]
 });
 
+// Create an optional context.
+const context: AppContext = {
+    name: "Demo application"
+};
+
 // Register the remote module.
-registerRemoteModules(Remotes, runtime);
+registerRemoteModules(Remotes, runtime, context);
 
 const root = createRoot(document.getElementById("root"));
 

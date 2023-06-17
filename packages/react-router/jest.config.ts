@@ -1,6 +1,6 @@
 import type { Config } from "jest";
 import { pathsToModuleNameMapper } from "ts-jest";
-import { config as swcConfig } from "./swc.jest.ts";
+import { swcConfig } from "./swc.jest.ts";
 import { compilerOptions } from "./tsconfig.json";
 
 const config: Config = {

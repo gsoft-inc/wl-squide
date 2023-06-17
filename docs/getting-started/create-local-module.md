@@ -6,7 +6,7 @@ order: 80
 
 Local modules are regular modules that are part of the **host application build**. They are independent modules that expose a `registration` function to the host application's bootstrapping code. A local module can be a standalone package, a sibling project (in a monorepo setup), or even a local folder within the host application.
 
-Local modules are useful when migrating from a monolithic application to a distributed application or when launching a new product with an unrefined business domain.
+Local modules are useful when **migrating** from a **monolithic application** to a distributed application or when **launching** a **new product** with an unrefined business domain.
 
 Let's add a local module to demonstrate how it's done!
 
@@ -16,7 +16,7 @@ Let's add a local module to demonstrate how it's done!
 >
 > To facilitate this transition, this shell also supports local modules that are loaded at build time.
 >
-> Both remote and local modules can be used within same application as this shell supports dual bootstrapping. For example, an application can be configured to load a few remote modules at runtime while also loading a few local modules at build time.
+> Both remote and local modules can be used within same application as this shell supports dual bootstrapping. For example, an application can be configured to load a few remote modules at runtime while also loading a few local modules.
 
 ## Install the packages
 

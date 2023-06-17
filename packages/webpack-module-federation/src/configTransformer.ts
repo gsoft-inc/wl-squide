@@ -46,9 +46,9 @@ const ReactRouterSharedDependencies: ModuleFederationPluginOptions = {
     }
 };
 
-function mergeOptions(targetOptions: ModuleFederationPluginOptions, { router = "react-router", pluginOptions = {} }: ModuleFederationOptions) {
+function resolvePluginOptions(baseOptions: ModuleFederationPluginOptions, { router = "react-router", pluginOptions = {} }: ModuleFederationOptions) {
     return merge.all<ModuleFederationPluginOptions>([
-        targetOptions,
+        baseOptions,
         DefaultSharedDependencies,
         router === "react-router" ? ReactRouterSharedDependencies : {},
         pluginOptions
@@ -56,7 +56,9 @@ function mergeOptions(targetOptions: ModuleFederationPluginOptions, { router = "
 }
 
 function validateConfig(config: webpack.Configuration) {
-    if (!isNil(config.plugins) && config.plugins.some(x => x.constructor.name === webpack.container.ModuleFederationPlugin.name)) {
+    // There doesn't seem to be an exported Webpack type for this.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (!isNil(config.plugins) && config.plugins.some((x: any) => x.constructor.name === webpack.container.ModuleFederationPlugin.name)) {
         throw new Error("ModuleFederationPlugin has already been configured. Please remove ModuleFederationPlugin from your configuration plugins before calling this function.");
     }
 }
@@ -64,7 +66,7 @@ function validateConfig(config: webpack.Configuration) {
 export function hostTransformer(config: webpack.Configuration, name: string, options: ModuleFederationOptions = {}): webpack.Configuration {
     validateConfig(config);
 
-    const pluginOptions = mergeOptions({ name }, options);
+    const pluginOptions = resolvePluginOptions({ name }, options);
 
     return {
         ...config,
@@ -78,7 +80,7 @@ export function hostTransformer(config: webpack.Configuration, name: string, opt
 export function remoteTransformer(config: webpack.Configuration, name: string, options: ModuleFederationOptions = {}): webpack.Configuration {
     validateConfig(config);
 
-    const pluginOptions = mergeOptions({
+    const pluginOptions = resolvePluginOptions({
         name,
         filename: RemoteEntryPoint,
         exposes: {

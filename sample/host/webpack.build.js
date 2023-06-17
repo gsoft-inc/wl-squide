@@ -5,6 +5,7 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
 import TerserPlugin from "terser-webpack-plugin";
 import webpack from "webpack";
+import { swcConfig } from "./swc.build.js";
 
 const DefinePlugin = webpack.DefinePlugin;
 
@@ -40,7 +41,8 @@ const config = {
                 test: /\.(ts|tsx)$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: "swc-loader"
+                    loader: "swc-loader",
+                    options: swcConfig
                 }
             },
             {

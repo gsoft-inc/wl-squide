@@ -15,19 +15,22 @@
         "update-deps": "npm-check-updates -u"
     },
     "devDependencies": {
-        "@swc/core": "1.3.62",
-        "@types/react": "18.2.9",
-        "@types/react-dom": "18.2.4",
+        "@swc/core": "1.3.64",
+        "@swc/helpers": "0.5.1",
+        "@types/react": "18.2.12",
+        "@types/react-dom": "18.2.5",
         "@types/webpack": "5.28.1",
-        "@workleap/eslint-plugin": "1.8.1",
-        "@workleap/typescript-configs": "2.3.1",
+        "@workleap/eslint-plugin": "1.8.2",
+        "@workleap/swc-configs": "1.0.0",
+        "@workleap/typescript-configs": "2.3.2",
         "http-server": "14.1.1",
         "npm-check-updates": "16.10.12",
         "swc-loader": "0.2.3",
         "terser-webpack-plugin": "5.3.9",
-        "webpack": "5.86.0",
+        "typescript": "5.0.4",
+        "webpack": "5.87.0",
         "webpack-cli": "5.1.4",
-        "webpack-dev-server": "4.15.0"
+        "webpack-dev-server": "4.15.1"
     },
     "dependencies": {
         "@sample/shared": "workspace:*",
@@ -35,6 +38,6 @@
         "@squide/webpack-module-federation": "workspace:*",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "react-router-dom": "6.12.1"
+        "react-router-dom": "6.13.0"
     }
 }

@@ -21,15 +21,16 @@
         "react-dom": "*"
     },
     "devDependencies": {
-        "@types/react": "18.2.9",
-        "@types/react-dom": "18.2.4",
-        "@workleap/eslint-plugin": "1.8.1",
-        "@workleap/tsup-configs": "1.0.1",
-        "@workleap/typescript-configs": "2.3.1",
+        "@types/react": "18.2.12",
+        "@types/react-dom": "18.2.5",
+        "@workleap/eslint-plugin": "1.8.2",
+        "@workleap/tsup-configs": "2.0.0",
+        "@workleap/typescript-configs": "2.3.2",
         "npm-check-updates": "16.10.12",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "tsup": "6.7.0"
+        "tsup": "7.0.0",
+        "typescript": "5.0.4"
     },
     "dependencies": {
         "@squide/react-router": "workspace:*"

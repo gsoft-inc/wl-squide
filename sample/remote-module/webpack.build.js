@@ -3,6 +3,7 @@
 import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 import path from "path";
 import TerserPlugin from "terser-webpack-plugin";
+import { swcConfig } from "./swc.build.js";
 
 /** @type {import("webpack").Configuration} */
 const config = {
@@ -36,7 +37,8 @@ const config = {
                 test: /\.(ts|tsx)$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: "swc-loader"
+                    loader: "swc-loader",
+                    options: swcConfig
                 }
             },
             {

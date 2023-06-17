@@ -6,6 +6,7 @@ import "webpack-dev-server";
 import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import webpack from "webpack";
+import { swcConfig } from "./swc.dev.js";
 
 const DefinePlugin = webpack.DefinePlugin;
 
@@ -29,7 +30,8 @@ const config = {
                 test: /\.(ts|tsx)$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: "swc-loader"
+                    loader: "swc-loader",
+                    options: swcConfig
                 }
             },
             {

@@ -4,6 +4,7 @@
 import "webpack-dev-server";
 
 import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
+import { swcConfig } from "./swc.dev.js";
 
 /** @type {import("webpack").Configuration} */
 const config = {
@@ -29,7 +30,8 @@ const config = {
                 test: /\.(ts|tsx)$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: "swc-loader"
+                    loader: "swc-loader",
+                    options: swcConfig
                 }
             },
             {

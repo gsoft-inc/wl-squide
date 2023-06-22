@@ -11,10 +11,7 @@
     "scripts": {
         "dev": "tsup --config ./tsup.dev.ts",
         "build": "tsup --config ./tsup.build.ts",
-        "serve-build": "pnpm build",
-
-        "check-updates": "npm-check-updates",
-        "update-deps": "npm-check-updates -u"
+        "serve-build": "pnpm build"
     },
     "peerDependencies": {
         "react": "*",
@@ -22,12 +19,11 @@
         "react-router-dom": "*"
     },
     "devDependencies": {
-        "@types/react": "18.2.12",
-        "@types/react-dom": "18.2.5",
+        "@types/react": "18.2.13",
+        "@types/react-dom": "18.2.6",
         "@workleap/eslint-plugin": "1.8.2",
         "@workleap/tsup-configs": "2.0.0",
         "@workleap/typescript-configs": "2.3.2",
-        "npm-check-updates": "16.10.12",
         "react": "18.2.0",
         "react-dom": "18.2.0",
         "react-router-dom": "6.13.0",

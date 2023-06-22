@@ -210,20 +210,20 @@ Reset the monorepo installation (delete `dist` folders, clear caches, delete `no
 pnpm reset
 ```
 
-### check-updates
+### list-outdated-deps
 
-Execute [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) on every package to check for packages to updates.
+Checks for outdated dependencies. For more information, view [PNPM documentation](https://pnpm.io/cli/outdated).
 
 ```bash
-pnpm check-updates
+pnpm list-outdated-deps
 ```
 
-### update-deps
+### update-outdated-deps
 
-Execute [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) with the `-u` option to update every package dependencies to their latest version.
+Updated outdate dependencies to their latest version. For more information, view [PNPM documentation](https://pnpm.io/cli/update).
 
 ```bash
-pnpm update-deps
+pnpm update-outdated-deps
 ```
 
 ## CI

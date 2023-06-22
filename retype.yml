@@ -9,7 +9,10 @@ edit:
 url: https://workleap.github.io/wl-squide/
 
 branding:
-    title: "🦑 @squide"
+    title: "@squide"
+    logo: ./logo.png
+
+favicon: ./favicon.png
 
 links:
     - text: Home

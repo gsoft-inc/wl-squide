@@ -165,7 +165,7 @@ import {
 const renderItem: RenderItemFunction = (item, index, level) => {
     // To keep thing simple, this sample doesn't support nested navigation items.
     // For an example including support for nested navigation items, have a look at
-    // https://workleap.github.io/wl-squide/references/routing/userenderednavigationitems/
+    // https://gsoft-inc.github.io/wl-squide/references/routing/userenderednavigationitems/
     if (!isNavigationLink(item)) {
         return null;
     }

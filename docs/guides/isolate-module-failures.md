@@ -61,7 +61,7 @@ export function RootLayout() {
     const navigationItems = useNavigationItems();
 
     // To keep things simple, we are omitting the definition of "renderItem" and "renderSection".
-    // For a full example, view: https://workleap.github.io/wl-squide/references/routing/userenderednavigationitems/.
+    // For a full example, view: https://gsoft-inc.github.io/wl-squide/references/routing/userenderednavigationitems/.
     const navigationElements = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (

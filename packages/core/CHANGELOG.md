@@ -1,5 +1,11 @@
 # @squide/core
 
+## 1.0.1
+
+### Patch Changes
+
+- [#54](https://github.com/gsoft-inc/wl-squide/pull/54) [`1f0e967`](https://github.com/gsoft-inc/wl-squide/commit/1f0e96781513b262122fb8e47e10379caae0b731) Thanks [@ofrogon](https://github.com/ofrogon)! - Migrate project from GitHub organization
+
 ## 1.0.0
 
 ### Major Changes

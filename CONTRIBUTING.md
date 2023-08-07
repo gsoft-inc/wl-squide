@@ -220,7 +220,7 @@ pnpm list-outdated-deps
 
 ### update-outdated-deps
 
-Updated outdate dependencies to their latest version. For more information, view [PNPM documentation](https://pnpm.io/cli/update).
+Updated outdated dependencies to their latest version. For more information, view [PNPM documentation](https://pnpm.io/cli/update).
 
 ```bash
 pnpm update-outdated-deps

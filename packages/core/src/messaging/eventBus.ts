@@ -39,7 +39,7 @@ export class EventBus<TEventNames extends EventName = EventName> {
     }
 
     dispatch(eventName: TEventNames, data?: unknown) {
-        this.#logger?.debug(`[squide] - Dispatching event "${String(eventName)}"`, data);
+        this.#logger?.debug(`[squide] Dispatching event "${String(eventName)}"`, data);
 
         this.#eventEmitter.emit(eventName, data);
     }

@@ -14,11 +14,11 @@ Let's add a local module to demonstrate how it's done!
 >
 > However, we recognize that teams working on mature products may prefer to **gradually migrate** to a distributed architecture by first extracting subdomains into independent modules within their current monolithic setup before fully committing to remote modules loaded at runtime.
 >
-> To facilitate this transition, this shell also supports local modules that are loaded at build time.
+> To facilitate this transition, this shell also supports local modules that are loaded at **build time**.
 >
 > Both remote and local modules can be used within same application as this shell supports dual bootstrapping. For example, an application can be configured to load a few remote modules at runtime while also loading a few local modules.
 
-## Install the packages
+## 1. Install the packages
 
 Create a new project (we'll refer to ours as `local-module`), then open a terminal at the root of the newly created project and install the following packages:
 
@@ -36,7 +36,7 @@ npm install @squide/core @squide/react-router react-router-dom
 ```
 +++
 
-## Setup the application
+## 2. Setup the application
 
 First, create the following files:
 
@@ -92,7 +92,7 @@ export default function Page() {
 }
 ```
 
-## Register the local module
+## 3. Register the local module
 
 Go back to the `host` application and [register the local module](/references/registration/registerLocalModules.md). Don't forget to add a dependency in the host application `package.json` file.
 
@@ -134,6 +134,6 @@ root.render(
 );
 ```
 
-## Try the application :rocket:
+## 4. Try the application :rocket:
 
 Start both applications, and you should now notice a third link in the navigation menu. Click on the link to navigate to the page of your new local module!

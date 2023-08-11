@@ -6,9 +6,9 @@ expanded: true
 
 # Getting started
 
-Welcome to the `@squide` documentation. In this getting started section, you'll find an [overview](#overview) of the shell and a [quick start](create-host.md) guide to create a new federated application from scratch.
+Welcome to `@squide`, a shell for federated applications. In this getting started section, you'll find an overview of the shell and a [quick start](create-host.md) guide to create a new federated application from scratch.
 
-!!!warning The prefered way for creating a new federated application for the [Workleap](https://workleap.com/) platform is with our [foundry-cli](https://github.com/gsoft-inc/wl-foundry-cli).
+!!!warning The prefered way for creating a new federated application for the Workleap platform is with the [foundry-cli](https://github.com/gsoft-inc/wl-foundry-cli).
 +++ pnpm
 ```bash
 pnpm create @workleap/project@latest <output-directory>
@@ -24,7 +24,7 @@ npm create @workleap/project@latest <output-directory>
 +++
 !!!
 
-## Overview
+## Why
 
 We have built this shell to facilitate the adoption of federated applications at [Workleap](https://workleap.com/) by **enforcing patterns** that we believe will help feature teams successfully implement a distributed architecture.
 
@@ -48,7 +48,7 @@ With Webpack Module Federation, we believe that we can develop federated applica
 
 React Router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) feature is ideal for federated applications as it enables highly **composable** and **decoupled** UI. Besides, what else would you use? :joy:
 
-### Module registration
+## Module registration
 
 The most distinctive aspect of this shell is the conventions it enforces for loading and registering remote modules. Here's a brief overview of the flow:
 
@@ -60,7 +60,7 @@ The most distinctive aspect of this shell is the conventions it enforces for loa
 
 That's a nutshell overview. Of course, there is more to it, but these are the main ideas.
 
-### Guiding principles
+## Guiding principles
 
 While developing the [API](/references) of `@squide`, we kept a few guiding principles in mind. Those principles are not settled stones, you might want to diverge from them from time to time, but adhering to those will make your experience more enjoyable:
 
@@ -72,7 +72,7 @@ While developing the [API](/references) of `@squide`, we kept a few guiding prin
 
 - Data and state should never be shared between parts of a federated application. Even if two parts require the same data or the same state values, they should load, store and manage them independently.
 
-### Limitations
+## Limitations
 
 [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) comes with a few manageable limitations that are important to consider when architecting your distributed application:
 
@@ -82,4 +82,6 @@ While developing the [API](/references) of `@squide`, we kept a few guiding prin
 
 > These limitations are not specific to `@squide`, they are specific to Webpack Module Federation.
 
+## Create your project
 
+To get started, follow the [quick start](create-host.md) guide to create a new federated application from scratch.

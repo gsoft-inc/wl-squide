@@ -12,4 +12,4 @@ Have a look at the [contributor's documentation](https://github.com/gsoft-inc/wl
 
 ## License
 
-See the @squide [LICENSE](https://github.com/gsoft-inc/wl-squide/blob/main/LICENSE) on Github.
+See the [LICENSE](https://github.com/gsoft-inc/wl-squide/blob/main/LICENSE) on Github.

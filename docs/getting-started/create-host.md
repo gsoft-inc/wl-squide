@@ -7,25 +7,42 @@ label: Create an host app
 
 Let's begin by creating the application that will serve as the entry point for our federated application and host the application modules.
 
-## Install the packages
+## 1. Install the packages
 
 Create a new project (we'll refer to ours as `host`), then open a terminal at the root of the newly created project and install the following packages:
 
 +++ pnpm
 ```bash
-pnpm add @squide/core @squide/react-router @squide/webpack-module-federation webpack react-router-dom
+pnpm add -D webpack
+pnpm add @squide/core @squide/react-router @squide/webpack-module-federation react-router-dom
 ```
 +++ yarn
 ```bash
-yarn add @squide/core @squide/react-router @squide/webpack-module-federation webpack react-router-dom
+yarn add -D webpack
+yarn add @squide/core @squide/react-router @squide/webpack-module-federation react-router-dom
 ```
 +++ npm
 ```bash
-npm install @squide/core @squide/react-router @squide/webpack-module-federation webpack react-router-dom
+npm install -D webpack
+npm install @squide/core @squide/react-router @squide/webpack-module-federation react-router-dom
 ```
 +++
 
-## Setup the application
+
+
+    "dependencies": {
+        "@sample/local-module": "workspace:*",
+        "@sample/shared": "workspace:*",
+        "@squide/fakes": "workspace:*",
+        "@squide/react-router": "workspace:*",
+        "@squide/webpack-module-federation": "workspace:*",
+        "react": "18.2.0",
+        "react-dom": "18.2.0",
+        "react-router-dom": "6.13.0"
+    }
+
+
+## 2. Setup the application
 
 First, create the following files:
 
@@ -203,7 +220,7 @@ export default function RootLayout() {
 }
 ```
 
-## Configure Webpack
+## 3. Configure Webpack
 
 To include the Webpack [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) we'll use the [hostTransformer](/references/webpack/hostTransformer.md) function:
 
@@ -223,6 +240,6 @@ export default federatedConfig;
 
 [!ref icon="mark-github" text="View a full webpack.config.js"](https://github.com/gsoft-inc/wl-squide/blob/main/sample/host/webpack.dev.js)
 
-## Try the application :rocket:
+## 4. Try the application :rocket:
 
 Start the application, and you should see the home page. Even if the remote module application is not yet available, the host application will gracefully load.

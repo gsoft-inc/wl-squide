@@ -6,8 +6,13 @@
     "private": true,
     "license": "Apache-2.0",
     "type": "module",
-    "exports": "./dist/register.js",
-    "types": "./dist/register.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/register.js",
+            "types": "./dist/register.d.ts",
+            "default": "./dist/register.js"
+        }
+    },
     "scripts": {
         "dev": "tsup --config ./tsup.dev.ts",
         "build": "tsup --config ./tsup.build.ts",

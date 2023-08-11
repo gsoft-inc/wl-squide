@@ -15,10 +15,17 @@
     },
     "type": "module",
     "exports": {
-        ".": "./dist/index.js",
-        "./configTransformer.js": "./dist/configTransformer.js"
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        },
+        "./configTransformer.js": {
+            "import": "./dist/configTransformer.js",
+            "types": "./dist/configTransformer.d.ts",
+            "default": "./dist/configTransformer.js"
+        }
     },
-    "types": "./dist/index.d.ts",
     "files": [
         "/dist",
         "CHANGELOG.md",

@@ -6,7 +6,7 @@ expanded: true
 
 # Getting started
 
-Welcome to `@squide`, a shell for federated applications. In this getting started section, you'll find an overview of the shell and a [quick start](create-host.md) guide to create a new federated application from scratch.
+Welcome to `@squide`, a shell for [Workleap's](https://workleap.com/) federated applications. In this getting started section, you'll find an overview of the shell and a [quick start](create-host.md) guide to create a new federated application from scratch.
 
 !!!warning The prefered way for creating a new federated application for the Workleap platform is with the [foundry-cli](https://github.com/gsoft-inc/wl-foundry-cli).
 +++ pnpm

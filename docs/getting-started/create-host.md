@@ -9,7 +9,7 @@ Let's begin by creating the application that will serve as the entry point for o
 
 ## 1. Install the packages
 
-Create a new project (we'll refer to ours as `host`), then open a terminal at the root of the newly created project and install the following packages:
+Create a new project (we'll refer to ours as `host`), then open a terminal at the root of the new solution and install the following packages:
 
 +++ pnpm
 ```bash
@@ -28,21 +28,9 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
 ```
 +++
 
-
-
-    "dependencies": {
-        "@sample/local-module": "workspace:*",
-        "@sample/shared": "workspace:*",
-        "@squide/fakes": "workspace:*",
-        "@squide/react-router": "workspace:*",
-        "@squide/webpack-module-federation": "workspace:*",
-        "react": "18.2.0",
-        "react-dom": "18.2.0",
-        "react-router-dom": "6.13.0"
-    }
-
-
 ## 2. Setup the application
+
+### File structure
 
 First, create the following files:
 
@@ -56,6 +44,8 @@ host
 ├──── index.ts
 ├── webpack.config.js
 ```
+
+### Async boundary
 
 Then, use a dynamic import to add an async boundary:
 
@@ -72,6 +62,8 @@ export {};
 !!!info
 To learn more about this async boundary and the `bootstrap.tsx` file, read the following [article](https://dev.to/infoxicator/module-federation-shared-api-ach#using-an-async-boundary).
 !!!
+
+### Module registration
 
 Then, instanciate the shell [Runtime](/references/runtime/runtime-class.md) and [register the remote module](/references/registration/registerRemoteModules.md) (the configuration of the remote module will be covered in the [next section](create-remote-module.md)):
 
@@ -108,6 +100,8 @@ root.render(
     </RuntimeContext.Provider>
 );
 ```
+
+### Router instance
 
 Then, [retrieve the routes](/references/runtime/useRoutes.md) that have been registered by the remote module and create a router instance:
 
@@ -166,7 +160,9 @@ export function Home() {
 }
 ```
 
-Then, create a layout component to [render the navigation items](/references/routing/useRenderedNavigationItems.md):
+### Navigation items
+
+FInally, create a layout component to [render the navigation items](/references/routing/useRenderedNavigationItems.md):
 
 ```tsx !#38,41 host/src/RootLayout.tsx
 import type { ReactNode } from "react";
@@ -222,7 +218,7 @@ export default function RootLayout() {
 
 ## 3. Configure Webpack
 
-To include the Webpack [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) we'll use the [hostTransformer](/references/webpack/hostTransformer.md) function:
+To configure the Webpack [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/), use the [hostTransformer](/references/webpack/hostTransformer.md) function:
 
 
 ```js !#8 host/webpack.config.js

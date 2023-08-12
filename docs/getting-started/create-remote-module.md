@@ -10,7 +10,7 @@ Let's add our first remote module!
 
 ## 1. Install the packages
 
-Create a new project (we'll refer to ours as `remote-module`), then open a terminal at the root of the newly created project and install the following packages:
+Create a new project (we'll refer to ours as `remote-module`), then open a terminal at the root of the new solution and install the following packages:
 
 +++ pnpm
 ```bash
@@ -31,6 +31,8 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
 
 ## 2. Setup the application
 
+### File structure
+
 First, create the following files:
 
 ```
@@ -40,6 +42,8 @@ remote-module
 ├──── Page.tsx
 ├── webpack.config.js
 ```
+
+### Routes and navigation items registration
 
 Then, register the remote module [routes](/references/runtime/runtime-class.md#register-routes) and [navigation items](/references/runtime/runtime-class.md#register-navigation-items):
 
@@ -77,7 +81,7 @@ export default function Page() {
 
 ## 3. Configure Webpack
 
-To add Webpack [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) we'll use the [remoteTransformer](/references/webpack/remoteTransformer.md) function:
+To configure the Webpack [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/), use the [remoteTransformer](/references/webpack/remoteTransformer.md) function:
 
 ```js !#8 remote-module/webpack.config.js
 import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";

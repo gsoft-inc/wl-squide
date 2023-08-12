@@ -20,7 +20,7 @@ Let's add a local module to demonstrate how it's done!
 
 ## 1. Install the packages
 
-Create a new project (we'll refer to ours as `local-module`), then open a terminal at the root of the newly created project and install the following packages:
+Create a new project (we'll refer to ours as `local-module`), then open a terminal at the root of the new solution and install the following packages:
 
 +++ pnpm
 ```bash
@@ -38,6 +38,8 @@ npm install @squide/core @squide/react-router react-router-dom
 
 ## 2. Setup the application
 
+### File structure
+
 First, create the following files:
 
 ```
@@ -48,6 +50,8 @@ local-modules
 ├── package.json
 ```
 
+### Package configuration
+
 Then, add the following fields to the `package.json` files:
 
 ```json !#2,4 local-module/package.json
@@ -57,6 +61,8 @@ Then, add the following fields to the `package.json` files:
     "main": "dist/register.js"
 }
 ```
+
+### Routes and navigation items registration
 
 Then, register the local module [routes](/references/runtime/runtime-class.md#register-routes) and [navigation items](/references/runtime/runtime-class.md#register-navigation-items):
 

@@ -17,7 +17,7 @@ favicon: ./favicon.png
 links:
     - text: Home
       icon: home
-      link: /
+      link: getting-started
 
     - text: Issues
       icon: issue-opened
@@ -27,6 +27,11 @@ links:
     - text: Feature requests
       icon: comment-discussion
       link: https://github.com/gsoft-inc/wl-squide/discussions
+      target: blank
+
+    - text: Releases
+      icon: tag
+      link: https://github.com/gsoft-inc/wl-squide/releases
       target: blank
 
     - text: Github

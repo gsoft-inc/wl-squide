@@ -31,7 +31,7 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
 
 ## 2. Setup the application
 
-### File structure
+### Application structure
 
 First, create the following files:
 
@@ -79,9 +79,9 @@ export default function Page() {
 }
 ```
 
-## 3. Configure Webpack
+## 3. Configure webpack
 
-To configure the Webpack [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/), use the [remoteTransformer](/references/webpack/remoteTransformer.md) function:
+To configure the webpack [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/), use the [remoteTransformer](/references/webpack/remoteTransformer.md) function:
 
 ```js !#8 remote-module/webpack.config.js
 import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";

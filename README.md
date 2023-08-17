@@ -1,6 +1,6 @@
 # wl-squide
 
-A federated web application shell built on top of [Webpack Module Federation](https://webpack.js.org/concepts/module-federation/) and [React Router](https://reactrouter.com/en/main).
+A federated web application shell built on top of [Module Federation](https://webpack.js.org/concepts/module-federation/) and [React Router](https://reactrouter.com/en/main).
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
 [![CI](https://github.com/gsoft-inc/wl-squide/actions/workflows/ci.yml/badge.svg)](https://github.com/gsoft-inc/wl-squide/actions/workflows/ci.yml)

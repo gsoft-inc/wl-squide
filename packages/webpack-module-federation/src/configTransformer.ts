@@ -56,7 +56,7 @@ function resolvePluginOptions(baseOptions: ModuleFederationPluginOptions, { rout
 }
 
 function validateConfig(config: webpack.Configuration) {
-    // There doesn't seem to be an exported Webpack type for this.
+    // There doesn't seem to be an exported webpack type for this.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (!isNil(config.plugins) && config.plugins.some((x: any) => x.constructor.name === webpack.container.ModuleFederationPlugin.name)) {
         throw new Error("ModuleFederationPlugin has already been configured. Please remove ModuleFederationPlugin from your configuration plugins before calling this function.");

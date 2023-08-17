@@ -32,7 +32,7 @@ Under [packages/](packages/) are the actual packages composing the federated app
 
 [@squide/react-router](packages/react-router/) is a [React Router](https://reactrouter.com/en/main) implementation of the shell routing capabilities. This implementation is offered as a standalone package because the shell could eventually support alternative routing libraries like [TanStack router](https://tanstack.com/router/v1).
 
-[@squide/webpack-module-federation](packages/webpack-module-federation/) is module federation implementation for [Webpack](https://webpack.js.org/concepts/module-federation/). This implementation is offered as a standalone package because not all application configurations will require module federation and the shell could eventually support alternative module federation application like [Rspack](https://www.rspack.dev/).
+[@squide/webpack-module-federation](packages/webpack-module-federation/) is module federation implementation for [webpack](https://webpack.js.org/concepts/module-federation/). This implementation is offered as a standalone package because not all application configurations will require module federation and the shell could eventually support alternative module federation application like [Rspack](https://www.rspack.dev/).
 
 [@squide/fakes](packages/fakes/) is a collection of fake implementations to facilitate the development of federated modules in isolation.
 

@@ -30,7 +30,7 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
 
 ## 2. Setup the application
 
-### File structure
+### Application structure
 
 First, create the following files:
 
@@ -216,9 +216,9 @@ export default function RootLayout() {
 }
 ```
 
-## 3. Configure Webpack
+## 3. Configure webpack
 
-To configure the Webpack [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/), use the [hostTransformer](/references/webpack/hostTransformer.md) function:
+To configure the webpack [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/), use the [hostTransformer](/references/webpack/hostTransformer.md) function:
 
 
 ```js !#8 host/webpack.config.js

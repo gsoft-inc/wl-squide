@@ -19,7 +19,7 @@ links:
       icon: home
       link: getting-started
 
-    - text: Issues
+    - text: Found a bug?
       icon: issue-opened
       link: https://github.com/gsoft-inc/wl-squide/issues
       target: blank

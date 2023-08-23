@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import type { RootRoute, Route } from "./routeRegistry.ts";
 
 import { isNil } from "@squide/core";
+import type { RouteObject } from "react-router-dom";
 
 export interface UseHoistedRoutesOptions {
     allowedPaths?: string[];
@@ -27,7 +28,7 @@ function getAllRoutePaths(route: Route) {
     return !isNil(current) ? [current] : [];
 }
 
-export function useHoistedRoutes(routes: RootRoute[], wrapManagedRoutes: (routes: Route[]) => Route, { allowedPaths }: UseHoistedRoutesOptions = {}) {
+export function useHoistedRoutes(routes: RootRoute[], wrapManagedRoutes: (routes: Route[]) => Route, { allowedPaths }: UseHoistedRoutesOptions = {}): RouteObject[] {
     // Hack to reuse the same array reference through re-renders.
     const [memoizedAllowedPaths] = useState(allowedPaths);
 

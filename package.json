@@ -44,7 +44,7 @@
         "netlify-cli": "15.6.0",
         "retypeapp": "3.1.0",
         "ts-node": "10.9.1",
-        "typescript": "5.0.4"
+        "typescript": "5.1.6"
     },
     "engines": {
         "node": ">=18.0.0"

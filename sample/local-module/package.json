@@ -33,7 +33,7 @@
         "react-dom": "18.2.0",
         "react-router-dom": "6.13.0",
         "tsup": "7.0.0",
-        "typescript": "5.0.4"
+        "typescript": "5.1.6"
     },
     "dependencies": {
         "@sample/shared": "workspace:*",

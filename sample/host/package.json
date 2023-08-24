@@ -19,7 +19,7 @@
         "@types/react": "18.2.13",
         "@types/react-dom": "18.2.6",
         "@types/webpack": "5.28.1",
-        "@workleap/eslint-plugin": "2.0.0",
+        "@workleap/eslint-plugin": "2.0.1",
         "@workleap/swc-configs": "1.0.0",
         "@workleap/typescript-configs": "2.3.2",
         "copyfiles": "2.4.1",

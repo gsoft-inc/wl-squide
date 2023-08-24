@@ -18,8 +18,8 @@ importers:
         specifier: 6.4.1
         version: 6.4.1(eslint@8.47.0)(typescript@5.1.6)
       '@workleap/eslint-plugin':
-        specifier: 2.0.0
-        version: 2.0.0(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6)
+        specifier: 2.0.1
+        version: 2.0.1(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6)
       '@workleap/typescript-configs':
         specifier: 2.3.2
         version: 2.3.2(typescript@5.1.6)
@@ -58,8 +58,8 @@ importers:
         specifier: 18.2.6
         version: 18.2.6
       '@workleap/eslint-plugin':
-        specifier: 2.0.0
-        version: 2.0.0(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6)
+        specifier: 2.0.1
+        version: 2.0.1(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6)
       '@workleap/tsup-configs':
         specifier: 2.0.0
         version: 2.0.0(tsup@7.0.0)
@@ -89,8 +89,8 @@ importers:
         specifier: 29.5.2
         version: 29.5.2
       '@workleap/eslint-plugin':
-        specifier: 2.0.0
-        version: 2.0.0(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6)
+        specifier: 2.0.1
+        version: 2.0.1(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6)
       '@workleap/tsup-configs':
         specifier: 2.0.0
         version: 2.0.0(tsup@7.0.0)
@@ -138,8 +138,8 @@ importers:
         specifier: 18.0.0
         version: 18.0.0
       '@workleap/eslint-plugin':
-        specifier: 2.0.0
-        version: 2.0.0(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6)
+        specifier: 2.0.1
+        version: 2.0.1(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6)
       '@workleap/swc-configs':
         specifier: 1.0.0
         version: 1.0.0(@swc/core@1.3.66)(@swc/helpers@0.5.1)(@swc/jest@0.2.26)
@@ -205,8 +205,8 @@ importers:
         specifier: 18.2.6
         version: 18.2.6
       '@workleap/eslint-plugin':
-        specifier: 2.0.0
-        version: 2.0.0(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6)
+        specifier: 2.0.1
+        version: 2.0.1(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6)
       '@workleap/swc-configs':
         specifier: 1.0.0
         version: 1.0.0(@swc/core@1.3.66)(@swc/helpers@0.5.1)(@swc/jest@0.2.26)
@@ -281,8 +281,8 @@ importers:
         specifier: 5.28.1
         version: 5.28.1(@swc/core@1.3.66)(webpack-cli@5.1.4)
       '@workleap/eslint-plugin':
-        specifier: 2.0.0
-        version: 2.0.0(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6)
+        specifier: 2.0.1
+        version: 2.0.1(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6)
       '@workleap/swc-configs':
         specifier: 1.0.0
         version: 1.0.0(@swc/core@1.3.66)(@swc/helpers@0.5.1)(@swc/jest@0.2.26)
@@ -333,8 +333,8 @@ importers:
         specifier: 18.2.6
         version: 18.2.6
       '@workleap/eslint-plugin':
-        specifier: 2.0.0
-        version: 2.0.0(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6)
+        specifier: 2.0.1
+        version: 2.0.1(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6)
       '@workleap/tsup-configs':
         specifier: 2.0.0
         version: 2.0.0(tsup@7.0.0)
@@ -394,8 +394,8 @@ importers:
         specifier: 5.28.1
         version: 5.28.1(@swc/core@1.3.66)(webpack-cli@5.1.4)
       '@workleap/eslint-plugin':
-        specifier: 2.0.0
-        version: 2.0.0(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6)
+        specifier: 2.0.1
+        version: 2.0.1(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6)
       '@workleap/swc-configs':
         specifier: 1.0.0
         version: 1.0.0(@swc/core@1.3.66)(@swc/helpers@0.5.1)(@swc/jest@0.2.26)
@@ -437,8 +437,8 @@ importers:
         specifier: 18.2.6
         version: 18.2.6
       '@workleap/eslint-plugin':
-        specifier: 2.0.0
-        version: 2.0.0(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6)
+        specifier: 2.0.1
+        version: 2.0.1(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6)
       '@workleap/tsup-configs':
         specifier: 2.0.0
         version: 2.0.0(tsup@7.0.0)
@@ -1744,7 +1744,7 @@ packages:
       nopt: 5.0.0
       npmlog: 5.0.1
       rimraf: 3.0.2
-      semver: 7.5.1
+      semver: 7.5.4
       tar: 6.1.15
     transitivePeerDependencies:
       - encoding
@@ -1765,7 +1765,7 @@ packages:
       find-up: 6.3.0
       minimatch: 9.0.3
       read-pkg: 7.1.0
-      semver: 7.5.1
+      semver: 7.5.4
       yaml: 2.3.1
       yargs: 17.7.2
     dev: true
@@ -1818,7 +1818,7 @@ packages:
       resolve: 2.0.0-next.4
       rfdc: 1.3.0
       safe-json-stringify: 1.2.0
-      semver: 7.5.1
+      semver: 7.5.4
       string-width: 5.1.2
       strip-ansi: 7.1.0
       supports-color: 9.4.0
@@ -1901,7 +1901,7 @@ packages:
       p-wait-for: 4.1.0
       path-key: 4.0.0
       regexp-tree: 0.1.27
-      semver: 7.5.1
+      semver: 7.5.4
       tmp-promise: 3.0.3
       uuid: 9.0.0
     dev: true
@@ -2335,7 +2335,7 @@ packages:
       p-locate: 6.0.0
       process: 0.11.10
       read-pkg-up: 9.1.0
-      semver: 7.5.1
+      semver: 7.5.4
     dev: true
 
   /@netlify/functions-utils@5.2.23(supports-color@9.4.0):
@@ -2546,7 +2546,7 @@ packages:
       precinct: 11.0.5(supports-color@9.4.0)
       require-package-name: 2.0.1
       resolve: 2.0.0-next.4
-      semver: 7.5.1
+      semver: 7.5.4
       tmp-promise: 3.0.3
       toml: 3.0.0
       unixify: 1.0.0
@@ -2587,7 +2587,7 @@ packages:
       precinct: 11.0.5(supports-color@9.4.0)
       require-package-name: 2.0.1
       resolve: 2.0.0-next.4
-      semver: 7.5.1
+      semver: 7.5.4
       tmp-promise: 3.0.3
       toml: 3.0.0
       unixify: 1.0.0
@@ -3139,7 +3139,7 @@ packages:
   /@types/concat-stream@2.0.0:
     resolution: {integrity: sha512-t3YCerNM7NTVjLuICZo5gYAXYoDvpuuTceCcFQWcDQz26kxUR5uIWolxbIR5jRNIXpMqhOpW/b8imCR1LEmuJw==}
     dependencies:
-      '@types/node': 18.17.9
+      '@types/node': 20.5.4
     dev: true
 
   /@types/connect-history-api-fallback@1.5.0:
@@ -3841,8 +3841,8 @@ packages:
       webpack-dev-server: 4.15.1(webpack-cli@5.1.4)(webpack@5.88.0)
     dev: true
 
-  /@workleap/eslint-plugin@2.0.0(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6):
-    resolution: {integrity: sha512-Ha9Xpf74dXLgUyZhvyAb4LgKtdKW0duNgMFrTmCrapgaCgo+5dy4PW86Yp0wGmyczP+YGUUB+jGS62I3IjeDHg==}
+  /@workleap/eslint-plugin@2.0.1(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(jest@29.5.0)(typescript@5.1.6):
+    resolution: {integrity: sha512-cCxUjh76oD79aFHqWHGi+j/vdJMc7QJUPbdf6myet0Xo7K+QifeDfwWUh3wXHM78Pb+UhCtrRA+M687xMonDag==}
     peerDependencies:
       '@typescript-eslint/parser': '*'
       eslint: '*'
@@ -4134,7 +4134,7 @@ packages:
       global-cache-dir: 4.4.0
       is-plain-obj: 4.1.0
       path-exists: 5.0.0
-      semver: 7.5.1
+      semver: 7.5.4
       write-file-atomic: 4.0.2
     dev: true
 
@@ -4881,7 +4881,7 @@ packages:
   /builtins@5.0.1:
     resolution: {integrity: sha512-qwVpFEHNfhYJIzNRBvd2C1kyo6jz3ZSMPyyuR47OPdiKWlbYnZNyDWuyR175qDnAJLiCo5fBBqPb3RiXgWlkOQ==}
     dependencies:
-      semver: 7.5.1
+      semver: 7.5.4
     dev: true
 
   /bundle-name@3.0.0:
@@ -5435,7 +5435,7 @@ packages:
       js-string-escape: 1.0.1
       lodash: 4.17.21
       md5-hex: 3.0.1
-      semver: 7.5.1
+      semver: 7.5.4
       well-known-symbols: 2.0.0
     dev: true
 
@@ -7134,7 +7134,7 @@ packages:
       proxy-addr: 2.0.7
       rfdc: 1.3.0
       secure-json-parse: 2.7.0
-      semver: 7.5.1
+      semver: 7.5.4
       tiny-lru: 11.0.1
     transitivePeerDependencies:
       - supports-color
@@ -7626,7 +7626,7 @@ packages:
     dependencies:
       '@xhmikosr/downloader': 12.0.0
       node-fetch: 3.3.2
-      semver: 7.5.1
+      semver: 7.5.4
     dev: true
 
   /git-repo-info@2.1.1:
@@ -9527,7 +9527,7 @@ packages:
       jws: 3.2.2
       lodash: 4.17.21
       ms: 2.1.3
-      semver: 7.5.1
+      semver: 7.5.4
     dev: true
 
   /jsx-ast-utils@3.3.5:
@@ -9841,7 +9841,7 @@ packages:
       jest-validate: 27.5.1
       map-obj: 5.0.2
       moize: 6.1.6
-      semver: 7.5.1
+      semver: 7.5.4
     dev: true
 
   /log-symbols@1.0.2:
@@ -11010,7 +11010,7 @@ packages:
       is-plain-obj: 4.1.0
       normalize-node-version: 12.4.0
       path-exists: 5.0.0
-      semver: 7.5.1
+      semver: 7.5.4
     dev: true
 
   /noms@0.0.0:
@@ -11046,7 +11046,7 @@ packages:
     dependencies:
       all-node-versions: 11.3.0
       filter-obj: 5.1.0
-      semver: 7.5.1
+      semver: 7.5.4
     dev: true
 
   /normalize-package-data@2.5.0:
@@ -11064,7 +11064,7 @@ packages:
     dependencies:
       hosted-git-info: 4.1.0
       is-core-module: 2.13.0
-      semver: 7.5.1
+      semver: 7.5.4
       validate-npm-package-license: 3.0.4
     dev: true
 
@@ -11514,7 +11514,7 @@ packages:
       got: 12.6.1
       registry-auth-token: 5.0.2
       registry-url: 6.0.1
-      semver: 7.5.1
+      semver: 7.5.4
     dev: true
 
   /parallel-transform@1.2.0:
@@ -12676,7 +12676,7 @@ packages:
     resolution: {integrity: sha512-0Ju4+6A8iOnpL/Thra7dZsSlOHYAHIeMxfhWQRI1/VLcT3WDBZKKtQt/QkBOsiIN9ZpuvHE6cGZ0x4glCMmfiA==}
     engines: {node: '>=12'}
     dependencies:
-      semver: 7.5.1
+      semver: 7.5.4
     dev: true
 
   /semver@5.7.2:
@@ -14276,7 +14276,7 @@ packages:
       is-yarn-global: 0.4.1
       latest-version: 7.0.0
       pupa: 3.1.0
-      semver: 7.5.1
+      semver: 7.5.4
       semver-diff: 4.0.0
       xdg-basedir: 5.1.0
     dev: true

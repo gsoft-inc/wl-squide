@@ -36,7 +36,7 @@
         "@changesets/changelog-github": "0.4.8",
         "@changesets/cli": "2.26.1",
         "@typescript-eslint/parser": "6.4.1",
-        "@workleap/eslint-plugin": "2.0.0",
+        "@workleap/eslint-plugin": "2.0.1",
         "@workleap/typescript-configs": "2.3.2",
         "cross-env": "7.0.3",
         "eslint": "8.47.0",

@@ -27,7 +27,7 @@ function getAllRoutePaths(route: Route) {
     return !isNil(current) ? [current] : [];
 }
 
-export function useHoistedRoutes(routes: RootRoute[], wrapManagedRoutes: (routes: Route[]) => Route, { allowedPaths }: UseHoistedRoutesOptions = {}): Route[] {
+export function useHoistedRoutes(routes: RootRoute[], wrapManagedRoutes: (routes: Route[]) => Route, { allowedPaths }: UseHoistedRoutesOptions = {}) {
     // Hack to reuse the same array reference through re-renders.
     const [memoizedAllowedPaths] = useState(allowedPaths);
 

@@ -10,3 +10,5 @@ export * from "./navigationItemRegistry.ts";
 export * from "./useNavigationItems.ts";
 export * from "./useRenderedNavigationItems.tsx";
 
+export type { RouteObject } from "react-router-dom";
+

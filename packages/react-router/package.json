@@ -44,7 +44,7 @@
         "@types/react": "18.2.13",
         "@types/react-dom": "18.2.6",
         "@types/react-test-renderer": "18.0.0",
-        "@workleap/eslint-plugin": "1.8.2",
+        "@workleap/eslint-plugin": "2.0.0",
         "@workleap/swc-configs": "1.0.0",
         "@workleap/tsup-configs": "2.0.0",
         "@workleap/typescript-configs": "2.3.2",
@@ -55,7 +55,6 @@
         "react-router-dom": "6.13.0",
         "react-test-renderer": "18.2.0",
         "ts-jest": "29.1.0",
-        "ts-node": "10.9.1",
         "tsup": "7.0.0",
         "typescript": "5.0.4"
     },

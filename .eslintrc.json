@@ -2,6 +2,6 @@
     "$schema": "https://json.schemastore.org/eslintrc",
     "root": true,
     "extends": [
-        "plugin:@workleap/monorepo-root"
+        "plugin:@workleap/monorepo-workspace"
     ]
 }

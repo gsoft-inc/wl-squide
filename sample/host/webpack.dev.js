@@ -1,6 +1,6 @@
 // @ts-check
 
-// Added for TSC, otherwise the "devServer" section is unknown.
+// Added for TS, otherwise the "devServer" section is unknown.
 import "webpack-dev-server";
 
 import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";

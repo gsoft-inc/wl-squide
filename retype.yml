@@ -8,6 +8,14 @@ edit:
 
 url: https://gsoft-inc.github.io/wl-squide/
 
+# Pro features
+poweredByRetype: false
+
+outbound:
+    enabled: true
+    icon: ""
+
+# Regular features
 branding:
     title: "@squide"
     logo: ./logo.png

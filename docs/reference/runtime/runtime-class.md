@@ -75,7 +75,7 @@ runtime.registerRoutes([
 ]);
 ```
 
-[!ref icon="gear" text="Setup the host application to accept hoisted routes"](/references/routing/useHoistedRoutes.md)
+[!ref icon="gear" text="Setup the host application to accept hoisted routes"](/reference/routing/useHoistedRoutes.md)
 
 ### Register navigation items
 
@@ -101,7 +101,7 @@ runtime.registerNavigationItems([
 ]);
 ```
 
-[!ref icon="gear" text="Setup the host application to render navigation items"](/references/routing/useRenderedNavigationItems.md)
+[!ref icon="gear" text="Setup the host application to render navigation items"](/reference/routing/useRenderedNavigationItems.md)
 
 ### Register nested navigation items
 

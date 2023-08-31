@@ -61,7 +61,7 @@ export function RootLayout() {
     const navigationItems = useNavigationItems();
 
     // To keep things simple, we are omitting the definition of "renderItem" and "renderSection".
-    // For a full example, view: https://gsoft-inc.github.io/wl-squide/references/routing/userenderednavigationitems/.
+    // For a full example, view: https://gsoft-inc.github.io/wl-squide/reference/routing/userenderednavigationitems/.
     const navigationElements = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (
@@ -82,5 +82,5 @@ By implementing this mechanism, the level of failure isolation achieved is **com
 With this mechanism, failure isolation **is as good as** with an **iframes** or **subdomains** implementation.
 
 !!!warning
-If your application is [hoisting page](/references/routing/useHoistedRoutes.md), it's important to note that they will be rendered outside of the host application's root error boundary. To prevent breaking the entire application when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router's `errorElement` property for each hoisted page.
+If your application is [hoisting page](/reference/routing/useHoistedRoutes.md), it's important to note that they will be rendered outside of the host application's root error boundary. To prevent breaking the entire application when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router's `errorElement` property for each hoisted page.
 !!!

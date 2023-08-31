@@ -7,14 +7,14 @@ order: 60
 Now that we've created a host application, loaded a few modules and registered routes and navigation items, let's delve into the APIs provided by this shell.
 
 !!!info
-For a comprehensive list of the `@squide` API, refer to the [References](/references#api) section.
+For a comprehensive list of the `@squide` API, refer to the [References](/reference#api) section.
 !!!
 
 ## Logging
 
-`@squide` includes a built-in logging feature that integrates with the [Runtime](/references/runtime/runtime-class.md) class and the [useLogger](/references/runtime/useLogger.md) hook.
+`@squide` includes a built-in logging feature that integrates with the [Runtime](/reference/runtime/runtime-class.md) class and the [useLogger](/reference/runtime/useLogger.md) hook.
 
-First, register your own custom logger by implementing the [Logger](/references/logging/Logger.md) interface or register `@squide` built-in [ConsoleLogger](/references/logging/ConsoleLogger):
+First, register your own custom logger by implementing the [Logger](/reference/logging/Logger.md) interface or register `@squide` built-in [ConsoleLogger](/reference/logging/ConsoleLogger):
 
 ```ts host/src/bootstrap.tsx
 import { Runtime, ConsoleLogger, type LogLevel } from "@squide/react-router";
@@ -34,13 +34,13 @@ const logger = useLogger();
 logger.debug("Hello", { world: "!" });
 ```
 
-The logger is also available from the [Runtime](/references/runtime/runtime-class.md) instance.
+The logger is also available from the [Runtime](/reference/runtime/runtime-class.md) instance.
 
 ## Messaging
 
-It's crucial that the parts of a federated application remains loosely coupled. To help with that, `@squide` offers a built-in [Event Bus](/references/messaging/EventBus.md).
+It's crucial that the parts of a federated application remains loosely coupled. To help with that, `@squide` offers a built-in [Event Bus](/reference/messaging/EventBus.md).
 
-First, listen to an event with the [useEventBusListener](/references/messaging/useEventBusListener.md) hook:
+First, listen to an event with the [useEventBusListener](/reference/messaging/useEventBusListener.md) hook:
 
 ```ts
 import { useCallback } from "react";
@@ -53,7 +53,7 @@ const handleFoo = useCallback((data, context) => {
 useEventBusListener("foo", handleFoo);
 ```
 
-Then, dispatch an event from anywhere with the [useEventBusDispatcher](/references/messaging/useEventBusDispatcher.md) hook:
+Then, dispatch an event from anywhere with the [useEventBusDispatcher](/reference/messaging/useEventBusDispatcher.md) hook:
 
 ```ts
 import { useEventDispatcher } from "@squide/react-router";
@@ -65,11 +65,11 @@ dispatch("foo", "bar");
 
 You can use the event bus to enable various communication scenarios, such as notifying components of state changes, broadcasting messages across modules, or triggering actions based on specific events.
 
-The event bus is also available from the [Runtime](/references/runtime/runtime-class.md) instance.
+The event bus is also available from the [Runtime](/reference/runtime/runtime-class.md) instance.
 
 ## Session
 
-Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the `@squide` [Runtime](/references/runtime/runtime-class.md) class accepts a [sessionAccessor](/references/fakes/SessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
+Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the `@squide` [Runtime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/SessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
 
 First, let's define a `sessionAccessor` function:
 
@@ -99,7 +99,7 @@ const runtime = new Runtime({
 });
 ```
 
-Finally, access the session from any parts of the application with the [useSession](/references/runtime/useSession.md) hook:
+Finally, access the session from any parts of the application with the [useSession](/reference/runtime/useSession.md) hook:
 
 ```ts
 import { useSession } from "@squide/react-router";
@@ -107,7 +107,7 @@ import { useSession } from "@squide/react-router";
 const session = useSession();
 ```
 
-Or determine whether or not the user is authenticated with the [useIsAuthenticated](/references/session/useIsAuthenticated.md) hook:
+Or determine whether or not the user is authenticated with the [useIsAuthenticated](/reference/session/useIsAuthenticated.md) hook:
 
 ```ts
 import { useIsAuthenticated } from "@squide/react-router";
@@ -115,11 +115,11 @@ import { useIsAuthenticated } from "@squide/react-router";
 const isAuthenticated = useIsAuthenticated();
 ```
 
-The session is also available from the [Runtime](/references/runtime/runtime-class.md) instance.
+The session is also available from the [Runtime](/reference/runtime/runtime-class.md) instance.
 
 ## Services
 
-While `@squide` provides a range of built-in functionalities, by no mean these alone can support the needs of every mature application. Therefore, the shell [Runtime](/references/runtime/runtime-class.md) allows the addition of custom services.
+While `@squide` provides a range of built-in functionalities, by no mean these alone can support the needs of every mature application. Therefore, the shell [Runtime](/reference/runtime/runtime-class.md) allows the addition of custom services.
 
 First, make the service available to every part of the application by passing a service instance to the `Runtime` instance:
 
@@ -134,7 +134,7 @@ const runtime = new Runtime({
 });
 ```
 
-Then, access the service instance from anywhere with the [useService](/references/runtime/useService.md) hook:
+Then, access the service instance from anywhere with the [useService](/reference/runtime/useService.md) hook:
 
 ```ts
 import { useService } from "@squide/react-router";
@@ -143,7 +143,7 @@ import { type UserService } from "@sample/shared";
 const service = useService("user-service") as UserService;
 ```
 
-The services are also available from the [Runtime](/references/runtime/runtime-class.md) instance.
+The services are also available from the [Runtime](/reference/runtime/runtime-class.md) instance.
 
 
 

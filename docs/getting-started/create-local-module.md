@@ -64,7 +64,7 @@ Then, add the following fields to the `package.json` files:
 
 ### Routes and navigation items registration
 
-Then, register the local module [routes](/references/runtime/runtime-class.md#register-routes) and [navigation items](/references/runtime/runtime-class.md#register-navigation-items):
+Then, register the local module [routes](/reference/runtime/runtime-class.md#register-routes) and [navigation items](/reference/runtime/runtime-class.md#register-navigation-items):
 
 ```tsx !#8-13,15-20 local-module/src/register.tsx
 import { lazy } from "react";
@@ -100,7 +100,7 @@ export default function Page() {
 
 ## 3. Register the local module
 
-Go back to the `host` application and [register the local module](/references/registration/registerLocalModules.md). Don't forget to add a dependency in the host application `package.json` file.
+Go back to the `host` application and [register the local module](/reference/registration/registerLocalModules.md). Don't forget to add a dependency in the host application `package.json` file.
 
 ```tsx !#5,27 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";

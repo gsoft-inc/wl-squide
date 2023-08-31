@@ -65,7 +65,7 @@ To learn more about this async boundary and the `bootstrap.tsx` file, read the f
 
 ### Module registration
 
-Then, instanciate the shell [Runtime](/references/runtime/runtime-class.md) and [register the remote module](/references/registration/registerRemoteModules.md) (the configuration of the remote module will be covered in the [next section](create-remote-module.md)):
+Then, instanciate the shell [Runtime](/reference/runtime/runtime-class.md) and [register the remote module](/reference/registration/registerRemoteModules.md) (the configuration of the remote module will be covered in the [next section](create-remote-module.md)):
 
 ```tsx !#23,13-15,18-20 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
@@ -103,7 +103,7 @@ root.render(
 
 ### Router instance
 
-Then, [retrieve the routes](/references/runtime/useRoutes.md) that have been registered by the remote module and create a router instance:
+Then, [retrieve the routes](/reference/runtime/useRoutes.md) that have been registered by the remote module and create a router instance:
 
 ```tsx !#10,13,17 host/src/App.tsx
 import { lazy, useMemo } from "react";
@@ -162,7 +162,7 @@ export function Home() {
 
 ### Navigation items
 
-FInally, create a layout component to [render the navigation items](/references/routing/useRenderedNavigationItems.md):
+FInally, create a layout component to [render the navigation items](/reference/routing/useRenderedNavigationItems.md):
 
 ```tsx !#38,41 host/src/RootLayout.tsx
 import type { ReactNode } from "react";
@@ -178,7 +178,7 @@ import {
 const renderItem: RenderItemFunction = (item, index, level) => {
     // To keep thing simple, this sample doesn't support nested navigation items.
     // For an example including support for nested navigation items, have a look at
-    // https://gsoft-inc.github.io/wl-squide/references/routing/userenderednavigationitems/
+    // https://gsoft-inc.github.io/wl-squide/reference/routing/userenderednavigationitems/
     if (!isNavigationLink(item)) {
         return null;
     }
@@ -218,7 +218,7 @@ export default function RootLayout() {
 
 ## 3. Configure webpack
 
-To configure the webpack [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/), use the [hostTransformer](/references/webpack/hostTransformer.md) function:
+To configure the webpack [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/), use the [hostTransformer](/reference/webpack/hostTransformer.md) function:
 
 
 ```js !#8 host/webpack.config.js

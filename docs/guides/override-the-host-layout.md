@@ -70,7 +70,7 @@ export function RootLayout() {
     const navigationItems = useNavigationItems();
 
     // To keep things simple, we are omitting the definition of "renderItem" and "renderSection".
-    // For a full example, view: https://gsoft-inc.github.io/wl-squide/references/routing/userenderednavigationitems/.
+    // For a full example, view: https://gsoft-inc.github.io/wl-squide/reference/routing/userenderednavigationitems/.
     const navigationElements = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (
@@ -105,7 +105,7 @@ root
 
 Package managers supporting workspaces such as [Yarn](https://classic.yarnpkg.com/) and [NPM](https://docs.npmjs.com/cli) call this mechanism "hoisting", which means "raise (something) by means of ropes and pulleys". This is exactly what we are trying to achieve here.
 
-`@squide` has a built-in [useHoistedRoutes](/references/routing/useHoistedRoutes.md) hook capable of raising module routes marked as `hoist` at the root of the routes array, before the `RootLayout` declaration. Thus, an hoisted page will not be wrapped by the `RootLayout` and will have full control over its rendering.
+`@squide` has a built-in [useHoistedRoutes](/reference/routing/useHoistedRoutes.md) hook capable of raising module routes marked as `hoist` at the root of the routes array, before the `RootLayout` declaration. Thus, an hoisted page will not be wrapped by the `RootLayout` and will have full control over its rendering.
 
 To hoist module pages, first transform the module routes with the `useHoistedRoutes` hook before creating the router instance:
 
@@ -198,6 +198,6 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
 }
 ```
 
-[!ref icon="gear" text="For additional options, go to the `useHoistedRoutes` hook reference page"](/references/routing/useHoistedRoutes.md)
+[!ref icon="gear" text="For additional options, go to the `useHoistedRoutes` hook reference page"](/reference/routing/useHoistedRoutes.md)
 
 

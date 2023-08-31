@@ -2,7 +2,7 @@
 
 Indicate whether or not the user is authenticated.
 
-> If the [sessionAccessor](/references/runtime/runtime-class.md) function return a non `null` / `undefined` value, a user is considered as authenticated.
+> If the [sessionAccessor](/reference/runtime/runtime-class.md) function return a non `null` / `undefined` value, a user is considered as authenticated.
 
 ## Reference
 

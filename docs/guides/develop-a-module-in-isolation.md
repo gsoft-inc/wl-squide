@@ -120,7 +120,7 @@ remote-module
 ├── webpack.config.js
 ```
 
-The `index.tsx` file is similar to the `bootstrap.tsx` file of a host application but, tailored for an isolated module. The key distinction is that, since we set up the project for local development, we'll register the module with the [registerLocalModules](/references/registration/registerLocalModules.md) function instead of the [registerRemoteModules](/references/registration/registerRemoteModules.md) function:
+The `index.tsx` file is similar to the `bootstrap.tsx` file of a host application but, tailored for an isolated module. The key distinction is that, since we set up the project for local development, we'll register the module with the [registerLocalModules](/reference/registration/registerLocalModules.md) function instead of the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function:
 
 ```tsx !#10-12,16 remote-module/src/index.tsx
 import { createRoot } from "react-dom/client";

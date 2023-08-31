@@ -1,5 +1,6 @@
 **/dist/*
+**/__snapshots__/*
 node_modules
 *.md
-pnpm-lock.yaml
-**/__snapshots__/*
+*.yml
+*.yaml

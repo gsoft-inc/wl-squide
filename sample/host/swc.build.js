@@ -1,3 +1,7 @@
-import { defineBuildConfig } from "@workleap/swc-configs";
+// @ts-check
 
-export const swcConfig = defineBuildConfig();
+import { browserslistToSwc, defineBuildConfig } from "@workleap/swc-configs";
+
+export const swcConfig = defineBuildConfig({
+    targets: browserslistToSwc()
+});

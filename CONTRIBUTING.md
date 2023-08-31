@@ -32,7 +32,7 @@ Under [packages/](packages/) are the actual packages composing the federated app
 
 [@squide/react-router](packages/react-router/) is a [React Router](https://reactrouter.com/en/main) implementation of the shell routing capabilities. This implementation is offered as a standalone package because the shell could eventually support alternative routing libraries like [TanStack router](https://tanstack.com/router/v1).
 
-[@squide/webpack-module-federation](packages/webpack-module-federation/) is module federation implementation for [Webpack](https://webpack.js.org/concepts/module-federation/). This implementation is offered as a standalone package because not all application configurations will require module federation and the shell could eventually support alternative module federation application like [Rspack](https://www.rspack.dev/).
+[@squide/webpack-module-federation](packages/webpack-module-federation/) is module federation implementation for [webpack](https://webpack.js.org/concepts/module-federation/). This implementation is offered as a standalone package because not all application configurations will require module federation and the shell could eventually support alternative module federation application like [Rspack](https://www.rspack.dev/).
 
 [@squide/fakes](packages/fakes/) is a collection of fake implementations to facilitate the development of federated modules in isolation.
 
@@ -54,6 +54,18 @@ To install the project, open a terminal at the root of the workspace and execute
 
 ```bash
 pnpm install
+```
+
+### Setup Retype
+
+[Retype](https://retype.com/) is the documentation platform that `workleap/web-configs` is using for the documentation. As this project is leveraging a few [Pro features](https://retype.com/pro/) of Retype, you must first setup your [Retype wallet](https://retype.com/guides/cli/#retype-wallet).
+
+To do so, first make sure that you retrieve the Retype license from your Vault (or ask IT).
+
+Then, open a terminal at the root of the workspace and execute the following command:
+
+```bash
+npx retype wallet --add <your-license-key-here>
 ```
 
 ## Develop the shell packages
@@ -80,7 +92,7 @@ When you are ready to release the packages, you must follow the following steps:
 1. Run `pnpm changeset` and follow the prompt. For versioning, always follow the [SemVer standard](https://semver.org/).
 2. Commit the newly generated file in your branch and submit a new Pull Request(PR). Changesets will automatically detect the changes and post a message in your pull request telling you that once the PR closes, the versions will be released.
 3. Find someone to review your PR.
-4. Merge the Pull request into `main`. A GitHub action will automatically trigger and update the version of the packages and publish them to [npm]https://www.npmjs.com/). A tag will also be created on GitHub tagging your PR merge commit.
+4. Merge the Pull request into `main`. A GitHub action will automatically trigger and update the version of the packages and publish them to [npm](https://www.npmjs.com/). A tag will also be created on GitHub tagging your PR merge commit.
 
 ### Troubleshooting
 
@@ -170,6 +182,14 @@ Build the sample application for deployment and start a local web server to serv
 pnpm serve-sample
 ```
 
+### dev-docs
+
+Build the [Retype](https://retype.com/) documentation for development and start the Retype dev server. If you are experiencing issue with the license, refer to the [setup Retype section](#setup-retype).
+
+```bash
+pnpm dev-docs
+```
+
 ### test
 
 Run the shell packages unit tests.
@@ -230,17 +250,23 @@ pnpm update-outdated-deps
 
 We use [GitHub Actions](https://github.com/features/actions) for this repository.
 
-You can find the configuration in the [.github/workflows](.github/workflows/) folder and the build results available [here](https://github.com/gsoft-inc/wl-squide/actions).
+You can find the configuration in the [.github/workflows](.github/workflows/) folder and the build results are available [here](https://github.com/gsoft-inc/wl-squide/actions).
 
-We currently have 2 builds configured:
+We currently have 3 builds configured:
 
 ### Changesets
 
-This build runs on a push on the `main` branch, and if theirs a file present in the `.changeset` folder, will publish the new package version on npm.
+This action runs on a push on the `main` branch. If there is a file present in the `.changeset` folder, it will publish the new package version on npm.
 
 ### CI
 
-This build will trigger when a commit is done in a PR to `main` or after a push to `main` and will run `build`, `lint-ci` and `test` commands on the source code.
+This action will trigger when a commit is done in a PR to `main` or after a push to `main` and will run `build`, `lint-ci` and `test` commands on the source code.
+
+### Retype
+
+This action will trigger when a commit is done in a PR to `main` or after a push to `main`. The action will generate the documentation website into the `retype` branch. This repository [Github Pages](https://github.com/gsoft-inc/wl-web-configs/settings/pages) is configured to automatically deploy the website from the `retype` branch.
+
+If you are having issue with the Retype license, make sure the `RETYPE_API_KEY` Github secret contains a valid Retype license.
 
 ## Add a new package to the monorepo
 

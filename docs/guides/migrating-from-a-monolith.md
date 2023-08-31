@@ -21,14 +21,14 @@ The primary challenge to migrate to a distributed architecture is coupling. Thus
 
 We recommend the following steps:
 
-1- Transform the codebase into a monorepo setup.
+1. Transform the codebase into a monorepo setup.
 
-2- Create independent local packages (modules) for each identified value stream.
+2. Create independent local packages (modules) for each identified value stream.
 
-3- Refactor the monolithic application code into the corresponding value tream local packages and ensure that each value stream [can be developed independently](develop-a-module-in-isolation.md) (e.g., without the need to start the entire application).
+3. Refactor the monolithic application code into the corresponding value tream local packages and ensure that each value stream [can be developed independently](develop-a-module-in-isolation.md) (e.g., without the need to start the entire application).
 
-4- Import and [register the local packages](/references/registration/registerLocalModules.md) (modules) into the host application.
+4. Import and [register the local packages](/references/registration/registerLocalModules.md) (modules) into the host application.
 
-5- Finally, transition from local modules to [remote modules](/references/registration/registerRemoteModules.md) and update your CI/CD pipelines to enable independent deployment of modules.
+5. Finally, transition from local modules to [remote modules](/references/registration/registerRemoteModules.md) and update your CI/CD pipelines to enable independent deployment of modules.
 
 By following these steps, you can gradually decouple your monolithic application, create modular value streams, and prepare the foundation for a distributed architecture.

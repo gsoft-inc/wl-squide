@@ -81,7 +81,7 @@ const Remotes: RemoteDefinition = [
 
 The `name` property of a remote definition **must match** the `name` property defined in the remote module [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) configuration.
 
-If you are using `@squide` [remoteTransformer](/references/webpack/remoteTransformer.md) function to add the `ModuleFederationPlugin` to the remote module Webpack [configuration object](https://webpack.js.org/concepts/configuration/), the remote module `name` is the second argument of the `remoteTransformer` function.
+If you are using `@squide` [remoteTransformer](/references/webpack/remoteTransformer.md) function to add the `ModuleFederationPlugin` to the remote module webpack [configuration object](https://webpack.js.org/concepts/configuration/), the remote module `name` is the second argument of the `remoteTransformer` function.
 
 In the following exemple, the remote module `name` is `remote1`.
 
@@ -108,7 +108,7 @@ export default federatedConfig;
 
 ### Url
 
-The `url` property of a remote definition **must match** the [publicPath](https://webpack.js.org/guides/public-path/) of the remote module Webpack [configuration object](https://webpack.js.org/concepts/configuration/).
+The `url` property of a remote definition **must match** the [publicPath](https://webpack.js.org/guides/public-path/) of the remote module webpack [configuration object](https://webpack.js.org/concepts/configuration/).
 
 In the following exemple, the remote module `publicPath` is `http://localhost:8081`.
 

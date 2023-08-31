@@ -6,6 +6,8 @@ order: 60
 
 Many applications must integrate with specific remote logging solutions such as [Honeycomb](https://www.honeycomb.io/) and [Azure Application Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview). To facilitate this integration, the shell runtime accepts any custom loggers implementing the [Logger](/references/logging/Logger.md) interface.
 
+## Custom logger
+
 First, let's define a custom logger:
 
 ```ts host/src/customerLogger.ts
@@ -72,6 +74,8 @@ const runtime = new Runtime({
     ],
 });
 ```
+
+## Try the application :rocket:
 
 Start the applications and open the developer tools, then, refresh the page. You should see the following console log message:
 

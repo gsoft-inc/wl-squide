@@ -2,7 +2,7 @@
     "name": "@squide/webpack-module-federation",
     "author": "Workleap",
     "version": "1.0.1",
-    "description": "Add support for Webpack Module Federation to @squide federated application shell.",
+    "description": "Add support for Module Federation to @squide federated application shell.",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
@@ -15,10 +15,17 @@
     },
     "type": "module",
     "exports": {
-        ".": "./dist/index.js",
-        "./configTransformer.js": "./dist/configTransformer.js"
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        },
+        "./configTransformer.js": {
+            "import": "./dist/configTransformer.js",
+            "types": "./dist/configTransformer.d.ts",
+            "default": "./dist/configTransformer.js"
+        }
     },
-    "types": "./dist/index.d.ts",
     "files": [
         "/dist",
         "CHANGELOG.md",
@@ -34,24 +41,23 @@
         "webpack": ">=5.0.0"
     },
     "devDependencies": {
-        "@swc/core": "1.3.66",
+        "@swc/core": "1.3.81",
         "@swc/helpers": "0.5.1",
-        "@swc/jest": "0.2.26",
-        "@types/jest": "29.5.2",
-        "@types/react": "18.2.13",
-        "@types/react-dom": "18.2.6",
-        "@workleap/eslint-plugin": "1.8.2",
-        "@workleap/swc-configs": "1.0.0",
-        "@workleap/tsup-configs": "2.0.0",
-        "@workleap/typescript-configs": "2.3.2",
-        "jest": "29.5.0",
+        "@swc/jest": "0.2.29",
+        "@types/jest": "29.5.4",
+        "@types/react": "18.2.21",
+        "@types/react-dom": "18.2.7",
+        "@workleap/eslint-plugin": "2.1.0",
+        "@workleap/swc-configs": "2.1.0",
+        "@workleap/tsup-configs": "3.0.0",
+        "@workleap/typescript-configs": "3.0.1",
+        "jest": "29.6.4",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "ts-jest": "29.1.0",
-        "ts-node": "10.9.1",
-        "tsup": "7.0.0",
-        "typescript": "5.0.4",
-        "webpack": "5.88.0"
+        "ts-jest": "29.1.1",
+        "tsup": "7.2.0",
+        "typescript": "5.2.2",
+        "webpack": "5.88.2"
     },
     "dependencies": {
         "@squide/core": "workspace:*",

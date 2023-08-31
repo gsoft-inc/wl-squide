@@ -14,8 +14,13 @@
         "provenance": true
     },
     "type": "module",
-    "exports": "./dist/index.js",
-    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        }
+    },
     "files": [
         "/dist",
         "CHANGELOG.md",
@@ -30,15 +35,15 @@
         "react-dom": "*"
     },
     "devDependencies": {
-        "@types/react": "18.2.13",
-        "@types/react-dom": "18.2.6",
-        "@workleap/eslint-plugin": "1.8.2",
-        "@workleap/tsup-configs": "2.0.0",
-        "@workleap/typescript-configs": "2.3.2",
+        "@types/react": "18.2.21",
+        "@types/react-dom": "18.2.7",
+        "@workleap/eslint-plugin": "2.1.0",
+        "@workleap/tsup-configs": "3.0.0",
+        "@workleap/typescript-configs": "3.0.1",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "tsup": "7.0.0",
-        "typescript": "5.0.4"
+        "tsup": "7.2.0",
+        "typescript": "5.2.2"
     },
     "dependencies": {
         "eventemitter3": "5.0.1"

@@ -8,6 +8,14 @@ edit:
 
 url: https://gsoft-inc.github.io/wl-squide/
 
+# Pro features
+poweredByRetype: false
+
+outbound:
+    enabled: true
+    icon: ""
+
+# Regular features
 branding:
     title: "@squide"
     logo: ./logo.png
@@ -17,15 +25,22 @@ favicon: ./favicon.png
 links:
     - text: Home
       icon: home
-      link: welcome
+      link: getting-started
 
-    - text: Guides
-      icon: book
-      link: guides
+    - text: Found a bug?
+      icon: issue-opened
+      link: https://github.com/gsoft-inc/wl-squide/issues
+      target: blank
 
-    - text: References
-      icon: gear
-      link: references
+    - text: Feature requests
+      icon: comment-discussion
+      link: https://github.com/gsoft-inc/wl-squide/discussions
+      target: blank
+
+    - text: Releases
+      icon: tag
+      link: https://github.com/gsoft-inc/wl-squide/releases
+      target: blank
 
     - text: Github
       icon: mark-github

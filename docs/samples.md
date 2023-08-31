@@ -3,8 +3,6 @@ order: 60
 icon: command-palette
 ---
 
-# Samples
-
 ## `@squide` sandbox
 
 - :icon-mark-github: [Host application](https://github.com/gsoft-inc/wl-squide/tree/main/sample/host)

@@ -6,8 +6,8 @@
 
     // Formatters settings
     "editor.codeActionsOnSave": {
-        "source.fixAll": true, // this makes sure eslint and stylelint are run on save
-        "source.sortImports": true // we want vscode to handle import sorting. It's snappier and more reliable than eslint
+        "source.fixAll": true, // Makes sure ESLint is runned on save
+        "source.sortImports": true // Let VS Code handle import sorting, it's snappier and more reliable than ESLint
     },
     "editor.formatOnSave": true,
     "[html]": {
@@ -18,21 +18,18 @@
     },
 
     // Languages
-    "typescript.format.enable": false, // disables the default formatter, we use eslint instead
-    "typescript.preferences.useAliasesForRenames": false, // useAliasesForRenames is not the behavior we want from vscode
+    "typescript.format.enable": false, // Disables the default formatter to use ESLint instead
+    "typescript.preferences.useAliasesForRenames": false,
     "typescript.tsdk": "node_modules\\typescript\\lib",
 
-    "javascript.format.enable": false, // disables the default formatter, we use eslint instead
-    "javascript.preferences.useAliasesForRenames": false, // useAliasesForRenames is not the behavior we want from vscode
+    "javascript.format.enable": false, // Disables the default formatter to use ESLint instead
+    "javascript.preferences.useAliasesForRenames": false,
 
-    "json.format.enable": false, // disables the default formatter, we use eslint instead
+    "json.format.enable": false, // Disables the default formatter to use ESLint instead
 
-    "css.validate": false, // disables the default formatter, we use stylelint instead
-    "less.validate": false, // disables the default formatter, we use stylelint instead
-    "scss.validate": false, // disables the default formatter, we use stylelint instead
+    "css.validate": false, // Disables the default formatter to use Stylelint instead
 
-    // Settings for third parties we frequently use
-    // Third party - Jest
+    // Settings for third parties that are frequently used
     "files.associations": {
         "*.snap": "javascriptreact"
     },

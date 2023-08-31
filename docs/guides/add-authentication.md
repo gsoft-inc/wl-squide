@@ -8,7 +8,9 @@ Most of our applications (if not all) will eventually require the user to authen
 
 When combined with a [React Router's](https://reactrouter.com/en/main) authentication boundary and a login page, the shared `sessionAccessor` function is a great asset to manage authentication concerns.
 
-First, let's define a `sessionAccessor` function:
+## Session accessor
+
+Define a `sessionAccessor` function wrapping a `SessionManager` instance:
 
 ```ts host/src/session.ts
 import type { SessionAccessorFunction } from "@squide/react-router";
@@ -36,9 +38,11 @@ const runtime = new Runtime({
 });
 ```
 
-Then create an authentication boundary component using the [useIsAuthenticated]() hook:
+## Authentication boundary
 
-> Internally, the `useIsAuthenticated` hook use the `sessionAccessor` function to determine whether or not the user is authenticated.
+Create a new React Router's authentication boundary component using the [useIsAuthenticated]() hook:
+
+> Internally, the `useIsAuthenticated` hook use the `sessionAccessor` function that we created previously to determine whether or not the user is authenticated.
 
 ```tsx !#5 host/src/AuthenticationBoundary.tsx
 import { Navigate, Outlet } from "react-router-dom";
@@ -49,7 +53,9 @@ export function AuthenticationBoundary() {
 }
 ```
 
-Then, add a login page:
+## Login page
+
+Add a login page to the application:
 
 ```tsx !#17-21 host/src/Login.tsx
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
@@ -115,7 +121,9 @@ export default function Login() {
 }
 ```
 
-And finally, assemble everything with React Router's [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes):
+## Nested routes
+
+Assemble everything with React Router's [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes):
 
 ```tsx !#29-30,34 host/src/App.tsx
 import { lazy, useMemo } from "react";
@@ -191,7 +199,9 @@ export function App() {
 }
 ```
 
-Now, start the application and attempt navigating to the root page (`/`). You will be redirected to the `/login` page. Login with `"temp"` / `"temp"`, you will be redirected to the root page.
+## Try the application :rocket:
+
+Start the application and attempt navigating to the root page (`/`). You will be redirected to the `/login` page. Login with `"temp"` / `"temp"`, you will be redirected to the root page.
 
 
 

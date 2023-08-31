@@ -10,7 +10,7 @@ However, there are a few essential configurations that need to be made regardles
 
 ## Default redirect
 
-To enable support for direct page hits, you need to add the following redirect rule to your host application's hosting provider:
+To enable support for direct page hits, add the following redirect rule to your host application's hosting provider:
 
 ```
 /* /index.html 200

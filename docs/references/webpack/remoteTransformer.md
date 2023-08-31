@@ -1,6 +1,6 @@
 # remoteTransformer
 
-Add to an existing Webpack [configuration object](https://webpack.js.org/concepts/configuration/) a [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) plugin instance pre-configured for a `@squide` remote module application.
+Add to an existing webpack [configuration object](https://webpack.js.org/concepts/configuration/) a [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) plugin instance pre-configured for a `@squide` remote module application.
 
 ## Reference
 
@@ -10,7 +10,7 @@ const federatedConfig = remoteTransformer(config, name, options?: { router?, plu
 
 ### Parameters
 
-- `config`: A Webpack [configuration object](https://webpack.js.org/concepts/configuration/).
+- `config`: A webpack [configuration object](https://webpack.js.org/concepts/configuration/).
 - `name`: The remote application name.
 - `options`: An optional object literal of options.
     - `router`: An optional router identifier (default is `"react-router"`).
@@ -18,7 +18,7 @@ const federatedConfig = remoteTransformer(config, name, options?: { router?, plu
 
 ### Returns
 
-A Webpack [configuration object](https://webpack.js.org/concepts/configuration/) enriched with a [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) plugin instance.
+A webpack [configuration object](https://webpack.js.org/concepts/configuration/) enriched with a [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) plugin instance.
 
 ## Conventions
 
@@ -57,7 +57,7 @@ For the detailed configuration of the shared dependencies, have a look at the [c
 
 ## Usage
 
-### Transform a Webpack config
+### Transform a webpack config
 
 ```js !#10 remote-module/webpack.config.js
 import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";

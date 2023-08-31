@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.2.0.746812871282">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.2.0.746839966148">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.2.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.2.0.746812871282" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.2.0.746839966148" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.2.0.746812871282" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.2.0.746839966148" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.2.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.2.0.746812871282" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.2.0.746812871282" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.2.0.746839966148" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.2.0.746839966148" defer></script>
 
     <style>
         .docs-markdown ol, .docs-markdown ul {
@@ -364,7 +364,7 @@
         <span>Routes and navigation items registration</span>
     </h3>
 </doc-anchor-target>
-<p>Then, register the local module <a href="../../references/runtime/runtime-class/#register-routes">routes</a> and <a href="../../references/runtime/runtime-class/#register-navigation-items">navigation items</a>:</p>
+<p>Then, register the local module <a href="../../reference/runtime/runtime-class/#register-routes">routes</a> and <a href="../../reference/runtime/runtime-class/#register-navigation-items">navigation items</a>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/src/register.tsx</div>
 <pre class="language-tsx" data-line="8-13,15-20"><code v-pre class="language-tsx">import { lazy } from &quot;react&quot;;
@@ -403,7 +403,7 @@ export const register: ModuleRegisterFunction = (runtime: Runtime, context: AppC
         <span>3. Register the local module</span>
     </h2>
 </doc-anchor-target>
-<p>Go back to the <code v-pre>host</code> application and <a href="../../references/registration/registerlocalmodules/">register the local module</a>. Don&#x27;t forget to add a dependency in the host application <code v-pre>package.json</code> file.</p>
+<p>Go back to the <code v-pre>host</code> application and <a href="../../reference/registration/registerlocalmodules/">register the local module</a>. Don&#x27;t forget to add a dependency in the host application <code v-pre>package.json</code> file.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
 <pre class="language-tsx" data-line="5,27"><code v-pre class="language-tsx">import { createRoot } from &quot;react-dom/client&quot;;

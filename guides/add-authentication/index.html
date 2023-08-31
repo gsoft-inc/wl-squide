@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.2.0.746812871282">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.2.0.746839966148">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.2.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.2.0.746812871282" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.2.0.746839966148" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.2.0.746812871282" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.2.0.746839966148" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.2.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.2.0.746812871282" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.2.0.746812871282" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.2.0.746839966148" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.2.0.746839966148" defer></script>
 
     <style>
         .docs-markdown ol, .docs-markdown ul {
@@ -287,7 +287,7 @@
         <span>Add authentication</span>
     </h1>
 </doc-anchor-target>
-<p>Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the <code v-pre>@squide</code> <a href="../../references/runtime/runtime-class/">Runtime</a> class accepts a <a href="../../references/fakes/sessionmanager/#integrate-with-a-runtime-instance">sessionAccessor</a> function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.</p>
+<p>Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the <code v-pre>@squide</code> <a href="../../reference/runtime/runtime-class/">Runtime</a> class accepts a <a href="../../reference/fakes/sessionmanager/#integrate-with-a-runtime-instance">sessionAccessor</a> function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.</p>
 <p>When combined with a <a href="https://reactrouter.com/en/main" class="outbound" target="_blank">React Router&#x27;s</a> authentication boundary and a login page, the shared <code v-pre>sessionAccessor</code> function is a great asset to manage authentication concerns.</p>
 <doc-anchor-target id="session-accessor">
     <h2>
@@ -323,7 +323,7 @@ const sessionAccessor: SessionAccessorFunction = () =&gt; {
         </div>
     </div>
 </div>
-<p>Then create a <a href="../../references/runtime/runtime-class/">Runtime</a> instance with the new <code v-pre>sessionAccessor</code> function:</p>
+<p>Then create a <a href="../../reference/runtime/runtime-class/">Runtime</a> instance with the new <code v-pre>sessionAccessor</code> function:</p>
 <div class="codeblock-wrapper"><doc-codeblock line-numbers>
 <div class="codeblock-title">host/src/boostrap.tsx</div>
 <pre class="language-typescript" data-line="5"><code v-pre class="language-typescript">import { Runtime } from &quot;@squide/react-router&quot;;

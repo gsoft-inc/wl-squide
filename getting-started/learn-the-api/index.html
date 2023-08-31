@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.2.0.746812871282">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.2.0.746839966148">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.2.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.2.0.746812871282" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.2.0.746839966148" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.2.0.746812871282" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.2.0.746839966148" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.2.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.2.0.746812871282" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.2.0.746812871282" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.2.0.746839966148" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.2.0.746839966148" defer></script>
 
     <style>
         .docs-markdown ol, .docs-markdown ul {
@@ -301,7 +301,7 @@
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>For a comprehensive list of the <code v-pre>@squide</code> API, refer to the <a href="../../references/#api">References</a> section.</p>
+<p>For a comprehensive list of the <code v-pre>@squide</code> API, refer to the <a href="../../reference/#api">References</a> section.</p>
         </div>
     </div>
 </div>
@@ -311,8 +311,8 @@
         <span>Logging</span>
     </h2>
 </doc-anchor-target>
-<p><code v-pre>@squide</code> includes a built-in logging feature that integrates with the <a href="../../references/runtime/runtime-class/">Runtime</a> class and the <a href="../../references/runtime/uselogger/">useLogger</a> hook.</p>
-<p>First, register your own custom logger by implementing the <a href="../../references/logging/logger/">Logger</a> interface or register <code v-pre>@squide</code> built-in <a href="../../references/logging/consolelogger/">ConsoleLogger</a>:</p>
+<p><code v-pre>@squide</code> includes a built-in logging feature that integrates with the <a href="../../reference/runtime/runtime-class/">Runtime</a> class and the <a href="../../reference/runtime/uselogger/">useLogger</a> hook.</p>
+<p>First, register your own custom logger by implementing the <a href="../../reference/logging/logger/">Logger</a> interface or register <code v-pre>@squide</code> built-in <a href="../../reference/logging/consolelogger/">ConsoleLogger</a>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { Runtime, ConsoleLogger, type LogLevel } from &quot;@squide/react-router&quot;;
@@ -329,15 +329,15 @@ const logger = useLogger();
 
 logger.debug(&quot;Hello&quot;, { world: &quot;!&quot; });</code></pre>
 </doc-codeblock></div>
-<p>The logger is also available from the <a href="../../references/runtime/runtime-class/">Runtime</a> instance.</p>
+<p>The logger is also available from the <a href="../../reference/runtime/runtime-class/">Runtime</a> instance.</p>
 <doc-anchor-target id="messaging">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#messaging">#</doc-anchor-trigger>
         <span>Messaging</span>
     </h2>
 </doc-anchor-target>
-<p>It&#x27;s crucial that the parts of a federated application remains loosely coupled. To help with that, <code v-pre>@squide</code> offers a built-in <a href="../../references/messaging/eventbus/">Event Bus</a>.</p>
-<p>First, listen to an event with the <a href="../../references/messaging/useeventbuslistener/">useEventBusListener</a> hook:</p>
+<p>It&#x27;s crucial that the parts of a federated application remains loosely coupled. To help with that, <code v-pre>@squide</code> offers a built-in <a href="../../reference/messaging/eventbus/">Event Bus</a>.</p>
+<p>First, listen to an event with the <a href="../../reference/messaging/useeventbuslistener/">useEventBusListener</a> hook:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { useCallback } from &quot;react&quot;;
 import { useEventBusListener } from &quot;@squide/react-router&quot;;
@@ -348,7 +348,7 @@ const handleFoo = useCallback((data, context) =&gt; {
 
 useEventBusListener(&quot;foo&quot;, handleFoo);</code></pre>
 </doc-codeblock></div>
-<p>Then, dispatch an event from anywhere with the <a href="../../references/messaging/useeventbusdispatcher/">useEventBusDispatcher</a> hook:</p>
+<p>Then, dispatch an event from anywhere with the <a href="../../reference/messaging/useeventbusdispatcher/">useEventBusDispatcher</a> hook:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { useEventDispatcher } from &quot;@squide/react-router&quot;;
 
@@ -357,14 +357,14 @@ const dispatch = useEventBusDispatcher();
 dispatch(&quot;foo&quot;, &quot;bar&quot;);</code></pre>
 </doc-codeblock></div>
 <p>You can use the event bus to enable various communication scenarios, such as notifying components of state changes, broadcasting messages across modules, or triggering actions based on specific events.</p>
-<p>The event bus is also available from the <a href="../../references/runtime/runtime-class/">Runtime</a> instance.</p>
+<p>The event bus is also available from the <a href="../../reference/runtime/runtime-class/">Runtime</a> instance.</p>
 <doc-anchor-target id="session">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#session">#</doc-anchor-trigger>
         <span>Session</span>
     </h2>
 </doc-anchor-target>
-<p>Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the <code v-pre>@squide</code> <a href="../../references/runtime/runtime-class/">Runtime</a> class accepts a <a href="../../references/fakes/sessionmanager/#integrate-with-a-runtime-instance">sessionAccessor</a> function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.</p>
+<p>Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the <code v-pre>@squide</code> <a href="../../reference/runtime/runtime-class/">Runtime</a> class accepts a <a href="../../reference/fakes/sessionmanager/#integrate-with-a-runtime-instance">sessionAccessor</a> function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.</p>
 <p>First, let&#x27;s define a <code v-pre>sessionAccessor</code> function:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/session.ts</div>
@@ -403,26 +403,26 @@ const runtime = new Runtime({
     sessionAccessor
 });</code></pre>
 </doc-codeblock></div>
-<p>Finally, access the session from any parts of the application with the <a href="../../references/runtime/usesession/">useSession</a> hook:</p>
+<p>Finally, access the session from any parts of the application with the <a href="../../reference/runtime/usesession/">useSession</a> hook:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { useSession } from &quot;@squide/react-router&quot;;
 
 const session = useSession();</code></pre>
 </doc-codeblock></div>
-<p>Or determine whether or not the user is authenticated with the <a href="../../references/session/useisauthenticated/">useIsAuthenticated</a> hook:</p>
+<p>Or determine whether or not the user is authenticated with the <a href="../../reference/session/useisauthenticated/">useIsAuthenticated</a> hook:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { useIsAuthenticated } from &quot;@squide/react-router&quot;;
 
 const isAuthenticated = useIsAuthenticated();</code></pre>
 </doc-codeblock></div>
-<p>The session is also available from the <a href="../../references/runtime/runtime-class/">Runtime</a> instance.</p>
+<p>The session is also available from the <a href="../../reference/runtime/runtime-class/">Runtime</a> instance.</p>
 <doc-anchor-target id="services">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#services">#</doc-anchor-trigger>
         <span>Services</span>
     </h2>
 </doc-anchor-target>
-<p>While <code v-pre>@squide</code> provides a range of built-in functionalities, by no mean these alone can support the needs of every mature application. Therefore, the shell <a href="../../references/runtime/runtime-class/">Runtime</a> allows the addition of custom services.</p>
+<p>While <code v-pre>@squide</code> provides a range of built-in functionalities, by no mean these alone can support the needs of every mature application. Therefore, the shell <a href="../../reference/runtime/runtime-class/">Runtime</a> allows the addition of custom services.</p>
 <p>First, make the service available to every part of the application by passing a service instance to the <code v-pre>Runtime</code> instance:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/boostrap.tsx</div>
@@ -435,14 +435,14 @@ const runtime = new Runtime({
     }
 });</code></pre>
 </doc-codeblock></div>
-<p>Then, access the service instance from anywhere with the <a href="../../references/runtime/useservice/">useService</a> hook:</p>
+<p>Then, access the service instance from anywhere with the <a href="../../reference/runtime/useservice/">useService</a> hook:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { useService } from &quot;@squide/react-router&quot;;
 import { type UserService } from &quot;@sample/shared&quot;;
 
 const service = useService(&quot;user-service&quot;) as UserService;</code></pre>
 </doc-codeblock></div>
-<p>The services are also available from the <a href="../../references/runtime/runtime-class/">Runtime</a> instance.</p>
+<p>The services are also available from the <a href="../../reference/runtime/runtime-class/">Runtime</a> instance.</p>
 
                                 
                                 <!-- Required only on API pages -->

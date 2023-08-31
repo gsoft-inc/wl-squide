@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.2.0.746812871282">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.2.0.746839966148">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.2.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../favicon.png" rel="icon">
-    <link href="../resources/css/retype.css?v=3.2.0.746812871282" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=3.2.0.746839966148" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=3.2.0.746812871282" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=3.2.0.746839966148" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=3.2.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.2.0.746812871282" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=3.2.0.746812871282" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.2.0.746839966148" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=3.2.0.746839966148" defer></script>
 
     <style>
         .docs-markdown ol, .docs-markdown ul {
@@ -332,7 +332,7 @@
     </h2>
 </doc-anchor-target>
 <p>We have built this shell to facilitate the adoption of federated applications at <a href="https://workleap.com/" class="outbound" target="_blank">Workleap</a> by <strong>enforcing patterns</strong> that we believe will help feature teams successfully implement a distributed architecture.</p>
-<p>The shell itself is a lightweight <a href="../references/">API layer</a> built on top of <a href="https://webpack.js.org/concepts/module-federation/" class="outbound" target="_blank">Module Federation</a> and <a href="https://reactrouter.com" class="outbound" target="_blank">React Router</a>, with the goal of maximizing the strength of both libraries while interfering as little as possible with their functionality.</p>
+<p>The shell itself is a lightweight <a href="../reference/">API layer</a> built on top of <a href="https://webpack.js.org/concepts/module-federation/" class="outbound" target="_blank">Module Federation</a> and <a href="https://reactrouter.com" class="outbound" target="_blank">React Router</a>, with the goal of maximizing the strength of both libraries while interfering as little as possible with their functionality.</p>
 <doc-anchor-target id="module-federation">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#module-federation">#</doc-anchor-trigger>
@@ -363,11 +363,11 @@
 </doc-anchor-target>
 <p>The most distinctive aspect of this shell is the conventions it enforces for loading and registering remote modules. Here&#x27;s a brief overview of the flow:</p>
 <ol>
-<li><p>During bootstrap, the host application attempts to <a href="../references/registration/registerremotemodules/">load predefined modules</a> and calls a registration function with a specific name and signature for each successfully loaded module.</p>
+<li><p>During bootstrap, the host application attempts to <a href="../reference/registration/registerremotemodules/">load predefined modules</a> and calls a registration function with a specific name and signature for each successfully loaded module.</p>
 </li>
-<li><p>During registration, a module receives <a href="../references/runtime/runtime-class/">the shared services</a> of the federation application and use them to dynamically register its <a href="../references/runtime/runtime-class/#register-routes">routes</a> and <a href="../references/runtime/runtime-class/#register-navigation-items">navigation items</a>.</p>
+<li><p>During registration, a module receives <a href="../reference/runtime/runtime-class/">the shared services</a> of the federation application and use them to dynamically register its <a href="../reference/runtime/runtime-class/#register-routes">routes</a> and <a href="../reference/runtime/runtime-class/#register-navigation-items">navigation items</a>.</p>
 </li>
-<li><p>Once <a href="../references/registration/useareremotesready/">all the remote modules are registered</a>, the host application will create a React Router <a href="https://reactrouter.com/en/main/routers/create-browser-router" class="outbound" target="_blank">instance</a> with the registered routes and <a href="../references/routing/userenderednavigationitems/">renders a navigation menu</a> with the registered navigation items.</p>
+<li><p>Once <a href="../reference/registration/useareremotesready/">all the remote modules are registered</a>, the host application will create a React Router <a href="https://reactrouter.com/en/main/routers/create-browser-router" class="outbound" target="_blank">instance</a> with the registered routes and <a href="../reference/routing/userenderednavigationitems/">renders a navigation menu</a> with the registered navigation items.</p>
 </li>
 </ol>
 <p>That&#x27;s a nutshell overview. Of course, there is more to it, but these are the main ideas.</p>
@@ -377,7 +377,7 @@
         <span>Guiding principles</span>
     </h2>
 </doc-anchor-target>
-<p>While developing the <a href="../references/">API</a> of <code v-pre>@squide</code>, we kept a few guiding principles in mind. Those principles are not settled stones, you might want to diverge from them from time to time, but adhering to those will make your experience more enjoyable:</p>
+<p>While developing the <a href="../reference/">API</a> of <code v-pre>@squide</code>, we kept a few guiding principles in mind. Those principles are not settled stones, you might want to diverge from them from time to time, but adhering to those will make your experience more enjoyable:</p>
 <ul>
 <li><p>A module should always correspond to a subdomain of the application&#x27;s business domain and should only export pages.</p>
 </li>

@@ -4,7 +4,7 @@ icon: gear
 expanded: true
 ---
 
-# References
+# Reference
 
 ## Artefacts
 

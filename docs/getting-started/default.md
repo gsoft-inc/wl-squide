@@ -30,7 +30,7 @@ npm create @workleap/project@latest <output-directory>
 
 We have built this shell to facilitate the adoption of federated applications at [Workleap](https://workleap.com/) by **enforcing patterns** that we believe will help feature teams successfully implement a distributed architecture.
 
-The shell itself is a lightweight [API layer](/references) built on top of [Module Federation](https://webpack.js.org/concepts/module-federation/) and [React Router](https://reactrouter.com), with the goal of maximizing the strength of both libraries while interfering as little as possible with their functionality.
+The shell itself is a lightweight [API layer](/reference) built on top of [Module Federation](https://webpack.js.org/concepts/module-federation/) and [React Router](https://reactrouter.com), with the goal of maximizing the strength of both libraries while interfering as little as possible with their functionality.
 
 ### Module Federation
 
@@ -54,17 +54,17 @@ React Router [nested routes](https://reactrouter.com/en/main/start/tutorial#nest
 
 The most distinctive aspect of this shell is the conventions it enforces for loading and registering remote modules. Here's a brief overview of the flow:
 
-1. During bootstrap, the host application attempts to [load predefined modules](/references/registration/registerRemoteModules.md) and calls a registration function with a specific name and signature for each successfully loaded module.
+1. During bootstrap, the host application attempts to [load predefined modules](/reference/registration/registerRemoteModules.md) and calls a registration function with a specific name and signature for each successfully loaded module.
 
-2. During registration, a module receives [the shared services](/references/runtime/runtime-class.md) of the federation application and use them to dynamically register its [routes](/references/runtime/runtime-class.md#register-routes) and [navigation items](/references/runtime/runtime-class.md#register-navigation-items).
+2. During registration, a module receives [the shared services](/reference/runtime/runtime-class.md) of the federation application and use them to dynamically register its [routes](/reference/runtime/runtime-class.md#register-routes) and [navigation items](/reference/runtime/runtime-class.md#register-navigation-items).
 
-3. Once [all the remote modules are registered](/references/registration/useAreRemotesReady.md), the host application will create a React Router [instance](https://reactrouter.com/en/main/routers/create-browser-router) with the registered routes and [renders a navigation menu](/references/routing/useRenderedNavigationItems.md) with the registered navigation items.
+3. Once [all the remote modules are registered](/reference/registration/useAreRemotesReady.md), the host application will create a React Router [instance](https://reactrouter.com/en/main/routers/create-browser-router) with the registered routes and [renders a navigation menu](/reference/routing/useRenderedNavigationItems.md) with the registered navigation items.
 
 That's a nutshell overview. Of course, there is more to it, but these are the main ideas.
 
 ## Guiding principles
 
-While developing the [API](/references) of `@squide`, we kept a few guiding principles in mind. Those principles are not settled stones, you might want to diverge from them from time to time, but adhering to those will make your experience more enjoyable:
+While developing the [API](/reference) of `@squide`, we kept a few guiding principles in mind. Those principles are not settled stones, you might want to diverge from them from time to time, but adhering to those will make your experience more enjoyable:
 
 - A module should always correspond to a subdomain of the application's business domain and should only export pages.
 

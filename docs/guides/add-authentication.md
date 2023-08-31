@@ -4,7 +4,7 @@ order: 80
 
 # Add authentication
 
-Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the `@squide` [Runtime](/references/runtime/runtime-class.md) class accepts a [sessionAccessor](/references/fakes/SessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
+Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the `@squide` [Runtime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/SessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
 
 When combined with a [React Router's](https://reactrouter.com/en/main) authentication boundary and a login page, the shared `sessionAccessor` function is a great asset to manage authentication concerns.
 
@@ -27,7 +27,7 @@ const sessionAccessor: SessionAccessorFunction = () => {
 Our security department reminds you to refrain from using a fake `SessionManager` in a production application :blush:
 !!!
 
-Then create a [Runtime](/references/runtime/runtime-class.md) instance with the new `sessionAccessor` function:
+Then create a [Runtime](/reference/runtime/runtime-class.md) instance with the new `sessionAccessor` function:
 
 ```ts #5 host/src/boostrap.tsx
 import { Runtime } from "@squide/react-router";

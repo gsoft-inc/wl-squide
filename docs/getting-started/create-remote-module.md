@@ -45,7 +45,7 @@ remote-module
 
 ### Routes and navigation items registration
 
-Then, register the remote module [routes](/references/runtime/runtime-class.md#register-routes) and [navigation items](/references/runtime/runtime-class.md#register-navigation-items):
+Then, register the remote module [routes](/reference/runtime/runtime-class.md#register-routes) and [navigation items](/reference/runtime/runtime-class.md#register-navigation-items):
 
 ```tsx !#8-13,15-20 remote-module/src/register.tsx
 import { lazy } from "react";
@@ -81,7 +81,7 @@ export default function Page() {
 
 ## 3. Configure webpack
 
-To configure the webpack [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/), use the [remoteTransformer](/references/webpack/remoteTransformer.md) function:
+To configure the webpack [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/), use the [remoteTransformer](/reference/webpack/remoteTransformer.md) function:
 
 ```js !#8 remote-module/webpack.config.js
 import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";

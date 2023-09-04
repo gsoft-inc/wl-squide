@@ -1,57 +1,96 @@
+// // @ts-check
+
+// // Added for TS, otherwise the "devServer" section is unknown.
+// import "webpack-dev-server";
+
+// import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
+// import { swcConfig } from "./swc.dev.js";
+
+// /** @type {import("webpack").Configuration} */
+// const config = {
+//     mode: "development",
+//     target: "web",
+//     devtool: "eval-cheap-module-source-map",
+//     devServer: {
+//         port: 8081,
+//         historyApiFallback: true,
+//         // Otherwise hot reload in the host failed with a CORS error.
+//         headers: {
+//             "Access-Control-Allow-Origin": "*"
+//         }
+//     },
+//     entry: "./src/register.tsx",
+//     output: {
+//         // The trailing / is very important, otherwise paths will ne be resolved correctly.
+//         publicPath: "http://localhost:8081/"
+//     },
+//     module: {
+//         rules: [
+//             {
+//                 test: /\.(ts|tsx)$/,
+//                 exclude: /node_modules/,
+//                 use: {
+//                     loader: "swc-loader",
+//                     options: swcConfig
+//                 }
+//             },
+//             {
+//                 // https://stackoverflow.com/questions/69427025/programmatic-webpack-jest-esm-cant-resolve-module-without-js-file-exten
+//                 test: /\.js/,
+//                 resolve: {
+//                     fullySpecified: false
+//                 }
+//             },
+//             {
+//                 test: /\.(png|jpe?g|gif)$/i,
+//                 type: "asset/resource"
+//             }
+//         ]
+//     },
+//     resolve: {
+//         // Must add ".js" for files imported from node_modules.
+//         extensions: [".js", ".ts", ".tsx"]
+//     }
+// };
+
+// const federatedConfig = remoteTransformer(config, "remote1", {
+//     pluginOptions: {
+//         shared: {
+//             "shared": {
+//                 singleton: true
+//             }
+//         }
+//     }
+// });
+
+// export default federatedConfig;
+
 // @ts-check
 
-// Added for TS, otherwise the "devServer" section is unknown.
-import "webpack-dev-server";
-
+import { isNetlify } from "@sample/shared";
 import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
+import { defineDevConfig } from "@workleap/webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-/** @type {import("webpack").Configuration} */
-const config = {
-    mode: "development",
-    target: "web",
-    devtool: "eval-cheap-module-source-map",
-    devServer: {
-        port: 8081,
-        historyApiFallback: true,
-        // Otherwise hot reload in the host failed with a CORS error.
-        headers: {
-            "Access-Control-Allow-Origin": "*"
-        }
-    },
+const config = defineDevConfig(swcConfig, {
     entry: "./src/register.tsx",
-    output: {
-        // The trailing / is very important, otherwise paths will ne be resolved correctly.
-        publicPath: "http://localhost:8081/"
-    },
-    module: {
-        rules: [
-            {
-                test: /\.(ts|tsx)$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: "swc-loader",
-                    options: swcConfig
-                }
-            },
-            {
-                // https://stackoverflow.com/questions/69427025/programmatic-webpack-jest-esm-cant-resolve-module-without-js-file-exten
-                test: /\.js/,
-                resolve: {
-                    fullySpecified: false
-                }
-            },
-            {
-                test: /\.(png|jpe?g|gif)$/i,
-                type: "asset/resource"
-            }
-        ]
-    },
-    resolve: {
-        // Must add ".js" for files imported from node_modules.
-        extensions: [".js", ".ts", ".tsx"]
+    port: 8081,
+    cache: false,
+    fastRefresh: false,
+    htmlWebpackPlugin: false,
+    environmentVariables: {
+        "NETLIFY": isNetlify.toString()
     }
-};
+    // transformers: [createRemoteTransformer("remote1", {
+    //     pluginOptions: {
+    //         shared: {
+    //             "shared": {
+    //                 singleton: true
+    //             }
+    //         }
+    //     }
+    // })]
+});
 
 const federatedConfig = remoteTransformer(config, "remote1", {
     pluginOptions: {
@@ -64,3 +103,7 @@ const federatedConfig = remoteTransformer(config, "remote1", {
 });
 
 export default federatedConfig;
+
+// console.log(config.plugins[1]);
+
+// export default config;

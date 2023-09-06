@@ -1,5 +1,473 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`defineBuildHostConfig the application name is set as the federation plugin application name 1`] = `
+{
+  "index": 3,
+  "plugin": ModuleFederationPlugin {
+    "_options": {
+      "name": "host",
+      "shared": {
+        "@squide/core": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/react-router": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/webpack-module-federation": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-router-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`defineBuildHostConfig the module federation plugin configuration includes the default shared dependencies 1`] = `
+{
+  "index": 3,
+  "plugin": ModuleFederationPlugin {
+    "_options": {
+      "name": "host",
+      "shared": {
+        "@squide/core": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/react-router": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/webpack-module-federation": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-router-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`defineBuildHostConfig when additional options are provided for an existing default shared dependency, add the consumer options to the default options 1`] = `
+{
+  "index": 3,
+  "plugin": ModuleFederationPlugin {
+    "_options": {
+      "name": "host",
+      "shared": {
+        "@squide/core": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/react-router": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/webpack-module-federation": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react": {
+          "eager": true,
+          "requiredVersion": "1.2.3",
+          "singleton": true,
+        },
+        "react-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-router-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`defineBuildHostConfig when additional shared dependencies are provided, add the dependencies to the module federation plugin configuration 1`] = `
+{
+  "index": 3,
+  "plugin": ModuleFederationPlugin {
+    "_options": {
+      "name": "host",
+      "shared": {
+        "@squide/core": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/react-router": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/webpack-module-federation": {
+          "eager": true,
+          "singleton": true,
+        },
+        "first": {
+          "singleton": true,
+        },
+        "react": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-router-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+        "second": {
+          "eager": true,
+          "singleton": true,
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`defineBuildHostConfig when overriding options are provided for a default shared dependency, use the consumer option 1`] = `
+{
+  "index": 3,
+  "plugin": ModuleFederationPlugin {
+    "_options": {
+      "name": "host",
+      "shared": {
+        "@squide/core": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/react-router": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/webpack-module-federation": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react": {
+          "eager": false,
+          "singleton": false,
+        },
+        "react-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-router-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`defineBuildHostConfig when the router is not react-router, do not add react-router shared dependencies 1`] = `
+{
+  "index": 3,
+  "plugin": ModuleFederationPlugin {
+    "_options": {
+      "name": "host",
+      "shared": {
+        "@squide/core": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/webpack-module-federation": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`defineBuildRemoteModuleConfig the application name is set as the federation plugin application name 1`] = `
+{
+  "index": 2,
+  "plugin": ModuleFederationPlugin {
+    "_options": {
+      "exposes": {
+        "./register": "./src/register",
+      },
+      "filename": "remoteEntry.js",
+      "name": "remote1",
+      "shared": {
+        "@squide/core": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/react-router": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/webpack-module-federation": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-router-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`defineBuildRemoteModuleConfig the module federation plugin configuration includes the default shared dependencies 1`] = `
+{
+  "index": 2,
+  "plugin": ModuleFederationPlugin {
+    "_options": {
+      "exposes": {
+        "./register": "./src/register",
+      },
+      "filename": "remoteEntry.js",
+      "name": "remote1",
+      "shared": {
+        "@squide/core": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/react-router": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/webpack-module-federation": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-router-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`defineBuildRemoteModuleConfig when additional options are provided for an existing default shared dependency, add the consumer options to the default options 1`] = `
+{
+  "index": 2,
+  "plugin": ModuleFederationPlugin {
+    "_options": {
+      "exposes": {
+        "./register": "./src/register",
+      },
+      "filename": "remoteEntry.js",
+      "name": "remote1",
+      "shared": {
+        "@squide/core": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/react-router": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/webpack-module-federation": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react": {
+          "eager": true,
+          "requiredVersion": "1.2.3",
+          "singleton": true,
+        },
+        "react-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-router-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`defineBuildRemoteModuleConfig when additional shared dependencies are provided, add the dependencies to the module federation plugin configuration 1`] = `
+{
+  "index": 2,
+  "plugin": ModuleFederationPlugin {
+    "_options": {
+      "exposes": {
+        "./register": "./src/register",
+      },
+      "filename": "remoteEntry.js",
+      "name": "remote1",
+      "shared": {
+        "@squide/core": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/react-router": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/webpack-module-federation": {
+          "eager": true,
+          "singleton": true,
+        },
+        "first": {
+          "singleton": true,
+        },
+        "react": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-router-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+        "second": {
+          "eager": true,
+          "singleton": true,
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`defineBuildRemoteModuleConfig when overriding options are provided for a default shared dependency, use the consumer option 1`] = `
+{
+  "index": 2,
+  "plugin": ModuleFederationPlugin {
+    "_options": {
+      "exposes": {
+        "./register": "./src/register",
+      },
+      "filename": "remoteEntry.js",
+      "name": "remote1",
+      "shared": {
+        "@squide/core": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/react-router": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/webpack-module-federation": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react": {
+          "eager": false,
+          "singleton": false,
+        },
+        "react-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-router-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`defineBuildRemoteModuleConfig when the router is not react-router, do not add react-router shared dependencies 1`] = `
+{
+  "index": 2,
+  "plugin": ModuleFederationPlugin {
+    "_options": {
+      "exposes": {
+        "./register": "./src/register",
+      },
+      "filename": "remoteEntry.js",
+      "name": "remote1",
+      "shared": {
+        "@squide/core": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/webpack-module-federation": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+      },
+    },
+  },
+}
+`;
+
 exports[`defineDevHostConfig the application name is set as the federation plugin application name 1`] = `
 {
   "index": 2,

@@ -23,7 +23,7 @@
         "@workleap/eslint-plugin": "2.1.0",
         "@workleap/swc-configs": "2.1.1",
         "@workleap/typescript-configs": "3.0.2",
-        "@workleap/webpack-configs": "1.0.4",
+        "@workleap/webpack-configs": "1.0.5",
         "browserslist": "4.21.10",
         "copyfiles": "2.4.1",
         "html-webpack-plugin": "5.5.3",

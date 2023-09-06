@@ -1,13 +1,3 @@
-/*
-build host:
--
-
-
-build remote:
-
-
-*/
-
 import { defineBuildConfig as defineSwcBuildConfig, defineDevConfig as defineSwcDevConfig } from "@workleap/swc-configs";
 import { findPlugin, matchConstructorName, type WebpackConfig } from "@workleap/webpack-configs";
 import webpack from "webpack";

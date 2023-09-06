@@ -13,7 +13,9 @@ function loadRemoteScript(url: string, { timeoutDelay = 2000 }: LoadRemoteScript
     return new Promise((resolve, reject) => {
         const element = document.createElement("script");
 
-        element.src = url;
+        // Adding a timestamp to make sure the remote entry points are never cached.
+        // View: https://github.com/module-federation/module-federation-examples/issues/566.
+        element.src = `${url}?t=${Date.now()}`;
         element.type = "text/javascript";
         element.async = true;
 

@@ -25,7 +25,7 @@
         "dev-sample": "pnpm --filter \"./sample/*\" -r --parallel dev",
         "build-sample": "pnpm --filter \"./sample/*\" -r --parallel build",
         "serve-sample": "pnpm --filter \"./sample/*\" -r --parallel serve-build",
-        "deploy-sample": "cross-env NETLIFY=true pnpm build-sample && pnpm run \"/^deploy-sample:.*/\"",
+        "deploy-sample": "cross-env NETLIFY=true pnpm build-sample && pnpm run deploy-sample:host && pnpm run deploy-sample:remote-module",
         "deploy-sample:host": "netlify deploy --dir=sample/host/dist --site=ae684cea-e6b1-4293-95d6-fc82462654c8 --prod",
         "deploy-sample:remote-module": "netlify deploy --dir=sample/remote-module/dist --site=43234f6e-a884-410e-9b4d-f290459f841f --prod",
         "dev-docs": "retype start",
@@ -35,7 +35,7 @@
     "devDependencies": {
         "@changesets/changelog-github": "0.4.8",
         "@changesets/cli": "2.26.2",
-        "@typescript-eslint/parser": "6.5.0",
+        "@typescript-eslint/parser": "6.6.0",
         "@workleap/eslint-plugin": "2.1.0",
         "@workleap/typescript-configs": "3.0.2",
         "cross-env": "7.0.3",

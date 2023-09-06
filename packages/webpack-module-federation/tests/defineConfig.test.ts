@@ -356,9 +356,6 @@ describe("defineDevRemoteModuleConfig", () => {
         expect(result.entry).toBe("updated by the dummy transformer");
     });
 });
-
-///
-
 describe("defineBuildRemoteModuleConfig", () => {
     const SwcConfig = defineSwcBuildConfig({
         chrome: "116"

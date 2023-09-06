@@ -16,7 +16,7 @@ const hoistedRoutes = useHoistedRoutes(routes: [], wrapManagedRoutes: () => {}, 
 
 - `routes`: An array of `Route` to process.
 - `wrapManagedRoutes`: A function nesting the managed routes under React elements such as a layout, an error boundary or an authentication boundary.
-- `options`: An optional object literal of options.
+- `options`: An optional object literal of options:
     - `allowedPaths`: An optional array of exclusive route paths available for hosting.
 
 ### Returns

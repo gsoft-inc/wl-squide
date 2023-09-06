@@ -1,7 +1,7 @@
 import { defineBuildConfig as defineSwcBuildConfig, defineDevConfig as defineSwcDevConfig } from "@workleap/swc-configs";
 import { findPlugin, matchConstructorName, type WebpackConfig } from "@workleap/webpack-configs";
 import webpack from "webpack";
-import { defineBuildHostConfig, defineBuildRemoteModuleConfig, defineDevHostConfig, defineDevRemoteModuleConfig } from "../src/defineConfig.ts";
+import { defineBuildHostConfig, defineBuildRemoteModuleConfig, defineDevHostConfig, defineDevRemoteModuleConfig, defineHostModuleFederationPluginOptions, defineRemoteModuleFederationPluginOptions } from "../src/defineConfig.ts";
 
 class DummyPlugin {
     _options: unknown;
@@ -440,3 +440,122 @@ describe("defineBuildRemoteModuleConfig", () => {
         expect(result).toBeDefined();
     });
 });
+
+describe("defineHostModuleFederationPluginOptions", () => {
+    test("merge the default options with the provided options", () => {
+        const result = defineHostModuleFederationPluginOptions("host", {
+            runtime: "a-custom-runtime-name"
+        });
+
+        expect(result.runtime).toBe("a-custom-runtime-name");
+    });
+
+    test("merge the shared dependencies with the default shared dependencies", () => {
+        const result = defineHostModuleFederationPluginOptions("host", {
+            shared: {
+                "react": {
+                    singleton: false,
+                    requiredVersion: "1.2.3"
+                },
+                "first": {
+                    singleton: true
+                },
+                "second": {
+                    eager: true,
+                    singleton: true
+                }
+            }
+        });
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        expect(result.shared.react).toBeDefined();
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        expect(result.shared.react.singleton).toBeFalsy();
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        expect(result.shared.react.requiredVersion).toBe("1.2.3");
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        expect(result.shared.first).toBeDefined();
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        expect(result.shared.second).toBeDefined();
+    });
+});
+
+describe("defineRemoteModuleFederationPluginOptions", () => {
+    test("merge the default options with the provided options", () => {
+        const result = defineRemoteModuleFederationPluginOptions("remote1", {
+            runtime: "a-custom-runtime-name"
+        });
+
+        expect(result.runtime).toBe("a-custom-runtime-name");
+    });
+
+    test("merge the shared dependencies with the default shared dependencies", () => {
+        const result = defineRemoteModuleFederationPluginOptions("remote1", {
+            shared: {
+                "react": {
+                    singleton: false,
+                    requiredVersion: "1.2.3"
+                },
+                "first": {
+                    singleton: true
+                },
+                "second": {
+                    eager: true,
+                    singleton: true
+                }
+            }
+        });
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        expect(result.shared.react).toBeDefined();
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        expect(result.shared.react.singleton).toBeFalsy();
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        expect(result.shared.react.requiredVersion).toBe("1.2.3");
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        expect(result.shared.first).toBeDefined();
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        expect(result.shared.second).toBeDefined();
+    });
+
+    test("can provide additional \"exposes\"", () => {
+        const result = defineRemoteModuleFederationPluginOptions("remote1", {
+            exposes: {
+                "custom-file.js": "./src/custom-file.js"
+            }
+        });
+
+        expect(Object.keys(result.exposes!).length).toBe(2);
+        expect(Object.values(result.exposes!)[1]).toBe("./src/custom-file.js");
+    });
+});
+
+
+// describe("defineDevHtmlWebpackPluginConfig", () => {
+//     test("merge the default options with the provided values", () => {
+//         const result = defineDevHtmlWebpackPluginConfig({
+//             filename: "a-custom-filename"
+//         });
+
+//         expect(result.filename).toBe("a-custom-filename");
+//         expect(result.template).toMatch(/index.html/);
+//     });
+
+//     test("when a template value is provided, override the default template option", () => {
+//         const result = defineDevHtmlWebpackPluginConfig({
+//             template: "a-custom-template-file-path"
+//         });
+
+//         expect(result.template).toBe("a-custom-template-file-path");
+//     });
+// });

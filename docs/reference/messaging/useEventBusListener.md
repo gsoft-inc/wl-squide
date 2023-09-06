@@ -10,7 +10,7 @@ useEventBusListener(eventName, callback: () => {}, options?: { once? })
 
 - `eventName`: The name of the event to listen for.
 - `callback`: A function to be executed when a event matching the provided name is dispatched.
-- `options`: An optional object literal of options.
+- `options`: An optional object literal of options:
     - `once`: Whether or not the event listener should be automatically removed once an event as been handled.
 
 ### Returns

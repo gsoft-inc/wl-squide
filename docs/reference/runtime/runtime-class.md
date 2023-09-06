@@ -14,7 +14,7 @@ const runtime = new Runtime(options?: { loggers?: [], services?: {}, sessionAcce
 
 ### Parameters
 
-- `options`: An optional object literal of options.
+- `options`: An optional object literal of options:
     - `loggers`: An optional array of `Logger` instances.
     - `services`: An optional string-keyed object literal of custom service instances.
     - `sessionAccessor`: An optional function returning the current session.

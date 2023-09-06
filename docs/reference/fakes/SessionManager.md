@@ -10,7 +10,7 @@ const sessionManager = new SessionManager(options?: { key? })
 
 ### Parameters
 
-- `options`: An optional object literal of options.
+- `options`: An optional object literal of options:
     - `key`: An optional key identifying the session in `localStorage`.
 
 ## Usage

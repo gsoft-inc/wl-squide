@@ -14,7 +14,7 @@ registerLocalModules(registerFunctions: [], runtime, options?: { context? })
 
 - `registerFunctions`: An array of `ModuleRegisterFunction`.
 - `runtime`: A `Runtime` instance.
-- `options`: An optional object literal of options.
+- `options`: An optional object literal of options:
     - `context`: An optional context object that will be pass to the registration function.
 
 ### Returns

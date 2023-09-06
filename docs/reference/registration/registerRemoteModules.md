@@ -14,7 +14,7 @@ registerRemoteModules(remotes: [], runtime, options?: { context? })
 
 - `remotes`: An array of `RemoteDefinition` (view the [Remote definition](#remote-definition) section).
 - `runtime`: A `Runtime` instance.
-- `options`: An optional object literal of options.
+- `options`: An optional object literal of options:
     - `context`: An optional context object that will be pass to the registration function.
 
 ### Returns

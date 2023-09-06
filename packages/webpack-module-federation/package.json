@@ -17,11 +17,13 @@
     "exports": {
         ".": {
             "import": "./dist/index.js",
-            "types": "./dist/index.d.ts"
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
         },
         "./defineConfig.js": {
             "import": "./dist/defineConfig.js",
-            "types": "./dist/defineConfig.d.ts"
+            "types": "./dist/defineConfig.d.ts",
+            "default": "./dist/defineConfig.js"
         }
     },
     "files": [

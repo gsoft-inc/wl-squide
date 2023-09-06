@@ -9,7 +9,8 @@
     "exports": {
         ".": {
             "import": "./dist/register.js",
-            "types": "./dist/register.d.ts"
+            "types": "./dist/register.d.ts",
+            "default": "./dist/register.js"
         }
     },
     "scripts": {

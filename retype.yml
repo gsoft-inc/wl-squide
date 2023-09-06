@@ -1,31 +1,41 @@
-input: ./docs
-output: .retype
+# -------------------
+# Retype Pro
+# -------------------
 
-edit:
-    repo: "https://github.com/gsoft-inc/wl-squide"
-    base: /docs
-    branch: main
-
-url: https://gsoft-inc.github.io/wl-squide/
-
-# Pro features
 poweredByRetype: false
 
 outbound:
     enabled: true
     icon: ""
 
-# Regular features
+breadcrumb:
+    enabled: true
+    home: false
+
+# -------------------
+# Retype
+# -------------------
+
+input: ./docs
+output: .retype
+
+url: https://gsoft-inc.github.io/wl-squide/
+
 branding:
     title: "@squide"
     logo: ./logo.png
 
 favicon: ./favicon.png
 
+edit:
+    repo: "https://github.com/gsoft-inc/wl-squide"
+    base: /docs
+    branch: main
+
 links:
     - text: Home
       icon: home
-      link: getting-started
+      link: /
 
     - text: Found a bug?
       icon: issue-opened

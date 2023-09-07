@@ -4,12 +4,12 @@ order: 100
 
 # defineDevHostConfig
 
-Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) specifically configured for a `@squide` host application in development mode.
+Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a `@squide` host application in development mode.
 
 ## Reference
 
 ```ts
-const federatedConfig = defineDevHostConfig(swcConfig: {}, applicationName, port, options?: {})
+const webpackConfig = defineDevHostConfig(swcConfig: {}, applicationName, port, options?: {})
 ```
 
 ## Parameters
@@ -24,11 +24,11 @@ const federatedConfig = defineDevHostConfig(swcConfig: {}, applicationName, port
 
 ## Returns
 
-A webpack [configuration object](https://webpack.js.org/concepts/configuration/) specifically configured for a `@squide` host application in development mode.
+A webpack [configuration object](https://webpack.js.org/concepts/configuration/) tailored for a `@squide` host application in development mode.
 
 ## Default shared dependencies
 
-The `defineDevHostConfig` function will configure following shared dependencies as `singleton` by default:
+The `defineDevHostConfig` function will add the following shared dependencies as `singleton` by default:
 - [react](https://www.npmjs.com/package/react)
 - [react-dom](https://www.npmjs.com/package/react-dom)
 - [react-router-dom](https://www.npmjs.com/package/react-router-dom)
@@ -40,13 +40,13 @@ For the full shared dependencies configuration, have a look at the [defineConfig
 
 ## Usage
 
-### Define a default webpack config
+### Define a webpack config
 
 ```js !#6 host/webpack.dev.js
 // @ts-check
 
 import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
-import { swcConfig } from "@workleap/swc-configs";
+import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080);
 ```
@@ -61,7 +61,7 @@ Additional shared dependencies must be configured on the host application as wel
 // @ts-check
 
 import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
-import { swcConfig } from "@workleap/swc-configs";
+import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {
     sharedDependencies: {
@@ -74,15 +74,11 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
 
 ### Extend a default shared dependency
 
-!!!info
-Typically, the default shared dependencies must also be overrided for every remote module.
-!!!
-
 ```js !#7-11 host/webpack.dev.js
 // @ts-check
 
 import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
-import { swcConfig } from "@workleap/swc-configs";
+import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {
     sharedDependencies: {
@@ -107,15 +103,11 @@ In the previous example, the `react` shared dependency will be **augmented** wit
 
 ### Override a default shared dependency
 
-!!!info
-Typically, the default shared dependencies must also be overrided for every remote module.
-!!!
-
 ```js !#7-11 host/webpack.dev.js
 // @ts-check
 
 import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
-import { swcConfig } from "@workleap/swc-configs";
+import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {
     sharedDependencies: {
@@ -126,7 +118,7 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
 });
 ```
 
-In the previous example, the `react` shared dependency `singleton` option will be overrided by the newly provided value. The resulting shared dependency will be:
+In the previous example, the `react` shared dependency `singleton` option will be **overrided** by the newly provided value. The resulting shared dependency will be:
 
 ```js !#4
 {
@@ -145,7 +137,7 @@ While you could customize the [ModuleFederationPlugin](https://webpack.js.org/pl
 // @ts-check
 
 import { defineDevHostConfig, defineHostModuleFederationPluginOptions } from "@squide/webpack-module-federation/defineConfig.js";
-import { swcConfig } from "@workleap/swc-configs";
+import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {
     moduleFederationPluginOptions: defineHostModuleFederationPluginOptions("host", {

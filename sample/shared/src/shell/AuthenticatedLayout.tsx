@@ -1,7 +1,8 @@
-import { isNavigationLink, useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/react-router";
+import { isNavigationLink, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/react-router";
 import { Suspense, useCallback, type ReactNode } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { useApplicationEventBusListener } from "../eventBus.ts";
+import type { Session } from "../session.ts";
 
 type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
 
@@ -41,6 +42,8 @@ const renderSection: RenderSectionFunction = (elements, index, level) => {
 };
 
 export default function AuthenticatedLayout() {
+    const session = useSession() as Session;
+
     const handleModulesMessage = useCallback((data: unknown) => {
         console.log("[sample] Message received from a module: ", data);
     }, []);
@@ -57,6 +60,9 @@ export default function AuthenticatedLayout() {
                 <nav style={{ width: "100%" }}>
                     {renderedNavigationItems}
                 </nav>
+                <div style={{ whiteSpace: "nowrap", marginRight: "20px" }}>
+                    (User: <span style={{ fontWeight: "bold" }}>{session.user.name}</span>)
+                </div>
                 <div>
                     <Link to="/logout">Disconnect</Link>
                 </div>

@@ -111,7 +111,7 @@ With our new setup in place, we can now configure the remote module to be develo
 
 To begin, let's add an `index.tsx` and `App.tsx` files to the remote module project:
 
-``` !#5,6
+``` !#5-6
 remote-module
 ├── src
 ├────── register.tsx
@@ -224,7 +224,9 @@ npm install -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-d
 ```
 +++
 
-Then, add a new `dev-local` script to the `package.json` file to start the local development server:
+Then, perform the same steps as for [setuping an isolated setup for a remote module](#remote-module), except for the `dev-local` script and the [webpack](https://webpack.js.org/) configuration as they will diverge.
+
+Once you performed the remote module steps, add a new `dev-local` script to the `package.json` file to start the local development server:
 
 ```json local-module/package.json
 {

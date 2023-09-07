@@ -6,7 +6,7 @@ order: 80
 
 Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the `@squide` [Runtime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/LocalStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
 
-When combined with a [React Router's](https://reactrouter.com/en/main) authentication boundary and a login page, the shared `sessionAccessor` function is a great asset to manage authentication concerns.
+When combined with a [React Router](https://reactrouter.com/en/main) authentication boundary and a login page, the shared `sessionAccessor` function is of great help to manage authentication concerns.
 
 ## Session accessor
 
@@ -23,10 +23,6 @@ const sessionAccessor: SessionAccessorFunction = () => {
 };
 ```
 
-!!!warning
-Our security department reminds you to refrain from using a fake `LocalStorageSessionManager` in a production application :blush:
-!!!
-
 Then create a [Runtime](/reference/runtime/runtime-class.md) instance with the new `sessionAccessor` function:
 
 ```ts #5 host/src/boostrap.tsx
@@ -38,11 +34,15 @@ const runtime = new Runtime({
 });
 ```
 
+!!!warning
+Our security department reminds you to refrain from using a fake `LocalStorageSessionManager` in a production application :blush:
+!!!
+
 ## Authentication boundary
 
-Create a new React Router's authentication boundary component using the [useIsAuthenticated]() hook:
+Create a new React Router authentication boundary component using the [useIsAuthenticated]() hook:
 
-> Internally, the `useIsAuthenticated` hook use the `sessionAccessor` function that we created previously to determine whether or not the user is authenticated.
+> Internally, the `useIsAuthenticated` hook utilize the `sessionAccessor` function that we created previously to determine whether or not the user is authenticated.
 
 ```tsx !#5 host/src/AuthenticationBoundary.tsx
 import { Navigate, Outlet } from "react-router-dom";
@@ -52,10 +52,6 @@ export function AuthenticationBoundary() {
     return useIsAuthenticated() ? <Outlet /> : <Navigate to="/login" />;
 }
 ```
-
-## Authenticated layout
-
-Blabla
 
 ## Login page
 
@@ -127,13 +123,120 @@ export default function Login() {
 
 ## Logout page
 
-blabla
+Add a logout page to the application:
+
+```tsx host/src/Logout.tsx
+import { Link } from "react-router-dom";
+import { sessionManager } from "./session.ts";
+
+export default function Logout() {
+    sessionManager.clearSession();
+
+    return (
+        <main>
+            <h1>Logged out</h1>
+            <div>You are logged out from the application!</div>
+            <Link to="/login">Log in again</Link>
+        </main>
+    );
+}
+```
+
+The logout page also take cares of **clearing** the current **session**, allowing to simply redirect to the page to clear current user session:
+
+```tsx
+<Link to="/logout">Disconnect</Link>
+```
+
+## Authenticated layout
+
+With authentication in place, we now expect to render the navigation items only to authenticated users and to offer a way to logout from the application. To do so, let's introduce a new `AuthenticatedLayout`:
+
+```tsx !#39,49-59 host/src/AuthenticatedLayout.tsx
+import type { ReactNode } from "react";
+import { Link, Outlet } from "react-router-dom";
+import { 
+    useNavigationItems,
+    useRenderedNavigationItems,
+    isNavigationLink,
+    type RenderItemFunction,
+    type RenderSectionFunction
+} from "@squide/react-router";
+import type { Session } from "../session.ts";
+
+const renderItem: RenderItemFunction = (item, index, level) => {
+    // To keep thing simple, this sample doesn't support nested navigation items.
+    // For an example including support for nested navigation items, have a look at
+    // https://gsoft-inc.github.io/wl-squide/reference/routing/userenderednavigationitems/
+    if (!isNavigationLink(item)) {
+        return null;
+    }
+
+    return (
+        <li key={`${level}-${index}`}>
+            <Link {...linkProps} {...additionalProps}>
+                {label}
+            </Link>
+        </li>
+    );
+};
+
+const renderSection: RenderSectionFunction = (elements, index, level) => {
+    return (
+        <ul key={`${level}-${index}`}>
+            {elements}
+        </ul>
+    );
+};
+
+export default function AuthenticatedLayout() {
+    // Retrieve the current user session.
+    const session = useSession() as Session;
+
+    // Retrieve the navigation items registered by the remote modules.
+    const navigationItems = useNavigationItems();
+
+    // Transform the navigation items into React elements.
+    const navigationElements = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
+
+    return (
+        <>
+            <div style={{ display: "flex", alignItems: "center" }}>
+                <nav style={{ width: "100%" }}>
+                    {renderedNavigationItems}
+                </nav>
+                <div style={{ whiteSpace: "nowrap", marginRight: "20px" }}>
+                    (User: <span style={{ fontWeight: "bold" }}>{session.user.name}</span>)
+                </div>
+                <div>
+                    <Link to="/logout">Disconnect</Link>
+                </div>
+            </div>
+            <Outlet />
+        </>
+    );
+}
+```
+
+Most of the layout code has been moved from the `RootLayout` to the `AuthenticatedLayout`, leaving the root layout only taking care for now of styling the outer wrapper of the application:
+
+```tsx host/src/RootLayout.tsx
+import { Outlet } from "react-router-dom";
+
+export function RootLayout() {
+    return (
+        <div style={{ margin: "20px" }}>
+            <Outlet />
+        </div>
+    );
+}
+```
 
 ## Nested routes
 
-Assemble everything with React Router's [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes):
+Assemble everything with React Router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes):
 
-```tsx !#29-30,34,37 host/src/App.tsx
+```tsx !#30-31,34-35,39,42 host/src/App.tsx
 import { lazy, useMemo } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useRoutes } from "@squide/react-router";
@@ -146,6 +249,7 @@ const AuthenticatedLayout = lazy(() => import("./AuthenticatedLayout.tsx"));
 const ModuleErrorBoundary = lazy(() => import("./ModuleErrorBoundary.tsx"));
 const Home = lazy(() => import("./Home.tsx"));
 const Login = lazy(() => import("./Login.tsx"));
+const Logout = lazy(() => import("./Logout.tsx"));
 
 export function App() {
     const isReady = useAreRemotesReady();
@@ -160,10 +264,14 @@ export function App() {
                     errorElement: <RootErrorBoundary />,
                     children: [
                         {
-                            // The login page is declared before the authentication boundary,
-                            // therefore it's a public page.
+                            // The login and logout page are declared before the authentication boundary,
+                            // therefore they are public page.
                             path: "/login",
                             element: <Login />
+                        },
+                        {
+                            path: "/logout",
+                            element: <Logout />
                         },
                         {
                             // Every page beyond the authenticated boundary are protected.

@@ -4,19 +4,19 @@ order: 80
 
 # Add authentication
 
-Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the `@squide` [Runtime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/SessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
+Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the `@squide` [Runtime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/LocalStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
 
 When combined with a [React Router's](https://reactrouter.com/en/main) authentication boundary and a login page, the shared `sessionAccessor` function is a great asset to manage authentication concerns.
 
 ## Session accessor
 
-Define a `sessionAccessor` function wrapping a `SessionManager` instance:
+Define a `sessionAccessor` function wrapping a `LocalStorageSessionManager` instance:
 
 ```ts host/src/session.ts
 import type { SessionAccessorFunction } from "@squide/react-router";
-import { SessionManager } from "@squide/fakes";
+import { LocalStorageSessionManager } from "@squide/fakes";
 
-export const sessionManager = new SessionManager<Session>();
+export const sessionManager = new LocalStorageSessionManager<Session>();
 
 const sessionAccessor: SessionAccessorFunction = () => {
     return sessionManager.getSession();
@@ -24,7 +24,7 @@ const sessionAccessor: SessionAccessorFunction = () => {
 ```
 
 !!!warning
-Our security department reminds you to refrain from using a fake `SessionManager` in a production application :blush:
+Our security department reminds you to refrain from using a fake `LocalStorageSessionManager` in a production application :blush:
 !!!
 
 Then create a [Runtime](/reference/runtime/runtime-class.md) instance with the new `sessionAccessor` function:
@@ -52,6 +52,10 @@ export function AuthenticationBoundary() {
     return useIsAuthenticated() ? <Outlet /> : <Navigate to="/login" />;
 }
 ```
+
+## Authenticated layout
+
+Blabla
 
 ## Login page
 
@@ -121,11 +125,15 @@ export default function Login() {
 }
 ```
 
+## Logout page
+
+blabla
+
 ## Nested routes
 
 Assemble everything with React Router's [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes):
 
-```tsx !#29-30,34 host/src/App.tsx
+```tsx !#29-30,34,37 host/src/App.tsx
 import { lazy, useMemo } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useRoutes } from "@squide/react-router";

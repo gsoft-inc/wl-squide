@@ -539,23 +539,3 @@ describe("defineRemoteModuleFederationPluginOptions", () => {
         expect(Object.values(result.exposes!)[1]).toBe("./src/custom-file.js");
     });
 });
-
-
-// describe("defineDevHtmlWebpackPluginConfig", () => {
-//     test("merge the default options with the provided values", () => {
-//         const result = defineDevHtmlWebpackPluginConfig({
-//             filename: "a-custom-filename"
-//         });
-
-//         expect(result.filename).toBe("a-custom-filename");
-//         expect(result.template).toMatch(/index.html/);
-//     });
-
-//     test("when a template value is provided, override the default template option", () => {
-//         const result = defineDevHtmlWebpackPluginConfig({
-//             template: "a-custom-template-file-path"
-//         });
-
-//         expect(result.template).toBe("a-custom-template-file-path");
-//     });
-// });

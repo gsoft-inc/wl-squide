@@ -1,11 +1,11 @@
-# SessionManager
+# LocalStorageSessionManager
 
-A local session manager strictly for development purpose.
+A local storage session manager strictly for development purpose.
 
 ## Reference
 
 ```ts
-const sessionManager = new SessionManager(options?: { key? })
+const sessionManager = new LocalStorageSessionManager(options?: { key? })
 ```
 
 ### Parameters
@@ -15,13 +15,13 @@ const sessionManager = new SessionManager(options?: { key? })
 
 ## Usage
 
-### Create a SessionManager instance
+### Create a manager instance
 
 ```ts
-import { SessionManager } from "@squide/fakes";
+import { SessionMaLocalStorageSessionManagernager } from "@squide/fakes";
 import type { Session } from "@sample/share";
 
-const sessionManager = new SessionManager<Session>();
+const sessionManager = new LocalStorageSessionManager<Session>();
 ```
 
 ### Set a session
@@ -46,10 +46,10 @@ sessionManager.clearSession();
 
 ```ts !#8 host/src/session.ts
 import type { SessionAccessorFunction } from "@squide/react-router";
-import { SessionManager } from "@squide/fakes";
+import { LocalStorageSessionManager } from "@squide/fakes";
 import type { Session } from "@sample/share";
 
-export const sessionManager = new SessionManager<Session>();
+export const sessionManager = new LocalStorageSessionManager<Session>();
 
 export const sessionAccessor: SessionAccessorFunction = () => {
     return sessionManager.getSession();

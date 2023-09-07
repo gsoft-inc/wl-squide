@@ -24,15 +24,15 @@ Create a new project (we'll refer to ours as `local-module`), then open a termin
 
 +++ pnpm
 ```bash
-pnpm add @squide/core @squide/react-router react-router-dom
+pnpm add @squide/core @squide/react-router react react-dom react-router-dom
 ```
 +++ yarn
 ```bash
-yarn add @squide/core @squide/react-router react-router-dom
+yarn add @squide/core @squide/react-router react react-dom react-router-dom
 ```
 +++ npm
 ```bash
-npm install @squide/core @squide/react-router react-router-dom
+npm install @squide/core @squide/react-router react react-dom react-router-dom
 ```
 +++
 

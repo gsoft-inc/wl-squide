@@ -53,11 +53,13 @@ expanded: true
 
 ### Webpack
 
-- [hostTransformer](webpack/hostTransformer.md)
-- [remoteTransformer](webpack/remoteTransformer.md)
+- [defineDevHostConfig](webpack/defineDevHostConfig.md)
+- [defineDevRemoteModuleConfig](webpack/defineDevRemoteModuleConfig.md)
+- [defineBuildHostConfig](webpack/defineBuildHostConfig.md)
+- [defineBuildRemoteModuleConfig](webpack/defineBuildRemoteModuleConfig.md)
 
 ## Fakes
 
 `@squide` offers a collection of fake implementations to facilitate the development of modules in isolation from the other parts of the application.
 
-- [SessionManager](fakes/SessionManager.md)
+- [LocalStorageSessionManager](fakes/LocalStorageSessionManager.md)

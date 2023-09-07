@@ -8,6 +8,7 @@
     "type": "module",
     "scripts": {
         "dev": "webpack serve --config webpack.dev.js",
+        "dev-local": "cross-env LOCAL=true webpack serve --config webpack.dev.js",
         "build": "webpack --config webpack.build.js",
         "serve-build": "pnpm build && pnpm http-server dist -p 8081 -P http://localhost:8081? -c-1"
     },
@@ -23,6 +24,7 @@
         "@workleap/typescript-configs": "3.0.2",
         "@workleap/webpack-configs": "1.0.5",
         "browserslist": "4.21.10",
+        "cross-env": "7.0.3",
         "http-server": "14.1.1",
         "swc-loader": "0.2.3",
         "terser-webpack-plugin": "5.3.9",
@@ -33,6 +35,7 @@
     },
     "dependencies": {
         "@sample/shared": "workspace:*",
+        "@squide/fakes": "workspace:*",
         "@squide/react-router": "workspace:*",
         "@squide/webpack-module-federation": "workspace:*",
         "react": "18.2.0",

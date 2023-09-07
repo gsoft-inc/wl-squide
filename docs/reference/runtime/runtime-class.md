@@ -25,8 +25,10 @@ const runtime = new Runtime(options?: { loggers?: [], services?: {}, sessionAcce
 
 ```ts
 import { ConsoleLogger, Runtime } from "@squide/react-router";
-import { SessionManager } from "@squide/fakes";
+import { LocalStorageSessionManager } from "@squide/fakes";
 import { UserService, type UserService, type AppSession } from "@sample/shared";
+
+const sessionManager = new LocalStorageSessionManager();
 
 const runtime = new Runtime({
     loggers: [new ConsoleLogger()],

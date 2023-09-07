@@ -1,8 +1,7 @@
-import { useApplicationEventBusListener } from "@sample/shared";
 import { isNavigationLink, useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/react-router";
 import { Suspense, useCallback, type ReactNode } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import { sessionManager } from "./session.ts";
+import { Link, Outlet } from "react-router-dom";
+import { useApplicationEventBusListener } from "../eventBus.ts";
 
 type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
 
@@ -42,19 +41,11 @@ const renderSection: RenderSectionFunction = (elements, index, level) => {
 };
 
 export default function AuthenticatedLayout() {
-    const navigate = useNavigate();
-
     const handleModulesMessage = useCallback((data: unknown) => {
         console.log("[sample] Message received from a module: ", data);
     }, []);
 
     useApplicationEventBusListener("write-to-host", handleModulesMessage);
-
-    const handleDisconnect = useCallback(() => {
-        sessionManager.clearSession();
-
-        navigate("/login");
-    }, [navigate]);
 
     const navigationItems = useNavigationItems();
 
@@ -67,7 +58,7 @@ export default function AuthenticatedLayout() {
                     {renderedNavigationItems}
                 </nav>
                 <div>
-                    <button type="button" onClick={handleDisconnect}>Disconnect</button>
+                    <Link to="/logout">Disconnect</Link>
                 </div>
             </div>
             <Suspense fallback={<div>Loading...</div>}>

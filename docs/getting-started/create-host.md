@@ -13,18 +13,18 @@ Create a new project (we'll refer to ours as `host`), then open a terminal at th
 
 +++ pnpm
 ```bash
-pnpm add -D webpack
-pnpm add @squide/core @squide/react-router @squide/webpack-module-federation react-router-dom
+pnpm add -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli swc/core @swc/helpers browserslist postcss
+pnpm add @squide/core @squide/react-router @squide/webpack-module-federation react react-dom react-router-dom
 ```
 +++ yarn
 ```bash
-yarn add -D webpack
-yarn add @squide/core @squide/react-router @squide/webpack-module-federation react-router-dom
+yarn add -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli swc/core @swc/helpers browserslist postcss
+yarn add @squide/core @squide/react-router @squide/webpack-module-federation react react-dom react-router-dom
 ```
 +++ npm
 ```bash
-npm install -D webpack
-npm install @squide/core @squide/react-router @squide/webpack-module-federation react-router-dom
+npm install -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli swc/core @swc/helpers browserslist postcss
+npm install @squide/core @squide/react-router @squide/webpack-module-federation react react-dom react-router-dom
 ```
 +++
 

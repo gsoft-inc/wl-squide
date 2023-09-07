@@ -40,7 +40,8 @@ remote-module
 ├── src
 ├──── register.tsx
 ├──── Page.tsx
-├── webpack.config.js
+├── webpack.dev.js
+├── webpack.build.js
 ```
 
 ### Routes and navigation items registration
@@ -81,22 +82,31 @@ export default function Page() {
 
 ## 3. Configure webpack
 
-To configure the webpack [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/), use the [remoteTransformer](/reference/webpack/remoteTransformer.md) function:
+### development
 
-```js !#8 remote-module/webpack.config.js
-import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
+To configure [webpack](https://webpack.js.org/) for a federated remote module application in **development** mode, use the [defineDevRemoteModuleConfig](/reference/webpack/defineDevRemoteModuleConfig.md) function:
 
-/** @type {import("webpack").Configuration} */
-const config = {
-    ...
-};
+```js !#6 remote-module/webpack.dev.js
+// @ts-check
 
-const federatedConfig = remoteTransformer(config, "remote1");
+import { defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { swcConfig } from "./swc.dev.js";
 
-export default federatedConfig;
+export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081);
 ```
 
-[!ref icon="mark-github" text="View a full webpack.config.js on Github"](https://github.com/gsoft-inc/wl-squide/blob/main/sample/remote-module/webpack.dev.js)
+### build
+
+To configure [webpack](https://webpack.js.org/) for a federated remote module application in **build** mode, use the [defineBuildRemoteModuleConfig](/reference/webpack/defineBuildRemoteModuleConfig.md) function:
+
+```js !#6 remote-module/webpack.build.js
+// @ts-check
+
+import { defineBuildRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { swcConfig } from "./swc.build.js";
+
+export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://localhost:8081/");
+```
 
 ## 4. Try the application :rocket:
 

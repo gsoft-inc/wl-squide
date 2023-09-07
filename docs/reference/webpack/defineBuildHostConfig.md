@@ -1,10 +1,10 @@
 ---
-order: 90
+order: 80
 ---
 
 # defineBuildHostConfig
 
-Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a `@squide` host application in build mode.
+Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a `@squide` host application in **build** mode.
 
 ## Reference
 

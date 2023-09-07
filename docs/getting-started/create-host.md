@@ -42,7 +42,8 @@ host
 ├──── Home.tsx
 ├──── bootstrap.tsx
 ├──── index.ts
-├── webpack.config.js
+├── webpack.dev.js
+├── webpack.build.js
 ```
 
 ### Async boundary
@@ -218,23 +219,31 @@ export default function RootLayout() {
 
 ## 3. Configure webpack
 
-To configure the webpack [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/), use the [hostTransformer](/reference/webpack/hostTransformer.md) function:
+### development
 
+To configure [webpack](https://webpack.js.org/) for a federated host application in **development** mode, use the [defineDevHostConfig](/reference/webpack/defineDevHostConfig.md) function:
 
-```js !#8 host/webpack.config.js
-import { hostTransformer } from "@squide/webpack-module-federation/configTransformer.js";
+```js !#6 host/webpack.dev.js
+// @ts-check
 
-/** @type {import("webpack").Configuration} */
-const webpackConfig = {
-    ...
-};
+import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { swcConfig } from "./swc.dev.js";
 
-const federatedConfig = hostTransformer(config, "host");
-
-export default federatedConfig;
+export default defineDevHostConfig(swcConfig, "host", 8080);
 ```
 
-[!ref icon="mark-github" text="View a full webpack.config.js"](https://github.com/gsoft-inc/wl-squide/blob/main/sample/host/webpack.dev.js)
+### build
+
+To configure [webpack](https://webpack.js.org/) for a federated host application in **build** mode, use the [defineBuildHostConfig](/reference/webpack/defineBuildHostConfig.md) function:
+
+```js !#6 host/webpack.build.js
+// @ts-check
+
+import { defineBuildHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { swcConfig } from "./swc.build.js";
+
+export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/");
+```
 
 ## 4. Try the application :rocket:
 

@@ -1,10 +1,10 @@
 ---
-order: 80
+order: 90
 ---
 
 # defineDevRemoteModuleConfig
 
-Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a `@squide` remote module application in development mode.
+Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a `@squide` remote module application in **development** mode.
 
 ## Reference
 

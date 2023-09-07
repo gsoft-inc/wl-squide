@@ -117,7 +117,7 @@ remote-module
 ├────── index.tsx
 ├────── App.tsx
 ├── package.json
-├── webpack.config.js
+├── webpack.dev.js
 ```
 
 The `index.tsx` file is similar to the `bootstrap.tsx` file of a host application but, tailored for an isolated module. The key distinction is that, since we set up the project for local development, we'll register the module with the [registerLocalModules](/reference/registration/registerLocalModules.md) function instead of the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function:
@@ -171,26 +171,26 @@ Next, add a new `dev-local` script to the `package.json` file to start the local
 
 ```json !#3 remote-module/package.json
 {
-    "dev": "webpack serve --config webpack.config.js",
-    "dev-local": "cross-env LOCAL=true webpack serve --config webpack.config.js",
+    "dev": "webpack serve --config webpack.dev.js",
+    "dev-local": "cross-env LOCAL=true webpack serve --config webpack.dev.js",
 }
 ```
 
-The `dev-local` script is similar to the `dev` script but introduces a `LOCAL` environment variable. This new environment variable will be utilized by the `webpack.config.js` file to conditionally setup the development server for local development in isolation or to be consumed by a host application through the `/remoteEntry.js` entry point:
+The `dev-local` script is similar to the `dev` script but introduces a `LOCAL` environment variable. This new environment variable will be utilized by the `webpack.dev.js` file to conditionally setup the development server for local development in isolation or to be consumed by a host application through the `/remoteEntry.js` entry point:
 
-```js !#3,7,11-13 remote-module/webpack.config.js
-import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
+```js !#9,12 remote-module/webpack.dev.js
+// @ts-check
 
-const isLocal = env.LOCAL === "true";
+import { defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevConfig } from "@workleap/webpack-configs";
+import { swcConfig } from "./swc.dev.js";
 
-/** @type {import("webpack").Configuration} */
-let config = {
-    entry: isLocal ? "./src/index.tsx" : "./src/register.tsx",
-    ...
-};
+let config;
 
-if (!isLocal) {
-    config = remoteTransformer(config, "remote1");
+if (!env.LOCAL) {
+    config = defineDevRemoteModuleConfig(swcConfig, "remote1", 8080);
+} else {
+    config = defineDevConfig(swcConfig);
 }
 
 export default config;
@@ -209,10 +209,11 @@ Similarly to remote modules, you can achieve the same isolated setup for local m
 ```
 
 ```js local-module/webpack.config.js
-/** @type {import("webpack").Configuration} */
-export default {
-    entry: "./src/index.tsx",
-    ...
-};
+// @ts-check
+
+import { defineDevConfig } from "@workleap/webpack-configs";
+import { swcConfig } from "./swc.config.js";
+
+export default defineDevConfig(swcConfig);
 ```
 

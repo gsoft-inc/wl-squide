@@ -4,7 +4,7 @@ order: 100
 
 # defineDevHostConfig
 
-Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a `@squide` host application in development mode.
+Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a `@squide` host application in **development** mode.
 
 ## Reference
 

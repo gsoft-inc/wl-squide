@@ -4,7 +4,7 @@ order: 70
 
 # defineBuildRemoteModuleConfig
 
-Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a `@squide` remote module application in build mode.
+Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a `@squide` remote module application in **build** mode.
 
 ## Reference
 

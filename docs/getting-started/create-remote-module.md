@@ -17,17 +17,17 @@ pnpm add @squide/core @squide/react-router @squide/webpack-module-federation rea
 
 +++ pnpm
 ```bash
-pnpm add -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli swc/core @swc/helpers browserslist postcss
+pnpm add -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
 pnpm add @squide/core @squide/react-router @squide/webpack-module-federation react react-dom react-router-dom
 ```
 +++ yarn
 ```bash
-yarn add -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli swc/core @swc/helpers browserslist postcss
+yarn add -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
 yarn add @squide/core @squide/react-router @squide/webpack-module-federation react react-dom react-router-dom
 ```
 +++ npm
 ```bash
-npm install -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli swc/core @swc/helpers browserslist postcss
+npm install -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
 npm install @squide/core @squide/react-router @squide/webpack-module-federation react react-dom react-router-dom
 ```
 +++

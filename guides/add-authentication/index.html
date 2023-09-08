@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.3.0.747341900606">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.3.0.747495340544">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.3.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.3.0.747341900606" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.3.0.747495340544" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.3.0.747341900606" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.3.0.747495340544" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.3.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.3.0.747341900606" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.3.0.747341900606" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.3.0.747495340544" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.3.0.747495340544" defer></script>
 
     <style>
         .docs-markdown > ol, .docs-markdown > ul {
@@ -304,25 +304,35 @@
         <span>Add authentication</span>
     </h1>
 </doc-anchor-target>
-<p>Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the <code v-pre>@squide</code> <a href="../../reference/runtime/runtime-class/">Runtime</a> class accepts a <a href="../../reference/fakes/sessionmanager/#integrate-with-a-runtime-instance">sessionAccessor</a> function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.</p>
-<p>When combined with a <a href="https://reactrouter.com/en/main" class="outbound" target="_blank">React Router&#x27;s</a> authentication boundary and a login page, the shared <code v-pre>sessionAccessor</code> function is a great asset to manage authentication concerns.</p>
+<p>Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the <code v-pre>@squide</code> <a href="../../reference/runtime/runtime-class/">Runtime</a> class accepts a <a href="../../reference/fakes/localstoragesessionmanager/#integrate-with-a-runtime-instance">sessionAccessor</a> function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.</p>
+<p>When combined with a <a href="https://reactrouter.com/en/main" class="outbound" target="_blank">React Router</a> authentication boundary and a login page, the shared <code v-pre>sessionAccessor</code> function is of great help to manage authentication concerns.</p>
 <doc-anchor-target id="session-accessor">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#session-accessor">#</doc-anchor-trigger>
         <span>Session accessor</span>
     </h2>
 </doc-anchor-target>
-<p>Define a <code v-pre>sessionAccessor</code> function wrapping a <code v-pre>SessionManager</code> instance:</p>
+<p>Define a <code v-pre>sessionAccessor</code> function wrapping a <code v-pre>LocalStorageSessionManager</code> instance:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/session.ts</div>
 <pre class="language-typescript"><code v-pre class="language-typescript">import type { SessionAccessorFunction } from &quot;@squide/react-router&quot;;
-import { SessionManager } from &quot;@squide/fakes&quot;;
+import { LocalStorageSessionManager } from &quot;@squide/fakes&quot;;
 
-export const sessionManager = new SessionManager&lt;Session&gt;();
+export const sessionManager = new LocalStorageSessionManager&lt;Session&gt;();
 
 const sessionAccessor: SessionAccessorFunction = () =&gt; {
     return sessionManager.getSession();
 };</code></pre>
+</doc-codeblock></div>
+<p>Then create a <a href="../../reference/runtime/runtime-class/">Runtime</a> instance with the new <code v-pre>sessionAccessor</code> function:</p>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">host/src/boostrap.tsx</div>
+<pre class="language-typescript" data-line="5"><code v-pre class="language-typescript">import { Runtime } from &quot;@squide/react-router&quot;;
+import { sessionAccessor } from &quot;./session.ts&quot;;
+
+const runtime = new Runtime({
+    sessionAccessor
+});</code></pre>
 </doc-codeblock></div>
 <div class="flex mb-6">
     <div class="shrink-0 w-1 rounded-tl rounded-bl bg-yellow-500"></div>
@@ -336,29 +346,19 @@ const sessionAccessor: SessionAccessorFunction = () =&gt; {
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>Our security department reminds you to refrain from using a fake <code v-pre>SessionManager</code> in a production application <span class="docs-emoji">&#x1F60A;</span></p>
+<p>Our security department reminds you to refrain from using a fake <code v-pre>LocalStorageSessionManager</code> in a production application <span class="docs-emoji">&#x1F60A;</span></p>
         </div>
     </div>
 </div>
-<p>Then create a <a href="../../reference/runtime/runtime-class/">Runtime</a> instance with the new <code v-pre>sessionAccessor</code> function:</p>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<div class="codeblock-title">host/src/boostrap.tsx</div>
-<pre class="language-typescript" data-line="5"><code v-pre class="language-typescript">import { Runtime } from &quot;@squide/react-router&quot;;
-import { sessionAccessor } from &quot;./session.ts&quot;;
-
-const runtime = new Runtime({
-    sessionAccessor
-});</code></pre>
-</doc-codeblock></div>
 <doc-anchor-target id="authentication-boundary">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#authentication-boundary">#</doc-anchor-trigger>
         <span>Authentication boundary</span>
     </h2>
 </doc-anchor-target>
-<p>Create a new React Router&#x27;s authentication boundary component using the <a href="">useIsAuthenticated</a> hook:</p>
+<p>Create a new React Router authentication boundary component using the <a href="">useIsAuthenticated</a> hook:</p>
 <blockquote>
-<p>Internally, the <code v-pre>useIsAuthenticated</code> hook use the <code v-pre>sessionAccessor</code> function that we created previously to determine whether or not the user is authenticated.</p>
+<p>Internally, the <code v-pre>useIsAuthenticated</code> hook utilize the <code v-pre>sessionAccessor</code> function that we created previously to determine whether or not the user is authenticated.</p>
 </blockquote>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/AuthenticationBoundary.tsx</div>
@@ -440,16 +440,130 @@ export default function Login() {
     );
 }</code></pre>
 </doc-codeblock></div>
+<doc-anchor-target id="logout-page">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#logout-page">#</doc-anchor-trigger>
+        <span>Logout page</span>
+    </h2>
+</doc-anchor-target>
+<p>Add a logout page to the application:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/src/Logout.tsx</div>
+<pre class="language-tsx"><code v-pre class="language-tsx">import { Link } from &quot;react-router-dom&quot;;
+import { sessionManager } from &quot;./session.ts&quot;;
+
+export default function Logout() {
+    sessionManager.clearSession();
+
+    return (
+        &lt;main&gt;
+            &lt;h1&gt;Logged out&lt;/h1&gt;
+            &lt;div&gt;You are logged out from the application!&lt;/div&gt;
+            &lt;Link to=&quot;/login&quot;&gt;Log in again&lt;/Link&gt;
+        &lt;/main&gt;
+    );
+}</code></pre>
+</doc-codeblock></div>
+<p>The logout page also takes care of <strong>clearing</strong> the current <strong>session</strong>, allowing you to simply redirect to the page to clear the current user session:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-tsx"><code v-pre class="language-tsx">&lt;Link to=&quot;/logout&quot;&gt;Disconnect&lt;/Link&gt;</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="authenticated-layout">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#authenticated-layout">#</doc-anchor-trigger>
+        <span>Authenticated layout</span>
+    </h2>
+</doc-anchor-target>
+<p>With authentication in place, we now expect to render the navigation items only to authenticated users and to offer a way to logout from the application. To do so, let&#x27;s introduce a new <code v-pre>AuthenticatedLayout</code>:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/src/AuthenticatedLayout.tsx</div>
+<pre class="language-tsx" data-line="39,49-59"><code v-pre class="language-tsx">import type { ReactNode } from &quot;react&quot;;
+import { Link, Outlet } from &quot;react-router-dom&quot;;
+import { 
+    useNavigationItems,
+    useRenderedNavigationItems,
+    isNavigationLink,
+    type RenderItemFunction,
+    type RenderSectionFunction
+} from &quot;@squide/react-router&quot;;
+import type { Session } from &quot;../session.ts&quot;;
+
+const renderItem: RenderItemFunction = (item, index, level) =&gt; {
+    // To keep thing simple, this sample doesn't support nested navigation items.
+    // For an example including support for nested navigation items, have a look at
+    // https://gsoft-inc.github.io/wl-squide/reference/routing/userenderednavigationitems/
+    if (!isNavigationLink(item)) {
+        return null;
+    }
+
+    return (
+        &lt;li key={`${level}-${index}`}&gt;
+            &lt;Link {...linkProps} {...additionalProps}&gt;
+                {label}
+            &lt;/Link&gt;
+        &lt;/li&gt;
+    );
+};
+
+const renderSection: RenderSectionFunction = (elements, index, level) =&gt; {
+    return (
+        &lt;ul key={`${level}-${index}`}&gt;
+            {elements}
+        &lt;/ul&gt;
+    );
+};
+
+export default function AuthenticatedLayout() {
+    // Retrieve the current user session.
+    const session = useSession() as Session;
+
+    // Retrieve the navigation items registered by the remote modules.
+    const navigationItems = useNavigationItems();
+
+    // Transform the navigation items into React elements.
+    const navigationElements = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
+
+    return (
+        &lt;&gt;
+            &lt;div style={{ display: &quot;flex&quot;, alignItems: &quot;center&quot; }}&gt;
+                &lt;nav style={{ width: &quot;100%&quot; }}&gt;
+                    {renderedNavigationItems}
+                &lt;/nav&gt;
+                &lt;div style={{ whiteSpace: &quot;nowrap&quot;, marginRight: &quot;20px&quot; }}&gt;
+                    (User: &lt;span style={{ fontWeight: &quot;bold&quot; }}&gt;{session.user.name}&lt;/span&gt;)
+                &lt;/div&gt;
+                &lt;div&gt;
+                    &lt;Link to=&quot;/logout&quot;&gt;Disconnect&lt;/Link&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;Outlet /&gt;
+        &lt;/&gt;
+    );
+}</code></pre>
+</doc-codeblock></div>
+<p>Most of the layout code has been moved from the <code v-pre>RootLayout</code> to the <code v-pre>AuthenticatedLayout</code>, leaving the root layout only taking care for now of styling the outer wrapper of the application:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/src/RootLayout.tsx</div>
+<pre class="language-tsx"><code v-pre class="language-tsx">import { Outlet } from &quot;react-router-dom&quot;;
+
+export function RootLayout() {
+    return (
+        &lt;div style={{ margin: &quot;20px&quot; }}&gt;
+            &lt;Outlet /&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
+</doc-codeblock></div>
 <doc-anchor-target id="nested-routes">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#nested-routes">#</doc-anchor-trigger>
         <span>Nested routes</span>
     </h2>
 </doc-anchor-target>
-<p>Assemble everything with React Router&#x27;s <a href="https://reactrouter.com/en/main/start/tutorial#nested-routes" class="outbound" target="_blank">nested routes</a>:</p>
+<p>Assemble everything with React Router <a href="https://reactrouter.com/en/main/start/tutorial#nested-routes" class="outbound" target="_blank">nested routes</a>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="29-30,34"><code v-pre class="language-tsx">import { lazy, useMemo } from &quot;react&quot;;
+<pre class="language-tsx" data-line="30-31,34-35,39,42"><code v-pre class="language-tsx">import { lazy, useMemo } from &quot;react&quot;;
 import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
 import { useRoutes } from &quot;@squide/react-router&quot;;
 import { useAreRemotesReady } from &quot;@squide/webpack-module-federation&quot;;
@@ -461,6 +575,7 @@ const AuthenticatedLayout = lazy(() =&gt; import(&quot;./AuthenticatedLayout.tsx
 const ModuleErrorBoundary = lazy(() =&gt; import(&quot;./ModuleErrorBoundary.tsx&quot;));
 const Home = lazy(() =&gt; import(&quot;./Home.tsx&quot;));
 const Login = lazy(() =&gt; import(&quot;./Login.tsx&quot;));
+const Logout = lazy(() =&gt; import(&quot;./Logout.tsx&quot;));
 
 export function App() {
     const isReady = useAreRemotesReady();
@@ -475,10 +590,14 @@ export function App() {
                     errorElement: &lt;RootErrorBoundary /&gt;,
                     children: [
                         {
-                            // The login page is declared before the authentication boundary,
-                            // therefore it's a public page.
+                            // The login and logout page are declared before the authentication boundary,
+                            // therefore they are public page.
                             path: &quot;/login&quot;,
                             element: &lt;Login /&gt;
+                        },
+                        {
+                            path: &quot;/logout&quot;,
+                            element: &lt;Logout /&gt;
                         },
                         {
                             // Every page beyond the authenticated boundary are protected.

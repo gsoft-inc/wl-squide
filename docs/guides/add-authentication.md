@@ -142,7 +142,7 @@ export default function Logout() {
 }
 ```
 
-The logout page also take cares of **clearing** the current **session**, allowing to simply redirect to the page to clear current user session:
+The logout page also takes care of **clearing** the current **session**, allowing you to simply redirect to the page to clear the current user session:
 
 ```tsx
 <Link to="/logout">Disconnect</Link>

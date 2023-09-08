@@ -208,7 +208,7 @@ Start the local application by running the `dev-local` script. The federated app
 
 Similarly to remote modules, you can achieve the same isolated setup for local modules. The main difference is that the `webpack.config.js` file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on [Module Federation](https://webpack.js.org/concepts/module-federation/).
 
-First open a terminal at the root of local module project and install the `@workleap/webpack-configs` package and it's dependencies:
+First, open a terminal at the root of the local module project and install the `@workleap/webpack-configs` package and its dependencies:
 
 +++ pnpm
 ```bash

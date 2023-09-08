@@ -14,7 +14,7 @@ const isReady = useAreRemotesReady(options?: { interval? })
 
 ### Parameters
 
-- `options`: An optional object literal of options.
+- `options`: An optional object literal of options:
     - `interval`: The interval in milliseconds at which the hook is validating if the registration process is completed.
 
 ### Returns

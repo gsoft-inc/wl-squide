@@ -55,7 +55,7 @@ export interface DefineHostModuleFederationPluginOptions extends ModuleFederatio
 ////////////////////////////  Host  /////////////////////////////
 
 // The function return type is mandatory, otherwise we got an error TS4058.
-export function defineHostModuleFederationPluginOptions(applicationName: string, options: DefineHostModuleFederationPluginOptions = {}): ModuleFederationPluginOptions {
+export function defineHostModuleFederationPluginOptions(applicationName: string, options: DefineHostModuleFederationPluginOptions): ModuleFederationPluginOptions {
     const {
         router = "react-router",
         shared = {},
@@ -152,9 +152,10 @@ export interface DefineRemoteModuleFederationPluginOptions extends ModuleFederat
 }
 
 // The function return type is mandatory, otherwise we got an error TS4058.
-export function defineRemoteModuleFederationPluginOptions(applicationName: string, options: DefineRemoteModuleFederationPluginOptions = {}): ModuleFederationPluginOptions {
+export function defineRemoteModuleFederationPluginOptions(applicationName: string, options: DefineRemoteModuleFederationPluginOptions): ModuleFederationPluginOptions {
     const {
         router = "react-router",
+        exposes = {},
         shared = {},
         ...rest
     } = options;
@@ -165,7 +166,8 @@ export function defineRemoteModuleFederationPluginOptions(applicationName: strin
         name: applicationName,
         filename: RemoteEntryPoint,
         exposes: {
-            [RemoteModuleName]: "./src/register"
+            [RemoteModuleName]: "./src/register",
+            ...exposes
         },
         // Deep merging the default shared dependencies with the provided shared dependencies
         // to allow the consumer to easily override a default option of a shared dependency

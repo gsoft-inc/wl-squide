@@ -1,14 +1,14 @@
 import { isNil, isNilOrEmpty } from "@squide/core";
 
-export interface SessionManagerOptions {
+export interface LocalStorageSessionManagerOptions {
     key?: string;
 }
 
-export class SessionManager<T = unknown> {
+export class LocalStorageSessionManager<T = unknown> {
     readonly #key: string;
     #cache?: T = undefined;
 
-    constructor({ key = "app-session" }: SessionManagerOptions = {}) {
+    constructor({ key = "app-session" }: LocalStorageSessionManagerOptions = {}) {
         this.#key = key;
     }
 

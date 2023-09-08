@@ -14,7 +14,7 @@ const runtime = new Runtime(options?: { loggers?: [], services?: {}, sessionAcce
 
 ### Parameters
 
-- `options`: An optional object literal of options.
+- `options`: An optional object literal of options:
     - `loggers`: An optional array of `Logger` instances.
     - `services`: An optional string-keyed object literal of custom service instances.
     - `sessionAccessor`: An optional function returning the current session.
@@ -25,8 +25,10 @@ const runtime = new Runtime(options?: { loggers?: [], services?: {}, sessionAcce
 
 ```ts
 import { ConsoleLogger, Runtime } from "@squide/react-router";
-import { SessionManager } from "@squide/fakes";
+import { LocalStorageSessionManager } from "@squide/fakes";
 import { UserService, type UserService, type AppSession } from "@sample/shared";
+
+const sessionManager = new LocalStorageSessionManager();
 
 const runtime = new Runtime({
     loggers: [new ConsoleLogger()],

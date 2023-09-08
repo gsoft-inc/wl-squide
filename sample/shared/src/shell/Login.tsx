@@ -1,10 +1,13 @@
+import { useIsAuthenticated } from "@squide/react-router";
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import type { SessionManager } from "../session.ts";
 
-import { useIsAuthenticated } from "@squide/react-router";
-import { sessionManager } from "./session.ts";
+export interface LoginProps {
+    sessionManager: SessionManager;
+}
 
-export default function Login() {
+export default function Login({ sessionManager }: LoginProps) {
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
 

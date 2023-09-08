@@ -67,6 +67,8 @@ export function useAppRouter({ rootRoutes = [] }: UseAppRouterOptions = {}) {
 This guide only covers the `RootLayout` and `RootErrorBoundary` but the same goes for other shell assets such as an `AuthenticationBoundary`.
 !!!
 
+[!ref icon="mark-github" text="View a shell package example on Github"](https://github.com/gsoft-inc/wl-squide/tree/main/sample/shared/shell)
+
 ## Host application
 
 Then, let's revisit the host application and incorporate the newly introduced `useAppRouter` hook:
@@ -109,7 +111,7 @@ With our new setup in place, we can now configure the remote module to be develo
 
 To begin, let's add an `index.tsx` and `App.tsx` files to the remote module project:
 
-``` !#5,6
+``` !#5-6
 remote-module
 ├── src
 ├────── register.tsx
@@ -117,35 +119,37 @@ remote-module
 ├────── index.tsx
 ├────── App.tsx
 ├── package.json
-├── webpack.config.js
+├── webpack.dev.js
 ```
 
 The `index.tsx` file is similar to the `bootstrap.tsx` file of a host application but, tailored for an isolated module. The key distinction is that, since we set up the project for local development, we'll register the module with the [registerLocalModules](/reference/registration/registerLocalModules.md) function instead of the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function:
 
-```tsx !#10-12,16 remote-module/src/index.tsx
+```tsx !#8-10,14 remote-module/src/index.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, Runtime } from "@squide/react-router";
-import { registerLocalModules } from "@squide/webpack-module-federation";
+import { ConsoleLogger, RuntimeContext, Runtime, registerLocalModules } from "@squide/react-router";
 import { App } from "./App.tsx";
 import { register } from "./register.tsx";
 
 // Create the shell runtime.
-// Services, loggers and sessionAccessor could be reuse through a shared packages
-// or faked when in isolation.
+// Services, loggers and sessionAccessor could be reuse through a shared packages or faked when in isolation.
 const runtime = new Runtime({
     loggers: [new ConsoleLogger()]
 });
 
 // Registering the remote module as a static module because the "register" function 
 // is local when developing in isolation.
-registerStaticModules([register], runtime);
+registerLocalModules([register], runtime);
 
 const root = createRoot(document.getElementById("root"));
 
 root.render(
-    <RuntimeContext.Provider value={runtime}>
-        <App />
-    </RuntimeContext.Provider>
+    <StrictMode>
+        <RuntimeContext.Provider value={runtime}>
+            <Suspense fallback={<div>Loading...</div>}>
+                <App />
+            </Suspense>
+        </RuntimeContext.Provider>
+    </StrictMode>
 );
 ```
 
@@ -167,30 +171,30 @@ export function App() {
 }
 ```
 
-Next, add a new `dev-local` script to the `package.json` file to start the local development server in "isolation":
+Next, add a new `dev-local` script to the `package.json` file to start the local development server in **"isolation"**:
 
 ```json !#3 remote-module/package.json
 {
-    "dev": "webpack serve --config webpack.config.js",
-    "dev-local": "cross-env LOCAL=true webpack serve --config webpack.config.js",
+    "dev": "webpack serve --config webpack.dev.js",
+    "dev-local": "cross-env LOCAL=true webpack serve --config webpack.dev.js",
 }
 ```
 
-The `dev-local` script is similar to the `dev` script but introduces a `LOCAL` environment variable. This new environment variable will be utilized by the `webpack.config.js` file to conditionally setup the development server for local development in isolation or to be consumed by a host application through the `/remoteEntry.js` entry point:
+The `dev-local` script is similar to the `dev` script but introduces a `LOCAL` environment variable. This new environment variable will be utilized by the `webpack.dev.js` file to conditionally setup the development server for local development in isolation or to be consumed by a host application through the `/remoteEntry.js` entry point:
 
-```js !#3,7,11-13 remote-module/webpack.config.js
-import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
+```js !#9,12 remote-module/webpack.dev.js
+// @ts-check
 
-const isLocal = env.LOCAL === "true";
+import { defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevConfig } from "@workleap/webpack-configs";
+import { swcConfig } from "./swc.dev.js";
 
-/** @type {import("webpack").Configuration} */
-let config = {
-    entry: isLocal ? "./src/index.tsx" : "./src/register.tsx",
-    ...
-};
+let config;
 
-if (!isLocal) {
-    config = remoteTransformer(config, "remote1");
+if (!process.env.LOCAL) {
+    config = defineDevRemoteModuleConfig(swcConfig, "remote1", 8081);
+} else {
+    config = defineDevConfig(swcConfig);
 }
 
 export default config;
@@ -198,9 +202,31 @@ export default config;
 
 Start the local application by running the `dev-local` script. The federated application shell should wrap the content of the index route of the module.
 
+[!ref icon="mark-github" text="View a remote module project example on Github"](https://github.com/gsoft-inc/wl-squide/tree/main/sample/remote-module)
+
 ## Local module
 
 Similarly to remote modules, you can achieve the same isolated setup for local modules. The main difference is that the `webpack.config.js` file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on [Module Federation](https://webpack.js.org/concepts/module-federation/).
+
+First, open a terminal at the root of the local module project and install the `@workleap/webpack-configs` package and its dependencies:
+
++++ pnpm
+```bash
+pnpm add -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+```
++++ yarn
+```bash
+yarn add -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+```
++++ npm
+```bash
+npm install -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+```
++++
+
+Then, perform the same steps as for [setuping an isolated setup for a remote module](#remote-module), except for the `dev-local` script and the [webpack](https://webpack.js.org/) configuration as they will diverge.
+
+Once you performed the remote module steps, add a new `dev-local` script to the `package.json` file to start the local development server:
 
 ```json local-module/package.json
 {
@@ -208,11 +234,16 @@ Similarly to remote modules, you can achieve the same isolated setup for local m
 }
 ```
 
+Finally, configure webpack to serve the application when the `dev-local` script is executed:
+
 ```js local-module/webpack.config.js
-/** @type {import("webpack").Configuration} */
-export default {
-    entry: "./src/index.tsx",
-    ...
-};
+// @ts-check
+
+import { defineDevConfig } from "@workleap/webpack-configs";
+import { swcConfig } from "./swc.config.js";
+
+export default defineDevConfig(swcConfig);
 ```
+
+[!ref icon="mark-github" text="View a local module project example on Github"](https://github.com/gsoft-inc/wl-squide/tree/main/sample/local-module)
 

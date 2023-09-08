@@ -10,7 +10,7 @@ const eventBus = new EventBus(options?: { logger? })
 
 ### Parameters
 
-- `options`: An optional object literal of options.
+- `options`: An optional object literal of options:
     - `logger`: An optional logger to facilitate debugging.
 
 ## Usage

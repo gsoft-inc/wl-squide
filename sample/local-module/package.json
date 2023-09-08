@@ -15,6 +15,7 @@
     },
     "scripts": {
         "dev": "tsup --config ./tsup.dev.ts",
+        "dev-local": "webpack serve --config webpack.config.js",
         "build": "tsup --config ./tsup.build.ts",
         "serve-build": "pnpm build"
     },
@@ -24,19 +25,31 @@
         "react-router-dom": "*"
     },
     "devDependencies": {
+        "@swc/core": "1.3.82",
+        "@swc/helpers": "0.5.1",
         "@types/react": "18.2.21",
         "@types/react-dom": "18.2.7",
+        "@types/webpack": "5.28.2",
+        "@workleap/browserslist-config": "2.0.0",
         "@workleap/eslint-plugin": "2.1.0",
+        "@workleap/swc-configs": "2.1.1",
         "@workleap/tsup-configs": "3.0.0",
         "@workleap/typescript-configs": "3.0.2",
-        "react": "18.2.0",
-        "react-dom": "18.2.0",
-        "react-router-dom": "6.15.0",
+        "@workleap/webpack-configs": "1.0.5",
+        "browserslist": "4.21.10",
+        "cross-env": "7.0.3",
         "tsup": "7.2.0",
-        "typescript": "5.2.2"
+        "typescript": "5.2.2",
+        "webpack": "5.88.2",
+        "webpack-cli": "5.1.4",
+        "webpack-dev-server": "4.15.1"
     },
     "dependencies": {
         "@sample/shared": "workspace:*",
-        "@squide/react-router": "workspace:*"
+        "@squide/fakes": "workspace:*",
+        "@squide/react-router": "workspace:*",
+        "react": "18.2.0",
+        "react-dom": "18.2.0",
+        "react-router-dom": "6.15.0"
     }
 }

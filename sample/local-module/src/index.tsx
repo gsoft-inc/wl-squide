@@ -1,31 +1,20 @@
-import { register } from "@sample/local-module";
-import { isNetlify, type AppContext } from "@sample/shared";
 import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
-import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App.tsx";
+import { register } from "./register.tsx";
 import { sessionAccessor } from "./session.ts";
 
-const Remotes: RemoteDefinition[] = [
-    {
-        name: "remote1",
-        url: isNetlify ? "https://squide-remote-module.netlify.app" : "http://localhost:8081"
-    }
-];
-
+// Create the shell runtime.
+// Services, loggers and sessionAccessor could be reuse through a shared packages or faked when in isolation.
 const runtime = new Runtime({
     loggers: [new ConsoleLogger()],
     sessionAccessor
 });
 
-const context: AppContext = {
-    name: "Test app"
-};
-
-registerRemoteModules(Remotes, runtime, { context });
-
-registerLocalModules([register], runtime, { context });
+// Registering the remote module as a static module because the "register" function
+// is local when developing in isolation.
+registerLocalModules([register], runtime);
 
 const root = createRoot(document.getElementById("root")!);
 
@@ -38,3 +27,5 @@ root.render(
         </RuntimeContext.Provider>
     </StrictMode>
 );
+
+

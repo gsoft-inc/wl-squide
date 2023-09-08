@@ -14,7 +14,7 @@ registerRemoteModules(remotes: [], runtime, options?: { context? })
 
 - `remotes`: An array of `RemoteDefinition` (view the [Remote definition](#remote-definition) section).
 - `runtime`: A `Runtime` instance.
-- `options`: An optional object literal of options.
+- `options`: An optional object literal of options:
     - `context`: An optional context object that will be pass to the registration function.
 
 ### Returns
@@ -81,30 +81,24 @@ const Remotes: RemoteDefinition = [
 
 The `name` property of a remote definition **must match** the `name` property defined in the remote module [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) configuration.
 
-If you are using `@squide` [remoteTransformer](/reference/webpack/remoteTransformer.md) function to add the `ModuleFederationPlugin` to the remote module webpack [configuration object](https://webpack.js.org/concepts/configuration/), the remote module `name` is the second argument of the `remoteTransformer` function.
+If you are relying on either the `@squide` [defineDevRemoteModuleConfig](../webpack//defineDevRemoteModuleConfig.md) or [defineBuildRemoteModuleConfig](../webpack/defineBuildRemoteModuleConfig.md) function to add the `ModuleFederationPlugin` to the remote module webpack [configuration object](https://webpack.js.org/concepts/configuration/), then the remote module `name` is the second argument of the function.
 
 In the following exemple, the remote module `name` is `remote1`.
 
 ```ts !#2 host/src/bootstrap.tsx
 const Remotes: RemoteDefinition = [
-    { name: "remote1", url: "REMOTE_URL" }
+    { name: "remote1", url: `http://localhost:${PORT}` }
 ];
 ```
 
-```js !#7 remote-module/src/webpack.config.js
-import { remoteTransformer } from "@squide/webpack-module-federation/configTransformer.js";
+```js !#6 remote-module/src/webpack.dev.js
+// @ts-check
 
-const webpackConfig = { ... };
+import { defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { swcConfig } from "./swc.dev.js";
 
-const federatedConfig = remoteTransformer(
-    webpackConfig, 
-    "remote1"
-);
-
-export default federatedConfig;
+export default defineDevRemoteModuleConfig(swcConfig, "remote1", PORT);
 ```
-
-[!ref icon="gear" text="View the `remoteTransformer` function"](/reference/webpack/remoteTransformer.md)
 
 ### Url
 
@@ -118,15 +112,26 @@ const Remotes: RemoteDefinition = [
 ];
 ```
 
-```js !#3 remote-module/webpack.config.js
-const webpackConfig = {
-    output: {
-        publicPath: "http://localhost:8081"
-    }
-};
+In development mode, the `publicPath` is built from the provided `host` and `port` values. Therefore, if the port value is `8081`, then the generated `publicPath` would be `http://localhost:8081/`:
 
-const federatedConfig = remoteTransformer(
-    webpackConfig, 
-    "REMOTE_NAME"
-);
+```js !#6-8 remote-module/webpack.dev.js
+// @ts-check
+
+import { defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { swcConfig } from "./swc.dev.js";
+
+export default defineDevRemoteModuleConfig(swcConfig, REMOTE_NAME, 8081, {
+    host: "localhost" // (This is the default value)
+});
+```
+
+In build mode, the `publicPath` is the third argument of the `defineBuildRemoteModuleConfig` function:
+
+```js !#6 remote-module/webpack.build.js
+// @ts-check
+
+import { defineBuildRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { swcConfig } from "./swc.build.js";
+
+export default defineBuildRemoteModuleConfig(swcConfig, REMOTE_NAME, "http://localhost:8081/");
 ```

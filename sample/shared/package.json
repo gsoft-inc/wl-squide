@@ -19,10 +19,16 @@
         "serve-build": "pnpm build"
     },
     "peerDependencies": {
+        "@squide/react-router": "*",
+        "@squide/webpack-module-federation": "*",
         "react": "*",
-        "react-dom": "*"
+        "react-dom": "*",
+        "react-router-dom": "*"
     },
     "devDependencies": {
+        "@remix-run/router": "1.8.0",
+        "@squide/react-router": "workspace:*",
+        "@squide/webpack-module-federation": "workspace:*",
         "@types/react": "18.2.21",
         "@types/react-dom": "18.2.7",
         "@workleap/eslint-plugin": "2.1.0",
@@ -30,10 +36,8 @@
         "@workleap/typescript-configs": "3.0.2",
         "react": "18.2.0",
         "react-dom": "18.2.0",
+        "react-router-dom": "6.15.0",
         "tsup": "7.2.0",
         "typescript": "5.2.2"
-    },
-    "dependencies": {
-        "@squide/react-router": "workspace:*"
     }
 }

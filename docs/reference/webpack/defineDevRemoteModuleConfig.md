@@ -28,7 +28,7 @@ A webpack [configuration object](https://webpack.js.org/concepts/configuration/)
 
 ## Conventions
 
-To fulfil `@squide` remote module requirements, the `defineDevRemoteModuleConfig` function will pre-configure the [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) with the following `filename` and `exposes` properties.
+To fulfill `@squide` remote module requirements, the `defineDevRemoteModuleConfig` function will pre-configure the [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) with the following `filename` and `exposes` properties.
 
 ```js !#6-9
 import ModuleFederationPlugin from "webpack/lib/container/ModuleFederationPlugin.js";

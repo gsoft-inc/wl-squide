@@ -12,6 +12,10 @@ breadcrumb:
     enabled: true
     home: false
 
+hub:
+    link: http://www.workleap.com
+    alt: Go to the documentation hub root site
+
 # -------------------
 # Retype
 # -------------------

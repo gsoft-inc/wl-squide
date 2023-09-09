@@ -13,8 +13,8 @@ breadcrumb:
     home: false
 
 hub:
-    link: http://www.workleap.com
-    alt: Go to the documentation hub root site
+    link: https://gsoft-inc.github.io/wl-idp-docs-hub/
+    alt: Go to the IDP hub root site
 
 # -------------------
 # Retype

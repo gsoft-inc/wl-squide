@@ -221,7 +221,7 @@ export default function RootLayout() {
 
 ### development
 
-To configure [webpack](https://webpack.js.org/) for a federated host application in **development** mode, use the [defineDevHostConfig](/reference/webpack/defineDevHostConfig.md) function:
+To configure webpack for a federated host application in **development** mode, use the [defineDevHostConfig](/reference/webpack/defineDevHostConfig.md) function:
 
 ```js !#6 host/webpack.dev.js
 // @ts-check
@@ -234,7 +234,7 @@ export default defineDevHostConfig(swcConfig, "host", 8080);
 
 ### build
 
-To configure [webpack](https://webpack.js.org/) for a federated host application in **build** mode, use the [defineBuildHostConfig](/reference/webpack/defineBuildHostConfig.md) function:
+To configure webpack for a federated host application in **build** mode, use the [defineBuildHostConfig](/reference/webpack/defineBuildHostConfig.md) function:
 
 ```js !#6 host/webpack.build.js
 // @ts-check

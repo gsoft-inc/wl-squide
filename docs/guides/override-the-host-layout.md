@@ -103,7 +103,7 @@ root
 
 ## Hoisting
 
-Package managers supporting workspaces such as [Yarn](https://classic.yarnpkg.com/) and [NPM](https://docs.npmjs.com/cli) call this mechanism "hoisting", which means "raise (something) by means of ropes and pulleys". This is exactly what we are trying to achieve here.
+Package managers supporting workspaces such as Yarn and NPM call this mechanism "hoisting", which means "raise (something) by means of ropes and pulleys". This is exactly what we are trying to achieve here.
 
 `@squide` has a built-in [useHoistedRoutes](/reference/routing/useHoistedRoutes.md) hook capable of raising module routes marked as `hoist` at the root of the routes array, before the `RootLayout` declaration. Thus, an hoisted page will not be wrapped by the `RootLayout` and will have full control over its rendering.
 

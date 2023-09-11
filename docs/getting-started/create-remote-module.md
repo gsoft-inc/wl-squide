@@ -87,7 +87,7 @@ export default function Page() {
 
 ### development
 
-To configure [webpack](https://webpack.js.org/) for a federated remote module application in **development** mode, use the [defineDevRemoteModuleConfig](/reference/webpack/defineDevRemoteModuleConfig.md) function:
+To configure webpack for a federated remote module application in **development** mode, use the [defineDevRemoteModuleConfig](/reference/webpack/defineDevRemoteModuleConfig.md) function:
 
 ```js !#6 remote-module/webpack.dev.js
 // @ts-check
@@ -100,7 +100,7 @@ export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081);
 
 ### build
 
-To configure [webpack](https://webpack.js.org/) for a federated remote module application in **build** mode, use the [defineBuildRemoteModuleConfig](/reference/webpack/defineBuildRemoteModuleConfig.md) function:
+To configure webpack for a federated remote module application in **build** mode, use the [defineBuildRemoteModuleConfig](/reference/webpack/defineBuildRemoteModuleConfig.md) function:
 
 ```js !#6 remote-module/webpack.build.js
 // @ts-check

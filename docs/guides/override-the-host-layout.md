@@ -6,7 +6,7 @@ order: 100
 
 ## Root layout
 
-In many applications, multiple pages often share a **common layout** that includes elements such as a navigation bar, a user profile menu, and a main content section. In a [React Router's](https://reactrouter.com/en/main) application, this shared layout is commonly referred to as a `RootLayout`:
+In many applications, multiple pages often share a **common layout** that includes elements such as a navigation bar, a user profile menu, and a main content section. In a [React Router](https://reactrouter.com/en/main) application, this shared layout is commonly referred to as a `RootLayout`:
 
 
 ```tsx !#16,21,24,30,36 host/src/App.tsx
@@ -91,7 +91,7 @@ In the previous code sample, the `RootLayout` serves as the default layout for t
 
 For most pages, this is the behavior expected by the author. However, for pages such as a *login page*, the default `RootLayout` isn't suitable because the page is not bound to a user session (the user is not even authenticated yet).
 
-To accomodate pages that require a different layout, a mechanism is needed to move their route declaration at the root of the React Router's [router instance](https://reactrouter.com/en/main/routers/create-browser-router), before the `RootLayout` is declared.
+To accomodate pages that require a different layout, a mechanism is needed to move their route declaration at the root of the React Router [router instance](https://reactrouter.com/en/main/routers/create-browser-router), before the `RootLayout` is declared.
 
 ``` !#2
 root

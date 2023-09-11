@@ -42,7 +42,7 @@
         "eslint": "8.49.0",
         "jest": "29.6.4",
         "netlify-cli": "16.3.1",
-        "retypeapp": "3.4.0",
+        "retypeapp": "3.4.1",
         "ts-node": "10.9.1",
         "typescript": "5.2.2"
     },

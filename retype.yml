@@ -78,4 +78,9 @@ footer:
           link: https://github.com/gsoft-inc/wl-squide/blob/main/LICENSE
           target: blank
 
+# To allow using {{ }} in code blocks.
+# View: https://github.com/retypeapp/retype/issues/622#issuecomment-1712391219.
+templating:
+    enabled: false
+
 verbose: true

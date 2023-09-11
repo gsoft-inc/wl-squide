@@ -224,7 +224,7 @@ npm install -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-d
 ```
 +++
 
-Then, perform the same steps as for [setuping an isolated setup for a remote module](#remote-module), except for the `dev-local` script and the [webpack](https://webpack.js.org/) configuration as they will diverge.
+Then, perform the same steps as for [setuping an isolated setup for a remote module](#remote-module), except for the `dev-local` script and the webpack configuration as they will diverge.
 
 Once you performed the remote module steps, add a new `dev-local` script to the `package.json` file to start the local development server:
 

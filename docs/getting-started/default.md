@@ -6,7 +6,7 @@ expanded: true
 
 # Getting started
 
-Welcome to `@squide` (yes :squid: with an **"e"**), a shell for [Workleap's](https://workleap.com/) federated applications. In this getting started section, you'll find an overview of the shell and a [quick start](create-host.md) guide to create a new federated application from scratch.
+Welcome to `@squide` (yes :squid: with an **"e"**), a shell for [Workleap](https://workleap.com/) federated applications. In this getting started section, you'll find an overview of the shell and a [quick start](create-host.md) guide to create a new federated application from scratch.
 
 !!!warning Foundry CLI
 
@@ -28,7 +28,7 @@ npm create @workleap/project@latest <output-directory>
 
 ## Why
 
-We have built this shell to facilitate the adoption of federated applications at [Workleap](https://workleap.com/) by **enforcing patterns** that we believe will help feature teams successfully implement a distributed architecture.
+We have built this shell to facilitate the adoption of federated applications at Workleap by **enforcing patterns** that we believe will help feature teams successfully implement a distributed architecture.
 
 The shell itself is a lightweight [API layer](/reference) built on top of [Module Federation](https://webpack.js.org/concepts/module-federation/) and [React Router](https://reactrouter.com), with the goal of maximizing the strength of both libraries while interfering as little as possible with their functionality.
 
@@ -38,11 +38,11 @@ We have identified **2 major challenges** with frontend federated applications:
 - How can we prevent loading the same large dependencies twice when switching between *modules*?
 - How can we offer a cohesive experience that doesn't feel *modular*?
 
-To address the first challenge, we believe that [Module Federation](https://webpack.js.org/concepts/module-federation/) provides a solution by offering a mecanism capable of **deduping common dependencies** shared **between** the **host** application and the **remote** modules at runtime.
+To address the first challenge, we believe that Module Federation provides a solution by offering a mecanism capable of **deduping common dependencies** shared **between** the **host** application and the **remote** modules at runtime.
 
 With this mecanism in place, all federated parts of an application can now be loaded in the same [browsing context](https://developer.mozilla.org/en-US/docs/Glossary/Browsing_context) instead of nested browsing contexts such as [iframes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe). 
 
-By sharing the same browsing context (e.g. the same [Document](https://developer.mozilla.org/en-US/docs/Web/API/Document), the same [Window object](https://developer.mozilla.org/en-US/docs/Web/API/Window), and the same [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)), federated parts now **form a unified and cohesive single application**, addressing the second challenge. 
+By sharing the same browsing context (e.g. the same [Document object](https://developer.mozilla.org/en-US/docs/Web/API/Document), the same [Window object](https://developer.mozilla.org/en-US/docs/Web/API/Window), and the same DOM), federated parts now **form a unified and cohesive single application**, addressing the second challenge. 
 
 With Module Federation, we believe that we can develop federated applications that provide the same user experience as monolithic applications :rocket:
 
@@ -76,7 +76,7 @@ While developing the [API](/reference) of `@squide`, we kept a few guiding princ
 
 ## Limitations
 
-[Module Federation](https://webpack.js.org/concepts/module-federation/) comes with a few manageable limitations that are important to consider when architecting your distributed application:
+Module Federation comes with a few manageable limitations that are important to consider when architecting your distributed application:
 
 - A [shared dependency](https://webpack.js.org/plugins/module-federation-plugin/#sharing-hints) cannot be tree-shaken. Since remote modules are loaded at runtime, [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin) cannot infer which parts of a shared dependency will be used by the application modules. Therefore, tree-shaking is disabled for shared dependencies.
 

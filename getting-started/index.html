@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.747713963953">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.747760092284">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.4.1">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Getting started</title>
     <meta name="title" content="Getting started">
-    <meta name="description" content="Welcome to @squide(yes 🦑 with an \"e\"), a shell for Workleap's federated applications.">
+    <meta name="description" content="Welcome to @squide(yes 🦑 with an \"e\"), a shell for Workleap federated applications.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/getting-started/">
@@ -21,23 +21,23 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/getting-started/">
     <meta property="og:title" content="Getting started">
-    <meta property="og:description" content="Welcome to @squide(yes 🦑 with an \"e\"), a shell for Workleap's federated applications.">
+    <meta property="og:description" content="Welcome to @squide(yes 🦑 with an \"e\"), a shell for Workleap federated applications.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/getting-started/">
     <meta property="twitter:title" content="Getting started">
-    <meta property="twitter:description" content="Welcome to @squide(yes 🦑 with an \"e\"), a shell for Workleap's federated applications.">
+    <meta property="twitter:description" content="Welcome to @squide(yes 🦑 with an \"e\"), a shell for Workleap federated applications.">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../favicon.png" rel="icon">
-    <link href="../resources/css/retype.css?v=3.4.1.747713963953" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=3.4.1.747760092284" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=3.4.1.747713963953" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=3.4.1.747760092284" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=3.4.1" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.4.1.747713963953" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=3.4.1.747713963953" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.4.1.747760092284" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=3.4.1.747760092284" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
 
@@ -287,7 +287,7 @@
         <span>Getting started</span>
     </h1>
 </doc-anchor-target>
-<p>Welcome to <code v-pre>@squide</code> (yes <span class="docs-emoji">&#x1F991;</span> with an <strong>&quot;e&quot;</strong>), a shell for <a href="https://workleap.com/" class="outbound" target="_blank">Workleap&#x27;s</a> federated applications. In this getting started section, you&#x27;ll find an overview of the shell and a <a href="create-host/">quick start</a> guide to create a new federated application from scratch.</p>
+<p>Welcome to <code v-pre>@squide</code> (yes <span class="docs-emoji">&#x1F991;</span> with an <strong>&quot;e&quot;</strong>), a shell for <a href="https://workleap.com/" class="outbound" target="_blank">Workleap</a> federated applications. In this getting started section, you&#x27;ll find an overview of the shell and a <a href="create-host/">quick start</a> guide to create a new federated application from scratch.</p>
 <div class="flex mb-6">
     <div class="shrink-0 w-1 rounded-tl rounded-bl bg-yellow-500"></div>
     <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
@@ -331,7 +331,7 @@
         <span>Why</span>
     </h2>
 </doc-anchor-target>
-<p>We have built this shell to facilitate the adoption of federated applications at <a href="https://workleap.com/" class="outbound" target="_blank">Workleap</a> by <strong>enforcing patterns</strong> that we believe will help feature teams successfully implement a distributed architecture.</p>
+<p>We have built this shell to facilitate the adoption of federated applications at Workleap by <strong>enforcing patterns</strong> that we believe will help feature teams successfully implement a distributed architecture.</p>
 <p>The shell itself is a lightweight <a href="../reference/">API layer</a> built on top of <a href="https://webpack.js.org/concepts/module-federation/" class="outbound" target="_blank">Module Federation</a> and <a href="https://reactrouter.com" class="outbound" target="_blank">React Router</a>, with the goal of maximizing the strength of both libraries while interfering as little as possible with their functionality.</p>
 <doc-anchor-target id="module-federation">
     <h3>
@@ -344,9 +344,9 @@
 <li>How can we prevent loading the same large dependencies twice when switching between <em>modules</em>?</li>
 <li>How can we offer a cohesive experience that doesn&#x27;t feel <em>modular</em>?</li>
 </ul>
-<p>To address the first challenge, we believe that <a href="https://webpack.js.org/concepts/module-federation/" class="outbound" target="_blank">Module Federation</a> provides a solution by offering a mecanism capable of <strong>deduping common dependencies</strong> shared <strong>between</strong> the <strong>host</strong> application and the <strong>remote</strong> modules at runtime.</p>
+<p>To address the first challenge, we believe that Module Federation provides a solution by offering a mecanism capable of <strong>deduping common dependencies</strong> shared <strong>between</strong> the <strong>host</strong> application and the <strong>remote</strong> modules at runtime.</p>
 <p>With this mecanism in place, all federated parts of an application can now be loaded in the same <a href="https://developer.mozilla.org/en-US/docs/Glossary/Browsing_context" class="outbound" target="_blank">browsing context</a> instead of nested browsing contexts such as <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe" class="outbound" target="_blank">iframes</a>.</p>
-<p>By sharing the same browsing context (e.g. the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document" class="outbound" target="_blank">Document</a>, the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window" class="outbound" target="_blank">Window object</a>, and the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model" class="outbound" target="_blank">DOM</a>), federated parts now <strong>form a unified and cohesive single application</strong>, addressing the second challenge.</p>
+<p>By sharing the same browsing context (e.g. the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document" class="outbound" target="_blank">Document object</a>, the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window" class="outbound" target="_blank">Window object</a>, and the same DOM), federated parts now <strong>form a unified and cohesive single application</strong>, addressing the second challenge.</p>
 <p>With Module Federation, we believe that we can develop federated applications that provide the same user experience as monolithic applications <span class="docs-emoji">&#x1F680;</span></p>
 <doc-anchor-target id="react-router">
     <h3>
@@ -394,7 +394,7 @@
         <span>Limitations</span>
     </h2>
 </doc-anchor-target>
-<p><a href="https://webpack.js.org/concepts/module-federation/" class="outbound" target="_blank">Module Federation</a> comes with a few manageable limitations that are important to consider when architecting your distributed application:</p>
+<p>Module Federation comes with a few manageable limitations that are important to consider when architecting your distributed application:</p>
 <ul>
 <li><p>A <a href="https://webpack.js.org/plugins/module-federation-plugin/#sharing-hints" class="outbound" target="_blank">shared dependency</a> cannot be tree-shaken. Since remote modules are loaded at runtime, <a href="https://webpack.js.org/plugins/module-federation-plugin" class="outbound" target="_blank">ModuleFederationPlugin</a> cannot infer which parts of a shared dependency will be used by the application modules. Therefore, tree-shaking is disabled for shared dependencies.</p>
 </li>

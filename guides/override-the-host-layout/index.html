@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.747713963953">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.747760092284">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.4.1">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.4.1.747713963953" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.4.1.747760092284" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.4.1.747713963953" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.4.1.747760092284" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.4.1" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.4.1.747713963953" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.4.1.747713963953" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.4.1.747760092284" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.4.1.747760092284" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
 
@@ -406,7 +406,7 @@ export function RootLayout() {
         <span>Hoisting</span>
     </h2>
 </doc-anchor-target>
-<p>Package managers supporting workspaces such as <a href="https://classic.yarnpkg.com/" class="outbound" target="_blank">Yarn</a> and <a href="https://docs.npmjs.com/cli" class="outbound" target="_blank">NPM</a> call this mechanism &quot;hoisting&quot;, which means &quot;raise (something) by means of ropes and pulleys&quot;. This is exactly what we are trying to achieve here.</p>
+<p>Package managers supporting workspaces such as Yarn and NPM call this mechanism &quot;hoisting&quot;, which means &quot;raise (something) by means of ropes and pulleys&quot;. This is exactly what we are trying to achieve here.</p>
 <p><code v-pre>@squide</code> has a built-in <a href="../../reference/routing/usehoistedroutes/">useHoistedRoutes</a> hook capable of raising module routes marked as <code v-pre>hoist</code> at the root of the routes array, before the <code v-pre>RootLayout</code> declaration. Thus, an hoisted page will not be wrapped by the <code v-pre>RootLayout</code> and will have full control over its rendering.</p>
 <p>To hoist module pages, first transform the module routes with the <code v-pre>useHoistedRoutes</code> hook before creating the router instance:</p>
 <div class="codeblock-wrapper"><doc-codeblock line-numbers>

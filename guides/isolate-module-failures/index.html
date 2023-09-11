@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.747713963953">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.747760092284">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.4.1">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.4.1.747713963953" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.4.1.747760092284" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.4.1.747713963953" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.4.1.747760092284" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.4.1" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.4.1.747713963953" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.4.1.747713963953" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.4.1.747760092284" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.4.1.747760092284" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
 
@@ -306,7 +306,7 @@
     </h1>
 </doc-anchor-target>
 <p>One of the key characteristics of micro-frontends implementations like <a href="https://martinfowler.com/articles/micro-frontends.html#Run-timeIntegrationViaIframes" class="outbound" target="_blank">iframes</a> and subdomains is the ability to isolate failures within individual remote modules, preventing them from breaking the entire application.</p>
-<p>However, in a <a href="https://webpack.js.org/concepts/module-federation/" class="outbound" target="_blank">Module Federation</a> implementation, this is not the case as all the remote modules share the same browsing context (e.g. the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document" class="outbound" target="_blank">Document</a>, the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window" class="outbound" target="_blank">Window object</a>, and the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model" class="outbound" target="_blank">DOM</a>). A failure in one remote module can potentially breaks the entire application.</p>
+<p>However, in a <a href="https://webpack.js.org/concepts/module-federation/" class="outbound" target="_blank">Module Federation</a> implementation, this is not the case as all the remote modules share the same browsing context (e.g. the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document" class="outbound" target="_blank">Document object</a>, the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window" class="outbound" target="_blank">Window object</a>, and the same DOM). A failure in one remote module can potentially breaks the entire application.</p>
 <p>Nevertheless, we can get very close to iframes failure isolation by utilizing React Router&#x27;s <a href="https://reactrouter.com/en/main/components/outlet" class="outbound" target="_blank">Outlet</a> component and the <a href="https://reactrouter.com/en/main/route/error-element" class="outbound" target="_blank">errorElement</a> property of a React Router&#x27;s routes:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>

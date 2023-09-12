@@ -6,6 +6,8 @@ const CustomLayout = lazy(() => import("./CustomLayout.tsx"));
 const Remote = lazy(() => import("./Remote.tsx"));
 const Fetch = lazy(() => import("./Fetch.tsx"));
 const Hoisted = lazy(() => import("./Hoisted.tsx"));
+const OfficevibeTab = lazy(() => import("./OfficevibeTab.tsx"));
+const SkillsTab = lazy(() => import("./SkillsTab.tsx"));
 
 export const register: ModuleRegisterFunction<Runtime> = runtime => {
     runtime.registerRoutes([
@@ -65,4 +67,28 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
             ]
         }
     ]);
+
+    ///////
+
+    runtime.registerRoutes([
+        {
+            path: "/distributed-tabs/officevibe",
+            element: <OfficevibeTab />
+        },
+        {
+            path: "/distributed-tabs/skills",
+            element: <SkillsTab />
+        }
+    ], { parentPath: "/distributed-tabs" });
+
+    runtime.registerNavigationItems([
+        {
+            to: "/distributed-tabs/officevibe",
+            label: "Officevibe"
+        },
+        {
+            to: "/distributed-tabs/skills",
+            label: "Skills"
+        }
+    ], { menuId: "/distributed-tabs" });
 };

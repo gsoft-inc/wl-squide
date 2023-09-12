@@ -28,20 +28,16 @@ export type RootNavigationItem = NavigationItem & {
 };
 
 export class NavigationItemRegistry {
-    #menus: Map<string, RootNavigationItem[]>;
+    readonly #menus: Map<string, RootNavigationItem[]> = new Map();
 
-    constructor() {
-        this.#menus = new Map();
-    }
-
-    add(menuId: string, navigationItems: RootNavigationItem[]) {
+    add(menuPath: string, navigationItems: RootNavigationItem[]) {
         // Create a new array so the navigation items array is immutable.
-        const items = [...(this.#menus.get(menuId) ?? []), ...navigationItems];
+        const items = [...(this.#menus.get(menuPath) ?? []), ...navigationItems];
 
-        this.#menus.set(menuId, items);
+        this.#menus.set(menuPath, items);
     }
 
-    getItems(menuId: string) {
-        return this.#menus.get(menuId);
+    getItems(menuPath: string) {
+        return this.#menus.get(menuPath);
     }
 }

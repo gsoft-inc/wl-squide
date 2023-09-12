@@ -15,7 +15,7 @@ export const registerDistributedTabsPage: ModuleRegisterFunction<Runtime, AppCon
     runtime.registerNavigationItems([
         {
             to: "distributed-tabs",
-            label: "Distributed tabs"
+            label: "Tabs"
         }
     ]);
 };

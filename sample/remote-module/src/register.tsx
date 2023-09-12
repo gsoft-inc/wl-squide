@@ -51,7 +51,7 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
         },
         {
             to: "/hoisted",
-            label: <strong>Hoisted</strong>
+            label: <span style={{ color: "green" }}>Hoisted</span>
         },
         {
             label: "Section",
@@ -72,23 +72,23 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
 
     runtime.registerRoutes([
         {
-            path: "/distributed-tabs/officevibe",
+            path: "/officevibe",
             element: <OfficevibeTab />
         },
         {
-            path: "/distributed-tabs/skills",
+            path: "/skills",
             element: <SkillsTab />
         }
     ], { parentPath: "/distributed-tabs" });
 
     runtime.registerNavigationItems([
         {
-            to: "/distributed-tabs/officevibe",
+            to: "/officevibe",
             label: "Officevibe"
         },
         {
-            to: "/distributed-tabs/skills",
+            to: "/skills",
             label: "Skills"
         }
-    ], { menuId: "/distributed-tabs" });
+    ], { menuPath: "/distributed-tabs" });
 };

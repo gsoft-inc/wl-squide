@@ -15,10 +15,10 @@ export interface RegisterRoutesOptions {
 }
 
 export interface RegisterNavigationItemsOptions {
-    menuId?: string;
+    menuPath?: string;
 }
 
-export const RootMenuId = "root";
+export const RootMenuPath = "/";
 
 export abstract class AbstractRuntime<TRoute = unknown, TNavigationItem = unknown> {
     protected readonly _logger: RuntimeLogger;

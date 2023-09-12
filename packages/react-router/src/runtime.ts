@@ -1,4 +1,4 @@
-import { AbstractRuntime, RootMenuId, type RegisterNavigationItemsOptions, type RegisterRoutesOptions } from "@squide/core";
+import { AbstractRuntime, RootMenuPath, type RegisterNavigationItemsOptions, type RegisterRoutesOptions } from "@squide/core";
 import { NavigationItemRegistry, type RootNavigationItem } from "./navigationItemRegistry.ts";
 import { RouteRegistry, type RootRoute, type Route } from "./routeRegistry.ts";
 
@@ -22,19 +22,19 @@ export class Runtime extends AbstractRuntime<RootRoute | Route, RootNavigationIt
         return this.#routeRegistry.routes;
     }
 
-    registerNavigationItems(navigationItems: RootNavigationItem[], { menuId = RootMenuId }: RegisterNavigationItemsOptions = {}) {
-        this.#navigationItemRegistry.add(menuId, navigationItems);
+    registerNavigationItems(navigationItems: RootNavigationItem[], { menuPath = RootMenuPath }: RegisterNavigationItemsOptions = {}) {
+        this.#navigationItemRegistry.add(menuPath, navigationItems);
 
-        const items = this.#navigationItemRegistry.getItems(menuId)!;
+        const items = this.#navigationItemRegistry.getItems(menuPath)!;
 
         this._logger.debug(
-            `[squide] The following navigation item${navigationItems.length !== 1 ? "s" : ""} has been registered to the "${menuId}" menu for a total of ${items.length} item${items.length !== 1 ? "s" : ""}.`,
+            `[squide] The following navigation item${navigationItems.length !== 1 ? "s" : ""} has been registered to the "${menuPath}" menu for a total of ${items.length} item${items.length !== 1 ? "s" : ""}.`,
             navigationItems,
             items
         );
     }
 
-    getNavigationItems(menuId: string = RootMenuId) {
-        return this.#navigationItemRegistry.getItems(menuId) ?? [];
+    getNavigationItems(menuPath: string = RootMenuPath) {
+        return this.#navigationItemRegistry.getItems(menuPath) ?? [];
     }
 }

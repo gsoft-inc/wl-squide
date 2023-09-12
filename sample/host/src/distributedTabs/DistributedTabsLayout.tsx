@@ -29,7 +29,7 @@ export default function DistributedTabsLayout() {
     return (
         <div>
             <div>
-                <p>Navigate between the tabs below :)</p>
+                <p>Every tab is registered by a different modules and is lazy loaded.</p>
                 {renderedTabs}
                 <div style={{ padding: "20px" }}>
                     <Outlet />

@@ -51,5 +51,5 @@ export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, c
             to: "/distributed-tabs",
             label: "Workleap"
         }
-    ], { menuId: "/distributed-tabs" });
+    ], { menuPath: "/distributed-tabs" });
 };

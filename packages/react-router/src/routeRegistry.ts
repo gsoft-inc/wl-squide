@@ -21,6 +21,10 @@ function replaceTokens(routePath: string) {
     return routePath.replace(`/${IndexToken}`, "");
 }
 
+function createIndexRoutePath(parentPath: string) {
+    return parentPath.endsWith("/") ? `${parentPath}${IndexToken}` : `${parentPath}/${IndexToken}`;
+}
+
 export function createIndexKey(route: Route, layoutPath: string) {
     if (route.index) {
         // This is useful in the case a nested index route is registered for a layout index route.
@@ -28,7 +32,7 @@ export function createIndexKey(route: Route, layoutPath: string) {
         // would respond to the same path, keeping the code for now.
         const _layoutPath = replaceTokens(layoutPath);
 
-        return _layoutPath.endsWith("/") ? `${_layoutPath}${IndexToken}` : `${_layoutPath}/${IndexToken}`;
+        return createIndexRoutePath(_layoutPath);
     }
 
     return normalizePath(route.path!);
@@ -69,7 +73,15 @@ export class RouteRegistry {
         const layoutRoute = this.#routesIndex.get(indexKey);
 
         if (!layoutRoute) {
-            throw new Error(`[squide] No route has been registered for the layout path: "${layoutPath}". Make sure to register the module including the parent route before registring a nested route for that route.`);
+            // Indentation with template literals is still weird.
+            // View: https://stackoverflow.com/questions/25924057/multiline-strings-that-dont-break-indentation.
+            const message = `
+[squide] No route has been registered for the layout path: "${layoutPath}". Make sure to register the "${layoutPath}" route before registering the ${routes.map(x => `"${x.path ?? createIndexRoutePath(layoutPath)}"`).join(",")} route${routes.length > 1 ? "s" : ""}.
+If you are certain that "${layoutPath}" has been registered before the route${routes.length > 1 ? "s" : ""}, make sure that the following conditions are met:
+    - The "layoutPath" perfectly match the nested layout route path (make sure that there's no leading or trailing "/" that differs).
+    - The nested layout route path has been registered with the "registerRoutes" function. A @squide route cannot be registered under a nested layout route that has not registered with the "registerRoutes" function.`;
+
+            throw new Error(message);
         }
 
         // Register new nested routes as children of their layout route.

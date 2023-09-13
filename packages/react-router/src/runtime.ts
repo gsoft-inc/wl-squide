@@ -9,7 +9,7 @@ export class Runtime extends AbstractRuntime<RootRoute | Route, RootNavigationIt
     registerRoutes(routes: RootRoute[] | Route[], options: RegisterRoutesOptions = {}) {
         this.#routeRegistry.add(routes, options);
 
-        const parentLog = options.layoutPath ? `as children of the "${options.layoutPath}" route` : "";
+        const parentLog = options.layoutPath ? ` as children of the "${options.layoutPath}" route` : "";
 
         this._logger.debug(
             `[squide] The following route${routes.length !== 1 ? "s" : ""} has been registered${parentLog} for a total of ${this.#routeRegistry.routes.length} route${this.#routeRegistry.routes.length !== 1 ? "s" : ""}.`,

@@ -12,9 +12,6 @@ Let's add our first remote module!
 
 Create a new project (we'll refer to ours as `remote-module`), then open a terminal at the root of the new solution and install the following packages:
 
-pnpm add -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli swc/core @swc/helpers browserslist postcss
-pnpm add @squide/core @squide/react-router @squide/webpack-module-federation react react-dom react-router-dom
-
 +++ pnpm
 ```bash
 pnpm add -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss

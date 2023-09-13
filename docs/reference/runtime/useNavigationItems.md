@@ -14,7 +14,7 @@ const navigationItems = useNavigationItems()
 
 ### Parameters
 
-None
+- `menuId`: An optional id to retrieve the navigation menu for a specific menu.
 
 ### Returns
 
@@ -22,8 +22,18 @@ An array of `NavigationItem`.
 
 ## Usage
 
+### Retrieve the items for the `root` menu
+
 ```ts
 import { useNavigationItems } from "@squide/react-router";
 
 const items = useNavigationItems();
+```
+
+### Retrieve the items for a specific menu
+
+```ts
+import { useNavigationItems } from "@squide/react-router";
+
+const items = useNavigationItems("my-custom-menu");
 ```

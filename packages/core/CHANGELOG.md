@@ -1,5 +1,11 @@
 # @squide/core
 
+## 1.1.0
+
+### Minor Changes
+
+- [#73](https://github.com/gsoft-inc/wl-squide/pull/73) [`5407086`](https://github.com/gsoft-inc/wl-squide/commit/5407086a98587901abe341360729f8fe972d8174) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Added a new composable nested layouts feature
+
 ## 1.0.2
 
 ### Patch Changes

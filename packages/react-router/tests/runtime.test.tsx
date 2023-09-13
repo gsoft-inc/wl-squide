@@ -227,11 +227,6 @@ describe("registerRoutes", () => {
     });
 });
 
-/*
-- can register a root navigation item
-- can register a navigation item for a specific menu id
-*/
-
 describe("registerNavigationItems", () => {
     test("can register a root navigation link", () => {
         const runtime = new Runtime();
@@ -280,7 +275,7 @@ describe("registerNavigationItems", () => {
         expect(runtime.getNavigationItems("link-menu")[0].to).toBe("/link");
     });
 
-    test("ca register a navigation section for a specific menu id", () => {
+    test("can register a navigation section for a specific menu id", () => {
         const runtime = new Runtime();
 
         runtime.registerNavigationItems([
@@ -297,5 +292,87 @@ describe("registerNavigationItems", () => {
 
         expect(runtime.getNavigationItems("section-menu").length).toBe(1);
         expect(runtime.getNavigationItems("section-menu")[0].label).toBe("Section");
+    });
+});
+
+describe("getNavigationItems", () => {
+    test("when no menu id is specified, returns all the registered navigation items for the root menu", () => {
+        const runtime = new Runtime();
+
+        runtime.registerNavigationItems([
+            {
+                to: "/item-1",
+                label: "Item 1"
+            },
+            {
+                to: "/item-2",
+                label: "Item 2"
+            }
+        ]);
+
+        runtime.registerNavigationItems([
+            {
+                to: "/item-3",
+                label: "Item 3"
+            }
+        ]);
+
+        runtime.registerNavigationItems([
+            {
+                to: "/item-4",
+                label: "Item 4"
+            }
+        ], { menuId: "menu-1" });
+
+        runtime.registerNavigationItems([
+            {
+                to: "/item-5",
+                label: "Item 5"
+            }
+        ], { menuId: "menu-2" });
+
+        expect(runtime.getNavigationItems().length).toBe(3);
+        expect(runtime.getNavigationItems()[0].to).toBe("/item-1");
+        expect(runtime.getNavigationItems()[1].to).toBe("/item-2");
+        expect(runtime.getNavigationItems()[2].to).toBe("/item-3");
+    });
+
+    test("when no menu id is specified, returns all the registered navigation items for that specific menu", () => {
+        const runtime = new Runtime();
+
+        runtime.registerNavigationItems([
+            {
+                to: "/item-1",
+                label: "Item 1"
+            },
+            {
+                to: "/item-2",
+                label: "Item 2"
+            }
+        ]);
+
+        runtime.registerNavigationItems([
+            {
+                to: "/item-3",
+                label: "Item 3"
+            }
+        ]);
+
+        runtime.registerNavigationItems([
+            {
+                to: "/item-4",
+                label: "Item 4"
+            }
+        ], { menuId: "menu-1" });
+
+        runtime.registerNavigationItems([
+            {
+                to: "/item-5",
+                label: "Item 5"
+            }
+        ], { menuId: "menu-2" });
+
+        expect(runtime.getNavigationItems("menu-1").length).toBe(1);
+        expect(runtime.getNavigationItems("menu-1")[0].to).toBe("/item-4");
     });
 });

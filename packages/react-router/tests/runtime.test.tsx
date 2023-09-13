@@ -48,11 +48,6 @@ describe("createIndexKey", () => {
     });
 });
 
-/*
-- "can register a nested route for an index route"
-- "can register a nested route for the root index route"
-*/
-
 describe("registerRoutes", () => {
     test("can register a root route", () => {
         const runtime = new Runtime();
@@ -69,12 +64,12 @@ describe("registerRoutes", () => {
         expect(runtime.routes[0].path).toBe("/root");
     });
 
-    test("when the parent route has already been registered, register the nested route", () => {
+    test("when the layout route has already been registered, register the nested route", () => {
         const runtime = new Runtime();
 
         runtime.registerRoutes([
             {
-                path: "/parent",
+                path: "/layout",
                 element: <div>Hello!</div>
             }
         ]);
@@ -83,25 +78,25 @@ describe("registerRoutes", () => {
 
         runtime.registerRoutes([
             {
-                path: "/parent/nested",
+                path: "/layout/nested",
                 element: <div>Hello!</div>
             }
-        ], { parentPath: "/parent" });
+        ], { layoutPath: "/layout" });
 
         expect(runtime.routes.length).toBe(1);
         expect(runtime.routes[0].children).toBeDefined();
         expect(runtime.routes[0].children?.length).toBe(1);
     });
 
-    test("when the parent route has not already been registered, do not register the nested route", () => {
+    test("when the layout route has not already been registered, do not register the nested route", () => {
         const runtime = new Runtime();
 
         expect(() => runtime.registerRoutes([
             {
-                path: "/parent/nested",
+                path: "/layout/nested",
                 element: <div>Hello!</div>
             }
-        ], { parentPath: "/parent" })).toThrow();
+        ], { layoutPath: "/layout" })).toThrow();
     });
 
     test("can register a deeply nested route", () => {
@@ -109,78 +104,78 @@ describe("registerRoutes", () => {
 
         runtime.registerRoutes([
             {
-                path: "/parent",
+                path: "/layout",
                 element: <div>Hello!</div>
             }
         ]);
 
         runtime.registerRoutes([
             {
-                path: "/parent/nested",
+                path: "/layout/nested",
                 element: <div>Hello!</div>
             }
-        ], { parentPath: "/parent" });
+        ], { layoutPath: "/layout" });
 
         runtime.registerRoutes([
             {
-                path: "/parent/nested/another-level",
+                path: "/layout/nested/another-level",
                 element: <div>Hello!</div>
             }
-        ], { parentPath: "/parent/nested" });
+        ], { layoutPath: "/layout/nested" });
 
         expect(runtime.routes.length).toBe(1);
         expect(runtime.routes[0].children![0].children).toBeDefined();
         expect(runtime.routes[0].children![0].children?.length).toBe(1);
     });
 
-    test("when the parent path has a trailing separator but the parent route path doesn't have a trailing separator, the nested route is registered", () => {
+    test("when the layout path has a trailing separator but the layout route path doesn't have a trailing separator, the nested route is registered", () => {
         const runtime = new Runtime();
 
         runtime.registerRoutes([
             {
-                path: "/parent",
+                path: "/layout",
                 element: <div>Hello!</div>
             }
         ]);
 
         runtime.registerRoutes([
             {
-                path: "/parent/nested",
+                path: "/layout/nested",
                 element: <div>Hello!</div>
             }
-        ], { parentPath: "/parent/" });
+        ], { layoutPath: "/layout/" });
 
         expect(runtime.routes[0].children).toBeDefined();
         expect(runtime.routes[0].children!.length).toBe(1);
     });
 
-    test("when the parent path doesn't have a trailing separator but the parent route path have a trailing separator, the nested route is registered", () => {
+    test("when the layout path doesn't have a trailing separator but the layout route path have a trailing separator, the nested route is registered", () => {
         const runtime = new Runtime();
 
         runtime.registerRoutes([
             {
-                path: "/parent/",
+                path: "/layout/",
                 element: <div>Hello!</div>
             }
         ]);
 
         runtime.registerRoutes([
             {
-                path: "/parent/nested",
+                path: "/layout/nested",
                 element: <div>Hello!</div>
             }
-        ], { parentPath: "/parent" });
+        ], { layoutPath: "/layout" });
 
         expect(runtime.routes[0].children).toBeDefined();
         expect(runtime.routes[0].children!.length).toBe(1);
     });
 
-    test("can register a nested route for an index parent route", () => {
+    test("can register a nested route for an index layout route", () => {
         const runtime = new Runtime();
 
         runtime.registerRoutes([
             {
-                path: "/parent",
+                path: "/layout",
                 element: <div>Hello!</div>
             }
         ]);
@@ -190,18 +185,18 @@ describe("registerRoutes", () => {
                 index: true,
                 element: <div>Hello!</div>
             }
-        ], { parentPath: "/parent" });
+        ], { layoutPath: "/layout" });
 
         runtime.registerRoutes([
             {
-                path: "/parent/another-level",
+                path: "/layout/another-level",
                 element: <div>Hello!</div>
             }
-        ], { parentPath: "/parent/$index$" });
+        ], { layoutPath: "/layout/$index$" });
 
         expect(runtime.routes[0].children![0].children).toBeDefined();
         expect(runtime.routes[0].children![0].children?.length).toBe(1);
-        expect(runtime.routes[0].children![0].children![0].path).toBe("/parent/another-level");
+        expect(runtime.routes[0].children![0].children![0].path).toBe("/layout/another-level");
     });
 
     test("can register a nested route for the root index route", () => {
@@ -219,7 +214,7 @@ describe("registerRoutes", () => {
                 path: "/nested",
                 element: <div>Hello!</div>
             }
-        ], { parentPath: "/$index$" });
+        ], { layoutPath: "/$index$" });
 
         expect(runtime.routes[0].children).toBeDefined();
         expect(runtime.routes[0].children?.length).toBe(1);

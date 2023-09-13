@@ -79,7 +79,7 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
             path: "/distributed-tabs/skills",
             element: <SkillsTab />
         }
-    ], { parentPath: "/distributed-tabs" });
+    ], { layoutPath: "/distributed-tabs" });
 
     runtime.registerNavigationItems([
         {

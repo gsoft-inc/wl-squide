@@ -44,7 +44,7 @@ export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, c
             index: true,
             element: <WorkleapTab />
         }
-    ], { parentPath: "/distributed-tabs" });
+    ], { layoutPath: "/distributed-tabs" });
 
     runtime.registerNavigationItems([
         {

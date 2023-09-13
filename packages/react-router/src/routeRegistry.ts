@@ -9,19 +9,6 @@ export type RootRoute = Route & {
 
 const IndexToken = "$index$";
 
-// TODO: simplify or make it shareable?!?!
-function concatenatePaths(x: string, y: string) {
-    if (x.endsWith("/") && y.startsWith("/")) {
-        return `${x}${y.substring(1)}`;
-    }
-
-    if (x.endsWith("/") || y.startsWith("/")) {
-        return `${x}${y}`;
-    }
-
-    return `${x}/${y}`;
-}
-
 function normalizePath(routePath: string) {
     if (routePath !== "/" && routePath.endsWith("/")) {
         return routePath.substring(0, routePath.length - 1);
@@ -34,15 +21,14 @@ function replaceTokens(routePath: string) {
     return routePath.replace(`/${IndexToken}`, "");
 }
 
-export function createIndexKey(route: Route, parentPath: string) {
+export function createIndexKey(route: Route, layoutPath: string) {
     if (route.index) {
-        // That would be usefull if nested index route is registered for a parent index route.
-        // The use case doesn't really make sense as both the parent route and the nested route would
-        // respond to the same path.
-        // Still, keeping the code for now.
-        const _parentPath = replaceTokens(parentPath);
+        // This is useful in the case a nested index route is registered for a layout index route.
+        // This use case doesn't really make sense thought as both the layout route and the nested route
+        // would respond to the same path, keeping the code for now.
+        const _layoutPath = replaceTokens(layoutPath);
 
-        return concatenatePaths(_parentPath, IndexToken);
+        return _layoutPath.endsWith("/") ? `${_layoutPath}${IndexToken}` : `${_layoutPath}/${IndexToken}`;
     }
 
     return normalizePath(route.path!);
@@ -58,9 +44,9 @@ export class RouteRegistry {
         this.#routes = [];
     }
 
-    add(routes: RootRoute[] | Route[], { parentPath }: RegisterRoutesOptions = {}) {
-        if (parentPath) {
-            this.#addNestedRoutes(routes, parentPath);
+    add(routes: RootRoute[] | Route[], { layoutPath }: RegisterRoutesOptions = {}) {
+        if (layoutPath) {
+            this.#addNestedRoutes(routes, layoutPath);
         } else {
             this.#addRootRoutes(routes);
         }
@@ -78,24 +64,23 @@ export class RouteRegistry {
         this.#routes = [...this.#routes, ...routes];
     }
 
-    // TODO: in docs if looking to append to an index route, add "/index" at the end.
-    #addNestedRoutes(routes: Route[], parentPath: string) {
-        const indexKey = normalizePath(parentPath);
-        const parentRoute = this.#routesIndex.get(indexKey);
+    #addNestedRoutes(routes: Route[], layoutPath: string) {
+        const indexKey = normalizePath(layoutPath);
+        const layoutRoute = this.#routesIndex.get(indexKey);
 
-        if (!parentRoute) {
-            throw new Error(`[squide] No route has been registered for the parentPath: ${parentPath}. Make sure to register the module including the parent route before registring a nested route for that route.`);
+        if (!layoutRoute) {
+            throw new Error(`[squide] No route has been registered for the layout path: "${layoutPath}". Make sure to register the module including the parent route before registring a nested route for that route.`);
         }
 
-        // Register new nested routes as children of their parent route.
-        parentRoute.children = [
-            ...(parentRoute.children ?? []),
+        // Register new nested routes as children of their layout route.
+        layoutRoute.children = [
+            ...(layoutRoute.children ?? []),
             ...routes
         ];
 
         // Add index entries to speed up the registration of future nested routes.
         routes.forEach(x => {
-            const key = createIndexKey(x, parentPath);
+            const key = createIndexKey(x, layoutPath);
 
             this.#routesIndex.set(key, x);
         });

@@ -77,7 +77,66 @@ runtime.registerRoutes([
 ]);
 ```
 
-[!ref icon="gear" text="Setup the host application to accept hoisted routes"](/reference/routing/useHoistedRoutes.md)
+[!ref text="Setup the host application to accept hoisted routes"](/reference/routing/useHoistedRoutes.md)
+
+### Register routes under a specific nested layout route
+
+React router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) enable applications to render nested layouts at various points within the router tree. This is quite helpful for federated applications as it enables composable and decoupled UI.
+
+To fully harness the power of nested routes, this shell allows a route to be registered **under any** previously registered **nested layout route**, even if that route was registered by another module.
+
+When registering a new route, to render the route under a specific nested layout route, specify a `layoutPath` property that matches the nested layout route's `path` property. The only requirement is that the **nested layout route** must has been **registered** to `@squide` **before** the **new child route**.
+
+
+```tsx !#10
+import { lazy } from "react";
+
+const Page = lazy(() => import("./Page.tsx"));
+
+runtime.registerRoutes([
+    {
+        path: "/page-1",
+        element: <Page />
+    }
+], { layoutPath: "/layout-path" });
+```
+
+#### Index routes
+
+Although nested layout routes that serves as indexes (e.g. `{ index: true, element: <Layout /> }`) are not very common, `@squide` still supports this scenario. To register a route **under an index route**, set the `layoutPath` property as the concatenation of the index route's parent path and `/$index$`. 
+
+```tsx !#8,12 host/src/register.tsx
+import { lazy } from "react";
+
+const Page = lazy(() => import("./Page.tsx"));
+const Layout = lazy(() => import("./Layout.tsx"));
+
+runtime.registerRoutes([
+    {
+        path: "/page-1",
+        element: <Page />,
+        children: [
+            {
+                index: true,
+                element: <Layout />
+            }
+        ]
+    }
+]);
+```
+
+```tsx !#10 remote-module/src/register.tsx
+import { lazy } from "react";
+
+const Page = lazy(() => import("./Page.tsx"));
+
+runtime.registerRoutes([
+    {
+        path: "/page-2",
+        element: <Page />
+    }
+], { layoutPath: "/page-1/$index$" });
+```
 
 ### Register navigation items
 
@@ -103,7 +162,7 @@ runtime.registerNavigationItems([
 ]);
 ```
 
-[!ref icon="gear" text="Setup the host application to render navigation items"](/reference/routing/useRenderedNavigationItems.md)
+[!ref text="Setup the host application to render navigation items"](/reference/routing/useRenderedNavigationItems.md)
 
 ### Register nested navigation items
 

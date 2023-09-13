@@ -1,131 +1,57 @@
-import { createIndexKey, type Route } from "../src/routeRegistry.ts";
+import { createIndexKey } from "../src/routeRegistry.ts";
 import { Runtime } from "../src/runtime.ts";
 
-function DummyComponent() {
-    return (
-        <div>I am a dummy component!</div>
-    );
-}
+/*
+- "when the route is not an index route and the path ends with a separator, strip the separator"
+*/
 
 describe("createIndexKey", () => {
-    /*
-    TODO: same segment twice?!?! (not sure if this is an actual valid case)
-    */
-
     test("when the route is an index route, append \"index\" to the parent path", () => {
         const result1 = createIndexKey({
             index: true,
-            element: <DummyComponent />
+            element: <div>Hello!</div>
         }, "/");
 
         expect(result1).toBe("/$index$");
 
         const result2 = createIndexKey({
             index: true,
-            element: <DummyComponent />
+            element: <div>Hello!</div>
         }, "/parent");
 
         expect(result2).toBe("/parent/$index$");
     });
 
-    test("when the route is not an index route, append the route path to the parent path", () => {
+    test("when the route is not an index route, return the route path", () => {
         const result1 = createIndexKey({
             path: "/nested",
-            element: <DummyComponent />
+            element: <div>Hello!</div>
         }, "/");
 
         expect(result1).toBe("/nested");
 
         const result2 = createIndexKey({
-            path: "/nested",
-            element: <DummyComponent />
-        }, "/parent");
-
-        expect(result2).toBe("/parent/nested");
-    });
-
-    test("add a separator between both paths", () => {
-        const result1 = createIndexKey({
-            path: "nested",
-            element: <DummyComponent />
-        }, "/");
-
-        expect(result1).toBe("/nested");
-
-        const result2 = createIndexKey({
-            path: "nested",
-            element: <DummyComponent />
-        }, "/parent");
-
-        expect(result2).toBe("/parent/nested");
-    });
-
-    test("when the parent path ends with a \"/\", do not add an additional separator between both paths", () => {
-        const result1 = createIndexKey({
-            path: "nested",
-            element: <DummyComponent />
-        }, "/");
-
-        expect(result1).toBe("/nested");
-
-        const result2 = createIndexKey({
-            path: "nested",
-            element: <DummyComponent />
-        }, "/parent/");
-
-        expect(result2).toBe("/parent/nested");
-    });
-
-    test("when the nested route path starts with a \"/\", do not add an additional separator between both paths", () => {
-        const result = createIndexKey({
-            path: "/nested",
-            element: <DummyComponent />
-        }, "/parent");
-
-        expect(result).toBe("/parent/nested");
-    });
-
-    test("when the parent path ends with a separator and the route path starts with a separator, remove the route path separator", () => {
-        const result1 = createIndexKey({
-            path: "/nested",
-            element: <DummyComponent />
-        }, "/");
-
-        expect(result1).toBe("/nested");
-
-        const result2 = createIndexKey({
-            path: "/nested",
-            element: <DummyComponent />
-        }, "/parent/");
-
-        expect(result2).toBe("/parent/nested");
-    });
-
-    test("when the route path already includes the parent path, do not concatenate the paths", () => {
-        const result = createIndexKey({
             path: "/parent/nested",
-            element: <DummyComponent />
-        }, "/parent");
-
-        expect(result).toBe("/parent/nested");
-    });
-
-    test("when the route path ends with a separator, strip the separator", () => {
-        const result1 = createIndexKey({
-            path: "/nested/",
-            element: <DummyComponent />
-        }, "/");
-
-        expect(result1).toBe("/nested");
-
-        const result2 = createIndexKey({
-            path: "/nested/",
-            element: <DummyComponent />
+            element: <div>Hello!</div>
         }, "/parent");
 
         expect(result2).toBe("/parent/nested");
+    });
+
+    test("when the route is not an index route and the path ends with a separator, strip the separator", () => {
+        const result = createIndexKey({
+            path: "/parent/nested/",
+            element: <div>Hello!</div>
+        }, "/parent");
+
+        expect(result).toBe("/parent/nested");
     });
 });
+
+/*
+- "can register a nested route for an index route"
+- "can register a nested route for the root index route"
+*/
 
 describe("registerRoutes", () => {
     test("can register a root route", () => {
@@ -134,7 +60,7 @@ describe("registerRoutes", () => {
         runtime.registerRoutes([
             {
                 path: "/root",
-                element: <DummyComponent />,
+                element: <div>Hello!</div>,
                 hoist: true
             }
         ]);
@@ -143,13 +69,13 @@ describe("registerRoutes", () => {
         expect(runtime.routes[0].path).toBe("/root");
     });
 
-    test("when the parent route has already been registered, do not register the nested route", () => {
+    test("when the parent route has already been registered, register the nested route", () => {
         const runtime = new Runtime();
 
         runtime.registerRoutes([
             {
                 path: "/parent",
-                element: <DummyComponent />
+                element: <div>Hello!</div>
             }
         ]);
 
@@ -157,8 +83,8 @@ describe("registerRoutes", () => {
 
         runtime.registerRoutes([
             {
-                path: "/nested",
-                element: <DummyComponent />
+                path: "/parent/nested",
+                element: <div>Hello!</div>
             }
         ], { parentPath: "/parent" });
 
@@ -172,8 +98,8 @@ describe("registerRoutes", () => {
 
         expect(() => runtime.registerRoutes([
             {
-                path: "/nested",
-                element: <DummyComponent />
+                path: "/parent/nested",
+                element: <div>Hello!</div>
             }
         ], { parentPath: "/parent" })).toThrow();
     });
@@ -184,21 +110,21 @@ describe("registerRoutes", () => {
         runtime.registerRoutes([
             {
                 path: "/parent",
-                element: <DummyComponent />
+                element: <div>Hello!</div>
             }
         ]);
 
         runtime.registerRoutes([
             {
-                path: "/nested",
-                element: <DummyComponent />
+                path: "/parent/nested",
+                element: <div>Hello!</div>
             }
         ], { parentPath: "/parent" });
 
         runtime.registerRoutes([
             {
-                path: "/another-level",
-                element: <DummyComponent />
+                path: "/parent/nested/another-level",
+                element: <div>Hello!</div>
             }
         ], { parentPath: "/parent/nested" });
 
@@ -207,287 +133,69 @@ describe("registerRoutes", () => {
         expect(runtime.routes[0].children![0].children?.length).toBe(1);
     });
 
-    test("when the nested route path do not includes the parent path, concatenate the paths", () => {
+    test("when the parent path has a trailing separator but the parent route path doesn't have a trailing separator, the nested route is registered", () => {
         const runtime = new Runtime();
 
         runtime.registerRoutes([
             {
                 path: "/parent",
-                element: <DummyComponent />
-            }
-        ]);
-
-        runtime.registerRoutes([
-            {
-                path: "/nested",
-                element: <DummyComponent />
-            }
-        ], { parentPath: "/parent" });
-
-        expect(runtime.routes[0].children![0].path).toBe("/parent/nested");
-
-        runtime.registerRoutes([
-            {
-                path: "/another-level",
-                element: <DummyComponent />
-            }
-        ], { parentPath: "/parent/nested" });
-
-        expect(runtime.routes[0].children![0].children![0].path).toBe("/parent/nested/another-level");
-
-        runtime.registerRoutes([
-            {
-                path: "/",
-                element: <DummyComponent />
-            }
-        ]);
-
-        runtime.registerRoutes([
-            {
-                path: "nested",
-                element: <DummyComponent />
-            }
-        ], { parentPath: "/" });
-
-        expect(runtime.routes[1].children![0].path).toBe("/nested");
-    });
-
-    test("when the nested route path already includes the parent path, do not concatenate the paths", () => {
-        const runtime = new Runtime();
-
-        runtime.registerRoutes([
-            {
-                path: "/parent",
-                element: <DummyComponent />
+                element: <div>Hello!</div>
             }
         ]);
 
         runtime.registerRoutes([
             {
                 path: "/parent/nested",
-                element: <DummyComponent />
-            }
-        ], { parentPath: "/parent" });
-
-        expect(runtime.routes[0].children![0].path).toBe("/parent/nested");
-
-        runtime.registerRoutes([
-            {
-                path: "/parent/nested/another-level",
-                element: <DummyComponent />
-            }
-        ], { parentPath: "/parent/nested" });
-
-        expect(runtime.routes[0].children![0].children![0].path).toBe("/parent/nested/another-level");
-
-        runtime.registerRoutes([
-            {
-                path: "/",
-                element: <DummyComponent />
-            }
-        ]);
-
-        runtime.registerRoutes([
-            {
-                path: "/nested",
-                element: <DummyComponent />
-            }
-        ], { parentPath: "/" });
-
-        expect(runtime.routes[1].children![0].path).toBe("/nested");
-    });
-
-    test("when the nested route is an index route, do not set a path", () => {
-        const runtime = new Runtime();
-
-        runtime.registerRoutes([
-            {
-                path: "/parent",
-                element: <DummyComponent />
-            }
-        ]);
-
-        runtime.registerRoutes([
-            {
-                index: true,
-                element: <DummyComponent />
-            }
-        ], { parentPath: "/parent" });
-
-        expect(runtime.routes[0].children![0].path).toBeUndefined();
-        expect(runtime.routes[0].children![0].index).toBeTruthy();
-    });
-
-    test("add a separator between both paths", () => {
-        const runtime = new Runtime();
-
-        runtime.registerRoutes([
-            {
-                path: "/parent",
-                element: <DummyComponent />
-            }
-        ]);
-
-        runtime.registerRoutes([
-            {
-                path: "/nested",
-                element: <DummyComponent />
-            }
-        ], { parentPath: "/parent" });
-
-        expect(runtime.routes[0].children![0].path).toBe("/parent/nested");
-
-        runtime.registerRoutes([
-            {
-                path: "/",
-                element: <DummyComponent />
-            }
-        ]);
-
-        runtime.registerRoutes([
-            {
-                path: "/nested",
-                element: <DummyComponent />
-            }
-        ], { parentPath: "/" });
-
-        expect(runtime.routes[1].children![0].path).toBe("/nested");
-    });
-
-    test("when the parent path ends with a \"/\", do not add an additional separator between both paths", () => {
-        const runtime = new Runtime();
-
-        runtime.registerRoutes([
-            {
-                path: "/parent",
-                element: <DummyComponent />
-            }
-        ]);
-
-        runtime.registerRoutes([
-            {
-                path: "nested",
-                element: <DummyComponent />
+                element: <div>Hello!</div>
             }
         ], { parentPath: "/parent/" });
 
-        expect(runtime.routes[0].children![0].path).toBe("/parent/nested");
-
-        runtime.registerRoutes([
-            {
-                path: "/",
-                element: <DummyComponent />
-            }
-        ]);
-
-        runtime.registerRoutes([
-            {
-                path: "nested",
-                element: <DummyComponent />
-            }
-        ], { parentPath: "/" });
-
-        expect(runtime.routes[1].children![0].path).toBe("/nested");
+        expect(runtime.routes[0].children).toBeDefined();
+        expect(runtime.routes[0].children!.length).toBe(1);
     });
 
-    test("when the nested route path starts with a \"/\", do not add an additional separator between both paths", () => {
-        const runtime = new Runtime();
-
-        runtime.registerRoutes([
-            {
-                path: "/parent",
-                element: <DummyComponent />
-            }
-        ]);
-
-        runtime.registerRoutes([
-            {
-                path: "/nested",
-                element: <DummyComponent />
-            }
-        ], { parentPath: "/parent" });
-
-        expect(runtime.routes[0].children![0].path).toBe("/parent/nested");
-    });
-
-
-    test("when the parent path ends with a separator and the route path starts with a separator, remove the route path separator", () => {
+    test("when the parent path doesn't have a trailing separator but the parent route path have a trailing separator, the nested route is registered", () => {
         const runtime = new Runtime();
 
         runtime.registerRoutes([
             {
                 path: "/parent/",
-                element: <DummyComponent />
+                element: <div>Hello!</div>
             }
         ]);
 
         runtime.registerRoutes([
             {
-                path: "/nested",
-                element: <DummyComponent />
+                path: "/parent/nested",
+                element: <div>Hello!</div>
             }
         ], { parentPath: "/parent" });
 
-        expect(runtime.routes[0].children![0].path).toBe("/parent/nested");
-
-        runtime.registerRoutes([
-            {
-                path: "/",
-                element: <DummyComponent />
-            }
-        ]);
-
-        runtime.registerRoutes([
-            {
-                path: "/nested",
-                element: <DummyComponent />
-            }
-        ], { parentPath: "/" });
-
-        expect(runtime.routes[1].children![0].path).toBe("/nested");
+        expect(runtime.routes[0].children).toBeDefined();
+        expect(runtime.routes[0].children!.length).toBe(1);
     });
 
-    test("when the nested route path ends with a separator, strip the separator", () => {
+    test("can register a nested route for an index parent route", () => {
         const runtime = new Runtime();
 
         runtime.registerRoutes([
             {
                 path: "/parent",
-                element: <DummyComponent />
-            }
-        ]);
-
-        runtime.registerRoutes([
-            {
-                path: "/nested/",
-                element: <DummyComponent />
-            }
-        ], { parentPath: "/parent" });
-
-        expect(runtime.routes[0].children![0].path).toBe("/parent/nested");
-    });
-
-    test("can register a nested route for an index route", () => {
-        const runtime = new Runtime();
-
-        runtime.registerRoutes([
-            {
-                path: "/parent",
-                element: <DummyComponent />
+                element: <div>Hello!</div>
             }
         ]);
 
         runtime.registerRoutes([
             {
                 index: true,
-                element: <DummyComponent />
+                element: <div>Hello!</div>
             }
         ], { parentPath: "/parent" });
 
         runtime.registerRoutes([
             {
-                path: "another-level",
-                element: <DummyComponent />
+                path: "/parent/another-level",
+                element: <div>Hello!</div>
             }
         ], { parentPath: "/parent/$index$" });
 
@@ -502,14 +210,14 @@ describe("registerRoutes", () => {
         runtime.registerRoutes([
             {
                 index: true,
-                element: <DummyComponent />
+                element: <div>Hello!</div>
             }
         ]);
 
         runtime.registerRoutes([
             {
-                path: "nested",
-                element: <DummyComponent />
+                path: "/nested",
+                element: <div>Hello!</div>
             }
         ], { parentPath: "/$index$" });
 
@@ -519,5 +227,75 @@ describe("registerRoutes", () => {
     });
 });
 
-// describe("registerNavigationItems", () => {
-// });
+/*
+- can register a root navigation item
+- can register a navigation item for a specific menu id
+*/
+
+describe("registerNavigationItems", () => {
+    test("can register a root navigation link", () => {
+        const runtime = new Runtime();
+
+        runtime.registerNavigationItems([
+            {
+                to: "/root",
+                label: "Root"
+            }
+        ]);
+
+        expect(runtime.getNavigationItems().length).toBe(1);
+        expect(runtime.getNavigationItems()[0].to).toBe("/root");
+    });
+
+    test("can register a root navigation section", () => {
+        const runtime = new Runtime();
+
+        runtime.registerNavigationItems([
+            {
+                label: "Section",
+                children: [
+                    {
+                        to: "/child",
+                        label: "Child"
+                    }
+                ]
+            }
+        ]);
+
+        expect(runtime.getNavigationItems().length).toBe(1);
+        expect(runtime.getNavigationItems()[0].label).toBe("Section");
+    });
+
+    test("can register a navigation link for a specific menu id", () => {
+        const runtime = new Runtime();
+
+        runtime.registerNavigationItems([
+            {
+                to: "/link",
+                label: "Link"
+            }
+        ], { menuId: "link-menu" });
+
+        expect(runtime.getNavigationItems("link-menu").length).toBe(1);
+        expect(runtime.getNavigationItems("link-menu")[0].to).toBe("/link");
+    });
+
+    test("ca register a navigation section for a specific menu id", () => {
+        const runtime = new Runtime();
+
+        runtime.registerNavigationItems([
+            {
+                label: "Section",
+                children: [
+                    {
+                        to: "/child",
+                        label: "Child"
+                    }
+                ]
+            }
+        ], { menuId: "section-menu" });
+
+        expect(runtime.getNavigationItems("section-menu").length).toBe(1);
+        expect(runtime.getNavigationItems("section-menu")[0].label).toBe("Section");
+    });
+});

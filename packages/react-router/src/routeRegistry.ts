@@ -9,6 +9,7 @@ export type RootRoute = Route & {
 
 const IndexToken = "$index$";
 
+// TODO: simplify or make it shareable?!?!
 function concatenatePaths(x: string, y: string) {
     if (x.endsWith("/") && y.startsWith("/")) {
         return `${x}${y.substring(1)}`;
@@ -19,12 +20,6 @@ function concatenatePaths(x: string, y: string) {
     }
 
     return `${x}/${y}`;
-}
-
-// Enclose the path between separator to ensure we look for a full url segment.
-// Ex: /foo -> /foo/
-function isPathAlreadyIncluded(target: string, path: string) {
-    return target.includes(`${path}${path.endsWith("/") ? "" : "/"}`);
 }
 
 function normalizePath(routePath: string) {
@@ -40,38 +35,17 @@ function replaceTokens(routePath: string) {
 }
 
 export function createIndexKey(route: Route, parentPath: string) {
-    let routePath = route.path!;
-
     if (route.index) {
-        routePath = IndexToken;
-    } else {
-        // Do not concatenate if the route path already includes the parent path.
-        if (isPathAlreadyIncluded(routePath, parentPath)) {
-            return normalizePath(routePath);
-        }
+        // That would be usefull if nested index route is registered for a parent index route.
+        // The use case doesn't really make sense as both the parent route and the nested route would
+        // respond to the same path.
+        // Still, keeping the code for now.
+        const _parentPath = replaceTokens(parentPath);
+
+        return concatenatePaths(_parentPath, IndexToken);
     }
 
-    return normalizePath(concatenatePaths(parentPath, routePath));
-}
-
-// IMPORTANT: Do not create a copy of route instance otherwise it will save a different copy
-// in the index and breaks deeply nested routes support.
-function tryAppendParentPathToNestedRoutePath(nestedRoute: Route, parentPath: string) {
-    if (nestedRoute.index) {
-        return nestedRoute;
-    }
-
-    const nestedPath = nestedRoute.path!;
-    const _parentPath = replaceTokens(parentPath);
-
-    // Do not concatenate if the route path already includes the parent path.
-    if (isPathAlreadyIncluded(nestedPath, _parentPath)) {
-        nestedRoute.path = normalizePath(nestedPath);
-    } else {
-        nestedRoute.path = normalizePath(concatenatePaths(_parentPath, nestedPath));
-    }
-
-    return nestedRoute;
+    return normalizePath(route.path!);
 }
 
 export class RouteRegistry {
@@ -116,7 +90,7 @@ export class RouteRegistry {
         // Register new nested routes as children of their parent route.
         parentRoute.children = [
             ...(parentRoute.children ?? []),
-            ...routes.map(x => tryAppendParentPathToNestedRoutePath(x, parentPath))
+            ...routes
         ];
 
         // Add index entries to speed up the registration of future nested routes.

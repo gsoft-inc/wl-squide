@@ -72,23 +72,23 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
 
     runtime.registerRoutes([
         {
-            path: "/officevibe",
+            path: "/distributed-tabs/officevibe",
             element: <OfficevibeTab />
         },
         {
-            path: "/skills",
+            path: "/distributed-tabs/skills",
             element: <SkillsTab />
         }
     ], { parentPath: "/distributed-tabs" });
 
     runtime.registerNavigationItems([
         {
-            to: "/officevibe",
+            to: "/distributed-tabs/officevibe",
             label: "Officevibe"
         },
         {
-            to: "/skills",
+            to: "/distributed-tabs/skills",
             label: "Skills"
         }
-    ], { menuPath: "/distributed-tabs" });
+    ], { menuId: "/distributed-tabs" });
 };

@@ -12,9 +12,6 @@ Let's add our first remote module!
 
 Create a new project (we'll refer to ours as `remote-module`), then open a terminal at the root of the new solution and install the following packages:
 
-pnpm add -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli swc/core @swc/helpers browserslist postcss
-pnpm add @squide/core @squide/react-router @squide/webpack-module-federation react react-dom react-router-dom
-
 +++ pnpm
 ```bash
 pnpm add -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
@@ -40,9 +37,14 @@ First, create the following files:
 
 ```
 remote-module
+├── public
+├──── index.html
 ├── src
 ├──── register.tsx
 ├──── Page.tsx
+├── .browserslistrc
+├── swc.dev.js
+├── swc.build.js
 ├── webpack.dev.js
 ├── webpack.build.js
 ```
@@ -85,9 +87,48 @@ export default function Page() {
 
 ## 3. Configure webpack
 
-### development
+!!!info
+`@squide` webpack configuration is built on top of [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/), [@workleap/browserslist-config](https://gsoft-inc.github.io/wl-web-configs/browserslist/) and [@workleap/swc-configs](https://gsoft-inc.github.io/wl-web-configs/swc/). If you are having issues with the configuration of these tools, have a look at their documentation websites.
+!!!
 
-To configure webpack for a federated remote module application in **development** mode, use the [defineDevRemoteModuleConfig](/reference/webpack/defineDevRemoteModuleConfig.md) function:
+### HTML template
+
+First, open the `public/index.html` file created at the beginning of this guide and copy/paste the following [HtmlWebpackPlugin](https://webpack.js.org/plugins/html-webpack-plugin/) template:
+
+```html host/public/index.html
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+</html>
+```
+
+### Browserslist
+
+Then, open the `.browserslist` file and copy/paste the following content:
+
+``` host/.browserslistrc
+extends @workleap/browserslist-config
+```
+
+### Development configuration
+
+To configure webpack for a **development** environment, first open the `swc.dev.js` file and copy/paste the following code:
+
+```js remote-module/swc.dev.js
+// @ts-check
+
+import { browserslistToSwc, defineDevConfig } from "@workleap/swc-configs";
+
+const targets = browserslistToSwc();
+
+export default defineDevConfig(targets);
+```
+
+Then, open the `webpack.dev.js` file and use the the [defineDevRemoteModuleConfig](/reference/webpack/defineDevRemoteModuleConfig.md) function to configure webpack:
 
 ```js !#6 remote-module/webpack.dev.js
 // @ts-check
@@ -98,9 +139,25 @@ import { swcConfig } from "./swc.dev.js";
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081);
 ```
 
-### build
+!!!info
+If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/).
+!!!
 
-To configure webpack for a federated remote module application in **build** mode, use the [defineBuildRemoteModuleConfig](/reference/webpack/defineBuildRemoteModuleConfig.md) function:
+### Build configuration
+
+To configure webpack for a **build** environment, first open the `swc.build.js` file and copy/paste the following code:
+
+```js remote-module/swc.build.js
+// @ts-check
+
+import { browserslistToSwc, defineBuildConfig } from "@workleap/swc-configs";
+
+const targets = browserslistToSwc();
+
+export default defineBuildConfig(targets);
+```
+
+Then, open the `webpack.build.js` file and use the the [defineBuildRemoteModuleConfig](/reference/webpack/defineBuildRemoteModuleConfig.md) function to configure webpack:
 
 ```js !#6 remote-module/webpack.build.js
 // @ts-check
@@ -110,6 +167,10 @@ import { swcConfig } from "./swc.build.js";
 
 export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://localhost:8081/");
 ```
+
+!!!info
+If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/).
+!!!
 
 ## 4. Try the application :rocket:
 

@@ -4,6 +4,7 @@ import { lazy } from "react";
 
 const About = lazy(() => import("./About.tsx"));
 const Message = lazy(() => import("./Message.tsx"));
+const WorkleapTab = lazy(() => import("./WorkleapTab.tsx"));
 
 export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, context) => {
     console.log("Context: ", context);
@@ -35,4 +36,20 @@ export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, c
             }
         }
     ]);
+
+    ///////
+
+    runtime.registerRoutes([
+        {
+            index: true,
+            element: <WorkleapTab />
+        }
+    ], { layoutPath: "/distributed-tabs" });
+
+    runtime.registerNavigationItems([
+        {
+            to: "/distributed-tabs",
+            label: "Workleap"
+        }
+    ], { menuId: "/distributed-tabs" });
 };

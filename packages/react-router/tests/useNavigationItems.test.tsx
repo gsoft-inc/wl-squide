@@ -1,31 +1,97 @@
 import { RuntimeContext } from "@squide/core";
-import { renderHook, type RenderHookOptions } from "@testing-library/react";
+import { renderHook } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { Runtime } from "../src/runtime.ts";
 import { useNavigationItems } from "../src/useNavigationItems.ts";
 
-function renderWithRuntime<TProps>(runtime: Runtime, additionalProps: RenderHookOptions<TProps> = {}) {
-    return renderHook(() => useNavigationItems(), {
+function renderWithRuntime(runtime: Runtime, menuId?: string) {
+    return renderHook(() => useNavigationItems(menuId), {
         wrapper: ({ children }: { children?: ReactNode }) => (
             <RuntimeContext.Provider value={runtime}>
                 {children}
             </RuntimeContext.Provider>
-        ),
-        ...additionalProps
+        )
     });
 }
 
-test("returns all the registered routes", () => {
+test("when no menu id is specified, returns all the registered navigation items for the root menu", () => {
     const runtime = new Runtime();
 
     runtime.registerNavigationItems([
-        { to: "/foo", label: "Foo" },
-        { to: "/bar", label: "Bar" }
+        {
+            to: "/item-1",
+            label: "Item 1"
+        },
+        {
+            to: "/item-2",
+            label: "Item 2"
+        }
     ]);
+
+    runtime.registerNavigationItems([
+        {
+            to: "/item-3",
+            label: "Item 3"
+        }
+    ]);
+
+    runtime.registerNavigationItems([
+        {
+            to: "/item-4",
+            label: "Item 4"
+        }
+    ], { menuId: "menu-1" });
+
+    runtime.registerNavigationItems([
+        {
+            to: "/item-5",
+            label: "Item 5"
+        }
+    ], { menuId: "menu-2" });
 
     const { result } = renderWithRuntime(runtime);
 
-    expect(result.current.length).toBe(2);
+    expect(result.current.length).toBe(3);
+});
+
+test("when a menu id is specified, returns all the registered navigation items for that specific menu", () => {
+    const runtime = new Runtime();
+
+    runtime.registerNavigationItems([
+        {
+            to: "/item-1",
+            label: "Item 1"
+        },
+        {
+            to: "/item-2",
+            label: "Item 2"
+        }
+    ]);
+
+    runtime.registerNavigationItems([
+        {
+            to: "/item-3",
+            label: "Item 3"
+        }
+    ]);
+
+    runtime.registerNavigationItems([
+        {
+            to: "/item-4",
+            label: "Item 4"
+        }
+    ], { menuId: "menu-1" });
+
+    runtime.registerNavigationItems([
+        {
+            to: "/item-5",
+            label: "Item 5"
+        }
+    ], { menuId: "menu-2" });
+
+    const { result } = renderWithRuntime(runtime, "menu-1");
+
+    expect(result.current.length).toBe(1);
 });
 
 test("returned array is immutable", () => {

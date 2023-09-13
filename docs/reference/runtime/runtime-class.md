@@ -77,7 +77,77 @@ runtime.registerRoutes([
 ]);
 ```
 
-[!ref icon="gear" text="Setup the host application to accept hoisted routes"](/reference/routing/useHoistedRoutes.md)
+[!ref text="Setup the host application to accept hoisted routes"](/reference/routing/useHoistedRoutes.md)
+
+### Register routes under a specific nested layout route
+
+React router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) enable applications to render nested layouts at various points within the router tree. This is quite helpful for federated applications as it enables composable and decoupled UI.
+
+To fully harness the power of nested routes, the `registerRoutes` function allows a route to be registered **under any** previously registered **nested layout route**, even if that route was registered by another module.
+
+When registering a new route with the `registerRoutes` function, to render the route under a specific nested layout route, specify a `layoutPath` property that matches the nested layout route's `path` property. The only requirement is that the **nested layout route** must have been **registered** to `@squide` **before** the **new child route**.
+
+```tsx !#10
+import { lazy } from "react";
+
+const Page = lazy(() => import("./Page.tsx"));
+
+runtime.registerRoutes([
+    {
+        path: "/layout/page-1",
+        element: <Page />
+    }
+], { layoutPath: "/layout" }); // Register the page under the "/layout" nested layout.
+```
+
+!!!info
+Likewise any other React Router routes, the `path` property of a page rendered under a nested layout must be an absolute path. For example, if a nested layout `path` is `/layout`, the `path` property of a page rendered under that layout route and responding to the `/page-1` url, should be `/layout/page-1`.
+!!!
+
+#### Index routes
+
+Although nested layout routes that serve as indexes (e.g. `{ index: true, element: <Layout /> }`) are not very common, `@squide` still supports this scenario. To register a route **under an index route**, set the `layoutPath` property as the concatenation of the index route's parent path and `/$index$`. 
+
+```tsx !#8,12 host/src/register.tsx
+import { lazy } from "react";
+
+const Page = lazy(() => import("./Page.tsx"));
+const Layout = lazy(() => import("./Layout.tsx"));
+
+runtime.registerRoutes([
+    {
+        path: "/page-1",
+        element: <Page />,
+        children: [
+            {
+                index: true,
+                element: <Layout />
+            }
+        ]
+    }
+]);
+```
+
+```tsx !#10 remote-module/src/register.tsx
+import { lazy } from "react";
+
+const Page = lazy(() => import("./Page.tsx"));
+
+runtime.registerRoutes([
+    {
+        path: "/page-1/page-2",
+        element: <Page />
+    }
+], { layoutPath: "/page-1/$index$" }); // Using $index$ to match "index: true"
+```
+
+### Retrieve routes
+
+A federated application routes are accessible from a `Runtime` instance, but keep in mind that the preferred way to retrieve the routes is with the [useRoutes](./useRoutes) hook.
+
+```tsx
+const routes = runtime.routes;
+```
 
 ### Register navigation items
 
@@ -103,7 +173,7 @@ runtime.registerNavigationItems([
 ]);
 ```
 
-[!ref icon="gear" text="Setup the host application to render navigation items"](/reference/routing/useRenderedNavigationItems.md)
+[!ref text="Setup the host application to render navigation items"](/reference/routing/useRenderedNavigationItems.md)
 
 ### Register nested navigation items
 
@@ -221,6 +291,35 @@ runtime.registerNavigationItems([
         }
     }
 ]);
+```
+
+### Register navigation items for a specific menu
+
+By default, every navigation item registered with the `registerNavigationItems` function is registered as part of the `root` navigation menu. To register a navigation item for a different navigation menu, specify a `menuId` property when registering the items.
+
+```tsx !#6
+runtime.registerNavigationItems([
+    {
+        to: "/layout/page-1",
+        label: "Page 1"
+    }
+], { menuId: "my-custom-layout" });
+```
+
+### Retrieve navigation items
+
+A federated application navigation items are accessible from a `Runtime` instance, but keep in mind that the preferred way to retrieve the navigation items is with the [useNavigationItems](./useNavigationItems) hook.
+
+By default, the `getNavigationItems` will return the navigation items for the `root` menu:
+
+```tsx
+const navigationItems = runtime.getNavigationItems();
+```
+
+To retrieve the navigation items for a **specific** navigation menu, provide a `menuId`:
+
+```tsx
+const navigationItems = runtime.getNavigationItems("my-custom-layout");
 ```
 
 ### Use the logger

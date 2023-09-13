@@ -10,7 +10,7 @@ type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: num
 
 const renderLinkItem: RenderLinkItemFunction = ({ label, linkProps, additionalProps: { highlight, ...additionalProps } }, index, level) => {
     return (
-        <li key={`${level}-${index}`} style={{ fontWeight: highlight ? "bold" : "normal", listStyleType: "none" }}>
+        <li key={`${level}-${index}`} style={{ fontWeight: highlight ? "bold" : "normal" }}>
             <Link {...linkProps} {...additionalProps}>
                 {label}
             </Link>
@@ -20,7 +20,7 @@ const renderLinkItem: RenderLinkItemFunction = ({ label, linkProps, additionalPr
 
 const renderSectionItem: RenderSectionItemFunction = ({ label, section }, index, level) => {
     return (
-        <li key={`${level}-${index}`} style={{ listStyleType: "none", display: "flex", gap: "5px" }}>
+        <li key={`${level}-${index}`} style={{ display: "flex", gap: "5px" }}>
             {label}
             <div style={{ display: "flex", alignItems: "center", fontSize: "12px" }}>
                 ({section})
@@ -35,7 +35,7 @@ const renderItem: RenderItemFunction = (item, index, level) => {
 
 const renderSection: RenderSectionFunction = (elements, index, level) => {
     return (
-        <ul key={`${level}-${index}`} style={{ display: "flex", gap: "10px", padding: 0 }}>
+        <ul key={`${level}-${index}`} style={{ display: "flex", gap: "10px", padding: 0, listStyleType: "none" }}>
             {elements}
         </ul>
     );

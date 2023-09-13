@@ -10,6 +10,16 @@ export interface RuntimeOptions {
     sessionAccessor?: SessionAccessorFunction;
 }
 
+export interface RegisterRoutesOptions {
+    layoutPath?: string;
+}
+
+export interface RegisterNavigationItemsOptions {
+    menuId?: string;
+}
+
+export const RootMenuId = "root";
+
 export abstract class AbstractRuntime<TRoute = unknown, TNavigationItem = unknown> {
     protected readonly _logger: RuntimeLogger;
     protected readonly _eventBus: EventBus;
@@ -23,13 +33,13 @@ export abstract class AbstractRuntime<TRoute = unknown, TNavigationItem = unknow
         this._sessionAccessor = sessionAccessor;
     }
 
-    abstract registerRoutes(routes: TRoute[]): void;
+    abstract registerRoutes(routes: TRoute[], options?: RegisterRoutesOptions): void;
 
     abstract get routes(): TRoute[];
 
-    abstract registerNavigationItems(navigationItems: TNavigationItem[]): void;
+    abstract registerNavigationItems(navigationItems: TNavigationItem[], options?: RegisterNavigationItemsOptions): void;
 
-    abstract get navigationItems(): TNavigationItem[];
+    abstract getNavigationItems(menuId?: string): TNavigationItem[];
 
     get logger() {
         return this._logger;

@@ -36,12 +36,17 @@ First, create the following files:
 
 ```
 host
+├── public
+├──── index.html
 ├── src
 ├──── App.tsx
 ├──── RootLayout.tsx
 ├──── Home.tsx
 ├──── bootstrap.tsx
 ├──── index.ts
+├── .browserslistrc
+├── swc.dev.js
+├── swc.build.js
 ├── webpack.dev.js
 ├── webpack.build.js
 ```
@@ -219,9 +224,48 @@ export default function RootLayout() {
 
 ## 3. Configure webpack
 
-### development
+!!!info
+`@squide` webpack configuration is built on top of [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/), [@workleap/browserslist-config](https://gsoft-inc.github.io/wl-web-configs/browserslist/) and [@workleap/swc-configs](https://gsoft-inc.github.io/wl-web-configs/swc/). If you are having issues with the configuration of these tools, have a look at their documentation websites.
+!!!
 
-To configure webpack for a federated host application in **development** mode, use the [defineDevHostConfig](/reference/webpack/defineDevHostConfig.md) function:
+### HTML template
+
+First, open the `public/index.html` file created at the beginning of this guide and copy/paste the following [HtmlWebpackPlugin](https://webpack.js.org/plugins/html-webpack-plugin/) template:
+
+```html host/public/index.html
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+</html>
+```
+
+### Browserslist
+
+Then, open the `.browserslist` file and copy/paste the following content:
+
+``` host/.browserslistrc
+extends @workleap/browserslist-config
+```
+
+### Development configuration
+
+To configure webpack for a **development** environment, first open the `swc.dev.js` file and copy/paste the following code:
+
+```js host/swc.dev.js
+// @ts-check
+
+import { browserslistToSwc, defineDevConfig } from "@workleap/swc-configs";
+
+const targets = browserslistToSwc();
+
+export default defineDevConfig(targets);
+```
+
+Then, open the `webpack.dev.js` file and use the [defineDevHostConfig](/reference/webpack/defineDevHostConfig.md) function to configure webpack:
 
 ```js !#6 host/webpack.dev.js
 // @ts-check
@@ -232,9 +276,25 @@ import { swcConfig } from "./swc.dev.js";
 export default defineDevHostConfig(swcConfig, "host", 8080);
 ```
 
-### build
+!!!info
+If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/).
+!!!
 
-To configure webpack for a federated host application in **build** mode, use the [defineBuildHostConfig](/reference/webpack/defineBuildHostConfig.md) function:
+### Build configuration
+
+To configure webpack for a **build** environment, first open the `swc.build.js` file and copy/paste the following code:
+
+```js host/swc.build.js
+// @ts-check
+
+import { browserslistToSwc, defineBuildConfig } from "@workleap/swc-configs";
+
+const targets = browserslistToSwc();
+
+export default defineBuildConfig(targets);
+```
+
+Then, open the `webpack.build.js` file and use the [defineBuildHostConfig](/reference/webpack/defineBuildHostConfig.md) function to configure webpack:
 
 ```js !#6 host/webpack.build.js
 // @ts-check
@@ -244,6 +304,10 @@ import { swcConfig } from "./swc.build.js";
 
 export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/");
 ```
+
+!!!info
+If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/).
+!!!
 
 ## 4. Try the application :rocket:
 

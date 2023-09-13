@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.747760092284">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.747952294109">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.4.1">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.4.1.747760092284" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.4.1.747952294109" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.4.1.747760092284" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.4.1.747952294109" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.4.1" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.4.1.747760092284" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.4.1.747760092284" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.4.1.747952294109" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.4.1.747952294109" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
 
@@ -351,12 +351,17 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
 <p>First, create the following files:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-none"><code v-pre class="language-none">host
+├── public
+├──── index.html
 ├── src
 ├──── App.tsx
 ├──── RootLayout.tsx
 ├──── Home.tsx
 ├──── bootstrap.tsx
 ├──── index.ts
+├── .browserslistrc
+├── swc.dev.js
+├── swc.build.js
 ├── webpack.dev.js
 ├── webpack.build.js</code></pre>
 </doc-codeblock></div>
@@ -562,13 +567,70 @@ export default function RootLayout() {
         <span>3. Configure webpack</span>
     </h2>
 </doc-anchor-target>
-<doc-anchor-target id="development">
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p><code v-pre>@squide</code> webpack configuration is built on top of <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/" class="outbound" target="_blank">@workleap/webpack-configs</a>, <a href="https://gsoft-inc.github.io/wl-web-configs/browserslist/" class="outbound" target="_blank">@workleap/browserslist-config</a> and <a href="https://gsoft-inc.github.io/wl-web-configs/swc/" class="outbound" target="_blank">@workleap/swc-configs</a>. If you are having issues with the configuration of these tools, have a look at their documentation websites.</p>
+        </div>
+    </div>
+</div>
+<doc-anchor-target id="html-template">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#development">#</doc-anchor-trigger>
-        <span>development</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#html-template">#</doc-anchor-trigger>
+        <span>HTML template</span>
     </h3>
 </doc-anchor-target>
-<p>To configure webpack for a federated host application in <strong>development</strong> mode, use the <a href="../../reference/webpack/definedevhostconfig/">defineDevHostConfig</a> function:</p>
+<p>First, open the <code v-pre>public/index.html</code> file created at the beginning of this guide and copy/paste the following <a href="https://webpack.js.org/plugins/html-webpack-plugin/" class="outbound" target="_blank">HtmlWebpackPlugin</a> template:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/public/index.html</div>
+<pre class="language-markup"><code v-pre class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="browserslist">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#browserslist">#</doc-anchor-trigger>
+        <span>Browserslist</span>
+    </h3>
+</doc-anchor-target>
+<p>Then, open the <code v-pre>.browserslist</code> file and copy/paste the following content:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/.browserslistrc</div>
+<pre class="language-none"><code v-pre class="language-none">extends @workleap/browserslist-config</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="development-configuration">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#development-configuration">#</doc-anchor-trigger>
+        <span>Development configuration</span>
+    </h3>
+</doc-anchor-target>
+<p>To configure webpack for a <strong>development</strong> environment, first open the <code v-pre>swc.dev.js</code> file and copy/paste the following code:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/swc.dev.js</div>
+<pre class="language-javascript"><code v-pre class="language-javascript">// @ts-check
+
+import { browserslistToSwc, defineDevConfig } from &quot;@workleap/swc-configs&quot;;
+
+const targets = browserslistToSwc();
+
+export default defineDevConfig(targets);</code></pre>
+</doc-codeblock></div>
+<p>Then, open the <code v-pre>webpack.dev.js</code> file and use the <a href="../../reference/webpack/definedevhostconfig/">defineDevHostConfig</a> function to configure webpack:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/webpack.dev.js</div>
 <pre class="language-javascript" data-line="6"><code v-pre class="language-javascript">// @ts-check
@@ -578,13 +640,41 @@ import { swcConfig } from &quot;./swc.dev.js&quot;;
 
 export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080);</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="build">
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>If you are having issues with the wepack configuration that are not related to module federation, refer to the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/" class="outbound" target="_blank">@workleap/webpack-configs documentation</a>.</p>
+        </div>
+    </div>
+</div>
+<doc-anchor-target id="build-configuration">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#build">#</doc-anchor-trigger>
-        <span>build</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#build-configuration">#</doc-anchor-trigger>
+        <span>Build configuration</span>
     </h3>
 </doc-anchor-target>
-<p>To configure webpack for a federated host application in <strong>build</strong> mode, use the <a href="../../reference/webpack/definebuildhostconfig/">defineBuildHostConfig</a> function:</p>
+<p>To configure webpack for a <strong>build</strong> environment, first open the <code v-pre>swc.build.js</code> file and copy/paste the following code:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/swc.build.js</div>
+<pre class="language-javascript"><code v-pre class="language-javascript">// @ts-check
+
+import { browserslistToSwc, defineBuildConfig } from &quot;@workleap/swc-configs&quot;;
+
+const targets = browserslistToSwc();
+
+export default defineBuildConfig(targets);</code></pre>
+</doc-codeblock></div>
+<p>Then, open the <code v-pre>webpack.build.js</code> file and use the <a href="../../reference/webpack/definebuildhostconfig/">defineBuildHostConfig</a> function to configure webpack:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/webpack.build.js</div>
 <pre class="language-javascript" data-line="6"><code v-pre class="language-javascript">// @ts-check
@@ -594,6 +684,23 @@ import { swcConfig } from &quot;./swc.build.js&quot;;
 
 export default defineBuildHostConfig(swcConfig, &quot;host&quot;, &quot;http://localhost:8080/&quot;);</code></pre>
 </doc-codeblock></div>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>If you are having issues with the wepack configuration that are not related to module federation, refer to the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/" class="outbound" target="_blank">@workleap/webpack-configs documentation</a>.</p>
+        </div>
+    </div>
+</div>
 <doc-anchor-target id="4-try-the-application">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#4-try-the-application">#</doc-anchor-trigger>

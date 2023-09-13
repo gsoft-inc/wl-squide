@@ -28,7 +28,7 @@ function createIndexRoutePath(parentPath: string) {
 export function createIndexKey(route: Route, layoutPath: string) {
     if (route.index) {
         // This is useful in the case a nested index route is registered for a layout index route.
-        // This use case doesn't really make sense thought as both the layout route and the nested route
+        // This use case doesn't really make sense though as both the layout route and the nested route
         // would respond to the same path, keeping the code for now.
         const _layoutPath = replaceTokens(layoutPath);
 

@@ -106,7 +106,7 @@ Likewise any other React Router routes, the `path` property of a page rendered u
 
 #### Index routes
 
-Although nested layout routes that serves as indexes (e.g. `{ index: true, element: <Layout /> }`) are not very common, `@squide` still supports this scenario. To register a route **under an index route**, set the `layoutPath` property as the concatenation of the index route's parent path and `/$index$`. 
+Although nested layout routes that serve as indexes (e.g. `{ index: true, element: <Layout /> }`) are not very common, `@squide` still supports this scenario. To register a route **under an index route**, set the `layoutPath` property as the concatenation of the index route's parent path and `/$index$`. 
 
 ```tsx !#8,12 host/src/register.tsx
 import { lazy } from "react";

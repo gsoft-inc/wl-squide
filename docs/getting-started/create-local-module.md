@@ -20,21 +20,28 @@ Let's add a local module to demonstrate how it's done!
 
 ## 1. Install the packages
 
-Create a new project (we'll refer to ours as `local-module`), then open a terminal at the root of the new solution and install the following packages:
+Create a new application (we'll refer to ours as `local-module`), then open a terminal at the root of the new solution and install the following packages:
 
 +++ pnpm
 ```bash
+pnpm add -D @workleap/tsup-configs tsup typescript
 pnpm add @squide/core @squide/react-router react react-dom react-router-dom
 ```
 +++ yarn
 ```bash
+pnpm add -D @workleap/tsup-configs tsup typescript
 yarn add @squide/core @squide/react-router react react-dom react-router-dom
 ```
 +++ npm
 ```bash
+pnpm add -D @workleap/tsup-configs tsup typescript
 npm install @squide/core @squide/react-router react react-dom react-router-dom
 ```
 +++
+
+!!!warning
+While you can use any package manager to develop an application with `@squide`, it is highly recommend that you use [PNPM](https://pnpm.io/) as the following guide has been developed and tested with PNPM.
+!!!
 
 ## 2. Setup the application
 
@@ -47,18 +54,34 @@ local-modules
 ├── src
 ├──── register.tsx
 ├──── Page.tsx
+├── tsup.dev.ts
+├── tsup.build.ts
 ├── package.json
 ```
 
-### Package configuration
+### Package.json
 
-Then, add the following fields to the `package.json` files:
+Then, ensure that you are developing your module using [ESM syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) by specifying `type: module` in your `package.json` file:
 
-```json !#2,4 local-module/package.json
+```json local-module/package.json
+{
+    "type": "module"
+}
+```
+
+Then, configure the package to be shareable by adding the `name`, `version`, and `export` fields to the `package.json` file:
+
+```json local-module/package.json
 {
     "name": "@sample/local-module",
     "version": "0.0.1",
-    "main": "dist/register.js"
+    "exports": {
+        ".": {
+            "import": "./dist/register.js",
+            "types": "./dist/register.d.ts",
+            "default": "./dist/register.js"
+        }
+    }
 }
 ```
 
@@ -68,12 +91,12 @@ Then, register the local module [routes](/reference/runtime/runtime-class.md#reg
 
 ```tsx !#8-13,15-20 local-module/src/register.tsx
 import { lazy } from "react";
-import { registerRoutes, registerNavigationItems, type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import type { AppContext } from "@sample/shared";
 
 const Page = lazy(() => import("./Page"));
 
-export const register: ModuleRegisterFunction = (runtime: Runtime, context: AppContext) => {
+export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime: Runtime, context: AppContext) => {
     runtime.registerRoutes([
         {
             path: "/local/page",
@@ -90,17 +113,19 @@ export const register: ModuleRegisterFunction = (runtime: Runtime, context: AppC
 }
 ```
 
+And finally, create the `Page` component:
+
 ```tsx local-module/src/Page.tsx
 export default function Page() {
     return (
         <div>Hello from Local/Page!</div>
-    )
+    );
 }
 ```
 
 ## 3. Register the local module
 
-Go back to the `host` application and [register the local module](/reference/registration/registerLocalModules.md). Don't forget to add a dependency in the host application `package.json` file.
+Go back to the `host` application and [register the local module](/reference/registration/registerLocalModules.md):
 
 ```tsx !#5,27 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
@@ -140,6 +165,60 @@ root.render(
 );
 ```
 
-## 4. Try the application :rocket:
+Then, add a dependency to the `@sample/local-module` package in the host application `package.json` file:
 
-Start both applications, and you should now notice a third link in the navigation menu. Click on the link to navigate to the page of your new local module!
+```json host/package.json
+{
+    "dependencies": {
+        "@sample/local-module": "0.0.1"
+    }
+}
+```
+
+## 4. Configure tsup
+
+### Development configuration
+
+To configure tsup for a **development** environment, open the `tsup.dev.ts` file and copy/paste the following code:
+
+```ts local-module/tsup.dev.ts
+import { defineDevConfig } from "@workleap/tsup-configs";
+
+export default defineDevConfig();
+```
+
+### Build configuration
+
+To configure tsup for a **build** environment, open the `tsup.build.ts` file and copy/paste the following code:
+
+```ts local-module/tsup.build.ts
+import { defineBuildConfig } from "@workleap/tsup-configs";
+
+export default defineBuildConfig();
+```
+
+## 5. Add CLI scripts
+
+To initiate the development server, add the following script to the application `package.json` file:
+
+```json local-module/package.json
+{
+    "dev": "tsup --config ./tsup.dev.ts"
+}
+```
+
+To build the module, add the following script to the application `package.json` file:
+
+```json local-module/package.json
+{
+    "build": "tsup --config ./tsup.build.ts"
+}
+```
+
+## 6. Try the application :rocket:
+
+Start the `host`, `remote-module` and `local-module` applications in development mode using the `dev` script. You should now notice an additional link in the navigation menu. Click on the link to navigate to the page of your new **local** module!
+
+## 7. Sample application
+
+For a functional sample of a local module, have a look at the `@sample/local-module` application of the `squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/local-module).

@@ -10,24 +10,28 @@ Let's add our first remote module!
 
 ## 1. Install the packages
 
-Create a new project (we'll refer to ours as `remote-module`), then open a terminal at the root of the new solution and install the following packages:
+Create a new application (we'll refer to ours as `remote-module`), then open a terminal at the root of the new solution and install the following packages:
 
 +++ pnpm
 ```bash
-pnpm add -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
 pnpm add @squide/core @squide/react-router @squide/webpack-module-federation react react-dom react-router-dom
 ```
 +++ yarn
 ```bash
-yarn add -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
 yarn add @squide/core @squide/react-router @squide/webpack-module-federation react react-dom react-router-dom
 ```
 +++ npm
 ```bash
-npm install -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
 npm install @squide/core @squide/react-router @squide/webpack-module-federation react react-dom react-router-dom
 ```
 +++
+
+!!!warning
+While you can use any package manager to develop an application with `@squide`, it is highly recommended that you use [PNPM](https://pnpm.io/) as the following guide has been developed and tested with PNPM.
+!!!
 
 ## 2. Setup the application
 
@@ -47,6 +51,17 @@ remote-module
 ├── swc.build.js
 ├── webpack.dev.js
 ├── webpack.build.js
+├── package.json
+```
+
+### Package.json
+
+Then, ensure that you are developing your module using [ESM syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) by specifying `type: module` in your `package.json` file:
+
+```json remote-module/package.json
+{
+    "type": "module"
+}
 ```
 
 ### Routes and navigation items registration
@@ -55,12 +70,12 @@ Then, register the remote module [routes](/reference/runtime/runtime-class.md#re
 
 ```tsx !#8-13,15-20 remote-module/src/register.tsx
 import { lazy } from "react";
-import { registerRoutes, registerNavigationItems, type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import type { AppContext } from "@sample/shared";
 
 const Page = lazy(() => import("./Page"));
 
-export const register: ModuleRegisterFunction = (runtime: Runtime, context: AppContext) => {
+export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime: Runtime, context: AppContext) => {
     runtime.registerRoutes([
         {
             path: "/remote/page",
@@ -71,17 +86,19 @@ export const register: ModuleRegisterFunction = (runtime: Runtime, context: AppC
     runtime.registerNavigationItems([
         {
             to: "/remote/page",
-            content: "Remote/Page"
+            label: "Remote/Page"
         }
     ]);
 }
 ```
 
+And finally, create the `Page` component:
+
 ```tsx remote-module/src/Page.tsx
 export default function Page() {
     return (
         <div>Hello from Remote/Page!</div>
-    )
+    );
 }
 ```
 
@@ -125,7 +142,7 @@ import { browserslistToSwc, defineDevConfig } from "@workleap/swc-configs";
 
 const targets = browserslistToSwc();
 
-export default defineDevConfig(targets);
+export const swcConfig = defineDevConfig(targets);
 ```
 
 Then, open the `webpack.dev.js` file and use the the [defineDevRemoteModuleConfig](/reference/webpack/defineDevRemoteModuleConfig.md) function to configure webpack:
@@ -154,7 +171,7 @@ import { browserslistToSwc, defineBuildConfig } from "@workleap/swc-configs";
 
 const targets = browserslistToSwc();
 
-export default defineBuildConfig(targets);
+export const swcConfig = defineBuildConfig(targets);
 ```
 
 Then, open the `webpack.build.js` file and use the the [defineBuildRemoteModuleConfig](/reference/webpack/defineBuildRemoteModuleConfig.md) function to configure webpack:
@@ -172,6 +189,29 @@ export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://local
 If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/).
 !!!
 
-## 4. Try the application :rocket:
+## 4. Add CLI scripts
 
-Start both applications, and you should notice an additional link in the navigation menu. Click on the link to navigate to the page of your new remote module!
+To initiate the development server, add the following script to the application `package.json` file:
+
+```json remote-module/package.json
+{
+    "dev": "webpack serve --config webpack.dev.js"
+}
+```
+
+To build the module, add the following script to the application `package.json` file:
+
+```json remote-module/package.json
+{
+    "build": "webpack --config webpack.build.js"
+}
+```
+
+## 5. Try the application :rocket:
+
+Start the `host` and the `remote-module` applications in development mode using the `dev` script. You should notice an additional link in the navigation menu. Click on the link to navigate to the page of your new **remote** module!
+
+## 6. Sample application
+
+For a functional sample of a remote module, have a look at the `@sample/remote-module` application of the `squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/remote-module).
+

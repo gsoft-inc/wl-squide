@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.747952554249">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.748014790657">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.4.1">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.4.1.747952554249" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.4.1.748014790657" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.4.1.747952554249" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.4.1.748014790657" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.4.1" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.4.1.747952554249" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.4.1.747952554249" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.4.1.748014790657" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.4.1.748014790657" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
 
@@ -390,8 +390,8 @@ export function RootLayout() {
     );
 }</code></pre>
 </doc-codeblock></div>
-<p>In the previous code sample, the <code v-pre>RootLayout</code> serves as the default layout for the <em>home page</em> as well as for every page (route) registered by a module.</p>
-<p>For most pages, this is the behavior expected by the author. However, for pages such as a <em>login page</em>, the default <code v-pre>RootLayout</code> isn&#x27;t suitable because the page is not bound to a user session (the user is not even authenticated yet).</p>
+<p>In the previous code sample, the <code v-pre>RootLayout</code> serves as the default layout for the home page as well as for every page (route) registered by a module.</p>
+<p>For most pages, this is the behavior expected by the author. However, for pages such as a login page, the default <code v-pre>RootLayout</code> isn&#x27;t suitable because the page is not bound to a user session (the user is not even authenticated yet).</p>
 <p>To accomodate pages that require a different layout, a mechanism is needed to move their route declaration at the root of the React Router <a href="https://reactrouter.com/en/main/routers/create-browser-router" class="outbound" target="_blank">router instance</a>, before the <code v-pre>RootLayout</code> is declared.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-none" data-line="2"><code v-pre class="language-none">root
@@ -511,6 +511,13 @@ export function register: ModuleRegisterFunction&lt;Runtime&gt;(runtime) {
     <a href="../../reference/routing/usehoistedroutes/" class="absolute block inset-0"></a>
 </div>
 </p>
+<doc-anchor-target id="sample">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#sample">#</doc-anchor-trigger>
+        <span>Sample</span>
+    </h2>
+</doc-anchor-target>
+<p>For a functional sample of an application shell with hoisting activated, have a look at the <code v-pre>/shell</code> folder of the <code v-pre>@sample/shared</code> package of the <code v-pre>@squide</code> sandbox on <a href="https://github.com/gsoft-inc/wl-squide/tree/main/sample/shared/src/shell" class="outbound" target="_blank">GitHub</a>.</p>
 
                                 
                                 <!-- Required only on API pages -->

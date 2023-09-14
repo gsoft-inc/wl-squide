@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.747952554249">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.748014790657">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.4.1">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.4.1.747952554249" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.4.1.748014790657" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.4.1.747952554249" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.4.1.748014790657" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.4.1" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.4.1.747952554249" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.4.1.747952554249" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.4.1.748014790657" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.4.1.748014790657" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
 
@@ -307,7 +307,14 @@
 </doc-anchor-target>
 <p>One of the key characteristics of micro-frontends implementations like <a href="https://martinfowler.com/articles/micro-frontends.html#Run-timeIntegrationViaIframes" class="outbound" target="_blank">iframes</a> and subdomains is the ability to isolate failures within individual remote modules, preventing them from breaking the entire application.</p>
 <p>However, in a <a href="https://webpack.js.org/concepts/module-federation/" class="outbound" target="_blank">Module Federation</a> implementation, this is not the case as all the remote modules share the same browsing context (e.g. the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document" class="outbound" target="_blank">Document object</a>, the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window" class="outbound" target="_blank">Window object</a>, and the same DOM). A failure in one remote module can potentially breaks the entire application.</p>
-<p>Nevertheless, we can get very close to iframes failure isolation by utilizing React Router&#x27;s <a href="https://reactrouter.com/en/main/components/outlet" class="outbound" target="_blank">Outlet</a> component and the <a href="https://reactrouter.com/en/main/route/error-element" class="outbound" target="_blank">errorElement</a> property of a React Router&#x27;s routes:</p>
+<p>Nevertheless, an application can get very close to iframes failure isolation by utilizing React Router&#x27;s <a href="https://reactrouter.com/en/main/components/outlet" class="outbound" target="_blank">Outlet</a> component and the <a href="https://reactrouter.com/en/main/route/error-element" class="outbound" target="_blank">errorElement</a> property of a React Router&#x27;s routes.</p>
+<doc-anchor-target id="error-boundary">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#error-boundary">#</doc-anchor-trigger>
+        <span>Error boundary</span>
+    </h2>
+</doc-anchor-target>
+<p>In the following code sample, a <code v-pre>RootErrorBoundary</code> is declared below the <code v-pre>RootLayout</code> but above the routes of the remote module. By doing so, if a module encounters an unhandled error, the nested error boundary will only replace the section rendered by the <code v-pre>Outlet</code> component within the <code v-pre>RootLayout</code> rather than the entire page:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
 <pre class="language-tsx" data-line="16,20"><code v-pre class="language-tsx">import { useMemo } from &quot;react&quot;;
@@ -373,9 +380,7 @@ export function RootLayout() {
     );
 }</code></pre>
 </doc-codeblock></div>
-<p>In the previous code sample, a <code v-pre>RootErrorBoundary</code> is declared below the <code v-pre>RootLayout</code> but above the routes of the <em>remote module</em>. By doing so, if a module encounters an unhandled error, the nested error boundary will only replace the section rendered by the <code v-pre>Outlet</code> component within the <code v-pre>RootLayout</code> rather than the entire page.</p>
-<p>By implementing this mechanism, the level of failure isolation achieved is <strong>comparable</strong> to that of an <strong>iframes</strong> or <strong>subdomains</strong> implementation.</p>
-<p>With this mechanism, failure isolation <strong>is as good as</strong> with an <strong>iframes</strong> or <strong>subdomains</strong> implementation.</p>
+<p>By implementing this mechanism, the level of failure isolation achieved is <strong>comparable</strong> to that of an <strong>iframes</strong> or <strong>subdomains</strong> implementation. With this mechanism, failure isolation <strong>is as good as</strong> with an <strong>iframes</strong> or <strong>subdomains</strong> implementation.</p>
 <div class="flex mb-6">
     <div class="shrink-0 w-1 rounded-tl rounded-bl bg-yellow-500"></div>
     <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
@@ -392,6 +397,13 @@ export function RootLayout() {
         </div>
     </div>
 </div>
+<doc-anchor-target id="sample">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#sample">#</doc-anchor-trigger>
+        <span>Sample</span>
+    </h2>
+</doc-anchor-target>
+<p>For a functional sample of an application shell with error boundaries, have a look at the <code v-pre>/shell</code> folder of the <code v-pre>@sample/shared</code> package of the <code v-pre>@squide</code> sandbox on <a href="https://github.com/gsoft-inc/wl-squide/tree/main/sample/shared/src/shell" class="outbound" target="_blank">GitHub</a>.</p>
 
                                 
                                 <!-- Required only on API pages -->

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.747952554249">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.748014790657">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.4.1">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.4.1.747952554249" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.4.1.748014790657" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.4.1.747952554249" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.4.1.748014790657" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.4.1" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.4.1.747952554249" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.4.1.747952554249" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.4.1.748014790657" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.4.1.748014790657" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
 
@@ -384,7 +384,7 @@ import { Navigate, useNavigate } from &quot;react-router-dom&quot;;
 import { useIsAuthenticated } from &quot;@squide/react-router&quot;;
 import { sessionManager } from &quot;./session.ts&quot;;
 
-export default function Login() {
+export function Login() {
     const [username, setUserName] = useState(&quot;&quot;);
     const [password, setPassword] = useState(&quot;&quot;);
 
@@ -453,7 +453,7 @@ export default function Login() {
 <pre class="language-tsx"><code v-pre class="language-tsx">import { Link } from &quot;react-router-dom&quot;;
 import { sessionManager } from &quot;./session.ts&quot;;
 
-export default function Logout() {
+export function Logout() {
     sessionManager.clearSession();
 
     return (
@@ -514,7 +514,7 @@ const renderSection: RenderSectionFunction = (elements, index, level) =&gt; {
     );
 };
 
-export default function AuthenticatedLayout() {
+export function AuthenticatedLayout() {
     // Retrieve the current user session.
     const session = useSession() as Session;
 
@@ -564,19 +564,18 @@ export function RootLayout() {
 <p>Assemble everything with React Router <a href="https://reactrouter.com/en/main/start/tutorial#nested-routes" class="outbound" target="_blank">nested routes</a>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="30-31,34-35,39,42"><code v-pre class="language-tsx">import { lazy, useMemo } from &quot;react&quot;;
+<pre class="language-tsx" data-line="29-30,33-34,38,41"><code v-pre class="language-tsx">import { lazy, useMemo } from &quot;react&quot;;
 import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
 import { useRoutes } from &quot;@squide/react-router&quot;;
 import { useAreRemotesReady } from &quot;@squide/webpack-module-federation&quot;;
 import { AuthenticationBoundary } from &quot;./AuthenticationBoundary.tsx&quot;;
 import { RootErrorBoundary } from &quot;./RootErrorBoundary.tsx&quot;;
 import { RootLayout } from &quot;./RootLayout.tsx&quot;;
-
-const AuthenticatedLayout = lazy(() =&gt; import(&quot;./AuthenticatedLayout.tsx&quot;));
-const ModuleErrorBoundary = lazy(() =&gt; import(&quot;./ModuleErrorBoundary.tsx&quot;));
-const Home = lazy(() =&gt; import(&quot;./Home.tsx&quot;));
-const Login = lazy(() =&gt; import(&quot;./Login.tsx&quot;));
-const Logout = lazy(() =&gt; import(&quot;./Logout.tsx&quot;));
+import { AuthenticatedLayout } from &quot;./AuthenticatedLayout.tsx&quot;;
+import { ModuleErrorBoundary } from &quot;./ModuleErrorBoundary.tsx&quot;;
+import { Home } from &quot;./Home.tsx&quot;;
+import { Login } from &quot;./Login.tsx&quot;;
+import { Logout } from &quot;./Logout.tsx&quot;;
 
 export function App() {
     const isReady = useAreRemotesReady();
@@ -648,6 +647,13 @@ export function App() {
     </h2>
 </doc-anchor-target>
 <p>Start the application and attempt navigating to the root page (<code v-pre>/</code>). You will be redirected to the <code v-pre>/login</code> page. Login with <code v-pre>&quot;temp&quot;</code> / <code v-pre>&quot;temp&quot;</code>, you will be redirected to the root page.</p>
+<doc-anchor-target id="sample">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#sample">#</doc-anchor-trigger>
+        <span>Sample</span>
+    </h2>
+</doc-anchor-target>
+<p>For a functional sample of an application shell with authentication, have a look at the <code v-pre>/shell</code> folder of the <code v-pre>@sample/shared</code> package of the <code v-pre>@squide</code> sandbox on <a href="https://github.com/gsoft-inc/wl-squide/tree/main/sample/shared/src/shell" class="outbound" target="_blank">GitHub</a>.</p>
 
                                 
                                 <!-- Required only on API pages -->

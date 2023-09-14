@@ -125,7 +125,17 @@ export default function Page() {
 
 ## 3. Register the local module
 
-Go back to the `host` application and [register the local module](/reference/registration/registerLocalModules.md):
+Go back to the `host` application add a dependency to the `@sample/local-module` package in the host application `package.json` file:
+
+```json host/package.json
+{
+    "dependencies": {
+        "@sample/local-module": "0.0.1"
+    }
+}
+```
+
+Then, [register the local module](/reference/registration/registerLocalModules.md):
 
 ```tsx !#5,27 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
@@ -163,16 +173,6 @@ root.render(
         <App />
     </RuntimeContext.Provider>
 );
-```
-
-Then, add a dependency to the `@sample/local-module` package in the host application `package.json` file:
-
-```json host/package.json
-{
-    "dependencies": {
-        "@sample/local-module": "0.0.1"
-    }
-}
 ```
 
 ## 4. Configure tsup
@@ -219,6 +219,6 @@ To build the module, add the following script to the application `package.json` 
 
 Start the `host`, `remote-module` and `local-module` applications in development mode using the `dev` script. You should now notice an additional link in the navigation menu. Click on the link to navigate to the page of your new **local** module!
 
-## 7. Sample application
+## 7. Sample module
 
-For a functional sample of a local module, have a look at the `@sample/local-module` application of the `squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/local-module).
+For a functional sample of a **local** module, have a look at the `@sample/local-module` application of the `squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/local-module).

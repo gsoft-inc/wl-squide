@@ -211,7 +211,7 @@ To build the module, add the following script to the application `package.json` 
 
 Start the `host` and the `remote-module` applications in development mode using the `dev` script. You should notice an additional link in the navigation menu. Click on the link to navigate to the page of your new **remote** module!
 
-## 6. Sample application
+## 6. Sample module
 
-For a functional sample of a remote module, have a look at the `@sample/remote-module` application of the `squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/remote-module).
+For a functional sample of a **remote** module, have a look at the `@sample/remote-module` application of the `squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/remote-module).
 

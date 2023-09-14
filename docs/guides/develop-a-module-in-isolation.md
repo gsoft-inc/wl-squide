@@ -4,11 +4,11 @@ order: 50
 
 # Develop a module in isolation
 
-To develop their own independent module, a team **shouldn't be required to install the host application** or any **other modules** of the application **they do not own**. However, they should still have a means to integrate their module with the application shell (`RootLayout`, `RootErrorBoundary`, etc..) while working on their module in isolation.
+To develop their own independent module, a team **shouldn't be required to install the host application** or any **other modules** of the application **that they do not own**. However, they should have a means to integrate their module with the application shell (`RootLayout`, `RootErrorBoundary`, etc..) while working on their module in isolation.
 
 To achieve this, the first step is to extract the application shell from the host application. There are several approaches to accomplish this, but in this guide, we'll transform the host application into a monorepo and introduce a new local package named `@sample/shell` for this purpose:
 
-``` !#4,8
+``` !#4
 host
 ├── packages
 ├────── app
@@ -17,15 +17,38 @@ host
 ├─────────── RootLayout.tsx
 ├─────────── RootErrorBoundary.tsx
 ├─────────── useAppRouter.ts
+├─────────── index.ts
+├───────── package.json
+├───────── tsup.dev.ts
+├───────── tsup.build.ts
 ```
 
 ## Shell package
 
 > We won't show the implementation details of the `RootLayout` and `RootErrorBoundary` in this guide as it already has been covered many times by other guides.
 
-First, let's add an `appRouter` hook to the shell package. Its purpose is to provide a **reusable router configuration** that can be utilized by both the host application and the isolated modules. By using this hook, modules developed in isolation can utilize the **same application shell and routing configuration** as the host application. 
+First, add the following fields to the `package.json` file:
 
-```ts shell/src/appRouter.ts
+```json shell/package.json
+{
+    "name": "@sample/shell",
+    "version": "0.0.1",
+    "type": "module",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        }
+    }
+}
+```
+
+Then, install the package dependencies and configure the new package with [tsup](https://gsoft-inc.github.io/wl-web-configs/tsup/).
+
+Finally, add a `useAppRouter` hook to the shell package. Its purpose is to provide a **reusable router configuration** that can be utilized by both the host application and the isolated modules. By using this hook, modules developed in isolation can utilize the **same application shell and routing configuration** as the host application. 
+
+```tsx shell/src/useAppRouter.tsx
 import { useMemo, useState } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import { Route, useRoutes } from "@squide/react-router";
@@ -71,7 +94,17 @@ This guide only covers the `RootLayout` and `RootErrorBoundary` but the same goe
 
 ## Host application
 
-Then, let's revisit the host application and incorporate the newly introduced `useAppRouter` hook:
+Now, let's revisit the host application by first adding a dependency to the new `@sample/shell` package:
+
+```json host/package.json
+{
+    "dependencies": {
+        "@sample/shell": "0.0.1"
+    }
+}
+```
+
+Then, incorporate the newly introduced `useAppRouter` hook:
 
 ```tsx !#10-17 host/src/App.tsx
 import { RouterProvider } from "react-router-dom";
@@ -109,7 +142,17 @@ export function App() {
 
 With our new setup in place, we can now configure the remote module to be developed in isolation. The goal is to start the module development server and render the module pages with the same layout and functionalities as if it was rendered by the host application.
 
-To begin, let's add an `index.tsx` and `App.tsx` files to the remote module project:
+To begin, let's start by adding a dependencies to the `@sample/shell` package:
+
+```json remote-module/package.json
+{
+    "dependencies": {
+        "@sample/shell": "0.0.1"
+    }
+}
+```
+
+Then, add the `index.tsx` and `App.tsx` files to the remote module project:
 
 ``` !#5-6
 remote-module
@@ -122,7 +165,7 @@ remote-module
 ├── webpack.dev.js
 ```
 
-The `index.tsx` file is similar to the `bootstrap.tsx` file of a host application but, tailored for an isolated module. The key distinction is that, since we set up the project for local development, we'll register the module with the [registerLocalModules](/reference/registration/registerLocalModules.md) function instead of the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function:
+The `index.tsx` file is similar to the `bootstrap.tsx` file of an host application but, tailored for an isolated module. The key distinction is that, since the project is set up for local development, the module is registered with the [registerLocalModules](/reference/registration/registerLocalModules.md) function instead of the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function:
 
 ```tsx !#8-10,14 remote-module/src/index.tsx
 import { createRoot } from "react-dom/client";
@@ -143,17 +186,15 @@ registerLocalModules([register], runtime);
 const root = createRoot(document.getElementById("root"));
 
 root.render(
-    <StrictMode>
-        <RuntimeContext.Provider value={runtime}>
-            <Suspense fallback={<div>Loading...</div>}>
-                <App />
-            </Suspense>
-        </RuntimeContext.Provider>
-    </StrictMode>
+    <RuntimeContext.Provider value={runtime}>
+        <Suspense fallback={<div>Loading...</div>}>
+            <App />
+        </Suspense>
+    </RuntimeContext.Provider>
 );
 ```
 
-The `App.tsx` file uses the newly created `useAppRouter` hook to setup [React Router](https://reactrouter.com/):
+The `App.tsx` file uses the newly created `useAppRouter` hook to setup [React Router](https://reactrouter.com/) with the `<RootLayout>`, the `<RootErrorBoundary>` and the other shell assets:
 
 ```tsx !#5 App.tsx
 import { RouterProvider } from "react-router-dom";
@@ -180,7 +221,7 @@ Next, add a new `dev-local` script to the `package.json` file to start the local
 }
 ```
 
-The `dev-local` script is similar to the `dev` script but introduces a `LOCAL` environment variable. This new environment variable will be utilized by the `webpack.dev.js` file to conditionally setup the development server for local development in isolation or to be consumed by a host application through the `/remoteEntry.js` entry point:
+The `dev-local` script is similar to the `dev` script but introduces a `LOCAL` environment variable. This new environment variable will be utilized by the `webpack.dev.js` file to conditionally setup the development server for **local** development in **isolation** or to be consumed by a host application through the `/remoteEntry.js` entry point:
 
 ```js !#9,12 remote-module/webpack.dev.js
 // @ts-check
@@ -200,15 +241,15 @@ if (!process.env.LOCAL) {
 export default config;
 ```
 
-Start the local application by running the `dev-local` script. The federated application shell should wrap the content of the index route of the module.
+Start the remote module in isolation by running the `dev-local` script. The application shell should wrap the pages of the module.
 
 [!ref icon="mark-github" text="View a remote module project example on Github"](https://github.com/gsoft-inc/wl-squide/tree/main/sample/remote-module)
 
 ## Local module
 
-Similarly to remote modules, you can achieve the same isolated setup for local modules. The main difference is that the `webpack.config.js` file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on [Module Federation](https://webpack.js.org/concepts/module-federation/).
+Similarly to remote modules, the same isolated setup can be achieved for local modules. The main difference is that the `webpack.config.js` file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on webpack and [Module Federation](https://webpack.js.org/concepts/module-federation/).
 
-First, open a terminal at the root of the local module project and install the `@workleap/webpack-configs` package and its dependencies:
+First, open a terminal at the root of the local module application and install the `@workleap/webpack-configs` package and its dependencies:
 
 +++ pnpm
 ```bash

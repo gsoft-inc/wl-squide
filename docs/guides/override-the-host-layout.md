@@ -87,9 +87,9 @@ export function RootLayout() {
 }
 ```
 
-In the previous code sample, the `RootLayout` serves as the default layout for the *home page* as well as for every page (route) registered by a module.
+In the previous code sample, the `RootLayout` serves as the default layout for the home page as well as for every page (route) registered by a module.
 
-For most pages, this is the behavior expected by the author. However, for pages such as a *login page*, the default `RootLayout` isn't suitable because the page is not bound to a user session (the user is not even authenticated yet).
+For most pages, this is the behavior expected by the author. However, for pages such as a login page, the default `RootLayout` isn't suitable because the page is not bound to a user session (the user is not even authenticated yet).
 
 To accomodate pages that require a different layout, a mechanism is needed to move their route declaration at the root of the React Router [router instance](https://reactrouter.com/en/main/routers/create-browser-router), before the `RootLayout` is declared.
 
@@ -200,4 +200,6 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
 
 [!ref icon="gear" text="For additional options, go to the `useHoistedRoutes` hook reference page"](/reference/routing/useHoistedRoutes.md)
 
+## Sample
 
+For a functional sample of an application shell with hoisting activated, have a look at the `/shell` folder of the `@sample/shared` package of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/shared/src/shell).

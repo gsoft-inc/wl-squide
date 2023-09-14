@@ -75,7 +75,7 @@ const runtime = new Runtime({
 });
 ```
 
-## Try the application :rocket:
+## Try the logger :rocket:
 
 Start the applications and open the developer tools, then, refresh the page. You should see the following console log message:
 

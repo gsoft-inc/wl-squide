@@ -5,28 +5,33 @@ label: Create an host app
 
 # Create an host application
 
+
 Let's begin by creating the application that will serve as the entry point for our federated application and host the application modules.
 
 ## 1. Install the packages
 
-Create a new project (we'll refer to ours as `host`), then open a terminal at the root of the new solution and install the following packages:
+Create a new application (we'll refer to ours as `host`), then open a terminal at the root of the new solution and install the following packages:
 
 +++ pnpm
 ```bash
-pnpm add -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript
 pnpm add @squide/core @squide/react-router @squide/webpack-module-federation react react-dom react-router-dom
 ```
 +++ yarn
 ```bash
-yarn add -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript
 yarn add @squide/core @squide/react-router @squide/webpack-module-federation react react-dom react-router-dom
 ```
 +++ npm
 ```bash
-npm install -D @workleap/webpack-configs @workleap/swc-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript
 npm install @squide/core @squide/react-router @squide/webpack-module-federation react react-dom react-router-dom
 ```
 +++
+
+!!!warning
+While you can use any package manager to develop an application with `@squide`, it is highly recommended that you use [PNPM](https://pnpm.io/) as the following guide has been developed and tested with PNPM.
+!!!
 
 ## 2. Setup the application
 
@@ -49,6 +54,17 @@ host
 ├── swc.build.js
 ├── webpack.dev.js
 ├── webpack.build.js
+├── package.json
+```
+
+### package.json
+
+Then, ensure that you are developing your application using [ESM syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) by specifying `type: module` in your `package.json` file:
+
+```json host/package.json
+{
+    "type": "module"
+}
 ```
 
 ### Async boundary
@@ -73,7 +89,8 @@ To learn more about this async boundary and the `bootstrap.tsx` file, read the f
 
 Then, instanciate the shell [Runtime](/reference/runtime/runtime-class.md) and [register the remote module](/reference/registration/registerRemoteModules.md) (the configuration of the remote module will be covered in the [next section](create-remote-module.md)):
 
-```tsx !#23,13-15,18-20 host/src/bootstrap.tsx
+```tsx !#14-16,19-21,24 host/src/bootstrap.tsx
+import { Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, Runtime } from "@squide/react-router";
 import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
@@ -96,13 +113,15 @@ const context: AppContext = {
 };
 
 // Register the remote module.
-registerRemoteModules(Remotes, runtime, context);
+registerRemoteModules(Remotes, runtime, { context });
 
-const root = createRoot(document.getElementById("root"));
+const root = createRoot(document.getElementById("root")!);
 
 root.render(
     <RuntimeContext.Provider value={runtime}>
-        <App />
+        <Suspense fallback={<div>Loading...</div>}>
+            <App />
+        </Suspense>
     </RuntimeContext.Provider>
 );
 ```
@@ -112,7 +131,7 @@ root.render(
 Then, [retrieve the routes](/reference/runtime/useRoutes.md) that have been registered by the remote module and create a router instance:
 
 ```tsx !#10,13,17 host/src/App.tsx
-import { lazy, useMemo } from "react";
+import { useMemo } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useRoutes } from "@squide/react-router";
 import { useAreRemotesReady } from "@squide/webpack-module-federation";
@@ -124,7 +143,7 @@ export function App() {
     const isReady = useAreRemotesReady();
 
     // Retrieve the routes registered by the remote modules.
-    const routes = useRoutes(runtime);
+    const routes = useRoutes();
 
     // Create the router instance with an home page and the remote module routes.
     const router = useMemo(() => {
@@ -145,24 +164,26 @@ export function App() {
 
     // Display a loading until the remote modules are registered.
     if (!isReady) {
-        return <Loading />;
+        return <div>Loading...</div>;
     }
 
     // Render the router.
     return (
         <RouterProvider
             router={router}
-            fallbackElement={<Loading />}
+            fallbackElement={<div>Loading...</div>}
         />
     );
 }
 ```
 
+And finally, create the `<Home>` component:
+
 ```tsx host/src/Home.tsx
 export function Home() {
     return (
         <div>Hello from the Home page!</div>
-    )
+    );
 }
 ```
 
@@ -206,7 +227,7 @@ const renderSection: RenderSectionFunction = (elements, index, level) => {
     );
 };
 
-export default function RootLayout() {
+export function RootLayout() {
     // Retrieve the navigation items registered by the remote modules.
     const navigationItems = useNavigationItems();
 
@@ -225,7 +246,7 @@ export default function RootLayout() {
 ## 3. Configure webpack
 
 !!!info
-`@squide` webpack configuration is built on top of [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/), [@workleap/browserslist-config](https://gsoft-inc.github.io/wl-web-configs/browserslist/) and [@workleap/swc-configs](https://gsoft-inc.github.io/wl-web-configs/swc/). If you are having issues with the configuration of these tools, have a look at their documentation websites.
+`@squide` webpack configuration is built on top of [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/), [@workleap/browserslist-config](https://gsoft-inc.github.io/wl-web-configs/browserslist/) and [@workleap/swc-configs](https://gsoft-inc.github.io/wl-web-configs/swc/). If you are having issues with the configuration of these tools, refer to the tools documentation websites.
 !!!
 
 ### HTML template
@@ -262,7 +283,7 @@ import { browserslistToSwc, defineDevConfig } from "@workleap/swc-configs";
 
 const targets = browserslistToSwc();
 
-export default defineDevConfig(targets);
+export const swcConfig = defineDevConfig(targets);
 ```
 
 Then, open the `webpack.dev.js` file and use the [defineDevHostConfig](/reference/webpack/defineDevHostConfig.md) function to configure webpack:
@@ -291,7 +312,7 @@ import { browserslistToSwc, defineBuildConfig } from "@workleap/swc-configs";
 
 const targets = browserslistToSwc();
 
-export default defineBuildConfig(targets);
+export const swcConfig = defineBuildConfig(targets);
 ```
 
 Then, open the `webpack.build.js` file and use the [defineBuildHostConfig](/reference/webpack/defineBuildHostConfig.md) function to configure webpack:
@@ -309,6 +330,28 @@ export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/"
 If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/).
 !!!
 
-## 4. Try the application :rocket:
+## 4. Add CLI scripts
 
-Start the application, and you should see the home page. Even if the remote module application is not yet available, the host application will gracefully load.
+To initiate the development server, add the following script to the application `package.json` file:
+
+```json host/package.json
+{
+    "dev": "webpack serve --config webpack.dev.js"
+}
+```
+
+To build the application, add the following script to the application `package.json` file:
+
+```json host/package.json
+{
+    "build": "webpack --config webpack.build.js"
+}
+```
+
+## 5. Try the application :rocket:
+
+Start the application in a development environment using the `dev` script. You should see the home page. Even if the remote module application is not yet available, the host application will gracefully load.
+
+## 6. Sample application
+
+For a functional sample of an host application, have a look at the `@sample/host` application of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/host).

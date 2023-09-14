@@ -63,7 +63,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { useIsAuthenticated } from "@squide/react-router";
 import { sessionManager } from "./session.ts";
 
-export default function Login() {
+export function Login() {
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
 
@@ -129,7 +129,7 @@ Add a logout page to the application:
 import { Link } from "react-router-dom";
 import { sessionManager } from "./session.ts";
 
-export default function Logout() {
+export function Logout() {
     sessionManager.clearSession();
 
     return (
@@ -189,7 +189,7 @@ const renderSection: RenderSectionFunction = (elements, index, level) => {
     );
 };
 
-export default function AuthenticatedLayout() {
+export function AuthenticatedLayout() {
     // Retrieve the current user session.
     const session = useSession() as Session;
 
@@ -236,7 +236,7 @@ export function RootLayout() {
 
 Assemble everything with React Router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes):
 
-```tsx !#30-31,34-35,39,42 host/src/App.tsx
+```tsx !#29-30,33-34,38,41 host/src/App.tsx
 import { lazy, useMemo } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useRoutes } from "@squide/react-router";
@@ -244,12 +244,11 @@ import { useAreRemotesReady } from "@squide/webpack-module-federation";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
-
-const AuthenticatedLayout = lazy(() => import("./AuthenticatedLayout.tsx"));
-const ModuleErrorBoundary = lazy(() => import("./ModuleErrorBoundary.tsx"));
-const Home = lazy(() => import("./Home.tsx"));
-const Login = lazy(() => import("./Login.tsx"));
-const Logout = lazy(() => import("./Logout.tsx"));
+import { AuthenticatedLayout } from "./AuthenticatedLayout.tsx";
+import { ModuleErrorBoundary } from "./ModuleErrorBoundary.tsx";
+import { Home } from "./Home.tsx";
+import { Login } from "./Login.tsx";
+import { Logout } from "./Logout.tsx";
 
 export function App() {
     const isReady = useAreRemotesReady();
@@ -318,6 +317,10 @@ export function App() {
 ## Try the application :rocket:
 
 Start the application and attempt navigating to the root page (`/`). You will be redirected to the `/login` page. Login with `"temp"` / `"temp"`, you will be redirected to the root page.
+
+## Sample
+
+For a functional sample of an application shell with authentication, have a look at the `/shell` folder of the `@sample/shared` package of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/shared/src/shell).
 
 
 

@@ -98,7 +98,9 @@ export function useAppRouter({ rootRoutes = [] }: UseAppRouterOptions = {}) {
 This guide only covers the `RootLayout` and `RootErrorBoundary` but the same goes for other shell assets such as an `AuthenticationBoundary`.
 !!!
 
-[!ref icon="mark-github" text="View a shell package example on Github"](https://github.com/gsoft-inc/wl-squide/tree/main/sample/shared/shell)
+### Sample
+
+For a functional sample of an application shell with a `useAppRouter` hook, have a look at the `/shell` folder of the `@sample/shared` package of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/shared/src/shell).
 
 ## Host application
 
@@ -152,8 +154,6 @@ export function App() {
 ## Remote module
 
 With our new setup in place, we can now configure the remote module to be developed in isolation. The goal is to start the module development server and render the module pages with the same layout and functionalities as if it was rendered by the host application.
-
-[!ref icon="mark-github" text="View a remote module project example on Github"](https://github.com/gsoft-inc/wl-squide/tree/main/sample/remote-module)
 
 ### Add the shell dependency
 
@@ -296,11 +296,13 @@ export default config;
 
 Start the remote module in isolation by running the `dev-local` script. The application shell should wrap the pages of the module and the default page should be `<DevHome>`.
 
+### Sample application
+
+For a functional sample of a **remote** module application with an isolated development environment, have a look at the `@sample/remote-module` application of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/remote-module).
+
 ## Local module
 
 Similarly to remote modules, the same isolated setup can be achieved for local modules. The main difference is that the `webpack.config.js` file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on webpack and [Module Federation](https://webpack.js.org/concepts/module-federation/).
-
-[!ref icon="mark-github" text="View a local module project example on Github"](https://github.com/gsoft-inc/wl-squide/tree/main/sample/local-module)
 
 ### Install the packages
 
@@ -422,3 +424,6 @@ Next, add a new `dev-local` script to the `package.json` file to start the local
 
 Start the remote module in isolation by running the `dev-local` script. The application shell should wrap the pages of the module and the default page should be `<DevHome>`.
 
+### Sample application
+
+For a functional sample of a **local** module application with an isolated development environment, have a look at the `@sample/local-module` application of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/local-module).

@@ -219,4 +219,4 @@ Start the `host`, `remote-module` and `local-module` applications in development
 
 ## 7. Sample module
 
-For a functional sample of a **local** module, have a look at the `@sample/local-module` application of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/local-module).
+For a functional sample of a **local** module application, have a look at the `@sample/local-module` application of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/local-module).

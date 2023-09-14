@@ -211,5 +211,5 @@ Start the `host` and the `remote-module` applications in development mode using 
 
 ## 6. Sample module
 
-For a functional sample of a **remote** module, have a look at the `@sample/remote-module` application of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/remote-module).
+For a functional sample of a **remote** module application, have a look at the `@sample/remote-module` application of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/remote-module).
 

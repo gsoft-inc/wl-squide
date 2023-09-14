@@ -75,7 +75,7 @@ export function RootLayout() {
 }
 ```
 
-In the previous code sample, a `RootErrorBoundary` is declared below the `RootLayout` but above the routes of the *remote module*. By doing so, if a module encounters an unhandled error, the nested error boundary will only replace the section rendered by the `Outlet` component within the `RootLayout` rather than the entire page.
+In the previous code sample, a `RootErrorBoundary` is declared below the `RootLayout` but above the routes of the remote module. By doing so, if a module encounters an unhandled error, the nested error boundary will only replace the section rendered by the `Outlet` component within the `RootLayout` rather than the entire page.
 
 By implementing this mechanism, the level of failure isolation achieved is **comparable** to that of an **iframes** or **subdomains** implementation. With this mechanism, failure isolation **is as good as** with an **iframes** or **subdomains** implementation.
 

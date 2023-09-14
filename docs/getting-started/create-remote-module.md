@@ -54,7 +54,7 @@ remote-module
 ├── package.json
 ```
 
-### Package.json
+### package.json
 
 Then, ensure that you are developing your module using [ESM syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) by specifying `type: module` in your `package.json` file:
 
@@ -68,12 +68,10 @@ Then, ensure that you are developing your module using [ESM syntax](https://deve
 
 Then, register the remote module [routes](/reference/runtime/runtime-class.md#register-routes) and [navigation items](/reference/runtime/runtime-class.md#register-navigation-items):
 
-```tsx !#8-13,15-20 remote-module/src/register.tsx
-import { lazy } from "react";
+```tsx !#6-11,13-18 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import type { AppContext } from "@sample/shared";
-
-const Page = lazy(() => import("./Page"));
+import { Page } from "./Page.tsx";
 
 export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime: Runtime, context: AppContext) => {
     runtime.registerRoutes([
@@ -92,10 +90,10 @@ export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime: R
 }
 ```
 
-And finally, create the `Page` component:
+And finally, create the `<Page>` component:
 
 ```tsx remote-module/src/Page.tsx
-export default function Page() {
+export function Page() {
     return (
         <div>Hello from Remote/Page!</div>
     );
@@ -105,7 +103,7 @@ export default function Page() {
 ## 3. Configure webpack
 
 !!!info
-`@squide` webpack configuration is built on top of [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/), [@workleap/browserslist-config](https://gsoft-inc.github.io/wl-web-configs/browserslist/) and [@workleap/swc-configs](https://gsoft-inc.github.io/wl-web-configs/swc/). If you are having issues with the configuration of these tools, have a look at their documentation websites.
+`@squide` webpack configuration is built on top of [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/), [@workleap/browserslist-config](https://gsoft-inc.github.io/wl-web-configs/browserslist/) and [@workleap/swc-configs](https://gsoft-inc.github.io/wl-web-configs/swc/). If you are having issues with the configuration of these tools, refer to the tools documentation websites.
 !!!
 
 ### HTML template
@@ -213,5 +211,5 @@ Start the `host` and the `remote-module` applications in development mode using 
 
 ## 6. Sample module
 
-For a functional sample of a **remote** module, have a look at the `@sample/remote-module` application of the `squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/remote-module).
+For a functional sample of a **remote** module, have a look at the `@sample/remote-module` application of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/remote-module).
 

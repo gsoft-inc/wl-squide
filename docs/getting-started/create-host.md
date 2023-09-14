@@ -57,7 +57,7 @@ host
 ├── package.json
 ```
 
-### Package.json
+### package.json
 
 Then, ensure that you are developing your application using [ESM syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) by specifying `type: module` in your `package.json` file:
 
@@ -177,6 +177,8 @@ export function App() {
 }
 ```
 
+And finally, create the `<Home>` component:
+
 ```tsx host/src/Home.tsx
 export function Home() {
     return (
@@ -244,7 +246,7 @@ export function RootLayout() {
 ## 3. Configure webpack
 
 !!!info
-`@squide` webpack configuration is built on top of [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/), [@workleap/browserslist-config](https://gsoft-inc.github.io/wl-web-configs/browserslist/) and [@workleap/swc-configs](https://gsoft-inc.github.io/wl-web-configs/swc/). If you are having issues with the configuration of these tools, have a look at their documentation websites.
+`@squide` webpack configuration is built on top of [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/), [@workleap/browserslist-config](https://gsoft-inc.github.io/wl-web-configs/browserslist/) and [@workleap/swc-configs](https://gsoft-inc.github.io/wl-web-configs/swc/). If you are having issues with the configuration of these tools, refer to the tools documentation websites.
 !!!
 
 ### HTML template
@@ -352,4 +354,4 @@ Start the application in a development environment using the `dev` script. You s
 
 ## 6. Sample application
 
-For a functional sample of an host application, have a look at the `@sample/host` application of the `squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/host).
+For a functional sample of an host application, have a look at the `@sample/host` application of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/host).

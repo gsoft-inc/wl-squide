@@ -118,12 +118,12 @@ Then, incorporate the newly introduced `useAppRouter` hook:
 
 ```tsx !#9-16 host/src/App.tsx
 import { RouterProvider } from "react-router-dom";
-import { useAreRemotesReady } from "@squide/webpack-module-federation";
+import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { useAppRouter } from "@sample/shell";
 import { Home } from "./Home.tsx";
 
 export function App() {
-    const isReady = useAreRemotesReady();
+    const isReady = useAreModulesReady();
 
     const router = useAppRouter({
         rootRoutes: [

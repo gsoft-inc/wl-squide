@@ -133,13 +133,13 @@ Then, [retrieve the routes](/reference/runtime/useRoutes.md) that have been regi
 import { useMemo } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useRoutes } from "@squide/react-router";
-import { useAreRemotesReady } from "@squide/webpack-module-federation";
+import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { RootLayout } from "./RootLayout.tsx";
 import { Home } from "./Home.tsx";
 
 export function App() {
     // Re-render the application once the remote modules are registered.
-    const isReady = useAreRemotesReady();
+    const isReady = useAreModulesReady();
 
     // Retrieve the routes registered by the remote modules.
     const routes = useRoutes();

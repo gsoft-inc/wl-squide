@@ -4,7 +4,8 @@ export class RuntimeLogger {
     private loggers: Logger[];
 
     constructor(loggers: Logger[] = []) {
-        this.loggers = loggers;
+        // Filter out undefined values.
+        this.loggers = loggers.map(x => x);
     }
 
     private log(action: (logger: Logger) => Promise<unknown>) {

@@ -5,13 +5,16 @@ import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-mo
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App.tsx";
-import { registerDistributedTabsPage } from "./distributedTabs/register.tsx";
 import { sessionAccessor } from "./session.ts";
 
 const Remotes: RemoteDefinition[] = [
     {
         name: "remote1",
         url: isNetlify ? "https://squide-remote-module.netlify.app" : "http://localhost:8081"
+    },
+    {
+        name: "remote2",
+        url: isNetlify ? "https://squide-another-remote-module.netlify.app" : "http://localhost:8082"
     }
 ];
 
@@ -24,7 +27,7 @@ const context: AppContext = {
     name: "Test app"
 };
 
-registerLocalModules([registerDistributedTabsPage, registerLocalModule], runtime, { context });
+registerLocalModules([registerLocalModule], runtime, { context });
 
 registerRemoteModules(Remotes, runtime, { context });
 

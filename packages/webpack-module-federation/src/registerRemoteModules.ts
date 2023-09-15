@@ -1,10 +1,11 @@
-import { isNil, registerModule, type AbstractRuntime } from "@squide/core";
+import { isNil, registerModule, type AbstractRuntime, type ModuleRegistrationStatus } from "@squide/core";
 import { loadRemote } from "./loadRemote.ts";
 import { RemoteEntryPoint, RemoteModuleName, type RemoteDefinition } from "./remoteDefinition.ts";
 
-export type RegistrationStatus = "none" | "in-progress" | "ready";
+let registrationStatus: ModuleRegistrationStatus = "none";
 
-export let registrationStatus: RegistrationStatus = "none";
+// Aliasing to make the name more explicit to external modules.
+export { registrationStatus as remoteModulesRegistrationStatus };
 
 export interface RegistrationError {
     // The remote base URL
@@ -33,10 +34,14 @@ export async function registerRemoteModules(remotes: RemoteDefinition[], runtime
     registrationStatus = "in-progress";
 
     await Promise.allSettled(remotes.map(async (x, index) => {
-        const remoteUrl = new URL(RemoteEntryPoint, x.url).toString();
+        let remoteUrl;
+
         const containerName = x.name;
 
         try {
+            // Is included in the try/catch becase the URL could be invalid and cause an error.
+            remoteUrl = new URL(RemoteEntryPoint, x.url).toString();
+
             runtime.logger.information(`[squide] ${index + 1}/${remotes.length} Loading module "${RemoteModuleName}" from container "${containerName}" of remote "${remoteUrl}".`);
 
             const module = await loadRemote(remoteUrl, containerName, RemoteModuleName);
@@ -49,12 +54,15 @@ export async function registerRemoteModules(remotes: RemoteDefinition[], runtime
 
             registerModule(module.register, runtime, context);
 
-            runtime.logger.information(`[squide] ${index + 1}/${remotes.length} container "${containerName}" of remote "${remoteUrl}" has been registered".`);
+            runtime.logger.information(`[squide] ${index + 1}/${remotes.length} Container "${containerName}" of remote "${remoteUrl}" registration completed.`);
         } catch (error: unknown) {
-            runtime.logger.error(`[squide] An error occured while registering module "${RemoteModuleName}" from container "${containerName}" of remote "${remoteUrl}".`, error);
+            runtime.logger.error(
+                `[squide] ${index + 1}/${remotes.length} An error occured while registering module "${RemoteModuleName}" from container "${containerName}" of remote "${remoteUrl}".`,
+                error
+            );
 
             errors.push({
-                url: remoteUrl,
+                url: remoteUrl ?? `Partial URL is: "${x.url}"`,
                 containerName,
                 moduleName: RemoteModuleName,
                 error

@@ -25,9 +25,10 @@
         "dev-sample": "pnpm --filter \"./sample/*\" -r --parallel dev",
         "build-sample": "pnpm --filter \"./sample/*\" -r --parallel build",
         "serve-sample": "pnpm --filter \"./sample/*\" -r --parallel serve-build",
-        "deploy-sample": "cross-env NETLIFY=true pnpm build-sample && pnpm run deploy-sample:host && pnpm run deploy-sample:remote-module",
+        "deploy-sample": "cross-env NETLIFY=true pnpm build-sample && pnpm run deploy-sample:host && pnpm run deploy-sample:remote-module && pnpm run deploy-sample:another-remote-module",
         "deploy-sample:host": "netlify deploy --dir=sample/host/dist --site=ae684cea-e6b1-4293-95d6-fc82462654c8 --prod",
         "deploy-sample:remote-module": "netlify deploy --dir=sample/remote-module/dist --site=43234f6e-a884-410e-9b4d-f290459f841f --prod",
+        "deploy-sample:another-remote-module": "netlify deploy --dir=sample/another-remote-module/dist --site=2673b626-74aa-4c03-8a8f-8c794e90fd07 --prod",
         "dev-docs": "retype start",
         "list-outdated-deps": "pnpm outdated -r --format list",
         "update-outdated-deps": "pnpm update -r --latest"

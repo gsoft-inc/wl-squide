@@ -1,10 +1,6 @@
 import { createIndexKey } from "../src/routeRegistry.ts";
 import { Runtime } from "../src/runtime.ts";
 
-/*
-- "when the route is not an index route and the path ends with a separator, strip the separator"
-*/
-
 describe("createIndexKey", () => {
     test("when the route is an index route, append \"index\" to the parent path", () => {
         const result1 = createIndexKey({
@@ -88,15 +84,58 @@ describe("registerRoutes", () => {
         expect(runtime.routes[0].children?.length).toBe(1);
     });
 
-    test("when the layout route has not already been registered, do not register the nested route", () => {
+    test("when the layout route has not been registered, do not register the nested route", () => {
         const runtime = new Runtime();
 
-        expect(() => runtime.registerRoutes([
+        runtime.registerRoutes([
             {
                 path: "/layout/nested",
                 element: <div>Hello!</div>
             }
-        ], { layoutPath: "/layout" })).toThrow();
+        ], { layoutPath: "/layout" });
+
+        expect(runtime.routes.length).toBe(0);
+    });
+
+    test("when the layout route has not been registered, register the pending route once the layout route is registered", () => {
+        const runtime = new Runtime();
+
+        runtime.registerRoutes([
+            {
+                path: "/layout/nested",
+                element: <div>Hello!</div>
+            }
+        ], { layoutPath: "/layout" });
+
+        runtime.registerRoutes([
+            {
+                path: "/layout/another-nested",
+                element: <div>Hello!</div>
+            }
+        ], { layoutPath: "/layout" });
+
+        expect(runtime.routes.length).toBe(0);
+
+        runtime.registerRoutes([
+            {
+                path: "/foo",
+                element: <div>Hello!</div>
+            }
+        ]);
+
+        expect(runtime.routes.length).toBe(1);
+        expect(runtime.routes[0].children).toBeUndefined();
+
+        runtime.registerRoutes([
+            {
+                path: "/layout",
+                element: <div>Hello!</div>
+            }
+        ]);
+
+        expect(runtime.routes.length).toBe(2);
+        expect(runtime.routes[1].children).toBeDefined();
+        expect(runtime.routes[1].children?.length).toBe(2);
     });
 
     test("can register a deeply nested route", () => {
@@ -287,6 +326,41 @@ describe("registerNavigationItems", () => {
 
         expect(runtime.getNavigationItems("section-menu").length).toBe(1);
         expect(runtime.getNavigationItems("section-menu")[0].label).toBe("Section");
+    });
+});
+
+describe("_completeRegistration", () => {
+    test("when the registration is completed and there are no pending registrations, do nothing", () => {
+        const runtime = new Runtime();
+
+        runtime.registerRoutes([
+            {
+                path: "/layout/nested",
+                element: <div>Hello!</div>
+            }
+        ], { layoutPath: "/layout" });
+
+        runtime.registerRoutes([
+            {
+                path: "/layout",
+                element: <div>Hello!</div>
+            }
+        ]);
+
+        expect(() => runtime._completeRegistration()).not.toThrow();
+    });
+
+    test("when the registration is completed and there are pending registrations, throw an error", () => {
+        const runtime = new Runtime();
+
+        runtime.registerRoutes([
+            {
+                path: "/layout/nested",
+                element: <div>Hello!</div>
+            }
+        ], { layoutPath: "/layout" });
+
+        expect(() => runtime._completeRegistration()).toThrow();
     });
 });
 

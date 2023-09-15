@@ -30,13 +30,13 @@ An array of `Route`.
 ```tsx !#13-27,31,35 host/src/App.tsx
 import { useCallback, useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useAreRemotesReady } from "@squide/webpack-module-federation";
+import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { useRoutes, useHoistedRoutes, type Route } from "@squide/react-router";
 import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
 export function App() {
-    const isReady = useAreRemotesReady();
+    const isReady = useAreModulesReady();
 
     const routes = useRoutes();
 
@@ -112,13 +112,13 @@ For a detailed walkthrough, read the guide on [how to override the host layout](
 ```tsx !#15,18 host/src/App.tsx
 import { useCallback, useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useAreRemotesReady } from "@squide/webpack-module-federation";
+import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { useRoutes, useHoistedRoutes, type Route } from "@squide/react-router";
 import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
 export function App() {
-    const isReady = useAreRemotesReady();
+    const isReady = useAreModulesReady();
 
     const routes = useRoutes();
 
@@ -199,14 +199,14 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
 ```tsx #17 host/src/App.tsx
 import { useCallback, useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useAreRemotesReady } from "@squide/webpack-module-federation";
+import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { useRoutes, useHoistedRoutes, type Route } from "@squide/react-router";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
 export function App() {
-    const isReady = useAreRemotesReady();
+    const isReady = useAreModulesReady();
 
     const routes = useRoutes();
 
@@ -275,13 +275,13 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
 ```tsx !#26-29 host/src/App.tsx
 import { useCallback, useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useAreRemotesReady } from "@squide/webpack-module-federation";
+import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { useRoutes, useHoistedRoutes, type Route } from "@squide/react-router";
 import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
 export function App() {
-    const isReady = useAreRemotesReady();
+    const isReady = useAreModulesReady();
 
     const routes = useRoutes();
 

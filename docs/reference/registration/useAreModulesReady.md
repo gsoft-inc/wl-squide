@@ -1,6 +1,6 @@
-# useAreRemotesReady
+# useAreModulesReady
 
-Force the application to re-render once all the remote modules are registered. Without this hook, the page is rendered with an empty router as it happens before the remote modules registered their routes and navigation items.
+Force the application to re-render once all the modules are registered. Without this hook, the page is rendered with an empty router as it happens before the remote modules registered their routes and navigation items.
 
 !!!info
 Only use this hook if your application loads remote modules.
@@ -9,7 +9,7 @@ Only use this hook if your application loads remote modules.
 ## Reference
 
 ```ts
-const isReady = useAreRemotesReady(options?: { interval? })
+const isReady = useAreModulesReady(options?: { interval? })
 ```
 
 ### Parameters
@@ -49,14 +49,14 @@ root.render(
 ```tsx !#10,18-20 host/src/App.tsx
 import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useAreRemotesReady } from "@squide/webpack-module-federation";
+import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { useRoutes } from "@squide/react-router";
 
 export function App() {
-    // Re-render the application once all the remotes are registered.
+    // Re-render the application once all the modules are registered.
     // Otherwise, the remotes routes won't be added to the router as the router will be
     // rendered before the remote modules registered their routes.
-    const isReady = useAreRemotesReady();
+    const isReady = useAreModulesReady();
 
     const routes = useRoutes();
 

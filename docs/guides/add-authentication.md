@@ -240,7 +240,7 @@ Assemble everything with React Router [nested routes](https://reactrouter.com/en
 import { lazy, useMemo } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useRoutes } from "@squide/react-router";
-import { useAreRemotesReady } from "@squide/webpack-module-federation";
+import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
@@ -251,7 +251,7 @@ import { Login } from "./Login.tsx";
 import { Logout } from "./Logout.tsx";
 
 export function App() {
-    const isReady = useAreRemotesReady();
+    const isReady = useAreModulesReady();
 
     const routes = useRoutes();
 
@@ -317,10 +317,6 @@ export function App() {
 ## Try the application :rocket:
 
 Start the application and attempt navigating to the root page (`/`). You will be redirected to the `/login` page. Login with `"temp"` / `"temp"`, you will be redirected to the root page.
-
-## Sample
-
-For a functional sample of an application shell with authentication, have a look at the `/shell` folder of the `@sample/shared` package of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/shared/src/shell).
 
 
 

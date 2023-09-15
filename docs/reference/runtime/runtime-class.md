@@ -15,6 +15,7 @@ const runtime = new Runtime(options?: { loggers?: [], services?: {}, sessionAcce
 ### Parameters
 
 - `options`: An optional object literal of options:
+    - `mode`: An optional mode to optimize `@squide` for `production`. Values are `"development"` (default) and `"production"`.
     - `loggers`: An optional array of `Logger` instances.
     - `services`: An optional string-keyed object literal of custom service instances.
     - `sessionAccessor`: An optional function returning the current session.
@@ -38,6 +39,16 @@ const runtime = new Runtime({
     sessionAccessor: () => {
         return sessionManager.getSession();
     };
+});
+```
+
+### Change the runtime mode
+
+```ts
+import { Runtime } from "@squide/react-router";
+
+const runtime = new Runtime({
+    mode: "production"
 });
 ```
 
@@ -85,7 +96,7 @@ React router [nested routes](https://reactrouter.com/en/main/start/tutorial#nest
 
 To fully harness the power of nested routes, the `registerRoutes` function allows a route to be registered **under any** previously registered **nested layout route**, even if that route was registered by another module.
 
-When registering a new route with the `registerRoutes` function, to render the route under a specific nested layout route, specify a `layoutPath` property that matches the nested layout route's `path` property. The only requirement is that the **nested layout route** must have been **registered** to `@squide` **before** the **new child route**.
+When registering a new route with the `registerRoutes` function, to render the route under a specific nested layout route, specify a `layoutPath` property that matches the nested layout route's `path` property. The only requirement is that the **nested layout route** must be registered with `registerRoutes`.
 
 ```tsx !#10
 import { lazy } from "react";

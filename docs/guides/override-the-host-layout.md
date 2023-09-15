@@ -13,14 +13,14 @@ In many applications, multiple pages often share a **common layout** that includ
 import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useRoutes } from "@squide/react-router";
-import { useAreRemotesReady } from "@squide/webpack-module-federation";
+import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { Home } from "./Home.tsx";
 
 export function App() {
-    const isReady = useAreRemotesReady();
+    const isReady = useAreModulesReady();
 
     const routes = useRoutes();
 
@@ -113,13 +113,13 @@ To hoist module pages, first transform the module routes with the `useHoistedRou
 import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useRoutes, useHoistedRoutes, type Route } from "@squide/react-router";
-import { useAreRemotesReady } from "@squide/webpack-module-federation";
+import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { RootLayout } from "./RootLayout.tsx";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { Home } from "./Home.tsx";
 
 export function App() {
-    const isReady = useAreRemotesReady();
+    const isReady = useAreModulesReady();
 
     const routes = useRoutes();
 
@@ -199,7 +199,3 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
 ```
 
 [!ref icon="gear" text="For additional options, go to the `useHoistedRoutes` hook reference page"](/reference/routing/useHoistedRoutes.md)
-
-## Sample
-
-For a functional sample of an application shell with hoisting activated, have a look at the `/shell` folder of the `@sample/shared` package of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/shared/src/shell).

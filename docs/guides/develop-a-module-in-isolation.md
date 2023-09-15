@@ -29,7 +29,7 @@ host
 
 > The implementation details of the `RootLayout` and `RootErrorBoundary` won't be covered by this guide as it already has been covered many times by other guides.
 
-### package.json
+### Setup the package
 
 First, add the following fields to the `package.json` file:
 
@@ -48,13 +48,11 @@ First, add the following fields to the `package.json` file:
 }
 ```
 
-### Setup the package
-
 Then, install the package dependencies and configure the new package with [tsup](https://gsoft-inc.github.io/wl-web-configs/tsup/).
 
 ### Create useAppRouter
 
-Finally, add a `useAppRouter` hook to the shell package. Its purpose is to provide a **reusable router configuration** that can be utilized by both the host application and the isolated modules. By using this hook, modules developed in isolation can utilize the **same application shell and routing configuration** as the host application. 
+Finally, create a `useAppRouter` hook in the shell package. Its purpose is to provide a **reusable router configuration** that can be utilized by both the host application and the isolated modules. By using this hook, modules developed in isolation can utilize the **same application shell and routing configuration** as the host application. 
 
 ```tsx shell/src/useAppRouter.tsx
 import { useMemo, useState } from "react";
@@ -98,13 +96,9 @@ export function useAppRouter({ rootRoutes = [] }: UseAppRouterOptions = {}) {
 This guide only covers the `RootLayout` and `RootErrorBoundary` but the same goes for other shell assets such as an `AuthenticationBoundary`.
 !!!
 
-### Sample
-
-For a functional sample of an application shell with a `useAppRouter` hook, have a look at the `/shell` folder of the `@sample/shared` package of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/shared/src/shell).
-
 ## Host application
 
-### Add the shell dependency
+### Add the dependencies
 
 Now, let's revisit the host application by first adding a dependency to the new `@sample/shell` package:
 
@@ -116,18 +110,18 @@ Now, let's revisit the host application by first adding a dependency to the new 
 }
 ```
 
-### Incorporate useAppRouter
+### Use useAppRouter
 
 Then, incorporate the newly introduced `useAppRouter` hook:
 
 ```tsx !#9-16 host/src/App.tsx
 import { RouterProvider } from "react-router-dom";
-import { useAreRemotesReady } from "@squide/webpack-module-federation";
+import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { useAppRouter } from "@sample/shell";
 import { Home } from "./Home.tsx";
 
 export function App() {
-    const isReady = useAreRemotesReady();
+    const isReady = useAreModulesReady();
 
     const router = useAppRouter({
         rootRoutes: [
@@ -155,7 +149,7 @@ export function App() {
 
 With our new setup in place, we can now configure the remote module to be developed in isolation. The goal is to start the module development server and render the module pages with the same layout and functionalities as if it was rendered by the host application.
 
-### Add the shell dependency
+### Add the dependencies
 
 To begin, let's start by adding a dependencies to the `@sample/shell` package:
 
@@ -167,12 +161,14 @@ To begin, let's start by adding a dependencies to the `@sample/shell` package:
 }
 ```
 
-### Add new files
+### Create the new files
 
-Then, add the `index.tsx`, `App.tsx`, `DevHome.tsx`, and `webpack.dev.js` files to the remote module application:
+Then, create the following files in the remote module application:
 
-``` !#5-8
+``` !#2-3,7-9
 remote-module
+├── public
+├──── index.html
 ├── src
 ├────── register.tsx
 ├────── Page.tsx
@@ -187,7 +183,8 @@ remote-module
 
 The `index.tsx` file is similar to the `bootstrap.tsx` file of an host application but, tailored for an isolated module. The key distinction is that, since the project is set up for local development, the module is registered with the [registerLocalModules](/reference/registration/registerLocalModules.md) function instead of the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function:
 
-```tsx !#8-10,14 remote-module/src/index.tsx
+```tsx !#9-11,15 remote-module/src/index.tsx
+import { Suspense } from "react"; 
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, Runtime, registerLocalModules } from "@squide/react-router";
 import { App } from "./App.tsx";
@@ -203,7 +200,7 @@ const runtime = new Runtime({
 // is local when developing in isolation.
 registerLocalModules([register], runtime);
 
-const root = createRoot(document.getElementById("root"));
+const root = createRoot(document.getElementById("root")!);
 
 root.render(
     <RuntimeContext.Provider value={runtime}>
@@ -257,7 +254,7 @@ function DevHome() {
 }
 ```
 
-### dev-local script
+### Add a new CLI script
 
 Next, add a new `dev-local` script to the `package.json` file to start the local development server in **"isolation"**:
 
@@ -272,7 +269,36 @@ The `dev-local` script is similar to the `dev` script but introduces a `LOCAL` e
 
 ### Configure webpack
 
-To configure webpack, open the `webpack.dev.js` file and update the configuration to incorporate the `LOCAL` environment variable:
+!!!info
+If you are having issues configuring webpack, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/) documentation website.
+!!!
+
+#### HTML template
+
+First, open the `public/index.html` file created at the beginning of this guide and copy/paste the following [HtmlWebpackPlugin](https://webpack.js.org/plugins/html-webpack-plugin/) template:
+
+```html host/public/index.html
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+</html>
+```
+
+#### Browserslist
+
+Then, open the `.browserslist` file and copy/paste the following content:
+
+``` host/.browserslistrc
+extends @workleap/browserslist-config
+```
+
+#### defineDevConfig
+
+To configure webpack, open the `webpack.dev.js` file and update the configuration to incorporate the `LOCAL` environment variable and the [defineDevConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) function:
 
 ```js !#9,12 remote-module/webpack.dev.js
 // @ts-check
@@ -296,10 +322,6 @@ export default config;
 
 Start the remote module in isolation by running the `dev-local` script. The application shell should wrap the pages of the module and the default page should be `<DevHome>`.
 
-### Sample application
-
-For a functional sample of a **remote** module application with an isolated development environment, have a look at the `@sample/remote-module` application of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/remote-module).
-
 ## Local module
 
 Similarly to remote modules, the same isolated setup can be achieved for local modules. The main difference is that the `webpack.config.js` file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on webpack and [Module Federation](https://webpack.js.org/concepts/module-federation/).
@@ -322,9 +344,9 @@ npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browser
 ```
 +++
 
-### Add new files
+### Create the new files
 
-Then, add the following files to the local module application:
+Then, create the following files in the local module application:
 
 ``` !#2-3,7-12
 local-module
@@ -397,9 +419,9 @@ const targets = browserslistToSwc();
 export const swcConfig = defineDevConfig(targets);
 ```
 
-#### webpack configuration
+#### defineDevConfig
 
-Finally, open the `webpack.config.js` file and use the the [defineDevRemoteModuleConfig](/reference/webpack/defineDevRemoteModuleConfig.md) function to configure webpack:
+Finally, open the `webpack.config.js` file and use the the [defineDevConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) function to configure webpack:
 
 ```js local-module/webpack.config.js
 // @ts-check
@@ -410,7 +432,7 @@ import { swcConfig } from "./swc.config.js";
 export default defineDevConfig(swcConfig);
 ```
 
-### dev-local script
+### Add a new CLI script
 
 Next, add a new `dev-local` script to the `package.json` file to start the local development server:
 
@@ -423,7 +445,3 @@ Next, add a new `dev-local` script to the `package.json` file to start the local
 ### Try it :rocket:
 
 Start the remote module in isolation by running the `dev-local` script. The application shell should wrap the pages of the module and the default page should be `<DevHome>`.
-
-### Sample application
-
-For a functional sample of a **local** module application with an isolated development environment, have a look at the `@sample/local-module` application of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/local-module).

@@ -1,10 +1,11 @@
 ---
 order: 100
 label: Create an host app
+toc:
+    depth: 2-4
 ---
 
 # Create an host application
-
 
 Let's begin by creating the application that will serve as the entry point for our federated application and host the application modules.
 
@@ -35,7 +36,7 @@ While you can use any package manager to develop an application with `@squide`, 
 
 ## 2. Setup the application
 
-### Application structure
+### Create the new files
 
 First, create the following files:
 
@@ -57,7 +58,7 @@ host
 ├── package.json
 ```
 
-### package.json
+### ESM syntax
 
 Then, ensure that you are developing your application using [ESM syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) by specifying `type: module` in your `package.json` file:
 
@@ -134,13 +135,13 @@ Then, [retrieve the routes](/reference/runtime/useRoutes.md) that have been regi
 import { useMemo } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useRoutes } from "@squide/react-router";
-import { useAreRemotesReady } from "@squide/webpack-module-federation";
+import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { RootLayout } from "./RootLayout.tsx";
 import { Home } from "./Home.tsx";
 
 export function App() {
     // Re-render the application once the remote modules are registered.
-    const isReady = useAreRemotesReady();
+    const isReady = useAreModulesReady();
 
     // Retrieve the routes registered by the remote modules.
     const routes = useRoutes();
@@ -274,6 +275,8 @@ extends @workleap/browserslist-config
 
 ### Development configuration
 
+#### SWC
+
 To configure webpack for a **development** environment, first open the `swc.dev.js` file and copy/paste the following code:
 
 ```js host/swc.dev.js
@@ -285,6 +288,8 @@ const targets = browserslistToSwc();
 
 export const swcConfig = defineDevConfig(targets);
 ```
+
+#### defineDevHostConfig
 
 Then, open the `webpack.dev.js` file and use the [defineDevHostConfig](/reference/webpack/defineDevHostConfig.md) function to configure webpack:
 
@@ -303,6 +308,8 @@ If you are having issues with the wepack configuration that are not related to m
 
 ### Build configuration
 
+#### SWC
+
 To configure webpack for a **build** environment, first open the `swc.build.js` file and copy/paste the following code:
 
 ```js host/swc.build.js
@@ -314,6 +321,8 @@ const targets = browserslistToSwc();
 
 export const swcConfig = defineBuildConfig(targets);
 ```
+
+#### defineBuildHostConfig
 
 Then, open the `webpack.build.js` file and use the [defineBuildHostConfig](/reference/webpack/defineBuildHostConfig.md) function to configure webpack:
 
@@ -351,7 +360,3 @@ To build the application, add the following script to the application `package.j
 ## 5. Try the application :rocket:
 
 Start the application in a development environment using the `dev` script. You should see the home page. Even if the remote module application is not yet available, the host application will gracefully load.
-
-## 6. Sample application
-
-For a functional sample of an host application, have a look at the `@sample/host` application of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/host).

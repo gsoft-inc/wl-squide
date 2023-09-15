@@ -17,13 +17,13 @@ In the following code sample, a `RootErrorBoundary` is declared below the `RootL
 ```tsx !#16,20 host/src/App.tsx
 import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useAreRemotesReady } from "@squide/webpack-module-federation";
+import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { useRoutes } from "@squide/react-router";
 import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
 export function App() {
-    const isReady = useAreRemotesReady();
+    const isReady = useAreModulesReady();
 
     const routes = useRoutes();
 
@@ -84,7 +84,3 @@ By implementing this mechanism, the level of failure isolation achieved is **com
 !!!warning
 If your application is [hoisting page](/reference/routing/useHoistedRoutes.md), it's important to note that they will be rendered outside of the host application's root error boundary. To prevent breaking the entire application when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router's `errorElement` property for each hoisted page.
 !!!
-
-## Sample
-
-For a functional sample of an application shell with error boundaries, have a look at the `/shell` folder of the `@sample/shared` package of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/shared/src/shell).

@@ -1,5 +1,11 @@
 # @squide/core
 
+## 1.1.1
+
+### Patch Changes
+
+- [#77](https://github.com/gsoft-inc/wl-squide/pull/77) [`5d3295c`](https://github.com/gsoft-inc/wl-squide/commit/5d3295cfdb98ce56b8878dcb1bb58fb3f6fac975) Thanks [@patricklafrance](https://github.com/patricklafrance)! - TBD
+
 ## 1.1.0
 
 ### Minor Changes

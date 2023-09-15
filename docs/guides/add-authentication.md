@@ -318,10 +318,6 @@ export function App() {
 
 Start the application and attempt navigating to the root page (`/`). You will be redirected to the `/login` page. Login with `"temp"` / `"temp"`, you will be redirected to the root page.
 
-## Sample
-
-For a functional sample of an application shell with authentication, have a look at the `/shell` folder of the `@sample/shared` package of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/shared/src/shell).
-
 
 
 

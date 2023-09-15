@@ -64,4 +64,9 @@ export abstract class AbstractRuntime<TRoute = unknown, TNavigationItem = unknow
 
         return this._sessionAccessor();
     }
+
+    // Prefixed by _ to indicate that it's considered as a "internal" method.
+    _completeRegistration() {
+        this._logger.debug("[squide] Completed modules registration.");
+    }
 }

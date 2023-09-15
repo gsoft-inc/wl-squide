@@ -98,10 +98,6 @@ export function useAppRouter({ rootRoutes = [] }: UseAppRouterOptions = {}) {
 This guide only covers the `RootLayout` and `RootErrorBoundary` but the same goes for other shell assets such as an `AuthenticationBoundary`.
 !!!
 
-### Sample
-
-For a functional sample of an application shell with a `useAppRouter` hook, have a look at the `/shell` folder of the `@sample/shared` package of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/shared/src/shell).
-
 ## Host application
 
 ### Add the shell dependency
@@ -169,9 +165,9 @@ To begin, let's start by adding a dependencies to the `@sample/shell` package:
 
 ### Add new files
 
-Then, add the `index.tsx`, `App.tsx`, `DevHome.tsx`, and `webpack.dev.js` files to the remote module application:
+Then, add the `index.tsx`, `App.tsx` and, `DevHome.tsx`files to the remote module application:
 
-``` !#5-8
+``` !#5-7
 remote-module
 ├── src
 ├────── register.tsx
@@ -203,7 +199,7 @@ const runtime = new Runtime({
 // is local when developing in isolation.
 registerLocalModules([register], runtime);
 
-const root = createRoot(document.getElementById("root"));
+const root = createRoot(document.getElementById("root")!);
 
 root.render(
     <RuntimeContext.Provider value={runtime}>
@@ -295,10 +291,6 @@ export default config;
 ### Try it :rocket:
 
 Start the remote module in isolation by running the `dev-local` script. The application shell should wrap the pages of the module and the default page should be `<DevHome>`.
-
-### Sample application
-
-For a functional sample of a **remote** module application with an isolated development environment, have a look at the `@sample/remote-module` application of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/remote-module).
 
 ## Local module
 
@@ -423,7 +415,3 @@ Next, add a new `dev-local` script to the `package.json` file to start the local
 ### Try it :rocket:
 
 Start the remote module in isolation by running the `dev-local` script. The application shell should wrap the pages of the module and the default page should be `<DevHome>`.
-
-### Sample application
-
-For a functional sample of a **local** module application with an isolated development environment, have a look at the `@sample/local-module` application of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/local-module).

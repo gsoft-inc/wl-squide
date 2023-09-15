@@ -199,7 +199,3 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
 ```
 
 [!ref icon="gear" text="For additional options, go to the `useHoistedRoutes` hook reference page"](/reference/routing/useHoistedRoutes.md)
-
-## Sample
-
-For a functional sample of an application shell with hoisting activated, have a look at the `/shell` folder of the `@sample/shared` package of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/shared/src/shell).

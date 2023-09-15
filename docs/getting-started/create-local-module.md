@@ -216,7 +216,3 @@ To build the module, add the following script to the application `package.json` 
 ## 6. Try the application :rocket:
 
 Start the `host`, `remote-module` and `local-module` applications in development mode using the `dev` script. You should now notice an additional link in the navigation menu. Click on the link to navigate to the page of your new **local** module!
-
-## 7. Sample module
-
-For a functional sample of a **local** module application, have a look at the `@sample/local-module` application of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/local-module).

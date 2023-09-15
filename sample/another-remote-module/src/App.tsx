@@ -1,28 +1,25 @@
 import { useAppRouter } from "@sample/shared";
-import { useAreModulesReady } from "@squide/webpack-module-federation";
-import { lazy } from "react";
 import { RouterProvider } from "react-router-dom";
 import { sessionManager } from "./session.ts";
 
-const Home = lazy(() => import("./Home.tsx"));
+function DevHome() {
+    return (
+        <div>
+            <h2>Another remote module development home page</h2>
+            <p>Hey!</p>
+        </div>
+    );
+}
 
 export function App() {
-    // Re-render the app once all the remotes are registered.
-    // Otherwise, the remotes routes won't be added to the router.
-    const isReady = useAreModulesReady();
-
     const router = useAppRouter(sessionManager, {
         managedRoutes: [
             {
                 index: true,
-                element: <Home />
+                element: <DevHome />
             }
         ]
     });
-
-    if (!isReady) {
-        return <div>Loading...</div>;
-    }
 
     return (
         <RouterProvider

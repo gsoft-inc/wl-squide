@@ -5,7 +5,6 @@ label: Create an host app
 
 # Create an host application
 
-
 Let's begin by creating the application that will serve as the entry point for our federated application and host the application modules.
 
 ## 1. Install the packages
@@ -351,7 +350,3 @@ To build the application, add the following script to the application `package.j
 ## 5. Try the application :rocket:
 
 Start the application in a development environment using the `dev` script. You should see the home page. Even if the remote module application is not yet available, the host application will gracefully load.
-
-## 6. Sample application
-
-For a functional sample of an host application, have a look at the `@sample/host` application of the `@squide` sandbox on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/host).

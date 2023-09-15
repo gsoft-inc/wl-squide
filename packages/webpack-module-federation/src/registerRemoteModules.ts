@@ -1,10 +1,11 @@
-import { isNil, registerModule, type AbstractRuntime } from "@squide/core";
+import { isNil, registerModule, type AbstractRuntime, type ModuleRegistrationStatus } from "@squide/core";
 import { loadRemote } from "./loadRemote.ts";
 import { RemoteEntryPoint, RemoteModuleName, type RemoteDefinition } from "./remoteDefinition.ts";
 
-export type RegistrationStatus = "none" | "in-progress" | "ready";
+let registrationStatus: ModuleRegistrationStatus = "none";
 
-export let registrationStatus: RegistrationStatus = "none";
+// Aliasing to make the name more explicit to external modules.
+export { registrationStatus as remoteModulesRegistrationStatus };
 
 export interface RegistrationError {
     // The remote base URL
@@ -49,7 +50,7 @@ export async function registerRemoteModules(remotes: RemoteDefinition[], runtime
 
             registerModule(module.register, runtime, context);
 
-            runtime.logger.information(`[squide] ${index + 1}/${remotes.length} container "${containerName}" of remote "${remoteUrl}" has been registered".`);
+            runtime.logger.information(`[squide] ${index + 1}/${remotes.length} Container "${containerName}" of remote "${remoteUrl}" registration completed.`);
         } catch (error: unknown) {
             runtime.logger.error(`[squide] An error occured while registering module "${RemoteModuleName}" from container "${containerName}" of remote "${remoteUrl}".`, error);
 

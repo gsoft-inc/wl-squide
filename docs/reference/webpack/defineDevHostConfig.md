@@ -19,6 +19,7 @@ const webpackConfig = defineDevHostConfig(swcConfig: {}, applicationName, port, 
 - `port`: The host application port.
 - `options`: An optional object literal of options:
     - Accepts most of webpack `definedDevConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/#3-set-predefined-options).
+    - `htmlWebpackPluginOptions`: An optional object literal accepting any property of the [HtmlWebpackPlugin](https://github.com/jantimon/html-webpack-plugin#options).
     - `sharedDependencies`: An optional object literal of additional (or updated) module federation shared dependencies.
     - `moduleFederationPluginOptions`: An optional object literal of [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) options.
 

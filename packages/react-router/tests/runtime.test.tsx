@@ -107,7 +107,24 @@ describe("registerRoutes", () => {
             }
         ], { layoutPath: "/layout" });
 
+        runtime.registerRoutes([
+            {
+                path: "/layout/another-nested",
+                element: <div>Hello!</div>
+            }
+        ], { layoutPath: "/layout" });
+
         expect(runtime.routes.length).toBe(0);
+
+        runtime.registerRoutes([
+            {
+                path: "/foo",
+                element: <div>Hello!</div>
+            }
+        ]);
+
+        expect(runtime.routes.length).toBe(1);
+        expect(runtime.routes[0].children).toBeUndefined();
 
         runtime.registerRoutes([
             {
@@ -116,9 +133,9 @@ describe("registerRoutes", () => {
             }
         ]);
 
-        expect(runtime.routes.length).toBe(1);
-        expect(runtime.routes[0].children).toBeDefined();
-        expect(runtime.routes[0].children?.length).toBe(1);
+        expect(runtime.routes.length).toBe(2);
+        expect(runtime.routes[1].children).toBeDefined();
+        expect(runtime.routes[1].children?.length).toBe(2);
     });
 
     test("can register a deeply nested route", () => {

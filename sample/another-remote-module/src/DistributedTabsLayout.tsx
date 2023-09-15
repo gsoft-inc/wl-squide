@@ -33,7 +33,7 @@ export default function DistributedTabsLayout() {
                 <p>Every tab is registered by a different module and is lazy loaded.</p>
                 {renderedTabs}
                 <div style={{ padding: "20px" }}>
-                    <Suspense>
+                    <Suspense fallback={<div>Loading...</div>}>
                         <Outlet />
                     </Suspense>
                 </div>

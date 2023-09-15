@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.748014790657">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.748124810281">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.4.1">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.4.1.748014790657" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.4.1.748124810281" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.4.1.748014790657" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.4.1.748124810281" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.4.1" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.4.1.748014790657" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.4.1.748014790657" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.4.1.748124810281" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.4.1.748124810281" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
 
@@ -317,14 +317,14 @@
 <pre class="language-tsx" data-line="16,21,24,30,36"><code v-pre class="language-tsx">import { useMemo } from &quot;react&quot;;
 import { createBrowserRouter, RouterProvider } from &quot;react-router-dom&quot;;
 import { useRoutes } from &quot;@squide/react-router&quot;;
-import { useAreRemotesReady } from &quot;@squide/webpack-module-federation&quot;;
+import { useAreModulesReady } from &quot;@squide/webpack-module-federation&quot;;
 import { RootLayout } from &quot;./RootLayout.tsx&quot;;
 import { RootErrorBoundary } from &quot;./RootErrorBoundary.tsx&quot;;
 import { AuthenticationBoundary } from &quot;./AuthenticationBoundary.tsx&quot;;
 import { Home } from &quot;./Home.tsx&quot;;
 
 export function App() {
-    const isReady = useAreRemotesReady();
+    const isReady = useAreModulesReady();
 
     const routes = useRoutes();
 
@@ -414,13 +414,13 @@ export function RootLayout() {
 <pre class="language-tsx" data-line="15-34,38,42"><code v-pre class="language-tsx">import { useMemo } from &quot;react&quot;;
 import { createBrowserRouter, RouterProvider } from &quot;react-router-dom&quot;;
 import { useRoutes, useHoistedRoutes, type Route } from &quot;@squide/react-router&quot;;
-import { useAreRemotesReady } from &quot;@squide/webpack-module-federation&quot;;
+import { useAreModulesReady } from &quot;@squide/webpack-module-federation&quot;;
 import { RootLayout } from &quot;./RootLayout.tsx&quot;;
 import { AuthenticationBoundary } from &quot;./AuthenticationBoundary.tsx&quot;;
 import { Home } from &quot;./Home.tsx&quot;;
 
 export function App() {
-    const isReady = useAreRemotesReady();
+    const isReady = useAreModulesReady();
 
     const routes = useRoutes();
 
@@ -511,13 +511,6 @@ export function register: ModuleRegisterFunction&lt;Runtime&gt;(runtime) {
     <a href="../../reference/routing/usehoistedroutes/" class="absolute block inset-0"></a>
 </div>
 </p>
-<doc-anchor-target id="sample">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#sample">#</doc-anchor-trigger>
-        <span>Sample</span>
-    </h2>
-</doc-anchor-target>
-<p>For a functional sample of an application shell with hoisting activated, have a look at the <code v-pre>/shell</code> folder of the <code v-pre>@sample/shared</code> package of the <code v-pre>@squide</code> sandbox on <a href="https://github.com/gsoft-inc/wl-squide/tree/main/sample/shared/src/shell" class="outbound" target="_blank">GitHub</a>.</p>
 
                                 
                                 <!-- Required only on API pages -->

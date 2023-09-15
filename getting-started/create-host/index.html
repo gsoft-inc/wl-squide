@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.748014790657">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.748124810281">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.4.1">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.4.1.748014790657" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.4.1.748124810281" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.4.1.748014790657" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.4.1.748124810281" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.4.1" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.4.1.748014790657" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.4.1.748014790657" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.4.1.748124810281" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.4.1.748124810281" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
 
@@ -358,10 +358,10 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
         <span>2. Setup the application</span>
     </h2>
 </doc-anchor-target>
-<doc-anchor-target id="application-structure">
+<doc-anchor-target id="create-the-new-files">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#application-structure">#</doc-anchor-trigger>
-        <span>Application structure</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#create-the-new-files">#</doc-anchor-trigger>
+        <span>Create the new files</span>
     </h3>
 </doc-anchor-target>
 <p>First, create the following files:</p>
@@ -382,10 +382,10 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
 ├── webpack.build.js
 ├── package.json</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="packagejson">
+<doc-anchor-target id="esm-syntax">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#packagejson">#</doc-anchor-trigger>
-        <span>package.json</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#esm-syntax">#</doc-anchor-trigger>
+        <span>ESM syntax</span>
     </h3>
 </doc-anchor-target>
 <p>Then, ensure that you are developing your application using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules" class="outbound" target="_blank">ESM syntax</a> by specifying <code v-pre>type: module</code> in your <code v-pre>package.json</code> file:</p>
@@ -485,13 +485,13 @@ root.render(
 <pre class="language-tsx" data-line="10,13,17"><code v-pre class="language-tsx">import { useMemo } from &quot;react&quot;;
 import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
 import { useRoutes } from &quot;@squide/react-router&quot;;
-import { useAreRemotesReady } from &quot;@squide/webpack-module-federation&quot;;
+import { useAreModulesReady } from &quot;@squide/webpack-module-federation&quot;;
 import { RootLayout } from &quot;./RootLayout.tsx&quot;;
 import { Home } from &quot;./Home.tsx&quot;;
 
 export function App() {
     // Re-render the application once the remote modules are registered.
-    const isReady = useAreRemotesReady();
+    const isReady = useAreModulesReady();
 
     // Retrieve the routes registered by the remote modules.
     const routes = useRoutes();
@@ -653,6 +653,12 @@ export function RootLayout() {
         <span>Development configuration</span>
     </h3>
 </doc-anchor-target>
+<doc-anchor-target id="swc">
+    <h4>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#swc">#</doc-anchor-trigger>
+        <span>SWC</span>
+    </h4>
+</doc-anchor-target>
 <p>To configure webpack for a <strong>development</strong> environment, first open the <code v-pre>swc.dev.js</code> file and copy/paste the following code:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/swc.dev.js</div>
@@ -664,6 +670,12 @@ const targets = browserslistToSwc();
 
 export const swcConfig = defineDevConfig(targets);</code></pre>
 </doc-codeblock></div>
+<doc-anchor-target id="definedevhostconfig">
+    <h4>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#definedevhostconfig">#</doc-anchor-trigger>
+        <span>defineDevHostConfig</span>
+    </h4>
+</doc-anchor-target>
 <p>Then, open the <code v-pre>webpack.dev.js</code> file and use the <a href="../../reference/webpack/definedevhostconfig/">defineDevHostConfig</a> function to configure webpack:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/webpack.dev.js</div>
@@ -697,6 +709,12 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080);</code></p
         <span>Build configuration</span>
     </h3>
 </doc-anchor-target>
+<doc-anchor-target id="swc-1">
+    <h4>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#swc-1">#</doc-anchor-trigger>
+        <span>SWC</span>
+    </h4>
+</doc-anchor-target>
 <p>To configure webpack for a <strong>build</strong> environment, first open the <code v-pre>swc.build.js</code> file and copy/paste the following code:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/swc.build.js</div>
@@ -708,6 +726,12 @@ const targets = browserslistToSwc();
 
 export const swcConfig = defineBuildConfig(targets);</code></pre>
 </doc-codeblock></div>
+<doc-anchor-target id="definebuildhostconfig">
+    <h4>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#definebuildhostconfig">#</doc-anchor-trigger>
+        <span>defineBuildHostConfig</span>
+    </h4>
+</doc-anchor-target>
 <p>Then, open the <code v-pre>webpack.build.js</code> file and use the <a href="../../reference/webpack/definebuildhostconfig/">defineBuildHostConfig</a> function to configure webpack:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/webpack.build.js</div>
@@ -762,13 +786,6 @@ export default defineBuildHostConfig(swcConfig, &quot;host&quot;, &quot;http://l
     </h2>
 </doc-anchor-target>
 <p>Start the application in a development environment using the <code v-pre>dev</code> script. You should see the home page. Even if the remote module application is not yet available, the host application will gracefully load.</p>
-<doc-anchor-target id="6-sample-application">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#6-sample-application">#</doc-anchor-trigger>
-        <span>6. Sample application</span>
-    </h2>
-</doc-anchor-target>
-<p>For a functional sample of an host application, have a look at the <code v-pre>@sample/host</code> application of the <code v-pre>@squide</code> sandbox on <a href="https://github.com/gsoft-inc/wl-squide/tree/main/sample/host" class="outbound" target="_blank">GitHub</a>.</p>
 
                                 
                                 <!-- Required only on API pages -->
@@ -861,6 +878,6 @@ export default defineBuildHostConfig(swcConfig, &quot;host&quot;, &quot;http://l
 
     <div id="docs-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "Create an host app", level: 2, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Create an host app", level: 2, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 234 }</script>
 </body>
 </html>

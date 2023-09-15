@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.748014790657">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.4.1.748124810281">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.4.1">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("/wl-squide/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.4.1.748014790657" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.4.1.748124810281" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.4.1.748014790657" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.4.1.748124810281" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.4.1" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.4.1.748014790657" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.4.1.748014790657" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.4.1.748124810281" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.4.1.748124810281" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
 
@@ -332,6 +332,7 @@
 <ul>
 <li><code v-pre>options</code>: An optional object literal of options:
 <ul>
+<li><code v-pre>mode</code>: An optional mode to optimize <code v-pre>@squide</code> for <code v-pre>production</code>. Values are <code v-pre>&quot;development&quot;</code> (default) and <code v-pre>&quot;production&quot;</code>.</li>
 <li><code v-pre>loggers</code>: An optional array of <code v-pre>Logger</code> instances.</li>
 <li><code v-pre>services</code>: An optional string-keyed object literal of custom service instances.</li>
 <li><code v-pre>sessionAccessor</code>: An optional function returning the current session.</li>
@@ -365,6 +366,19 @@ const runtime = new Runtime({
     sessionAccessor: () =&gt; {
         return sessionManager.getSession();
     };
+});</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="change-the-runtime-mode">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#change-the-runtime-mode">#</doc-anchor-trigger>
+        <span>Change the runtime mode</span>
+    </h3>
+</doc-anchor-target>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-typescript"><code v-pre class="language-typescript">import { Runtime } from &quot;@squide/react-router&quot;;
+
+const runtime = new Runtime({
+    mode: &quot;production&quot;
 });</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="register-routes">
@@ -429,7 +443,7 @@ runtime.registerRoutes([
 </doc-anchor-target>
 <p>React router <a href="https://reactrouter.com/en/main/start/tutorial#nested-routes" class="outbound" target="_blank">nested routes</a> enable applications to render nested layouts at various points within the router tree. This is quite helpful for federated applications as it enables composable and decoupled UI.</p>
 <p>To fully harness the power of nested routes, the <code v-pre>registerRoutes</code> function allows a route to be registered <strong>under any</strong> previously registered <strong>nested layout route</strong>, even if that route was registered by another module.</p>
-<p>When registering a new route with the <code v-pre>registerRoutes</code> function, to render the route under a specific nested layout route, specify a <code v-pre>layoutPath</code> property that matches the nested layout route&#x27;s <code v-pre>path</code> property. The only requirement is that the <strong>nested layout route</strong> must have been <strong>registered</strong> to <code v-pre>@squide</code> <strong>before</strong> the <strong>new child route</strong>.</p>
+<p>When registering a new route with the <code v-pre>registerRoutes</code> function, to render the route under a specific nested layout route, specify a <code v-pre>layoutPath</code> property that matches the nested layout route&#x27;s <code v-pre>path</code> property. The only requirement is that the <strong>nested layout route</strong> must be registered with <code v-pre>registerRoutes</code>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-tsx" data-line="10"><code v-pre class="language-tsx">import { lazy } from &quot;react&quot;;
 

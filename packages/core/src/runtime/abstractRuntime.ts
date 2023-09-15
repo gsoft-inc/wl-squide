@@ -4,7 +4,10 @@ import { RuntimeLogger } from "./RuntimeLogger.ts";
 
 export type SessionAccessorFunction = () => unknown;
 
+export type RuntimeMode = "development" | "production";
+
 export interface RuntimeOptions {
+    mode?: RuntimeMode;
     loggers?: Logger[];
     services?: Record<string, unknown>;
     sessionAccessor?: SessionAccessorFunction;
@@ -21,12 +24,14 @@ export interface RegisterNavigationItemsOptions {
 export const RootMenuId = "root";
 
 export abstract class AbstractRuntime<TRoute = unknown, TNavigationItem = unknown> {
+    protected _mode: RuntimeMode;
     protected readonly _logger: RuntimeLogger;
     protected readonly _eventBus: EventBus;
     protected _services: Record<string, unknown>;
     protected _sessionAccessor?: SessionAccessorFunction;
 
-    constructor({ loggers, services = {}, sessionAccessor }: RuntimeOptions = {}) {
+    constructor({ mode = "development", loggers, services = {}, sessionAccessor }: RuntimeOptions = {}) {
+        this._mode = mode;
         this._logger = new RuntimeLogger(loggers);
         this._eventBus = new EventBus({ logger: this._logger });
         this._services = services;
@@ -40,6 +45,10 @@ export abstract class AbstractRuntime<TRoute = unknown, TNavigationItem = unknow
     abstract registerNavigationItems(navigationItems: TNavigationItem[], options?: RegisterNavigationItemsOptions): void;
 
     abstract getNavigationItems(menuId?: string): TNavigationItem[];
+
+    get mode() {
+        return this._mode;
+    }
 
     get logger() {
         return this._logger;

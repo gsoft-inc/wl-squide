@@ -19,7 +19,13 @@ registerRemoteModules(remotes: [], runtime, options?: { context? })
 
 ### Returns
 
-A `Promise` object with an array of [RegistrationError] if any happens during the registration.
+A `Promise` object with an array of `RegistrationError` if any happens during the registration.
+
+- `RegistrationError`:
+    - `url`: The URL of the module federation remote that failed to load.
+    - `containerName`: The name of the [dynamic container](https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers) that `@squide` attempted to recover.
+    - `moduleName`: The name of the [module](#name) that `@squide` attempted to recover.
+    - `error`: The original error object.
 
 ## Usage
 

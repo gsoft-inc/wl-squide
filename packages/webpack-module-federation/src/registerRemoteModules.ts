@@ -34,10 +34,14 @@ export async function registerRemoteModules(remotes: RemoteDefinition[], runtime
     registrationStatus = "in-progress";
 
     await Promise.allSettled(remotes.map(async (x, index) => {
-        const remoteUrl = new URL(RemoteEntryPoint, x.url).toString();
+        let remoteUrl;
+
         const containerName = x.name;
 
         try {
+            // Is included in the try/catch becase the URL could be invalid and cause an error.
+            remoteUrl = new URL(RemoteEntryPoint, x.url).toString();
+
             runtime.logger.information(`[squide] ${index + 1}/${remotes.length} Loading module "${RemoteModuleName}" from container "${containerName}" of remote "${remoteUrl}".`);
 
             const module = await loadRemote(remoteUrl, containerName, RemoteModuleName);
@@ -52,10 +56,13 @@ export async function registerRemoteModules(remotes: RemoteDefinition[], runtime
 
             runtime.logger.information(`[squide] ${index + 1}/${remotes.length} Container "${containerName}" of remote "${remoteUrl}" registration completed.`);
         } catch (error: unknown) {
-            runtime.logger.error(`[squide] An error occured while registering module "${RemoteModuleName}" from container "${containerName}" of remote "${remoteUrl}".`, error);
+            runtime.logger.error(
+                `[squide] ${index + 1}/${remotes.length} An error occured while registering module "${RemoteModuleName}" from container "${containerName}" of remote "${remoteUrl}".`,
+                error
+            );
 
             errors.push({
-                url: remoteUrl,
+                url: remoteUrl ?? `Partial URL is: "${x.url}"`,
                 containerName,
                 moduleName: RemoteModuleName,
                 error

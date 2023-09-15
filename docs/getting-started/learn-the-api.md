@@ -10,6 +10,20 @@ Now that we've created a host application, loaded a few modules and registered r
 For a comprehensive list of the `@squide` API, refer to the [References](/reference#api) section.
 !!!
 
+## Runtime mode
+
+In an effort to optimize the development experience, `@squide` can be bootstrapped in `development` or `production` mode:
+
+```ts host/src/bootstrap.tsx
+import { Runtime, ConsoleLogger, type LogLevel } from "@squide/react-router";
+
+const runtime = new Runtime({
+    mode: "production"
+});
+```
+
+By default, the Runtime [mode](../reference/runtime/runtime-class.md#change-the-runtime-mode) is `development`.
+
 ## Logging
 
 `@squide` includes a built-in logging feature that integrates with the [Runtime](/reference/runtime/runtime-class.md) class and the [useLogger](/reference/runtime/useLogger.md) hook.

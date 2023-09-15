@@ -329,6 +329,41 @@ describe("registerNavigationItems", () => {
     });
 });
 
+describe("_completeRegistration", () => {
+    test("when the registration is completed and there are no pending registrations, do nothing", () => {
+        const runtime = new Runtime();
+
+        runtime.registerRoutes([
+            {
+                path: "/layout/nested",
+                element: <div>Hello!</div>
+            }
+        ], { layoutPath: "/layout" });
+
+        runtime.registerRoutes([
+            {
+                path: "/layout",
+                element: <div>Hello!</div>
+            }
+        ]);
+
+        expect(() => runtime._completeRegistration()).not.toThrow();
+    });
+
+    test("when the registration is completed and there are pending registrations, throw an error", () => {
+        const runtime = new Runtime();
+
+        runtime.registerRoutes([
+            {
+                path: "/layout/nested",
+                element: <div>Hello!</div>
+            }
+        ], { layoutPath: "/layout" });
+
+        expect(() => runtime._completeRegistration()).toThrow();
+    });
+});
+
 describe("getNavigationItems", () => {
     test("when no menu id is specified, returns all the registered navigation items for the root menu", () => {
         const runtime = new Runtime();

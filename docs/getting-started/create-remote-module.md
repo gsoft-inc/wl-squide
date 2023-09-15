@@ -1,5 +1,7 @@
 ---
 order: 90
+toc:
+    depth: 2-4
 ---
 
 # Create a remote module
@@ -35,14 +37,12 @@ While you can use any package manager to develop an application with `@squide`, 
 
 ## 2. Setup the application
 
-### Application structure
+### Create the new files
 
 First, create the following files:
 
 ```
 remote-module
-├── public
-├──── index.html
 ├── src
 ├──── register.tsx
 ├──── Page.tsx
@@ -54,7 +54,7 @@ remote-module
 ├── package.json
 ```
 
-### package.json
+### ESM syntax
 
 Then, ensure that you are developing your module using [ESM syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) by specifying `type: module` in your `package.json` file:
 
@@ -106,30 +106,9 @@ export function Page() {
 `@squide` webpack configuration is built on top of [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/), [@workleap/browserslist-config](https://gsoft-inc.github.io/wl-web-configs/browserslist/) and [@workleap/swc-configs](https://gsoft-inc.github.io/wl-web-configs/swc/). If you are having issues with the configuration of these tools, refer to the tools documentation websites.
 !!!
 
-### HTML template
-
-First, open the `public/index.html` file created at the beginning of this guide and copy/paste the following [HtmlWebpackPlugin](https://webpack.js.org/plugins/html-webpack-plugin/) template:
-
-```html host/public/index.html
-<!DOCTYPE html>
-<html>
-    <head>
-    </head>
-    <body>
-        <div id="root"></div>
-    </body>
-</html>
-```
-
-### Browserslist
-
-Then, open the `.browserslist` file and copy/paste the following content:
-
-``` host/.browserslistrc
-extends @workleap/browserslist-config
-```
-
 ### Development configuration
+
+#### SWC
 
 To configure webpack for a **development** environment, first open the `swc.dev.js` file and copy/paste the following code:
 
@@ -142,6 +121,8 @@ const targets = browserslistToSwc();
 
 export const swcConfig = defineDevConfig(targets);
 ```
+
+#### defineDevRemoteModuleConfig
 
 Then, open the `webpack.dev.js` file and use the the [defineDevRemoteModuleConfig](/reference/webpack/defineDevRemoteModuleConfig.md) function to configure webpack:
 
@@ -160,6 +141,8 @@ If you are having issues with the wepack configuration that are not related to m
 
 ### Build configuration
 
+#### SWC
+
 To configure webpack for a **build** environment, first open the `swc.build.js` file and copy/paste the following code:
 
 ```js remote-module/swc.build.js
@@ -171,6 +154,8 @@ const targets = browserslistToSwc();
 
 export const swcConfig = defineBuildConfig(targets);
 ```
+
+#### defineBuildRemoteModuleConfig
 
 Then, open the `webpack.build.js` file and use the the [defineBuildRemoteModuleConfig](/reference/webpack/defineBuildRemoteModuleConfig.md) function to configure webpack:
 

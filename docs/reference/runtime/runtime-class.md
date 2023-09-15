@@ -15,6 +15,7 @@ const runtime = new Runtime(options?: { loggers?: [], services?: {}, sessionAcce
 ### Parameters
 
 - `options`: An optional object literal of options:
+    - `mode`: An optional mode to optimize `@squide` for `production`. Values are `"development"` (default) and `"production"`.
     - `loggers`: An optional array of `Logger` instances.
     - `services`: An optional string-keyed object literal of custom service instances.
     - `sessionAccessor`: An optional function returning the current session.
@@ -38,6 +39,16 @@ const runtime = new Runtime({
     sessionAccessor: () => {
         return sessionManager.getSession();
     };
+});
+```
+
+### Change the runtime mode
+
+```ts
+import { Runtime } from "@squide/react-router";
+
+const runtime = new Runtime({
+    mode: "production"
 });
 ```
 

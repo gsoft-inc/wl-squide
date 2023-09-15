@@ -1,5 +1,7 @@
 ---
 order: 80
+toc:
+    depth: 2-4
 ---
 
 # Create a local module
@@ -45,7 +47,7 @@ While you can use any package manager to develop an application with `@squide`, 
 
 ## 2. Setup the application
 
-### Application structure
+### Create the new files
 
 First, create the following files:
 
@@ -59,7 +61,7 @@ local-modules
 ├── package.json
 ```
 
-### package.json
+### ESM syntax
 
 Then, ensure that you are developing your module using [ESM syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) by specifying `type: module` in your `package.json` file:
 
@@ -174,6 +176,10 @@ root.render(
 ```
 
 ## 4. Configure tsup
+
+!!!info
+If you are having issues with the tsup configuration, refer to the [@workleap/tsup-configs documentation](https://gsoft-inc.github.io/wl-web-configs/tsup).
+!!!
 
 ### Development configuration
 

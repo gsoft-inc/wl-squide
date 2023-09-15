@@ -14,8 +14,8 @@
         }
     },
     "scripts": {
-        "dev": "tsup --config ./tsup.dev.ts",
-        "dev-local": "webpack serve --config webpack.config.js",
+        "dev": "nodemon",
+        "dev-local": "nodemon --config nodemon.local.json",
         "build": "tsup --config ./tsup.build.ts",
         "serve-build": "pnpm build"
     },
@@ -38,6 +38,7 @@
         "@workleap/webpack-configs": "1.0.6",
         "browserslist": "4.21.10",
         "cross-env": "7.0.3",
+        "nodemon": "3.0.1",
         "tsup": "7.2.0",
         "typescript": "5.2.2",
         "webpack": "5.88.2",

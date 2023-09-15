@@ -1,4 +1,5 @@
 import { useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/react-router";
+import { Suspense } from "react";
 import { Link, Outlet } from "react-router-dom";
 
 const renderItem: RenderItemFunction = (item, index, level) => {
@@ -32,7 +33,9 @@ export default function DistributedTabsLayout() {
                 <p>Every tab is registered by a different module and is lazy loaded.</p>
                 {renderedTabs}
                 <div style={{ padding: "20px" }}>
-                    <Outlet />
+                    <Suspense>
+                        <Outlet />
+                    </Suspense>
                 </div>
             </div>
         </div>

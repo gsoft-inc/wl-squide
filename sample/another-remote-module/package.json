@@ -13,7 +13,7 @@
         "serve-build": "pnpm build && pnpm http-server dist -p 8082 -P http://localhost:8082? -c-1"
     },
     "devDependencies": {
-        "@swc/core": "1.3.83",
+        "@swc/core": "1.3.84",
         "@swc/helpers": "0.5.2",
         "@types/react": "18.2.21",
         "@types/react-dom": "18.2.7",
@@ -38,6 +38,6 @@
         "@squide/webpack-module-federation": "workspace:*",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "react-router-dom": "6.15.0"
+        "react-router-dom": "6.16.0"
     }
 }

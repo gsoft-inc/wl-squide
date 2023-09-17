@@ -16,6 +16,9 @@ hub:
     link: https://gsoft-inc.github.io/wl-idp-docs-hub/
     alt: Go to the IDP hub root site
 
+start:
+    pro: true
+
 # -------------------
 # Retype
 # -------------------
@@ -39,7 +42,7 @@ edit:
 links:
     - text: Home
       icon: home
-      link: /
+      link: /getting-started
 
     - text: Found a bug?
       icon: issue-opened

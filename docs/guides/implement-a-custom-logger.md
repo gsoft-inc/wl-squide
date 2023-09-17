@@ -16,12 +16,12 @@ import { LogLevel, type Logger } from "@squide/react-router";
 export class CustomLogger implements Logger {
     readonly #logLevel: LogLevel;
 
-    constructor(logLevel: LogLevel = LogLevel.critical) {
+    constructor(logLevel: LogLevel = LogLevel.debug) {
         this.#logLevel = logLevel;
     }
 
     debug(log: string, ...rest: unknown[]): Promise<unknown> {
-        if (this.#logLevel >= LogLevel.debug) {
+        if (this.#logLevel <= LogLevel.debug) {
             console.log(`[custom-logger] ${log}`, ...rest);
         }
 
@@ -29,7 +29,7 @@ export class CustomLogger implements Logger {
     }
 
     information(log: string, ...rest: unknown[]): Promise<unknown> {
-        if (this.#logLevel >= LogLevel.information) {
+        if (this.#logLevel <= LogLevel.information) {
             console.info(`[custom-logger] ${log}`, ...rest);
         }
 
@@ -37,7 +37,7 @@ export class CustomLogger implements Logger {
     }
 
     warning(log: string, ...rest: unknown[]): Promise<unknown> {
-        if (this.#logLevel >= LogLevel.warning) {
+        if (this.#logLevel <= LogLevel.warning) {
             console.warn(`[custom-logger] ${log}`, ...rest);
         }
 
@@ -45,7 +45,7 @@ export class CustomLogger implements Logger {
     }
 
     error(log: string, ...rest: unknown[]): Promise<unknown> {
-        if (this.#logLevel >= LogLevel.error) {
+        if (this.#logLevel <= LogLevel.error) {
             console.error(`[custom-logger] ${log}`, ...rest);
         }
 
@@ -53,7 +53,7 @@ export class CustomLogger implements Logger {
     }
 
     critical(log: string, ...rest: unknown[]): Promise<unknown> {
-        if (this.#logLevel >= LogLevel.critical) {
+        if (this.#logLevel <= LogLevel.critical) {
             console.error(`[custom-logger] ${log}`, ...rest);
         }
 

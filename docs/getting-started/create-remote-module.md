@@ -10,7 +10,7 @@ Remote modules are modules that are not included in the host application build b
 
 Let's add our first remote module!
 
-## 1. Install the packages
+## Install the packages
 
 Create a new application (we'll refer to ours as `remote-module`), then open a terminal at the root of the new solution and install the following packages:
 
@@ -35,7 +35,7 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
 While you can use any package manager to develop an application with `@squide`, it is highly recommended that you use [PNPM](https://pnpm.io/) as the following guide has been developed and tested with PNPM.
 !!!
 
-## 2. Setup the application
+## Setup the application
 
 ### Create the new files
 
@@ -64,7 +64,7 @@ Then, ensure that you are developing your module using [ESM syntax](https://deve
 }
 ```
 
-### Routes and navigation items registration
+### Routes registration
 
 Then, register the remote module [routes](/reference/runtime/runtime-class.md#register-routes) and [navigation items](/reference/runtime/runtime-class.md#register-navigation-items):
 
@@ -100,7 +100,7 @@ export function Page() {
 }
 ```
 
-## 3. Configure webpack
+## Configure webpack
 
 !!!info
 `@squide` webpack configuration is built on top of [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/), [@workleap/browserslist-config](https://gsoft-inc.github.io/wl-web-configs/browserslist/) and [@workleap/swc-configs](https://gsoft-inc.github.io/wl-web-configs/swc/). If you are having issues with the configuration of these tools, refer to the tools documentation websites.
@@ -122,7 +122,7 @@ const targets = browserslistToSwc();
 export const swcConfig = defineDevConfig(targets);
 ```
 
-#### defineDevRemoteModuleConfig
+#### `defineDevRemoteModuleConfig`
 
 Then, open the `webpack.dev.js` file and use the the [defineDevRemoteModuleConfig](/reference/webpack/defineDevRemoteModuleConfig.md) function to configure webpack:
 
@@ -155,7 +155,7 @@ const targets = browserslistToSwc();
 export const swcConfig = defineBuildConfig(targets);
 ```
 
-#### defineBuildRemoteModuleConfig
+#### `defineBuildRemoteModuleConfig`
 
 Then, open the `webpack.build.js` file and use the the [defineBuildRemoteModuleConfig](/reference/webpack/defineBuildRemoteModuleConfig.md) function to configure webpack:
 
@@ -172,7 +172,7 @@ export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://local
 If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/).
 !!!
 
-## 4. Add CLI scripts
+## Add CLI scripts
 
 To initiate the development server, add the following script to the application `package.json` file:
 
@@ -190,7 +190,7 @@ To build the module, add the following script to the application `package.json` 
 }
 ```
 
-## 5. Try the application :rocket:
+## Try the application :rocket:
 
 Start the `host` and the `remote-module` applications in development mode using the `dev` script. You should notice an additional link in the navigation menu. Click on the link to navigate to the page of your new **remote** module!
 

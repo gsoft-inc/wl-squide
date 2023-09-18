@@ -50,7 +50,7 @@ First, add the following fields to the `package.json` file:
 
 Then, install the package dependencies and configure the new package with [tsup](https://gsoft-inc.github.io/wl-web-configs/tsup/).
 
-### Create useAppRouter
+### Create the `useAppRouter` hook
 
 Finally, create a `useAppRouter` hook in the shell package. Its purpose is to provide a **reusable router configuration** that can be utilized by both the host application and the isolated modules. By using this hook, modules developed in isolation can utilize the **same application shell and routing configuration** as the host application. 
 
@@ -110,7 +110,7 @@ Now, let's revisit the host application by first adding a dependency to the new 
 }
 ```
 
-### Use useAppRouter
+### Use the `useAppRouter` hook
 
 Then, incorporate the newly introduced `useAppRouter` hook:
 
@@ -296,7 +296,7 @@ Then, open the `.browserslist` file and copy/paste the following content:
 extends @workleap/browserslist-config
 ```
 
-#### defineDevConfig
+#### `defineDevConfig`
 
 To configure webpack, open the `webpack.dev.js` file and update the configuration to incorporate the `LOCAL` environment variable and the [defineDevConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) function:
 
@@ -419,7 +419,7 @@ const targets = browserslistToSwc();
 export const swcConfig = defineDevConfig(targets);
 ```
 
-#### defineDevConfig
+#### `defineDevConfig`
 
 Finally, open the `webpack.config.js` file and use the the [defineDevConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) function to configure webpack:
 

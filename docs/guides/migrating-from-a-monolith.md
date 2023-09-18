@@ -15,7 +15,7 @@ Since adding/deleting local packages in a monorepo setup is pretty cheap, teams 
 
 If your project is **already a monolithic application** with a [polyrepo setup](https://github.com/joelparkerhenderson/monorepo-vs-polyrepo#what-is-polyrepo) and you aim to migrate to a distributed architecture, we recommend a decoupling-first strategy using local modules and a monorepo setup.
 
-## Decoupling first
+## Decoupling first strategy
 
 The primary challenge to migrate to a distributed architecture is coupling. Thus, for most applications, starting by decoupling the monolith into **composable value streams** could be the right strategy. It's a great way to get into the migration without the immediate need to update the CI/CD infrastructure or preemptively change developers' habits.
 

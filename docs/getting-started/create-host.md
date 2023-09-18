@@ -9,7 +9,7 @@ toc:
 
 Let's begin by creating the application that will serve as the entry point for our federated application and host the application modules.
 
-## 1. Install the packages
+## Install the packages
 
 Create a new application (we'll refer to ours as `host`), then open a terminal at the root of the new solution and install the following packages:
 
@@ -34,7 +34,7 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
 While you can use any package manager to develop an application with `@squide`, it is highly recommended that you use [PNPM](https://pnpm.io/) as the following guide has been developed and tested with PNPM.
 !!!
 
-## 2. Setup the application
+## Setup the application
 
 ### Create the new files
 
@@ -244,7 +244,7 @@ export function RootLayout() {
 }
 ```
 
-## 3. Configure webpack
+## Configure webpack
 
 !!!info
 `@squide` webpack configuration is built on top of [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/), [@workleap/browserslist-config](https://gsoft-inc.github.io/wl-web-configs/browserslist/) and [@workleap/swc-configs](https://gsoft-inc.github.io/wl-web-configs/swc/). If you are having issues with the configuration of these tools, refer to the tools documentation websites.
@@ -289,7 +289,7 @@ const targets = browserslistToSwc();
 export const swcConfig = defineDevConfig(targets);
 ```
 
-#### defineDevHostConfig
+#### `defineDevHostConfig`
 
 Then, open the `webpack.dev.js` file and use the [defineDevHostConfig](/reference/webpack/defineDevHostConfig.md) function to configure webpack:
 
@@ -322,7 +322,7 @@ const targets = browserslistToSwc();
 export const swcConfig = defineBuildConfig(targets);
 ```
 
-#### defineBuildHostConfig
+#### `defineBuildHostConfig`
 
 Then, open the `webpack.build.js` file and use the [defineBuildHostConfig](/reference/webpack/defineBuildHostConfig.md) function to configure webpack:
 
@@ -339,7 +339,7 @@ export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/"
 If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/).
 !!!
 
-## 4. Add CLI scripts
+## Add CLI scripts
 
 To initiate the development server, add the following script to the application `package.json` file:
 
@@ -357,6 +357,6 @@ To build the application, add the following script to the application `package.j
 }
 ```
 
-## 5. Try the application :rocket:
+## Try the application :rocket:
 
 Start the application in a development environment using the `dev` script. You should see the home page. Even if the remote module application is not yet available, the host application will gracefully load.

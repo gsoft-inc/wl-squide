@@ -4,7 +4,7 @@ order: 100
 
 # Override the host layout
 
-## Root layout
+## Define a root layout
 
 In many applications, multiple pages often share a **common layout** that includes elements such as a navigation bar, a user profile menu, and a main content section. In a [React Router](https://reactrouter.com/en/main) application, this shared layout is commonly referred to as a `RootLayout`:
 
@@ -101,7 +101,7 @@ root
 ├───────────  Home page
 ```
 
-## Hoisting
+## Hoist the module pages
 
 Package managers supporting workspaces such as Yarn and NPM call this mechanism "hoisting", which means "raise (something) by means of ropes and pulleys". This is exactly what we are trying to achieve here.
 

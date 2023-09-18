@@ -83,7 +83,7 @@ const Remotes: RemoteDefinition = [
 ];
 ```
 
-### Name
+### `name`
 
 The `name` property of a remote definition **must match** the `name` property defined in the remote module [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) configuration.
 
@@ -106,7 +106,7 @@ import { swcConfig } from "./swc.dev.js";
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", PORT);
 ```
 
-### Url
+### `url`
 
 The `url` property of a remote definition **must match** the [publicPath](https://webpack.js.org/guides/public-path/) of the remote module webpack [configuration object](https://webpack.js.org/concepts/configuration/).
 

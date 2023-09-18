@@ -8,7 +8,7 @@ The deployment process for a federated application can vary depending on various
 
 However, there are a few essential configurations that need to be made regardless of your deployment choices.
 
-## Default redirect
+## Add a default redirect
 
 To enable support for direct page hits, add the following redirect rule to your host application's hosting provider:
 
@@ -16,9 +16,9 @@ To enable support for direct page hits, add the following redirect rule to your 
 /* /index.html 200
 ```
 
-## Remote URL
+## Set the remote URL
 
-Updates the application remote module production URL:
+Configure the remote modules production URL:
 
 ```ts
 import { RemoteDefinition } from "@squide/webpack-module-federation";
@@ -31,9 +31,9 @@ const Remotes: RemoteDefinition[] = [
 ];
 ```
 
-## Runtime mode
+## Update the runtime mode
 
-Don't forget to change the Runtime [mode](../reference/runtime/runtime-class.md#change-the-runtime-mode) to `"production"`:
+Don't forget to change the [Runtime mode](../reference/runtime/runtime-class.md#change-the-runtime-mode) to `production`:
 
 ```ts
 import { Runtime } from "@squide/react-router";
@@ -43,9 +43,9 @@ const runtime = new Runtime({
 });
 ```
 
-## Console logger
+## Remove the console logger
 
-We suggest to remove [ConsoleLogger](../reference/logging/ConsoleLogger.md) for the production build:
+Remove the [ConsoleLogger](../reference/logging/ConsoleLogger.md) from the production build:
 
 ```ts
 import { ConsoleLogger, Runtime } from "@squide/react-router";

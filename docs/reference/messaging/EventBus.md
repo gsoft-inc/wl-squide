@@ -15,7 +15,7 @@ const eventBus = new EventBus(options?: { logger? })
 
 ## Usage
 
-### Create an EventBus instance
+### Create an `EventBus` instance
 
 ```ts
 import { EventBus, ConsoleLogger } from "@squide/react-router";

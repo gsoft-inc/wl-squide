@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748235155934">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748359610947">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,11 +32,11 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.748235155934" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.748359610947" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748235155934" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748359610947" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748235155934" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748359610947" data-turbo-eval="false" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
 
@@ -309,10 +309,10 @@
 <p>With the introduction of <a href="../../reference/registration/registerlocalmodules/">local modules</a>, <code v-pre>@squide</code> offers an alternative approach that lies between prior solutions. Instead of immediately embracing Team Topology&#x27;s <a href="https://www.shortform.com/blog/stream-aligned-teams/" class="outbound" target="_blank">stream-aligned teams</a> and striving for full team autonomy across the board, local modules allow teams to start with a <a href="https://en.wikipedia.org/wiki/Monorepo" class="outbound" target="_blank">monorepo</a> setup and add independent local packages (modules) for each expected <a href="https://en.wikipedia.org/wiki/Value_stream" class="outbound" target="_blank">value stream</a>.</p>
 <p>Since adding/deleting local packages in a monorepo setup is pretty cheap, teams can freely reorganize their value streams along the way and won&#x27;t <strong>preemptively invest into a distributed</strong> CI/CD <strong>infrastructure</strong> as local modules are part of the host application build. With independent <strong>but local</strong> value streams, teams will be well-positioned to transition toward a federated application once they can justify the cost.</p>
 <p>If your project is <strong>already a monolithic application</strong> with a <a href="https://github.com/joelparkerhenderson/monorepo-vs-polyrepo#what-is-polyrepo" class="outbound" target="_blank">polyrepo setup</a> and you aim to migrate to a distributed architecture, we recommend a decoupling-first strategy using local modules and a monorepo setup.</p>
-<doc-anchor-target id="decoupling-first">
+<doc-anchor-target id="decoupling-first-strategy">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#decoupling-first">#</doc-anchor-trigger>
-        <span>Decoupling first</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#decoupling-first-strategy">#</doc-anchor-trigger>
+        <span>Decoupling first strategy</span>
     </h2>
 </doc-anchor-target>
 <p>The primary challenge to migrate to a distributed architecture is coupling. Thus, for most applications, starting by decoupling the monolith into <strong>composable value streams</strong> could be the right strategy. It&#x27;s a great way to get into the migration without the immediate need to update the CI/CD infrastructure or preemptively change developers&#x27; habits.</p>

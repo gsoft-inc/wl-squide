@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748235155934">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748359610947">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.748235155934" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.748359610947" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748235155934" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748359610947" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748235155934" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.748235155934" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748359610947" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.748359610947" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
 
@@ -306,10 +306,10 @@
     </h1>
 </doc-anchor-target>
 <p>Let&#x27;s begin by creating the application that will serve as the entry point for our federated application and host the application modules.</p>
-<doc-anchor-target id="1-install-the-packages">
+<doc-anchor-target id="install-the-packages">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#1-install-the-packages">#</doc-anchor-trigger>
-        <span>1. Install the packages</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#install-the-packages">#</doc-anchor-trigger>
+        <span>Install the packages</span>
     </h2>
 </doc-anchor-target>
 <p>Create a new application (we&#x27;ll refer to ours as <code v-pre>host</code>), then open a terminal at the root of the new solution and install the following packages:</p>
@@ -352,10 +352,10 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
         </div>
     </div>
 </div>
-<doc-anchor-target id="2-setup-the-application">
+<doc-anchor-target id="setup-the-application">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#2-setup-the-application">#</doc-anchor-trigger>
-        <span>2. Setup the application</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#setup-the-application">#</doc-anchor-trigger>
+        <span>Setup the application</span>
     </h2>
 </doc-anchor-target>
 <doc-anchor-target id="create-the-new-files">
@@ -595,10 +595,10 @@ export function RootLayout() {
     );
 }</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="3-configure-webpack">
+<doc-anchor-target id="configure-webpack">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#3-configure-webpack">#</doc-anchor-trigger>
-        <span>3. Configure webpack</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#configure-webpack">#</doc-anchor-trigger>
+        <span>Configure webpack</span>
     </h2>
 </doc-anchor-target>
 <div class="flex mb-6">
@@ -673,7 +673,7 @@ export const swcConfig = defineDevConfig(targets);</code></pre>
 <doc-anchor-target id="definedevhostconfig">
     <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#definedevhostconfig">#</doc-anchor-trigger>
-        <span>defineDevHostConfig</span>
+        <span><code v-pre>defineDevHostConfig</code></span>
     </h4>
 </doc-anchor-target>
 <p>Then, open the <code v-pre>webpack.dev.js</code> file and use the <a href="../../reference/webpack/definedevhostconfig/">defineDevHostConfig</a> function to configure webpack:</p>
@@ -729,7 +729,7 @@ export const swcConfig = defineBuildConfig(targets);</code></pre>
 <doc-anchor-target id="definebuildhostconfig">
     <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#definebuildhostconfig">#</doc-anchor-trigger>
-        <span>defineBuildHostConfig</span>
+        <span><code v-pre>defineBuildHostConfig</code></span>
     </h4>
 </doc-anchor-target>
 <p>Then, open the <code v-pre>webpack.build.js</code> file and use the <a href="../../reference/webpack/definebuildhostconfig/">defineBuildHostConfig</a> function to configure webpack:</p>
@@ -759,10 +759,10 @@ export default defineBuildHostConfig(swcConfig, &quot;host&quot;, &quot;http://l
         </div>
     </div>
 </div>
-<doc-anchor-target id="4-add-cli-scripts">
+<doc-anchor-target id="add-cli-scripts">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#4-add-cli-scripts">#</doc-anchor-trigger>
-        <span>4. Add CLI scripts</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#add-cli-scripts">#</doc-anchor-trigger>
+        <span>Add CLI scripts</span>
     </h2>
 </doc-anchor-target>
 <p>To initiate the development server, add the following script to the application <code v-pre>package.json</code> file:</p>
@@ -779,10 +779,10 @@ export default defineBuildHostConfig(swcConfig, &quot;host&quot;, &quot;http://l
     &quot;build&quot;: &quot;webpack --config webpack.build.js&quot;
 }</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="5-try-the-application">
+<doc-anchor-target id="try-the-application">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#5-try-the-application">#</doc-anchor-trigger>
-        <span>5. Try the application <span class="docs-emoji">&#x1F680;</span></span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#try-the-application">#</doc-anchor-trigger>
+        <span>Try the application <span class="docs-emoji">&#x1F680;</span></span>
     </h2>
 </doc-anchor-target>
 <p>Start the application in a development environment using the <code v-pre>dev</code> script. You should see the home page. Even if the remote module application is not yet available, the host application will gracefully load.</p>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748235155934">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748359610947">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.748235155934" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.748359610947" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748235155934" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748359610947" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748235155934" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.748235155934" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748359610947" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.748359610947" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
 
@@ -314,10 +314,10 @@
 <p>To facilitate this transition, this shell also supports local modules that are loaded at <strong>build time</strong>.</p>
 <p>Both remote and local modules can be used within same application as this shell supports dual bootstrapping. For example, an application can be configured to load a few remote modules at runtime while also loading a few local modules.</p>
 </blockquote>
-<doc-anchor-target id="1-install-the-packages">
+<doc-anchor-target id="install-the-packages">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#1-install-the-packages">#</doc-anchor-trigger>
-        <span>1. Install the packages</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#install-the-packages">#</doc-anchor-trigger>
+        <span>Install the packages</span>
     </h2>
 </doc-anchor-target>
 <p>Create a new application (we&#x27;ll refer to ours as <code v-pre>local-module</code>), then open a terminal at the root of the new solution and install the following packages:</p>
@@ -360,10 +360,10 @@ npm install @squide/core @squide/react-router react react-dom react-router-dom</
         </div>
     </div>
 </div>
-<doc-anchor-target id="2-setup-the-application">
+<doc-anchor-target id="setup-the-application">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#2-setup-the-application">#</doc-anchor-trigger>
-        <span>2. Setup the application</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#setup-the-application">#</doc-anchor-trigger>
+        <span>Setup the application</span>
     </h2>
 </doc-anchor-target>
 <doc-anchor-target id="create-the-new-files">
@@ -410,10 +410,10 @@ npm install @squide/core @squide/react-router react react-dom react-router-dom</
     }
 }</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="routes-and-navigation-items-registration">
+<doc-anchor-target id="routes-registration">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#routes-and-navigation-items-registration">#</doc-anchor-trigger>
-        <span>Routes and navigation items registration</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#routes-registration">#</doc-anchor-trigger>
+        <span>Routes registration</span>
     </h3>
 </doc-anchor-target>
 <p>Then, register the local module <a href="../../reference/runtime/runtime-class/#register-routes">routes</a> and <a href="../../reference/runtime/runtime-class/#register-navigation-items">navigation items</a>:</p>
@@ -448,10 +448,10 @@ export const register: ModuleRegisterFunction&lt;Runtime, AppContext&gt; = (runt
     );
 }</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="3-register-the-local-module">
+<doc-anchor-target id="register-the-local-module">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#3-register-the-local-module">#</doc-anchor-trigger>
-        <span>3. Register the local module</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#register-the-local-module">#</doc-anchor-trigger>
+        <span>Register the local module</span>
     </h2>
 </doc-anchor-target>
 <p>Go back to the <code v-pre>host</code> application add a dependency to the <code v-pre>@sample/local-module</code> package in the host application <code v-pre>package.json</code> file:</p>
@@ -502,10 +502,10 @@ root.render(
     &lt;/RuntimeContext.Provider&gt;
 );</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="4-configure-tsup">
+<doc-anchor-target id="configure-tsup">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#4-configure-tsup">#</doc-anchor-trigger>
-        <span>4. Configure tsup</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#configure-tsup">#</doc-anchor-trigger>
+        <span>Configure tsup</span>
     </h2>
 </doc-anchor-target>
 <div class="flex mb-6">
@@ -551,10 +551,10 @@ export default defineDevConfig();</code></pre>
 
 export default defineBuildConfig();</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="5-add-cli-scripts">
+<doc-anchor-target id="add-cli-scripts">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#5-add-cli-scripts">#</doc-anchor-trigger>
-        <span>5. Add CLI scripts</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#add-cli-scripts">#</doc-anchor-trigger>
+        <span>Add CLI scripts</span>
     </h2>
 </doc-anchor-target>
 <p>To initiate the development server, add the following script to the application <code v-pre>package.json</code> file:</p>
@@ -571,10 +571,10 @@ export default defineBuildConfig();</code></pre>
     &quot;build&quot;: &quot;tsup --config ./tsup.build.ts&quot;
 }</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="6-try-the-application">
+<doc-anchor-target id="try-the-application">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#6-try-the-application">#</doc-anchor-trigger>
-        <span>6. Try the application <span class="docs-emoji">&#x1F680;</span></span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#try-the-application">#</doc-anchor-trigger>
+        <span>Try the application <span class="docs-emoji">&#x1F680;</span></span>
     </h2>
 </doc-anchor-target>
 <p>Start the <code v-pre>host</code>, <code v-pre>remote-module</code> and <code v-pre>local-module</code> applications in development mode using the <code v-pre>dev</code> script. You should now notice an additional link in the navigation menu. Click on the link to navigate to the page of your new <strong>local</strong> module!</p>

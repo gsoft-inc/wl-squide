@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748235155934">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748359610947">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.748235155934" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.748359610947" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748235155934" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748359610947" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748235155934" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.748235155934" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748359610947" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.748359610947" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
 
@@ -353,10 +353,10 @@
 }</code></pre>
 </doc-codeblock></div>
 <p>Then, install the package dependencies and configure the new package with <a href="https://gsoft-inc.github.io/wl-web-configs/tsup/" class="outbound" target="_blank">tsup</a>.</p>
-<doc-anchor-target id="create-useapprouter">
+<doc-anchor-target id="create-the-useapprouter-hook">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#create-useapprouter">#</doc-anchor-trigger>
-        <span>Create useAppRouter</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#create-the-useapprouter-hook">#</doc-anchor-trigger>
+        <span>Create the <code v-pre>useAppRouter</code> hook</span>
     </h3>
 </doc-anchor-target>
 <p>Finally, create a <code v-pre>useAppRouter</code> hook in the shell package. Its purpose is to provide a <strong>reusable router configuration</strong> that can be utilized by both the host application and the isolated modules. By using this hook, modules developed in isolation can utilize the <strong>same application shell and routing configuration</strong> as the host application.</p>
@@ -436,10 +436,10 @@ export function useAppRouter({ rootRoutes = [] }: UseAppRouterOptions = {}) {
     }
 }</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="use-useapprouter">
+<doc-anchor-target id="use-the-useapprouter-hook">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#use-useapprouter">#</doc-anchor-trigger>
-        <span>Use useAppRouter</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#use-the-useapprouter-hook">#</doc-anchor-trigger>
+        <span>Use the <code v-pre>useAppRouter</code> hook</span>
     </h3>
 </doc-anchor-target>
 <p>Then, incorporate the newly introduced <code v-pre>useAppRouter</code> hook:</p>
@@ -670,7 +670,7 @@ export function App() {
 <doc-anchor-target id="definedevconfig">
     <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#definedevconfig">#</doc-anchor-trigger>
-        <span>defineDevConfig</span>
+        <span><code v-pre>defineDevConfig</code></span>
     </h4>
 </doc-anchor-target>
 <p>To configure webpack, open the <code v-pre>webpack.dev.js</code> file and update the configuration to incorporate the <code v-pre>LOCAL</code> environment variable and the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/" class="outbound" target="_blank">defineDevConfig</a> function:</p>
@@ -848,7 +848,7 @@ export const swcConfig = defineDevConfig(targets);</code></pre>
 <doc-anchor-target id="definedevconfig-1">
     <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#definedevconfig-1">#</doc-anchor-trigger>
-        <span>defineDevConfig</span>
+        <span><code v-pre>defineDevConfig</code></span>
     </h4>
 </doc-anchor-target>
 <p>Finally, open the <code v-pre>webpack.config.js</code> file and use the the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/" class="outbound" target="_blank">defineDevConfig</a> function to configure webpack:</p>

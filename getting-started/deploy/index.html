@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748235155934">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748359610947">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.748235155934" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.748359610947" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748235155934" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748359610947" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748235155934" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.748235155934" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748359610947" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.748359610947" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
 
@@ -307,23 +307,23 @@
 </doc-anchor-target>
 <p>The deployment process for a federated application can vary depending on various factors, including the chosen hosting provider. Therefore, we do not recommend any specific deployment setup.</p>
 <p>However, there are a few essential configurations that need to be made regardless of your deployment choices.</p>
-<doc-anchor-target id="default-redirect">
+<doc-anchor-target id="add-a-default-redirect">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#default-redirect">#</doc-anchor-trigger>
-        <span>Default redirect</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#add-a-default-redirect">#</doc-anchor-trigger>
+        <span>Add a default redirect</span>
     </h2>
 </doc-anchor-target>
 <p>To enable support for direct page hits, add the following redirect rule to your host application&#x27;s hosting provider:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-none"><code v-pre class="language-none">/* /index.html 200</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="remote-url">
+<doc-anchor-target id="set-the-remote-url">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#remote-url">#</doc-anchor-trigger>
-        <span>Remote URL</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#set-the-remote-url">#</doc-anchor-trigger>
+        <span>Set the remote URL</span>
     </h2>
 </doc-anchor-target>
-<p>Updates the application remote module production URL:</p>
+<p>Configure the remote modules production URL:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { RemoteDefinition } from &quot;@squide/webpack-module-federation&quot;;
 
@@ -334,13 +334,13 @@ const Remotes: RemoteDefinition[] = [
     }
 ];</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="runtime-mode">
+<doc-anchor-target id="update-the-runtime-mode">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#runtime-mode">#</doc-anchor-trigger>
-        <span>Runtime mode</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#update-the-runtime-mode">#</doc-anchor-trigger>
+        <span>Update the runtime mode</span>
     </h2>
 </doc-anchor-target>
-<p>Don&#x27;t forget to change the Runtime <a href="../../reference/runtime/runtime-class/#change-the-runtime-mode">mode</a> to <code v-pre>&quot;production&quot;</code>:</p>
+<p>Don&#x27;t forget to change the <a href="../../reference/runtime/runtime-class/#change-the-runtime-mode">Runtime mode</a> to <code v-pre>production</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { Runtime } from &quot;@squide/react-router&quot;;
 
@@ -348,13 +348,13 @@ const runtime = new Runtime({
     mode: process.env.isNetlify ? &quot;production&quot; : &quot;development&quot;
 });</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="console-logger">
+<doc-anchor-target id="remove-the-console-logger">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#console-logger">#</doc-anchor-trigger>
-        <span>Console logger</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#remove-the-console-logger">#</doc-anchor-trigger>
+        <span>Remove the console logger</span>
     </h2>
 </doc-anchor-target>
-<p>We suggest to remove <a href="../../reference/logging/consolelogger/">ConsoleLogger</a> for the production build:</p>
+<p>Remove the <a href="../../reference/logging/consolelogger/">ConsoleLogger</a> from the production build:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { ConsoleLogger, Runtime } from &quot;@squide/react-router&quot;;
 

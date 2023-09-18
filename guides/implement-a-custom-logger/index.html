@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748235155934">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748359610947">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.748235155934" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.748359610947" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748235155934" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748359610947" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748235155934" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.748235155934" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748359610947" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.748359610947" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
 
@@ -306,10 +306,10 @@
     </h1>
 </doc-anchor-target>
 <p>Many applications must integrate with specific remote logging solutions such as <a href="https://www.honeycomb.io/" class="outbound" target="_blank">Honeycomb</a> and <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview" class="outbound" target="_blank">Azure Application Insights</a>. To facilitate this integration, the shell runtime accepts any custom loggers implementing the <a href="../../reference/logging/logger/">Logger</a> interface.</p>
-<doc-anchor-target id="custom-logger">
+<doc-anchor-target id="create-a-custom-logger-class">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#custom-logger">#</doc-anchor-trigger>
-        <span>Custom logger</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#create-a-custom-logger-class">#</doc-anchor-trigger>
+        <span>Create a custom logger class</span>
     </h2>
 </doc-anchor-target>
 <p>First, let&#x27;s define a custom logger:</p>
@@ -365,7 +365,7 @@ export class CustomLogger implements Logger {
     }
 }</code></pre>
 </doc-codeblock></div>
-<p>Then create a <a href="../../reference/runtime/runtime-class/">Runtime</a> instance with an instance of the new <code v-pre>CustomLogger</code>:</p>
+<p>Then create a <a href="../../reference/runtime/runtime-class/">Runtime</a> instance configured with an instance of the new <code v-pre>CustomLogger</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { Runtime } from &quot;@squide/react-router&quot;;

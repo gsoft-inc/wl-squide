@@ -22,7 +22,7 @@ const runtime = new Runtime(options?: { loggers?: [], services?: {}, sessionAcce
 
 ## Usage
 
-### Create a Runtime instance
+### Create a `Runtime` instance
 
 ```ts
 import { ConsoleLogger, Runtime } from "@squide/react-router";
@@ -248,7 +248,7 @@ runtime.registerNavigationItems([
 ]);
 ```
 
-### Use a React Element as navigation item label
+### Use a React element as navigation item label
 
 ```tsx !#6-9
 import { QuestionMarkIcon } from "@sample/icons";

@@ -20,7 +20,7 @@ order: 90
 
 ## Usage
 
-### Provide a Runtime instance
+### Provide a `Runtime` instance
 
 ```tsx !#9-11
 import { createRoot } from "react-dom/client";
@@ -37,7 +37,7 @@ root.render(
 );
 ```
 
-### Retrieve a Runtime instance
+### Retrieve a `Runtime` instance
 
 ```ts !#3
 import { useRuntime } from "@squide/react-router";

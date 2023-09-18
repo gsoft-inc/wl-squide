@@ -8,7 +8,7 @@ Most of our applications (if not all) will eventually require the user to authen
 
 When combined with a [React Router](https://reactrouter.com/en/main) authentication boundary and a login page, the shared `sessionAccessor` function is of great help to manage authentication concerns.
 
-## Session accessor
+## Create a session accessor function
 
 Define a `sessionAccessor` function wrapping a `LocalStorageSessionManager` instance:
 
@@ -23,7 +23,7 @@ const sessionAccessor: SessionAccessorFunction = () => {
 };
 ```
 
-Then create a [Runtime](/reference/runtime/runtime-class.md) instance with the new `sessionAccessor` function:
+Then create the [Runtime](/reference/runtime/runtime-class.md) instance with the new `sessionAccessor` function:
 
 ```ts #5 host/src/boostrap.tsx
 import { Runtime } from "@squide/react-router";
@@ -38,7 +38,7 @@ const runtime = new Runtime({
 Our security department reminds you to refrain from using a fake `LocalStorageSessionManager` in a production application :blush:
 !!!
 
-## Authentication boundary
+## Add an authentication boundary
 
 Create a new React Router authentication boundary component using the [useIsAuthenticated]() hook:
 
@@ -53,7 +53,7 @@ export function AuthenticationBoundary() {
 }
 ```
 
-## Login page
+## Add login page
 
 Add a login page to the application:
 
@@ -121,7 +121,7 @@ export function Login() {
 }
 ```
 
-## Logout page
+## Add a logout page
 
 Add a logout page to the application:
 
@@ -148,7 +148,7 @@ The logout page also takes care of **clearing** the current **session**, allowin
 <Link to="/logout">Disconnect</Link>
 ```
 
-## Authenticated layout
+## Define an authenticated layout
 
 With authentication in place, we now expect to render the navigation items only to authenticated users and to offer a way to logout from the application. To do so, let's introduce a new `AuthenticatedLayout`:
 
@@ -232,7 +232,7 @@ export function RootLayout() {
 }
 ```
 
-## Nested routes
+## Setup the routes
 
 Assemble everything with React Router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes):
 

@@ -42,7 +42,7 @@ const session = sessionManager.getSession();
 sessionManager.clearSession();
 ```
 
-### Integrate with a Runtime instance
+### Integrate with a `Runtime` instance
 
 ```ts !#8 host/src/session.ts
 import type { SessionAccessorFunction } from "@squide/react-router";

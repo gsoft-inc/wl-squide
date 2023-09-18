@@ -6,7 +6,7 @@ order: 60
 
 Many applications must integrate with specific remote logging solutions such as [Honeycomb](https://www.honeycomb.io/) and [Azure Application Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview). To facilitate this integration, the shell runtime accepts any custom loggers implementing the [Logger](/reference/logging/Logger.md) interface.
 
-## Custom logger
+## Create a custom logger class
 
 First, let's define a custom logger:
 
@@ -62,7 +62,7 @@ export class CustomLogger implements Logger {
 }
 ```
 
- Then create a [Runtime](/reference/runtime/runtime-class.md) instance with an instance of the new `CustomLogger`:
+ Then create a [Runtime](/reference/runtime/runtime-class.md) instance configured with an instance of the new `CustomLogger`:
 
 ```ts host/src/bootstrap.tsx
 import { Runtime } from "@squide/react-router";

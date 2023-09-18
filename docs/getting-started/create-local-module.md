@@ -20,7 +20,7 @@ Let's add a local module to demonstrate how it's done!
 >
 > Both remote and local modules can be used within same application as this shell supports dual bootstrapping. For example, an application can be configured to load a few remote modules at runtime while also loading a few local modules.
 
-## 1. Install the packages
+## Install the packages
 
 Create a new application (we'll refer to ours as `local-module`), then open a terminal at the root of the new solution and install the following packages:
 
@@ -45,7 +45,7 @@ npm install @squide/core @squide/react-router react react-dom react-router-dom
 While you can use any package manager to develop an application with `@squide`, it is highly recommend that you use [PNPM](https://pnpm.io/) as the following guide has been developed and tested with PNPM.
 !!!
 
-## 2. Setup the application
+## Setup the application
 
 ### Create the new files
 
@@ -87,7 +87,7 @@ Then, configure the package to be shareable by adding the `name`, `version`, and
 }
 ```
 
-### Routes and navigation items registration
+### Routes registration
 
 Then, register the local module [routes](/reference/runtime/runtime-class.md#register-routes) and [navigation items](/reference/runtime/runtime-class.md#register-navigation-items):
 
@@ -123,7 +123,7 @@ export function Page() {
 }
 ```
 
-## 3. Register the local module
+## Register the local module
 
 Go back to the `host` application add a dependency to the `@sample/local-module` package in the host application `package.json` file:
 
@@ -175,7 +175,7 @@ root.render(
 );
 ```
 
-## 4. Configure tsup
+## Configure tsup
 
 !!!info
 If you are having issues with the tsup configuration, refer to the [@workleap/tsup-configs documentation](https://gsoft-inc.github.io/wl-web-configs/tsup).
@@ -201,7 +201,7 @@ import { defineBuildConfig } from "@workleap/tsup-configs";
 export default defineBuildConfig();
 ```
 
-## 5. Add CLI scripts
+## Add CLI scripts
 
 To initiate the development server, add the following script to the application `package.json` file:
 
@@ -219,6 +219,6 @@ To build the module, add the following script to the application `package.json` 
 }
 ```
 
-## 6. Try the application :rocket:
+## Try the application :rocket:
 
 Start the `host`, `remote-module` and `local-module` applications in development mode using the `dev` script. You should now notice an additional link in the navigation menu. Click on the link to navigate to the page of your new **local** module!

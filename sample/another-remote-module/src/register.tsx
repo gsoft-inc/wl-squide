@@ -2,19 +2,19 @@ import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 
 import { lazy } from "react";
 
-const DistributedTabsLayout = lazy(() => import("./DistributedTabsLayout.tsx"));
+const FederatedTabsLayout = lazy(() => import("./FederatedTabsLayout.tsx"));
 
 export const register: ModuleRegisterFunction<Runtime> = runtime => {
     runtime.registerRoutes([
         {
-            path: "/distributed-tabs",
-            element: <DistributedTabsLayout />
+            path: "/federated-tabs",
+            element: <FederatedTabsLayout />
         }
     ]);
 
     runtime.registerNavigationItems([
         {
-            to: "/distributed-tabs",
+            to: "/federated-tabs",
             label: "Tabs"
         }
     ]);

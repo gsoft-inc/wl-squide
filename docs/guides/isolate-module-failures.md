@@ -84,3 +84,7 @@ By implementing this mechanism, the level of failure isolation achieved is **com
 !!!warning
 If your application is [hoisting pages](/reference/routing/useHoistedRoutes.md), it's important to note that they will be rendered outside of the host application's root error boundary. To prevent breaking the entire application when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router's `errorElement` property for each hoisted page.
 !!!
+
+## Try it :rocket:
+
+Start the application in a development environment using the `dev` script. Update any of your application routes that is rendered under the newly created error boundary (e.g. that is not hoisted) and throw an `Error`. The error should be handled by the error boundary instead of breaking the whole application.

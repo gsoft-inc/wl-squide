@@ -44,12 +44,12 @@ export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, c
             index: true,
             element: <WorkleapTab />
         }
-    ], { layoutPath: "/distributed-tabs" });
+    ], { layoutPath: "/federated-tabs" });
 
     runtime.registerNavigationItems([
         {
-            to: "/distributed-tabs",
+            to: "/federated-tabs",
             label: "Workleap"
         }
-    ], { menuId: "/distributed-tabs" });
+    ], { menuId: "/federated-tabs" });
 };

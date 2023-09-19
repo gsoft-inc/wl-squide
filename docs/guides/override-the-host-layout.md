@@ -198,4 +198,8 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
 }
 ```
 
-[!ref icon="gear" text="For additional options, go to the `useHoistedRoutes` hook reference page"](/reference/routing/useHoistedRoutes.md)
+[!ref text="For additional options, go to the `useHoistedRoutes` hook reference page"](/reference/routing/useHoistedRoutes.md)
+
+## Try it :rocket:
+
+Start the application in a development environment using the `dev` script and navigate to the `/login` page. The page should be displayed even if you are not authenticated.

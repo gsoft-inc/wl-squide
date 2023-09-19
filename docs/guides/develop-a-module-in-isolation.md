@@ -241,7 +241,7 @@ export function App() {
 
 ### DevHome.tsx
 
-The `<DevHome>` component purpose is strictly to serve as an `index` page when developing the remote module in isolation.
+The `DevHome` component purpose is strictly to serve as an `index` page when developing the remote module in isolation.
 
 ```tsx remote-module/src/DevHome.tsx
 function DevHome() {
@@ -320,7 +320,7 @@ export default config;
 
 ### Try it :rocket:
 
-Start the remote module in isolation by running the `dev-local` script. The application shell should wrap the pages of the module and the default page should be `<DevHome>`.
+Start the remote module in isolation by running the `dev-local` script. The application shell should wrap the pages of the module and the default page should be `DevHome`.
 
 ## Local module
 
@@ -444,4 +444,4 @@ Next, add a new `dev-local` script to the `package.json` file to start the local
 
 ### Try it :rocket:
 
-Start the remote module in isolation by running the `dev-local` script. The application shell should wrap the pages of the module and the default page should be `<DevHome>`.
+Start the remote module in isolation by running the `dev-local` script. The application shell should wrap the pages of the module and the default page should be `DevHome`.

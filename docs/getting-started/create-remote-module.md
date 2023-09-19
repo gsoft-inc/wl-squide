@@ -135,9 +135,7 @@ import { swcConfig } from "./swc.dev.js";
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081);
 ```
 
-!!!info
-If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/).
-!!!
+> If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/).
 
 ### Build configuration
 
@@ -168,9 +166,7 @@ import { swcConfig } from "./swc.build.js";
 export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://localhost:8081/");
 ```
 
-!!!info
-If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/).
-!!!
+> If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/).
 
 ## Add CLI scripts
 
@@ -190,7 +186,11 @@ To build the module, add the following script to the application `package.json` 
 }
 ```
 
-## Try the application :rocket:
+## Try it :rocket:
 
 Start the `host` and the `remote-module` applications in development mode using the `dev` script. You should notice an additional link in the navigation menu. Click on the link to navigate to the page of your new **remote** module!
+
+!!!info
+To troubleshoot module registration issues, open the DevTools console. You'll find a log entry for each registration that occurs and error messages if something goes wrong.
+!!!
 

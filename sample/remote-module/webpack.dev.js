@@ -9,7 +9,7 @@ let config;
 if (!process.env.LOCAL) {
     config = defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
         sharedDependencies: {
-            "shared": {
+            "@sample/shared": {
                 singleton: true
             }
         },

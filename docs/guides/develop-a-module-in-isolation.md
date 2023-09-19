@@ -98,7 +98,7 @@ This guide only covers the `RootLayout` and `RootErrorBoundary` but the same goe
 
 ## Host application
 
-### Add the dependencies
+### Install the package
 
 Now, let's revisit the host application by first adding a dependency to the new `@sample/shell` package:
 
@@ -149,9 +149,9 @@ export function App() {
 
 With our new setup in place, we can now configure the remote module to be developed in isolation. The goal is to start the module development server and render the module pages with the same layout and functionalities as if it was rendered by the host application.
 
-### Add the dependencies
+### Install the package
 
-To begin, let's start by adding a dependencies to the `@sample/shell` package:
+To begin, let's start by adding a dependency to the `@sample/shell` package:
 
 ```json remote-module/package.json
 {

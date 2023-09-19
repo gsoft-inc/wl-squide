@@ -1,4 +1,4 @@
-import { useAppRouter } from "@sample/shared";
+import { useAppRouter } from "@sample/shell";
 import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { lazy } from "react";
 import { RouterProvider } from "react-router-dom";

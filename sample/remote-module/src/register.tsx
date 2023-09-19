@@ -1,5 +1,5 @@
+import { BackgroundColorContext } from "@sample/shared";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
-
 import { lazy } from "react";
 
 const CustomLayout = lazy(() => import("./CustomLayout.tsx"));
@@ -8,6 +8,7 @@ const Fetch = lazy(() => import("./Fetch.tsx"));
 const Hoisted = lazy(() => import("./Hoisted.tsx"));
 const OfficevibeTab = lazy(() => import("./OfficevibeTab.tsx"));
 const SkillsTab = lazy(() => import("./SkillsTab.tsx"));
+const ColoredPage = lazy(() => import("./ColoredPage.tsx"));
 
 export const register: ModuleRegisterFunction<Runtime> = runtime => {
     runtime.registerRoutes([
@@ -37,6 +38,18 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
                     element: <Hoisted />
                 }
             ]
+        },
+        {
+            path: "/no-context-override",
+            element: <ColoredPage />
+        },
+        {
+            path: "/context-override",
+            element: (
+                <BackgroundColorContext.Provider value="red">
+                    <ColoredPage />
+                </BackgroundColorContext.Provider>
+            )
         }
     ]);
 
@@ -65,6 +78,14 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
                     label: "Child 2"
                 }
             ]
+        },
+        {
+            to: "/no-context-override",
+            label: "No context override"
+        },
+        {
+            to: "/context-override",
+            label: "Context override"
         }
     ]);
 

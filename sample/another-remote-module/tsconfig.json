@@ -6,6 +6,7 @@
             "@squide/react-router": ["../../packages/react-router/src/index.ts"],
             "@squide/webpack-module-federation": ["../../packages/webpack-module-federation/src/index.ts"],
             "@squide/webpack-module-federation/configTransformer.js": ["../../packages/webpack-module-federation/src/configTransformer.ts"],
+            "@sample/shell": ["../shell/src/index.ts"],
             "@sample/shared": ["../shared/src/index.ts"]
         }
     },

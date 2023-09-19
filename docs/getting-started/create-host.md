@@ -291,13 +291,20 @@ export const swcConfig = defineDevConfig(targets);
 
 Then, open the `webpack.dev.js` file and use the [defineDevHostConfig](/reference/webpack/defineDevHostConfig.md) function to configure webpack:
 
-```js !#6 host/webpack.dev.js
+```js !#6-13 host/webpack.dev.js
 // @ts-check
 
 import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080);
+export default defineDevHostConfig(swcConfig, "host", 8080, {
+    sharedDependencies: {
+        "@sample/shared": {
+            singleton: true,
+            eager: true
+        }
+    }
+});
 ```
 
 > If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/).
@@ -322,13 +329,20 @@ export const swcConfig = defineBuildConfig(targets);
 
 Then, open the `webpack.build.js` file and use the [defineBuildHostConfig](/reference/webpack/defineBuildHostConfig.md) function to configure webpack:
 
-```js !#6 host/webpack.build.js
+```js !#6-13 host/webpack.build.js
 // @ts-check
 
 import { defineBuildHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/");
+export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/", {
+    sharedDependencies: {
+        "@sample/shared": {
+            singleton: true,
+            eager: true
+        }
+    }
+});
 ```
 
 > If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/).

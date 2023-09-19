@@ -126,13 +126,19 @@ export const swcConfig = defineDevConfig(targets);
 
 Then, open the `webpack.dev.js` file and use the the [defineDevRemoteModuleConfig](/reference/webpack/defineDevRemoteModuleConfig.md) function to configure webpack:
 
-```js !#6 remote-module/webpack.dev.js
+```js !#6-12 remote-module/webpack.dev.js
 // @ts-check
 
 import { defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081);
+export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
+    sharedDependencies: {
+        "@sample/shared": {
+            singleton: true
+        }
+    }
+});
 ```
 
 > If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/).
@@ -157,13 +163,19 @@ export const swcConfig = defineBuildConfig(targets);
 
 Then, open the `webpack.build.js` file and use the the [defineBuildRemoteModuleConfig](/reference/webpack/defineBuildRemoteModuleConfig.md) function to configure webpack:
 
-```js !#6 remote-module/webpack.build.js
+```js !#6-12 remote-module/webpack.build.js
 // @ts-check
 
 import { defineBuildRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://localhost:8081/");
+export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://localhost:8081/", {
+    sharedDependencies: {
+        "@sample/shared": {
+            singleton: true
+        }
+    }
+});
 ```
 
 > If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/).

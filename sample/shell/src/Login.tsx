@@ -1,7 +1,7 @@
+import type { SessionManager } from "@sample/shared";
 import { useIsAuthenticated } from "@squide/react-router";
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import type { SessionManager } from "../session.ts";
 
 export interface LoginProps {
     sessionManager: SessionManager;

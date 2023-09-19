@@ -1,4 +1,4 @@
-import { useAppRouter } from "@sample/shared";
+import { useAppRouter } from "@sample/shell";
 import { RouterProvider } from "react-router-dom";
 import { sessionManager } from "./session.ts";
 

@@ -5,8 +5,8 @@ import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 // Importing the Router type to prevent: error TS2742: The inferred type of 'useAppRouter' cannot be named without a reference
 import type { Router } from "@remix-run/router";
+import type { SessionManager } from "@sample/shared";
 import { createBrowserRouter } from "react-router-dom";
-import type { SessionManager } from "../session.ts";
 
 export interface UseAppRouterOptions {
     managedRoutes?: Route[];

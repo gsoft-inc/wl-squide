@@ -148,7 +148,7 @@ export function Tab3() {
 
 Now that the tabs have been registered, ensure that all four modules (including `remote-module-3`) are registered in the host application. Start the development servers using the `dev` script. Navigate to the `/federated-tabs` page, and you should see the tab headers. Click on each tab header to confirm that the content renders correctly.
 
-## Decouple the navigation links
+## Decouple the navigation items
 
 Althought it's functional, there are still a few configurations needed since the modules are currently coupled by hardcoded URLs within the `FederatedTabsLayout`.
 
@@ -230,8 +230,14 @@ export const register: ModuleRegisterFunction<Runtime> = (runtime: Runtime) => {
 
 Then, update the `FederatedTabsLayout` to render the registered navigation items instead of the hardcoded the URLs:
 
-```tsx !#26 remote-module-3/src/federated-tabs-layout.tsx
-import { useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/react-router";
+```tsx !#32 remote-module-3/src/federated-tabs-layout.tsx
+import { 
+    useNavigationItems,
+    useRenderedNavigationItems,
+    type NavigationLinkRenderProps,
+    type RenderItemFunction,
+    type RenderSectionFunction
+} from "@squide/react-router";
 import { Suspense } from "react";
 import { Link, Outlet } from "react-router-dom";
 

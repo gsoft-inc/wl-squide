@@ -7,7 +7,7 @@ const Message = lazy(() => import("./Message.tsx"));
 const WorkleapTab = lazy(() => import("./WorkleapTab.tsx"));
 
 export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, context) => {
-    console.log("Context: ", context);
+    console.log("Local module context: ", context);
 
     runtime.registerRoutes([
         {

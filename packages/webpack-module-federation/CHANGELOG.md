@@ -1,5 +1,12 @@
 # @squide/webpack-module-federation
 
+## 1.0.5
+
+### Patch Changes
+
+- [#83](https://github.com/gsoft-inc/wl-squide/pull/83) [`b29c492`](https://github.com/gsoft-inc/wl-squide/commit/b29c492ab34af978c2c5d34a67234bb9a6949651) Thanks [@patricklafrance](https://github.com/patricklafrance)! - - `eager` was defined for the common shared dependencies of the host application and the modules. This was causing every dependencies to be loaded twice, fixed it.
+  - `useAreRemotesReady` was never being ready if there was no local modules configured, fixed it.
+
 ## 1.0.4
 
 ### Patch Changes

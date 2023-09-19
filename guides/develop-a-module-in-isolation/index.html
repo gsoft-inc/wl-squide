@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748366735860">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748467409344">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -31,15 +31,22 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.748366735860" rel="stylesheet">
+    <link href="../../static/favicon.png" rel="icon">
+    <link href="../../resources/css/retype.css?v=3.5.0.748467409344" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748366735860" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748467409344" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748366735860" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.748366735860" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748467409344" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.748467409344" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
+
+    <style>
+    .align-image-left {
+        display: flex;
+        justify-content: start;
+    }
+    </style>
 
 </head>
 <body>
@@ -62,8 +69,8 @@
                         </a>
                         <a id="docs-site-logo" href="../../" class="flex items-center leading-snug text-2xl">
                             <span class="w-10 mr-2 grow-0 shrink-0 overflow-hidden">
-                                <img class="max-h-10 dark:hidden md:inline-block" src="../../logo.png">
-                                <img class="max-h-10 hidden dark:inline-block" src="../../logo.png">
+                                <img class="max-h-10 dark:hidden md:inline-block" src="../../static/logo.png">
+                                <img class="max-h-10 hidden dark:inline-block" src="../../static/logo.png">
                             </span>
                             <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">@squide</span>
                         </a>
@@ -421,10 +428,10 @@ export function useAppRouter({ rootRoutes = [] }: UseAppRouterOptions = {}) {
         <span>Host application</span>
     </h2>
 </doc-anchor-target>
-<doc-anchor-target id="add-the-dependencies">
+<doc-anchor-target id="install-the-package">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#add-the-dependencies">#</doc-anchor-trigger>
-        <span>Add the dependencies</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#install-the-package">#</doc-anchor-trigger>
+        <span>Install the package</span>
     </h3>
 </doc-anchor-target>
 <p>Now, let&#x27;s revisit the host application by first adding a dependency to the new <code v-pre>@sample/shell</code> package:</p>
@@ -481,13 +488,13 @@ export function App() {
     </h2>
 </doc-anchor-target>
 <p>With our new setup in place, we can now configure the remote module to be developed in isolation. The goal is to start the module development server and render the module pages with the same layout and functionalities as if it was rendered by the host application.</p>
-<doc-anchor-target id="add-the-dependencies-1">
+<doc-anchor-target id="install-the-package-1">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#add-the-dependencies-1">#</doc-anchor-trigger>
-        <span>Add the dependencies</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#install-the-package-1">#</doc-anchor-trigger>
+        <span>Install the package</span>
     </h3>
 </doc-anchor-target>
-<p>To begin, let&#x27;s start by adding a dependencies to the <code v-pre>@sample/shell</code> package:</p>
+<p>To begin, let&#x27;s start by adding a dependency to the <code v-pre>@sample/shell</code> package:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/package.json</div>
 <pre class="language-json"><code v-pre class="language-json">{
@@ -588,7 +595,7 @@ export function App() {
         <span>DevHome.tsx</span>
     </h3>
 </doc-anchor-target>
-<p>The <code v-pre>&lt;DevHome&gt;</code> component purpose is strictly to serve as an <code v-pre>index</code> page when developing the remote module in isolation.</p>
+<p>The <code v-pre>DevHome</code> component purpose is strictly to serve as an <code v-pre>index</code> page when developing the remote module in isolation.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/DevHome.tsx</div>
 <pre class="language-tsx"><code v-pre class="language-tsx">function DevHome() {
@@ -698,7 +705,7 @@ export default config;</code></pre>
         <span>Try it <span class="docs-emoji">&#x1F680;</span></span>
     </h3>
 </doc-anchor-target>
-<p>Start the remote module in isolation by running the <code v-pre>dev-local</code> script. The application shell should wrap the pages of the module and the default page should be <code v-pre>&lt;DevHome&gt;</code>.</p>
+<p>Start the remote module in isolation by running the <code v-pre>dev-local</code> script. The application shell should wrap the pages of the module and the default page should be <code v-pre>DevHome</code>.</p>
 <doc-anchor-target id="local-module">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#local-module">#</doc-anchor-trigger>
@@ -880,7 +887,7 @@ export default defineDevConfig(swcConfig);</code></pre>
         <span>Try it <span class="docs-emoji">&#x1F680;</span></span>
     </h3>
 </doc-anchor-target>
-<p>Start the remote module in isolation by running the <code v-pre>dev-local</code> script. The application shell should wrap the pages of the module and the default page should be <code v-pre>&lt;DevHome&gt;</code>.</p>
+<p>Start the remote module in isolation by running the <code v-pre>dev-local</code> script. The application shell should wrap the pages of the module and the default page should be <code v-pre>DevHome</code>.</p>
 
                                 
                                 <!-- Required only on API pages -->
@@ -906,10 +913,10 @@ export default defineDevConfig(swcConfig);</code></pre>
                                     </div>
                             
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../guides/migrating-from-a-monolith/">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../guides/federated-tabs/">
                                             <span>
                                                 <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                                                <span class="block mt-1">Migrating from a monolith</span>
+                                                <span class="block mt-1">Federated tabs</span>
                                             </span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                         </a>

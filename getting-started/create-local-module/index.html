@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748366735860">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748467409344">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -31,15 +31,22 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.748366735860" rel="stylesheet">
+    <link href="../../static/favicon.png" rel="icon">
+    <link href="../../resources/css/retype.css?v=3.5.0.748467409344" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748366735860" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748467409344" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748366735860" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.748366735860" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748467409344" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.748467409344" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
+
+    <style>
+    .align-image-left {
+        display: flex;
+        justify-content: start;
+    }
+    </style>
 
 </head>
 <body>
@@ -62,8 +69,8 @@
                         </a>
                         <a id="docs-site-logo" href="../../" class="flex items-center leading-snug text-2xl">
                             <span class="w-10 mr-2 grow-0 shrink-0 overflow-hidden">
-                                <img class="max-h-10 dark:hidden md:inline-block" src="../../logo.png">
-                                <img class="max-h-10 hidden dark:inline-block" src="../../logo.png">
+                                <img class="max-h-10 dark:hidden md:inline-block" src="../../static/logo.png">
+                                <img class="max-h-10 hidden dark:inline-block" src="../../static/logo.png">
                             </span>
                             <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">@squide</span>
                         </a>
@@ -571,13 +578,30 @@ export default defineBuildConfig();</code></pre>
     &quot;build&quot;: &quot;tsup --config ./tsup.build.ts&quot;
 }</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="try-the-application">
+<doc-anchor-target id="try-it">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#try-the-application">#</doc-anchor-trigger>
-        <span>Try the application <span class="docs-emoji">&#x1F680;</span></span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#try-it">#</doc-anchor-trigger>
+        <span>Try it <span class="docs-emoji">&#x1F680;</span></span>
     </h2>
 </doc-anchor-target>
 <p>Start the <code v-pre>host</code>, <code v-pre>remote-module</code> and <code v-pre>local-module</code> applications in development mode using the <code v-pre>dev</code> script. You should now notice an additional link in the navigation menu. Click on the link to navigate to the page of your new <strong>local</strong> module!</p>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>To troubleshoot module registration issues, open the DevTools console. You&#x27;ll find a log entry for each registration that occurs and error messages if something goes wrong.</p>
+        </div>
+    </div>
+</div>
 
                                 
                                 <!-- Required only on API pages -->

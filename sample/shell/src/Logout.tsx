@@ -1,5 +1,5 @@
+import type { SessionManager } from "@sample/shared";
 import { Link } from "react-router-dom";
-import type { SessionManager } from "../session.ts";
 
 export interface LogoutProps {
     sessionManager: SessionManager;

@@ -9,42 +9,50 @@ import { RemoteEntryPoint, RemoteModuleName } from "./remoteDefinition.ts";
 // Webpack doesn't export ModuleFederationPlugin typings.
 export type ModuleFederationPluginOptions = ConstructorParameters<typeof webpack.container.ModuleFederationPlugin>[0];
 
-export const DefaultSharedDependencies = {
-    "react": {
-        singleton: true,
-        eager: true
-    },
-    "react-dom": {
-        singleton: true,
-        eager: true
-    },
-    "@squide/core": {
-        singleton: true,
-        eager: true
-    },
-    "@squide/webpack-module-federation": {
-        singleton: true,
-        eager: true
-    }
-};
+// Generally, only the host application should have eager dependencies.
+// For more informations about shared dependencies refer to: https://github.com/patricklafrance/wmf-versioning
+export function getDefaultSharedDependencies(isHost: boolean) {
+    return {
+        "react": {
+            singleton: true,
+            eager: isHost ? true : undefined
+        },
+        "react-dom": {
+            singleton: true,
+            eager: isHost ? true : undefined
+        },
+        "@squide/core": {
+            singleton: true,
+            eager: isHost ? true : undefined
+        },
+        "@squide/webpack-module-federation": {
+            singleton: true,
+            eager: isHost ? true : undefined
+        }
+    };
+}
 
-export const ReactRouterSharedDependencies = {
-    "react-router-dom": {
-        singleton: true,
-        eager: true
-    },
-    "@squide/react-router": {
-        singleton: true,
-        eager: true
-    }
-};
+// Generally, only the host application should have eager dependencies.
+// For more informations about shared dependencies refer to: https://github.com/patricklafrance/wmf-versioning
+export function getReactRouterSharedDependencies(isHost: boolean) {
+    return {
+        "react-router-dom": {
+            singleton: true,
+            eager: isHost ? true : undefined
+        },
+        "@squide/react-router": {
+            singleton: true,
+            eager: isHost ? true : undefined
+        }
+    };
+}
 
 export type Router = "react-router";
 
-export function resolveDefaultSharedDependencies(router: Router) {
+export function resolveDefaultSharedDependencies(router: Router, isHost: boolean) {
     return {
-        ...DefaultSharedDependencies,
-        ...(router === "react-router" ? ReactRouterSharedDependencies : {})
+        ...getDefaultSharedDependencies(isHost),
+        ...(router === "react-router" ? getReactRouterSharedDependencies(isHost) : {})
     };
 }
 
@@ -63,7 +71,7 @@ export function defineHostModuleFederationPluginOptions(applicationName: string,
     } = options;
 
 
-    const defaultSharedDependencies = resolveDefaultSharedDependencies(router);
+    const defaultSharedDependencies = resolveDefaultSharedDependencies(router, true);
 
     return {
         name: applicationName,
@@ -160,7 +168,7 @@ export function defineRemoteModuleFederationPluginOptions(applicationName: strin
         ...rest
     } = options;
 
-    const defaultSharedDependencies = resolveDefaultSharedDependencies(router);
+    const defaultSharedDependencies = resolveDefaultSharedDependencies(router, false);
 
     return {
         name: applicationName,

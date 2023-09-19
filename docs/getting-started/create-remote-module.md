@@ -126,18 +126,22 @@ export const swcConfig = defineDevConfig(targets);
 
 Then, open the `webpack.dev.js` file and use the the [defineDevRemoteModuleConfig](/reference/webpack/defineDevRemoteModuleConfig.md) function to configure webpack:
 
-```js !#6 remote-module/webpack.dev.js
+```js !#6-12 remote-module/webpack.dev.js
 // @ts-check
 
 import { defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081);
+export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
+    sharedDependencies: {
+        "@sample/shared": {
+            singleton: true
+        }
+    }
+});
 ```
 
-!!!info
-If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/).
-!!!
+> If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/).
 
 ### Build configuration
 
@@ -159,18 +163,22 @@ export const swcConfig = defineBuildConfig(targets);
 
 Then, open the `webpack.build.js` file and use the the [defineBuildRemoteModuleConfig](/reference/webpack/defineBuildRemoteModuleConfig.md) function to configure webpack:
 
-```js !#6 remote-module/webpack.build.js
+```js !#6-12 remote-module/webpack.build.js
 // @ts-check
 
 import { defineBuildRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://localhost:8081/");
+export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://localhost:8081/", {
+    sharedDependencies: {
+        "@sample/shared": {
+            singleton: true
+        }
+    }
+});
 ```
 
-!!!info
-If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/).
-!!!
+> If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/).
 
 ## Add CLI scripts
 
@@ -190,7 +198,11 @@ To build the module, add the following script to the application `package.json` 
 }
 ```
 
-## Try the application :rocket:
+## Try it :rocket:
 
 Start the `host` and the `remote-module` applications in development mode using the `dev` script. You should notice an additional link in the navigation menu. Click on the link to navigate to the page of your new **remote** module!
+
+!!!info
+To troubleshoot module registration issues, open the DevTools console. You'll find a log entry for each registration that occurs and error messages if something goes wrong.
+!!!
 

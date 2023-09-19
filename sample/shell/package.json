@@ -1,8 +1,8 @@
 {
-    "name": "@sample/shared",
+    "name": "@sample/shell",
     "author": "Workleap",
     "version": "0.0.0",
-    "description": "Shared package to showcase @squide.",
+    "description": "Application shell package to showcase @squide.",
     "private": true,
     "license": "Apache-2.0",
     "type": "module",
@@ -19,6 +19,7 @@
         "serve-build": "pnpm build"
     },
     "peerDependencies": {
+        "@sample/shared": "*",
         "@squide/react-router": "*",
         "react": "*",
         "react-dom": "*",
@@ -26,6 +27,7 @@
     },
     "devDependencies": {
         "@remix-run/router": "1.9.0",
+        "@sample/shared": "workspace:*",
         "@squide/react-router": "workspace:*",
         "@types/react": "18.2.21",
         "@types/react-dom": "18.2.7",

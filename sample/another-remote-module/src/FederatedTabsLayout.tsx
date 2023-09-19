@@ -22,21 +22,18 @@ const renderSection: RenderSectionFunction = elements => {
     );
 };
 
-export default function DistributedTabsLayout() {
-    const navigationItems = useNavigationItems("/distributed-tabs");
-
+export default function FederatedTabsLayout() {
+    const navigationItems = useNavigationItems("/federated-tabs");
     const renderedTabs = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (
         <div>
-            <div>
-                <p>Every tab is registered by a different module and is lazy loaded.</p>
-                {renderedTabs}
-                <div style={{ padding: "20px" }}>
-                    <Suspense fallback={<div>Loading...</div>}>
-                        <Outlet />
-                    </Suspense>
-                </div>
+            <p>Every tab is registered by a different module and is lazy loaded.</p>
+            {renderedTabs}
+            <div style={{ padding: "20px" }}>
+                <Suspense fallback={<div>Loading...</div>}>
+                    <Outlet />
+                </Suspense>
             </div>
         </div>
     );

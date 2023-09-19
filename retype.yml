@@ -30,9 +30,9 @@ url: https://gsoft-inc.github.io/wl-squide/
 
 branding:
     title: "@squide"
-    logo: ./logo.png
+    logo: ./static/logo.png
 
-favicon: ./favicon.png
+favicon: ./static/favicon.png
 
 edit:
     repo: "https://github.com/gsoft-inc/wl-squide"

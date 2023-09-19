@@ -5,8 +5,9 @@ import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {
     sharedDependencies: {
-        "shared": {
-            singleton: true
+        "@sample/shared": {
+            singleton: true,
+            eager: true
         }
     },
     environmentVariables: {

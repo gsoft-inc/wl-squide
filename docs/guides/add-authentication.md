@@ -23,7 +23,7 @@ const sessionAccessor: SessionAccessorFunction = () => {
 };
 ```
 
-Then create the [Runtime](/reference/runtime/runtime-class.md) instance with the new `sessionAccessor` function:
+Then, create the [Runtime](/reference/runtime/runtime-class.md) instance with the new `sessionAccessor` function:
 
 ```ts #5 host/src/boostrap.tsx
 import { Runtime } from "@squide/react-router";
@@ -314,7 +314,7 @@ export function App() {
 }
 ```
 
-## Try the application :rocket:
+## Try it :rocket:
 
 Start the application and attempt navigating to the root page (`/`). You will be redirected to the `/login` page. Login with `"temp"` / `"temp"`, you will be redirected to the root page.
 

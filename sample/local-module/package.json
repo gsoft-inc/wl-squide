@@ -47,6 +47,7 @@
     },
     "dependencies": {
         "@sample/shared": "workspace:*",
+        "@sample/shell": "workspace:*",
         "@squide/fakes": "workspace:*",
         "@squide/react-router": "workspace:*",
         "react": "18.2.0",

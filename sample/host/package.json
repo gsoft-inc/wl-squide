@@ -36,6 +36,7 @@
     "dependencies": {
         "@sample/local-module": "workspace:*",
         "@sample/shared": "workspace:*",
+        "@sample/shell": "workspace:*",
         "@squide/fakes": "workspace:*",
         "@squide/react-router": "workspace:*",
         "@squide/webpack-module-federation": "workspace:*",

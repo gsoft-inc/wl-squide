@@ -82,9 +82,7 @@ import("./bootstrap");
 export {};
 ```
 
-!!!info
-To learn more about this async boundary and the `bootstrap.tsx` file, read the following [article](https://dev.to/infoxicator/module-federation-shared-api-ach#using-an-async-boundary).
-!!!
+> To learn more about this async boundary and the `bootstrap.tsx` file, read the following [article](https://dev.to/infoxicator/module-federation-shared-api-ach#using-an-async-boundary).
 
 ### Module registration
 
@@ -178,7 +176,7 @@ export function App() {
 }
 ```
 
-And finally, create the `<Home>` component:
+And finally, create the `Home` component:
 
 ```tsx host/src/Home.tsx
 export function Home() {
@@ -293,18 +291,23 @@ export const swcConfig = defineDevConfig(targets);
 
 Then, open the `webpack.dev.js` file and use the [defineDevHostConfig](/reference/webpack/defineDevHostConfig.md) function to configure webpack:
 
-```js !#6 host/webpack.dev.js
+```js !#6-13 host/webpack.dev.js
 // @ts-check
 
 import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080);
+export default defineDevHostConfig(swcConfig, "host", 8080, {
+    sharedDependencies: {
+        "@sample/shared": {
+            singleton: true,
+            eager: true
+        }
+    }
+});
 ```
 
-!!!info
-If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/).
-!!!
+> If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/).
 
 ### Build configuration
 
@@ -326,18 +329,23 @@ export const swcConfig = defineBuildConfig(targets);
 
 Then, open the `webpack.build.js` file and use the [defineBuildHostConfig](/reference/webpack/defineBuildHostConfig.md) function to configure webpack:
 
-```js !#6 host/webpack.build.js
+```js !#6-13 host/webpack.build.js
 // @ts-check
 
 import { defineBuildHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/");
+export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/", {
+    sharedDependencies: {
+        "@sample/shared": {
+            singleton: true,
+            eager: true
+        }
+    }
+});
 ```
 
-!!!info
-If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/).
-!!!
+> If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/).
 
 ## Add CLI scripts
 
@@ -357,6 +365,10 @@ To build the application, add the following script to the application `package.j
 }
 ```
 
-## Try the application :rocket:
+## Try it :rocket:
 
 Start the application in a development environment using the `dev` script. You should see the home page. Even if the remote module application is not yet available, the host application will gracefully load.
+
+!!!info
+To troubleshoot module registration issues, open the DevTools console. You'll find a log entry for each registration that occurs and error messages if something goes wrong.
+!!!

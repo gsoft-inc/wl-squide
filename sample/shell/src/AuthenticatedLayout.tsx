@@ -1,8 +1,7 @@
+import { useApplicationEventBusListener, type Session } from "@sample/shared";
 import { isNavigationLink, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/react-router";
 import { Suspense, useCallback, type ReactNode } from "react";
 import { Link, Outlet } from "react-router-dom";
-import { useApplicationEventBusListener } from "../eventBus.ts";
-import type { Session } from "../session.ts";
 
 type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
 

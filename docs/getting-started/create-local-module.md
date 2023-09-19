@@ -219,6 +219,10 @@ To build the module, add the following script to the application `package.json` 
 }
 ```
 
-## Try the application :rocket:
+## Try it :rocket:
 
 Start the `host`, `remote-module` and `local-module` applications in development mode using the `dev` script. You should now notice an additional link in the navigation menu. Click on the link to navigate to the page of your new **local** module!
+
+!!!info
+To troubleshoot module registration issues, open the DevTools console. You'll find a log entry for each registration that occurs and error messages if something goes wrong.
+!!!

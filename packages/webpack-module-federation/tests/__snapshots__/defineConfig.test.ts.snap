@@ -234,27 +234,27 @@ exports[`defineBuildRemoteModuleConfig the application name is set as the federa
       "name": "remote1",
       "shared": {
         "@squide/core": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/react-router": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/webpack-module-federation": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react-router-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
       },
@@ -275,27 +275,27 @@ exports[`defineBuildRemoteModuleConfig the module federation plugin configuratio
       "name": "remote1",
       "shared": {
         "@squide/core": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/react-router": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/webpack-module-federation": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react-router-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
       },
@@ -316,28 +316,28 @@ exports[`defineBuildRemoteModuleConfig when additional options are provided for 
       "name": "remote1",
       "shared": {
         "@squide/core": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/react-router": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/webpack-module-federation": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react": {
-          "eager": true,
+          "eager": undefined,
           "requiredVersion": "1.2.3",
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react-router-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
       },
@@ -358,30 +358,30 @@ exports[`defineBuildRemoteModuleConfig when additional shared dependencies are p
       "name": "remote1",
       "shared": {
         "@squide/core": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/react-router": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/webpack-module-federation": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "first": {
           "singleton": true,
         },
         "react": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react-router-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "second": {
@@ -406,15 +406,15 @@ exports[`defineBuildRemoteModuleConfig when overriding options are provided for 
       "name": "remote1",
       "shared": {
         "@squide/core": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/react-router": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/webpack-module-federation": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react": {
@@ -422,11 +422,11 @@ exports[`defineBuildRemoteModuleConfig when overriding options are provided for 
           "singleton": false,
         },
         "react-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react-router-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
       },
@@ -447,19 +447,19 @@ exports[`defineBuildRemoteModuleConfig when the router is not react-router, do n
       "name": "remote1",
       "shared": {
         "@squide/core": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/webpack-module-federation": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
       },
@@ -702,27 +702,27 @@ exports[`defineDevRemoteModuleConfig the application name is set as the federati
       "name": "remote1",
       "shared": {
         "@squide/core": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/react-router": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/webpack-module-federation": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react-router-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
       },
@@ -743,27 +743,27 @@ exports[`defineDevRemoteModuleConfig the module federation plugin configuration 
       "name": "remote1",
       "shared": {
         "@squide/core": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/react-router": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/webpack-module-federation": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react-router-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
       },
@@ -784,28 +784,28 @@ exports[`defineDevRemoteModuleConfig when additional options are provided for an
       "name": "remote1",
       "shared": {
         "@squide/core": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/react-router": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/webpack-module-federation": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react": {
-          "eager": true,
+          "eager": undefined,
           "requiredVersion": "1.2.3",
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react-router-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
       },
@@ -826,30 +826,30 @@ exports[`defineDevRemoteModuleConfig when additional shared dependencies are pro
       "name": "remote1",
       "shared": {
         "@squide/core": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/react-router": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/webpack-module-federation": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "first": {
           "singleton": true,
         },
         "react": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react-router-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "second": {
@@ -874,15 +874,15 @@ exports[`defineDevRemoteModuleConfig when overriding options are provided for a 
       "name": "remote1",
       "shared": {
         "@squide/core": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/react-router": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/webpack-module-federation": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react": {
@@ -890,11 +890,11 @@ exports[`defineDevRemoteModuleConfig when overriding options are provided for a 
           "singleton": false,
         },
         "react-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react-router-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
       },
@@ -915,19 +915,19 @@ exports[`defineDevRemoteModuleConfig when the router is not react-router, do not
       "name": "remote1",
       "shared": {
         "@squide/core": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "@squide/webpack-module-federation": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
+          "eager": undefined,
           "singleton": true,
         },
       },

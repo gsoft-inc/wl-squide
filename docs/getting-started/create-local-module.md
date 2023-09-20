@@ -96,7 +96,7 @@ import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import type { AppContext } from "@sample/shared";
 import { Page } from "./Page.tsx";
 
-export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime: Runtime, context: AppContext) => {
+export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, context) => {
     runtime.registerRoutes([
         {
             path: "/local/page",

@@ -3,11 +3,11 @@ order: 30
 label: Overriding a React context
 ---
 
-# Overriding a React context for a specific remote module
+# Overriding a React context
 
-In a federated application using [Module Federation](https://webpack.js.org/concepts/module-federation/), it's typical to configure various global [React contexts](https://legacy.reactjs.org/docs/context.html) at the root of the host application that will be consumed by the remote modules.
+In a federated application using [Module Federation](https://webpack.js.org/concepts/module-federation/), it's typical to configure various global [React contexts](https://legacy.reactjs.org/docs/context.html) at the root of the host application. These contexts will usually be consumed by the remote modules.
 
-Let's take a sample example using a `BackgroundColorContext`:
+Let's take a simple example using a `BackgroundColorContext`:
 
 ```tsx !#16-21 host/src/App.tsx
 import { useAppRouter } from "@sample/shell";
@@ -90,9 +90,9 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
 
 ## Extract an utility function
 
-If there was multiple routes to setup with the new provider, an utility function could be extracted:
+If there was multiple routes to setup with the new provider, an utility function could also be extracted:
 
-```tsx
+```tsx !#6-12,18 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { BackgroundColorContext } from "@sample/shared";
 import { ColoredPage } from "./ColoredPage.tsx";
@@ -116,6 +116,81 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
 }
 ```
 
+## Update a singleton dependency version
 
+Let's consider a more specific use case where the host application declares a `ThemeContext` from Workleap's new design system, Hopper:
 
+```tsx !#16-21 host/src/App.tsx
+import { useAppRouter } from "@sample/shell";
+import { ThemeContext } from "@hopper/components";
+import { useAreModulesReady } from "@squide/webpack-module-federation";
+import { RouterProvider } from "react-router-dom";
 
+export function App() {
+    const isReady = useAreModulesReady();
+
+    const router = useAppRouter(sessionManager);
+
+    if (!isReady) {
+        return <div>Loading...</div>;
+    }
+
+    return (
+        <ThemeContext.Provider value="dark">
+            <RouterProvider
+                router={router}
+                fallbackElement={<div>Loading...</div>}
+            />
+        </ThemeContext.Provider>
+    );
+}
+```
+
+In this scenario, Hopper's components are used throughout the entire federated application, including the remote modules. Moreover, `@hopper/components` is defined as a [singleton](https://webpack.js.org/plugins/module-federation-plugin/#singleton) shared dependency:
+
+```js !#8-10 host/webpack.dev.js
+// @ts-check
+
+import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { swcConfig } from "./swc.dev.js";
+
+export default defineDevHostConfig(swcConfig, "host", 8080, {
+    sharedDependencies: {
+        "@hopper/components": {
+            singleton: true
+        }
+    }
+});
+```
+
+Now, let's consider a situation where Hopper releases a new version of the package that includes breaking changes, without a "compatibility" package to ensure backward compatility with the previous version.
+
+To update the host application without breaking the remote modules, the recommended approach is to temporary "break" the singleton shared dependency by loading two versions of the dependency in parallel (one for the host application and one for the remote modules that have not been updated yet).
+
+As `@hopper/components` expose the `ThemeContext`, the context must be re-declared in each remote module until every part of the federated application has been updated to latest version of Hopper:
+
+```tsx !#6-12,18 remote-module/src/register.tsx
+import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import { ThemeContext } from "@hopper/components";
+import { Page } from "./Page.tsx";
+import type { ReactElement } from "react";
+
+function withHopperTheme(page: ReactElement) {
+    return (
+        <ThemeContext.Provider value="dark">
+            {page}
+        </ThemeContext.Provider>
+    )
+}
+
+export const register: ModuleRegisterFunction<Runtime> = runtime => {
+    runtime.registerRoutes([
+        {
+            path: "/page",
+            element: withHopperTheme(<Page />)
+        }
+    ]);
+}
+```
+
+Thankfully, [React Router](https://reactrouter.com/en/main) makes it very easy to declare contexts in a remote module.

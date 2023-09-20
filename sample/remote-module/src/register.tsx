@@ -105,11 +105,12 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
     runtime.registerNavigationItems([
         {
             to: "/federated-tabs/officevibe",
-            label: "Officevibe"
+            label: "Officevibe",
         },
         {
             to: "/federated-tabs/skills",
-            label: "Skills"
+            label: "Skills",
+            priority: 999
         }
     ], { menuId: "/federated-tabs" });
 };

@@ -279,6 +279,35 @@ export default function FederatedTabsLayout() {
 }
 ```
 
+## Change the display order of the tabs
+
+Similarly to how the display order of regular navigation items can be configured, a federated tab position can be affected with the [priority](http://localhost:5000/wl-squide/reference/runtime/runtime-class/#sort-registered-navigation-items) property.
+
+To force `Tab 3` to be positioned first: 
+
+```tsx !#17 local-module/src/register.tsx
+import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import { Tab3 } from "./Tab3.tsx";
+
+export const register: ModuleRegisterFunction<Runtime> = (runtime: Runtime) => {
+    runtime.registerRoutes([
+        {
+            path: "/federated-tabs/tab-3"
+            element: <Tab3 />
+        }
+    ], { layoutPath: "/federated-tabs" });
+
+    runtime.registerNavigationItems([
+        {
+            to: "/federated-tabs/tab-3",
+            label: "Tab 3",
+            // Highest priority goes first.
+            priority: 999
+        }
+    ], { menuId: "/federated-tabs" });
+}
+```
+
 ## Try it :rocket:
 
 To ensure everything is still working correctly, start the development servers using the `dev` script and navigate to the `/federated-tabs` page. You should see all three tabs, and you should be able to switch between them by clicking on the tab headers.

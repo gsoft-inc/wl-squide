@@ -12,4 +12,5 @@ expanded: true
 - [Implement a custom logger](implement-a-custom-logger.md)
 - [Develop a module in isolation](develop-a-module-in-isolation.md)
 - [Federated tabs](federated-tabs.md)
+- [Overriding a React context for a specific remote module](overriding-a-react-context.md)
 - [Migrating from a monolithic application](migrating-from-a-monolith.md)

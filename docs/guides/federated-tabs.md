@@ -51,7 +51,7 @@ To register the newly created layout as a nested layout, use the [registerRemote
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { FederatedTabsLayout } from "./FederatedTabsLayout.tsx";
 
-export const register: ModuleRegisterFunction<Runtime> = (runtime: Runtime) => {
+export const register: ModuleRegisterFunction<Runtime> = runtime => {
     runtime.registerRoutes([
         {
             // Register the layout as a nested layout under the "/federated-tabs" URL segment.
@@ -104,7 +104,7 @@ export function Tab1() {
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { Tab2 } from "./Tab2.tsx";
 
-export const register: ModuleRegisterFunction<Runtime> = (runtime: Runtime) => {
+export const register: ModuleRegisterFunction<Runtime> = runtime => {
     runtime.registerRoutes([
         {
             // The first part of the "path" must be the same as the nested layout path (FederatedTabsLayout).
@@ -160,7 +160,7 @@ First, let's register the navigation items with the `menuId` option:
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { Tab1 } from "./Tab1.tsx";
 
-export const register: ModuleRegisterFunction<Runtime> = (runtime: Runtime) => {
+export const register: ModuleRegisterFunction<Runtime> = runtime => {
     runtime.registerRoutes([
         {
             // Using "index: true" instead of a path because this is the default active tab.
@@ -208,7 +208,7 @@ export const register: ModuleRegisterFunction<Runtime> = (runtime: Runtime) => {
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { Tab3 } from "./Tab3.tsx";
 
-export const register: ModuleRegisterFunction<Runtime> = (runtime: Runtime) => {
+export const register: ModuleRegisterFunction<Runtime> = runtime => {
     runtime.registerRoutes([
         {
             // The first part of the "path" must be the same as the nested layout path (FederatedTabsLayout).
@@ -276,6 +276,35 @@ export default function FederatedTabsLayout() {
             </div>
         </div>
     );
+}
+```
+
+## Change the display order of the tabs
+
+Similarly to how the display order of regular navigation items can be configured, a federated tab position can be affected with the [priority](http://localhost:5000/wl-squide/reference/runtime/runtime-class/#sort-registered-navigation-items) property.
+
+To force `Tab 3` to be positioned first: 
+
+```tsx !#17 local-module/src/register.tsx
+import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import { Tab3 } from "./Tab3.tsx";
+
+export const register: ModuleRegisterFunction<Runtime> = runtime => {
+    runtime.registerRoutes([
+        {
+            path: "/federated-tabs/tab-3"
+            element: <Tab3 />
+        }
+    ], { layoutPath: "/federated-tabs" });
+
+    runtime.registerNavigationItems([
+        {
+            to: "/federated-tabs/tab-3",
+            label: "Tab 3",
+            // Highest priority goes first.
+            priority: 999
+        }
+    ], { menuId: "/federated-tabs" });
 }
 ```
 

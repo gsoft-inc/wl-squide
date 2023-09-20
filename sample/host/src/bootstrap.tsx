@@ -1,8 +1,8 @@
 import { register as registerLocalModule } from "@sample/local-module";
-import { BackgroundColorContext, isNetlify, type AppContext } from "@sample/shared";
+import { isNetlify, type AppContext } from "@sample/shared";
 import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
 import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
-import { StrictMode, Suspense } from "react";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App.tsx";
 import { sessionAccessor } from "./session.ts";
@@ -36,11 +36,7 @@ const root = createRoot(document.getElementById("root")!);
 root.render(
     <StrictMode>
         <RuntimeContext.Provider value={runtime}>
-            <BackgroundColorContext.Provider value="blue">
-                <Suspense fallback={<div>Loading...</div>}>
-                    <App />
-                </Suspense>
-            </BackgroundColorContext.Provider>
+            <App />
         </RuntimeContext.Provider>
     </StrictMode>
 );

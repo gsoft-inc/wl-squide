@@ -1,9 +1,9 @@
 import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
+import { register } from "../register.tsx";
+import { sessionAccessor } from "../session.ts";
 import { App } from "./App.tsx";
-import { register } from "./register.tsx";
-import { sessionAccessor } from "./session.ts";
 
 // Create the shell runtime.
 // Services, loggers and sessionAccessor could be reuse through a shared packages or faked when in isolation.
@@ -21,9 +21,7 @@ const root = createRoot(document.getElementById("root")!);
 root.render(
     <StrictMode>
         <RuntimeContext.Provider value={runtime}>
-            <Suspense fallback={<div>Loading...</div>}>
-                <App />
-            </Suspense>
+            <App />
         </RuntimeContext.Provider>
     </StrictMode>
 );

@@ -11,6 +11,11 @@
             "import": "./dist/index.js",
             "types": "./dist/index.d.ts",
             "default": "./dist/index.js"
+        },
+        "./FederatedTabsLayout.tsx": {
+            "import": "./dist/FederatedTabsLayout.js",
+            "types": "./dist/FederatedTabsLayout.d.ts",
+            "default": "./dist/FederatedTabsLayout.js"
         }
     },
     "scripts": {
@@ -27,7 +32,7 @@
     "devDependencies": {
         "@remix-run/router": "1.9.0",
         "@squide/react-router": "workspace:*",
-        "@types/react": "18.2.21",
+        "@types/react": "18.2.22",
         "@types/react-dom": "18.2.7",
         "@workleap/eslint-plugin": "2.1.1",
         "@workleap/tsup-configs": "3.0.1",

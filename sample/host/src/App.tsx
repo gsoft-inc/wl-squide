@@ -1,6 +1,7 @@
+import { BackgroundColorContext } from "@sample/shared";
 import { useAppRouter } from "@sample/shell";
 import { useAreModulesReady } from "@squide/webpack-module-federation";
-import { lazy } from "react";
+import { Suspense, lazy } from "react";
 import { RouterProvider } from "react-router-dom";
 import { sessionManager } from "./session.ts";
 
@@ -25,9 +26,13 @@ export function App() {
     }
 
     return (
-        <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-        />
+        <BackgroundColorContext.Provider value="blue">
+            <Suspense fallback={<div>Loading...</div>}>
+                    <RouterProvider
+                        router={router}
+                        fallbackElement={<div>Loading...</div>}
+                    />
+            </Suspense>
+        </BackgroundColorContext.Provider>
     );
 }

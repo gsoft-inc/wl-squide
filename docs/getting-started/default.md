@@ -44,7 +44,7 @@ With this mecanism in place, all federated parts of an application can now be lo
 
 By sharing the same browsing context (e.g. the same [Document object](https://developer.mozilla.org/en-US/docs/Web/API/Document), the same [Window object](https://developer.mozilla.org/en-US/docs/Web/API/Window), and the same DOM), federated parts now **form a unified and cohesive single application**, addressing the second challenge. 
 
-With Module Federation, we believe that we can develop federated applications that provide the same user experience as monolithic applications :rocket:
+With Module Federation, we believe that we can develop federated applications that provide the same user experience as monolithic applications :rocket:.
 
 ### React Router
 

@@ -8,7 +8,7 @@ const publicPath = process.env.NETLIFY === "true" ? "https://squide-host.netlify
 
 export default defineBuildHostConfig(swcConfig, "host", publicPath, {
     sharedDependencies: {
-        "shared": {
+        "@sample/shared": {
             singleton: true
         }
     },

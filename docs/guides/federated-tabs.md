@@ -289,7 +289,7 @@ To force `Tab 3` to be positioned first:
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { Tab3 } from "./Tab3.tsx";
 
-export const register: ModuleRegisterFunction<Runtime> = (runtime: Runtime) => {
+export const register: ModuleRegisterFunction<Runtime> = runtime => {
     runtime.registerRoutes([
         {
             path: "/federated-tabs/tab-3"

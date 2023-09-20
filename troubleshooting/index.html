@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748469052641">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748538729605">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Troubleshooting</title>
     <meta name="title" content="Troubleshooting">
-    <meta name="description" content="If you cannot shared values through a React context between the host application and the modules, it is most likely because either you are having two...">
+    <meta name="description" content="If you are encountering undefined values when sharing React context between the host application and its modules, it is likely due to two possible...">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/troubleshooting/">
@@ -21,22 +21,22 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/troubleshooting/">
     <meta property="og:title" content="Troubleshooting">
-    <meta property="og:description" content="If you cannot shared values through a React context between the host application and the modules, it is most likely because either you are having two...">
+    <meta property="og:description" content="If you are encountering undefined values when sharing React context between the host application and its modules, it is likely due to two possible...">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/troubleshooting/">
     <meta property="twitter:title" content="Troubleshooting">
-    <meta property="twitter:description" content="If you cannot shared values through a React context between the host application and the modules, it is most likely because either you are having two...">
+    <meta property="twitter:description" content="If you are encountering undefined values when sharing React context between the host application and its modules, it is likely due to two possible...">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../static/favicon.png" rel="icon">
-    <link href="../resources/css/retype.css?v=3.5.0.748469052641" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=3.5.0.748538729605" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=3.5.0.748469052641" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=3.5.0.748538729605" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.5.0.748469052641" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.5.0.748538729605" data-turbo-eval="false" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
 
@@ -299,18 +299,18 @@
         <span>React context values are undefined</span>
     </h2>
 </doc-anchor-target>
-<p>If you cannot shared values through a React context between the host application and the modules, it is most likely because either you are having two instances of React and the host application and the modules are not using the same instance or/and because you are having two instances of the React context.</p>
-<p>To fix the issue:</p>
+<p>If you are encountering undefined values when sharing React context between the host application and its modules, it is likely due to two possible reasons: either you have two instances of React, or you have multiple instances of that specific React context.</p>
+<p>To resolve this issue:</p>
 <ol>
-<li><p>Make sure that the <code v-pre>react</code> and <code v-pre>react-dom</code> dependencies are shared as a singleton between the host application and the remote modules. A React context value cannot be shared between parts of an application using a different React instance.</p>
+<li><p>Ensure that the <code v-pre>react</code> and <code v-pre>react-dom</code> dependencies are shared as <a href="https://webpack.js.org/plugins/module-federation-plugin/#singleton" class="outbound" target="_blank">singletons</a> between the host application and the remote modules. A React context value cannot be shared between different parts of an application that use different instances of React.</p>
 </li>
-<li><p>Make sure that the shared React context is in a library that is shared as a <code v-pre>singleton</code>.</p>
+<li><p>Confirm that the shared React context resides in a library shared as a <a href="https://webpack.js.org/plugins/module-federation-plugin/#singleton" class="outbound" target="_blank">singleton</a>.</p>
 </li>
-<li><p>If you are leveraging <a href="https://webpack.js.org/plugins/module-federation-plugin#eager" class="outbound" target="_blank">eager</a> shared dependencies, make sure that ONLY the host application is configuring the dependencies as <code v-pre>eager</code>.</p>
+<li><p>If you are using <a href="https://webpack.js.org/plugins/module-federation-plugin#eager" class="outbound" target="_blank">eager</a> shared dependencies, ensure that ONLY the host application configures these dependencies as <code v-pre>eager</code>.</p>
 </li>
 </ol>
-<p>If it doesn&#x27;t fix the issue, update your host application and remote modules webpack build config with <code v-pre>optimize: false</code>, then build the bundles and serve them. Open a browser, open the DevTools, switch to the Network tab (make sure JS files will be listed), navigate to the home page of the application and inspect the downloaded bundle files. The React context definition should only be included once, otherwise you have multiple instances of the React context.</p>
-<p>For more information about shared dependency versioning, refer to: <a href="https://github.com/patricklafrance/wmf-versioning" class="outbound" target="_blank">https://github.com/patricklafrance/wmf-versioning</a>.</p>
+<p>If the issue persists, update your host application and remote module&#x27;s webpack build configuration with the <code v-pre>optimize: false</code> option. Afterward, build the bundles and serve them. Open a web browser, access the DevTools, switch to the Network tab (ensure that JS files are listed), navigate to the application&#x27;s homepage, and inspect the downloaded bundle files. The problematic React context definition should appear only once; otherwise, you may have multiple instances of the React context.</p>
+<p>For additional information on shared dependency versioning, please refer to: <a href="https://github.com/patricklafrance/wmf-versioning.%22" class="outbound" target="_blank">https://github.com/patricklafrance/wmf-versioning.&quot;</a></p>
 
                                 
                                 <!-- Required only on API pages -->

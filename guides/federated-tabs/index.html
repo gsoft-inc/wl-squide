@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748469052641">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748538729605">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -34,12 +34,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.748469052641" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.748538729605" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748469052641" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748538729605" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748469052641" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.748469052641" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748538729605" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.748538729605" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
 
@@ -364,7 +364,7 @@ export default function FederatedTabsLayout() {
 <pre class="language-tsx" data-line="8-9"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import { FederatedTabsLayout } from &quot;./FederatedTabsLayout.tsx&quot;;
 
-export const register: ModuleRegisterFunction&lt;Runtime&gt; = (runtime: Runtime) =&gt; {
+export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
     runtime.registerRoutes([
         {
             // Register the layout as a nested layout under the &quot;/federated-tabs&quot; URL segment.
@@ -418,7 +418,7 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = (runtime: Runtime
 <pre class="language-tsx" data-line="8,11"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import { Tab2 } from &quot;./Tab2.tsx&quot;;
 
-export const register: ModuleRegisterFunction&lt;Runtime&gt; = (runtime: Runtime) =&gt; {
+export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
     runtime.registerRoutes([
         {
             // The first part of the &quot;path&quot; must be the same as the nested layout path (FederatedTabsLayout).
@@ -474,7 +474,7 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = (runtime: Runtime
 <pre class="language-tsx" data-line="20"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import { Tab1 } from &quot;./Tab1.tsx&quot;;
 
-export const register: ModuleRegisterFunction&lt;Runtime&gt; = (runtime: Runtime) =&gt; {
+export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
     runtime.registerRoutes([
         {
             // Using &quot;index: true&quot; instead of a path because this is the default active tab.
@@ -522,7 +522,7 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = (runtime: Runtime
 <pre class="language-tsx" data-line="20"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import { Tab3 } from &quot;./Tab3.tsx&quot;;
 
-export const register: ModuleRegisterFunction&lt;Runtime&gt; = (runtime: Runtime) =&gt; {
+export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
     runtime.registerRoutes([
         {
             // The first part of the &quot;path&quot; must be the same as the nested layout path (FederatedTabsLayout).
@@ -591,6 +591,37 @@ export default function FederatedTabsLayout() {
     );
 }</code></pre>
 </doc-codeblock></div>
+<doc-anchor-target id="change-the-display-order-of-the-tabs">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#change-the-display-order-of-the-tabs">#</doc-anchor-trigger>
+        <span>Change the display order of the tabs</span>
+    </h2>
+</doc-anchor-target>
+<p>Similarly to how the display order of regular navigation items can be configured, a federated tab position can be affected with the <a href="http://localhost:5000/wl-squide/reference/runtime/runtime-class/#sort-registered-navigation-items" class="outbound" target="_blank">priority</a> property.</p>
+<p>To force <code v-pre>Tab 3</code> to be positioned first:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">local-module/src/register.tsx</div>
+<pre class="language-tsx" data-line="17"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+import { Tab3 } from &quot;./Tab3.tsx&quot;;
+
+export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
+    runtime.registerRoutes([
+        {
+            path: &quot;/federated-tabs/tab-3&quot;
+            element: &lt;Tab3 /&gt;
+        }
+    ], { layoutPath: &quot;/federated-tabs&quot; });
+
+    runtime.registerNavigationItems([
+        {
+            to: &quot;/federated-tabs/tab-3&quot;,
+            label: &quot;Tab 3&quot;,
+            // Highest priority goes first.
+            priority: 999
+        }
+    ], { menuId: &quot;/federated-tabs&quot; });
+}</code></pre>
+</doc-codeblock></div>
 <doc-anchor-target id="try-it">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#try-it">#</doc-anchor-trigger>
@@ -623,10 +654,10 @@ export default function FederatedTabsLayout() {
                                     </div>
                             
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../guides/migrating-from-a-monolith/">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../guides/overriding-a-react-context/">
                                             <span>
                                                 <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                                                <span class="block mt-1">Migrating from a monolith</span>
+                                                <span class="block mt-1">Overriding a React context</span>
                                             </span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                         </a>

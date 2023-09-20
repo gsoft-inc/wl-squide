@@ -163,7 +163,7 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
 });
 ```
 
-Now, let's consider a situation where Hopper releases a new version of the package that includes breaking changes, without a "compatibility" package to ensure backward compatility with the previous version.
+Now, consider a situation where Hopper releases a new version of the package that includes breaking changes, without a "compatibility" package to ensure backward compatility with the previous version.
 
 To update the host application without breaking the remote modules, the recommended approach is to temporary "break" the singleton shared dependency by loading two versions of the dependency in parallel (one for the host application and one for the remote modules that have not been updated yet).
 

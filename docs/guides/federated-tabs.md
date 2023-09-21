@@ -148,7 +148,7 @@ export function Tab3() {
 
 Now that the tabs have been registered, ensure that all four modules (including `remote-module-3`) are registered in the host application. Start the development servers using the `dev` script. Navigate to the `/federated-tabs` page, and you should see the tab headers. Click on each tab header to confirm that the content renders correctly.
 
-## Decoupling the navigation items
+## Decouple the navigation items
 
 Althought it's functional, there are still a few configurations needed since the modules are currently coupled by hardcoded URLs within the `FederatedTabsLayout`.
 
@@ -279,7 +279,7 @@ export default function FederatedTabsLayout() {
 }
 ```
 
-## Changing the display order of the tabs
+## Change the display order of the tabs
 
 Similarly to how the display order of regular navigation items can be configured, a federated tab position can be affected with the [priority](http://localhost:5000/wl-squide/reference/runtime/runtime-class/#sort-registered-navigation-items) property.
 

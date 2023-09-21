@@ -7,7 +7,7 @@ icon: question
 
 ## React context values are undefined
 
-If you are encountering undefined values when sharing React context between the host application and its modules, it is likely due to two possible reasons: either you have two instances of React, or you have multiple instances of that specific React context.
+If you are encountering undefined values when providing a React context from the host application and consuming the context in modules, it is likely due to two possible reasons: either you have two instances of React, or you have multiple instances of that React context.
 
 To resolve this issue:
 
@@ -19,4 +19,4 @@ To resolve this issue:
 
 If the issue persists, update your host application and remote module's webpack build configuration with the `optimize: false` option. Afterward, build the bundles and serve them. Open a web browser, access the DevTools, switch to the Network tab (ensure that JS files are listed), navigate to the application's homepage, and inspect the downloaded bundle files. The problematic React context definition should appear only once; otherwise, you may have multiple instances of the React context.
 
-For additional information on shared dependency versioning, please refer to: https://github.com/patricklafrance/wmf-versioning."
+For additional information on shared dependency versioning, please refer to: https://github.com/patricklafrance/wmf-versioning.

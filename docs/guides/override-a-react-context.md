@@ -1,9 +1,9 @@
 ---
-order: 30
-label: Overriding a React context
+order: 20
+label: Override a React context
 ---
 
-# Overriding a React context
+# Override a React context
 
 In a federated application using [Module Federation](https://webpack.js.org/concepts/module-federation/), it's typical to configure various global [React contexts](https://legacy.reactjs.org/docs/context.html) at the root of the host application. These contexts are usually consumed down the line by the layouts and pages of the remote modules.
 
@@ -67,7 +67,7 @@ In the previous code samples, the host application provides a value for the `Bac
 
 ## Override the context for the remote module
 
-Now, suppose the requirements change, and the remote module's pages need to have a `red` background. The context can be overriden for the remote module by declaring a new provider directly in the routes registration:
+Now, suppose the requirements change, and one remote module's pages need to have a `red` background. The context can be overriden for the remote module by declaring a new provider directly in the routes registration:
 
 ```tsx !#10-12 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
@@ -90,7 +90,7 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
 
 ## Extract an utility function
 
-If there was multiple routes to setup with the new provider, an utility function could also be extracted:
+Since there are multiple routes to setup with the new provider, an utility function can be extracted:
 
 ```tsx !#6-12,18 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";

@@ -1,29 +1,20 @@
 import { BackgroundColorContext } from "@sample/shared";
 import { useAppRouter } from "@sample/shell";
-import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { Suspense, lazy } from "react";
 import { RouterProvider } from "react-router-dom";
-import { sessionManager } from "./session.ts";
+import { sessionManager } from "../session.ts";
 
-const Home = lazy(() => import("./Home.tsx"));
+const DevHome = lazy(() => import("./DevHome.tsx"));
 
 export function App() {
-    // Re-render the app once all the remotes are registered.
-    // Otherwise, the remotes routes won't be added to the router.
-    const isReady = useAreModulesReady();
-
     const router = useAppRouter(sessionManager, {
         managedRoutes: [
             {
                 index: true,
-                element: <Home />
+                element: <DevHome />
             }
         ]
     });
-
-    if (!isReady) {
-        return <div>Loading...</div>;
-    }
 
     return (
         <BackgroundColorContext.Provider value="blue">

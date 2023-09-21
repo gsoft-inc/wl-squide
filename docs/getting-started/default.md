@@ -44,11 +44,11 @@ With this mecanism in place, all federated parts of an application can now be lo
 
 By sharing the same browsing context (e.g. the same [Document object](https://developer.mozilla.org/en-US/docs/Web/API/Document), the same [Window object](https://developer.mozilla.org/en-US/docs/Web/API/Window), and the same DOM), federated parts now **form a unified and cohesive single application**, addressing the second challenge. 
 
-With Module Federation, we believe that we can develop federated applications that provide the same user experience as monolithic applications :rocket:
+With Module Federation, we hope to develop federated applications that provide the same user experience as monolithic applications :rocket:.
 
 ### React Router
 
-React Router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) feature is ideal for federated applications as it enables highly **composable** and **decoupled** UI. Besides, what else would you use? :joy:
+React Router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) feature is ideal for federated applications as it enables highly **composable** and **decoupled** UI. For a more in-depth explanation, refer to this [article](https://www.infoxicator.com/why-react-router-is-excellent-for-micro-frontends).
 
 ## Module registration
 

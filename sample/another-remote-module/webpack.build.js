@@ -8,7 +8,7 @@ const publicPath = process.env.NETLIFY === "true" ? "https://squide-another-remo
 
 export default defineBuildRemoteModuleConfig(swcConfig, "remote2", publicPath, {
     sharedDependencies: {
-        "shared": {
+        "@sample/shared": {
             singleton: true
         }
     },

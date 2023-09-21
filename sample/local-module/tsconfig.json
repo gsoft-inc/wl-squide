@@ -5,7 +5,8 @@
             "@squide/core": ["../../packages/core/src/index.ts"],
             "@squide/react-router": ["../../packages/react-router/src/index.ts"],
             "@sample/shell": ["../shell/src/index.ts"],
-            "@sample/shared": ["../shared/src/index.ts"]
+            "@sample/shared": ["../shared/src/index.ts"],
+            "@sample/shared/FederatedTabsLayout.tsx": ["../shared/src/FederatedTabsLayout.tsx"]
         }
     },
     "exclude": ["dist", "node_modules"]

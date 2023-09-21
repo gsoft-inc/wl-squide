@@ -159,5 +159,7 @@ const service = useService("user-service") as UserService;
 
 The services are also available from the [Runtime](/reference/runtime/runtime-class.md) instance.
 
+## Fakes
 
+For development purposes, have a look at the available [fake implementations](../reference/default.md#fakes).
 

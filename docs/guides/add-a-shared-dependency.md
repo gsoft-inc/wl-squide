@@ -38,13 +38,30 @@ Candidates for shared dependencies:
 
 To configure shared dependencies, use the `sharedDependencies` option of any [define*](../reference/default.md#webpack) function:
 
-```js !#7-11 webpack.config.js
+```js !#7-11 host/webpack.dev.js
 // @ts-check
 
 import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {
+    sharedDependencies: {
+        "@sample/shared": {
+            singleton: true
+        }
+    }
+});
+```
+
+When a dependency is shared between a host application and a remote module, the sharing options must be **configured on both ends**. Let's also set the `@sample/shared` as a `singleton` for the remote module:
+
+```js !#7-11 remote-module/webpack.dev.js
+// @ts-check
+
+import { defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { swcConfig } from "./swc.dev.js";
+
+export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true

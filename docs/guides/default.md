@@ -13,5 +13,5 @@ expanded: true
 - [Develop a module in isolation](develop-a-module-in-isolation.md)
 - [Federated tabs](federated-tabs.md)
 - [Add a shared dependency](add-a-shared-dependency.md)
-- [Override a React context](overriding-a-react-context.md)
+- [Override a React context](override-a-react-context.md)
 - [Migrating from a monolithic application](migrating-from-a-monolith.md)

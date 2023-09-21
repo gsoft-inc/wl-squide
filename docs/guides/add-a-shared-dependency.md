@@ -7,13 +7,13 @@ label: Add a shared dependency
 
 [Shared dependencies](https://webpack.js.org/plugins/module-federation-plugin/#sharing-libraries) represent one of the most powerful concepts within [Module Federation](https://webpack.js.org/plugins/module-federation-plugin). However, mastering this aspect can be quite challenging. **Failure** to configure shared dependencies properly in a federated application using Module Federation can significantly **impact** both **user** and **developer experiences**.
 
-`@squide` aims to simplify the configuration of shared dependencies by abstracting the [fundamental shared dependencies](#default-shared-dependencies) necessary for building an application with React and React Router. Nevertheless, every federated application will inevitably require the configuration of additional custom shared dependencies.
+`@squide` aims to simplify the configuration of shared dependencies by abstracting the [fundamental shared dependencies](#default-shared-dependencies) necessary for building an application with React and React Router. Nevertheless, every federated application will inevitably have tp configure additional custom shared dependencies.
 
 For a more comprehensive documentation of the Module Federation APIs, their functionality, and their benefits, please refer to this [article](https://www.infoxicator.com/en/module-federation-shared-api).
 
 ## Default shared dependencies
 
-Since `@squide` has dependencies on React and React Router, the [define*](../reference/default.md#webpack) functions automatically configure shared dependencies for these packages by default, in addition to `@squide` own packages. The following shared dependencies are set as [singleton](#singleton-dependency) by default:
+Since `@squide` has dependencies on React and React Router, the [define*](../reference/default.md#webpack) functions automatically configure shared dependencies for these packages by default, in addition to `@squide` own packages. The following shared dependencies are set as [eager](#eager-dependency) [singleton](#singleton-dependency) by default:
 
 - [react](https://www.npmjs.com/package/react)
 - [react-dom](https://www.npmjs.com/package/react-dom)
@@ -28,7 +28,7 @@ For the full shared dependencies configuration, have a look at the [defineConfig
 
 ## What should be configured as a shared dependency?
 
-Candidates for shared dependencies:
+Libraries matching the following criterias are strong candidates to be configured as shared dependencies:
 
 - Medium to large libraries that are used by multiple modules..
 - Libraries that requires a [single instance](#react--react-dom) to work properly (like `react`).
@@ -53,7 +53,7 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
 });
 ```
 
-When a dependency is shared between a host application and a remote module, the sharing options must be **configured on both ends**. Let's also set the `@sample/shared` as a `singleton` for the remote module:
+When a dependency is shared between a host application and a remote module, the sharing options must be **configured on both ends**:
 
 ```js !#7-11 remote-module/webpack.dev.js
 // @ts-check
@@ -94,7 +94,7 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
 });
 ```
 
-"When specified, the `strictVersion` option will generate a runtime error if a module attempts to load a version of the dependency that is incompatible with the specified version. It's often unnecessary to use a strict version, and omitting it provides greater flexibility when it comes time to update the shared dependency version."
+When specified, the `strictVersion` option will generate a **runtime error** if a module attempts to load a **version** of the dependency that is **incompatible** with the specified version. It's **often unnecessary** to use a strict version, and omitting it provides greater flexibility when it comes time to update the shared dependency version.
 
 ### Expected behaviors
 
@@ -102,19 +102,19 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
 
 When the version difference between a host application and a remote module is a **minor** or **patch** version, the higher version of the dependency will be loaded. For example:
 
-- The host application is on `10.1.0` and a remote module is on `10.3.1` -> `10.3.1` will be loaded
-- The host application is on `10.3.1` and a remote module is on `10.1.0` -> `10.3.1` will be loaded
+- If the host application is on `10.1.0` and a remote module is on `10.3.1` -> `10.3.1` will be loaded
+- If the host application is on `10.3.1` and a remote module is on `10.1.0` -> `10.3.1` will be loaded
 
 #### Major version
 
-If the version difference between a host application and a remote module is a **major** version, once again, the higher version of the dependency will be loaded. However, a warning will also be issued. For example:
+If the version difference between a host application and a remote module is a **major** version, once again, the higher version of the dependency will be loaded. However, a **warning** will also be issued. For example:
 
-- The host application is on `11.0.0` and a remote module is on `10.3.1` -> `11.0.0` will be loaded
-- The host application is on `10.3.1` and a remote module is on `11.0.0` -> `11.0.0` will be loaded
+- If the host application is on `11.0.0` and a remote module is on `10.3.1` -> `11.0.0` will be loaded
+- If the host application is on `10.3.1` and a remote module is on `11.0.0` -> `11.0.0` will be loaded
 
 ## Eager dependency
 
-An [eager](https://webpack.js.org/plugins/module-federation-plugin/#eager) shared dependency becomes available as soon as the host application starts. In simple terms, it is included in the host application bundle rather than being loaded lazily when it is first requested."
+An [eager](https://webpack.js.org/plugins/module-federation-plugin/#eager) shared dependency becomes available as soon as the host application starts. In simple terms, it is included in the host application bundle rather than being loaded lazily when it is first requested.
 
 ```js !#10 webpack.config.js
 // @ts-check
@@ -132,17 +132,15 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
 });
 ```
 
-All the shared dependencies that are configured by [default](#default-shared-dependencies) for a `@squide` federated application are set as `eager` shared dependencies.
-
-The key point to remember about `eager` dependencies is that only one application or remote module should configure a shared dependency as eager. Otherwise, the dependency will be included in the bundler of every application or remote module that set the dependency as `eager`.
+The key point to remember about `eager` dependencies is that **only one application or remote module should configure a shared dependency as eager**. Otherwise, the dependency will be included in the bundler of every application or remote module that set the dependency as `eager`.
 
 ## React context limitations
 
-For a React context to be provided by the host application and consumed by the remodules, the library exporting the React context must be set as a `singleton`.
+For a React context to be provided by the host application and consumed by the remote modules, the library exporting the React context must be set as a `singleton`.
 
-To troubleshoot a React context issue or gor find more information, refer to the [troubleshooting](../troubleshooting.md#react-context-values-are-undefined) page.
+To troubleshoot a React context issue or find more information about the limitations, refer to the [troubleshooting](../troubleshooting.md#react-context-values-are-undefined) page.
 
-## `react` & `react-dom`
+## `react`
 
 `react` and `react-dom` dependencies must be configured as a `singleton`, otherwise either an error will be thrown at bootstrapping if the loaded `react` versions are incompatible, or features like `useState` will not work.
 

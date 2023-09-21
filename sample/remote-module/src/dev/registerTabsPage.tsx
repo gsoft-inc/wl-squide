@@ -1,4 +1,4 @@
-import { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { lazy } from "react";
 
 const FederatedTabsLayout = lazy(() => import("@sample/shared/FederatedTabsLayout.tsx"));

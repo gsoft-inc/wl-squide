@@ -28,10 +28,10 @@ export function App() {
     return (
         <BackgroundColorContext.Provider value="blue">
             <Suspense fallback={<div>Loading...</div>}>
-                    <RouterProvider
-                        router={router}
-                        fallbackElement={<div>Loading...</div>}
-                    />
+                <RouterProvider
+                    router={router}
+                    fallbackElement={<div>Loading...</div>}
+                />
             </Suspense>
         </BackgroundColorContext.Provider>
     );

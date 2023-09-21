@@ -1,5 +1,5 @@
 import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
-import { StrictMode, Suspense } from "react";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { register } from "../register.tsx";
 import { sessionAccessor } from "../session.ts";

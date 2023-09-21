@@ -279,7 +279,7 @@ export default function FederatedTabsLayout() {
 }
 ```
 
-## Change the display order of the tabs
+## Changing the display order of the tabs
 
 Similarly to how the display order of regular navigation items can be configured, a federated tab position can be affected with the [priority](http://localhost:5000/wl-squide/reference/runtime/runtime-class/#sort-registered-navigation-items) property.
 

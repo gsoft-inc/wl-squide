@@ -7,7 +7,7 @@ label: Add a shared dependency
 
 [Shared dependencies](https://webpack.js.org/plugins/module-federation-plugin/#sharing-libraries) represent one of the most powerful concepts within [Module Federation](https://webpack.js.org/plugins/module-federation-plugin). However, mastering this aspect can be quite challenging. **Failure** to configure shared dependencies properly in a federated application using Module Federation can significantly **impact** both **user** and **developer experiences**.
 
-`@squide` aims to simplify the configuration of shared dependencies by abstracting the [fundamental shared dependencies](#default-shared-dependencies) necessary for building an application with React and React Router. Nevertheless, every federated application will inevitably have tp configure additional custom shared dependencies.
+`@squide` aims to simplify the configuration of shared dependencies by abstracting the [fundamental shared dependencies](#default-shared-dependencies) necessary for building an application with React and React Router. Nevertheless, every federated application will inevitably have to configure additional custom shared dependencies.
 
 For a more comprehensive documentation of the Module Federation APIs, their functionality, and their benefits, please refer to this [article](https://www.infoxicator.com/en/module-federation-shared-api).
 

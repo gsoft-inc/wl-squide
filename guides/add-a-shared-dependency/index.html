@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748634712658">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.748976480190">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.748634712658" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.748976480190" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748634712658" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.748976480190" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748634712658" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.748634712658" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.748976480190" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.748976480190" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype_customization.css" rel="stylesheet" />
 
@@ -62,7 +62,7 @@
                 <!-- Logo -->
                 <div class="flex items-center justify-between h-full py-2 md:w-75">
                     <div class="flex items-center px-2 md:px-6">
-                        <a id="docs-hub-link" href="https://gsoft-inc.github.io/wl-idp-docs-hub/" title="Go to the IDP hub root site">
+                        <a id="docs-hub-link" href="https://gsoft-inc.github.io/wl-idp-docs-hub/" title="Workleap's IDP homepage">
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="30" viewBox="0 0 12 30" fill="currentColor" aria-label="Home" focusable="false" role="img">
                                 <path d="M10.6763 23.0822C10.4303 23.328 10.0967 23.4661 9.74885 23.4661C9.40103 23.4661 9.06744 23.328 8.82135 23.0822L1.38384 15.6447C1.13806 15.3986 1 15.065 1 14.7172C1 14.3694 1.13806 14.0358 1.38384 13.7897L8.82135 6.35222C9.0703 6.1205 9.39939 5.99432 9.73945 6.0002C10.0795 6.00607 10.404 6.14354 10.6448 6.38372C10.885 6.62452 11.0225 6.94906 11.0284 7.28912C11.0342 7.62917 10.9081 7.95826 10.6763 8.20722L4.16635 14.7172L10.6763 21.2272C10.9221 21.4733 11.0602 21.8069 11.0602 22.1547C11.0602 22.5025 10.9221 22.8361 10.6763 23.0822Z" />
                             </svg>
@@ -72,7 +72,7 @@
                                 <img class="max-h-10 dark:hidden md:inline-block" src="../../static/logo.png">
                                 <img class="max-h-10 hidden dark:inline-block" src="../../static/logo.png">
                             </span>
-                            <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">@squide</span>
+                            <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">Squide</span>
                         </a>
                     </div>
         
@@ -313,7 +313,7 @@
     </h1>
 </doc-anchor-target>
 <p><a href="https://webpack.js.org/plugins/module-federation-plugin/#sharing-libraries" class="outbound" target="_blank">Shared dependencies</a> represent one of the most powerful concepts within <a href="https://webpack.js.org/plugins/module-federation-plugin" class="outbound" target="_blank">Module Federation</a>. However, mastering this aspect can be quite challenging. <strong>Failure</strong> to configure shared dependencies properly in a federated application using Module Federation can significantly <strong>impact</strong> both <strong>user</strong> and <strong>developer experiences</strong>.</p>
-<p><code v-pre>@squide</code> aims to simplify the configuration of shared dependencies by abstracting the <doc-anchor-trigger to="#default-shared-dependencies">fundamental shared dependencies</doc-anchor-trigger> necessary for building an application with React and React Router. Nevertheless, every federated application will inevitably have to configure additional custom shared dependencies.</p>
+<p>Squide aims to simplify the configuration of shared dependencies by abstracting the <doc-anchor-trigger to="#default-shared-dependencies">fundamental shared dependencies</doc-anchor-trigger> necessary for building an application with React and React Router. Nevertheless, every federated application will inevitably have to configure additional custom shared dependencies.</p>
 <p>For a more comprehensive documentation of the Module Federation APIs, their functionality, and their benefits, please refer to this <a href="https://www.infoxicator.com/en/module-federation-shared-api" class="outbound" target="_blank">article</a>.</p>
 <doc-anchor-target id="default-shared-dependencies">
     <h2>
@@ -321,7 +321,7 @@
         <span>Default shared dependencies</span>
     </h2>
 </doc-anchor-target>
-<p>Since <code v-pre>@squide</code> has dependencies on React and React Router, the <a href="../../reference/#webpack">define*</a> functions automatically configure shared dependencies for these packages by default, in addition to <code v-pre>@squide</code> own packages. The following shared dependencies are set as <doc-anchor-trigger to="#eager-dependency">eager</doc-anchor-trigger> <doc-anchor-trigger to="#singleton-dependency">singleton</doc-anchor-trigger> by default:</p>
+<p>Since Squide has dependencies on React and React Router, the <a href="../../reference/#webpack">define*</a> functions automatically configure shared dependencies for these packages by default, in addition to Squide own packages. The following shared dependencies are set as <doc-anchor-trigger to="#eager-dependency">eager</doc-anchor-trigger> <doc-anchor-trigger to="#singleton-dependency">singleton</doc-anchor-trigger> by default:</p>
 <ul>
 <li><a href="https://www.npmjs.com/package/react" class="outbound" target="_blank">react</a></li>
 <li><a href="https://www.npmjs.com/package/react-dom" class="outbound" target="_blank">react-dom</a></li>
@@ -343,7 +343,7 @@
 <p>Libraries matching the following criterias are strong candidates to be configured as shared dependencies:</p>
 <ul>
 <li>Medium to large libraries that are used by multiple modules..</li>
-<li>Libraries that requires a <doc-anchor-trigger to="#react--react-dom">single instance</doc-anchor-trigger> to work properly (like <code v-pre>react</code>).</li>
+<li>Libraries that requires a <doc-anchor-trigger to="#react">single instance</doc-anchor-trigger> to work properly (like <code v-pre>react</code>).</li>
 <li>Libraries exporting <doc-anchor-trigger to="#react-context-limitations">React contexts</doc-anchor-trigger>.</li>
 </ul>
 <doc-anchor-target id="adding-shared-dependencies">

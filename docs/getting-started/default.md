@@ -8,7 +8,7 @@ expanded: true
 
 Welcome to Squide (yes :squid: with an **"e"**), a shell for [Workleap](https://workleap.com/) federated applications. In this getting started section, you'll find an overview of the shell and a [quick start](create-host.md) guide to create a new federated application from scratch.
 
-!!!warning Foundry CLI
+<!-- !!!warning Foundry CLI
 
 The prefered way for creating a new federated application for the Workleap's platform is with the [foundry-cli](https://github.com/gsoft-inc/wl-foundry-cli).
 +++ pnpm
@@ -24,7 +24,7 @@ yarn create @workleap/project@latest <output-directory>
 npm create @workleap/project@latest <output-directory>
 ```
 +++
-!!!
+!!! -->
 
 ## Why
 

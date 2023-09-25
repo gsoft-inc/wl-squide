@@ -60,6 +60,6 @@ expanded: true
 
 ## Fakes
 
-`@squide` offers a collection of fake implementations to facilitate the development of modules in isolation from the other parts of the application.
+Squide offers a collection of fake implementations to facilitate the development of modules in isolation from the other parts of the application.
 
 - [LocalStorageSessionManager](fakes/LocalStorageSessionManager.md)

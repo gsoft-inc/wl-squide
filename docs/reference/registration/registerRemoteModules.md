@@ -23,8 +23,8 @@ A `Promise` object with an array of `RegistrationError` if any happens during th
 
 - `RegistrationError`:
     - `url`: The URL of the module federation remote that failed to load.
-    - `containerName`: The name of the [dynamic container](https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers) that `@squide` attempted to recover.
-    - `moduleName`: The name of the [module](#name) that `@squide` attempted to recover.
+    - `containerName`: The name of the [dynamic container](https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers) that Squide attempted to recover.
+    - `moduleName`: The name of the [module](#name) that Squide attempted to recover.
     - `error`: The original error object.
 
 ## Usage
@@ -87,7 +87,7 @@ const Remotes: RemoteDefinition = [
 
 The `name` property of a remote definition **must match** the `name` property defined in the remote module [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) configuration.
 
-If you are relying on either the `@squide` [defineDevRemoteModuleConfig](../webpack//defineDevRemoteModuleConfig.md) or [defineBuildRemoteModuleConfig](../webpack/defineBuildRemoteModuleConfig.md) function to add the `ModuleFederationPlugin` to the remote module webpack [configuration object](https://webpack.js.org/concepts/configuration/), then the remote module `name` is the second argument of the function.
+If you are relying on either the Squide [defineDevRemoteModuleConfig](../webpack//defineDevRemoteModuleConfig.md) or [defineBuildRemoteModuleConfig](../webpack/defineBuildRemoteModuleConfig.md) function to add the `ModuleFederationPlugin` to the remote module webpack [configuration object](https://webpack.js.org/concepts/configuration/), then the remote module `name` is the second argument of the function.
 
 In the following exemple, the remote module `name` is `remote1`.
 

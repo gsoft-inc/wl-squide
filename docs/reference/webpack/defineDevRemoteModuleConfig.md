@@ -4,7 +4,7 @@ order: 90
 
 # defineDevRemoteModuleConfig
 
-Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a `@squide` remote module application in **development** mode.
+Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a Squide remote module application in **development** mode.
 
 ## Reference
 
@@ -24,11 +24,11 @@ const webpackConfig = defineDevRemoteModuleConfig(swcConfig: {}, applicationName
 
 ## Returns
 
-A webpack [configuration object](https://webpack.js.org/concepts/configuration/) tailored for a `@squide` remote module application in development mode.
+A webpack [configuration object](https://webpack.js.org/concepts/configuration/) tailored for a Squide remote module application in development mode.
 
 ## Conventions
 
-To fulfill `@squide` remote module requirements, the `defineDevRemoteModuleConfig` function will pre-configure the [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) with the following `filename` and `exposes` properties.
+To fulfill Squide remote module requirements, the `defineDevRemoteModuleConfig` function will pre-configure the [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) with the following `filename` and `exposes` properties.
 
 ```js !#6-9
 import ModuleFederationPlugin from "webpack/lib/container/ModuleFederationPlugin.js";

@@ -6,7 +6,7 @@ expanded: true
 
 # Getting started
 
-Welcome to `@squide` (yes :squid: with an **"e"**), a shell for [Workleap](https://workleap.com/) federated applications. In this getting started section, you'll find an overview of the shell and a [quick start](create-host.md) guide to create a new federated application from scratch.
+Welcome to Squide (yes :squid: with an **"e"**), a shell for [Workleap](https://workleap.com/) federated applications. In this getting started section, you'll find an overview of the shell and a [quick start](create-host.md) guide to create a new federated application from scratch.
 
 !!!warning Foundry CLI
 
@@ -64,7 +64,7 @@ That's a nutshell overview. Of course, there is more to it, but these are the ma
 
 ## Guiding principles
 
-While developing the [API](/reference) of `@squide`, we kept a few guiding principles in mind. Those principles are not settled stones, you might want to diverge from them from time to time, but adhering to those will make your experience more enjoyable:
+While developing the [API](/reference) of Squide, we kept a few guiding principles in mind. Those principles are not settled stones, you might want to diverge from them from time to time, but adhering to those will make your experience more enjoyable:
 
 - A module should always correspond to a subdomain of the application's business domain and should only export pages.
 
@@ -82,7 +82,7 @@ Module Federation comes with a few manageable limitations that are important to 
 
 - Module Federation does not support [React Fast Refresh](https://github.com/pmmmwh/react-refresh-webpack-plugin). However, it does support [Hot Module Replacement](https://webpack.js.org/concepts/hot-module-replacement/).
 
-> These limitations are not specific to `@squide`, they are specific to Module Federation.
+> These limitations are not specific to Squide, they are specific to Module Federation.
 
 ## Create your project
 

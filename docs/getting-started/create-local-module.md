@@ -42,7 +42,7 @@ npm install @squide/core @squide/react-router react react-dom react-router-dom
 +++
 
 !!!warning
-While you can use any package manager to develop an application with `@squide`, it is highly recommend that you use [PNPM](https://pnpm.io/) as the following guide has been developed and tested with PNPM.
+While you can use any package manager to develop an application with Squide, it is highly recommend that you use [PNPM](https://pnpm.io/) as the following guide has been developed and tested with PNPM.
 !!!
 
 ## Setup the application
@@ -225,4 +225,8 @@ Start the `host`, `remote-module` and `local-module` applications in development
 
 !!!info
 To troubleshoot module registration issues, open the DevTools console. You'll find a log entry for each registration that occurs and error messages if something goes wrong.
+!!!
+
+!!!info
+If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/local-module).
 !!!

@@ -3,7 +3,7 @@ order: 50
 icon: command-palette
 ---
 
-## `@squide` sandbox
+## Squide sandbox
 
 - :icon-mark-github: [Host application](https://github.com/gsoft-inc/wl-squide/tree/main/sample/host)
 - :icon-mark-github: [Remote module](https://github.com/gsoft-inc/wl-squide/tree/main/sample/remote-module)

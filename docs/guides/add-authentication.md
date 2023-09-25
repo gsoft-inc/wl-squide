@@ -4,7 +4,7 @@ order: 80
 
 # Add authentication
 
-Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the `@squide` [Runtime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/LocalStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
+Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the Squide [Runtime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/LocalStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
 
 When combined with a [React Router](https://reactrouter.com/en/main) authentication boundary and a login page, the shared `sessionAccessor` function is of great help to manage authentication concerns.
 
@@ -165,7 +165,7 @@ import {
 import type { Session } from "../session.ts";
 
 const renderItem: RenderItemFunction = (item, index, level) => {
-    // To keep thing simple, this sample doesn't support nested navigation items.
+    // To keep things simple, this sample doesn't support nested navigation items.
     // For an example including support for nested navigation items, have a look at
     // https://gsoft-inc.github.io/wl-squide/reference/routing/userenderednavigationitems/
     if (!isNavigationLink(item)) {
@@ -317,6 +317,10 @@ export function App() {
 ## Try it :rocket:
 
 Start the application and attempt navigating to the root page (`/`). You will be redirected to the `/login` page. Login with `"temp"` / `"temp"`, you will be redirected to the root page.
+
+!!!info
+If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/shell).
+!!!
 
 
 

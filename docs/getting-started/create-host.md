@@ -31,7 +31,7 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
 +++
 
 !!!warning
-While you can use any package manager to develop an application with `@squide`, it is highly recommended that you use [PNPM](https://pnpm.io/) as the following guide has been developed and tested with PNPM.
+While you can use any package manager to develop an application with Squide, it is highly recommended that you use [PNPM](https://pnpm.io/) as the following guide has been developed and tested with PNPM.
 !!!
 
 ## Setup the application
@@ -245,7 +245,7 @@ export function RootLayout() {
 ## Configure webpack
 
 !!!info
-`@squide` webpack configuration is built on top of [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/), [@workleap/browserslist-config](https://gsoft-inc.github.io/wl-web-configs/browserslist/) and [@workleap/swc-configs](https://gsoft-inc.github.io/wl-web-configs/swc/). If you are having issues with the configuration of these tools, refer to the tools documentation websites.
+Squide webpack configuration is built on top of [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/), [@workleap/browserslist-config](https://gsoft-inc.github.io/wl-web-configs/browserslist/) and [@workleap/swc-configs](https://gsoft-inc.github.io/wl-web-configs/swc/). If you are having issues with the configuration of these tools, refer to the tools documentation websites.
 !!!
 
 ### HTML template
@@ -372,3 +372,8 @@ Start the application in a development environment using the `dev` script. You s
 !!!info
 To troubleshoot module registration issues, open the DevTools console. You'll find a log entry for each registration that occurs and error messages if something goes wrong.
 !!!
+
+!!!info
+If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/host).
+!!!
+

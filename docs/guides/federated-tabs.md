@@ -4,7 +4,7 @@ order: 40
 
 # Federated tabs
 
-While it's typically recommended for a `@squide` application to maintain the boundary of a page within a single domain (e.g. module), there are situations where **enhancing** the **user experience** necessitates rendering a page with parts from **multiple domains**, or at the very least, simulating it 😊.
+While it's typically recommended for a Squide application to maintain the boundary of a page within a single domain (e.g. module), there are situations where **enhancing** the **user experience** necessitates rendering a page with parts from **multiple domains**, or at the very least, simulating it 😊.
 
 For this guide, we'll take as an example a page for which the parts that are owned by different domains are organized by tabs (federated tabs):
 
@@ -18,7 +18,7 @@ For this guide, we'll take as an example a page for which the parts that are own
 
 ## Define a nested layout
 
-To construct this page while adhering to `@squide` constraint of exclusively permitting route exports from modules to maintain a high degree of decoupling in the application, let's begin by defining a React Router [nested layout](https://reactrouter.com/en/main/start/tutorial#nested-routes). This nested layout will be responsible for rendering all the tab headers and the content of the active tab:
+To construct this page while adhering to Squide constraint of exclusively permitting route exports from modules to maintain a high degree of decoupling in the application, let's begin by defining a React Router [nested layout](https://reactrouter.com/en/main/start/tutorial#nested-routes). This nested layout will be responsible for rendering all the tab headers and the content of the active tab:
 
 ```tsx !#9-11,15 remote-module-3/src/federated-tabs-layout.tsx
 import { Suspense } from "react";

@@ -14,7 +14,7 @@ breadcrumb:
 
 hub:
     link: https://gsoft-inc.github.io/wl-idp-docs-hub/
-    alt: Go to the IDP hub root site
+    alt: Workleap's IDP homepage
 
 start:
     pro: true
@@ -29,7 +29,7 @@ output: .retype
 url: https://gsoft-inc.github.io/wl-squide/
 
 branding:
-    title: "@squide"
+    title: "Squide"
     logo: ./static/logo.png
 
 favicon: ./static/favicon.png

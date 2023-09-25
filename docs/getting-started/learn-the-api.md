@@ -7,12 +7,12 @@ order: 60
 Now that we've created a host application, loaded a few modules and registered routes and navigation items, let's delve into the APIs provided by this shell.
 
 !!!info
-For a comprehensive list of the `@squide` API, refer to the [References](/reference#api) section.
+For a comprehensive list of the Squide API, refer to the [References](/reference#api) section.
 !!!
 
 ## Runtime mode
 
-In an effort to optimize the development experience, `@squide` can be bootstrapped in `development` or `production` mode:
+In an effort to optimize the development experience, Squide can be bootstrapped in `development` or `production` mode:
 
 ```ts host/src/bootstrap.tsx
 import { Runtime, ConsoleLogger, type LogLevel } from "@squide/react-router";
@@ -26,9 +26,9 @@ By default, the Runtime [mode](../reference/runtime/runtime-class.md#change-the-
 
 ## Logging
 
-`@squide` includes a built-in logging feature that integrates with the [Runtime](/reference/runtime/runtime-class.md) class and the [useLogger](/reference/runtime/useLogger.md) hook.
+Squide includes a built-in logging feature that integrates with the [Runtime](/reference/runtime/runtime-class.md) class and the [useLogger](/reference/runtime/useLogger.md) hook.
 
-First, register your own custom logger by implementing the [Logger](/reference/logging/Logger.md) interface or register `@squide` built-in [ConsoleLogger](/reference/logging/ConsoleLogger):
+First, register your own custom logger by implementing the [Logger](/reference/logging/Logger.md) interface or register Squide built-in [ConsoleLogger](/reference/logging/ConsoleLogger):
 
 ```ts host/src/bootstrap.tsx
 import { Runtime, ConsoleLogger, type LogLevel } from "@squide/react-router";
@@ -52,7 +52,7 @@ The logger is also available from the [Runtime](/reference/runtime/runtime-class
 
 ## Messaging
 
-It's crucial that the parts of a federated application remains loosely coupled. To help with that, `@squide` offers a built-in [Event Bus](/reference/messaging/EventBus.md).
+It's crucial that the parts of a federated application remains loosely coupled. To help with that, Squide offers a built-in [Event Bus](/reference/messaging/EventBus.md).
 
 First, listen to an event with the [useEventBusListener](/reference/messaging/useEventBusListener.md) hook:
 
@@ -83,7 +83,7 @@ The event bus is also available from the [Runtime](/reference/runtime/runtime-cl
 
 ## Session
 
-Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the `@squide` [Runtime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/LocalStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
+Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the Squide [Runtime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/LocalStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
 
 First, let's define a `sessionAccessor` function:
 
@@ -133,7 +133,7 @@ The session is also available from the [Runtime](/reference/runtime/runtime-clas
 
 ## Services
 
-While `@squide` provides a range of built-in functionalities, by no mean these alone can support the needs of every mature application. Therefore, the shell [Runtime](/reference/runtime/runtime-class.md) allows the addition of custom services.
+While Squide provides a range of built-in functionalities, by no mean these alone can support the needs of every mature application. Therefore, the shell [Runtime](/reference/runtime/runtime-class.md) allows the addition of custom services.
 
 First, make the service available to every part of the application by passing a service instance to the `Runtime` instance:
 

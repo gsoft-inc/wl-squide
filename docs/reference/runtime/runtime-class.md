@@ -15,7 +15,7 @@ const runtime = new Runtime(options?: { loggers?: [], services?: {}, sessionAcce
 ### Parameters
 
 - `options`: An optional object literal of options:
-    - `mode`: An optional mode to optimize `@squide` for `production`. Values are `"development"` (default) and `"production"`.
+    - `mode`: An optional mode to optimize Squide for `production`. Values are `"development"` (default) and `"production"`.
     - `loggers`: An optional array of `Logger` instances.
     - `services`: An optional string-keyed object literal of custom service instances.
     - `sessionAccessor`: An optional function returning the current session.
@@ -54,7 +54,7 @@ const runtime = new Runtime({
 
 ### Register routes
 
-A `@squide` route accept any properties of a React Router [Route](https://reactrouter.com/en/main/components/route) component with the addition of an `hoist` property.
+A Squide route accept any properties of a React Router [Route](https://reactrouter.com/en/main/components/route) component with the addition of an `hoist` property.
 
 ```tsx
 import { lazy } from "react";
@@ -117,7 +117,7 @@ Likewise any other React Router routes, the `path` property of a page rendered u
 
 #### Index routes
 
-Although nested layout routes that serve as indexes (e.g. `{ index: true, element: <Layout /> }`) are not very common, `@squide` still supports this scenario. To register a route **under an index route**, set the `layoutPath` property as the concatenation of the index route's parent path and `/$index$`. 
+Although nested layout routes that serve as indexes (e.g. `{ index: true, element: <Layout /> }`) are not very common, Squide still supports this scenario. To register a route **under an index route**, set the `layoutPath` property as the concatenation of the index route's parent path and `/$index$`. 
 
 ```tsx !#8,12 host/src/register.tsx
 import { lazy } from "react";
@@ -162,7 +162,7 @@ const routes = runtime.routes;
 
 ### Register navigation items
 
-A `@squide` navigation item can either be a `NavigationLink` or a `NavigationSection`. Both types can be intertwined to create a multi-level menu hierarchy. A `NavigationSection` item is used to setup a new level while a `NavigationLink` define a link.
+A Squide navigation item can either be a `NavigationLink` or a `NavigationSection`. Both types can be intertwined to create a multi-level menu hierarchy. A `NavigationSection` item is used to setup a new level while a `NavigationLink` define a link.
 
 - `NavigationSection` accept the following properties:
     - `label`: The section text.

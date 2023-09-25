@@ -7,13 +7,13 @@ label: Add a shared dependency
 
 [Shared dependencies](https://webpack.js.org/plugins/module-federation-plugin/#sharing-libraries) represent one of the most powerful concepts within [Module Federation](https://webpack.js.org/plugins/module-federation-plugin). However, mastering this aspect can be quite challenging. **Failure** to configure shared dependencies properly in a federated application using Module Federation can significantly **impact** both **user** and **developer experiences**.
 
-`@squide` aims to simplify the configuration of shared dependencies by abstracting the [fundamental shared dependencies](#default-shared-dependencies) necessary for building an application with React and React Router. Nevertheless, every federated application will inevitably have to configure additional custom shared dependencies.
+Squide aims to simplify the configuration of shared dependencies by abstracting the [fundamental shared dependencies](#default-shared-dependencies) necessary for building an application with React and React Router. Nevertheless, every federated application will inevitably have to configure additional custom shared dependencies.
 
 For a more comprehensive documentation of the Module Federation APIs, their functionality, and their benefits, please refer to this [article](https://www.infoxicator.com/en/module-federation-shared-api).
 
 ## Default shared dependencies
 
-Since `@squide` has dependencies on React and React Router, the [define*](../reference/default.md#webpack) functions automatically configure shared dependencies for these packages by default, in addition to `@squide` own packages. The following shared dependencies are set as [eager](#eager-dependency) [singleton](#singleton-dependency) by default:
+Since Squide has dependencies on React and React Router, the [define*](../reference/default.md#webpack) functions automatically configure shared dependencies for these packages by default, in addition to Squide own packages. The following shared dependencies are set as [eager](#eager-dependency) [singleton](#singleton-dependency) by default:
 
 - [react](https://www.npmjs.com/package/react)
 - [react-dom](https://www.npmjs.com/package/react-dom)
@@ -31,7 +31,7 @@ For the full shared dependencies configuration, have a look at the [defineConfig
 Libraries matching the following criterias are strong candidates to be configured as shared dependencies:
 
 - Medium to large libraries that are used by multiple modules..
-- Libraries that requires a [single instance](#react--react-dom) to work properly (like `react`).
+- Libraries that requires a [single instance](#react) to work properly (like `react`).
 - Libraries exporting [React contexts](#react-context-limitations).
 
 ## Adding shared dependencies

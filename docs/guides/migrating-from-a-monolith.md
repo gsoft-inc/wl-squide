@@ -9,7 +9,7 @@ Transforming an existing [monolithic application](https://en.wikipedia.org/wiki/
 
 However, it's also a **bad idea** to **start** a new application **with a distributed architecture** since teams typically lack sufficient understanding of the business domain at that stage. Therefore, for most applications, it makes sense to **begin as monolithic application** and transition to a distributed architecture later.
 
-With the introduction of [local modules](/reference/registration/registerLocalModules.md), `@squide` offers an alternative approach that lies between prior solutions. Instead of immediately embracing Team Topology's [stream-aligned teams](https://www.shortform.com/blog/stream-aligned-teams/) and striving for full team autonomy across the board, local modules allow teams to start with a [monorepo](https://en.wikipedia.org/wiki/Monorepo) setup and add independent local packages (modules) for each expected [value stream](https://en.wikipedia.org/wiki/Value_stream).
+With the introduction of [local modules](/reference/registration/registerLocalModules.md), Squide offers an alternative approach that lies between prior solutions. Instead of immediately embracing Team Topology's [stream-aligned teams](https://www.shortform.com/blog/stream-aligned-teams/) and striving for full team autonomy across the board, local modules allow teams to start with a [monorepo](https://en.wikipedia.org/wiki/Monorepo) setup and add independent local packages (modules) for each expected [value stream](https://en.wikipedia.org/wiki/Value_stream).
 
 Since adding/deleting local packages in a monorepo setup is pretty cheap, teams can freely reorganize their value streams along the way and won't **preemptively invest into a distributed** CI/CD **infrastructure** as local modules are part of the host application build. With independent **but local** value streams, teams will be well-positioned to transition toward a federated application once they can justify the cost.
 
@@ -25,7 +25,7 @@ We recommend the following steps:
 
 2. Create independent local packages (modules) for each identified value stream.
 
-3. Refactor the monolithic application code into the corresponding value tream local packages and ensure that each value stream [can be developed independently](develop-a-module-in-isolation.md) (e.g., without the need to start the entire application).
+3. Refactor the monolithic application code into the corresponding value stream local packages and ensure that each value stream [can be developed independently](develop-a-module-in-isolation.md) (e.g., without the need to start the entire application).
 
 4. Import and [register the local packages](/reference/registration/registerLocalModules.md) (modules) into the host application.
 

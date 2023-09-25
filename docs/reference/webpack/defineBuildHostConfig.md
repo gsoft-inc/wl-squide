@@ -4,7 +4,7 @@ order: 80
 
 # defineBuildHostConfig
 
-Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a `@squide` host application in **build** mode.
+Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a Squide host application in **build** mode.
 
 ## Reference
 
@@ -25,7 +25,7 @@ const webpackConfig = defineBuildHostConfig(swcConfig: {}, applicationName, publ
 
 ## Returns
 
-A webpack [configuration object](https://webpack.js.org/concepts/configuration/) tailored for a `@squide` host application in build mode.
+A webpack [configuration object](https://webpack.js.org/concepts/configuration/) tailored for a Squide host application in build mode.
 
 ## Default shared dependencies
 

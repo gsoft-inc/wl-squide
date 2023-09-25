@@ -88,3 +88,7 @@ If your application is [hoisting pages](/reference/routing/useHoistedRoutes.md),
 ## Try it :rocket:
 
 Start the application in a development environment using the `dev` script. Update any of your application routes that is rendered under the newly created error boundary (e.g. that is not hoisted) and throw an `Error`. The error should be handled by the error boundary instead of breaking the whole application.
+
+!!!info
+If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/shell).
+!!!

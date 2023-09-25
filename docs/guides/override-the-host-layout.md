@@ -105,7 +105,7 @@ root
 
 Package managers supporting workspaces such as Yarn and NPM call this mechanism "hoisting", which means "raise (something) by means of ropes and pulleys". This is exactly what we are trying to achieve here.
 
-`@squide` has a built-in [useHoistedRoutes](/reference/routing/useHoistedRoutes.md) hook capable of raising module routes marked as `hoist` at the root of the routes array, before the `RootLayout` declaration. Thus, an hoisted page will not be wrapped by the `RootLayout` and will have full control over its rendering.
+Squide has a built-in [useHoistedRoutes](/reference/routing/useHoistedRoutes.md) hook capable of raising module routes marked as `hoist` at the root of the routes array, before the `RootLayout` declaration. Thus, an hoisted page will not be wrapped by the `RootLayout` and will have full control over its rendering.
 
 To hoist module pages, first transform the module routes with the `useHoistedRoutes` hook before creating the router instance:
 
@@ -203,3 +203,7 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
 ## Try it :rocket:
 
 Start the application in a development environment using the `dev` script and navigate to the `/login` page. The page should be displayed even if you are not authenticated.
+
+!!!info
+If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/shell).
+!!!

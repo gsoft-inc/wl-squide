@@ -445,3 +445,7 @@ Next, add a new `dev-local` script to the `package.json` file to start the local
 ### Try it :rocket:
 
 Start the remote module in isolation by running the `dev-local` script. The application shell should wrap the pages of the module and the default page should be `DevHome`.
+
+!!!info
+If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample).
+!!!

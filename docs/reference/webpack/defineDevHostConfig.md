@@ -4,7 +4,7 @@ order: 100
 
 # defineDevHostConfig
 
-Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a `@squide` host application in **development** mode.
+Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a Squide host application in **development** mode.
 
 ## Reference
 
@@ -25,7 +25,7 @@ const webpackConfig = defineDevHostConfig(swcConfig: {}, applicationName, port, 
 
 ## Returns
 
-A webpack [configuration object](https://webpack.js.org/concepts/configuration/) tailored for a `@squide` host application in development mode.
+A webpack [configuration object](https://webpack.js.org/concepts/configuration/) tailored for a Squide host application in development mode.
 
 ## Default shared dependencies
 

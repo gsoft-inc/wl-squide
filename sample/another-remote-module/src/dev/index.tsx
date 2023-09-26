@@ -2,8 +2,8 @@ import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@s
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { register } from "../register.tsx";
-import { sessionAccessor } from "../session.ts";
 import { App } from "./App.tsx";
+import { sessionAccessor } from "./session.ts";
 
 // Create the shell runtime.
 // Services, loggers and sessionAccessor could be reuse through a shared packages or faked when in isolation.

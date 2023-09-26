@@ -53,7 +53,7 @@ export function AuthenticationBoundary() {
 }
 ```
 
-## Add login page
+## Add a login page
 
 Add a login page to the application:
 

@@ -1,3 +1,8 @@
+---
+toc:
+    depth: 2-3
+---
+
 # useSession
 
 Retrieve the current session from the `Runtime` instance provided by `RuntimeContext`.

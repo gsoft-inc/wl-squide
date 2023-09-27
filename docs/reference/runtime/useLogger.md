@@ -1,3 +1,8 @@
+---
+toc:
+    depth: 2-3
+---
+
 # useLogger
 
 Retrieve a `RuntimeLogger` instance from the `Runtime` instance provided by `RuntimeContext`.

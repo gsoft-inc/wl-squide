@@ -26,7 +26,7 @@ npm create @workleap/project@latest <output-directory>
 +++
 !!! -->
 
-## Why
+## Why?
 
 We have built this shell to facilitate the adoption of federated applications at Workleap by **enforcing patterns** that we believe will help feature teams successfully implement a distributed architecture.
 

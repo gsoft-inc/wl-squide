@@ -1,3 +1,8 @@
+---
+toc:
+    depth: 2-3
+---
+
 # useEventBusDispatcher
 
 Retrieve an `EventBus` instance from the `Runtime` instance provided by `RuntimeContext` and provide a function to dispatch an event.

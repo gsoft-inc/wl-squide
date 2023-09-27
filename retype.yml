@@ -12,6 +12,9 @@ breadcrumb:
     enabled: true
     home: false
 
+toc:
+    depth: 2
+
 hub:
     link: https://gsoft-inc.github.io/wl-idp-docs-hub/
     alt: Workleap's IDP homepage

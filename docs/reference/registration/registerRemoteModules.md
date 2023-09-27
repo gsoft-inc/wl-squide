@@ -1,3 +1,8 @@
+---
+toc:
+    depth: 2-3
+---
+
 # registerRemoteModules
 
 Register one or many remote module(s). During the registration process, the module `register` function will be invoked with a `Runtime` instance and an optional `context` object.

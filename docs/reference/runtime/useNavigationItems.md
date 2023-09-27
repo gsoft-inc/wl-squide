@@ -1,5 +1,7 @@
 ---
 order: 60
+toc:
+    depth: 2-3
 ---
 
 # useNavigationItems

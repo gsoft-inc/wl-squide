@@ -1,3 +1,8 @@
+---
+toc:
+    depth: 2-3
+---
+
 # useService
 
 Retrieve a custom service from the `Runtime` instance provided by `RuntimeContext`.

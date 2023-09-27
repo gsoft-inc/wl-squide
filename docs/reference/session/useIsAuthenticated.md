@@ -1,3 +1,8 @@
+---
+toc:
+    depth: 2-3
+---
+
 # useIsAuthenticated
 
 Indicate whether or not the user is authenticated.

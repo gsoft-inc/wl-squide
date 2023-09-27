@@ -1,3 +1,8 @@
+---
+toc:
+    depth: 2-3
+---
+
 # useAreModulesReady
 
 Force the application to re-render once all the modules are registered. Without this hook, the page is rendered with an empty router as it happens before the remote modules registered their routes and navigation items.

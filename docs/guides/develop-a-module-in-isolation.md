@@ -1,7 +1,5 @@
 ---
 order: 50
-toc:
-    depth: 2-4
 ---
 
 # Develop a module in isolation
@@ -25,13 +23,13 @@ host
 ├───────── tsup.build.ts
 ```
 
-## Shell package
+## Create a shell package
 
 > The implementation details of the `RootLayout` and `RootErrorBoundary` won't be covered by this guide as it already has been covered many times by other guides.
 
-### Setup the package
+### Create the package
 
-First, add the following fields to the `package.json` file:
+First, create a new package (we'll refer to ours as `shell`) and add the following fields to the `package.json` file:
 
 ```json shell/package.json
 {
@@ -96,7 +94,7 @@ export function useAppRouter({ rootRoutes = [] }: UseAppRouterOptions = {}) {
 This guide only covers the `RootLayout` and `RootErrorBoundary` but the same goes for other shell assets such as an `AuthenticationBoundary`.
 !!!
 
-## Host application
+## Update the host application
 
 ### Install the package
 
@@ -145,9 +143,9 @@ export function App() {
 }
 ```
 
-## Remote module
+## Setup a remote module
 
-With our new setup in place, we can now configure the remote module to be developed in isolation. The goal is to start the module development server and render the module pages with the same layout and functionalities as if it was rendered by the host application.
+With the new `shell` package in place, we can now configure the remote module to be developed in isolation. The goal is to start the module development server and render the module pages with the same layout and functionalities as if it was rendered by the host application.
 
 ### Install the package
 
@@ -322,7 +320,7 @@ export default config;
 
 Start the remote module in isolation by running the `dev-local` script. The application shell should wrap the pages of the module and the default page should be `DevHome`.
 
-## Local module
+## Setup a local module
 
 Similarly to remote modules, the same isolated setup can be achieved for local modules. The main difference is that the `webpack.config.js` file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on webpack and [Module Federation](https://webpack.js.org/concepts/module-federation/).
 

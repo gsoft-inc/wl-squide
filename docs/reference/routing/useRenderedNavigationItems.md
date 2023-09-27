@@ -1,3 +1,8 @@
+---
+toc:
+    depth: 2-3
+---
+
 # useRenderedNavigationItems
 
 Recursively parse a navigation items structure to transform the items into React Elements.

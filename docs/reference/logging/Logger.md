@@ -1,3 +1,8 @@
+---
+toc:
+    depth: 2-3
+---
+
 # Logger
 
 A basic logger interface.

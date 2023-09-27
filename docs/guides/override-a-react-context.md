@@ -1,8 +1,6 @@
 ---
 order: 20
 label: Override a React context
-toc:
-    depth: 2
 ---
 
 # Override a React context

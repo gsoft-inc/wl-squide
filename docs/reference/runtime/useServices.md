@@ -1,3 +1,8 @@
+---
+toc:
+    depth: 2-3
+---
+
 # useServices
 
 Retrieve a string-keyed object literal of custom service instances from the `Runtime` instance provided by `RuntimeContext`.

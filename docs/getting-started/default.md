@@ -2,8 +2,6 @@
 order: 90
 icon: rocket
 expanded: true
-toc:
-    depth: 2
 ---
 
 # Getting started

@@ -1,3 +1,8 @@
+---
+toc:
+    depth: 2-3
+---
+
 # LocalStorageSessionManager
 
 A local storage session manager strictly for development purpose.

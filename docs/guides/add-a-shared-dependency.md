@@ -1,8 +1,6 @@
 ---
 order: 30
 label: Add a shared dependency
-toc:
-    depth: 2
 ---
 
 # Add a shared dependency

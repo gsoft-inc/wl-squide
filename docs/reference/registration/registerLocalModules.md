@@ -1,3 +1,8 @@
+---
+toc:
+    depth: 2-3
+---
+
 # registerLocalModules
 
 Register one or many local module(s). During the registration process, the specified registration function will be invoked with a `Runtime` instance and an optional `context` object.

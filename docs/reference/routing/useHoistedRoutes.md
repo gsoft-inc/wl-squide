@@ -1,3 +1,8 @@
+---
+toc:
+    depth: 2-3
+---
+
 # useHoistedRoutes
 
 Allow modules to register pages outside of the host application's elements boundary. Unlike a regular page, an hoisted page is added at the root of the router, meaning before the host application root layout, root error boundary and even root authentication boundary. Thus, an hoisted page has full control over its rendering.

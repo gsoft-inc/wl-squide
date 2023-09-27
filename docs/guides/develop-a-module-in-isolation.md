@@ -1,7 +1,5 @@
 ---
 order: 50
-toc:
-    depth: 2
 ---
 
 # Develop a module in isolation

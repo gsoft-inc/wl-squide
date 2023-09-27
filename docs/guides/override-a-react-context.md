@@ -1,6 +1,8 @@
 ---
 order: 20
 label: Override a React context
+toc:
+    depth: 2
 ---
 
 # Override a React context
@@ -88,7 +90,7 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
 }
 ```
 
-## Extract an utility function
+### Extract an utility function
 
 Since there are multiple routes to setup with the new provider, an utility function can be extracted:
 

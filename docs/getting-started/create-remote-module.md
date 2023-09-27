@@ -1,7 +1,7 @@
 ---
 order: 90
 toc:
-    depth: 2-4
+    depth: 2
 ---
 
 # Create a remote module

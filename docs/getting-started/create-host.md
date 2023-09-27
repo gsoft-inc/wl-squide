@@ -2,7 +2,7 @@
 order: 100
 label: Create an host app
 toc:
-    depth: 2-4
+    depth: 2
 ---
 
 # Create an host application

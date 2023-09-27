@@ -1,7 +1,7 @@
 ---
 order: 80
 toc:
-    depth: 2-4
+    depth: 2
 ---
 
 # Create a local module

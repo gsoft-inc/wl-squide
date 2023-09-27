@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.749063606983">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.749148418444">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Add a shared dependency</title>
     <meta name="title" content="Add a shared dependency">
-    <meta name="description" content="Shared dependencies represent one of the most powerful concepts within Module Federation. However, mastering this aspect can be quite challenging. ">
+    <meta name="description" content="Shared dependencies represent one of the most powerful concepts within Module Federation.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/guides/add-a-shared-dependency/">
@@ -21,23 +21,23 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/guides/add-a-shared-dependency/">
     <meta property="og:title" content="Add a shared dependency">
-    <meta property="og:description" content="Shared dependencies represent one of the most powerful concepts within Module Federation. However, mastering this aspect can be quite challenging. ">
+    <meta property="og:description" content="Shared dependencies represent one of the most powerful concepts within Module Federation.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/guides/add-a-shared-dependency/">
     <meta property="twitter:title" content="Add a shared dependency">
-    <meta property="twitter:description" content="Shared dependencies represent one of the most powerful concepts within Module Federation. However, mastering this aspect can be quite challenging. ">
+    <meta property="twitter:description" content="Shared dependencies represent one of the most powerful concepts within Module Federation.">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.749063606983" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.749148418444" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.749063606983" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.749148418444" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.749063606983" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.749063606983" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.749148418444" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.749148418444" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -305,82 +305,13 @@
         <span>Add a shared dependency</span>
     </h1>
 </doc-anchor-target>
-<p><a href="https://webpack.js.org/plugins/module-federation-plugin/#sharing-libraries" class="outbound" target="_blank">Shared dependencies</a> represent one of the most powerful concepts within <a href="https://webpack.js.org/plugins/module-federation-plugin" class="outbound" target="_blank">Module Federation</a>. However, mastering this aspect can be quite challenging. <strong>Failure</strong> to configure shared dependencies properly in a federated application using Module Federation can significantly <strong>impact</strong> both <strong>user</strong> and <strong>developer experiences</strong>.</p>
-<p>Squide aims to simplify the configuration of shared dependencies by abstracting the <doc-anchor-trigger to="#default-shared-dependencies">fundamental shared dependencies</doc-anchor-trigger> necessary for building an application with React and React Router. Nevertheless, every federated application will inevitably have to configure additional custom shared dependencies.</p>
+<p><a href="https://webpack.js.org/plugins/module-federation-plugin/#sharing-libraries" class="outbound" target="_blank">Shared dependencies</a> represent one of the most powerful concepts within <a href="https://webpack.js.org/plugins/module-federation-plugin" class="outbound" target="_blank">Module Federation</a>. However, mastering its configuration can be quite challenging. <strong>Failure</strong> to configure shared dependencies properly in a federated application using Module Federation can significantly <strong>impact</strong> both <strong>user</strong> and <strong>developer experiences</strong>.</p>
+<p>Squide aims to simplify the configuration of shared dependencies by abstracting the <doc-anchor-trigger to="#default-shared-dependencies">shared dependencies</doc-anchor-trigger> necessary for building an application with React and React Router. Nevertheless, every federated application will inevitably have to configure additional custom shared dependencies.</p>
 <p>For a more comprehensive documentation of the Module Federation APIs, their functionality, and their benefits, please refer to this <a href="https://www.infoxicator.com/en/module-federation-shared-api" class="outbound" target="_blank">article</a>.</p>
-<doc-anchor-target id="default-shared-dependencies">
+<doc-anchor-target id="understanding-singleton-dependencies">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#default-shared-dependencies">#</doc-anchor-trigger>
-        <span>Default shared dependencies</span>
-    </h2>
-</doc-anchor-target>
-<p>Since Squide has dependencies on React and React Router, the <a href="../../reference/#webpack">define*</a> functions automatically configure shared dependencies for these packages by default, in addition to Squide own packages. The following shared dependencies are set as <doc-anchor-trigger to="#eager-dependency">eager</doc-anchor-trigger> <doc-anchor-trigger to="#singleton-dependency">singleton</doc-anchor-trigger> by default:</p>
-<ul>
-<li><a href="https://www.npmjs.com/package/react" class="outbound" target="_blank">react</a></li>
-<li><a href="https://www.npmjs.com/package/react-dom" class="outbound" target="_blank">react-dom</a></li>
-<li><a href="https://www.npmjs.com/package/react-router-dom" class="outbound" target="_blank">react-router-dom</a></li>
-<li><a href="https://www.npmjs.com/package/@squide/core" class="outbound" target="_blank">@squide/core</a></li>
-<li><a href="https://www.npmjs.com/package/@squide/react-router" class="outbound" target="_blank">@squide/react-router</a></li>
-<li><a href="https://www.npmjs.com/package/@squide/webpack-module-federation" class="outbound" target="_blank">@squide/webpack-module-federation</a></li>
-</ul>
-<p>For the full shared dependencies configuration, have a look at the <a href="https://github.com/gsoft-inc/wl-squide/blob/main/packages/webpack-module-federation/src/defineConfig.ts" class="outbound" target="_blank">defineConfig.ts</a> file on Github.</p>
-<blockquote>
-<p>You can <a href="../../reference/webpack/definedevhostconfig/#extend-a-default-shared-dependency">extend</a> or <a href="../../reference/webpack/definedevhostconfig/#override-a-default-shared-dependency">override</a> the default shared dependencies configuration.</p>
-</blockquote>
-<doc-anchor-target id="what-should-be-configured-as-a-shared-dependency">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#what-should-be-configured-as-a-shared-dependency">#</doc-anchor-trigger>
-        <span>What should be configured as a shared dependency?</span>
-    </h2>
-</doc-anchor-target>
-<p>Libraries matching the following criterias are strong candidates to be configured as shared dependencies:</p>
-<ul>
-<li>Medium to large libraries that are used by multiple modules..</li>
-<li>Libraries that requires a <doc-anchor-trigger to="#react">single instance</doc-anchor-trigger> to work properly (like <code v-pre>react</code>).</li>
-<li>Libraries exporting <doc-anchor-trigger to="#react-context-limitations">React contexts</doc-anchor-trigger>.</li>
-</ul>
-<doc-anchor-target id="adding-shared-dependencies">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#adding-shared-dependencies">#</doc-anchor-trigger>
-        <span>Adding shared dependencies</span>
-    </h2>
-</doc-anchor-target>
-<p>To configure shared dependencies, use the <code v-pre>sharedDependencies</code> option of any <a href="../../reference/#webpack">define*</a> function:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">host/webpack.dev.js</div>
-<pre class="language-javascript" data-line="7-11"><code v-pre class="language-javascript">// @ts-check
-
-import { defineDevHostConfig } from &quot;@squide/webpack-module-federation/defineConfig.js&quot;;
-import { swcConfig } from &quot;./swc.dev.js&quot;;
-
-export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
-    sharedDependencies: {
-        &quot;@sample/shared&quot;: {
-            singleton: true
-        }
-    }
-});</code></pre>
-</doc-codeblock></div>
-<p>When a dependency is shared between a host application and a remote module, the sharing options must be <strong>configured on both ends</strong>:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">remote-module/webpack.dev.js</div>
-<pre class="language-javascript" data-line="7-11"><code v-pre class="language-javascript">// @ts-check
-
-import { defineDevRemoteModuleConfig } from &quot;@squide/webpack-module-federation/defineConfig.js&quot;;
-import { swcConfig } from &quot;./swc.dev.js&quot;;
-
-export default defineDevRemoteModuleConfig(swcConfig, &quot;remote1&quot;, 8081, {
-    sharedDependencies: {
-        &quot;@sample/shared&quot;: {
-            singleton: true
-        }
-    }
-});</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="singleton-dependency">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#singleton-dependency">#</doc-anchor-trigger>
-        <span>Singleton dependency</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#understanding-singleton-dependencies">#</doc-anchor-trigger>
+        <span>Understanding singleton dependencies</span>
     </h2>
 </doc-anchor-target>
 <p>A <a href="https://webpack.js.org/plugins/module-federation-plugin/#singleton" class="outbound" target="_blank">singleton</a> shared dependency does exactly what its name suggests: it loads only a single instance of the dependency. This means that the dependency will be included in just one bundle file of the federated application.</p>
@@ -436,10 +367,22 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
 <li>If the host application is on <code v-pre>11.0.0</code> and a remote module is on <code v-pre>10.3.1</code> -&gt; <code v-pre>11.0.0</code> will be loaded</li>
 <li>If the host application is on <code v-pre>10.3.1</code> and a remote module is on <code v-pre>11.0.0</code> -&gt; <code v-pre>11.0.0</code> will be loaded</li>
 </ul>
-<doc-anchor-target id="eager-dependency">
+<doc-anchor-target id="what-should-be-configured-as-a-shared-dependency">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#what-should-be-configured-as-a-shared-dependency">#</doc-anchor-trigger>
+        <span>What should be configured as a shared dependency?</span>
+    </h3>
+</doc-anchor-target>
+<p>Libraries matching the following criterias are strong candidates to be configured as shared dependencies:</p>
+<ul>
+<li>Medium to large libraries that are used by multiple modules..</li>
+<li>Libraries that requires a <doc-anchor-trigger to="#react-dependencies-requirements">single instance</doc-anchor-trigger> to work properly (like <code v-pre>react</code>).</li>
+<li>Libraries exporting <doc-anchor-trigger to="#react-context-limitations">React contexts</doc-anchor-trigger>.</li>
+</ul>
+<doc-anchor-target id="understanding-eager-dependencies">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#eager-dependency">#</doc-anchor-trigger>
-        <span>Eager dependency</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#understanding-eager-dependencies">#</doc-anchor-trigger>
+        <span>Understanding eager dependencies</span>
     </h2>
 </doc-anchor-target>
 <p>An <a href="https://webpack.js.org/plugins/module-federation-plugin/#eager" class="outbound" target="_blank">eager</a> shared dependency becomes available as soon as the host application starts. In simple terms, it is included in the host application bundle rather than being loaded lazily when it is first requested.</p>
@@ -459,7 +402,71 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
     }
 });</code></pre>
 </doc-codeblock></div>
-<p>The key point to remember about <code v-pre>eager</code> dependencies is that <strong>only one application or remote module should configure a shared dependency as eager</strong>. Otherwise, the dependency will be included in the bundler of every application or remote module that set the dependency as <code v-pre>eager</code>.</p>
+<p>The key point to remember about <code v-pre>eager</code> dependencies is that <strong>only one application or remote module should configure a shared dependency as eager</strong>. Otherwise, the dependency will be included in the bundle of the host application and of every remote module that set the dependency as <code v-pre>eager</code>.</p>
+<doc-anchor-target id="what-should-be-configured-as-an-eager-dependency">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#what-should-be-configured-as-an-eager-dependency">#</doc-anchor-trigger>
+        <span>What should be configured as an eager dependency?</span>
+    </h3>
+</doc-anchor-target>
+<p>Any shared dependency that must be loaded to bootstrap the application.</p>
+<doc-anchor-target id="default-shared-dependencies">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#default-shared-dependencies">#</doc-anchor-trigger>
+        <span>Default shared dependencies</span>
+    </h2>
+</doc-anchor-target>
+<p>Since Squide has dependencies on React and React Router, the <a href="../../reference/#webpack">define*</a> functions automatically configure shared dependencies for these packages by default, in addition to Squide own packages. The following shared dependencies are set as <doc-anchor-trigger to="#understanding-eager-dependencies">eager</doc-anchor-trigger> <doc-anchor-trigger to="#understanding-singleton-dependencies">singleton</doc-anchor-trigger> by default:</p>
+<ul>
+<li><a href="https://www.npmjs.com/package/react" class="outbound" target="_blank">react</a></li>
+<li><a href="https://www.npmjs.com/package/react-dom" class="outbound" target="_blank">react-dom</a></li>
+<li><a href="https://www.npmjs.com/package/react-router-dom" class="outbound" target="_blank">react-router-dom</a></li>
+<li><a href="https://www.npmjs.com/package/@squide/core" class="outbound" target="_blank">@squide/core</a></li>
+<li><a href="https://www.npmjs.com/package/@squide/react-router" class="outbound" target="_blank">@squide/react-router</a></li>
+<li><a href="https://www.npmjs.com/package/@squide/webpack-module-federation" class="outbound" target="_blank">@squide/webpack-module-federation</a></li>
+</ul>
+<p>For the full shared dependencies configuration, have a look at the <a href="https://github.com/gsoft-inc/wl-squide/blob/main/packages/webpack-module-federation/src/defineConfig.ts" class="outbound" target="_blank">defineConfig.ts</a> file on Github.</p>
+<blockquote>
+<p>You can <a href="../../reference/webpack/definedevhostconfig/#extend-a-default-shared-dependency">extend</a> or <a href="../../reference/webpack/definedevhostconfig/#override-a-default-shared-dependency">override</a> the default shared dependencies configuration.</p>
+</blockquote>
+<doc-anchor-target id="add-custom-shared-dependencies">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#add-custom-shared-dependencies">#</doc-anchor-trigger>
+        <span>Add custom shared dependencies</span>
+    </h2>
+</doc-anchor-target>
+<p>To configure shared dependencies, use the <code v-pre>sharedDependencies</code> option of any <a href="../../reference/#webpack">define*</a> function:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/webpack.dev.js</div>
+<pre class="language-javascript" data-line="7-11"><code v-pre class="language-javascript">// @ts-check
+
+import { defineDevHostConfig } from &quot;@squide/webpack-module-federation/defineConfig.js&quot;;
+import { swcConfig } from &quot;./swc.dev.js&quot;;
+
+export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
+    sharedDependencies: {
+        &quot;@sample/shared&quot;: {
+            singleton: true
+        }
+    }
+});</code></pre>
+</doc-codeblock></div>
+<p>When a dependency is shared between a host application and a remote module, the sharing options must be <strong>configured on both ends</strong>:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">remote-module/webpack.dev.js</div>
+<pre class="language-javascript" data-line="7-11"><code v-pre class="language-javascript">// @ts-check
+
+import { defineDevRemoteModuleConfig } from &quot;@squide/webpack-module-federation/defineConfig.js&quot;;
+import { swcConfig } from &quot;./swc.dev.js&quot;;
+
+export default defineDevRemoteModuleConfig(swcConfig, &quot;remote1&quot;, 8081, {
+    sharedDependencies: {
+        &quot;@sample/shared&quot;: {
+            singleton: true
+        }
+    }
+});</code></pre>
+</doc-codeblock></div>
 <doc-anchor-target id="react-context-limitations">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#react-context-limitations">#</doc-anchor-trigger>
@@ -468,20 +475,14 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
 </doc-anchor-target>
 <p>For a React context to be provided by the host application and consumed by the remote modules, the library exporting the React context must be set as a <code v-pre>singleton</code>.</p>
 <p>To troubleshoot a React context issue or find more information about the limitations, refer to the <a href="../../troubleshooting/#react-context-values-are-undefined">troubleshooting</a> page.</p>
-<doc-anchor-target id="react">
+<doc-anchor-target id="react-dependencies-requirements">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#react">#</doc-anchor-trigger>
-        <span><code v-pre>react</code></span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#react-dependencies-requirements">#</doc-anchor-trigger>
+        <span>React dependencies requirements</span>
     </h2>
 </doc-anchor-target>
 <p><code v-pre>react</code> and <code v-pre>react-dom</code> dependencies must be configured as a <code v-pre>singleton</code>, otherwise either an error will be thrown at bootstrapping if the loaded <code v-pre>react</code> versions are incompatible, or features like <code v-pre>useState</code> will not work.</p>
-<doc-anchor-target id="react-router-dom">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#react-router-dom">#</doc-anchor-trigger>
-        <span><code v-pre>react-router-dom</code></span>
-    </h2>
-</doc-anchor-target>
-<p>The <code v-pre>react-router-dom</code> dependency must be configured as a <code v-pre>singleton</code> because it relies on a global React context that needs to be declared in the host application and is consumed by remote modules.</p>
+<p>The <code v-pre>react-router-dom</code> dependency must as well be configured as a <code v-pre>singleton</code> because it relies on a global React context that needs to be declared in the host application and is consumed by remote modules.</p>
 <doc-anchor-target id="learn-more">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#learn-more">#</doc-anchor-trigger>
@@ -581,6 +582,6 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
 
     <div id="docs-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "Add a shared dependency", level: 2, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Add a shared dependency", level: 2, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 2 }</script>
 </body>
 </html>

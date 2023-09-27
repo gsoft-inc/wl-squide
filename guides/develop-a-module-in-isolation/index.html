@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.749063606983">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.749148418444">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.749063606983" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.749148418444" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.749063606983" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.749148418444" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.749063606983" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.749063606983" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.749148418444" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.749148418444" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -321,22 +321,22 @@
 ├───────── tsup.dev.ts
 ├───────── tsup.build.ts</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="shell-package">
+<doc-anchor-target id="create-a-shell-package">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#shell-package">#</doc-anchor-trigger>
-        <span>Shell package</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#create-a-shell-package">#</doc-anchor-trigger>
+        <span>Create a shell package</span>
     </h2>
 </doc-anchor-target>
 <blockquote>
 <p>The implementation details of the <code v-pre>RootLayout</code> and <code v-pre>RootErrorBoundary</code> won&#x27;t be covered by this guide as it already has been covered many times by other guides.</p>
 </blockquote>
-<doc-anchor-target id="setup-the-package">
+<doc-anchor-target id="create-the-package">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#setup-the-package">#</doc-anchor-trigger>
-        <span>Setup the package</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#create-the-package">#</doc-anchor-trigger>
+        <span>Create the package</span>
     </h3>
 </doc-anchor-target>
-<p>First, add the following fields to the <code v-pre>package.json</code> file:</p>
+<p>First, create a new package (we&#x27;ll refer to ours as <code v-pre>shell</code>) and add the following fields to the <code v-pre>package.json</code> file:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">shell/package.json</div>
 <pre class="language-json"><code v-pre class="language-json">{
@@ -415,10 +415,10 @@ export function useAppRouter({ rootRoutes = [] }: UseAppRouterOptions = {}) {
         </div>
     </div>
 </div>
-<doc-anchor-target id="host-application">
+<doc-anchor-target id="update-the-host-application">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#host-application">#</doc-anchor-trigger>
-        <span>Host application</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#update-the-host-application">#</doc-anchor-trigger>
+        <span>Update the host application</span>
     </h2>
 </doc-anchor-target>
 <doc-anchor-target id="install-the-package">
@@ -474,13 +474,13 @@ export function App() {
     );
 }</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="remote-module">
+<doc-anchor-target id="setup-a-remote-module">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#remote-module">#</doc-anchor-trigger>
-        <span>Remote module</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#setup-a-remote-module">#</doc-anchor-trigger>
+        <span>Setup a remote module</span>
     </h2>
 </doc-anchor-target>
-<p>With our new setup in place, we can now configure the remote module to be developed in isolation. The goal is to start the module development server and render the module pages with the same layout and functionalities as if it was rendered by the host application.</p>
+<p>With the new <code v-pre>shell</code> package in place, we can now configure the remote module to be developed in isolation. The goal is to start the module development server and render the module pages with the same layout and functionalities as if it was rendered by the host application.</p>
 <doc-anchor-target id="install-the-package-1">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#install-the-package-1">#</doc-anchor-trigger>
@@ -699,10 +699,10 @@ export default config;</code></pre>
     </h3>
 </doc-anchor-target>
 <p>Start the remote module in isolation by running the <code v-pre>dev-local</code> script. The application shell should wrap the pages of the module and the default page should be <code v-pre>DevHome</code>.</p>
-<doc-anchor-target id="local-module">
+<doc-anchor-target id="setup-a-local-module">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#local-module">#</doc-anchor-trigger>
-        <span>Local module</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#setup-a-local-module">#</doc-anchor-trigger>
+        <span>Setup a local module</span>
     </h2>
 </doc-anchor-target>
 <p>Similarly to remote modules, the same isolated setup can be achieved for local modules. The main difference is that the <code v-pre>webpack.config.js</code> file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on webpack and <a href="https://webpack.js.org/concepts/module-federation/" class="outbound" target="_blank">Module Federation</a>.</p>
@@ -990,6 +990,6 @@ export default defineDevConfig(swcConfig);</code></pre>
 
     <div id="docs-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "Develop a module in isolation", level: 2, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 234 }</script>
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Develop a module in isolation", level: 2, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 2 }</script>
 </body>
 </html>

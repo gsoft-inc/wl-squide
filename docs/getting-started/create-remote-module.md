@@ -35,8 +35,6 @@ While you can use any package manager to develop an application with Squide, it 
 
 ## Setup the application
 
-### Create the new files
-
 First, create the following files:
 
 ```
@@ -52,8 +50,6 @@ remote-module
 ├── package.json
 ```
 
-### ESM syntax
-
 Then, ensure that you are developing your module using [ESM syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) by specifying `type: module` in your `package.json` file:
 
 ```json remote-module/package.json
@@ -64,7 +60,7 @@ Then, ensure that you are developing your module using [ESM syntax](https://deve
 
 ### Routes registration
 
-Then, register the remote module [routes](/reference/runtime/runtime-class.md#register-routes) and [navigation items](/reference/runtime/runtime-class.md#register-navigation-items):
+Next, register the remote module routes and navigation items with the [registerRoutes](/reference/runtime/runtime-class.md#register-routes) and [registerNavigationItems](/reference/runtime/runtime-class.md#register-navigation-items) functions:
 
 ```tsx !#6-11,13-18 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
@@ -88,7 +84,7 @@ export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime: R
 }
 ```
 
-And finally, create the `<Page>` component:
+Then, create the `<Page>` component:
 
 ```tsx remote-module/src/Page.tsx
 export function Page() {
@@ -106,8 +102,6 @@ Squide webpack configuration is built on top of [@workleap/webpack-configs](http
 
 ### Development configuration
 
-#### SWC
-
 To configure webpack for a **development** environment, first open the `swc.dev.js` file and copy/paste the following code:
 
 ```js remote-module/swc.dev.js
@@ -119,8 +113,6 @@ const targets = browserslistToSwc();
 
 export const swcConfig = defineDevConfig(targets);
 ```
-
-#### `defineDevRemoteModuleConfig`
 
 Then, open the `webpack.dev.js` file and use the the [defineDevRemoteModuleConfig](/reference/webpack/defineDevRemoteModuleConfig.md) function to configure webpack:
 
@@ -143,8 +135,6 @@ export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
 
 ### Build configuration
 
-#### SWC
-
 To configure webpack for a **build** environment, first open the `swc.build.js` file and copy/paste the following code:
 
 ```js remote-module/swc.build.js
@@ -156,8 +146,6 @@ const targets = browserslistToSwc();
 
 export const swcConfig = defineBuildConfig(targets);
 ```
-
-#### `defineBuildRemoteModuleConfig`
 
 Then, open the `webpack.build.js` file and use the the [defineBuildRemoteModuleConfig](/reference/webpack/defineBuildRemoteModuleConfig.md) function to configure webpack:
 

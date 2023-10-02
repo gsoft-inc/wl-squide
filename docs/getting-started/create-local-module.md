@@ -45,8 +45,6 @@ While you can use any package manager to develop an application with Squide, it 
 
 ## Setup the application
 
-### Create the new files
-
 First, create the following files:
 
 ```
@@ -59,8 +57,6 @@ local-modules
 ├── package.json
 ```
 
-### ESM syntax
-
 Then, ensure that you are developing your module using [ESM syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) by specifying `type: module` in your `package.json` file:
 
 ```json local-module/package.json
@@ -69,7 +65,7 @@ Then, ensure that you are developing your module using [ESM syntax](https://deve
 }
 ```
 
-Then, configure the package to be shareable by adding the `name`, `version`, and `export` fields to the `package.json` file:
+Finally, configure the package to be shareable by adding the `name`, `version`, and `export` fields to the `package.json` file:
 
 ```json local-module/package.json
 {
@@ -87,7 +83,7 @@ Then, configure the package to be shareable by adding the `name`, `version`, and
 
 ### Routes registration
 
-Then, register the local module [routes](/reference/runtime/runtime-class.md#register-routes) and [navigation items](/reference/runtime/runtime-class.md#register-navigation-items):
+Next, register the local module routes and navigation items with [registerRoutes](/reference/runtime/runtime-class.md#register-routes) and [registerNavigationItems](/reference/runtime/runtime-class.md#register-navigation-items) functions:
 
 ```tsx !#6-11,13-18 local-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
@@ -111,7 +107,7 @@ export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, c
 }
 ```
 
-And finally, create the `<Page>` component:
+Then, create the `<Page>` component:
 
 ```tsx local-module/src/Page.tsx
 export function Page() {
@@ -133,7 +129,7 @@ Go back to the `host` application add a dependency to the `@sample/local-module`
 }
 ```
 
-Then, [register the local module](/reference/registration/registerLocalModules.md):
+Then, register the local module with the [registerLocalModule](/reference/registration/registerLocalModules.md) function:
 
 ```tsx !#5,27 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";

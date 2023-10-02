@@ -34,8 +34,6 @@ While you can use any package manager to develop an application with Squide, it 
 
 ## Setup the application
 
-### Create the new files
-
 First, create the following files:
 
 ```
@@ -56,8 +54,6 @@ host
 ├── package.json
 ```
 
-### ESM syntax
-
 Then, ensure that you are developing your application using [ESM syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) by specifying `type: module` in your `package.json` file:
 
 ```json host/package.json
@@ -66,9 +62,7 @@ Then, ensure that you are developing your application using [ESM syntax](https:/
 }
 ```
 
-### Async boundary
-
-Then, use a dynamic import to add an async boundary:
+Finally, use a dynamic import to add an async boundary:
 
 ```ts host/src/index.ts
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -84,7 +78,7 @@ export {};
 
 ### Module registration
 
-Then, instanciate the shell [Runtime](/reference/runtime/runtime-class.md) and [register the remote module](/reference/registration/registerRemoteModules.md) (the configuration of the remote module will be covered in the [next section](create-remote-module.md)):
+Next, to register the modules, instanciate the shell [Runtime](/reference/runtime/runtime-class.md) and register the remote module with the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function (the configuration of the remote module will be covered in the [next section](create-remote-module.md)):
 
 ```tsx !#14-16,19-21,24 host/src/bootstrap.tsx
 import { Suspense } from "react";
@@ -123,9 +117,7 @@ root.render(
 );
 ```
 
-### Router instance
-
-Then, [retrieve the routes](/reference/runtime/useRoutes.md) that have been registered by the remote module and create a router instance:
+Then, retrieve the routes that have been registered by the remote module with the [useRoutes](/reference/runtime/useRoutes.md) hook and create a router instance:
 
 ```tsx !#10,13,17 host/src/App.tsx
 import { useMemo } from "react";
@@ -174,19 +166,9 @@ export function App() {
 }
 ```
 
-And finally, create the `Home` component:
-
-```tsx host/src/Home.tsx
-export function Home() {
-    return (
-        <div>Hello from the Home page!</div>
-    );
-}
-```
-
 ### Navigation items
 
-FInally, create a layout component to [render the navigation items](/reference/routing/useRenderedNavigationItems.md):
+Next, create a layout component to [render the navigation items](/reference/routing/useRenderedNavigationItems.md):
 
 ```tsx !#38,41 host/src/RootLayout.tsx
 import type { ReactNode } from "react";
@@ -240,13 +222,23 @@ export function RootLayout() {
 }
 ```
 
+### Homepage
+
+Finally, create the `Home` component that will serve as the homepage for this guide application:
+
+```tsx host/src/Home.tsx
+export function Home() {
+    return (
+        <div>Hello from the Home page!</div>
+    );
+}
+```
+
 ## Configure webpack
 
 !!!info
 Squide webpack configuration is built on top of [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/), [@workleap/browserslist-config](https://gsoft-inc.github.io/wl-web-configs/browserslist/) and [@workleap/swc-configs](https://gsoft-inc.github.io/wl-web-configs/swc/). If you are having issues with the configuration of these tools, refer to the tools documentation websites.
 !!!
-
-### HTML template
 
 First, open the `public/index.html` file created at the beginning of this guide and copy/paste the following [HtmlWebpackPlugin](https://webpack.js.org/plugins/html-webpack-plugin/) template:
 
@@ -261,8 +253,6 @@ First, open the `public/index.html` file created at the beginning of this guide 
 </html>
 ```
 
-### Browserslist
-
 Then, open the `.browserslist` file and copy/paste the following content:
 
 ``` host/.browserslistrc
@@ -270,8 +260,6 @@ extends @workleap/browserslist-config
 ```
 
 ### Development configuration
-
-#### SWC
 
 To configure webpack for a **development** environment, first open the `swc.dev.js` file and copy/paste the following code:
 
@@ -284,8 +272,6 @@ const targets = browserslistToSwc();
 
 export const swcConfig = defineDevConfig(targets);
 ```
-
-#### `defineDevHostConfig`
 
 Then, open the `webpack.dev.js` file and use the [defineDevHostConfig](/reference/webpack/defineDevHostConfig.md) function to configure webpack:
 
@@ -309,8 +295,6 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
 
 ### Build configuration
 
-#### SWC
-
 To configure webpack for a **build** environment, first open the `swc.build.js` file and copy/paste the following code:
 
 ```js host/swc.build.js
@@ -322,8 +306,6 @@ const targets = browserslistToSwc();
 
 export const swcConfig = defineBuildConfig(targets);
 ```
-
-#### `defineBuildHostConfig`
 
 Then, open the `webpack.build.js` file and use the [defineBuildHostConfig](/reference/webpack/defineBuildHostConfig.md) function to configure webpack:
 

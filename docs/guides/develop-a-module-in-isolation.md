@@ -27,8 +27,6 @@ host
 
 > The implementation details of the `RootLayout` and `RootErrorBoundary` won't be covered by this guide as it already has been covered many times by other guides.
 
-### Create the package
-
 First, create a new package (we'll refer to ours as `shell`) and add the following fields to the `package.json` file:
 
 ```json shell/package.json
@@ -47,8 +45,6 @@ First, create a new package (we'll refer to ours as `shell`) and add the followi
 ```
 
 Then, install the package dependencies and configure the new package with [tsup](https://gsoft-inc.github.io/wl-web-configs/tsup/).
-
-### Create the `useAppRouter` hook
 
 Finally, create a `useAppRouter` hook in the shell package. Its purpose is to provide a **reusable router configuration** that can be utilized by both the host application and the isolated modules. By using this hook, modules developed in isolation can utilize the **same application shell and routing configuration** as the host application. 
 
@@ -96,8 +92,6 @@ This guide only covers the `RootLayout` and `RootErrorBoundary` but the same goe
 
 ## Update the host application
 
-### Install the package
-
 Now, let's revisit the host application by first adding a dependency to the new `@sample/shell` package:
 
 ```json host/package.json
@@ -107,8 +101,6 @@ Now, let's revisit the host application by first adding a dependency to the new 
     }
 }
 ```
-
-### Use the `useAppRouter` hook
 
 Then, incorporate the newly introduced `useAppRouter` hook:
 
@@ -147,8 +139,6 @@ export function App() {
 
 With the new `shell` package in place, we can now configure the remote module to be developed in isolation. The goal is to start the module development server and render the module pages with the same layout and functionalities as if it was rendered by the host application.
 
-### Install the package
-
 To begin, let's start by adding a dependency to the `@sample/shell` package:
 
 ```json remote-module/package.json
@@ -158,8 +148,6 @@ To begin, let's start by adding a dependency to the `@sample/shell` package:
     }
 }
 ```
-
-### Create the new files
 
 Then, create the following files in the remote module application:
 
@@ -271,8 +259,6 @@ The `dev-local` script is similar to the `dev` script but introduces a `LOCAL` e
 If you are having issues configuring webpack, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/) documentation website.
 !!!
 
-#### HTML template
-
 First, open the `public/index.html` file created at the beginning of this guide and copy/paste the following [HtmlWebpackPlugin](https://webpack.js.org/plugins/html-webpack-plugin/) template:
 
 ```html host/public/index.html
@@ -285,8 +271,6 @@ First, open the `public/index.html` file created at the beginning of this guide 
     </body>
 </html>
 ```
-
-#### Browserslist
 
 Then, open the `.browserslist` file and copy/paste the following content:
 
@@ -324,8 +308,6 @@ Start the remote module in isolation by running the `dev-local` script. The appl
 
 Similarly to remote modules, the same isolated setup can be achieved for local modules. The main difference is that the `webpack.config.js` file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on webpack and [Module Federation](https://webpack.js.org/concepts/module-federation/).
 
-### Install the packages
-
 First, open a terminal at the root of the local module application and install the `@workleap/webpack-configs` package and its dependencies:
 
 +++ pnpm
@@ -341,8 +323,6 @@ yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browsersli
 npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
 ```
 +++
-
-### Create the new files
 
 Then, create the following files in the local module application:
 
@@ -380,8 +360,6 @@ This file is similar to the `DevHome.tsx` file of the [remote module](#devhomets
 If you are having issues configuring webpack, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/) documentation website.
 !!!
 
-#### HTML template
-
 First, open the `public/index.html` file and copy/paste the following [HtmlWebpackPlugin](https://webpack.js.org/plugins/html-webpack-plugin/) template:
 
 ```html local-module/public/index.html
@@ -395,15 +373,11 @@ First, open the `public/index.html` file and copy/paste the following [HtmlWebpa
 </html>
 ```
 
-#### Browserslist
-
 Then, open the `.browserslist` file and copy/paste the following content:
 
 ``` local-module/.browserslistrc
 extends @workleap/browserslist-config
 ```
-
-#### SWC
 
 Then, open the `swc.config.js` file and copy/paste the following code:
 
@@ -416,8 +390,6 @@ const targets = browserslistToSwc();
 
 export const swcConfig = defineDevConfig(targets);
 ```
-
-#### `defineDevConfig`
 
 Finally, open the `webpack.config.js` file and use the the [defineDevConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) function to configure webpack:
 

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.749148418444">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.749578693291">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.749148418444" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.749578693291" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.749148418444" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.749578693291" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.749148418444" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.749148418444" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.749578693291" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.749578693291" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -358,12 +358,6 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
         <span>Setup the application</span>
     </h2>
 </doc-anchor-target>
-<doc-anchor-target id="create-the-new-files">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#create-the-new-files">#</doc-anchor-trigger>
-        <span>Create the new files</span>
-    </h3>
-</doc-anchor-target>
 <p>First, create the following files:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-none"><code v-pre class="language-none">host
@@ -382,12 +376,6 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
 ├── webpack.build.js
 ├── package.json</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="esm-syntax">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#esm-syntax">#</doc-anchor-trigger>
-        <span>ESM syntax</span>
-    </h3>
-</doc-anchor-target>
 <p>Then, ensure that you are developing your application using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules" class="outbound" target="_blank">ESM syntax</a> by specifying <code v-pre>type: module</code> in your <code v-pre>package.json</code> file:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/package.json</div>
@@ -395,13 +383,7 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
     &quot;type&quot;: &quot;module&quot;
 }</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="async-boundary">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#async-boundary">#</doc-anchor-trigger>
-        <span>Async boundary</span>
-    </h3>
-</doc-anchor-target>
-<p>Then, use a dynamic import to add an async boundary:</p>
+<p>Finally, use a dynamic import to add an async boundary:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/index.ts</div>
 <pre class="language-typescript"><code v-pre class="language-typescript">// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -421,7 +403,7 @@ export {};</code></pre>
         <span>Module registration</span>
     </h3>
 </doc-anchor-target>
-<p>Then, instanciate the shell <a href="../../reference/runtime/runtime-class/">Runtime</a> and <a href="../../reference/registration/registerremotemodules/">register the remote module</a> (the configuration of the remote module will be covered in the <a href="../create-remote-module/">next section</a>):</p>
+<p>Next, to register the modules, instanciate the shell <a href="../../reference/runtime/runtime-class/">Runtime</a> and register the remote module with the <a href="../../reference/registration/registerremotemodules/">registerRemoteModules</a> function (the configuration of the remote module will be covered in the <a href="../create-remote-module/">next section</a>):</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
 <pre class="language-tsx" data-line="14-16,19-21,24"><code v-pre class="language-tsx">import { Suspense } from &quot;react&quot;;
@@ -459,13 +441,7 @@ root.render(
     &lt;/RuntimeContext.Provider&gt;
 );</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="router-instance">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#router-instance">#</doc-anchor-trigger>
-        <span>Router instance</span>
-    </h3>
-</doc-anchor-target>
-<p>Then, <a href="../../reference/runtime/useroutes/">retrieve the routes</a> that have been registered by the remote module and create a router instance:</p>
+<p>Then, retrieve the routes that have been registered by the remote module with the <a href="../../reference/runtime/useroutes/">useRoutes</a> hook and create a router instance:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
 <pre class="language-tsx" data-line="10,13,17"><code v-pre class="language-tsx">import { useMemo } from &quot;react&quot;;
@@ -513,22 +489,13 @@ export function App() {
     );
 }</code></pre>
 </doc-codeblock></div>
-<p>And finally, create the <code v-pre>Home</code> component:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">host/src/Home.tsx</div>
-<pre class="language-tsx"><code v-pre class="language-tsx">export function Home() {
-    return (
-        &lt;div&gt;Hello from the Home page!&lt;/div&gt;
-    );
-}</code></pre>
-</doc-codeblock></div>
 <doc-anchor-target id="navigation-items">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#navigation-items">#</doc-anchor-trigger>
         <span>Navigation items</span>
     </h3>
 </doc-anchor-target>
-<p>FInally, create a layout component to <a href="../../reference/routing/userenderednavigationitems/">render the navigation items</a>:</p>
+<p>Next, create a layout component to <a href="../../reference/routing/userenderednavigationitems/">render the navigation items</a>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/RootLayout.tsx</div>
 <pre class="language-tsx" data-line="38,41"><code v-pre class="language-tsx">import type { ReactNode } from &quot;react&quot;;
@@ -581,6 +548,21 @@ export function RootLayout() {
     );
 }</code></pre>
 </doc-codeblock></div>
+<doc-anchor-target id="homepage">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#homepage">#</doc-anchor-trigger>
+        <span>Homepage</span>
+    </h3>
+</doc-anchor-target>
+<p>Finally, create the <code v-pre>Home</code> component that will serve as the homepage for this guide application:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/src/Home.tsx</div>
+<pre class="language-tsx"><code v-pre class="language-tsx">export function Home() {
+    return (
+        &lt;div&gt;Hello from the Home page!&lt;/div&gt;
+    );
+}</code></pre>
+</doc-codeblock></div>
 <doc-anchor-target id="configure-webpack">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#configure-webpack">#</doc-anchor-trigger>
@@ -604,12 +586,6 @@ export function RootLayout() {
         </div>
     </div>
 </div>
-<doc-anchor-target id="html-template">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#html-template">#</doc-anchor-trigger>
-        <span>HTML template</span>
-    </h3>
-</doc-anchor-target>
 <p>First, open the <code v-pre>public/index.html</code> file created at the beginning of this guide and copy/paste the following <a href="https://webpack.js.org/plugins/html-webpack-plugin/" class="outbound" target="_blank">HtmlWebpackPlugin</a> template:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/public/index.html</div>
@@ -622,12 +598,6 @@ export function RootLayout() {
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="browserslist">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#browserslist">#</doc-anchor-trigger>
-        <span>Browserslist</span>
-    </h3>
-</doc-anchor-target>
 <p>Then, open the <code v-pre>.browserslist</code> file and copy/paste the following content:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/.browserslistrc</div>
@@ -638,12 +608,6 @@ export function RootLayout() {
         <doc-anchor-trigger class="header-anchor-trigger" to="#development-configuration">#</doc-anchor-trigger>
         <span>Development configuration</span>
     </h3>
-</doc-anchor-target>
-<doc-anchor-target id="swc">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#swc">#</doc-anchor-trigger>
-        <span>SWC</span>
-    </h4>
 </doc-anchor-target>
 <p>To configure webpack for a <strong>development</strong> environment, first open the <code v-pre>swc.dev.js</code> file and copy/paste the following code:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -656,12 +620,6 @@ const targets = browserslistToSwc();
 
 export const swcConfig = defineDevConfig(targets);</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="definedevhostconfig">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#definedevhostconfig">#</doc-anchor-trigger>
-        <span><code v-pre>defineDevHostConfig</code></span>
-    </h4>
-</doc-anchor-target>
 <p>Then, open the <code v-pre>webpack.dev.js</code> file and use the <a href="../../reference/webpack/definedevhostconfig/">defineDevHostConfig</a> function to configure webpack:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/webpack.dev.js</div>
@@ -688,12 +646,6 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
         <span>Build configuration</span>
     </h3>
 </doc-anchor-target>
-<doc-anchor-target id="swc-1">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#swc-1">#</doc-anchor-trigger>
-        <span>SWC</span>
-    </h4>
-</doc-anchor-target>
 <p>To configure webpack for a <strong>build</strong> environment, first open the <code v-pre>swc.build.js</code> file and copy/paste the following code:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/swc.build.js</div>
@@ -705,12 +657,6 @@ const targets = browserslistToSwc();
 
 export const swcConfig = defineBuildConfig(targets);</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="definebuildhostconfig">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#definebuildhostconfig">#</doc-anchor-trigger>
-        <span><code v-pre>defineBuildHostConfig</code></span>
-    </h4>
-</doc-anchor-target>
 <p>Then, open the <code v-pre>webpack.build.js</code> file and use the <a href="../../reference/webpack/definebuildhostconfig/">defineBuildHostConfig</a> function to configure webpack:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/webpack.build.js</div>

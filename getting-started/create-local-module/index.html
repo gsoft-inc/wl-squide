@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.749148418444">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.749578693291">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.749148418444" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.749578693291" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.749148418444" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.749578693291" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.749148418444" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.749148418444" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.749578693291" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.749578693291" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -366,12 +366,6 @@ npm install @squide/core @squide/react-router react react-dom react-router-dom</
         <span>Setup the application</span>
     </h2>
 </doc-anchor-target>
-<doc-anchor-target id="create-the-new-files">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#create-the-new-files">#</doc-anchor-trigger>
-        <span>Create the new files</span>
-    </h3>
-</doc-anchor-target>
 <p>First, create the following files:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-none"><code v-pre class="language-none">local-modules
@@ -382,12 +376,6 @@ npm install @squide/core @squide/react-router react react-dom react-router-dom</
 ├── tsup.build.ts
 ├── package.json</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="esm-syntax">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#esm-syntax">#</doc-anchor-trigger>
-        <span>ESM syntax</span>
-    </h3>
-</doc-anchor-target>
 <p>Then, ensure that you are developing your module using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules" class="outbound" target="_blank">ESM syntax</a> by specifying <code v-pre>type: module</code> in your <code v-pre>package.json</code> file:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/package.json</div>
@@ -395,7 +383,7 @@ npm install @squide/core @squide/react-router react react-dom react-router-dom</
     &quot;type&quot;: &quot;module&quot;
 }</code></pre>
 </doc-codeblock></div>
-<p>Then, configure the package to be shareable by adding the <code v-pre>name</code>, <code v-pre>version</code>, and <code v-pre>export</code> fields to the <code v-pre>package.json</code> file:</p>
+<p>Finally, configure the package to be shareable by adding the <code v-pre>name</code>, <code v-pre>version</code>, and <code v-pre>export</code> fields to the <code v-pre>package.json</code> file:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/package.json</div>
 <pre class="language-json"><code v-pre class="language-json">{
@@ -416,7 +404,7 @@ npm install @squide/core @squide/react-router react react-dom react-router-dom</
         <span>Routes registration</span>
     </h3>
 </doc-anchor-target>
-<p>Then, register the local module <a href="../../reference/runtime/runtime-class/#register-routes">routes</a> and <a href="../../reference/runtime/runtime-class/#register-navigation-items">navigation items</a>:</p>
+<p>Next, register the local module routes and navigation items with <a href="../../reference/runtime/runtime-class/#register-routes">registerRoutes</a> and <a href="../../reference/runtime/runtime-class/#register-navigation-items">registerNavigationItems</a> functions:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/src/register.tsx</div>
 <pre class="language-tsx" data-line="6-11,13-18"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
@@ -439,7 +427,7 @@ export const register: ModuleRegisterFunction&lt;Runtime, AppContext&gt; = (runt
     ]);
 }</code></pre>
 </doc-codeblock></div>
-<p>And finally, create the <code v-pre>&lt;Page&gt;</code> component:</p>
+<p>Then, create the <code v-pre>&lt;Page&gt;</code> component:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/src/Page.tsx</div>
 <pre class="language-tsx"><code v-pre class="language-tsx">export function Page() {
@@ -463,7 +451,7 @@ export const register: ModuleRegisterFunction&lt;Runtime, AppContext&gt; = (runt
     }
 }</code></pre>
 </doc-codeblock></div>
-<p>Then, <a href="../../reference/registration/registerlocalmodules/">register the local module</a>:</p>
+<p>Then, register the local module with the <a href="../../reference/registration/registerlocalmodules/">registerLocalModule</a> function:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
 <pre class="language-tsx" data-line="5,27"><code v-pre class="language-tsx">import { createRoot } from &quot;react-dom/client&quot;;

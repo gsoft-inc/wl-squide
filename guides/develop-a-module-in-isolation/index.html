@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.749148418444">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.749578693291">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.749148418444" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.749578693291" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.749148418444" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.749578693291" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.749148418444" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.749148418444" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.749578693291" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.749578693291" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -330,12 +330,6 @@
 <blockquote>
 <p>The implementation details of the <code v-pre>RootLayout</code> and <code v-pre>RootErrorBoundary</code> won&#x27;t be covered by this guide as it already has been covered many times by other guides.</p>
 </blockquote>
-<doc-anchor-target id="create-the-package">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#create-the-package">#</doc-anchor-trigger>
-        <span>Create the package</span>
-    </h3>
-</doc-anchor-target>
 <p>First, create a new package (we&#x27;ll refer to ours as <code v-pre>shell</code>) and add the following fields to the <code v-pre>package.json</code> file:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">shell/package.json</div>
@@ -353,12 +347,6 @@
 }</code></pre>
 </doc-codeblock></div>
 <p>Then, install the package dependencies and configure the new package with <a href="https://gsoft-inc.github.io/wl-web-configs/tsup/" class="outbound" target="_blank">tsup</a>.</p>
-<doc-anchor-target id="create-the-useapprouter-hook">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#create-the-useapprouter-hook">#</doc-anchor-trigger>
-        <span>Create the <code v-pre>useAppRouter</code> hook</span>
-    </h3>
-</doc-anchor-target>
 <p>Finally, create a <code v-pre>useAppRouter</code> hook in the shell package. Its purpose is to provide a <strong>reusable router configuration</strong> that can be utilized by both the host application and the isolated modules. By using this hook, modules developed in isolation can utilize the <strong>same application shell and routing configuration</strong> as the host application.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">shell/src/useAppRouter.tsx</div>
@@ -421,12 +409,6 @@ export function useAppRouter({ rootRoutes = [] }: UseAppRouterOptions = {}) {
         <span>Update the host application</span>
     </h2>
 </doc-anchor-target>
-<doc-anchor-target id="install-the-package">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#install-the-package">#</doc-anchor-trigger>
-        <span>Install the package</span>
-    </h3>
-</doc-anchor-target>
 <p>Now, let&#x27;s revisit the host application by first adding a dependency to the new <code v-pre>@sample/shell</code> package:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/package.json</div>
@@ -436,12 +418,6 @@ export function useAppRouter({ rootRoutes = [] }: UseAppRouterOptions = {}) {
     }
 }</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="use-the-useapprouter-hook">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#use-the-useapprouter-hook">#</doc-anchor-trigger>
-        <span>Use the <code v-pre>useAppRouter</code> hook</span>
-    </h3>
-</doc-anchor-target>
 <p>Then, incorporate the newly introduced <code v-pre>useAppRouter</code> hook:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
@@ -481,12 +457,6 @@ export function App() {
     </h2>
 </doc-anchor-target>
 <p>With the new <code v-pre>shell</code> package in place, we can now configure the remote module to be developed in isolation. The goal is to start the module development server and render the module pages with the same layout and functionalities as if it was rendered by the host application.</p>
-<doc-anchor-target id="install-the-package-1">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#install-the-package-1">#</doc-anchor-trigger>
-        <span>Install the package</span>
-    </h3>
-</doc-anchor-target>
 <p>To begin, let&#x27;s start by adding a dependency to the <code v-pre>@sample/shell</code> package:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/package.json</div>
@@ -496,12 +466,6 @@ export function App() {
     }
 }</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="create-the-new-files">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#create-the-new-files">#</doc-anchor-trigger>
-        <span>Create the new files</span>
-    </h3>
-</doc-anchor-target>
 <p>Then, create the following files in the remote module application:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-none" data-line="2-3,7-9"><code v-pre class="language-none">remote-module
@@ -638,12 +602,6 @@ export function App() {
         </div>
     </div>
 </div>
-<doc-anchor-target id="html-template">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#html-template">#</doc-anchor-trigger>
-        <span>HTML template</span>
-    </h4>
-</doc-anchor-target>
 <p>First, open the <code v-pre>public/index.html</code> file created at the beginning of this guide and copy/paste the following <a href="https://webpack.js.org/plugins/html-webpack-plugin/" class="outbound" target="_blank">HtmlWebpackPlugin</a> template:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/public/index.html</div>
@@ -656,12 +614,6 @@ export function App() {
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="browserslist">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#browserslist">#</doc-anchor-trigger>
-        <span>Browserslist</span>
-    </h4>
-</doc-anchor-target>
 <p>Then, open the <code v-pre>.browserslist</code> file and copy/paste the following content:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/.browserslistrc</div>
@@ -706,12 +658,6 @@ export default config;</code></pre>
     </h2>
 </doc-anchor-target>
 <p>Similarly to remote modules, the same isolated setup can be achieved for local modules. The main difference is that the <code v-pre>webpack.config.js</code> file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on webpack and <a href="https://webpack.js.org/concepts/module-federation/" class="outbound" target="_blank">Module Federation</a>.</p>
-<doc-anchor-target id="install-the-packages">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#install-the-packages">#</doc-anchor-trigger>
-        <span>Install the packages</span>
-    </h3>
-</doc-anchor-target>
 <p>First, open a terminal at the root of the local module application and install the <code v-pre>@workleap/webpack-configs</code> package and its dependencies:</p>
 <doc-tabs>
 <doc-tab v-cloak id="pnpm">
@@ -733,12 +679,6 @@ export default config;</code></pre>
 </doc-codeblock></div>
 </doc-tab>
 </doc-tabs>
-<doc-anchor-target id="create-the-new-files-1">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#create-the-new-files-1">#</doc-anchor-trigger>
-        <span>Create the new files</span>
-    </h3>
-</doc-anchor-target>
 <p>Then, create the following files in the local module application:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-none" data-line="2-3,7-12"><code v-pre class="language-none">local-module
@@ -799,12 +739,6 @@ export default config;</code></pre>
         </div>
     </div>
 </div>
-<doc-anchor-target id="html-template-1">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#html-template-1">#</doc-anchor-trigger>
-        <span>HTML template</span>
-    </h4>
-</doc-anchor-target>
 <p>First, open the <code v-pre>public/index.html</code> file and copy/paste the following <a href="https://webpack.js.org/plugins/html-webpack-plugin/" class="outbound" target="_blank">HtmlWebpackPlugin</a> template:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/public/index.html</div>
@@ -817,23 +751,11 @@ export default config;</code></pre>
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="browserslist-1">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#browserslist-1">#</doc-anchor-trigger>
-        <span>Browserslist</span>
-    </h4>
-</doc-anchor-target>
 <p>Then, open the <code v-pre>.browserslist</code> file and copy/paste the following content:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/.browserslistrc</div>
 <pre class="language-none"><code v-pre class="language-none">extends @workleap/browserslist-config</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="swc">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#swc">#</doc-anchor-trigger>
-        <span>SWC</span>
-    </h4>
-</doc-anchor-target>
 <p>Then, open the <code v-pre>swc.config.js</code> file and copy/paste the following code:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/swc.config.js</div>
@@ -845,12 +767,6 @@ const targets = browserslistToSwc();
 
 export const swcConfig = defineDevConfig(targets);</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="definedevconfig-1">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#definedevconfig-1">#</doc-anchor-trigger>
-        <span><code v-pre>defineDevConfig</code></span>
-    </h4>
-</doc-anchor-target>
 <p>Finally, open the <code v-pre>webpack.config.js</code> file and use the the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/" class="outbound" target="_blank">defineDevConfig</a> function to configure webpack:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/webpack.config.js</div>

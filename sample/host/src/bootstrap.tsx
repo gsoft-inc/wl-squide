@@ -1,5 +1,6 @@
 import { register as registerLocalModule } from "@sample/local-module";
 import { isNetlify, type AppContext } from "@sample/shared";
+import { MswPlugin } from "@squide/msw";
 import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
 import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
 import { StrictMode } from "react";
@@ -18,7 +19,10 @@ const Remotes: RemoteDefinition[] = [
     }
 ];
 
+const mswPlugin = new MswPlugin();
+
 const runtime = new Runtime({
+    plugins: [mswPlugin],
     loggers: [new ConsoleLogger()],
     sessionAccessor
 });
@@ -29,7 +33,13 @@ const context: AppContext = {
 
 registerLocalModules([registerLocalModule], runtime, { context });
 
-registerRemoteModules(Remotes, runtime, { context });
+registerRemoteModules(Remotes, runtime, { context }).then(() => {
+    if (process.env.USE_MSW) {
+        import("../mocks/browser.ts").then(({ startMsw }) => {
+            startMsw(mswPlugin.requestHandlers);
+        });
+    }
+});
 
 const root = createRoot(document.getElementById("root")!);
 

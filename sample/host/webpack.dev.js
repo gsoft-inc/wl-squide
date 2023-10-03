@@ -11,6 +11,7 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
         }
     },
     environmentVariables: {
-        "NETLIFY": process.env.NETLIFY === "true"
+        "NETLIFY": process.env.NETLIFY === "true",
+        "USE_MSW": process.env.USE_MSW === "true"
     }
 });

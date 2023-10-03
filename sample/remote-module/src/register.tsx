@@ -1,6 +1,8 @@
 import { BackgroundColorContext } from "@sample/shared";
+import { getMswPlugin } from "@squide/msw";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { lazy } from "react";
+import { requestHandlers } from "../mocks/handlers.ts";
 
 const CustomLayout = lazy(() => import("./CustomLayout.tsx"));
 const Remote = lazy(() => import("./Remote.tsx"));
@@ -89,7 +91,7 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
         }
     ]);
 
-    ///////
+    // Register federated tabs.
 
     runtime.registerRoutes([
         {
@@ -113,4 +115,10 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
             priority: 999
         }
     ], { menuId: "/federated-tabs" });
+
+    // Register request handlers for MSW.
+
+    const mswPlugin = getMswPlugin(runtime.plugins);
+
+    mswPlugin.registerRequestHandlers(requestHandlers);
 };

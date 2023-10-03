@@ -8,6 +8,7 @@
     "type": "module",
     "scripts": {
         "dev": "nodemon",
+        "dev-msw": "cross-env USE_MSW=true pnpm dev",
         "build": "pnpm build:webpack && pnpm build:copy-redirects",
         "build:webpack": "webpack --config webpack.build.js",
         "build:copy-redirects": "copyfiles _redirects dist",
@@ -26,7 +27,9 @@
         "@workleap/webpack-configs": "1.0.8",
         "browserslist": "4.21.10",
         "copyfiles": "2.4.1",
+        "cross-env": "7.0.3",
         "http-server": "14.1.1",
+        "msw": "1.3.2",
         "nodemon": "3.0.1",
         "typescript": "5.2.2",
         "webpack": "5.88.2",
@@ -39,7 +42,9 @@
         "@sample/shell": "workspace:*",
         "@squide/fakes": "workspace:*",
         "@squide/react-router": "workspace:*",
+        "@squide/msw": "workspace:*",
         "@squide/webpack-module-federation": "workspace:*",
+        "@tanstack/react-query": "rc",
         "react": "18.2.0",
         "react-dom": "18.2.0",
         "react-router-dom": "6.16.0"

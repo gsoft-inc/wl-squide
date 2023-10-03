@@ -40,7 +40,7 @@ npm install @squide/core @squide/react-router react react-dom react-router-dom
 +++
 
 !!!warning
-While you can use any package manager to develop an application with Squide, it is highly recommend that you use [PNPM](https://pnpm.io/) as the following guide has been developed and tested with PNPM.
+While you can use any package manager to develop an application with Squide, it is highly recommend that you use [PNPM](https://pnpm.io/) as the guides has been developed and tested with PNPM.
 !!!
 
 ## Setup the application

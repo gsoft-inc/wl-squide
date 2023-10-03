@@ -1,5 +1,6 @@
 import type { Logger } from "../logging/logger.ts";
 import { EventBus } from "../messaging/eventBus.ts";
+import type { Plugin } from "../plugins/plugin.ts";
 import { RuntimeLogger } from "./RuntimeLogger.ts";
 
 export type SessionAccessorFunction = () => unknown;
@@ -8,6 +9,7 @@ export type RuntimeMode = "development" | "production";
 
 export interface RuntimeOptions {
     mode?: RuntimeMode;
+    plugins?: Plugin[];
     loggers?: Logger[];
     services?: Record<string, unknown>;
     sessionAccessor?: SessionAccessorFunction;
@@ -25,13 +27,15 @@ export const RootMenuId = "root";
 
 export abstract class AbstractRuntime<TRoute = unknown, TNavigationItem = unknown> {
     protected _mode: RuntimeMode;
+    protected readonly _plugins: Plugin[];
     protected readonly _logger: RuntimeLogger;
     protected readonly _eventBus: EventBus;
     protected _services: Record<string, unknown>;
     protected _sessionAccessor?: SessionAccessorFunction;
 
-    constructor({ mode = "development", loggers, services = {}, sessionAccessor }: RuntimeOptions = {}) {
+    constructor({ mode = "development", plugins = [], loggers, services = {}, sessionAccessor }: RuntimeOptions = {}) {
         this._mode = mode;
+        this._plugins = plugins;
         this._logger = new RuntimeLogger(loggers);
         this._eventBus = new EventBus({ logger: this._logger });
         this._services = services;
@@ -48,6 +52,10 @@ export abstract class AbstractRuntime<TRoute = unknown, TNavigationItem = unknow
 
     get mode() {
         return this._mode;
+    }
+
+    get plugins() {
+        return this._plugins;
     }
 
     get logger() {

@@ -15,12 +15,16 @@ if (!process.env.LOCAL) {
             }
         },
         environmentVariables: {
-            "NETLIFY": process.env.NETLIFY === "true"
+            "NETLIFY": process.env.NETLIFY === "true",
+            "USE_MSW": process.env.USE_MSW === "true"
         }
     });
 } else {
     config = defineDevConfig(swcConfig, {
-        entry: path.resolve("./src/dev/index.tsx")
+        entry: path.resolve("./src/dev/index.tsx"),
+        environmentVariables: {
+            "USE_MSW": process.env.USE_MSW === "true"
+        }
     });
 }
 

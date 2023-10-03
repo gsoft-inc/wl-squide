@@ -13,7 +13,7 @@ export interface RegisterLocalModulesOptions<TContext> {
 
 export function registerLocalModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext>[], runtime: TRuntime, { context }: RegisterLocalModulesOptions<TContext> = {}) {
     if (registrationStatus !== "none") {
-        throw new Error("[squide] The \"registerLocalModules\" function can only be called once.");
+        throw new Error("[squide] registerLocalModules() can only be called once.");
     }
 
     registrationStatus = "in-progress";

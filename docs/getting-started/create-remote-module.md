@@ -30,7 +30,7 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
 +++
 
 !!!warning
-While you can use any package manager to develop an application with Squide, it is highly recommended that you use [PNPM](https://pnpm.io/) as the following guide has been developed and tested with PNPM.
+While you can use any package manager to develop an application with Squide, it is highly recommended that you use [PNPM](https://pnpm.io/) as the guides has been developed and tested with PNPM.
 !!!
 
 ## Setup the application
@@ -67,7 +67,7 @@ import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import type { AppContext } from "@sample/shared";
 import { Page } from "./Page.tsx";
 
-export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime: Runtime, context: AppContext) => {
+export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, context) => {
     runtime.registerRoutes([
         {
             path: "/remote/page",

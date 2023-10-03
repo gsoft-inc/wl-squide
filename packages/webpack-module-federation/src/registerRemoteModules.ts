@@ -24,7 +24,7 @@ export interface RegisterRemoteModulesOptions {
 
 export async function registerRemoteModules(remotes: RemoteDefinition[], runtime: AbstractRuntime, { context }: RegisterRemoteModulesOptions = {}) {
     if (registrationStatus !== "none") {
-        throw new Error("[squide] The \"registerRemoteModules\" function can only be called once.");
+        throw new Error("[squide] registerRemoteModules() can only be called once.");
     }
 
     const errors: RegistrationError[] = [];

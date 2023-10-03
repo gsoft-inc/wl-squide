@@ -8,13 +8,16 @@
     "type": "module",
     "scripts": {
         "dev": "nodemon",
-        "dev-local": "cross-env LOCAL=true nodemon",
+        "dev-msw": "cross-env USE_MSW=true pnpm dev",
+        "dev-local": "cross-env LOCAL=true pnpm dev",
+        "dev-local-msw": "cross-env USE_MSW=true pnpm dev-local",
         "build": "webpack --config webpack.build.js",
         "serve-build": "pnpm build && pnpm http-server dist -p 8081 -P http://localhost:8081? -c-1"
     },
     "devDependencies": {
         "@swc/core": "1.3.86",
         "@swc/helpers": "0.5.2",
+        "@tanstack/react-query": "rc",
         "@types/react": "18.2.22",
         "@types/react-dom": "18.2.7",
         "@types/webpack": "5.28.2",
@@ -26,6 +29,7 @@
         "browserslist": "4.21.10",
         "cross-env": "7.0.3",
         "http-server": "14.1.1",
+        "msw": "1.3.2",
         "nodemon": "3.0.1",
         "typescript": "5.2.2",
         "webpack": "5.88.2",
@@ -36,6 +40,7 @@
         "@sample/shared": "workspace:*",
         "@sample/shell": "workspace:*",
         "@squide/fakes": "workspace:*",
+        "@squide/msw": "workspace:*",
         "@squide/react-router": "workspace:*",
         "@squide/webpack-module-federation": "workspace:*",
         "react": "18.2.0",

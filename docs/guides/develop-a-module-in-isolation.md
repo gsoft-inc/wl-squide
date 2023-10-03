@@ -324,6 +324,10 @@ npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browser
 ```
 +++
 
+!!!warning
+While you can use any package manager to develop an application with Squide, it is highly recommended that you use [PNPM](https://pnpm.io/) as the guides has been developed and tested with PNPM.
+!!!
+
 Then, create the following files in the local module application:
 
 ``` !#2-3,7-12

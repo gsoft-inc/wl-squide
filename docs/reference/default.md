@@ -51,6 +51,14 @@ expanded: true
 
 - [useIsAuthenticated](session/useIsAuthenticated.md)
 
+### Services
+
+- [Service](services/service.md)
+
+### Plugins
+
+- [Plugin](plugins/plugin.md)
+
 ### Webpack
 
 - [defineDevHostConfig](webpack/defineDevHostConfig.md)

@@ -48,7 +48,7 @@ const logger = useLogger();
 logger.debug("Hello", { world: "!" });
 ```
 
-The logger is also available from the [Runtime](/reference/runtime/runtime-class.md) instance.
+The logger is also available from the [Runtime](/reference/runtime/runtime-class.md#use-the-logger) instance.
 
 ## Messaging
 
@@ -79,13 +79,13 @@ dispatch("foo", "bar");
 
 You can use the event bus to enable various communication scenarios, such as notifying components of state changes, broadcasting messages across modules, or triggering actions based on specific events.
 
-The event bus is also available from the [Runtime](/reference/runtime/runtime-class.md) instance.
+The event bus is also available from the [Runtime](/reference/runtime/runtime-class.md#use-the-event-bus) instance.
 
 ## Session
 
 Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the Squide [Runtime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/LocalStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
 
-First, let's define a `sessionAccessor` function:
+First, define a `sessionAccessor` function:
 
 ```ts host/src/session.ts
 import type { SessionAccessorFunction } from "@squide/react-router";
@@ -135,29 +135,84 @@ The session is also available from the [Runtime](/reference/runtime/runtime-clas
 
 While Squide provides a range of built-in functionalities, by no mean these alone can support the needs of every mature application. Therefore, the shell [Runtime](/reference/runtime/runtime-class.md) allows the addition of custom services.
 
-First, make the service available to every part of the application by passing a service instance to the `Runtime` instance:
+First, define a service by implementing the [Service](../reference/services/service.md) interface:
 
-```ts host/src/boostrap.tsx
+```ts !#3 shared/src/telemetryService.ts
+import { Service } from "@squide/react-router";
+
+export class TelemetryService extends Service {
+    constructor() {
+        super(TelemetryService.name)
+    }
+
+    getUser(userId: string) {
+        ...
+    } 
+}
+```
+
+Then, make the service available to every part of the application by passing a service instance to the `Runtime` instance:
+
+```ts !#5 host/src/boostrap.tsx
 import { Runtime } from "@squide/react-router";
-import { UserService } from "@sample/shared";
+import { TelemetryService } from "@sample/shared";
 
 const runtime = new Runtime({
-    services: {
-        "user-service": new UserService()
-    }
+    services: [new TelemetryService()]
 });
 ```
 
-Then, access the service instance from anywhere with the [useService](/reference/runtime/useService.md) hook:
+Finally, access the service instance from anywhere with the [useService](/reference/runtime/useService.md) hook:
 
 ```ts
 import { useService } from "@squide/react-router";
-import { type UserService } from "@sample/shared";
+import { TelemetryService } from "@sample/shared";
 
-const service = useService("user-service") as UserService;
+const service = useService(TelemetryService.name) as TelemetryService;
 ```
 
-The services are also available from the [Runtime](/reference/runtime/runtime-class.md) instance.
+The services are also available from the [Runtime](/reference/runtime/runtime-class.md#retrieve-a-service) instance.
+
+## Plugins
+
+To keep Squide lightweight, not all functionalities should be integrated as a core functionality. However, to accommodate a broad range of technologies, a plugin system has been implemented to fill the gap.
+
+First, define a plugin by implementing the [Plugin](../reference/plugins/plugin.md) interface:
+
+```ts !#3 shared/src/mswPlugin.ts
+import { Plugin } from "@squide/react-router";
+import type { RestHandler } from "msw";
+
+export class MswPlugin extends Plugin {
+    constructor() {
+        super(MswPlugin.name);
+    }
+
+    registerRequestHandlers(handlers: RestHandler[]) {
+        ...
+    }
+}
+```
+
+Then, make the plugin available to every part of the application by passing a service instance to the `Runtime` instance:
+
+```ts !#5 host/src/boostrap.tsx
+import { Runtime } from "@squide/react-router";
+import { MswPlugin } from "@squide/msw";
+
+const runtime = new Runtime({
+    plugins: [new MswPlugin()]
+});
+```
+
+Then, access the plugin instance from the [Runtime](/reference/runtime/runtime-class.md) instance:
+
+```ts !#4
+import { MswPlugin } from "@sample/shared";
+import { requetHandlers } from "../mocks/handlers.ts";
+
+const mswPlugin = runtime.getPlugin(MswPlugin.name) as MswPlugin;
+```
 
 ## Fakes
 

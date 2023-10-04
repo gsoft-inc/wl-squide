@@ -295,6 +295,12 @@ importers:
       '@squide/webpack-module-federation':
         specifier: workspace:*
         version: link:../../packages/webpack-module-federation
+      '@tanstack/react-query':
+        specifier: rc
+        version: 5.0.0-rc.4(react-dom@18.2.0)(react@18.2.0)
+      axios:
+        specifier: 1.5.1
+        version: 1.5.1(debug@4.3.4)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -311,6 +317,9 @@ importers:
       '@swc/helpers':
         specifier: 0.5.2
         version: 0.5.2
+      '@tanstack/react-query-devtools':
+        specifier: rc
+        version: 5.0.0-rc.4(@tanstack/react-query@5.0.0-rc.4)(react-dom@18.2.0)(react@18.2.0)
       '@types/react':
         specifier: 18.2.22
         version: 18.2.22
@@ -383,6 +392,9 @@ importers:
       '@tanstack/react-query':
         specifier: rc
         version: 5.0.0-rc.4(react-dom@18.2.0)(react@18.2.0)
+      axios:
+        specifier: 1.5.1
+        version: 1.5.1(debug@4.3.4)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -399,6 +411,9 @@ importers:
       '@swc/helpers':
         specifier: 0.5.2
         version: 0.5.2
+      '@tanstack/react-query-devtools':
+        specifier: rc
+        version: 5.0.0-rc.4(@tanstack/react-query@5.0.0-rc.4)(react-dom@18.2.0)(react@18.2.0)
       '@types/react':
         specifier: 18.2.22
         version: 18.2.22
@@ -556,6 +571,12 @@ importers:
       '@squide/webpack-module-federation':
         specifier: workspace:*
         version: link:../../packages/webpack-module-federation
+      '@tanstack/react-query':
+        specifier: rc
+        version: 5.0.0-rc.4(react-dom@18.2.0)(react@18.2.0)
+      axios:
+        specifier: 1.5.1
+        version: 1.5.1(debug@4.3.4)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -572,9 +593,9 @@ importers:
       '@swc/helpers':
         specifier: 0.5.2
         version: 0.5.2
-      '@tanstack/react-query':
+      '@tanstack/react-query-devtools':
         specifier: rc
-        version: 5.0.0-rc.4(react-dom@18.2.0)(react@18.2.0)
+        version: 5.0.0-rc.4(@tanstack/react-query@5.0.0-rc.4)(react-dom@18.2.0)(react@18.2.0)
       '@types/react':
         specifier: 18.2.22
         version: 18.2.22
@@ -635,6 +656,9 @@ importers:
       '@squide/react-router':
         specifier: workspace:*
         version: link:../../packages/react-router
+      '@tanstack/react-query':
+        specifier: rc
+        version: 5.0.0-rc.4(react-dom@18.2.0)(react@18.2.0)
       '@types/react':
         specifier: 18.2.22
         version: 18.2.22
@@ -4892,6 +4916,23 @@ packages:
   /@tanstack/query-core@5.0.0-rc.4:
     resolution: {integrity: sha512-d5QHSpR+kmutkJfXmyaiNvchVQctuY3d3vWBbAS4M3JTEQuOt+Gg2v7oghnDG05Ks7M0pq7ofNFuAJZ3s7p1yg==}
 
+  /@tanstack/query-devtools@5.0.0-rc.1:
+    resolution: {integrity: sha512-33ECTglWAllVT6IfUhqvgKbJulOtOP8+z9W/i0FlmWKNaEwzaR8lpa4pOCyLCZA2p5XW97nSJ/JfPOzeYQN/jQ==}
+    dev: true
+
+  /@tanstack/react-query-devtools@5.0.0-rc.4(@tanstack/react-query@5.0.0-rc.4)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-ILdxaONmNW7hWC6S9oL99NhrBbK/Iv8juA7O3JhtdwF/DxDnnt/KihhzalRNtVLC8P/E2k5fDfwV4r/ofJ2QGQ==}
+    peerDependencies:
+      '@tanstack/react-query': ^5.0.0-rc.4
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    dependencies:
+      '@tanstack/query-devtools': 5.0.0-rc.1
+      '@tanstack/react-query': 5.0.0-rc.4(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: true
+
   /@tanstack/react-query@5.0.0-rc.4(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-nN88B6SFvLneav7ZWegjHRhjv46SSAgGnjE/m1aeG9IcfjBGLTP32YkimoDw71F3tRFYzJyrtQ1y6FwB+UymGA==}
     peerDependencies:
@@ -6517,7 +6558,6 @@ packages:
 
   /asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
-    dev: true
 
   /atob@2.1.2:
     resolution: {integrity: sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==}
@@ -6558,7 +6598,6 @@ packages:
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
-    dev: true
 
   /axobject-query@3.2.1:
     resolution: {integrity: sha512-jsyHu61e6N4Vbz/v18DHwWYKK0bSWLqn47eeDSKPB7m8tqMHF9YJ+mhIk2lVteyZrY8tnSj/jHOv4YiTCuCJgg==}
@@ -7418,7 +7457,6 @@ packages:
     engines: {node: '>= 0.8'}
     dependencies:
       delayed-stream: 1.0.0
-    dev: true
 
   /commander@10.0.1:
     resolution: {integrity: sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==}
@@ -8109,7 +8147,6 @@ packages:
   /delayed-stream@1.0.0:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
     engines: {node: '>=0.4.0'}
-    dev: true
 
   /delegates@1.0.0:
     resolution: {integrity: sha512-bd2L678uiWATM6m5Z1VzNCErI3jiGzt6HGY8OVICs40JQq/HALfbyNJmp0UDakEY4pMMaN0Ly5om/B1VI/+xfQ==}
@@ -9653,7 +9690,6 @@ packages:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.35
-    dev: true
 
   /format@0.2.2:
     resolution: {integrity: sha512-wzsgA6WOq+09wrU1tsJ09udeR/YZRaeArL9e1wPbFg3GG2yDnC2ldKpxs4xunpFF9DgqCqOIra3bc1HWrJ37Ww==}
@@ -14383,7 +14419,6 @@ packages:
 
   /proxy-from-env@1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
-    dev: true
 
   /ps-list@8.1.1:
     resolution: {integrity: sha512-OPS9kEJYVmiO48u/B9qneqhkMvgCxT+Tm28VCEJpheTpl8cJ0ffZRRNgS5mrQRTrX5yRTpaJ+hRDeefXYmmorQ==}

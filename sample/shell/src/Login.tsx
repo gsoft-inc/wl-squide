@@ -7,7 +7,7 @@ export interface LoginProps {
     sessionManager: SessionManager;
 }
 
-export default function Login({ sessionManager }: LoginProps) {
+export function Login({ sessionManager }: LoginProps) {
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
 
@@ -25,7 +25,7 @@ export default function Login({ sessionManager }: LoginProps) {
 
             navigate("/");
         }
-    }, [username, password, navigate]);
+    }, [username, password, sessionManager, navigate]);
 
     const handleUserNameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setUserName(event.target.value);
@@ -63,3 +63,5 @@ export default function Login({ sessionManager }: LoginProps) {
         </main>
     );
 }
+
+export const Component = Login;

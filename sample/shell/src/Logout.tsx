@@ -5,7 +5,7 @@ export interface LogoutProps {
     sessionManager: SessionManager;
 }
 
-export default function Logout({ sessionManager }: LogoutProps) {
+export function Logout({ sessionManager }: LogoutProps) {
     sessionManager.clearSession();
 
     return (
@@ -16,3 +16,5 @@ export default function Logout({ sessionManager }: LogoutProps) {
         </main>
     );
 }
+
+export const Component = Logout;

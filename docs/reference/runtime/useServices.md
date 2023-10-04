@@ -5,7 +5,7 @@ toc:
 
 # useServices
 
-Retrieve a string-keyed object literal of custom service instances from the `Runtime` instance provided by `RuntimeContext`.
+Retrieve an array of custom service instances from the `Runtime` instance provided by `RuntimeContext`.
 
 ## Reference
 
@@ -19,7 +19,7 @@ None
 
 ### Returns
 
-A string-keyed object literal of custom service instances.
+An array of custom service instances.
 
 ## Usage
 

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function Remote() {
+export function Remote() {
     return (
         <div>
             <h2>Remote</h2>
@@ -9,3 +9,5 @@ export default function Remote() {
         </div>
     );
 }
+
+export const Component = Remote;

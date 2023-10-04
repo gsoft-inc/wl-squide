@@ -24,3 +24,5 @@ export * from "./federation/registerModule.ts";
 
 export * from "./plugins/plugin.ts";
 
+export * from "./services/service.ts";
+

@@ -1,26 +1,17 @@
 import { BackgroundColorContext } from "@sample/shared";
 import { getMswPlugin } from "@squide/msw";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
-import { lazy } from "react";
 import { requestHandlers } from "../mocks/handlers.ts";
-
-const CustomLayout = lazy(() => import("./CustomLayout.tsx"));
-const Remote = lazy(() => import("./Remote.tsx"));
-const Fetch = lazy(() => import("./Fetch.tsx"));
-const Hoisted = lazy(() => import("./Hoisted.tsx"));
-const OfficevibeTab = lazy(() => import("./OfficevibeTab.tsx"));
-const SkillsTab = lazy(() => import("./SkillsTab.tsx"));
-const ColoredPage = lazy(() => import("./ColoredPage.tsx"));
 
 export const register: ModuleRegisterFunction<Runtime> = runtime => {
     runtime.registerRoutes([
         {
             path: "/remote",
-            element: <Remote />
+            lazy: async () => import("./Remote.tsx")
         },
         {
             path: "/fetch",
-            element: <Fetch />,
+            lazy: () => import("./Fetch.tsx"),
             loader: async function loader() {
                 return fetch("https://rickandmortyapi.com/api/character/1,2,3,4,5", {
                     method: "GET",
@@ -33,25 +24,31 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
         {
             hoist: true,
             path: "/hoisted",
-            element: <CustomLayout />,
+            lazy: () => import("./CustomLayout.tsx"),
             children: [
                 {
                     index: true,
-                    element: <Hoisted />
+                    lazy: () => import("./Hoisted.tsx")
                 }
             ]
         },
         {
             path: "/no-context-override",
-            element: <ColoredPage />
+            lazy: () => import("./ColoredPage.tsx")
         },
         {
             path: "/context-override",
-            element: (
-                <BackgroundColorContext.Provider value="red">
-                    <ColoredPage />
-                </BackgroundColorContext.Provider>
-            )
+            lazy: async () => {
+                const { ColoredPage } = await import("./ColoredPage.tsx");
+
+                return {
+                    element: (
+                        <BackgroundColorContext.Provider value="red">
+                            <ColoredPage />
+                        </BackgroundColorContext.Provider>
+                    )
+                };
+            }
         }
     ]);
 
@@ -96,11 +93,11 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
     runtime.registerRoutes([
         {
             path: "/federated-tabs/officevibe",
-            element: <OfficevibeTab />
+            lazy: () => import("./OfficevibeTab.tsx")
         },
         {
             path: "/federated-tabs/skills",
-            element: <SkillsTab />
+            lazy: () => import("./SkillsTab.tsx")
         }
     ], { layoutPath: "/federated-tabs" });
 
@@ -118,7 +115,6 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
 
     // Register request handlers for MSW.
 
-    const mswPlugin = getMswPlugin(runtime.plugins);
-
+    const mswPlugin = getMswPlugin(runtime);
     mswPlugin.registerRequestHandlers(requestHandlers);
 };

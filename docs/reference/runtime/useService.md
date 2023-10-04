@@ -5,7 +5,7 @@ toc:
 
 # useService
 
-Retrieve a custom service from the `Runtime` instance provided by `RuntimeContext`.
+Retrieve a custom service instance from the `Runtime` instance provided by `RuntimeContext`.
 
 ## Reference
 
@@ -15,19 +15,17 @@ const service = useService(name)
 
 ### Parameters
 
-- `name`: A custom service instance name.
+- `name`: A custom service name.
 
 ### Returns
 
-A service instance or undefined if the specified service name doesn't match any registered instance.
+A service instance or throw an error if the specified service name doesn't match any registered instance.
 
 ## Usage
 
 ```ts
 import { useService } from "@squide/react-router";
-import type { UserService } from "@sample/shared";
+import { TelemetryService } from "@sample/shared";
  
-const userService = useService("use-service") as UserService;
-
-const users = userService.fetchAll();
+const telemetryService = useService(TelemetryService.name) as TelemetryService;
 ```

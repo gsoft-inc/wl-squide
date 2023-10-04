@@ -4,7 +4,7 @@ export interface NoMatchProps {
     path: string;
 }
 
-export default function NoMatch({ path }: NoMatchProps) {
+export function NoMatch({ path }: NoMatchProps) {
     return (
         <div>
             <h1>404</h1>
@@ -13,3 +13,5 @@ export default function NoMatch({ path }: NoMatchProps) {
         </div>
     );
 }
+
+export const Component = NoMatch;

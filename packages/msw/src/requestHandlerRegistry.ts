@@ -1,4 +1,4 @@
-import { type RestHandler } from "msw";
+import type { RestHandler } from "msw";
 
 export class RequestHandlerRegistry {
     readonly #handlers: RestHandler[] = [];

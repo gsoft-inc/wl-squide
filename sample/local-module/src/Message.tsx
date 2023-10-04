@@ -3,7 +3,7 @@ import { useCallback, useState, type ChangeEvent } from "react";
 import { useApplicationEventBusDispatcher } from "@sample/shared";
 import { Link } from "react-router-dom";
 
-export default function Message() {
+export function Message() {
     const [message, setMessage] = useState("");
 
     const handleTextChange = useCallback((event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -29,3 +29,5 @@ export default function Message() {
         </div>
     );
 }
+
+export const Component = Message;

@@ -1,6 +1,6 @@
 import { useBackgroundColor } from "@sample/shared";
 
-export default function ColoredPage() {
+export function ColoredPage() {
     const backgroundColor = useBackgroundColor();
 
     return (
@@ -9,3 +9,5 @@ export default function ColoredPage() {
         </div>
     );
 }
+
+export const Component = ColoredPage;

@@ -40,7 +40,7 @@ const renderSection: RenderSectionFunction = (elements, index, level) => {
     );
 };
 
-export default function AuthenticatedLayout() {
+export function AuthenticatedLayout() {
     const session = useSession() as Session;
 
     const handleModulesMessage = useCallback((data: unknown) => {
@@ -72,3 +72,5 @@ export default function AuthenticatedLayout() {
         </>
     );
 }
+
+export const Component = AuthenticatedLayout;

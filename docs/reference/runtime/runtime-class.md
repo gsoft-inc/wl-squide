@@ -11,7 +11,7 @@ A runtime instance give modules access to functionalities such as routing, navig
 ## Reference
 
 ```ts
-const runtime = new Runtime(options?: { loggers?: [], services?: {}, sessionAccessor?: () => {} })
+const runtime = new Runtime(options?: { loggers?: [], services?: [], plugins?: [], sessionAccessor?: () => {} })
 ```
 
 ### Parameters
@@ -19,7 +19,8 @@ const runtime = new Runtime(options?: { loggers?: [], services?: {}, sessionAcce
 - `options`: An optional object literal of options:
     - `mode`: An optional mode to optimize Squide for `production`. Values are `"development"` (default) and `"production"`.
     - `loggers`: An optional array of `Logger` instances.
-    - `services`: An optional string-keyed object literal of custom service instances.
+    - `services`: An optional array of custom service instances.
+    - `plugins`: An optional array of custom plugin instances.
     - `sessionAccessor`: An optional function returning the current session.
 
 ## Usage
@@ -29,15 +30,15 @@ const runtime = new Runtime(options?: { loggers?: [], services?: {}, sessionAcce
 ```ts
 import { ConsoleLogger, Runtime } from "@squide/react-router";
 import { LocalStorageSessionManager } from "@squide/fakes";
-import { UserService, type UserService, type AppSession } from "@sample/shared";
+import { MswPlugin } from "@squide/msw";
+import { TelemetryService, type AppSession } from "@sample/shared";
 
 const sessionManager = new LocalStorageSessionManager();
 
 const runtime = new Runtime({
     loggers: [new ConsoleLogger()],
-    services: {
-        "user-service": new UserService()
-    },
+    services: [new TelemetryService()],
+    plugins: [new MswPlugin()],
     sessionAccessor: () => {
         return sessionManager.getSession();
     };
@@ -356,9 +357,20 @@ runtime.eventBus.dispatch("write-to-host", "Hello host!");
 ### Retrieve a service
 
 ```ts
-// If the service isn't registered, undefined will be returned.
-const service = runtime.getService("user-service") as UserService;
+// If the service isn't registered, an exception will be thrown.
+const service = runtime.getService(TelemetryService.name) as TelemetryService;
 ```
+
+[!ref Learn more about services](../services/service.md)
+
+### Retrieve a plugin
+
+```ts
+// If the plugin isn't registered, an exception will be thrown.
+const plugin = runtime.getPlugin(MswPlugin.name) as MswPlugin;
+```
+
+[!ref Learn more about plugins](../plugins/plugin.md)
 
 ### Retrieve the current session
 

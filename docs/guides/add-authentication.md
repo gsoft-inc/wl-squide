@@ -10,20 +10,31 @@ When combined with a [React Router](https://reactrouter.com/en/main) authenticat
 
 ## Create a session accessor function
 
-Define a `sessionAccessor` function wrapping a `LocalStorageSessionManager` instance:
+First, create a shared type for the session:
+
+```ts shared/src/session.ts
+export interface Session {
+    user: {
+        name: string;
+    };
+}
+```
+
+Then, define a `sessionAccessor` function wrapping a `LocalStorageSessionManager` instance:
 
 ```ts host/src/session.ts
 import type { SessionAccessorFunction } from "@squide/react-router";
 import { LocalStorageSessionManager } from "@squide/fakes";
+import type { Session } from "@sample/shared";
 
 export const sessionManager = new LocalStorageSessionManager<Session>();
 
-const sessionAccessor: SessionAccessorFunction = () => {
+export const sessionAccessor: SessionAccessorFunction = () => {
     return sessionManager.getSession();
 };
 ```
 
-Then, create the [Runtime](/reference/runtime/runtime-class.md) instance with the new `sessionAccessor` function:
+Finally, create the [Runtime](/reference/runtime/runtime-class.md) instance with the new `sessionAccessor` function:
 
 ```ts #5 host/src/boostrap.tsx
 import { Runtime } from "@squide/react-router";

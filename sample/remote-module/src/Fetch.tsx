@@ -6,7 +6,7 @@ interface Character {
     species: string;
 }
 
-export default function Fetch() {
+export function Fetch() {
     const characters = useLoaderData() as Character[];
 
     return (
@@ -29,3 +29,5 @@ export default function Fetch() {
         </div>
     );
 }
+
+export const Component = Fetch;

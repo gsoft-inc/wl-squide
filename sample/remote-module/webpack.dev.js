@@ -10,7 +10,13 @@ let config;
 if (!process.env.LOCAL) {
     config = defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
         sharedDependencies: {
+            "@tanstack/react-query": {
+                singleton: true
+            },
             "@sample/shared": {
+                singleton: true
+            },
+            "axios": {
                 singleton: true
             }
         },

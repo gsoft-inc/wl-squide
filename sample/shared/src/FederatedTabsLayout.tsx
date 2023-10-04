@@ -22,7 +22,7 @@ const renderSection: RenderSectionFunction = elements => {
     );
 };
 
-export default function FederatedTabsLayout() {
+export function FederatedTabsLayout() {
     const navigationItems = useNavigationItems("/federated-tabs");
     const renderedTabs = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
@@ -38,5 +38,7 @@ export default function FederatedTabsLayout() {
         </div>
     );
 }
+
+export const Component = FederatedTabsLayout;
 
 

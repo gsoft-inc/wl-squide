@@ -1,4 +1,4 @@
-export default function DevHome() {
+export function DevHome() {
     return (
         <div>
             <h2>Remote module development home page</h2>

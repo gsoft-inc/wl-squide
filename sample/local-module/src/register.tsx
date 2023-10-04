@@ -1,10 +1,5 @@
 import type { AppContext } from "@sample/shared";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
-import { lazy } from "react";
-
-const About = lazy(() => import("./About.tsx"));
-const Message = lazy(() => import("./Message.tsx"));
-const WorkleapTab = lazy(() => import("./WorkleapTab.tsx"));
 
 export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, context) => {
     console.log("Local module context: ", context);
@@ -12,11 +7,11 @@ export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, c
     runtime.registerRoutes([
         {
             path: "/about",
-            element: <About />
+            lazy: () => import("./About.tsx")
         },
         {
             path: "/message",
-            element: <Message />
+            lazy: () => import("./Message.tsx")
         }
     ]);
 
@@ -42,7 +37,7 @@ export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, c
     runtime.registerRoutes([
         {
             index: true,
-            element: <WorkleapTab />
+            lazy: () => import("./WorkleapTab.tsx")
         }
     ], { layoutPath: "/federated-tabs" });
 

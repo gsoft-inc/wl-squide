@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function Hoisted() {
+export function Hoisted() {
     return (
         <div>
             <h2>Hoisted</h2>
@@ -9,3 +9,5 @@ export default function Hoisted() {
         </div>
     );
 }
+
+export const Component = Hoisted;

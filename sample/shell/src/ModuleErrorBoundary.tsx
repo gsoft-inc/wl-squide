@@ -11,7 +11,7 @@ function getErrorMessage(error: unknown) {
         : JSON.stringify(error);
 }
 
-export default function ModuleErrorBoundary() {
+export function ModuleErrorBoundary() {
     const error = useRouteError();
     const location = useLocation();
     const logger = useLogger();
@@ -26,3 +26,5 @@ export default function ModuleErrorBoundary() {
         </div>
     );
 }
+
+export const ErrorBoundary = ModuleErrorBoundary;

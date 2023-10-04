@@ -6,6 +6,7 @@
             "@squide/react-router": ["../../packages/react-router/src/index.ts"],
             "@squide/webpack-module-federation": ["../../packages/webpack-module-federation/src/index.ts"],
             "@squide/webpack-module-federation/defineConfig.js": ["../../packages/webpack-module-federation/src/defineConfig.js"],
+            "@squide/msw": ["../../packages/msw/src/index.ts"],
             "@sample/shell": ["../shell/src/index.ts"],
             "@sample/shared": ["../shared/src/index.ts"],
             "@sample/shared/FederatedTabsLayout.tsx": ["../shared/src/FederatedTabsLayout.tsx"]

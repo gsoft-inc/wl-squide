@@ -1,6 +1,7 @@
 import type { Logger } from "../logging/logger.ts";
 import { EventBus } from "../messaging/eventBus.ts";
 import type { Plugin } from "../plugins/plugin.ts";
+import type { Service } from "../services/service.ts";
 import { RuntimeLogger } from "./RuntimeLogger.ts";
 
 export type SessionAccessorFunction = () => unknown;
@@ -9,9 +10,9 @@ export type RuntimeMode = "development" | "production";
 
 export interface RuntimeOptions {
     mode?: RuntimeMode;
-    plugins?: Plugin[];
     loggers?: Logger[];
-    services?: Record<string, unknown>;
+    services?: Service[];
+    plugins?: Plugin[];
     sessionAccessor?: SessionAccessorFunction;
 }
 
@@ -27,13 +28,13 @@ export const RootMenuId = "root";
 
 export abstract class AbstractRuntime<TRoute = unknown, TNavigationItem = unknown> {
     protected _mode: RuntimeMode;
-    protected readonly _plugins: Plugin[];
     protected readonly _logger: RuntimeLogger;
     protected readonly _eventBus: EventBus;
-    protected _services: Record<string, unknown>;
+    protected readonly _services: Service[];
+    protected readonly _plugins: Plugin[];
     protected _sessionAccessor?: SessionAccessorFunction;
 
-    constructor({ mode = "development", plugins = [], loggers, services = {}, sessionAccessor }: RuntimeOptions = {}) {
+    constructor({ mode = "development", loggers, services = [], plugins = [], sessionAccessor }: RuntimeOptions = {}) {
         this._mode = mode;
         this._plugins = plugins;
         this._logger = new RuntimeLogger(loggers);
@@ -58,6 +59,16 @@ export abstract class AbstractRuntime<TRoute = unknown, TNavigationItem = unknow
         return this._plugins;
     }
 
+    getPlugin(pluginName: string) {
+        const plugin = this._plugins.find(x => x.name === pluginName);
+
+        if (!plugin) {
+            throw new Error(`[squide] Cannot find a plugin named "${pluginName}". Did you add an instance of the plugin to the application Runtime instance?`);
+        }
+
+        return plugin;
+    }
+
     get logger() {
         return this._logger;
     }
@@ -71,7 +82,13 @@ export abstract class AbstractRuntime<TRoute = unknown, TNavigationItem = unknow
     }
 
     getService(serviceName: string) {
-        return this._services[serviceName];
+        const service = this._services.find(x => x.name === serviceName);
+
+        if (!service) {
+            throw new Error(`[squide] Cannot find a service named "${serviceName}". Did you add the service to the application Runtime instance?`);
+        }
+
+        return service;
     }
 
     getSession() {

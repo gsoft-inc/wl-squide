@@ -10,7 +10,7 @@ const Home = lazy(() => import("./Home.tsx"));
 export function App() {
     // Re-render the app once all the remotes are registered.
     // Otherwise, the remotes routes won't be added to the router.
-    const isReady = useAreModulesReady();
+    const areModulesReady = useAreModulesReady();
 
     const router = useAppRouter(sessionManager, {
         managedRoutes: [
@@ -21,7 +21,7 @@ export function App() {
         ]
     });
 
-    if (!isReady) {
+    if (!areModulesReady) {
         return <div>Loading...</div>;
     }
 

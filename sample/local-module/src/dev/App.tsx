@@ -1,9 +1,8 @@
 import { useAppRouter } from "@sample/shell";
-import { Suspense, lazy } from "react";
+import { Suspense } from "react";
 import { RouterProvider } from "react-router-dom";
+import { DevHome } from "./DevHome.tsx";
 import { sessionManager } from "./session.ts";
-
-const DevHome = lazy(() => import("./DevHome.tsx"));
 
 export function App() {
     const router = useAppRouter(sessionManager, {

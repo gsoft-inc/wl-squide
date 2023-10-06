@@ -8,7 +8,11 @@ toc:
 Allow modules to register pages outside of the host application's elements boundary. Unlike a regular page, an hoisted page is added at the root of the router, meaning before the host application root layout, root error boundary and even root authentication boundary. Thus, an hoisted page has full control over its rendering.
 
 !!!warning
-By declaring a page as hoisted, other parts of the application will not be isolated anymore from this page's failures as the page will be rendered outside of the host application's root error boundary. To avoid breaking the entire application when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router's [errorElement](https://reactrouter.com/en/main/route/error-element) property for each hoisted page.
+By declaring a page as hoisted, other parts of the application will not be isolated anymore from this page's failures as the page will be rendered outside of the host application's root error boundary. To **avoid breaking the entire application** when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router's [errorElement](https://reactrouter.com/en/main/route/error-element) property for each hoisted page.
+!!!
+
+!!!warning
+By declaring a page as hoisted, the page will be rendered at the root of the router, therefore, most certainly outside the authenticated boundary of the application. If the hoisted page requires an authentication, make sure to **wrap the page with an authentication boundary** or to handle the authentication within the page.
 !!!
 
 ## Reference
@@ -41,7 +45,7 @@ import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
 export function App() {
-    const isReady = useAreModulesReady();
+    const areModulesReady = useAreModulesReady();
 
     const routes = useRoutes();
 
@@ -69,7 +73,7 @@ export function App() {
         return createBrowserRouter(hoistedRoutes);
     }, [hoistedRoutes]);
 
-    if (!isReady) {
+    if (!areModulesReady) {
         return <div>Loading...</div>;
     }
 
@@ -82,12 +86,10 @@ export function App() {
 }
 ```
 
-```tsx !#11-12 remote-module/src/register.tsx
-import { lazy } from "react";
+```tsx !#10-11 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
-
-const RemoteErrorBoundary = lazy(() => import("./RemoteErrorBoundary.tsx"));
-const About = lazy(() => import("./About.tsx"));
+import { RemoteErrorBoundary } from "./RemoteErrorBoundary.tsx";
+import { About } from "./About.tsx";
 
 export function register: ModuleRegisterFunction<Runtime>(runtime) {
     runtime.registerRoutes([
@@ -123,7 +125,7 @@ import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
 export function App() {
-    const isReady = useAreModulesReady();
+    const areModulesReady = useAreModulesReady();
 
     const routes = useRoutes();
 
@@ -147,7 +149,7 @@ export function App() {
         return createBrowserRouter(hoistedRoutes);
     }, [hoistedRoutes]);
 
-    if (!isReady) {
+    if (!areModulesReady) {
         return <div>Loading...</div>;
     }
 
@@ -160,13 +162,11 @@ export function App() {
 }
 ```
 
-```tsx !#12,15,18,21-22 remote-module/src/register.tsx
-import { lazy } from "react";
+```tsx !#10,13,16,19-20 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
-
-const RemoteLayout = lazy(() => import("./RemoteLayout.tsx"));
-const RemoteErrorBoundary = lazy(() => import("./RemoteErrorBoundary.tsx"));
-const About = lazy(() => import("./About.tsx"));
+import { RemoteLayout } from "./RemoteLayout.tsx";
+import { RemoteErrorBoundary} from "./RemoteErrorBoundary.tsx";
+import { About } from "./About.tsx";
 
 export function register: ModuleRegisterFunction<Runtime>(runtime) {
     runtime.registerRoutes([
@@ -211,7 +211,7 @@ import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
 export function App() {
-    const isReady = useAreModulesReady();
+    const areModulesReady = useAreModulesReady();
 
     const routes = useRoutes();
 
@@ -241,7 +241,7 @@ export function App() {
         return createBrowserRouter(hoistedRoutes);
     }, [hoistedRoutes]);
 
-    if (!isReady) {
+    if (!areModulesReady) {
         return <div>Loading...</div>;
     }
 
@@ -254,12 +254,10 @@ export function App() {
 }
 ```
 
-```tsx !#11-12,15 remote-module/src/register.tsx
-import { lazy } from "react";
+```tsx !#9-10,13 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
-
-const RemoteErrorBoundary = lazy(() => import("./RemoteErrorBoundary.tsx"));
-const Login = lazy(() => import("./Login.tsx"));
+import { RemoteErrorBoundary } from "./RemoteErrorBoundary.tsx";
+import { Login } from "./Login.tsx";
 
 export function register: ModuleRegisterFunction<Runtime>(runtime) {
     runtime.registerRoutes([
@@ -286,7 +284,7 @@ import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
 export function App() {
-    const isReady = useAreModulesReady();
+    const areModulesReady = useAreModulesReady();
 
     const routes = useRoutes();
 
@@ -313,7 +311,7 @@ export function App() {
         return createBrowserRouter(hoistedRoutes);
     }, [hoistedRoutes]);
 
-    if (!isReady) {
+    if (!areModulesReady) {
         return <div>Loading...</div>;
     }
 

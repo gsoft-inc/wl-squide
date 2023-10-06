@@ -10,7 +10,7 @@ Force the application to re-render once all the modules are registered. Without 
 ## Reference
 
 ```ts
-const isReady = useAreModulesReady(options?: { interval? })
+const areModulesReady = useAreModulesReady(options?: { interval? })
 ```
 
 ### Parameters
@@ -57,7 +57,7 @@ export function App() {
     // Re-render the application once all the modules are registered.
     // Otherwise, the remotes routes won't be added to the router as the router will be
     // rendered before the remote modules registered their routes.
-    const isReady = useAreModulesReady();
+    const areModulesReady = useAreModulesReady();
 
     const routes = useRoutes();
 
@@ -65,7 +65,7 @@ export function App() {
         return createBrowserRouter(routes);
     }, [routes]);
 
-    if (!isReady) {
+    if (!areModulesReady) {
         return <div>Loading...</div>;
     }
 

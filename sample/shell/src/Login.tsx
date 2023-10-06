@@ -1,31 +1,48 @@
-import type { SessionManager } from "@sample/shared";
 import { useIsAuthenticated } from "@squide/react-router";
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
-export interface LoginProps {
-    sessionManager: SessionManager;
+export class InvalidCredentialsError extends Error {
+    constructor(message: string = "") {
+        super(message);
+        this.name = "InvalidCredentialsError";
+    }
 }
 
-export function Login({ sessionManager }: LoginProps) {
+export type OnLoginHandler = (username: string, password: string) => Promise<void>;
+
+export interface LoginProps {
+    onLogin: OnLoginHandler;
+}
+
+export function Login({ onLogin }: LoginProps) {
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState<string>();
+    const [isBusy, setIsBusy] = useState(false);
 
     const navigate = useNavigate();
 
-    const handleClick = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+    const handleClick = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
-        if (username === "temp" && password === "temp") {
-            sessionManager.setSession({
-                user: {
-                    name: username
-                }
-            });
+        try {
+            setIsBusy(true);
+            setErrorMessage(undefined);
+
+            await onLogin(username, password);
 
             navigate("/");
+        } catch (error: unknown) {
+            setIsBusy(false);
+
+            if (error instanceof InvalidCredentialsError) {
+                setErrorMessage("Invalid credentials, please try again.");
+            } else {
+                setErrorMessage("An unknown error occured while trying to log you in, please try again.");
+            }
         }
-    }, [username, password, sessionManager, navigate]);
+    }, [username, password, onLogin, navigate]);
 
     const handleUserNameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setUserName(event.target.value);
@@ -59,9 +76,9 @@ export function Login({ sessionManager }: LoginProps) {
                     </button>
                 </div>
                 <div>Hint: use temp/temp :)</div>
+                {isBusy && <div style={{ color: "blue" }}>Loading...</div>}
+                {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
             </form>
         </main>
     );
 }
-
-export const Component = Login;

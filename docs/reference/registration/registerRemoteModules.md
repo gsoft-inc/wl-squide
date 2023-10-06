@@ -52,12 +52,10 @@ const Remotes: RemoteDefinition = [
 registerRemoteModules(Remotes, runtime, { context });
 ```
 
-```tsx !#7-21 remote-module/src/register.tsx
-import { lazy } from "react";
+```tsx !#5-19 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import type { AppContext } from "@sample/shared";
-
-const About = lazy(() => import("./About.tsx"));
+import { About } from "./About.tsx";
 
 export function register: ModuleRegisterFunction<Runtime, AppContext>(runtime, context) {
     runtime.registerRoutes([

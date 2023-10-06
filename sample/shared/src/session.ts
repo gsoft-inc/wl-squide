@@ -4,8 +4,8 @@ export interface Session {
     };
 }
 
-export interface SessionManager {
-    setSession: (session: Session) => void;
-    getSession: () => Session;
-    clearSession: () => void;
-}
+// export interface SessionManager {
+//     setSession: (session: Session) => void;
+//     getSession: () => Session | undefined;
+//     clearSession: () => void;
+// }

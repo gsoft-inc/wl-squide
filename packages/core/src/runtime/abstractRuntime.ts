@@ -17,7 +17,8 @@ export interface RuntimeOptions {
 }
 
 export interface RegisterRoutesOptions {
-    layoutPath?: string;
+    parentPath?: string;
+    parentName?: string;
 }
 
 export interface RegisterNavigationItemsOptions {

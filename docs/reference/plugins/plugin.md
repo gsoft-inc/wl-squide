@@ -11,7 +11,7 @@ An abstract base class to define a plugin.
 
 ### Define a plugin
 
-```ts !#3 shared/src/mswPlugin.ts
+```ts !#4 shared/src/mswPlugin.ts
 import { Plugin } from "@squide/react-router";
 import type { RestHandler } from "msw";
 
@@ -52,7 +52,7 @@ mswPlugin.registerRequestHandlers(requetHandlers);
 
 We recommend pairing a plugin definition with a custom function to retrieve the plugin from a runtime instance.
 
-```ts !#3 shared/src/mswPlugin.ts
+```ts !#14-16 shared/src/mswPlugin.ts
 import { Plugin, type Runtime } from "@squide/react-router";
 import type { RestHandler } from "msw";
 

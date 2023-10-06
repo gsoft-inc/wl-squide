@@ -26,5 +26,3 @@ export function ModuleErrorBoundary() {
         </div>
     );
 }
-
-export const ErrorBoundary = ModuleErrorBoundary;

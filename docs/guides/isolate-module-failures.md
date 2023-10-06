@@ -23,7 +23,7 @@ import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
 export function App() {
-    const isReady = useAreModulesReady();
+    const areModulesReady = useAreModulesReady();
 
     const routes = useRoutes();
 
@@ -43,7 +43,7 @@ export function App() {
         });
     }, [routes]);
 
-    if (!isReady) {
+    if (!areModulesReady) {
         return <div>Loading...</div>;
     }
 

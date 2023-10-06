@@ -1,4 +1,4 @@
-export default function Home() {
+export function Home() {
     return (
         <div>
             <h2>Home Page</h2>
@@ -6,3 +6,5 @@ export default function Home() {
         </div>
     );
 }
+
+export const Component = Home;

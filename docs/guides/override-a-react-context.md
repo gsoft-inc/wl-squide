@@ -16,11 +16,11 @@ import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { RouterProvider } from "react-router-dom";
 
 export function App() {
-    const isReady = useAreModulesReady();
+    const areModulesReady = useAreModulesReady();
 
     const router = useAppRouter(sessionManager);
 
-    if (!isReady) {
+    if (!areModulesReady) {
         return <div>Loading...</div>;
     }
 
@@ -127,11 +127,11 @@ import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { RouterProvider } from "react-router-dom";
 
 export function App() {
-    const isReady = useAreModulesReady();
+    const areModulesReady = useAreModulesReady();
 
     const router = useAppRouter(sessionManager);
 
-    if (!isReady) {
+    if (!areModulesReady) {
         return <div>Loading...</div>;
     }
 

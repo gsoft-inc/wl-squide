@@ -23,6 +23,7 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
         },
         {
             hoist: true,
+            visibility: "public",
             path: "/hoisted",
             lazy: () => import("./CustomLayout.tsx"),
             children: [
@@ -99,7 +100,7 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
             path: "/federated-tabs/skills",
             lazy: () => import("./SkillsTab.tsx")
         }
-    ], { layoutPath: "/federated-tabs" });
+    ], { parentPath: "/federated-tabs" });
 
     runtime.registerNavigationItems([
         {

@@ -39,7 +39,7 @@ export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, c
             index: true,
             lazy: () => import("./WorkleapTab.tsx")
         }
-    ], { layoutPath: "/federated-tabs" });
+    ], { parentPath: "/federated-tabs" });
 
     runtime.registerNavigationItems([
         {

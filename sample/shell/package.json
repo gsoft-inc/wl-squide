@@ -11,35 +11,11 @@
             "import": "./dist/index.js",
             "types": "./dist/index.d.ts",
             "default": "./dist/index.js"
-        },
-        "./AuthenticatedLayout.tsx": {
-            "import": "./dist/AuthenticatedLayout.js",
-            "types": "./dist/AuthenticatedLayout.d.ts",
-            "default": "./dist/AuthenticatedLayout.js"
-        },
-        "./Login.tsx": {
-            "import": "./dist/Login.js",
-            "types": "./dist/Login.d.ts",
-            "default": "./dist/Login.js"
-        },
-        "./Logout.tsx": {
-            "import": "./dist/Logout.js",
-            "types": "./dist/Logout.d.ts",
-            "default": "./dist/Logout.js"
-        },
-        "./ModuleErrorBoundary.tsx": {
-            "import": "./dist/ModuleErrorBoundary.js",
-            "types": "./dist/ModuleErrorBoundary.d.ts",
-            "default": "./dist/ModuleErrorBoundary.js"
-        },
-        "./NoMatch.tsx": {
-            "import": "./dist/NoMatch.js",
-            "types": "./dist/NoMatch.d.ts",
-            "default": "./dist/NoMatch.js"
         }
     },
     "scripts": {
         "dev": "nodemon",
+        "dev-msw": "pnpm nodemon",
         "build": "tsup --config ./tsup.build.ts",
         "serve-build": "pnpm build"
     },

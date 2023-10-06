@@ -129,7 +129,7 @@ import { Home } from "./Home.tsx";
 
 export function App() {
     // Re-render the application once the remote modules are registered.
-    const isReady = useAreModulesReady();
+    const areModulesReady = useAreModulesReady();
 
     // Retrieve the routes registered by the remote modules.
     const routes = useRoutes();
@@ -152,7 +152,7 @@ export function App() {
     }, [routes]);
 
     // Display a loading until the remote modules are registered.
-    if (!isReady) {
+    if (!areModulesReady) {
         return <div>Loading...</div>;
     }
 

@@ -111,7 +111,7 @@ import { useAppRouter } from "@sample/shell";
 import { Home } from "./Home.tsx";
 
 export function App() {
-    const isReady = useAreModulesReady();
+    const areModulesReady = useAreModulesReady();
 
     const router = useAppRouter({
         rootRoutes: [
@@ -122,7 +122,7 @@ export function App() {
         ]
     });
 
-    if (!isReady) {
+    if (!areModulesReady) {
         return <div>Loading...</div>;
     }
 

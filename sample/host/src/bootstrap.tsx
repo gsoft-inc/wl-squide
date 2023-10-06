@@ -40,10 +40,7 @@ const runtime = new Runtime({
 const queryClient = new QueryClient();
 
 const context: AppContext = {
-    name: "Test app",
-    // TODO: Should eventually be a plugin instead of passing it through the context object.
-    // @squide/react-query.
-    queryClient
+    name: "Test app"
 };
 
 registerLocalModules([registerLocalModule], runtime, { context });
@@ -53,6 +50,10 @@ registerRemoteModules(Remotes, runtime, { context }).then(() => {
         import("../mocks/browser.ts").then(({ startMsw }) => {
             // Will start MSW with the request handlers provided by every module.
             startMsw(mswPlugin.requestHandlers);
+
+            // Indicate to resources that are dependent on MSW
+            // that the service has been started.
+            mswPlugin.setAsStarted();
         });
     }
 });

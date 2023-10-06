@@ -1,12 +1,13 @@
-import type { SessionManager } from "@sample/shared";
 import { Link } from "react-router-dom";
 
+export type onLogoutHandler = () => Promise<void>;
+
 export interface LogoutProps {
-    sessionManager: SessionManager;
+    onLogout: onLogoutHandler;
 }
 
-export function Logout({ sessionManager }: LogoutProps) {
-    sessionManager.clearSession();
+export function Logout({ onLogout }: LogoutProps) {
+    onLogout();
 
     return (
         <main>
@@ -16,5 +17,3 @@ export function Logout({ sessionManager }: LogoutProps) {
         </main>
     );
 }
-
-export const Component = Logout;

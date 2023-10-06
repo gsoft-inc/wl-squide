@@ -13,5 +13,3 @@ export function NoMatch({ path }: NoMatchProps) {
         </div>
     );
 }
-
-export const Component = NoMatch;

@@ -262,7 +262,7 @@ import { Login } from "./Login.tsx";
 import { Logout } from "./Logout.tsx";
 
 export function App() {
-    const isReady = useAreModulesReady();
+    const areModulesReady = useAreModulesReady();
 
     const routes = useRoutes();
 
@@ -312,7 +312,7 @@ export function App() {
         });
     }, [routes]);
 
-    if (!isReady) {
+    if (!areModulesReady) {
         return <div>Loading...</div>;
     }
 

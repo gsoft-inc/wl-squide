@@ -72,5 +72,3 @@ export function AuthenticatedLayout() {
         </>
     );
 }
-
-export const Component = AuthenticatedLayout;

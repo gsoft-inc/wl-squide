@@ -52,7 +52,7 @@ const telemetryService = runtime.getService(TelemetryService.name);
 
 We recommend pairing a custom service definition with a custom function or hook to retrieve the service from a runtime instance.
 
-```ts !#9-11,13-15 shared/src/telemetryService.ts
+```ts !#9-11,13-17 shared/src/telemetryService.ts
 import { Service, useRuntime, type Runtime } from "@squide/react-router";
 
 export class TelemetryService extends Service {

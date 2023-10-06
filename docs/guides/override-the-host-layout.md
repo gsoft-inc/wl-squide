@@ -20,7 +20,7 @@ import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { Home } from "./Home.tsx";
 
 export function App() {
-    const isReady = useAreModulesReady();
+    const areModulesReady = useAreModulesReady();
 
     const routes = useRoutes();
 
@@ -47,7 +47,7 @@ export function App() {
         });
     }, [routes]);
 
-    if (!isReady) {
+    if (!areModulesReady) {
         return <div>Loading...</div>;
     }
 
@@ -119,7 +119,7 @@ import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { Home } from "./Home.tsx";
 
 export function App() {
-    const isReady = useAreModulesReady();
+    const areModulesReady = useAreModulesReady();
 
     const routes = useRoutes();
 
@@ -153,7 +153,7 @@ export function App() {
         return createBrowserRouter(hoistedRoutes);
     }, [hoistedRoutes]);
 
-    if (!isReady) {
+    if (!areModulesReady) {
         return <div>Loading...</div>;
     }
 
@@ -168,7 +168,7 @@ export function App() {
 
 Then, mark the pages as hoisted and optionally use a new layout:
 
-```tsx #12-13,16,19-20 local-module/src/register.tsx
+```tsx #11-12,15,18-19 local-module/src/register.tsx
 import { lazy } from "react";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { LocalLayout } from "./LocalLayout.tsx";
@@ -196,6 +196,10 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
     ]);
 }
 ```
+
+!!!warning
+By declaring a page as hoisted, the page will be rendered at the root of the router, therefore, most certainly outside the authenticated boundary of the application. If the hoisted page requires an authentication, make sure to **wrap the page with an authentication boundary** or to handle the authentication within the page.
+!!!
 
 [!ref text="For additional options, go to the `useHoistedRoutes` hook reference page"](/reference/routing/useHoistedRoutes.md)
 

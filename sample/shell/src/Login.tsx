@@ -2,6 +2,8 @@ import { useIsAuthenticated } from "@squide/react-router";
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
+export type OnLoginHandler = (username: string, password: string) => Promise<void>;
+
 export class InvalidCredentialsError extends Error {
     constructor(message: string = "") {
         super(message);
@@ -9,10 +11,8 @@ export class InvalidCredentialsError extends Error {
     }
 }
 
-export type OnLoginHandler = (username: string, password: string) => Promise<void>;
-
 export interface LoginProps {
-    onLogin: OnLoginHandler;
+    onLogin?: OnLoginHandler;
 }
 
 export function Login({ onLogin }: LoginProps) {
@@ -30,7 +30,9 @@ export function Login({ onLogin }: LoginProps) {
             setIsBusy(true);
             setErrorMessage(undefined);
 
-            await onLogin(username, password);
+            if (onLogin) {
+                await onLogin(username, password);
+            }
 
             navigate("/");
         } catch (error: unknown) {

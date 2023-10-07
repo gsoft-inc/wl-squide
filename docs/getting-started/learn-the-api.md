@@ -179,7 +179,7 @@ To keep Squide lightweight, not all functionalities should be integrated as a co
 
 First, define a plugin by implementing the [Plugin](../reference/plugins/plugin.md) interface:
 
-```ts !#3 shared/src/mswPlugin.ts
+```ts !#4 shared/src/mswPlugin.ts
 import { Plugin } from "@squide/react-router";
 import type { RestHandler } from "msw";
 

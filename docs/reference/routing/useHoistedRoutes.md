@@ -86,27 +86,23 @@ export function App() {
 }
 ```
 
-```tsx !#10-11 remote-module/src/register.tsx
+```tsx !#9-10 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { RemoteErrorBoundary } from "./RemoteErrorBoundary.tsx";
 import { About } from "./About.tsx";
 
 export function register: ModuleRegisterFunction<Runtime>(runtime) {
-    runtime.registerRoutes([
-        {
-            path: "/about",
-            element: <About />,
-            errorElement: <RemoteErrorBoundary />
-            hoist: true
-        }
-    ]);
+    runtime.registerRoute({
+        path: "/about",
+        element: <About />,
+        errorElement: <RemoteErrorBoundary />
+        hoist: true
+    });
 
-    runtime.registerNavigationItems([
-        {
-            to: "/about",
-            label: "About"
-        }
-    ]);
+    runtime.registerNavigationItem({
+        to: "/about",
+        label: "About"
+    });
 }
 ```
 
@@ -162,40 +158,36 @@ export function App() {
 }
 ```
 
-```tsx !#10,13,16,19-20 remote-module/src/register.tsx
+```tsx !#9,12,15,18-19 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { RemoteLayout } from "./RemoteLayout.tsx";
 import { RemoteErrorBoundary} from "./RemoteErrorBoundary.tsx";
 import { About } from "./About.tsx";
 
 export function register: ModuleRegisterFunction<Runtime>(runtime) {
-    runtime.registerRoutes([
-        {
-            path: "/about",
-            hoist: true,
-            // Will render the "About" page inside the "RemoteLayout" rather than the "RootLayout".
-            // For more information about React Router's nested routes, view https://reactrouter.com/en/main/start/tutorial#nested-routes.
-            element: <RemoteLayout />,
-            children: [
-                {
-                    errorElement: <RemoteErrorBoundary />,
-                    children: [
-                        {
-                            index: true,
-                            element: <About />
-                        }
-                    ]
-                }
-            ]
-        }
-    ]);
+    runtime.registerRoute({
+        path: "/about",
+        hoist: true,
+        // Will render the "About" page inside the "RemoteLayout" rather than the "RootLayout".
+        // For more information about React Router's nested routes, view https://reactrouter.com/en/main/start/tutorial#nested-routes.
+        element: <RemoteLayout />,
+        children: [
+            {
+                errorElement: <RemoteErrorBoundary />,
+                children: [
+                    {
+                        index: true,
+                        element: <About />
+                    }
+                ]
+            }
+        ]
+    });
 
-    runtime.registerNavigationItems([
-        {
-            to: "/about",
-            label: "About"
-        }
-    ]);
+    runtime.registerNavigationItem({
+        to: "/about",
+        label: "About"
+    });
 }
 ```
 
@@ -254,22 +246,20 @@ export function App() {
 }
 ```
 
-```tsx !#9-10,13 remote-module/src/register.tsx
+```tsx !#8-9,12 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { RemoteErrorBoundary } from "./RemoteErrorBoundary.tsx";
 import { Login } from "./Login.tsx";
 
 export function register: ModuleRegisterFunction<Runtime>(runtime) {
-    runtime.registerRoutes([
-        {
-            path: "/login",
-            element: <Login />,
-            errorElement: <RemoteErrorBoundary />,
-            // By hoisting the "Login" page, it will now be rendered outside of the default 
-            // authenticated boundary and will therefore be public.
-            hoist: true
-        }
-    ]);
+    runtime.registerRoute({
+        path: "/login",
+        element: <Login />,
+        errorElement: <RemoteErrorBoundary />,
+        // By hoisting the "Login" page, it will now be rendered outside of the default 
+        // authenticated boundary and will therefore be public.
+        hoist: true
+    });
 }
 ```
 

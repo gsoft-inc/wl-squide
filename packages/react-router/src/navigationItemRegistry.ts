@@ -30,11 +30,11 @@ export type RootNavigationItem = NavigationItem & {
 export class NavigationItemRegistry {
     readonly #menus: Map<string, RootNavigationItem[]> = new Map();
 
-    add(menuId: string, navigationItems: RootNavigationItem[]) {
+    add(menuId: string, navigationItem: RootNavigationItem) {
         // Create a new array so the navigation items array is immutable.
         const items = [
             ...(this.#menus.get(menuId) ?? []),
-            ...navigationItems
+            navigationItem
         ];
 
         this.#menus.set(menuId, items);

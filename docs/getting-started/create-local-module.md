@@ -83,27 +83,23 @@ Finally, configure the package to be shareable by adding the `name`, `version`, 
 
 ### Routes registration
 
-Next, register the local module routes and navigation items with [registerRoutes](/reference/runtime/runtime-class.md#register-routes) and [registerNavigationItems](/reference/runtime/runtime-class.md#register-navigation-items) functions:
+Next, register the local module routes and navigation items with [registerRoute](/reference/runtime/runtime-class.md#register-routes) and [registerNavigationItem](/reference/runtime/runtime-class.md#register-navigation-items) functions:
 
-```tsx !#6-11,13-18 local-module/src/register.tsx
+```tsx !#6-9,11-14 local-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import type { AppContext } from "@sample/shared";
 import { Page } from "./Page.tsx";
 
 export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, context) => {
-    runtime.registerRoutes([
-        {
-            path: "/local/page",
-            element: <Page />
-        }
-    ]);
+    runtime.registerRoute({
+        path: "/local/page",
+        element: <Page />
+    });
 
-    runtime.registerNavigationItems([
-        {
-            to: "/local/page",
-            content: "Local/Page"
-        }
-    ]);
+    runtime.registerNavigationItem({
+        to: "/local/page",
+        content: "Local/Page"
+    });
 }
 ```
 

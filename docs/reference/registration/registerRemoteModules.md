@@ -58,19 +58,15 @@ import type { AppContext } from "@sample/shared";
 import { About } from "./About.tsx";
 
 export function register: ModuleRegisterFunction<Runtime, AppContext>(runtime, context) {
-    runtime.registerRoutes([
-        {
-            path: "/about",
-            element: <About />
-        }
-    ]);
+    runtime.registerRoute({
+        path: "/about",
+        element: <About />
+    });
 
-    runtime.registerNavigationItems([
-        {
-            to: "/about",
-            label: "About"
-        }
-    ]);
+    runtime.registerNavigationItem({
+        to: "/about",
+        label: "About"
+    });
 }
 ```
 

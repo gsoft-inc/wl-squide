@@ -1,21 +1,21 @@
-import { AbstractRuntime, RootMenuId, type RegisterNavigationItemsOptions, type RegisterRoutesOptions } from "@squide/core";
+import { AbstractRuntime, RootMenuId, type RegisterNavigationItemOptions, type RegisterRouteOptions } from "@squide/core";
 import { NavigationItemRegistry, type RootNavigationItem } from "./navigationItemRegistry.ts";
-import { RouteRegistry, type RootRoute, type Route } from "./routeRegistry.ts";
+import { ManagedRoutesOutlet, RouteRegistry, type RootRoute, type Route } from "./routeRegistry.ts";
 
 export class Runtime extends AbstractRuntime<RootRoute | Route, RootNavigationItem> {
     readonly #routeRegistry = new RouteRegistry();
     readonly #navigationItemRegistry = new NavigationItemRegistry();
 
-    registerRoutes(routes: RootRoute[] | Route[], options: RegisterRoutesOptions = {}) {
-        const result = this.#routeRegistry.add(routes, options);
+    registerRoute(route: RootRoute, options: RegisterRouteOptions = {}) {
+        const result = this.#routeRegistry.add(route, options);
 
         if (result.registrationStatus === "registered") {
             const parentId = options.parentPath ?? options.parentName;
             const parentLog = parentId ? ` as children of the "${parentId}" route` : "";
 
             this._logger.debug(
-                `[squide] The following route${routes.length !== 1 ? "s" : ""} has been %cregistered%c${parentLog} for a total of ${this.#routeRegistry.routes.length} route${this.#routeRegistry.routes.length !== 1 ? "s" : ""}.`, "color: white; background-color: green;", "%s",
-                "Newly registered routes:", routes,
+                `[squide] The following route has been %cregistered%c${parentLog}.`, "color: white; background-color: green;", "%s",
+                "Newly registered route:", route,
                 "All registered routes:", this.#routeRegistry.routes
             );
 
@@ -30,8 +30,8 @@ export class Runtime extends AbstractRuntime<RootRoute | Route, RootNavigationIt
             const parentId = options.parentPath ?? options.parentName;
 
             this._logger.debug(
-                `[squide] The following route${routes.length !== 1 ? "s" : ""} registration are %cpending%c until "${parentId}" is registered.`, "color: white; background-color: #007acc;", "%s",
-                "Pending registration:", routes,
+                `[squide] The following route registration is %cpending%c until "${parentId}" is registered.`, "color: white; background-color: #007acc;", "%s",
+                "Pending registration:", route,
                 "All registered routes:", this.#routeRegistry.routes
             );
         }
@@ -41,14 +41,14 @@ export class Runtime extends AbstractRuntime<RootRoute | Route, RootNavigationIt
         return this.#routeRegistry.routes;
     }
 
-    registerNavigationItems(navigationItems: RootNavigationItem[], { menuId = RootMenuId }: RegisterNavigationItemsOptions = {}) {
-        this.#navigationItemRegistry.add(menuId, navigationItems);
+    registerNavigationItem(navigationItem: RootNavigationItem, { menuId = RootMenuId }: RegisterNavigationItemOptions = {}) {
+        this.#navigationItemRegistry.add(menuId, navigationItem);
 
         const items = this.#navigationItemRegistry.getItems(menuId)!;
 
         this._logger.debug(
-            `[squide] The following navigation item${navigationItems.length !== 1 ? "s" : ""} has been registered to the "${menuId}" menu for a total of ${items.length} item${items.length !== 1 ? "s" : ""}.`,
-            "Newly registered items:", navigationItems,
+            `[squide] The following navigation item has been registered to the "${menuId}" menu for a total of ${items.length} item${items.length !== 1 ? "s" : ""}.`,
+            "Newly registered item:", navigationItem,
             "All registered items:", this.#navigationItemRegistry.getItems(menuId)
         );
     }
@@ -61,8 +61,11 @@ export class Runtime extends AbstractRuntime<RootRoute | Route, RootNavigationIt
         const pendingRegistrations = this.#routeRegistry.pendingRegistrations;
 
         if (pendingRegistrations.size > 0) {
-            let message = `[squide] ${pendingRegistrations.size} parent route${pendingRegistrations.size !== 1 ? "s" : ""} were expected to be registered but ${pendingRegistrations.size !== 1 ? "are" : "is"} missing:\r\n\r\n`;
+            if (pendingRegistrations.has(ManagedRoutesOutlet.name!)) {
+                throw new Error("[squide] The \"ManagedRoutesOutlet\" route is missing from the router configuration. The \"ManagedRoutesOutlet\" route must be added as children of an hoisted route. Did you forget to hoist the parent route that includes the \"ManagedRoutesOutlet\" route?");
+            }
 
+            let message = `[squide] ${pendingRegistrations.size} parent route${pendingRegistrations.size !== 1 ? "s" : ""} were expected to be registered but ${pendingRegistrations.size !== 1 ? "are" : "is"} missing:\r\n\r\n`;
             let index = 0;
 
             // It's easier to use for ... of with a Map object.
@@ -73,7 +76,7 @@ export class Runtime extends AbstractRuntime<RootRoute | Route, RootNavigationIt
                 message += "    Pending registrations:\r\n";
 
                 for (const x of nestedRoutes) {
-                    message += `        - "${x.path ?? x.name ?? "(pathless route)"}"\r\n`;
+                    message += `        - "${x.path ?? x.name ?? "(no identifier)"}"\r\n`;
                 }
 
                 message += "\r\n";
@@ -81,8 +84,8 @@ export class Runtime extends AbstractRuntime<RootRoute | Route, RootNavigationIt
 
             message += `If you are certain that the parent route${pendingRegistrations.size !== 1 ? "s" : ""} has been registered, make sure that the following conditions are met:\r\n`;
             message += "- The missing parent routes \"path\" or \"name\" property perfectly match the provided \"parentPath\" or \"parentName\" (make sure that there's no leading or trailing \"/\" that differs).\r\n";
-            message += "- The missing parent routes has been registered with the \"registerRoutes()\" function. A route cannot be registered under a parent route that has not be registered with the \"registerRoutes()\" function.\r\n";
-            message += "For more information about nested routes, refers to https://gsoft-inc.github.io/wl-squide/reference/runtime/runtime-class/#register-routes-under-a-specific-nested-layout-route.\r\n";
+            message += "- The missing parent routes has been registered with the \"registerRoute()\" function. A route cannot be registered under a parent route that has not be registered with the \"registerRoute()\" function.\r\n";
+            message += "For more information about nested routes, refers to https://gsoft-inc.github.io/wl-squide/reference/runtime/runtime-class/#register-routes-under-a-specific-nested-layout-route.";
 
             if (this._mode === "development") {
                 throw new Error(message);

@@ -1,4 +1,4 @@
-import type { RegisterRoutesOptions } from "@squide/core";
+import type { RegisterRouteOptions } from "@squide/core";
 import type { IndexRouteObject, NonIndexRouteObject } from "react-router-dom";
 
 export type RouteVisibility = "public" | "authenticated";
@@ -21,6 +21,7 @@ export type RootRoute = Route & {
     visibility?: RouteVisibility;
     type?: RouteType;
 };
+
 
 function normalizePath(routePath?: string) {
     if (routePath && routePath !== "/" && routePath.endsWith("/")) {
@@ -49,6 +50,12 @@ export interface AddRouteReturnType {
     completedPendingRegistrations?: Route[];
 }
 
+const ManagedRoutesOutletName = "__squide-managed-routes-outlet__";
+
+export const ManagedRoutesOutlet: Route = {
+    name: ManagedRoutesOutletName
+};
+
 export class RouteRegistry {
     #routes: RootRoute[];
 
@@ -64,18 +71,43 @@ export class RouteRegistry {
         this.#routes = [];
     }
 
-    add(routes: RootRoute[] | Route[], { parentPath, parentName }: RegisterRoutesOptions = {}) {
+    #validateRootRoutes(route: RootRoute, { parentPath, parentName }: RegisterRouteOptions = {}) {
+        if (route.hoist && parentPath) {
+            throw new Error(`[squide] A route cannot have the "hoist" property when a "publicPath" option is provided. Route id: "${route.path ?? route.name ?? "(no identifier)"}".`);
+        }
+
+        if (route.hoist && parentName) {
+            throw new Error(`[squide] A route cannot have the "hoist" property when a "parentName" option is provided. Route id: "${route.path ?? route.name ?? "(no identifier)"}".`);
+        }
+    }
+
+    add(route: RootRoute, options: RegisterRouteOptions = {}) {
+        const {
+            parentPath,
+            parentName
+        } = options;
+
+        this.#validateRootRoutes(route, options);
+
         if (parentPath) {
             // The normalized path cannot be undefined because it's been provided by the consumer
             // (e.g. it cannot be a pathless route).
-            return this.#addNestedRoutes(routes, normalizePath(parentPath)!);
+            return this.#addNestedRoutes([route], normalizePath(parentPath)!);
         }
 
-        if (parentName) {
-            return this.#addNestedRoutes(routes, parentName);
+        let _parentName = parentName;
+
+        if (!route.hoist && !_parentName) {
+            _parentName = ManagedRoutesOutletName;
         }
 
-        return this.#addRootRoutes(routes);
+        if (_parentName) {
+            console.log("******* Adding nested route:", route, " for parent name: ", _parentName, " indexes: ", this.#routesIndex);
+
+            return this.#addNestedRoutes([route], _parentName);
+        }
+
+        return this.#addRootRoutes([route]);
     }
 
     #addIndex(route: Route) {
@@ -112,7 +144,7 @@ export class RouteRegistry {
     }
 
     #addRootRoutes(routes: RootRoute[]): AddRouteReturnType {
-        // Creates a copy of the route objects and a type to each route to indicate
+        // Creates a copy of the route objects and add a "type" property to each route indicating
         // that it's a root route.
         const _routes: RootRoute[] = routes.map(x => ({
             ...x,

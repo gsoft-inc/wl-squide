@@ -176,24 +176,22 @@ import { LocalErrorBoundary } from "./LocalErrorBoundary.tsx";
 import { Login } from "./Login.tsx";
 
 export function register: ModuleRegisterFunction<Runtime>(runtime) {
-    runtime.registerRoutes([
-        {
-            path: "/login",
-            hoist: true,
-            element: <LocalLayout />,
-            children: [
-                {
-                    errorElement: <LocalErrorBoundary />,
-                    children: [
-                        {
-                            index: true,
-                            element: <Login />
-                        }
-                    ]
-                }
-            ]
-        }
-    ]);
+    runtime.registerRoute({
+        path: "/login",
+        hoist: true,
+        element: <LocalLayout />,
+        children: [
+            {
+                errorElement: <LocalErrorBoundary />,
+                children: [
+                    {
+                        index: true,
+                        element: <Login />
+                    }
+                ]
+            }
+        ]
+    });
 }
 ```
 

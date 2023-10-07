@@ -16,12 +16,12 @@ export interface RuntimeOptions {
     sessionAccessor?: SessionAccessorFunction;
 }
 
-export interface RegisterRoutesOptions {
+export interface RegisterRouteOptions {
     parentPath?: string;
     parentName?: string;
 }
 
-export interface RegisterNavigationItemsOptions {
+export interface RegisterNavigationItemOptions {
     menuId?: string;
 }
 
@@ -44,11 +44,11 @@ export abstract class AbstractRuntime<TRoute = unknown, TNavigationItem = unknow
         this._sessionAccessor = sessionAccessor;
     }
 
-    abstract registerRoutes(routes: TRoute[], options?: RegisterRoutesOptions): void;
+    abstract registerRoute(route: TRoute, options?: RegisterRouteOptions): void;
 
     abstract get routes(): TRoute[];
 
-    abstract registerNavigationItems(navigationItems: TNavigationItem[], options?: RegisterNavigationItemsOptions): void;
+    abstract registerNavigationItem(navigationItem: TNavigationItem, options?: RegisterNavigationItemOptions): void;
 
     abstract getNavigationItems(menuId?: string): TNavigationItem[];
 

@@ -6,5 +6,6 @@ export * from "./ModuleErrorBoundary.tsx";
 export * from "./NoMatch.tsx";
 export * from "./RootErrorBoundary.tsx";
 export * from "./RootLayout.tsx";
+export * from "./register.tsx";
 export * from "./useAppRouter.tsx";
 

@@ -1,3 +1,3 @@
 export interface AppContext {
-    name: string;
+    name?: string;
 }

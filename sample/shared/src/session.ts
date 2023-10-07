@@ -3,9 +3,3 @@ export interface Session {
         name: string;
     };
 }
-
-// export interface SessionManager {
-//     setSession: (session: Session) => void;
-//     getSession: () => Session | undefined;
-//     clearSession: () => void;
-// }

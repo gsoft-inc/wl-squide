@@ -1,40 +1,7 @@
 import type { Session } from "@sample/shared";
-// import type { Session } from "@sample/shared";
-// import { LocalStorageSessionManager } from "@squide/fakes";
+import { InvalidCredentialsError } from "@sample/shell";
 import type { SessionAccessorFunction } from "@squide/react-router";
-// import type { QueryClient } from "@tanstack/react-query";
-// import axios from "axios";
-
-// export const sessionManager = new LocalStorageSessionManager<Session>() as SessionManager;
-
-// export const SessionQueryKey = ["/session"];
-
-// export const sessionQuery = {
-//     queryKey: SessionQueryKey,
-//     queryFn: async () => {
-//         const { data } = await axios.get("/session");
-
-//         return data;
-//     }
-// };
-
-// export class SessionManager {
-//     readonly #queryClient: QueryClient;
-
-//     constructor(queryClient: QueryClient) {
-//         this.#queryClient = queryClient;
-//     }
-
-//     getSession() {
-//         this.#queryClient.getQueryData(SessionQueryKey);
-//     }
-// }
-
-// export async function fetchSession() {
-//     const { data } = await axios.get("/session");
-
-//     return data;
-// }
+import axios from "axios";
 
 export class SessionManager {
     #session?: Session;
@@ -44,7 +11,13 @@ export class SessionManager {
     }
 
     getSession() {
-        return this.#session;
+        // return this.#session;
+
+        return {
+            user: {
+                name: "John Doe"
+            }
+        };
     }
 
     clearSession() {
@@ -57,3 +30,24 @@ export const sessionManager = new SessionManager();
 export const sessionAccessor: SessionAccessorFunction = () => {
     return sessionManager.getSession();
 };
+
+export async function onLogin(username: string, password: string) {
+    try {
+        await axios.post("/login", {
+            username,
+            password
+        });
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+            if (error.response?.status === 401) {
+                throw new InvalidCredentialsError();
+            }
+        }
+
+        throw new Error("An unknown error happened while trying to login a user");
+    }
+}
+
+export async function onLogout() {
+    sessionManager.clearSession();
+}

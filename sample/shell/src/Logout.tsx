@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 export type onLogoutHandler = () => Promise<void>;
 
 export interface LogoutProps {
-    onLogout: onLogoutHandler;
+    onLogout?: onLogoutHandler;
 }
 
 export function Logout({ onLogout }: LogoutProps) {
-    onLogout();
+    if (onLogout) {
+        onLogout();
+    }
 
     return (
         <main>

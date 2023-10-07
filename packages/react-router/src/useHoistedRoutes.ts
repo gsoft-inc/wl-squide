@@ -1,7 +1,6 @@
+import { isNil } from "@squide/core";
 import { useMemo, useState } from "react";
 import type { RootRoute, Route } from "./routeRegistry.ts";
-
-import { isNil } from "@squide/core";
 
 export interface UseHoistedRoutesOptions {
     allowedPaths?: string[];

@@ -60,7 +60,7 @@ Then, ensure that you are developing your module using [ESM syntax](https://deve
 
 ### Routes registration
 
-Next, register the remote module routes and navigation items with the [registerRoutes](/reference/runtime/runtime-class.md#register-routes) and [registerNavigationItems](/reference/runtime/runtime-class.md#register-navigation-items) functions:
+Next, register the remote module routes and navigation items with the [registerRoute](/reference/runtime/runtime-class.md#register-routes) and [registerNavigationItem](/reference/runtime/runtime-class.md#register-navigation-items) functions:
 
 ```tsx !#6-11,13-18 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
@@ -68,19 +68,15 @@ import type { AppContext } from "@sample/shared";
 import { Page } from "./Page.tsx";
 
 export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, context) => {
-    runtime.registerRoutes([
-        {
-            path: "/remote/page",
-            element: <Page />
-        }
-    ]);
+    runtime.registerRoute({
+        path: "/remote/page",
+        element: <Page />
+    });
 
-    runtime.registerNavigationItems([
-        {
-            to: "/remote/page",
-            label: "Remote/Page"
-        }
-    ]);
+    runtime.registerNavigationItem({
+        to: "/remote/page",
+        label: "Remote/Page"
+    });
 }
 ```
 

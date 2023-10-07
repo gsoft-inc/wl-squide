@@ -17,10 +17,15 @@ function renderWithRuntime<TProps>(runtime: Runtime, additionalProps: RenderHook
 test("returns all the registered routes", () => {
     const runtime = new Runtime();
 
-    runtime.registerRoutes([
-        { path: "/foo", element: <div>Foo</div> },
-        { path: "/bar", element: <div>Bar</div> }
-    ]);
+    runtime.registerRoute({
+        path: "/foo",
+        element: <div>Foo</div>
+    });
+
+    runtime.registerRoute({
+        path: "/bar",
+        element: <div>Bar</div>
+    });
 
     const { result } = renderWithRuntime(runtime);
 
@@ -30,9 +35,10 @@ test("returns all the registered routes", () => {
 test("returned array is immutable", () => {
     const runtime = new Runtime();
 
-    runtime.registerRoutes([
-        { path: "/foo", element: <div>Foo</div> }
-    ]);
+    runtime.registerRoute({
+        path: "/foo",
+        element: <div>Foo</div>
+    });
 
     const { result, rerender } = renderWithRuntime(runtime);
 
@@ -43,9 +49,10 @@ test("returned array is immutable", () => {
 
     const array2 = result.current;
 
-    runtime.registerRoutes([
-        { path: "/bar", element: <div>Bar</div> }
-    ]);
+    runtime.registerRoute({
+        path: "/bar",
+        element: <div>Bar</div>
+    });
 
     // Added a new route, the returned array should be a new instance.
     rerender();

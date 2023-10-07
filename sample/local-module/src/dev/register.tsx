@@ -1,6 +1,12 @@
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import { DevHome } from "./DevHome.tsx";
 
-export const register: ModuleRegisterFunction<Runtime> = runtime => {
+export const registerDev: ModuleRegisterFunction<Runtime> = runtime => {
+    runtime.registerRoute({
+        index: true,
+        element: <DevHome />
+    });
+
     runtime.registerRoute({
         path: "/federated-tabs",
         lazy: () => import("@sample/shared/FederatedTabsLayout.tsx")

@@ -57,11 +57,19 @@ const runtime = new Runtime({
 
 ### Register routes
 
+```ts
+runtime.registerRoute(route, options?: {})
+```
+
+- `options`: An optional object literal of options:
+    - `parentPath`: An optional path of a parent route to register this new route under.
+    - `parentName`: An optional name of a parent route to register this new route under.
+
 A Squide route can either be a `RootRoute` or a `Route`.
 
 - `RootRoute`: accept any properties of a React Router [Route](https://reactrouter.com/en/main/components/route) component with the addition of:
-    - `hoist`: An optional boolean property to register the route at the root of the router. The default value is `false`.
-    - `visibility`: An optional property to register a route as a `public` or `authenticated` route. The default value is `authenticated`.
+    - `hoist`: An optional boolean value to register the route at the root of the router. The default value is `false`.
+    - `visibility`: An optional visibility indicator for the route. Values are `public` or `authenticated` and the default value is `authenticated`.
     - `name`: An optional name for the route.
 - `Route`: accept any properties of a React Router [Route](https://reactrouter.com/en/main/components/route) component with the addition of:
     - `name`: An optional name for the route.
@@ -70,28 +78,24 @@ A Squide route can either be a `RootRoute` or a `Route`.
 import { Page } from "./Page.tsx"
 
 // Register a new route from a local or remote module.
-runtime.registerRoutes([
-    {
-        path: "/page-1",
-        element: <Page />
-    }
-]);
+runtime.registerRoute({
+    path: "/page-1",
+    element: <Page />
+});
 ```
 
 ### Register an hoisted route
 
 Unlike a regular page, a hoisted page is added at the root of the router, outside of the boundaries of the host application's root layout. This means that a hoisted page has full control over its rendering.
 
-```tsx !#7
+```tsx !#6
 import { Page } from "./Page.tsx";
 
-runtime.registerRoutes([
-    {
-        path: "/page-1",
-        element: <Page />,
-        hoist: true
-    }
-]);
+runtime.registerRoute({
+    path: "/page-1",
+    element: <Page />,
+    hoist: true
+});
 ```
 
 [!ref text="Setup the host application to accept hoisted routes"](/reference/routing/useHoistedRoutes.md)
@@ -100,65 +104,61 @@ runtime.registerRoutes([
 
 When registering a route, a hint can be provided to indicate if the route is intended to be displayed as a `public` or `authenticated` route. This is especially useful when dealing with code that conditionally fetch data for authenticated routes.
 
-```tsx !#7
+```tsx !#6
 import { Page } from "./Page.tsx";
 
-runtime.registerRoutes([
-    {
-        path: "/page-1",
-        element: <Page />,
-        visibility: "public"
-    }
-]);
+runtime.registerRoute({
+    path: "/page-1",
+    element: <Page />,
+    visibility: "public"
+});
 ```
 
 ### Register a named route
 
-The `registerRoutes` function accepts a `parentName` property, allowing a route to be [nested under an existing parent route](#register-nested-routes-under-an-existing-route). When searching for the parent route matching the `parentName` property, the `parentName` will be matched against the `name` property of every route.
+The `registerRoute` function accepts a `parentName` property, allowing a route to be [nested under an existing parent route](#register-nested-routes-under-an-existing-route). When searching for the parent route matching the `parentName` property, the `parentName` will be matched against the `name` property of every route.
 
-> A `name` property should usually only be defined for routes that doesn't have a path.
+> A `name` property should usually only be defined for routes that doesn't have a path like an error boundary or an authentication boundary.
 
-```tsx !#5
-import { Page } from "./Page.tsx";
+```tsx !#4
+import { RootErrorBoundary } from "./Page.tsx";
 
-runtime.registerRoutes([
-    {
-        name: "page-1",
-        element: <Page />
-    }
-]);
+runtime.registerRoute({
+    name: "error-boundary",
+    element: <RootErrorBoundary />
+});
 ```
 
 ### Register nested routes under an existing route
 
 React router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) enable applications to render nested layouts at various points within the router tree. This is quite helpful for federated applications as it enables composable and decoupled UI.
 
-To fully harness the power of nested routes, the `registerRoutes` function allows a route to be registered **under any** previously **registered route**, even if that route was registered by another module. The only requirement is that the **parent route** must have been registered with the `registerRoutes` function.
+To fully harness the power of nested routes, the `registerRoute` function allows a route to be registered **under any** previously **registered route**, even if that route was registered by another module. The only requirement is that the **parent route** must have been registered with the `registerRoute` function.
 
-When registering a new route with the `registerRoutes` function, to render the route under a parent route, specify a `parentPath` property that matches the parent route's `path` property:
+When registering a new route with the `registerRoute` function, to render the route under a parent route, specify a `parentPath` property that matches the parent route's `path` property:
 
-```tsx !#8
+```tsx !#7
 import { Page } from "./Page.tsx";
 
-runtime.registerRoutes([
-    {
-        path: "/layout/page-1",
-        element: <Page />
-    }
-], { parentPath: "/layout" }); // Register the page under an existing route having "/layout" as its "path".
+runtime.registerRoute({
+    path: "/layout/page-1",
+    element: <Page />
+}, { 
+    parentPath: "/layout" // Register the page under an existing route having "/layout" as its "path".
+});
 ```
 
 Or a `parentName` property that matches the parent route's `name` property:
 
-```tsx !#8
+```tsx !#7
 import { Page } from "./Page.tsx";
 
-runtime.registerRoutes([
-    {
-        path: "/layout/page-1",
-        element: <Page />
-    }
-], { parentName: "layout" }); // Register the page under an existing route having "layout" as its "name".
+runtime.registerRoute({
+    path: "/page-1",
+    element: <Page />
+}, { 
+    parentName: "error-boundary" // Register the page under an existing route having "error-boundary" as its "name".
+});
 ```
 
 !!!info
@@ -175,6 +175,13 @@ const routes = runtime.routes;
 
 ### Register navigation items
 
+```ts
+runtime.registerNavigationItem(item, options?: {})
+```
+
+- `options`: An optional object literal of options:
+    - `menuId`: An optional menu id to associate the item with.
+
 A Squide navigation item can either be a `NavigationLink` or a `NavigationSection`. Both types can be intertwined to create a multi-level menu hierarchy. A `NavigationSection` item is used to setup a new level while a `NavigationLink` define a link.
 
 - `NavigationSection` accept the following properties:
@@ -189,12 +196,10 @@ A Squide navigation item can either be a `NavigationLink` or a `NavigationSectio
 
 ```ts
 // Register a new navigation item from a local or remote module.
-runtime.registerNavigationItems([
-    {
-        to: "/page-1",
-        label: "Page 1"
-    }
-]);
+runtime.registerNavigationItem({
+    to: "/page-1",
+    label: "Page 1"
+});
 ```
 
 [!ref text="Setup the host application to render navigation items"](/reference/routing/useRenderedNavigationItems.md)
@@ -209,30 +214,28 @@ runtime.registerNavigationItems([
 //  ------- Nested Nested Link
 //  --- Nested Link
 //  Link
-runtime.registerNavigationItems([
-    {
-        label: "Section",
-        children: [
-            {
-                label: "Nested Section",
-                children: [
-                    {
-                        to: "#",
-                        label: "Nested Nested Link",
-                    }
-                ]
-            },
-            {
-                to: "#",
-                label: "Nested Link"
-            }
-        ]
-    },
-    {
-        to: "#",
-        label: "Link"
-    }
-]);
+runtime.registerNavigationItem({
+    label: "Section",
+    children: [
+        {
+            label: "Nested Section",
+            children: [
+                {
+                    to: "#",
+                    label: "Nested Nested Link",
+                }
+            ]
+        },
+        {
+            to: "#",
+            label: "Nested Link"
+        }
+    ]
+},
+{
+    to: "#",
+    label: "Link"
+});
 ```
 
 ### Sort registered navigation items
@@ -244,90 +247,81 @@ A `priority` property can be added to a navigation item to affect it's position 
 - If an item have a priority `> 0`, the item will be positioned before any other items with a lower priority (or without an explicit priority value).
 - If an item have a priority `< 0`, the item will be positioned after any other items with a higher priority (or without an explicit priority value).
 
-```ts !#5,12
-runtime.registerNavigationItems([
-    {
-        to: "/about",
-        label: "About",
-        priority: 10
-    },
-    {
-        to: "/home",
-        label: "Home",
-        // Because the "Home" navigation item has an higher priority, it will be rendered
-        // before the "About" navigation item.
-        priority: 100
-    }
-]);
+```ts !#4,12
+runtime.registerNavigationItem({
+    to: "/about",
+    label: "About",
+    priority: 10
+});
+
+runtime.registerNavigationItem({
+    to: "/home",
+    label: "Home",
+    // Because the "Home" navigation item has an higher priority, it will be rendered
+    // before the "About" navigation item.
+    priority: 100
+});
 ```
 
 ### Use a React element as navigation item label
 
-```tsx !#6-9
+```tsx !#5-8
 import { QuestionMarkIcon } from "@sample/icons";
 
-runtime.registerNavigationItems([
-    {
-        to: "/about",
-        label: (
-            <QuestionMarkIcon />
-            <span>About</span>
-        )
-    }
-]);
+runtime.registerNavigationItem({
+    to: "/about",
+    label: (
+        <QuestionMarkIcon />
+        <span>About</span>
+    )
+});
 ```
 
 ### Style a navigation item
 
-```ts !#5-7
-runtime.registerNavigationItems([
-    {
-        to: "/about",
-        label: "About",
-        style: {
-            backgroundColor: "#000"
-        }
+```ts !#4-6
+runtime.registerNavigationItem({
+    to: "/about",
+    label: "About",
+    style: {
+        backgroundColor: "#000"
     }
-]);
+});
 ```
 
 ### Open a navigation link in a new tab
 
-```ts !#5
-runtime.registerNavigationItems([
-    {
-        to: "/about",
-        label: "About",
-        target: "_blank"
-    }
-]);
+```ts !#4
+runtime.registerNavigationItem({
+    to: "/about",
+    label: "About",
+    target: "_blank"
+});
 ```
 
 ### Render additional props on a navigation item
 
-```ts !#5-7
-runtime.registerNavigationItems([
-    {
+```ts !#4-6
+runtime.registerNavigationItem({
         to: "/about",
         label: "About",
         additionalProps: {
             highlight: true
         }
-    }
-]);
+    });
 ```
 
 ### Register navigation items for a specific menu
 
-By default, every navigation item registered with the `registerNavigationItems` function is registered as part of the `root` navigation menu. To register a navigation item for a different navigation menu, specify a `menuId` property when registering the items.
+By default, every navigation item registered with the `registerNavigationItem` function is registered as part of the `root` navigation menu. To register a navigation item for a different navigation menu, specify a `menuId` property when registering the items.
 
-```tsx !#6
-runtime.registerNavigationItems([
-    {
-        to: "/layout/page-1",
-        label: "Page 1"
-    }
-], { menuId: "my-custom-layout" });
+```tsx !#5
+runtime.registerNavigationItem({
+    to: "/layout/page-1",
+    label: "Page 1"
+}, { 
+    menuId: "my-custom-layout" 
+});
 ```
 
 ### Retrieve navigation items

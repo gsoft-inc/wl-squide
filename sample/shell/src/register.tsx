@@ -1,5 +1,5 @@
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
-import { ManagedRoutesOutlet } from "@squide/react-router";
+import { ManagedRoutes } from "@squide/react-router";
 import type { OnLoginHandler } from "./Login.tsx";
 import type { onLogoutHandler } from "./Logout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
@@ -38,7 +38,7 @@ export function registerShell(onLogin: OnLoginHandler, onLogout: onLogoutHandler
                                         };
                                     },
                                     children: [
-                                        ManagedRoutesOutlet
+                                        ManagedRoutes
                                     ]
                                 }
                             ]

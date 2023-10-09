@@ -23,42 +23,40 @@ export function App() {
 
     useEffect(() => {
         if (areModulesReady && isMswStarted) {
-            setIsReady(true);
+            // getActiveRouteVisibility
 
-            // // getActiveRouteVisibility
+            // const location = useLocation();
+            const location = window.location;
 
-            // // const location = useLocation();
-            // const location = window.location;
+            console.log("**** location: ", location);
 
-            // console.log("**** location: ", location);
+            const matchingRoutes = matchRoutes(runtime.routes, location) ?? [];
 
-            // const matchingRoutes = matchRoutes(runtime.routes, location) ?? [];
+            console.log("**** matchingRoutes:", matchingRoutes);
 
-            // console.log("**** matchingRoutes:", matchingRoutes);
+            if (matchingRoutes.length > 0) {
+                // When a route is nested, it also returns all the parts that constistuate the whole route (for example the layouts).
+                // We only want to know the visiblity of the deepest root route.
+                const rootRoute = matchingRoutes.findLast(x => x.route.type === "root");
 
-            // if (matchingRoutes.length > 0) {
-            //     // When a route is nested, it also returns all the parts that constistuate the whole route (for example the layouts).
-            //     // We only want to know the visiblity of the deepest root route.
-            //     const rootRoute = matchingRoutes.findLast(x => x.route.type === "root");
+                if (rootRoute!.route.visibility === "authenticated") {
+                    axios.get("/session").then(({ data }) => {
+                        const session: Session = {
+                            user: {
+                                name: data.username
+                            }
+                        };
 
-            //     if (rootRoute!.route.visibility === "authenticated") {
-            //         axios.get("/session").then(({ data }) => {
-            //             const session: Session = {
-            //                 user: {
-            //                     name: data.username
-            //                 }
-            //             };
+                        sessionManager.setSession(session);
 
-            //             sessionManager.setSession(session);
-
-            //             setIsReady(true);
-            //         });
-            //     } else {
-            //         setIsReady(true);
-            //     }
-            // } else {
-            //     throw new Error(`[shell] There's no matching route for the location: "${location}". Did you add routes to React Router without using the runtime.registerRoute() function?`);
-            // }
+                        setIsReady(true);
+                    });
+                } else {
+                    setIsReady(true);
+                }
+            } else {
+                throw new Error(`[shell] There's no matching route for the location: "${location}". Did you add routes to React Router without using the runtime.registerRoute() function?`);
+            }
         }
     }, [areModulesReady, isMswStarted, runtime.routes]);
 

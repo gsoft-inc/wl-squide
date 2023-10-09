@@ -1,219 +1,402 @@
-import { createIndexKey } from "../src/routeRegistry.ts";
-import { Runtime } from "../src/runtime.ts";
-
-describe("createIndexKey", () => {
-    test("when the route is an index route, return undefined", () => {
-        const result = createIndexKey({
-            index: true,
-            element: <div>Hello!</div>
-        });
-
-        expect(result).toBeUndefined();
-    });
-
-    test("when the route has a path, return the route path", () => {
-        const result1 = createIndexKey({
-            path: "/nested",
-            element: <div>Hello!</div>
-        });
-
-        expect(result1).toBe("/nested");
-
-        const result2 = createIndexKey({
-            path: "/parent/nested",
-            element: <div>Hello!</div>
-        });
-
-        expect(result2).toBe("/parent/nested");
-    });
-
-    test("when the route has a path and the path ends with a separator, strip the separator", () => {
-        const result = createIndexKey({
-            path: "/parent/nested/",
-            element: <div>Hello!</div>
-        });
-
-        expect(result).toBe("/parent/nested");
-    });
-
-    test("when the route has a name, return the route name", () => {
-        const result = createIndexKey({
-            name: "foo",
-            element: <div>Hello!</div>
-        });
-
-        expect(result).toBe("foo");
-    });
-
-    test("when this a pathless route, return undefined", () => {
-        const result = createIndexKey({
-            element: <div>Hello!</div>
-        });
-
-        expect(result).toBeUndefined();
-    });
-});
+import type { RootRoute, Route } from "../src/routeRegistry.ts";
+import { ManagedRoutes, Runtime, isManagedRoutesOutletRoute } from "../src/runtime.ts";
 
 describe("registerRoute", () => {
-    test("can register an index route", () => {
-        const runtime = new Runtime();
+    describe("managed routes", () => {
+        function registerManagedRoutesOutlet(runtime: Runtime) {
+            runtime.registerRoute(ManagedRoutes);
+        }
 
-        runtime.registerRoute({
-            index: true,
-            element: <div>Hello!</div>
-        });
-
-        expect(runtime.routes.length).toBe(1);
-        expect(runtime.routes[0].index).toBeTruthy();
-    });
-
-    test("can register a pathless route", () => {
-        const runtime = new Runtime();
-
-        runtime.registerRoute({
-            element: <div>Hello!</div>
-        });
-
-        expect(runtime.routes.length).toBe(1);
-        expect(runtime.routes[0].index).toBeUndefined();
-        expect(runtime.routes[0].path).toBeUndefined();
-    });
-
-    test("can register multiple pathless routes", () => {
-        const runtime = new Runtime();
-
-        runtime.registerRoute({
-            element: <div>Hello!</div>
-        });
-
-        runtime.registerRoute({
-            element: <div>How</div>
-        });
-
-        runtime.registerRoute({
-            element: <div>Are</div>
-        });
-
-        runtime.registerRoute({
-            element: <div>You?</div>
-        });
-
-        expect(runtime.routes.length).toBe(4);
-    });
-
-    test("can register a deeply nested route with pathless parent routes", () => {
-        const runtime = new Runtime();
-
-        runtime.registerRoute({
-            element: <div>Hello</div>,
-            children: [
-                {
-                    element: <div>You!</div>,
-                    children: [
-                        {
-                            path: "/deeply-nested-route",
-                            element: <div>Hello from nested!</div>
-                        }
-                    ]
+        function getManagedRoutes(routes: Route[]): (Route | RootRoute)[] | undefined {
+            for (const route of routes) {
+                if (isManagedRoutesOutletRoute(route)) {
+                    return route.children as Route[];
                 }
-            ]
-        });
 
-        expect(runtime.routes.length).toBe(1);
-        expect(runtime.routes[0].children![0].children![0].path).toBe("/deeply-nested-route");
-    });
+                if (route.children) {
+                    const managedRoutes = getManagedRoutes(route.children);
 
-    test("can register a deeply nested index route with pathless parent routes", () => {
-        const runtime = new Runtime();
-
-        runtime.registerRoute({
-            element: <div>Hello</div>,
-            children: [
-                {
-                    element: <div>You!</div>,
-                    children: [
-                        {
-                            index: true,
-                            element: <div>Hello from nested!</div>
-                        }
-                    ]
+                    if (managedRoutes) {
+                        return managedRoutes as Route[];
+                    }
                 }
-            ]
+            }
+        }
+
+        test("when the outlet is not registered, route registrations are pending", () => {
+            const runtime = new Runtime();
+
+            runtime.registerRoute({
+                path: "/foo",
+                element: <div>Hello!</div>
+            });
+
+            expect(runtime.routes.length).toBe(0);
         });
 
-        expect(runtime.routes.length).toBe(1);
-        expect(runtime.routes[0].children![0].children![0].index).toBeTruthy();
+        test("when the outlet is registered, pending route registrations are completed", () => {
+            const runtime = new Runtime();
+
+            runtime.registerRoute({
+                path: "/foo",
+                element: <div>Hello!</div>
+            });
+
+            expect(runtime.routes.length).toBe(0);
+
+            registerManagedRoutesOutlet(runtime);
+
+            expect(runtime.routes.length).toBe(1);
+
+            const routes = getManagedRoutes(runtime.routes)!;
+
+            expect(routes.length).toBe(1);
+            expect(routes[0].path).toBe("/foo");
+        });
+
+        test("can register an index route", () => {
+            const runtime = new Runtime();
+
+            registerManagedRoutesOutlet(runtime);
+
+            runtime.registerRoute({
+                index: true,
+                element: <div>Hello!</div>
+            });
+
+            const routes = getManagedRoutes(runtime.routes)!;
+
+            expect(routes.length).toBe(1);
+            expect(routes[0].index).toBeTruthy();
+        });
+
+        test("can register a pathless route", () => {
+            const runtime = new Runtime();
+
+            registerManagedRoutesOutlet(runtime);
+
+            runtime.registerRoute({
+                element: <div>Hello!</div>
+            });
+
+            const routes = getManagedRoutes(runtime.routes)!;
+
+            expect(routes.length).toBe(1);
+            expect(routes[0].index).toBeUndefined();
+            expect(routes[0].path).toBeUndefined();
+        });
+
+        test("can register multiple pathless routes", () => {
+            const runtime = new Runtime();
+
+            registerManagedRoutesOutlet(runtime);
+
+            runtime.registerRoute({
+                element: <div>Hello!</div>
+            });
+
+            runtime.registerRoute({
+                element: <div>How</div>
+            });
+
+            runtime.registerRoute({
+                element: <div>Are</div>
+            });
+
+            runtime.registerRoute({
+                element: <div>You?</div>
+            });
+
+            const routes = getManagedRoutes(runtime.routes)!;
+
+            expect(routes.length).toBe(4);
+        });
+
+        test("can register a deeply nested route with pathless parent routes", () => {
+            const runtime = new Runtime();
+
+            registerManagedRoutesOutlet(runtime);
+
+            runtime.registerRoute({
+                element: <div>Hello</div>,
+                children: [
+                    {
+                        element: <div>You!</div>,
+                        children: [
+                            {
+                                path: "/deeply-nested-route",
+                                element: <div>Hello from nested!</div>
+                            }
+                        ]
+                    }
+                ]
+            });
+
+            const routes = getManagedRoutes(runtime.routes)!;
+
+            expect(routes.length).toBe(1);
+            expect(routes[0].children![0].children![0].path).toBe("/deeply-nested-route");
+        });
+
+        test("can register a deeply nested index route with pathless parent routes", () => {
+            const runtime = new Runtime();
+
+            registerManagedRoutesOutlet(runtime);
+
+            runtime.registerRoute({
+                element: <div>Hello</div>,
+                children: [
+                    {
+                        element: <div>You!</div>,
+                        children: [
+                            {
+                                index: true,
+                                element: <div>Hello from nested!</div>
+                            }
+                        ]
+                    }
+                ]
+            });
+
+            const routes = getManagedRoutes(runtime.routes)!;
+
+            expect(routes.length).toBe(1);
+            expect(routes[0].children![0].children![0].index).toBeTruthy();
+        });
+
+        test("can register a route with a \"public\" visibility", () => {
+            const runtime = new Runtime();
+
+            registerManagedRoutesOutlet(runtime);
+
+            runtime.registerRoute({
+                path: "/public",
+                element: <div>Hello!</div>,
+                visibility: "public"
+            });
+
+            const routes = getManagedRoutes(runtime.routes)!;
+
+            expect(routes.length).toBe(1);
+            expect(routes[0].path).toBe("/public");
+            expect((routes[0] as RootRoute).visibility).toBe("public");
+        });
+
+        test("can register a route with a \"authenticated\" visibility", () => {
+            const runtime = new Runtime();
+
+            registerManagedRoutesOutlet(runtime);
+
+            runtime.registerRoute({
+                path: "/authenticated",
+                element: <div>Hello!</div>,
+                visibility: "authenticated"
+            });
+
+            const routes = getManagedRoutes(runtime.routes)!;
+
+            expect(routes.length).toBe(1);
+            expect(routes[0].path).toBe("/authenticated");
+            expect((routes[0] as RootRoute).visibility).toBe("authenticated");
+        });
+
+        test("can register a root route with a name", () => {
+            const runtime = new Runtime();
+
+            registerManagedRoutesOutlet(runtime);
+
+            runtime.registerRoute({
+                name: "foo",
+                element: <div>Hello!</div>
+            });
+
+            const routes = getManagedRoutes(runtime.routes)!;
+
+            expect(routes.length).toBe(1);
+            expect(routes[0].name).toBe("foo");
+        });
+
+        test("can register a nested route with a name", () => {
+            const runtime = new Runtime();
+
+            registerManagedRoutesOutlet(runtime);
+
+            runtime.registerRoute({
+                element: <div>Hello</div>,
+                children: [
+                    {
+                        name: "foo",
+                        element: <div>You!</div>
+                    }
+                ]
+            });
+
+            const routes = getManagedRoutes(runtime.routes)!;
+
+            expect(routes.length).toBe(1);
+            expect(routes[0].children![0].name).toBe("foo");
+        });
     });
 
-    test("can register an hoisted route", () => {
-        const runtime = new Runtime();
+    describe("hoisted", () => {
+        test("can register an index route", () => {
+            const runtime = new Runtime();
 
-        runtime.registerRoute({
-            path: "/root",
-            element: <div>Hello!</div>,
-            hoist: true
+            runtime.registerRoute({
+                hoist: true,
+                index: true,
+                element: <div>Hello!</div>
+            });
+
+            expect(runtime.routes.length).toBe(1);
+            expect(runtime.routes[0].index).toBeTruthy();
         });
 
-        expect(runtime.routes.length).toBe(1);
-        expect(runtime.routes[0].path).toBe("/root");
-        expect(runtime.routes[0].hoist).toBeTruthy();
-    });
+        test("can register a pathless route", () => {
+            const runtime = new Runtime();
 
-    test("can register a route with a \"public\" visibility", () => {
-        const runtime = new Runtime();
+            runtime.registerRoute({
+                hoist: true,
+                element: <div>Hello!</div>
+            });
 
-        runtime.registerRoute({
-            path: "/public",
-            element: <div>Hello!</div>,
-            visibility: "public"
+            expect(runtime.routes.length).toBe(1);
+            expect(runtime.routes[0].index).toBeUndefined();
+            expect(runtime.routes[0].path).toBeUndefined();
         });
 
-        expect(runtime.routes.length).toBe(1);
-        expect(runtime.routes[0].path).toBe("/public");
-        expect(runtime.routes[0].visibility).toBe("public");
-    });
+        test("can register multiple pathless routes", () => {
+            const runtime = new Runtime();
 
-    test("can register a route with a \"authenticated\" visibility", () => {
-        const runtime = new Runtime();
+            runtime.registerRoute({
+                hoist: true,
+                element: <div>Hello!</div>
+            });
 
-        runtime.registerRoute({
-            path: "/authenticated",
-            element: <div>Hello!</div>,
-            visibility: "authenticated"
+            runtime.registerRoute({
+                hoist: true,
+                element: <div>How</div>
+            });
+
+            runtime.registerRoute({
+                hoist: true,
+                element: <div>Are</div>
+            });
+
+            runtime.registerRoute({
+                hoist: true,
+                element: <div>You?</div>
+            });
+
+            expect(runtime.routes.length).toBe(4);
         });
 
-        expect(runtime.routes.length).toBe(1);
-        expect(runtime.routes[0].path).toBe("/authenticated");
-        expect(runtime.routes[0].visibility).toBe("authenticated");
-    });
+        test("can register a deeply nested route with pathless parent routes", () => {
+            const runtime = new Runtime();
 
-    test("can register a root route with a name", () => {
-        const runtime = new Runtime();
+            runtime.registerRoute({
+                hoist: true,
+                element: <div>Hello</div>,
+                children: [
+                    {
+                        element: <div>You!</div>,
+                        children: [
+                            {
+                                path: "/deeply-nested-route",
+                                element: <div>Hello from nested!</div>
+                            }
+                        ]
+                    }
+                ]
+            });
 
-        runtime.registerRoute({
-            name: "foo",
-            element: <div>Hello!</div>
+            expect(runtime.routes.length).toBe(1);
+            expect(runtime.routes[0].children![0].children![0].path).toBe("/deeply-nested-route");
         });
 
-        expect(runtime.routes.length).toBe(1);
-        expect(runtime.routes[0].name).toBe("foo");
-    });
+        test("can register a deeply nested index route with pathless parent routes", () => {
+            const runtime = new Runtime();
 
-    test("can register a nested route with a name", () => {
-        const runtime = new Runtime();
+            runtime.registerRoute({
+                hoist: true,
+                element: <div>Hello</div>,
+                children: [
+                    {
+                        element: <div>You!</div>,
+                        children: [
+                            {
+                                index: true,
+                                element: <div>Hello from nested!</div>
+                            }
+                        ]
+                    }
+                ]
+            });
 
-        runtime.registerRoute({
-            element: <div>Hello</div>,
-            children: [
-                {
-                    name: "foo",
-                    element: <div>You!</div>
-                }
-            ]
+            expect(runtime.routes.length).toBe(1);
+            expect(runtime.routes[0].children![0].children![0].index).toBeTruthy();
         });
 
-        expect(runtime.routes.length).toBe(1);
-        expect(runtime.routes[0].children![0].name).toBe("foo");
+        test("can register a route with a \"public\" visibility", () => {
+            const runtime = new Runtime();
+
+            runtime.registerRoute({
+                hoist: true,
+                path: "/public",
+                element: <div>Hello!</div>,
+                visibility: "public"
+            });
+
+            expect(runtime.routes.length).toBe(1);
+            expect(runtime.routes[0].path).toBe("/public");
+            expect((runtime.routes[0] as RootRoute).visibility).toBe("public");
+        });
+
+        test("can register a route with a \"authenticated\" visibility", () => {
+            const runtime = new Runtime();
+
+            runtime.registerRoute({
+                hoist: true,
+                path: "/authenticated",
+                element: <div>Hello!</div>,
+                visibility: "authenticated"
+            });
+
+            expect(runtime.routes.length).toBe(1);
+            expect(runtime.routes[0].path).toBe("/authenticated");
+            expect((runtime.routes[0] as RootRoute).visibility).toBe("authenticated");
+        });
+
+        test("can register a root route with a name", () => {
+            const runtime = new Runtime();
+
+            runtime.registerRoute({
+                hoist: true,
+                name: "foo",
+                element: <div>Hello!</div>
+            });
+
+            expect(runtime.routes.length).toBe(1);
+            expect(runtime.routes[0].name).toBe("foo");
+        });
+
+        test("can register a nested route with a name", () => {
+            const runtime = new Runtime();
+
+            runtime.registerRoute({
+                hoist: true,
+                element: <div>Hello</div>,
+                children: [
+                    {
+                        name: "foo",
+                        element: <div>You!</div>
+                    }
+                ]
+            });
+
+            expect(runtime.routes.length).toBe(1);
+            expect(runtime.routes[0].children![0].name).toBe("foo");
+        });
     });
 
     describe("parentPath", () => {
@@ -221,6 +404,7 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
+                hoist: true,
                 path: "/layout",
                 element: <div>Hello!</div>
             });
@@ -271,6 +455,7 @@ describe("registerRoute", () => {
             expect(runtime.routes.length).toBe(0);
 
             runtime.registerRoute({
+                hoist: true,
                 path: "/foo",
                 element: <div>Hello!</div>
             });
@@ -279,6 +464,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].children).toBeUndefined();
 
             runtime.registerRoute({
+                hoist: true,
                 path: "/layout",
                 element: <div>Hello!</div>
             });
@@ -300,6 +486,7 @@ describe("registerRoute", () => {
             expect(runtime.routes.length).toBe(0);
 
             runtime.registerRoute({
+                hoist: true,
                 element: <div>Hello</div>,
                 children: [
                     {
@@ -323,6 +510,7 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
+                hoist: true,
                 path: "/layout",
                 element: <div>Hello!</div>
             });
@@ -349,6 +537,7 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
+                hoist: true,
                 element: <div>Hello</div>,
                 children: [
                     {
@@ -388,6 +577,7 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
+                hoist: true,
                 path: "/layout",
                 element: <div>Hello!</div>
             });
@@ -406,6 +596,7 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
+                hoist: true,
                 path: "/layout/",
                 element: <div>Hello!</div>
             });
@@ -419,6 +610,17 @@ describe("registerRoute", () => {
 
             expect(runtime.routes[0].children![0].path).toBe("/layout/nested");
         });
+
+        test("when a route is hoisted, it cannot be nested under another route", () => {
+            const runtime = new Runtime();
+
+            expect(() => runtime.registerRoute({
+                hoist: true,
+                element: <div>Hello</div>
+            }, {
+                parentPath: "/foo"
+            })).toThrow();
+        });
     });
 
     describe("parentName", () => {
@@ -426,6 +628,7 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
+                hoist: true,
                 name: "layout",
                 element: <div>Hello!</div>
             });
@@ -476,6 +679,7 @@ describe("registerRoute", () => {
             expect(runtime.routes.length).toBe(0);
 
             runtime.registerRoute({
+                hoist: true,
                 path: "/foo",
                 element: <div>Hello!</div>
             });
@@ -484,6 +688,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].children).toBeUndefined();
 
             runtime.registerRoute({
+                hoist: true,
                 name: "layout",
                 element: <div>Hello!</div>
             });
@@ -505,6 +710,7 @@ describe("registerRoute", () => {
             expect(runtime.routes.length).toBe(0);
 
             runtime.registerRoute({
+                hoist: true,
                 element: <div>Hello</div>,
                 children: [
                     {
@@ -528,6 +734,7 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
+                hoist: true,
                 name: "layout",
                 element: <div>Hello!</div>
             });
@@ -555,6 +762,7 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
+                hoist: true,
                 element: <div>Hello</div>,
                 children: [
                     {
@@ -588,6 +796,17 @@ describe("registerRoute", () => {
 
             expect(runtime.routes.length).toBe(1);
             expect(runtime.routes[0].children![0].children![0].children![0].children![0].path).toBe("/deeply-nested-layout/another-level/yet-another-level");
+        });
+
+        test("when a route is hoisted, it cannot be nested under another route", () => {
+            const runtime = new Runtime();
+
+            expect(() => runtime.registerRoute({
+                hoist: true,
+                element: <div>Hello</div>
+            }, {
+                parentName: "foo"
+            })).toThrow();
         });
     });
 });
@@ -649,74 +868,6 @@ describe("registerNavigationItem", () => {
         });
 
         expect(runtime.getNavigationItems("section-menu")[0].label).toBe("Section");
-    });
-});
-
-describe("_completeRegistration", () => {
-    describe("parentPath", () => {
-        test("when the registration is completed and there are no pending registrations, do nothing", () => {
-            const runtime = new Runtime();
-
-            runtime.registerRoute({
-                path: "/layout/nested",
-                element: <div>Hello!</div>
-            }, {
-                parentPath: "/layout"
-            });
-
-            runtime.registerRoute({
-                path: "/layout",
-                element: <div>Hello!</div>
-            });
-
-            expect(() => runtime._completeRegistration()).not.toThrow();
-        });
-
-        test("when the registration is completed and there are pending registrations, throw an error", () => {
-            const runtime = new Runtime();
-
-            runtime.registerRoute({
-                path: "/layout/nested",
-                element: <div>Hello!</div>
-            }, {
-                parentPath: "/layout"
-            });
-
-            expect(() => runtime._completeRegistration()).toThrow();
-        });
-    });
-
-    describe("parentName", () => {
-        test("when the registration is completed and there are no pending registrations, do nothing", () => {
-            const runtime = new Runtime();
-
-            runtime.registerRoute({
-                path: "/layout/nested",
-                element: <div>Hello!</div>
-            }, {
-                parentName: "layout"
-            });
-
-            runtime.registerRoute({
-                name: "layout",
-                element: <div>Hello!</div>
-            });
-
-            expect(() => runtime._completeRegistration()).not.toThrow();
-        });
-
-        test("when the registration is completed and there are pending registrations, throw an error", () => {
-            const runtime = new Runtime();
-
-            runtime.registerRoute({
-                path: "/layout/nested",
-                element: <div>Hello!</div>
-            }, {
-                parentName: "layout"
-            });
-
-            expect(() => runtime._completeRegistration()).toThrow();
-        });
     });
 });
 
@@ -791,5 +942,95 @@ describe("getNavigationItems", () => {
         });
 
         expect(runtime.getNavigationItems("menu-1")[0].to).toBe("/item-4");
+    });
+});
+
+describe("_completeRegistration", () => {
+    describe("managed routes", () => {
+        test("when the outlet is missing, the error message mentions the ManagedRoutes outlet", () => {
+            const runtime = new Runtime();
+            let errorMessage;
+
+            runtime.registerRoute({
+                path: "/layout",
+                element: <div>Hello!</div>
+            });
+
+            try {
+                runtime._completeRegistration();
+            } catch (error: unknown) {
+                errorMessage = (error as Error).message;
+            }
+
+            expect(errorMessage).toContain("ManagedRoutes");
+        });
+    });
+
+    describe("parentPath", () => {
+        test("when the registration is completed and there are no pending registrations, do nothing", () => {
+            const runtime = new Runtime();
+
+            runtime.registerRoute({
+                path: "/layout/nested",
+                element: <div>Hello!</div>
+            }, {
+                parentPath: "/layout"
+            });
+
+            runtime.registerRoute({
+                hoist: true,
+                path: "/layout",
+                element: <div>Hello!</div>
+            });
+
+            expect(() => runtime._completeRegistration()).not.toThrow();
+        });
+
+        test("when the registration is completed and there are pending registrations, throw an error", () => {
+            const runtime = new Runtime();
+
+            runtime.registerRoute({
+                path: "/layout/nested",
+                element: <div>Hello!</div>
+            }, {
+                parentPath: "/layout"
+            });
+
+            expect(() => runtime._completeRegistration()).toThrow();
+        });
+    });
+
+    describe("parentName", () => {
+        test("when the registration is completed and there are no pending registrations, do nothing", () => {
+            const runtime = new Runtime();
+
+            runtime.registerRoute({
+                path: "/layout/nested",
+                element: <div>Hello!</div>
+            }, {
+                parentName: "layout"
+            });
+
+            runtime.registerRoute({
+                hoist: true,
+                name: "layout",
+                element: <div>Hello!</div>
+            });
+
+            expect(() => runtime._completeRegistration()).not.toThrow();
+        });
+
+        test("when the registration is completed and there are pending registrations, throw an error", () => {
+            const runtime = new Runtime();
+
+            runtime.registerRoute({
+                path: "/layout/nested",
+                element: <div>Hello!</div>
+            }, {
+                parentName: "layout"
+            });
+
+            expect(() => runtime._completeRegistration()).toThrow();
+        });
     });
 });

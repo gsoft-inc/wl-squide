@@ -22,7 +22,6 @@ export type RootRoute = Route & {
     type?: RouteType;
 };
 
-
 function normalizePath(routePath?: string) {
     if (routePath && routePath !== "/" && routePath.endsWith("/")) {
         return routePath.substring(0, routePath.length - 1);
@@ -47,14 +46,8 @@ export type RouteRegistrationStatus = "pending" | "registered";
 
 export interface AddRouteReturnType {
     registrationStatus: RouteRegistrationStatus;
-    completedPendingRegistrations?: Route[];
+    completedPendingRegistrations: Route[];
 }
-
-const ManagedRoutesOutletName = "__squide-managed-routes-outlet__";
-
-export const ManagedRoutesOutlet: Route = {
-    name: ManagedRoutesOutletName
-};
 
 export class RouteRegistry {
     #routes: RootRoute[];
@@ -71,40 +64,15 @@ export class RouteRegistry {
         this.#routes = [];
     }
 
-    #validateRootRoutes(route: RootRoute, { parentPath, parentName }: RegisterRouteOptions = {}) {
-        if (route.hoist && parentPath) {
-            throw new Error(`[squide] A route cannot have the "hoist" property when a "publicPath" option is provided. Route id: "${route.path ?? route.name ?? "(no identifier)"}".`);
-        }
-
-        if (route.hoist && parentName) {
-            throw new Error(`[squide] A route cannot have the "hoist" property when a "parentName" option is provided. Route id: "${route.path ?? route.name ?? "(no identifier)"}".`);
-        }
-    }
-
-    add(route: RootRoute, options: RegisterRouteOptions = {}) {
-        const {
-            parentPath,
-            parentName
-        } = options;
-
-        this.#validateRootRoutes(route, options);
-
+    add(route: RootRoute, { parentPath, parentName }: RegisterRouteOptions = {}) {
         if (parentPath) {
             // The normalized path cannot be undefined because it's been provided by the consumer
             // (e.g. it cannot be a pathless route).
             return this.#addNestedRoutes([route], normalizePath(parentPath)!);
         }
 
-        let _parentName = parentName;
-
-        if (!route.hoist && !_parentName) {
-            _parentName = ManagedRoutesOutletName;
-        }
-
-        if (_parentName) {
-            console.log("******* Adding nested route:", route, " for parent name: ", _parentName, " indexes: ", this.#routesIndex);
-
-            return this.#addNestedRoutes([route], _parentName);
+        if (parentName) {
+            return this.#addNestedRoutes([route], parentName);
         }
 
         return this.#addRootRoutes([route]);
@@ -196,7 +164,8 @@ export class RouteRegistry {
             }
 
             return {
-                registrationStatus: "pending"
+                registrationStatus: "pending",
+                completedPendingRegistrations: []
             };
         }
 

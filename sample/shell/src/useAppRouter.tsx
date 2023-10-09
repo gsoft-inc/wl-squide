@@ -7,8 +7,6 @@ import type { Router } from "@remix-run/router";
 export function useAppRouter(): Router {
     const routes = useRoutes();
 
-    console.log(routes);
-
     const router = useMemo(() => {
         return createBrowserRouter(routes);
     }, [routes]);

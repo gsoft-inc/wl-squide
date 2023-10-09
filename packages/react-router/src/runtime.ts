@@ -1,13 +1,46 @@
 import { AbstractRuntime, RootMenuId, type RegisterNavigationItemOptions, type RegisterRouteOptions } from "@squide/core";
 import { NavigationItemRegistry, type RootNavigationItem } from "./navigationItemRegistry.ts";
-import { ManagedRoutesOutlet, RouteRegistry, type RootRoute, type Route } from "./routeRegistry.ts";
+import { RouteRegistry, type RootRoute, type Route } from "./routeRegistry.ts";
+
+const ManagedRoutesOutletName = "__squide-managed-routes-outlet__";
+
+export const ManagedRoutes: Route = {
+    name: ManagedRoutesOutletName
+};
+
+export function isManagedRoutesOutletRoute(route: Route) {
+    return route.name === ManagedRoutesOutletName;
+}
 
 export class Runtime extends AbstractRuntime<RootRoute | Route, RootNavigationItem> {
     readonly #routeRegistry = new RouteRegistry();
     readonly #navigationItemRegistry = new NavigationItemRegistry();
 
+    #validateRootRoutes(route: RootRoute, { parentPath, parentName }: RegisterRouteOptions = {}) {
+        if (route.hoist && parentPath) {
+            throw new Error(`[squide] A route cannot have the "hoist" property when a "publicPath" option is provided. Route id: "${route.path ?? route.name ?? "(no identifier)"}".`);
+        }
+
+        if (route.hoist && parentName) {
+            throw new Error(`[squide] A route cannot have the "hoist" property when a "parentName" option is provided. Route id: "${route.path ?? route.name ?? "(no identifier)"}".`);
+        }
+    }
+
     registerRoute(route: RootRoute, options: RegisterRouteOptions = {}) {
-        const result = this.#routeRegistry.add(route, options);
+        this.#validateRootRoutes(route, options);
+
+        let parentName = options.parentName;
+
+        // By default, a route that is not hoisted nor nested under a known
+        // parent will be rendered under the ManagedRoutes outlet.
+        if (!route.hoist && !parentName && !isManagedRoutesOutletRoute(route)) {
+            parentName = ManagedRoutesOutletName;
+        }
+
+        const result = this.#routeRegistry.add(route, {
+            ...options,
+            parentName
+        });
 
         if (result.registrationStatus === "registered") {
             const parentId = options.parentPath ?? options.parentName;
@@ -19,7 +52,7 @@ export class Runtime extends AbstractRuntime<RootRoute | Route, RootNavigationIt
                 "All registered routes:", this.#routeRegistry.routes
             );
 
-            if (result.completedPendingRegistrations) {
+            if (result.completedPendingRegistrations.length > 0) {
                 this._logger.debug(
                     `[squide] The pending registration of the following route${result.completedPendingRegistrations.length !== 1 ? "s" : ""} has been %ccompleted%c.`, "color: white; background-color: #26bfa5;", "%s",
                     "Newly registered routes:", result.completedPendingRegistrations,
@@ -61,8 +94,9 @@ export class Runtime extends AbstractRuntime<RootRoute | Route, RootNavigationIt
         const pendingRegistrations = this.#routeRegistry.pendingRegistrations;
 
         if (pendingRegistrations.size > 0) {
-            if (pendingRegistrations.has(ManagedRoutesOutlet.name!)) {
-                throw new Error("[squide] The \"ManagedRoutesOutlet\" route is missing from the router configuration. The \"ManagedRoutesOutlet\" route must be added as children of an hoisted route. Did you forget to hoist the parent route that includes the \"ManagedRoutesOutlet\" route?");
+            if (pendingRegistrations.has(ManagedRoutes.name!)) {
+                // eslint-disable-next-line max-len
+                throw new Error("[squide] The \"ManagedRoutes\" outlet route is missing from the router configuration. The \"ManagedRoutes\" outlet route must be added as a children of an hoisted route. Did you forget to include the \"ManagedRoutes\" outlet route or hoist the parent route that includes the \"ManagedRoutes\" outlet route?");
             }
 
             let message = `[squide] ${pendingRegistrations.size} parent route${pendingRegistrations.size !== 1 ? "s" : ""} were expected to be registered but ${pendingRegistrations.size !== 1 ? "are" : "is"} missing:\r\n\r\n`;

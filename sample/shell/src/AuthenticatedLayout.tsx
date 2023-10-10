@@ -74,7 +74,6 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
     }, [logger, navigate, sessionManager]);
 
     const navigationItems = useNavigationItems();
-
     const renderedNavigationItems = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (
@@ -84,6 +83,7 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
                     {renderedNavigationItems}
                 </nav>
                 <div style={{ whiteSpace: "nowrap", marginRight: "20px" }}>
+                    {/* Must check for a null session because when the disconnect button is clicked, it will clear the session and rerender this layout. */}
                     (User: <span style={{ fontWeight: "bold" }}>{session?.user?.name}</span>)
                 </div>
                 <div>

@@ -61,18 +61,13 @@ const runtime = new Runtime({
 runtime.registerRoute(route, options?: {})
 ```
 
+- `route`: accept any properties of a React Router [Route](https://reactrouter.com/en/main/components/route) component with the addition of:
+    - `name`: An optional name for the route.
+    - `visibility`: An optional visibility indicator for the route. Values are `public` or `authenticated`.
 - `options`: An optional object literal of options:
+    - `hoist`: An optional boolean value to register the route at the root of the router. The default value is `false`.
     - `parentPath`: An optional path of a parent route to register this new route under.
     - `parentName`: An optional name of a parent route to register this new route under.
-
-A Squide route can either be a `RootRoute` or a `Route`.
-
-- `RootRoute`: accept any properties of a React Router [Route](https://reactrouter.com/en/main/components/route) component with the addition of:
-    - `hoist`: An optional boolean value to register the route at the root of the router. The default value is `false`.
-    - `visibility`: An optional visibility indicator for the route. Values are `public` or `authenticated` and the default value is `authenticated`.
-    - `name`: An optional name for the route.
-- `Route`: accept any properties of a React Router [Route](https://reactrouter.com/en/main/components/route) component with the addition of:
-    - `name`: An optional name for the route.
 
 ```tsx
 import { Page } from "./Page.tsx"
@@ -88,7 +83,7 @@ runtime.registerRoute({
 
 Unlike a regular page, a hoisted page is added at the root of the router, outside of the boundaries of the host application's root layout. This means that a hoisted page has full control over its rendering.
 
-```tsx !#6
+```tsx !#7
 import { Page } from "./Page.tsx";
 
 runtime.registerRoute({
@@ -103,17 +98,41 @@ runtime.registerRoute({
 
 ### Register a public route
 
-When registering a route, a hint can be provided to indicate if the route is intended to be displayed as a `public` or `authenticated` route. This is especially useful when dealing with code that conditionally fetch data for authenticated routes.
+When registering a route, a hint can be provided, indicating if the route is intended to be displayed as a `public` or `authenticated` route. This is especially useful when dealing with code that conditionally fetch data for authenticated routes (e.g. a session).
 
-```tsx !#6
+```tsx !#4
 import { Page } from "./Page.tsx";
 
 runtime.registerRoute({
-    path: "/page-1",
-    element: <Page />,
     visibility: "public"
+    path: "/page-1",
+    element: <Page />
 });
 ```
+
+A nested route can also have a visibility hint:
+
+```tsx !#10
+import { Layout } from "./Layout.tsx";
+import { Page } from "./Page.tsx";
+
+runtime.registerRoute({
+    visibility: "public"
+    path: "/layout",
+    element: <Layout />,
+    children: [
+        {
+            visibility: "public",
+            path: "/page-1",
+            element: <Page />,
+        }
+    ]
+});
+```
+
+!!!info
+When no visibility hint is provided, a route is considered as an `authenticated` route.
+!!!
 
 ### Register a named route
 
@@ -122,11 +141,27 @@ The `registerRoute` function accepts a `parentName` property, allowing a route t
 > A `name` property should usually only be defined for routes that doesn't have a path like an error boundary or an authentication boundary.
 
 ```tsx !#4
-import { RootErrorBoundary } from "./Page.tsx";
+import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
 runtime.registerRoute({
     name: "error-boundary",
     element: <RootErrorBoundary />
+});
+```
+
+A nested route can also be named:
+
+```tsx !#8
+import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
+import { RootLayout } from "./RootLayout.tsx";
+
+runtime.registerRoute({
+    name: "error-boundary",
+    element: <RootErrorBoundary />,
+    children: [
+        name: "root-layout",
+        element: <RootLayout />
+    ]
 });
 ```
 

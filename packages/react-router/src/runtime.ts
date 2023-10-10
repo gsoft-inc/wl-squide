@@ -1,6 +1,6 @@
 import { AbstractRuntime, RootMenuId, type RegisterNavigationItemOptions, type RegisterRouteOptions } from "@squide/core";
 import { NavigationItemRegistry, type RootNavigationItem } from "./navigationItemRegistry.ts";
-import { RouteRegistry, type RootRoute, type Route } from "./routeRegistry.ts";
+import { RouteRegistry, type Route } from "./routeRegistry.ts";
 
 const ManagedRoutesOutletName = "__squide-managed-routes-outlet__";
 
@@ -12,11 +12,11 @@ export function isManagedRoutesOutletRoute(route: Route) {
     return route.name === ManagedRoutesOutletName;
 }
 
-export class Runtime extends AbstractRuntime<RootRoute | Route, RootNavigationItem> {
+export class Runtime extends AbstractRuntime<Route, RootNavigationItem> {
     readonly #routeRegistry = new RouteRegistry();
     readonly #navigationItemRegistry = new NavigationItemRegistry();
 
-    #validateRootRoutes(route: RootRoute, { hoist, parentPath, parentName }: RegisterRouteOptions = {}) {
+    #validateRouteRegistrationOptions(route: Route, { hoist, parentPath, parentName }: RegisterRouteOptions = {}) {
         if (hoist && parentPath) {
             throw new Error(`[squide] A route cannot have the "hoist" property when a "publicPath" option is provided. Route id: "${route.path ?? route.name ?? "(no identifier)"}".`);
         }
@@ -26,8 +26,8 @@ export class Runtime extends AbstractRuntime<RootRoute | Route, RootNavigationIt
         }
     }
 
-    registerRoute(route: RootRoute, options: RegisterRouteOptions = {}) {
-        this.#validateRootRoutes(route, options);
+    registerRoute(route: Route, options: RegisterRouteOptions = {}) {
+        this.#validateRouteRegistrationOptions(route, options);
 
         let parentName = options.parentName;
 
@@ -54,7 +54,7 @@ export class Runtime extends AbstractRuntime<RootRoute | Route, RootNavigationIt
 
             if (result.completedPendingRegistrations.length > 0) {
                 this._logger.debug(
-                    `[squide] The pending registration of the following route${result.completedPendingRegistrations.length !== 1 ? "s" : ""} has been %ccompleted%c.`, "color: white; background-color: #26bfa5;", "%s",
+                    `[squide] The pending registration of the following route${result.completedPendingRegistrations.length > 0 ? "s" : ""} has been %ccompleted%c.`, "color: white; background-color: #26bfa5;", "%s",
                     "Newly registered routes:", result.completedPendingRegistrations,
                     "All registered routes:", this.#routeRegistry.routes
                 );
@@ -99,7 +99,7 @@ export class Runtime extends AbstractRuntime<RootRoute | Route, RootNavigationIt
                 throw new Error("[squide] The \"ManagedRoutes\" outlet route is missing from the router configuration. The \"ManagedRoutes\" outlet route must be added as a children of an hoisted route. Did you forget to include the \"ManagedRoutes\" outlet route or hoist the parent route that includes the \"ManagedRoutes\" outlet route?");
             }
 
-            let message = `[squide] ${pendingRegistrations.size} parent route${pendingRegistrations.size !== 1 ? "s" : ""} were expected to be registered but ${pendingRegistrations.size !== 1 ? "are" : "is"} missing:\r\n\r\n`;
+            let message = `[squide] ${pendingRegistrations.size} parent route${pendingRegistrations.size > 0 ? "s" : ""} were expected to be registered but ${pendingRegistrations.size > 0 ? "are" : "is"} missing:\r\n\r\n`;
             let index = 0;
 
             // It's easier to use for ... of with a Map object.
@@ -116,7 +116,7 @@ export class Runtime extends AbstractRuntime<RootRoute | Route, RootNavigationIt
                 message += "\r\n";
             }
 
-            message += `If you are certain that the parent route${pendingRegistrations.size !== 1 ? "s" : ""} has been registered, make sure that the following conditions are met:\r\n`;
+            message += `If you are certain that the parent route${pendingRegistrations.size > 0 ? "s" : ""} has been registered, make sure that the following conditions are met:\r\n`;
             message += "- The missing parent routes \"path\" or \"name\" property perfectly match the provided \"parentPath\" or \"parentName\" (make sure that there's no leading or trailing \"/\" that differs).\r\n";
             message += "- The missing parent routes has been registered with the \"registerRoute()\" function. A route cannot be registered under a parent route that has not be registered with the \"registerRoute()\" function.\r\n";
             message += "For more information about nested routes, refers to https://gsoft-inc.github.io/wl-squide/reference/runtime/runtime-class/#register-routes-under-a-specific-nested-layout-route.";

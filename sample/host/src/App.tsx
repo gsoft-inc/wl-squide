@@ -26,23 +26,23 @@ export function App() {
 
     useEffect(() => {
         if (areModulesReady && isMswStarted) {
-            // getActiveRouteVisibility
+            // 2 hooks:
+            // getActiveRouteVisibility -> "public" | "protected" | unknown
+            // isActiveRouteProtected -> true if protected, false otherwise | throw an Error when unknown
 
-            // const location = useLocation();
             const location = window.location;
-
-            // console.log("**** location: ", location);
-
             const matchingRoutes = matchRoutes(runtime.routes, location) ?? [];
 
-            console.log("**** matchingRoutes:", matchingRoutes);
+            logger.debug(`[shell] Found ${matchingRoutes.length} matching route${matchingRoutes.length > 0 ? "s" : ""}:`, matchingRoutes);
 
             if (matchingRoutes.length > 0) {
-                // When a route is nested, it also returns all the parts that constistuate the whole route (for example the layouts).
-                // We only want to know the visiblity of the deepest root route.
-                const rootRoute = matchingRoutes.findLast(x => x.route.type === "root");
+                // When a route is nested, it also returns all the parts that constistuate the whole route (for example the layouts and the boundaries).
+                // We only want to know the visiblity of the actual route that has been requested, which is always the last entry.
+                const activeRoute = matchingRoutes[matchingRoutes.length - 1]!.route;
 
-                if (rootRoute!.route.visibility === "authenticated") {
+                logger.debug(`[shell] The active route is "${activeRoute.visibility}":`, activeRoute);
+
+                if (activeRoute!.visibility === "authenticated") {
                     logger.debug(`[shell] Fetching session data as "${location}" is a protected route.`);
 
                     axios.get("/session")
@@ -59,9 +59,15 @@ export function App() {
 
                             setIsReady(true);
                         })
-                        .catch(() => {
-                            // The authentication boundary will redirect to the login page.
+                        .catch((error: unknown) => {
                             setIsReady(true);
+
+                            if (axios.isAxiosError(error) && error.response?.status === 401) {
+                                // The authentication boundary will redirect to the login page.
+                                return;
+                            }
+
+                            throw error;
                         });
                 } else {
                     setIsReady(true);

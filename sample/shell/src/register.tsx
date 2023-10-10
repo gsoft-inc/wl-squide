@@ -9,10 +9,12 @@ import { RootLayout } from "./RootLayout.tsx";
 function registerRoutes(runtime: Runtime, sessionManager: SessionManager) {
     runtime.registerRoute({
         // Pathless route to declare a root layout and a root error boundary.
+        visibility: "public",
         element: <RootLayout />,
         children: [
             {
                 // Public pages like the login and logout pages will be rendered under this pathless route.
+                visibility: "public",
                 name: "root-error-boundary",
                 errorElement: <RootErrorBoundary />,
                 children: [

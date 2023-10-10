@@ -3,23 +3,18 @@ import type { IndexRouteObject, NonIndexRouteObject } from "react-router-dom";
 
 export type RouteVisibility = "public" | "authenticated";
 
-export type RouteType = "root";
-
 export interface IndexRoute extends IndexRouteObject {
     name?: string;
+    visibility?: RouteVisibility;
 }
 
 export interface NonIndexRoute extends Omit<NonIndexRouteObject, "children"> {
     name?: string;
+    visibility?: RouteVisibility;
     children?: Route[];
 }
 
 export type Route = IndexRoute | NonIndexRoute;
-
-export type RootRoute = Route & {
-    visibility?: RouteVisibility;
-    type?: RouteType;
-};
 
 function normalizePath(routePath?: string) {
     if (routePath && routePath !== "/" && routePath.endsWith("/")) {
@@ -49,11 +44,11 @@ export interface AddRouteReturnType {
 }
 
 export class RouteRegistry {
-    #routes: RootRoute[];
+    #routes: Route[];
 
     // Using an index to speed up the look up of parent routes.
-    // <indexKey, RootRoute | Route>
-    readonly #routesIndex: Map<string, RootRoute | Route> = new Map();
+    // <indexKey, Route>
+    readonly #routesIndex: Map<string, Route> = new Map();
 
     // A collection of pending routes to registered once their layout is registered.
     // <parentPath | parentName, Route[]>
@@ -63,7 +58,80 @@ export class RouteRegistry {
         this.#routes = [];
     }
 
-    add(route: RootRoute, { parentPath, parentName }: RegisterRouteOptions = {}) {
+    #addIndex(route: Route) {
+        const key = createIndexKey(route);
+
+        if (key) {
+            if (this.#routesIndex.has(key)) {
+                throw new Error(`[squide] A route index has already been registered for the key: "${key}". Did you register two routes with the same "path" or "name" property?`);
+            }
+
+            this.#routesIndex.set(key, route);
+        }
+
+        return key;
+    }
+
+    #recursivelyAddRoutes(routes: Route[]) {
+        const newRoutes: Route[] = [];
+        const completedPendingRegistrations: Route[] = [];
+
+        routes.forEach((x: Route) => {
+            // Creates a copy of the route object and add the default properties.
+            const route = {
+                ...x,
+                visibility: x.visibility ?? "authenticated"
+            };
+
+            if (route.children) {
+                // Recursively go through the children.
+                const result = this.#recursivelyAddRoutes(route.children);
+
+                route.children = result.newRoutes;
+
+                completedPendingRegistrations.push(...result.completedPendingRegistrations);
+            }
+
+            // Add index entries to speed up the registration of future nested routes.
+            const indexKey = this.#addIndex(route);
+
+            // IMPORTANT: do not deal with the pending registrations before recursively going through the children.
+            // Otherwise pending routes will be handled twice (one time as a pending registration and one time as child
+            // of the route).
+            if (indexKey) {
+                const pendingRegistrations = this.#tryRegisterPendingRoutes(indexKey);
+
+                completedPendingRegistrations.unshift(...pendingRegistrations);
+            }
+
+            newRoutes.push(route);
+        });
+
+        return {
+            newRoutes,
+            completedPendingRegistrations
+        };
+    }
+
+    #tryRegisterPendingRoutes(parentId: string) {
+        const pendingRegistrations = this.#pendingRegistrations.get(parentId);
+
+        if (pendingRegistrations) {
+            // Try to register the pending routes.
+            const { registrationStatus } = this.#addNestedRoutes(pendingRegistrations, parentId);
+
+            if (registrationStatus === "registered") {
+                // Remove the pending registrations.
+                this.#pendingRegistrations.delete(parentId);
+
+                return pendingRegistrations;
+            }
+        }
+
+        return [];
+    }
+
+    add(route: Route, { parentPath, parentName }: RegisterRouteOptions = {}) {
         if (parentPath) {
             // The normalized path cannot be undefined because it's been provided by the consumer
             // (e.g. it cannot be a pathless route).
@@ -77,69 +145,11 @@ export class RouteRegistry {
         return this.#addRootRoutes([route]);
     }
 
-    #addIndex(route: Route) {
-        const key = createIndexKey(route);
-
-        if (key) {
-            if (this.#routesIndex.has(key)) {
-                throw new Error(`[squide] A route index has already been registered for the key: "${key}". Did you register 2 routes with the same "path" or "name" property?`);
-            }
-
-            this.#routesIndex.set(key, route);
-        }
-
-        return key;
-    }
-
-    #recursivelyAddIndexes(route: Route) {
-        const newIndexes: string[] = [];
-        const key = this.#addIndex(route);
-
-        if (key) {
-            newIndexes.push(key);
-        }
-
-        if (route.children) {
-            route.children.forEach(x => {
-                const indexes = this.#recursivelyAddIndexes(x);
-
-                newIndexes.push(...indexes);
-            });
-        }
-
-        return newIndexes;
-    }
-
-    #addRootRoutes(routes: RootRoute[]): AddRouteReturnType {
-        // Creates a copy of the route objects and add a "type" property to each route indicating
-        // that it's a root route.
-        const _routes: RootRoute[] = routes.map(x => ({
-            ...x,
-            visibility: x.visibility ?? "authenticated",
-            type: "root"
-        }));
-
-        const newIndexes: string[] = [];
-
-        // Add index entries to speed up the registration of future nested routes.
-        // This is done recursively to also register indexes for the nested routes if there are any.
-        _routes.forEach(x => {
-            const indexes = this.#recursivelyAddIndexes(x);
-
-            newIndexes.push(...indexes);
-        });
+    #addRootRoutes(routes: Route[]): AddRouteReturnType {
+        const { newRoutes, completedPendingRegistrations } = this.#recursivelyAddRoutes(routes);
 
         // Create a new array so the routes array is immutable.
-        this.#routes = [...this.#routes, ..._routes];
-
-        const completedPendingRegistrations: Route[] = [];
-
-        // Use the new indexes to retrieve the route pending registrations and complete their registration.
-        newIndexes.forEach(x => {
-            const pendingRegistrations = this.#tryRegisterPendingRoutes(x);
-
-            completedPendingRegistrations.push(...pendingRegistrations);
-        });
+        this.#routes = [...this.#routes, ...newRoutes];
 
         return {
             registrationStatus: "registered",
@@ -148,18 +158,15 @@ export class RouteRegistry {
     }
 
     #addNestedRoutes(routes: Route[], parentId: string): AddRouteReturnType {
-        // Creates a copy of the route objects.
-        const _routes: Route[] = routes.map(x => ({ ...x }));
-
         const layoutRoute = this.#routesIndex.get(parentId);
 
         if (!layoutRoute) {
             const pendingRegistration = this.#pendingRegistrations.get(parentId);
 
             if (pendingRegistration) {
-                pendingRegistration.push(..._routes);
+                pendingRegistration.push(...routes);
             } else {
-                this.#pendingRegistrations.set(parentId, [..._routes]);
+                this.#pendingRegistrations.set(parentId, [...routes]);
             }
 
             return {
@@ -168,55 +175,22 @@ export class RouteRegistry {
             };
         }
 
+        const { newRoutes, completedPendingRegistrations } = this.#recursivelyAddRoutes(routes);
+
         // Register new nested routes as children of their layout route.
         layoutRoute.children = [
             ...(layoutRoute.children ?? []),
-            ..._routes
+            ...newRoutes
         ];
-
-        const newIndexes: string[] = [];
-
-        // Add index entries to speed up the registration of future nested routes.
-        // This is done recursively to also register indexes for the nested routes if there are any.
-        _routes.forEach(x => {
-            const indexes = this.#recursivelyAddIndexes(x);
-
-            newIndexes.push(...indexes);
-        });
 
         // Create a new array since the routes array is immutable and a nested
         // object has been updated.
         this.#routes = [...this.#routes];
 
-        const completedPendingRegistrations: Route[] = [];
-
-        // Use the new indexes to retrieve the route pending registrations and complete their registration.
-        newIndexes.forEach(x => {
-            const pendingRegistrations = this.#tryRegisterPendingRoutes(x);
-
-            completedPendingRegistrations.push(...pendingRegistrations);
-        });
-
         return {
             registrationStatus: "registered",
             completedPendingRegistrations
         };
-    }
-
-    #tryRegisterPendingRoutes(parentId: string) {
-        const pendingRegistrations = this.#pendingRegistrations.get(parentId);
-
-        if (pendingRegistrations) {
-            // Try to register the pending routes.
-            this.#addNestedRoutes(pendingRegistrations, parentId);
-
-            // Remove the pending registrations.
-            this.#pendingRegistrations.delete(parentId);
-
-            return pendingRegistrations;
-        }
-
-        return [];
     }
 
     get routes() {

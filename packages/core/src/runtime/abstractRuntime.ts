@@ -17,6 +17,7 @@ export interface RuntimeOptions {
 }
 
 export interface RegisterRouteOptions {
+    hoist?: true;
     parentPath?: string;
     parentName?: string;
 }

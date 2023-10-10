@@ -1,50 +1,39 @@
 import { useIsAuthenticated } from "@squide/react-router";
+import axios from "axios";
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
-export type OnLoginHandler = (username: string, password: string) => Promise<void>;
-
-export class InvalidCredentialsError extends Error {
-    constructor(message: string = "") {
-        super(message);
-        this.name = "InvalidCredentialsError";
-    }
-}
-
-export interface LoginProps {
-    onLogin?: OnLoginHandler;
-}
-
-export function Login({ onLogin }: LoginProps) {
+export function Login() {
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState<string>();
     const [isBusy, setIsBusy] = useState(false);
 
-    const navigate = useNavigate();
-
-    const handleClick = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
+    const handleClick = useCallback((event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
-        try {
-            setIsBusy(true);
-            setErrorMessage(undefined);
+        setIsBusy(true);
+        setErrorMessage(undefined);
 
-            if (onLogin) {
-                await onLogin(username, password);
-            }
+        axios.post("/login", { username, password })
+            .then(() => {
+                setIsBusy(false);
 
-            navigate("/");
-        } catch (error: unknown) {
-            setIsBusy(false);
+                // Reloading the application so the App.tsx code is runned again.
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                window.location = "/";
+            })
+            .catch((error: unknown) => {
+                setIsBusy(false);
 
-            if (error instanceof InvalidCredentialsError) {
-                setErrorMessage("Invalid credentials, please try again.");
-            } else {
-                setErrorMessage("An unknown error occured while trying to log you in, please try again.");
-            }
-        }
-    }, [username, password, onLogin, navigate]);
+                if (axios.isAxiosError(error) && error.response?.status === 401) {
+                    setErrorMessage("Invalid credentials, please try again.");
+                } else {
+                    throw error;
+                }
+            });
+    }, [username, password]);
 
     const handleUserNameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setUserName(event.target.value);

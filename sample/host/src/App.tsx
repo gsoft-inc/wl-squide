@@ -1,7 +1,7 @@
 import { BackgroundColorContext, type Session } from "@sample/shared";
 import { useAppRouter } from "@sample/shell";
 import { useIsMswStarted } from "@squide/msw";
-import { useRuntime, type Runtime } from "@squide/react-router";
+import { useLogger, useRuntime, type Runtime } from "@squide/react-router";
 import { useAreModulesReady } from "@squide/webpack-module-federation";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -12,6 +12,7 @@ export function App() {
     const [isReady, setIsReady] = useState(false);
 
     const runtime = useRuntime() as Runtime;
+    const logger = useLogger();
 
     // Re-render the app once all the remotes are registered.
     // Otherwise, the remotes routes won't be added to the router.
@@ -21,6 +22,8 @@ export function App() {
     // Otherwise, the API calls will return a 404 status.
     const isMswStarted = useIsMswStarted(process.env.USE_MSW as unknown as boolean);
 
+    const router = useAppRouter();
+
     useEffect(() => {
         if (areModulesReady && isMswStarted) {
             // getActiveRouteVisibility
@@ -28,7 +31,7 @@ export function App() {
             // const location = useLocation();
             const location = window.location;
 
-            console.log("**** location: ", location);
+            // console.log("**** location: ", location);
 
             const matchingRoutes = matchRoutes(runtime.routes, location) ?? [];
 
@@ -40,17 +43,26 @@ export function App() {
                 const rootRoute = matchingRoutes.findLast(x => x.route.type === "root");
 
                 if (rootRoute!.route.visibility === "authenticated") {
-                    axios.get("/session").then(({ data }) => {
-                        const session: Session = {
-                            user: {
-                                name: data.username
-                            }
-                        };
+                    logger.debug(`[shell] Fetching session data as "${location}" is a protected route.`);
 
-                        sessionManager.setSession(session);
+                    axios.get("/session")
+                        .then(({ data }) => {
+                            const session: Session = {
+                                user: {
+                                    name: data.username
+                                }
+                            };
 
-                        setIsReady(true);
-                    });
+                            logger.debug("[shell] Loaded the user session:", session);
+
+                            sessionManager.setSession(session);
+
+                            setIsReady(true);
+                        })
+                        .catch(() => {
+                            // The authentication boundary will redirect to the login page.
+                            setIsReady(true);
+                        });
                 } else {
                     setIsReady(true);
                 }
@@ -58,9 +70,7 @@ export function App() {
                 throw new Error(`[shell] There's no matching route for the location: "${location}". Did you add routes to React Router without using the runtime.registerRoute() function?`);
             }
         }
-    }, [areModulesReady, isMswStarted, runtime.routes]);
-
-    const router = useAppRouter();
+    }, [areModulesReady, isMswStarted, runtime.routes, router, logger]);
 
     if (!isReady) {
         return <div>Loading...</div>;

@@ -1,7 +1,8 @@
-import { useApplicationEventBusListener, type Session } from "@sample/shared";
-import { isNavigationLink, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/react-router";
+import { useApplicationEventBusListener, type Session, type SessionManager } from "@sample/shared";
+import { isNavigationLink, useLogger, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/react-router";
+import axios from "axios";
 import { Suspense, useCallback, type ReactNode } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
 
@@ -40,14 +41,35 @@ const renderSection: RenderSectionFunction = (elements, index, level) => {
     );
 };
 
-export function AuthenticatedLayout() {
+export interface AuthenticatedLayoutProps {
+    sessionManager: SessionManager;
+}
+
+export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps) {
+    const logger = useLogger();
     const session = useSession() as Session;
+
+    const navigate = useNavigate();
 
     const handleModulesMessage = useCallback((data: unknown) => {
         console.log("[sample] Message received from a module: ", data);
     }, []);
 
     useApplicationEventBusListener("write-to-host", handleModulesMessage);
+
+    const onDisconnect = useCallback(async () => {
+        axios.post("/logout")
+            .then(() => {
+                sessionManager.clearSession();
+
+                logger.debug("[shell] The user session has been cleared.");
+
+                // navigate("/logout");
+            })
+            .catch(() => {
+                throw new Error("An unknown error happened while disconnecting the user.");
+            });
+    }, [logger, navigate, sessionManager]);
 
     const navigationItems = useNavigationItems();
 
@@ -63,7 +85,7 @@ export function AuthenticatedLayout() {
                     (User: <span style={{ fontWeight: "bold" }}>{session.user.name}</span>)
                 </div>
                 <div>
-                    <Link to="/logout">Disconnect</Link>
+                    <button type="button" onClick={onDisconnect}>Disconnect</button>
                 </div>
             </div>
             <Suspense fallback={<div>Loading...</div>}>

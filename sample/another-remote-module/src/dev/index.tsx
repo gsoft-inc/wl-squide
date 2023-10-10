@@ -5,7 +5,7 @@ import { createRoot } from "react-dom/client";
 import { register as registerModule } from "../register.tsx";
 import { App } from "./App.tsx";
 import { registerDev } from "./register.tsx";
-import { onLogin, onLogout, sessionAccessor } from "./session.ts";
+import { sessionAccessor, sessionManager } from "./session.ts";
 
 // Create the shell runtime.
 // Services, loggers and sessionAccessor could be reuse through a shared packages or faked when in isolation.
@@ -16,7 +16,7 @@ const runtime = new Runtime({
 
 // Registering the remote module as a static module because the "register" function
 // is local when developing in isolation.
-registerLocalModules([registerShell(onLogin, onLogout), registerDev, registerModule], runtime);
+registerLocalModules([registerShell(sessionManager), registerDev, registerModule], runtime);
 
 const root = createRoot(document.getElementById("root")!);
 

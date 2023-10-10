@@ -243,9 +243,10 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                hoist: true,
                 index: true,
                 element: <div>Hello!</div>
+            }, {
+                hoist: true
             });
 
             expect(runtime.routes.length).toBe(1);
@@ -256,8 +257,9 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                hoist: true,
                 element: <div>Hello!</div>
+            }, {
+                hoist: true
             });
 
             expect(runtime.routes.length).toBe(1);
@@ -269,23 +271,27 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                hoist: true,
                 element: <div>Hello!</div>
+            }, {
+                hoist: true
             });
 
             runtime.registerRoute({
-                hoist: true,
                 element: <div>How</div>
+            }, {
+                hoist: true
             });
 
             runtime.registerRoute({
-                hoist: true,
                 element: <div>Are</div>
+            }, {
+                hoist: true
             });
 
             runtime.registerRoute({
-                hoist: true,
                 element: <div>You?</div>
+            }, {
+                hoist: true
             });
 
             expect(runtime.routes.length).toBe(4);
@@ -295,7 +301,6 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                hoist: true,
                 element: <div>Hello</div>,
                 children: [
                     {
@@ -308,6 +313,8 @@ describe("registerRoute", () => {
                         ]
                     }
                 ]
+            }, {
+                hoist: true
             });
 
             expect(runtime.routes.length).toBe(1);
@@ -318,7 +325,6 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                hoist: true,
                 element: <div>Hello</div>,
                 children: [
                     {
@@ -331,6 +337,8 @@ describe("registerRoute", () => {
                         ]
                     }
                 ]
+            }, {
+                hoist: true
             });
 
             expect(runtime.routes.length).toBe(1);
@@ -341,10 +349,11 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                hoist: true,
                 path: "/public",
                 element: <div>Hello!</div>,
                 visibility: "public"
+            }, {
+                hoist: true
             });
 
             expect(runtime.routes.length).toBe(1);
@@ -356,10 +365,11 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                hoist: true,
                 path: "/authenticated",
                 element: <div>Hello!</div>,
                 visibility: "authenticated"
+            }, {
+                hoist: true
             });
 
             expect(runtime.routes.length).toBe(1);
@@ -371,9 +381,10 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                hoist: true,
                 name: "foo",
                 element: <div>Hello!</div>
+            }, {
+                hoist: true
             });
 
             expect(runtime.routes.length).toBe(1);
@@ -384,7 +395,6 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                hoist: true,
                 element: <div>Hello</div>,
                 children: [
                     {
@@ -392,6 +402,8 @@ describe("registerRoute", () => {
                         element: <div>You!</div>
                     }
                 ]
+            }, {
+                hoist: true
             });
 
             expect(runtime.routes.length).toBe(1);
@@ -404,9 +416,10 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                hoist: true,
                 path: "/layout",
                 element: <div>Hello!</div>
+            }, {
+                hoist: true
             });
 
             expect(runtime.routes.length).toBe(1);
@@ -455,18 +468,20 @@ describe("registerRoute", () => {
             expect(runtime.routes.length).toBe(0);
 
             runtime.registerRoute({
-                hoist: true,
                 path: "/foo",
                 element: <div>Hello!</div>
+            }, {
+                hoist: true
             });
 
             expect(runtime.routes.length).toBe(1);
             expect(runtime.routes[0].children).toBeUndefined();
 
             runtime.registerRoute({
-                hoist: true,
                 path: "/layout",
                 element: <div>Hello!</div>
+            }, {
+                hoist: true
             });
 
             expect(runtime.routes.length).toBe(2);
@@ -486,7 +501,6 @@ describe("registerRoute", () => {
             expect(runtime.routes.length).toBe(0);
 
             runtime.registerRoute({
-                hoist: true,
                 element: <div>Hello</div>,
                 children: [
                     {
@@ -499,6 +513,8 @@ describe("registerRoute", () => {
                         ]
                     }
                 ]
+            }, {
+                hoist: true
             });
 
             expect(runtime.routes.length).toBe(1);
@@ -510,9 +526,10 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                hoist: true,
                 path: "/layout",
                 element: <div>Hello!</div>
+            }, {
+                hoist: true
             });
 
             runtime.registerRoute({
@@ -537,7 +554,6 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                hoist: true,
                 element: <div>Hello</div>,
                 children: [
                     {
@@ -550,6 +566,8 @@ describe("registerRoute", () => {
                         ]
                     }
                 ]
+            }, {
+                hoist: true
             });
 
             runtime.registerRoute({
@@ -577,9 +595,10 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                hoist: true,
                 path: "/layout",
                 element: <div>Hello!</div>
+            }, {
+                hoist: true
             });
 
             runtime.registerRoute({
@@ -596,9 +615,10 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                hoist: true,
                 path: "/layout/",
                 element: <div>Hello!</div>
+            }, {
+                hoist: true
             });
 
             runtime.registerRoute({
@@ -615,9 +635,9 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             expect(() => runtime.registerRoute({
-                hoist: true,
                 element: <div>Hello</div>
             }, {
+                hoist: true,
                 parentPath: "/foo"
             })).toThrow();
         });
@@ -628,9 +648,10 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                hoist: true,
                 name: "layout",
                 element: <div>Hello!</div>
+            }, {
+                hoist: true
             });
 
             expect(runtime.routes.length).toBe(1);
@@ -679,18 +700,20 @@ describe("registerRoute", () => {
             expect(runtime.routes.length).toBe(0);
 
             runtime.registerRoute({
-                hoist: true,
                 path: "/foo",
                 element: <div>Hello!</div>
+            }, {
+                hoist: true
             });
 
             expect(runtime.routes.length).toBe(1);
             expect(runtime.routes[0].children).toBeUndefined();
 
             runtime.registerRoute({
-                hoist: true,
                 name: "layout",
                 element: <div>Hello!</div>
+            }, {
+                hoist: true
             });
 
             expect(runtime.routes.length).toBe(2);
@@ -710,7 +733,6 @@ describe("registerRoute", () => {
             expect(runtime.routes.length).toBe(0);
 
             runtime.registerRoute({
-                hoist: true,
                 element: <div>Hello</div>,
                 children: [
                     {
@@ -723,6 +745,8 @@ describe("registerRoute", () => {
                         ]
                     }
                 ]
+            }, {
+                hoist: true
             });
 
             expect(runtime.routes.length).toBe(1);
@@ -734,9 +758,10 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                hoist: true,
                 name: "layout",
                 element: <div>Hello!</div>
+            }, {
+                hoist: true
             });
 
             runtime.registerRoute({
@@ -762,7 +787,6 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                hoist: true,
                 element: <div>Hello</div>,
                 children: [
                     {
@@ -775,6 +799,8 @@ describe("registerRoute", () => {
                         ]
                     }
                 ]
+            }, {
+                hoist: true
             });
 
             runtime.registerRoute({
@@ -802,9 +828,9 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             expect(() => runtime.registerRoute({
-                hoist: true,
                 element: <div>Hello</div>
             }, {
+                hoist: true,
                 parentName: "foo"
             })).toThrow();
         });
@@ -978,9 +1004,10 @@ describe("_completeRegistration", () => {
             });
 
             runtime.registerRoute({
-                hoist: true,
                 path: "/layout",
                 element: <div>Hello!</div>
+            }, {
+                hoist: true
             });
 
             expect(() => runtime._completeRegistration()).not.toThrow();
@@ -1012,9 +1039,10 @@ describe("_completeRegistration", () => {
             });
 
             runtime.registerRoute({
-                hoist: true,
                 name: "layout",
                 element: <div>Hello!</div>
+            }, {
+                hoist: true
             });
 
             expect(() => runtime._completeRegistration()).not.toThrow();

@@ -20,11 +20,15 @@ test("returns all the registered routes", () => {
     runtime.registerRoute({
         path: "/foo",
         element: <div>Foo</div>
+    }, {
+        hoist: true
     });
 
     runtime.registerRoute({
         path: "/bar",
         element: <div>Bar</div>
+    }, {
+        hoist: true
     });
 
     const { result } = renderWithRuntime(runtime);
@@ -38,6 +42,8 @@ test("returned array is immutable", () => {
     runtime.registerRoute({
         path: "/foo",
         element: <div>Foo</div>
+    }, {
+        hoist: true
     });
 
     const { result, rerender } = renderWithRuntime(runtime);
@@ -52,6 +58,8 @@ test("returned array is immutable", () => {
     runtime.registerRoute({
         path: "/bar",
         element: <div>Bar</div>
+    }, {
+        hoist: true
     });
 
     // Added a new route, the returned array should be a new instance.

@@ -13,9 +13,6 @@ export default defineBuildRemoteModuleConfig(swcConfig, "remote2", publicPath, {
         },
         "@sample/shared": {
             singleton: true
-        },
-        "axios": {
-            singleton: true
         }
     },
     environmentVariables: {

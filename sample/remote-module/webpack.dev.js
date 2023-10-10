@@ -15,9 +15,6 @@ if (!process.env.LOCAL) {
             },
             "@sample/shared": {
                 singleton: true
-            },
-            "axios": {
-                singleton: true
             }
         },
         environmentVariables: {

@@ -8,7 +8,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
-import { onLogin, onLogout, sessionAccessor } from "./session.ts";
+import { sessionAccessor, sessionManager } from "./session.ts";
 
 const Remotes: RemoteDefinition[] = [
     {
@@ -35,7 +35,7 @@ const context: AppContext = {
     name: "Sample app"
 };
 
-registerLocalModules([registerShell(onLogin, onLogout), registerHost, registerLocalModule], runtime, { context });
+registerLocalModules([registerShell(sessionManager), registerHost, registerLocalModule], runtime, { context });
 
 registerRemoteModules(Remotes, runtime, { context }).then(() => {
     if (process.env.USE_MSW) {

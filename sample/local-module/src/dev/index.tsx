@@ -5,7 +5,7 @@ import { createRoot } from "react-dom/client";
 import { registerLocalModule } from "../register.tsx";
 import { App } from "./App.tsx";
 import { registerDev } from "./register.tsx";
-import { onLogin, onLogout, sessionAccessor } from "./session.ts";
+import { sessionAccessor, sessionManager } from "./session.ts";
 
 // Create the shell runtime.
 // Services, loggers and sessionAccessor could be reuse through a shared packages or faked when in isolation.
@@ -14,7 +14,7 @@ const runtime = new Runtime({
     sessionAccessor
 });
 
-registerLocalModules([registerShell(onLogin, onLogout), registerDev, registerLocalModule], runtime);
+registerLocalModules([registerShell(sessionManager), registerDev, registerLocalModule], runtime);
 
 const root = createRoot(document.getElementById("root")!);
 

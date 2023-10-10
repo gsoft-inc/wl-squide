@@ -17,7 +17,6 @@ export interface NonIndexRoute extends Omit<NonIndexRouteObject, "children"> {
 export type Route = IndexRoute | NonIndexRoute;
 
 export type RootRoute = Route & {
-    hoist?: boolean;
     visibility?: RouteVisibility;
     type?: RouteType;
 };

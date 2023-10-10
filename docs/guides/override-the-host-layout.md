@@ -178,7 +178,6 @@ import { Login } from "./Login.tsx";
 export function register: ModuleRegisterFunction<Runtime>(runtime) {
     runtime.registerRoute({
         path: "/login",
-        hoist: true,
         element: <LocalLayout />,
         children: [
             {
@@ -191,6 +190,8 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
                 ]
             }
         ]
+    }, {
+        hoist: true
     });
 }
 ```

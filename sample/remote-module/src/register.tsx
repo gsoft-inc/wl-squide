@@ -3,7 +3,7 @@ import { getMswPlugin } from "@squide/msw";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { requestHandlers } from "../mocks/handlers.ts";
 
-export const register: ModuleRegisterFunction<Runtime> = runtime => {
+function registerRoutes(runtime: Runtime) {
     runtime.registerRoute({
         path: "/remote",
         lazy: async () => import("./Remote.tsx")
@@ -23,7 +23,6 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
     });
 
     runtime.registerRoute({
-        hoist: true,
         path: "/hoisted",
         lazy: () => import("./CustomLayout.tsx"),
         children: [
@@ -32,6 +31,8 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
                 lazy: () => import("./Hoisted.tsx")
             }
         ]
+    }, {
+        hoist: true
     });
 
     runtime.registerRoute({
@@ -123,9 +124,15 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
     }, {
         menuId: "/federated-tabs"
     });
+}
 
-    // Register request handlers for MSW.
-
+function registerMsw(runtime: Runtime) {
     const mswPlugin = getMswPlugin(runtime);
+
     mswPlugin.registerRequestHandlers(requestHandlers);
+}
+
+export const register: ModuleRegisterFunction<Runtime> = runtime => {
+    registerRoutes(runtime);
+    registerMsw(runtime);
 };

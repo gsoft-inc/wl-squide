@@ -30,7 +30,7 @@ export const registerLocalModule: ModuleRegisterFunction<Runtime, AppContext> = 
         }
     });
 
-    ///////
+    // Register federated tabs.
 
     runtime.registerRoute({
         index: true,

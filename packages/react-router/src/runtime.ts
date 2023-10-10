@@ -16,12 +16,12 @@ export class Runtime extends AbstractRuntime<RootRoute | Route, RootNavigationIt
     readonly #routeRegistry = new RouteRegistry();
     readonly #navigationItemRegistry = new NavigationItemRegistry();
 
-    #validateRootRoutes(route: RootRoute, { parentPath, parentName }: RegisterRouteOptions = {}) {
-        if (route.hoist && parentPath) {
+    #validateRootRoutes(route: RootRoute, { hoist, parentPath, parentName }: RegisterRouteOptions = {}) {
+        if (hoist && parentPath) {
             throw new Error(`[squide] A route cannot have the "hoist" property when a "publicPath" option is provided. Route id: "${route.path ?? route.name ?? "(no identifier)"}".`);
         }
 
-        if (route.hoist && parentName) {
+        if (hoist && parentName) {
             throw new Error(`[squide] A route cannot have the "hoist" property when a "parentName" option is provided. Route id: "${route.path ?? route.name ?? "(no identifier)"}".`);
         }
     }
@@ -33,7 +33,7 @@ export class Runtime extends AbstractRuntime<RootRoute | Route, RootNavigationIt
 
         // By default, a route that is not hoisted nor nested under a known
         // parent will be rendered under the ManagedRoutes outlet.
-        if (!route.hoist && !parentName && !isManagedRoutesOutletRoute(route)) {
+        if (!options.hoist && !parentName && !isManagedRoutesOutletRoute(route)) {
             parentName = ManagedRoutesOutletName;
         }
 

@@ -93,7 +93,8 @@ import { Page } from "./Page.tsx";
 
 runtime.registerRoute({
     path: "/page-1",
-    element: <Page />,
+    element: <Page />
+}, {
     hoist: true
 });
 ```

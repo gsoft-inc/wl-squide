@@ -1,16 +1,6 @@
 import { Link } from "react-router-dom";
 
-export type onLogoutHandler = () => Promise<void>;
-
-export interface LogoutProps {
-    onLogout?: onLogoutHandler;
-}
-
-export function Logout({ onLogout }: LogoutProps) {
-    if (onLogout) {
-        onLogout();
-    }
-
+export function Logout() {
     return (
         <main>
             <h1>Logged out</h1>

@@ -96,8 +96,9 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
         path: "/about",
         element: <About />,
         errorElement: <RemoteErrorBoundary />
+    }), {
         hoist: true
-    });
+    };
 
     runtime.registerNavigationItem({
         to: "/about",
@@ -167,7 +168,6 @@ import { About } from "./About.tsx";
 export function register: ModuleRegisterFunction<Runtime>(runtime) {
     runtime.registerRoute({
         path: "/about",
-        hoist: true,
         // Will render the "About" page inside the "RemoteLayout" rather than the "RootLayout".
         // For more information about React Router's nested routes, view https://reactrouter.com/en/main/start/tutorial#nested-routes.
         element: <RemoteLayout />,
@@ -182,6 +182,8 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
                 ]
             }
         ]
+    }, {
+        hoist: true
     });
 
     runtime.registerNavigationItem({
@@ -255,7 +257,8 @@ export function register: ModuleRegisterFunction<Runtime>(runtime) {
     runtime.registerRoute({
         path: "/login",
         element: <Login />,
-        errorElement: <RemoteErrorBoundary />,
+        errorElement: <RemoteErrorBoundary />
+    }, {
         // By hoisting the "Login" page, it will now be rendered outside of the default 
         // authenticated boundary and will therefore be public.
         hoist: true

@@ -15,10 +15,6 @@ export default defineBuildHostConfig(swcConfig, "host", publicPath, {
         "@sample/shared": {
             singleton: true,
             eager: true
-        },
-        "axios": {
-            singleton: true,
-            eager: true
         }
     },
     environmentVariables: {

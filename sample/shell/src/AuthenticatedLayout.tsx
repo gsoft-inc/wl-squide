@@ -1,7 +1,7 @@
 import { useApplicationEventBusListener, type Session, type SessionManager } from "@sample/shared";
 import { isNavigationLink, useLogger, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/react-router";
 import axios from "axios";
-import { Suspense, useCallback, type ReactNode } from "react";
+import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
 type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
@@ -57,14 +57,16 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
 
     useApplicationEventBusListener("write-to-host", handleModulesMessage);
 
-    const onDisconnect = useCallback(async () => {
+    const onDisconnect = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+
         axios.post("/logout")
             .then(() => {
                 sessionManager.clearSession();
 
                 logger.debug("[shell] The user session has been cleared.");
 
-                // navigate("/logout");
+                navigate("/logout");
             })
             .catch(() => {
                 throw new Error("An unknown error happened while disconnecting the user.");
@@ -82,7 +84,7 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
                     {renderedNavigationItems}
                 </nav>
                 <div style={{ whiteSpace: "nowrap", marginRight: "20px" }}>
-                    (User: <span style={{ fontWeight: "bold" }}>{session.user.name}</span>)
+                    (User: <span style={{ fontWeight: "bold" }}>{session?.user?.name}</span>)
                 </div>
                 <div>
                     <button type="button" onClick={onDisconnect}>Disconnect</button>

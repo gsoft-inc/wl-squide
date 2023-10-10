@@ -12,10 +12,6 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
         "@sample/shared": {
             singleton: true,
             eager: true
-        },
-        "axios": {
-            singleton: true,
-            eager: true
         }
     },
     environmentVariables: {

@@ -1,46 +1,14 @@
 import { AbstractRuntime, RootMenuId, type RegisterNavigationItemOptions, type RegisterRouteOptions } from "@squide/core";
 import { NavigationItemRegistry, type RootNavigationItem } from "./navigationItemRegistry.ts";
+import { ManagedRoutes } from "./outlets.ts";
 import { RouteRegistry, type Route } from "./routeRegistry.ts";
-
-const ManagedRoutesOutletName = "__squide-managed-routes-outlet__";
-
-export const ManagedRoutes: Route = {
-    name: ManagedRoutesOutletName
-};
-
-export function isManagedRoutesOutletRoute(route: Route) {
-    return route.name === ManagedRoutesOutletName;
-}
 
 export class Runtime extends AbstractRuntime<Route, RootNavigationItem> {
     readonly #routeRegistry = new RouteRegistry();
     readonly #navigationItemRegistry = new NavigationItemRegistry();
 
-    #validateRouteRegistrationOptions(route: Route, { hoist, parentPath, parentName }: RegisterRouteOptions = {}) {
-        if (hoist && parentPath) {
-            throw new Error(`[squide] A route cannot have the "hoist" property when a "publicPath" option is provided. Route id: "${route.path ?? route.name ?? "(no identifier)"}".`);
-        }
-
-        if (hoist && parentName) {
-            throw new Error(`[squide] A route cannot have the "hoist" property when a "parentName" option is provided. Route id: "${route.path ?? route.name ?? "(no identifier)"}".`);
-        }
-    }
-
     registerRoute(route: Route, options: RegisterRouteOptions = {}) {
-        this.#validateRouteRegistrationOptions(route, options);
-
-        let parentName = options.parentName;
-
-        // By default, a route that is not hoisted nor nested under a known
-        // parent will be rendered under the ManagedRoutes outlet.
-        if (!options.hoist && !parentName && !isManagedRoutesOutletRoute(route)) {
-            parentName = ManagedRoutesOutletName;
-        }
-
-        const result = this.#routeRegistry.add(route, {
-            ...options,
-            parentName
-        });
+        const result = this.#routeRegistry.add(route, options);
 
         if (result.registrationStatus === "registered") {
             const parentId = options.parentPath ?? options.parentName;

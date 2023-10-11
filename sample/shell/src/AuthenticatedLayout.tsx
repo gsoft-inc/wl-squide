@@ -76,6 +76,8 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
     const navigationItems = useNavigationItems();
     const renderedNavigationItems = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
+    console.log("$$$$$$$$ Hello from authenticated layout");
+
     return (
         <>
             <div style={{ display: "flex", alignItems: "center" }}>

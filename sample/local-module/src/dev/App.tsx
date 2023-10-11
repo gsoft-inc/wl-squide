@@ -1,13 +1,8 @@
 import { useAppRouter } from "@sample/shell";
-import { RouterProvider } from "react-router-dom";
+import { sessionManager } from "./session.ts";
 
 export function App() {
-    const router = useAppRouter();
-
-    return (
-        <RouterProvider
-            router={router}
-            fallbackElement={null}
-        />
-    );
+    return useAppRouter(sessionManager, {
+        waitForMsw: process.env.USE_MSW as unknown as boolean
+    });
 }

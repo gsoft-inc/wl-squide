@@ -20,8 +20,6 @@ expanded: true
 - [useRoutes](runtime/useRoutes.md)
 - [useNavigationItems](runtime/useNavigationItems.md)
 - [useLogger](runtime/useLogger.md)
-- [useService](runtime/useService.md)
-- [useServices](runtime/useServices.md)
 - [useSession](runtime/useSession.md)
 
 ### Registration
@@ -50,10 +48,6 @@ expanded: true
 ### Session
 
 - [useIsAuthenticated](session/useIsAuthenticated.md)
-
-### Services
-
-- [Service](services/service.md)
 
 ### Plugins
 

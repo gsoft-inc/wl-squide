@@ -1,5 +1,6 @@
+import { ManagedRoutes, isManagedRoutesOutletRoute } from "../src/outlets.ts";
 import type { Route } from "../src/routeRegistry.ts";
-import { ManagedRoutes, Runtime, isManagedRoutesOutletRoute } from "../src/runtime.ts";
+import { Runtime } from "../src/runtime.ts";
 
 describe("registerRoute", () => {
     describe("managed routes", () => {

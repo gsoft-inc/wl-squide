@@ -704,6 +704,9 @@ importers:
       '@squide/react-router':
         specifier: workspace:*
         version: link:../../packages/react-router
+      '@squide/webpack-module-federation':
+        specifier: workspace:*
+        version: link:../../packages/webpack-module-federation
       '@types/react':
         specifier: 18.2.22
         version: 18.2.22

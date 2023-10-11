@@ -131,48 +131,6 @@ const isAuthenticated = useIsAuthenticated();
 
 The session is also available from the [Runtime](/reference/runtime/runtime-class.md) instance.
 
-## Services
-
-While Squide provides a range of built-in functionalities, by no mean these alone can support the needs of every mature application. Therefore, the shell [Runtime](/reference/runtime/runtime-class.md) allows the addition of custom services.
-
-First, define a service by implementing the [Service](../reference/services/service.md) interface:
-
-```ts !#3 shared/src/telemetryService.ts
-import { Service } from "@squide/react-router";
-
-export class TelemetryService extends Service {
-    constructor() {
-        super(TelemetryService.name)
-    }
-
-    getUser(userId: string) {
-        ...
-    } 
-}
-```
-
-Then, make the service available to every part of the application by passing a service instance to the `Runtime` instance:
-
-```ts !#5 host/src/boostrap.tsx
-import { Runtime } from "@squide/react-router";
-import { TelemetryService } from "@sample/shared";
-
-const runtime = new Runtime({
-    services: [new TelemetryService()]
-});
-```
-
-Finally, access the service instance from anywhere with the [useService](/reference/runtime/useService.md) hook:
-
-```ts
-import { useService } from "@squide/react-router";
-import { TelemetryService } from "@sample/shared";
-
-const service = useService(TelemetryService.name) as TelemetryService;
-```
-
-The services are also available from the [Runtime](/reference/runtime/runtime-class.md#retrieve-a-service) instance.
-
 ## Plugins
 
 To keep Squide lightweight, not all functionalities should be integrated as a core functionality. However, to accommodate a broad range of technologies, a plugin system has been implemented to fill the gap.

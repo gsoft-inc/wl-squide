@@ -11,14 +11,14 @@ export function useIsMswStarted(enabled: boolean, { interval = 10 }: UseIsMswSta
     const runtime = useRuntime();
     const logger = useLogger();
 
-    const mswPlugin = getMswPlugin(runtime);
-
     // Using a state hook to force a rerender once MSW is started.
     const [value, setIsStarted] = useState(!enabled);
 
     // Perform a reload once MSW is started.
     useEffect(() => {
         if (enabled) {
+            const mswPlugin = getMswPlugin(runtime);
+
             const intervalId = setInterval(() => {
                 if (mswPlugin.isStarted) {
                     logger.debug("[squide] MSW is ready.");

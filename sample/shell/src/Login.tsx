@@ -1,7 +1,7 @@
 import { useIsAuthenticated } from "@squide/react-router";
 import axios from "axios";
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export function Login() {
     const [username, setUserName] = useState("");
@@ -19,7 +19,12 @@ export function Login() {
             .then(() => {
                 setIsBusy(false);
 
-                // Reloading the application so the App.tsx code is runned again.
+                // Reloading the whole application so the "App.tsx" component is re-rendered. Ideally, "useNavigate" would be
+                // used so "App.tsx" component would re-renderer everytime the location change but it doesn't
+                // seem feasible (at least  not easily) as public and private routes go through the "App.tsx" component.
+                // Anyhow, since all the Workleap apps will authenticate through a third party authentication provider, it
+                // doesn't seems like a big deal as the application will be reloaded anyway after the user logged in on the third party.
+                // application will be reloaded anyway after the login on the third party.
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 window.location = "/";

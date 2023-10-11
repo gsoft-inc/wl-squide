@@ -1,5 +1,6 @@
 import type { RegisterRouteOptions } from "@squide/core";
 import type { IndexRouteObject, NonIndexRouteObject } from "react-router-dom";
+import { ManagedRoutesOutletName, isManagedRoutesOutletRoute } from "./outlets.ts";
 
 export type RouteVisibility = "public" | "authenticated";
 
@@ -15,6 +16,8 @@ export interface NonIndexRoute extends Omit<NonIndexRouteObject, "children"> {
 }
 
 export type Route = IndexRoute | NonIndexRoute;
+
+export type RouteRegistrationStatus = "pending" | "registered";
 
 function normalizePath(routePath?: string) {
     if (routePath && routePath !== "/" && routePath.endsWith("/")) {
@@ -36,12 +39,6 @@ export function createIndexKey(route: Route) {
     return undefined;
 }
 
-export type RouteRegistrationStatus = "pending" | "registered";
-
-export interface AddRouteReturnType {
-    registrationStatus: RouteRegistrationStatus;
-    completedPendingRegistrations: Route[];
-}
 
 export class RouteRegistry {
     #routes: Route[];
@@ -95,7 +92,7 @@ export class RouteRegistry {
             // Add index entries to speed up the registration of future nested routes.
             const indexKey = this.#addIndex(route);
 
-            // IMPORTANT: do not deal with the pending registrations before recursively going through the children.
+            // IMPORTANT: do not handle the pending registrations before recursively going through the children.
             // Otherwise pending routes will be handled twice (one time as a pending registration and one time as child
             // of the route).
             if (indexKey) {
@@ -131,7 +128,34 @@ export class RouteRegistry {
         return [];
     }
 
-    add(route: Route, { parentPath, parentName }: RegisterRouteOptions = {}) {
+    #validateRouteRegistrationOptions(route: Route, { hoist, parentPath, parentName }: RegisterRouteOptions = {}) {
+        if (hoist && parentPath) {
+            throw new Error(`[squide] A route cannot have the "hoist" property when a "publicPath" option is provided. Route id: "${route.path ?? route.name ?? "(no identifier)"}".`);
+        }
+
+        if (hoist && parentName) {
+            throw new Error(`[squide] A route cannot have the "hoist" property when a "parentName" option is provided. Route id: "${route.path ?? route.name ?? "(no identifier)"}".`);
+        }
+    }
+
+    add(route: Route, options: RegisterRouteOptions = {}) {
+        let parentName = options.parentName;
+
+        // By default, a route that is not hoisted nor nested under a known
+        // parent will be rendered under the ManagedRoutes outlet.
+        if (!options.hoist && !parentName && !isManagedRoutesOutletRoute(route)) {
+            parentName = ManagedRoutesOutletName;
+        }
+
+        this.#validateRouteRegistrationOptions(route, options);
+
+        return this.#addRoute(route, {
+            ...options,
+            parentName
+        });
+    }
+
+    #addRoute(route: Route, { parentPath, parentName }: RegisterRouteOptions) {
         if (parentPath) {
             // The normalized path cannot be undefined because it's been provided by the consumer
             // (e.g. it cannot be a pathless route).
@@ -145,7 +169,7 @@ export class RouteRegistry {
         return this.#addRootRoutes([route]);
     }
 
-    #addRootRoutes(routes: Route[]): AddRouteReturnType {
+    #addRootRoutes(routes: Route[]) {
         const { newRoutes, completedPendingRegistrations } = this.#recursivelyAddRoutes(routes);
 
         // Create a new array so the routes array is immutable.
@@ -157,7 +181,7 @@ export class RouteRegistry {
         };
     }
 
-    #addNestedRoutes(routes: Route[], parentId: string): AddRouteReturnType {
+    #addNestedRoutes(routes: Route[], parentId: string) {
         const layoutRoute = this.#routesIndex.get(parentId);
 
         if (!layoutRoute) {

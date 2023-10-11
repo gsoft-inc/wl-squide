@@ -52,7 +52,7 @@ const Remotes: RemoteDefinition = [
 registerRemoteModules(Remotes, runtime, { context });
 ```
 
-```tsx !#5-19 remote-module/src/register.tsx
+```tsx !#5-15 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import type { AppContext } from "@sample/shared";
 import { About } from "./About.tsx";

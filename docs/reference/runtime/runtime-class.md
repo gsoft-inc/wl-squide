@@ -11,7 +11,7 @@ A runtime instance give modules access to functionalities such as routing, navig
 ## Reference
 
 ```ts
-const runtime = new Runtime(options?: { loggers?: [], services?: [], plugins?: [], sessionAccessor?: () => {} })
+const runtime = new Runtime(options?: { loggers?: [], plugins?: [], sessionAccessor?: () => {} })
 ```
 
 ### Parameters
@@ -19,7 +19,6 @@ const runtime = new Runtime(options?: { loggers?: [], services?: [], plugins?: [
 - `options`: An optional object literal of options:
     - `mode`: An optional mode to optimize Squide for `production`. Values are `"development"` (default) and `"production"`.
     - `loggers`: An optional array of `Logger` instances.
-    - `services`: An optional array of custom service instances.
     - `plugins`: An optional array of custom plugin instances.
     - `sessionAccessor`: An optional function returning the current session.
 
@@ -31,13 +30,12 @@ const runtime = new Runtime(options?: { loggers?: [], services?: [], plugins?: [
 import { ConsoleLogger, Runtime } from "@squide/react-router";
 import { LocalStorageSessionManager } from "@squide/fakes";
 import { MswPlugin } from "@squide/msw";
-import { TelemetryService, type AppSession } from "@sample/shared";
+import { type AppSession } from "@sample/shared";
 
 const sessionManager = new LocalStorageSessionManager();
 
 const runtime = new Runtime({
     loggers: [new ConsoleLogger()],
-    services: [new TelemetryService()],
     plugins: [new MswPlugin()],
     sessionAccessor: () => {
         return sessionManager.getSession();
@@ -63,7 +61,7 @@ runtime.registerRoute(route, options?: {})
 
 - `route`: accept any properties of a React Router [Route](https://reactrouter.com/en/main/components/route) component with the addition of:
     - `name`: An optional name for the route.
-    - `visibility`: An optional visibility indicator for the route. Values are `public` or `authenticated`.
+    - `visibility`: An optional visibility indicator for the route. Accepted values are `"public"` or `"authenticated"`.
 - `options`: An optional object literal of options:
     - `hoist`: An optional boolean value to register the route at the root of the router. The default value is `false`.
     - `parentPath`: An optional path of a parent route to register this new route under.
@@ -215,6 +213,7 @@ const routes = runtime.routes;
 runtime.registerNavigationItem(item, options?: {})
 ```
 
+- `item`: `NavigationSection | NavigationLink`.
 - `options`: An optional object literal of options:
     - `menuId`: An optional menu id to associate the item with.
 
@@ -393,15 +392,6 @@ runtime.eventBus.addListener("write-to-host", () => {});
 // Dispatch an event to the host application or a module.
 runtime.eventBus.dispatch("write-to-host", "Hello host!");
 ```
-
-### Retrieve a service
-
-```ts
-// If the service isn't registered, an exception will be thrown.
-const service = runtime.getService(TelemetryService.name) as TelemetryService;
-```
-
-[!ref Learn more about services](../services/service.md)
 
 ### Retrieve a plugin
 

@@ -103,6 +103,6 @@ export abstract class AbstractRuntime<TRoute = unknown, TNavigationItem = unknow
 
     // Prefixed by _ to indicate that it's considered as an "internal" method.
     _completeRegistration() {
-        this._logger.debug("[squide] Completed modules registration.");
+        this._logger.debug("[squide] %cModules are ready%c.", "color: white; background-color: green;", "");
     }
 }

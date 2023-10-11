@@ -22,7 +22,7 @@ export class Runtime extends AbstractRuntime<Route, RootNavigationItem> {
 
             if (result.completedPendingRegistrations.length > 0) {
                 this._logger.debug(
-                    `[squide] The pending registration of the following route${result.completedPendingRegistrations.length > 0 ? "s" : ""} has been %ccompleted%c.`, "color: white; background-color: #26bfa5;", "%s",
+                    `[squide] The pending registration of the following route${result.completedPendingRegistrations.length > 0 ? "s" : ""} has been %ccompleted%c.`, "color: white; background-color: green;", "%s",
                     "Newly registered routes:", result.completedPendingRegistrations,
                     "All registered routes:", this.#routeRegistry.routes
                 );
@@ -31,7 +31,7 @@ export class Runtime extends AbstractRuntime<Route, RootNavigationItem> {
             const parentId = options.parentPath ?? options.parentName;
 
             this._logger.debug(
-                `[squide] The following route registration is %cpending%c until "${parentId}" is registered.`, "color: white; background-color: #007acc;", "%s",
+                `[squide] The following route registration is %cpending%c until "${parentId}" is registered.`, "color: black; background-color: yellow;", "%s",
                 "Pending registration:", route,
                 "All registered routes:", this.#routeRegistry.routes
             );
@@ -48,7 +48,7 @@ export class Runtime extends AbstractRuntime<Route, RootNavigationItem> {
         const items = this.#navigationItemRegistry.getItems(menuId)!;
 
         this._logger.debug(
-            `[squide] The following navigation item has been registered to the "${menuId}" menu for a total of ${items.length} item${items.length !== 1 ? "s" : ""}.`,
+            `[squide] The following navigation item has been %cregistered%c to the "${menuId}" menu for a total of ${items.length} item${items.length !== 1 ? "s" : ""}.`, "color: white; background-color: green;", "%s",
             "Newly registered item:", navigationItem,
             "All registered items:", this.#navigationItemRegistry.getItems(menuId)
         );

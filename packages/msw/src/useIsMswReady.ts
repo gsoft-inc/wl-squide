@@ -21,7 +21,7 @@ export function useIsMswStarted(enabled: boolean, { interval = 10 }: UseIsMswSta
 
             const intervalId = setInterval(() => {
                 if (mswPlugin.isStarted) {
-                    logger.debug("[squide] MSW is ready.");
+                    logger.debug("[squide] %cMSW is ready%c.", "color: white; background-color: green;", "");
 
                     // Must clear interval before calling "_completeRegistration" in case there's an error.
                     clearInterval(intervalId);

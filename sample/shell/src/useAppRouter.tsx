@@ -41,7 +41,7 @@ function BootstrappingRoute({ sessionManager, waitForMsw = false }: Bootstrappin
                             }
                         };
 
-                        logger.debug("[shell] Loaded the user session:", session);
+                        logger.debug("[shell] %cSession is ready%c:", "color: white; background-color: green;", "", session);
 
                         sessionManager.setSession(session);
 

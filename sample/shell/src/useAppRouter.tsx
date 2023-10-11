@@ -6,12 +6,12 @@ import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 
-interface BootstrappingRouteProps {
+interface RootRouteProps {
     sessionManager: SessionManager;
     waitForMsw?: boolean;
 }
 
-function BootstrappingRoute({ sessionManager, waitForMsw = false }: BootstrappingRouteProps) {
+function RootRoute({ sessionManager, waitForMsw = false }: RootRouteProps) {
     const [isReady, setIsReady] = useState(false);
 
     const logger = useLogger();
@@ -83,7 +83,7 @@ export function useAppRouter(sessionManager: SessionManager, { waitForMsw }: Use
         return createBrowserRouter([
             {
                 // Pathless route to initialize the application.
-                element: <BootstrappingRoute sessionManager={sessionManager} waitForMsw={waitForMsw} />,
+                element: <RootRoute sessionManager={sessionManager} waitForMsw={waitForMsw} />,
                 children: routes
             }
         ]);

@@ -183,25 +183,25 @@ describe("registerRoute", () => {
             expect(routes[0].visibility).toBe("public");
         });
 
-        test("can register a root route with a \"authenticated\" visibility", () => {
+        test("can register a root route with a \"protected\" visibility", () => {
             const runtime = new Runtime();
 
             registerManagedRoutesOutlet(runtime);
 
             runtime.registerRoute({
-                path: "/authenticated",
+                path: "/protected",
                 element: <div>Hello!</div>,
-                visibility: "authenticated"
+                visibility: "protected"
             });
 
             const routes = getManagedRoutes(runtime.routes)!;
 
             expect(routes.length).toBe(1);
-            expect(routes[0].path).toBe("/authenticated");
-            expect(routes[0].visibility).toBe("authenticated");
+            expect(routes[0].path).toBe("/protected");
+            expect(routes[0].visibility).toBe("protected");
         });
 
-        test("when a root route has no visibility property, it is considered as an \"authenticated\" route", () => {
+        test("when a root route has no visibility property, it is considered as an \"protected\" route", () => {
             const runtime = new Runtime();
 
             registerManagedRoutesOutlet(runtime);
@@ -215,7 +215,7 @@ describe("registerRoute", () => {
 
             expect(routes.length).toBe(1);
             expect(routes[0].path).toBe("/foo");
-            expect(routes[0].visibility).toBe("authenticated");
+            expect(routes[0].visibility).toBe("protected");
         });
 
         test("can register a nested route with a \"public\" visibility", () => {
@@ -241,7 +241,7 @@ describe("registerRoute", () => {
             expect(routes[0].children![0].visibility).toBe("public");
         });
 
-        test("can register a nested route with a \"authenticated\" visibility", () => {
+        test("can register a nested route with a \"protected\" visibility", () => {
             const runtime = new Runtime();
 
             registerManagedRoutesOutlet(runtime);
@@ -251,7 +251,7 @@ describe("registerRoute", () => {
                 element: <div>Hello!</div>,
                 children: [
                     {
-                        visibility: "authenticated",
+                        visibility: "protected",
                         path: "/layout/nested",
                         element: <div>Hello!</div>
                     }
@@ -261,10 +261,10 @@ describe("registerRoute", () => {
             const routes = getManagedRoutes(runtime.routes)!;
 
             expect(routes[0].children![0].path).toBe("/layout/nested");
-            expect(routes[0].children![0].visibility).toBe("authenticated");
+            expect(routes[0].children![0].visibility).toBe("protected");
         });
 
-        test("when a nested route has no visibility property, it is considered as an \"authenticated\" route", () => {
+        test("when a nested route has no visibility property, it is considered as a \"protected\" route", () => {
             const runtime = new Runtime();
 
             registerManagedRoutesOutlet(runtime);
@@ -283,7 +283,7 @@ describe("registerRoute", () => {
             const routes = getManagedRoutes(runtime.routes)!;
 
             expect(routes[0].children![0].path).toBe("/layout/nested");
-            expect(routes[0].children![0].visibility).toBe("authenticated");
+            expect(routes[0].children![0].visibility).toBe("protected");
         });
 
         test("can register a root route with a name", () => {
@@ -446,22 +446,22 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].visibility).toBe("public");
         });
 
-        test("can register a root route with a \"authenticated\" visibility", () => {
+        test("can register a root route with a \"protected\" visibility", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                path: "/authenticated",
+                path: "/protected",
                 element: <div>Hello!</div>,
-                visibility: "authenticated"
+                visibility: "protected"
             }, {
                 hoist: true
             });
 
-            expect(runtime.routes[0].path).toBe("/authenticated");
-            expect(runtime.routes[0].visibility).toBe("authenticated");
+            expect(runtime.routes[0].path).toBe("/protected");
+            expect(runtime.routes[0].visibility).toBe("protected");
         });
 
-        test("when a root route has no visibility property, it is considered as an \"authenticated\" route", () => {
+        test("when a root route has no visibility property, it is considered as an \"protected\" route", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
@@ -472,7 +472,7 @@ describe("registerRoute", () => {
             });
 
             expect(runtime.routes[0].path).toBe("/foo");
-            expect(runtime.routes[0].visibility).toBe("authenticated");
+            expect(runtime.routes[0].visibility).toBe("protected");
         });
 
         test("can register a nested route with a \"public\" visibility", () => {
@@ -496,7 +496,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].children![0].visibility).toBe("public");
         });
 
-        test("can register a nested route with a \"authenticated\" visibility", () => {
+        test("can register a nested route with a \"protected\" visibility", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
@@ -504,7 +504,7 @@ describe("registerRoute", () => {
                 element: <div>Hello!</div>,
                 children: [
                     {
-                        visibility: "authenticated",
+                        visibility: "protected",
                         path: "/layout/nested",
                         element: <div>Hello!</div>
                     }
@@ -514,10 +514,10 @@ describe("registerRoute", () => {
             });
 
             expect(runtime.routes[0].children![0].path).toBe("/layout/nested");
-            expect(runtime.routes[0].children![0].visibility).toBe("authenticated");
+            expect(runtime.routes[0].children![0].visibility).toBe("protected");
         });
 
-        test("when a nested route has no visibility property, it is considered as an \"authenticated\" route", () => {
+        test("when a nested route has no visibility property, it is considered as an \"protected\" route", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
@@ -534,7 +534,7 @@ describe("registerRoute", () => {
             });
 
             expect(runtime.routes[0].children![0].path).toBe("/layout/nested");
-            expect(runtime.routes[0].children![0].visibility).toBe("authenticated");
+            expect(runtime.routes[0].children![0].visibility).toBe("protected");
         });
 
         test("can register a root route with a name", () => {

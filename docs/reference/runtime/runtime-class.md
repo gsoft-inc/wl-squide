@@ -61,7 +61,7 @@ runtime.registerRoute(route, options?: {})
 
 - `route`: accept any properties of a React Router [Route](https://reactrouter.com/en/main/components/route) component with the addition of:
     - `name`: An optional name for the route.
-    - `visibility`: An optional visibility indicator for the route. Accepted values are `"public"` or `"authenticated"`.
+    - `visibility`: An optional visibility indicator for the route. Accepted values are `"public"` or `"protected"`.
 - `options`: An optional object literal of options:
     - `hoist`: An optional boolean value to register the route at the root of the router. The default value is `false`.
     - `parentPath`: An optional path of a parent route to register this new route under.
@@ -96,7 +96,7 @@ runtime.registerRoute({
 
 ### Register a public route
 
-When registering a route, a hint can be provided, indicating if the route is intended to be displayed as a `public` or `authenticated` route. This is especially useful when dealing with code that conditionally fetch data for authenticated routes (e.g. a session).
+When registering a route, a hint can be provided, indicating if the route is intended to be displayed as a `public` or `protected` route. This is especially useful when dealing with code that conditionally fetch data for protected routes (e.g. a session).
 
 ```tsx !#4
 import { Page } from "./Page.tsx";
@@ -129,7 +129,7 @@ runtime.registerRoute({
 ```
 
 !!!info
-When no visibility hint is provided, a route is considered as an `authenticated` route.
+When no visibility hint is provided, a route is considered as a `protected` route.
 !!!
 
 ### Register a named route

@@ -4,17 +4,13 @@ import { useIsMatchingRouteProtected, useLogger, useRoutes } from "@squide/react
 import { useAreModulesReady } from "@squide/webpack-module-federation";
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
-import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-interface RootRouteProps {
-    sessionManager: SessionManager;
-    waitForMsw?: boolean;
-}
-
-function RootRoute({ sessionManager, waitForMsw = false }: RootRouteProps) {
+export function useAppRouter(waitForMsw: boolean, sessionManager: SessionManager) {
     const [isReady, setIsReady] = useState(false);
 
     const logger = useLogger();
+    const routes = useRoutes();
 
     // Re-render the app once all the remotes are registered, otherwise the remotes routes won't be added to the router.
     const areModulesReady = useAreModulesReady();
@@ -65,29 +61,13 @@ function RootRoute({ sessionManager, waitForMsw = false }: RootRouteProps) {
         }
     }, [areModulesReady, isMswStarted, isActiveRouteProtected, logger, sessionManager]);
 
+    const router = useMemo(() => {
+        return createBrowserRouter(routes);
+    }, [routes]);
+
     if (!isReady) {
         return <div>Loading...</div>;
     }
-
-    return <Outlet />;
-}
-
-export interface UseAppRouterOptions {
-    waitForMsw?: boolean;
-}
-
-export function useAppRouter(sessionManager: SessionManager, { waitForMsw }: UseAppRouterOptions = {}) {
-    const routes = useRoutes();
-
-    const router = useMemo(() => {
-        return createBrowserRouter([
-            {
-                // Pathless route to initialize the application.
-                element: <RootRoute sessionManager={sessionManager} waitForMsw={waitForMsw} />,
-                children: routes
-            }
-        ]);
-    }, [routes, sessionManager, waitForMsw]);
 
     return (
         <RouterProvider

@@ -22,5 +22,5 @@ export function useIsMatchingRouteProtected(locationArg: Partial<Location>) {
         throw new Error(`[squide] There's no matching route for the location: "${locationArg.pathname}". Did you add routes to React Router without using the runtime.registerRoute() function?`);
     }
 
-    return activeRoute.visibility === "authenticated";
+    return activeRoute.visibility === "protected";
 }

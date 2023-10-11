@@ -2,7 +2,7 @@ import type { RegisterRouteOptions } from "@squide/core";
 import type { IndexRouteObject, NonIndexRouteObject } from "react-router-dom";
 import { ManagedRoutesOutletName, isManagedRoutesOutletRoute } from "./outlets.ts";
 
-export type RouteVisibility = "public" | "authenticated";
+export type RouteVisibility = "public" | "protected";
 
 export interface IndexRoute extends IndexRouteObject {
     name?: string;
@@ -77,7 +77,7 @@ export class RouteRegistry {
             // Creates a copy of the route object and add the default properties.
             const route = {
                 ...x,
-                visibility: x.visibility ?? "authenticated"
+                visibility: x.visibility ?? "protected"
             };
 
             if (route.children) {

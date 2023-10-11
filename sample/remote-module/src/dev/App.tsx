@@ -3,9 +3,7 @@ import { useAppRouter } from "@sample/shell";
 import { sessionManager } from "./session.ts";
 
 export function App() {
-    const appRouter = useAppRouter(sessionManager, {
-        waitForMsw: process.env.USE_MSW as unknown as boolean
-    });
+    const appRouter = useAppRouter(process.env.USE_MSW as unknown as boolean, sessionManager);
 
     return (
         <BackgroundColorContext.Provider value="blue">

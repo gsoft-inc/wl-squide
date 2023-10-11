@@ -55,7 +55,6 @@ function registerRoutes(runtime: Runtime, sessionManager: SessionManager) {
                                 ]
                             }
                         ]
-
                     }
                 ]
             }

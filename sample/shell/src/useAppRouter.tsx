@@ -1,6 +1,6 @@
 import type { Session, SessionManager } from "@sample/shared";
 import { useIsMswStarted } from "@squide/msw";
-import { useIsActiveRouteProtected, useLogger, useRoutes } from "@squide/react-router";
+import { useIsMatchingRouteProtected, useLogger, useRoutes } from "@squide/react-router";
 import { useAreModulesReady } from "@squide/webpack-module-federation";
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
@@ -26,7 +26,7 @@ function RootRoute({ sessionManager, waitForMsw = false }: RootRouteProps) {
     // seem feasible (at least  not easily) as public and private routes go through this component.
     // Anyhow, since all the Workleap apps will authenticate through a third party authentication provider, it
     // doesn't seems like a big deal as the application will be reloaded anyway after the user logged in on the third party.
-    const isActiveRouteProtected = useIsActiveRouteProtected(window.location);
+    const isActiveRouteProtected = useIsMatchingRouteProtected(window.location);
 
     useEffect(() => {
         if (areModulesReady && isMswStarted) {

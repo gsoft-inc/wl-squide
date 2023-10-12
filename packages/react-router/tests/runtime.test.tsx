@@ -171,16 +171,16 @@ describe("registerRoute", () => {
             registerManagedRoutesOutlet(runtime);
 
             runtime.registerRoute({
+                $visibility: "public",
                 path: "/public",
-                element: <div>Hello!</div>,
-                visibility: "public"
+                element: <div>Hello!</div>
             });
 
             const routes = getManagedRoutes(runtime.routes)!;
 
             expect(routes.length).toBe(1);
             expect(routes[0].path).toBe("/public");
-            expect(routes[0].visibility).toBe("public");
+            expect(routes[0].$visibility).toBe("public");
         });
 
         test("can register a root route with a \"protected\" visibility", () => {
@@ -189,16 +189,16 @@ describe("registerRoute", () => {
             registerManagedRoutesOutlet(runtime);
 
             runtime.registerRoute({
+                $visibility: "protected",
                 path: "/protected",
-                element: <div>Hello!</div>,
-                visibility: "protected"
+                element: <div>Hello!</div>
             });
 
             const routes = getManagedRoutes(runtime.routes)!;
 
             expect(routes.length).toBe(1);
             expect(routes[0].path).toBe("/protected");
-            expect(routes[0].visibility).toBe("protected");
+            expect(routes[0].$visibility).toBe("protected");
         });
 
         test("when a root route has no visibility property, it is considered as an \"protected\" route", () => {
@@ -215,7 +215,7 @@ describe("registerRoute", () => {
 
             expect(routes.length).toBe(1);
             expect(routes[0].path).toBe("/foo");
-            expect(routes[0].visibility).toBe("protected");
+            expect(routes[0].$visibility).toBe("protected");
         });
 
         test("can register a nested route with a \"public\" visibility", () => {
@@ -228,7 +228,7 @@ describe("registerRoute", () => {
                 element: <div>Hello!</div>,
                 children: [
                     {
-                        visibility: "public",
+                        $visibility: "public",
                         path: "/layout/nested",
                         element: <div>Hello!</div>
                     }
@@ -238,7 +238,7 @@ describe("registerRoute", () => {
             const routes = getManagedRoutes(runtime.routes)!;
 
             expect(routes[0].children![0].path).toBe("/layout/nested");
-            expect(routes[0].children![0].visibility).toBe("public");
+            expect(routes[0].children![0].$visibility).toBe("public");
         });
 
         test("can register a nested route with a \"protected\" visibility", () => {
@@ -251,7 +251,7 @@ describe("registerRoute", () => {
                 element: <div>Hello!</div>,
                 children: [
                     {
-                        visibility: "protected",
+                        $visibility: "protected",
                         path: "/layout/nested",
                         element: <div>Hello!</div>
                     }
@@ -261,7 +261,7 @@ describe("registerRoute", () => {
             const routes = getManagedRoutes(runtime.routes)!;
 
             expect(routes[0].children![0].path).toBe("/layout/nested");
-            expect(routes[0].children![0].visibility).toBe("protected");
+            expect(routes[0].children![0].$visibility).toBe("protected");
         });
 
         test("when a nested route has no visibility property, it is considered as a \"protected\" route", () => {
@@ -283,7 +283,7 @@ describe("registerRoute", () => {
             const routes = getManagedRoutes(runtime.routes)!;
 
             expect(routes[0].children![0].path).toBe("/layout/nested");
-            expect(routes[0].children![0].visibility).toBe("protected");
+            expect(routes[0].children![0].$visibility).toBe("protected");
         });
 
         test("can register a root route with a name", () => {
@@ -292,14 +292,14 @@ describe("registerRoute", () => {
             registerManagedRoutesOutlet(runtime);
 
             runtime.registerRoute({
-                name: "foo",
+                $name: "foo",
                 element: <div>Hello!</div>
             });
 
             const routes = getManagedRoutes(runtime.routes)!;
 
             expect(routes.length).toBe(1);
-            expect(routes[0].name).toBe("foo");
+            expect(routes[0].$name).toBe("foo");
         });
 
         test("can register a nested route with a name", () => {
@@ -311,7 +311,7 @@ describe("registerRoute", () => {
                 element: <div>Hello</div>,
                 children: [
                     {
-                        name: "foo",
+                        $name: "foo",
                         element: <div>You!</div>
                     }
                 ]
@@ -320,7 +320,7 @@ describe("registerRoute", () => {
             const routes = getManagedRoutes(runtime.routes)!;
 
             expect(routes.length).toBe(1);
-            expect(routes[0].children![0].name).toBe("foo");
+            expect(routes[0].children![0].$name).toBe("foo");
         });
     });
 
@@ -435,30 +435,30 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
+                $visibility: "public",
                 path: "/public",
-                element: <div>Hello!</div>,
-                visibility: "public"
+                element: <div>Hello!</div>
             }, {
                 hoist: true
             });
 
             expect(runtime.routes[0].path).toBe("/public");
-            expect(runtime.routes[0].visibility).toBe("public");
+            expect(runtime.routes[0].$visibility).toBe("public");
         });
 
         test("can register a root route with a \"protected\" visibility", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
+                $visibility: "protected",
                 path: "/protected",
-                element: <div>Hello!</div>,
-                visibility: "protected"
+                element: <div>Hello!</div>
             }, {
                 hoist: true
             });
 
             expect(runtime.routes[0].path).toBe("/protected");
-            expect(runtime.routes[0].visibility).toBe("protected");
+            expect(runtime.routes[0].$visibility).toBe("protected");
         });
 
         test("when a root route has no visibility property, it is considered as an \"protected\" route", () => {
@@ -472,7 +472,7 @@ describe("registerRoute", () => {
             });
 
             expect(runtime.routes[0].path).toBe("/foo");
-            expect(runtime.routes[0].visibility).toBe("protected");
+            expect(runtime.routes[0].$visibility).toBe("protected");
         });
 
         test("can register a nested route with a \"public\" visibility", () => {
@@ -483,7 +483,7 @@ describe("registerRoute", () => {
                 element: <div>Hello!</div>,
                 children: [
                     {
-                        visibility: "public",
+                        $visibility: "public",
                         path: "/layout/nested",
                         element: <div>Hello!</div>
                     }
@@ -493,7 +493,7 @@ describe("registerRoute", () => {
             });
 
             expect(runtime.routes[0].children![0].path).toBe("/layout/nested");
-            expect(runtime.routes[0].children![0].visibility).toBe("public");
+            expect(runtime.routes[0].children![0].$visibility).toBe("public");
         });
 
         test("can register a nested route with a \"protected\" visibility", () => {
@@ -504,7 +504,7 @@ describe("registerRoute", () => {
                 element: <div>Hello!</div>,
                 children: [
                     {
-                        visibility: "protected",
+                        $visibility: "protected",
                         path: "/layout/nested",
                         element: <div>Hello!</div>
                     }
@@ -514,7 +514,7 @@ describe("registerRoute", () => {
             });
 
             expect(runtime.routes[0].children![0].path).toBe("/layout/nested");
-            expect(runtime.routes[0].children![0].visibility).toBe("protected");
+            expect(runtime.routes[0].children![0].$visibility).toBe("protected");
         });
 
         test("when a nested route has no visibility property, it is considered as an \"protected\" route", () => {
@@ -534,21 +534,21 @@ describe("registerRoute", () => {
             });
 
             expect(runtime.routes[0].children![0].path).toBe("/layout/nested");
-            expect(runtime.routes[0].children![0].visibility).toBe("protected");
+            expect(runtime.routes[0].children![0].$visibility).toBe("protected");
         });
 
         test("can register a root route with a name", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                name: "foo",
+                $name: "foo",
                 element: <div>Hello!</div>
             }, {
                 hoist: true
             });
 
             expect(runtime.routes.length).toBe(1);
-            expect(runtime.routes[0].name).toBe("foo");
+            expect(runtime.routes[0].$name).toBe("foo");
         });
 
         test("can register a nested route with a name", () => {
@@ -558,7 +558,7 @@ describe("registerRoute", () => {
                 element: <div>Hello</div>,
                 children: [
                     {
-                        name: "foo",
+                        $name: "foo",
                         element: <div>You!</div>
                     }
                 ]
@@ -567,7 +567,7 @@ describe("registerRoute", () => {
             });
 
             expect(runtime.routes.length).toBe(1);
-            expect(runtime.routes[0].children![0].name).toBe("foo");
+            expect(runtime.routes[0].children![0].$name).toBe("foo");
         });
     });
 
@@ -808,7 +808,7 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                name: "layout",
+                $name: "layout",
                 element: <div>Hello!</div>
             }, {
                 hoist: true
@@ -870,7 +870,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].children).toBeUndefined();
 
             runtime.registerRoute({
-                name: "layout",
+                $name: "layout",
                 element: <div>Hello!</div>
             }, {
                 hoist: true
@@ -899,7 +899,7 @@ describe("registerRoute", () => {
                         element: <div>You!</div>,
                         children: [
                             {
-                                name: "layout",
+                                $name: "layout",
                                 element: <div>Hello from nested!</div>
                             }
                         ]
@@ -918,14 +918,14 @@ describe("registerRoute", () => {
             const runtime = new Runtime();
 
             runtime.registerRoute({
-                name: "layout",
+                $name: "layout",
                 element: <div>Hello!</div>
             }, {
                 hoist: true
             });
 
             runtime.registerRoute({
-                name: "layout-nested",
+                $name: "layout-nested",
                 element: <div>Hello!</div>
             }
             , {
@@ -953,7 +953,7 @@ describe("registerRoute", () => {
                         element: <div>You!</div>,
                         children: [
                             {
-                                name: "deeply-nested-layout",
+                                $name: "deeply-nested-layout",
                                 element: <div>Hello from nested!</div>
                             }
                         ]
@@ -964,14 +964,14 @@ describe("registerRoute", () => {
             });
 
             runtime.registerRoute({
-                name: "deeply-nested-layout/another-level",
+                $name: "deeply-nested-layout/another-level",
                 element: <div>Hello!</div>
             }, {
                 parentName: "deeply-nested-layout"
             });
 
             expect(runtime.routes.length).toBe(1);
-            expect(runtime.routes[0].children![0].children![0].children![0].name).toBe("deeply-nested-layout/another-level");
+            expect(runtime.routes[0].children![0].children![0].children![0].$name).toBe("deeply-nested-layout/another-level");
 
             runtime.registerRoute({
                 path: "/deeply-nested-layout/another-level/yet-another-level",
@@ -1002,8 +1002,8 @@ describe("registerNavigationItem", () => {
         const runtime = new Runtime();
 
         runtime.registerNavigationItem({
-            to: "/root",
-            label: "Root"
+            $label: "Root",
+            to: "/root"
         });
 
         expect(runtime.getNavigationItems()[0].to).toBe("/root");
@@ -1013,24 +1013,24 @@ describe("registerNavigationItem", () => {
         const runtime = new Runtime();
 
         runtime.registerNavigationItem({
-            label: "Section",
+            $label: "Section",
             children: [
                 {
-                    to: "/child",
-                    label: "Child"
+                    $label: "Child",
+                    to: "/child"
                 }
             ]
         });
 
-        expect(runtime.getNavigationItems()[0].label).toBe("Section");
+        expect(runtime.getNavigationItems()[0].$label).toBe("Section");
     });
 
     test("can register a navigation link for a specific menu id", () => {
         const runtime = new Runtime();
 
         runtime.registerNavigationItem({
-            to: "/link",
-            label: "Link"
+            $label: "Link",
+            to: "/link"
         }, {
             menuId: "link-menu"
         });
@@ -1042,18 +1042,18 @@ describe("registerNavigationItem", () => {
         const runtime = new Runtime();
 
         runtime.registerNavigationItem({
-            label: "Section",
+            $label: "Section",
             children: [
                 {
-                    to: "/child",
-                    label: "Child"
+                    $label: "Child",
+                    to: "/child"
                 }
             ]
         }, {
             menuId: "section-menu"
         });
 
-        expect(runtime.getNavigationItems("section-menu")[0].label).toBe("Section");
+        expect(runtime.getNavigationItems("section-menu")[0].$label).toBe("Section");
     });
 });
 
@@ -1062,30 +1062,30 @@ describe("getNavigationItems", () => {
         const runtime = new Runtime();
 
         runtime.registerNavigationItem({
-            to: "/item-1",
-            label: "Item 1"
+            $label: "Item 1",
+            to: "/item-1"
         });
 
         runtime.registerNavigationItem({
-            to: "/item-2",
-            label: "Item 2"
+            $label: "Item 2",
+            to: "/item-2"
         });
 
         runtime.registerNavigationItem({
-            to: "/item-3",
-            label: "Item 3"
+            $label: "Item 3",
+            to: "/item-3"
         });
 
         runtime.registerNavigationItem({
-            to: "/item-4",
-            label: "Item 4"
+            $label: "Item 4",
+            to: "/item-4"
         }, {
             menuId: "menu-1"
         });
 
         runtime.registerNavigationItem({
-            to: "/item-5",
-            label: "Item 5"
+            $label: "Item 5",
+            to: "/item-5"
         }, {
             menuId: "menu-2"
         });
@@ -1099,30 +1099,30 @@ describe("getNavigationItems", () => {
         const runtime = new Runtime();
 
         runtime.registerNavigationItem({
-            to: "/item-1",
-            label: "Item 1"
+            $label: "Item 1",
+            to: "/item-1"
         });
 
         runtime.registerNavigationItem({
-            to: "/item-2",
-            label: "Item 2"
+            $label: "Item 2",
+            to: "/item-2"
         });
 
         runtime.registerNavigationItem({
-            to: "/item-3",
-            label: "Item 3"
+            $label: "Item 3",
+            to: "/item-3"
         });
 
         runtime.registerNavigationItem({
-            to: "/item-4",
-            label: "Item 4"
+            $label: "Item 4",
+            to: "/item-4"
         }, {
             menuId: "menu-1"
         });
 
         runtime.registerNavigationItem({
-            to: "/item-5",
-            label: "Item 5"
+            $label: "Item 5",
+            to: "/item-5"
         }, {
             menuId: "menu-2"
         });
@@ -1199,7 +1199,7 @@ describe("_completeRegistration", () => {
             });
 
             runtime.registerRoute({
-                name: "layout",
+                $name: "layout",
                 element: <div>Hello!</div>
             }, {
                 hoist: true

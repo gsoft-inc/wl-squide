@@ -77,42 +77,42 @@ function registerRoutes(runtime: Runtime) {
     });
 
     runtime.registerNavigationItem({
-        to: "/remote",
-        label: "Remote"
+        $label: "Remote",
+        to: "/remote"
     });
 
     runtime.registerNavigationItem({
-        to: "/fetch",
-        label: "Fetch"
+        $label: "Fetch",
+        to: "/fetch"
     });
 
     runtime.registerNavigationItem({
-        to: "/hoisted",
-        label: <span style={{ color: "green" }}>Hoisted</span>
+        $label: <span style={{ color: "green" }}>Hoisted</span>,
+        to: "/hoisted"
     });
 
     runtime.registerNavigationItem({
-        label: "Section",
+        $label: "Section",
         children: [
             {
                 to: "#",
-                label: "Child 1"
+                $label: "Child 1"
             },
             {
                 to: "#",
-                label: "Child 2"
+                $label: "Child 2"
             }
         ]
     });
 
     runtime.registerNavigationItem({
-        to: "/no-context-override",
-        label: "No context override"
+        $label: "No context override",
+        to: "/no-context-override"
     });
 
     runtime.registerNavigationItem({
-        to: "/context-override",
-        label: "Context override"
+        $label: "Context override",
+        to: "/context-override"
     });
 
     // Register federated tabs.
@@ -132,16 +132,16 @@ function registerRoutes(runtime: Runtime) {
     });
 
     runtime.registerNavigationItem({
-        to: "/federated-tabs/officevibe",
-        label: "Officevibe"
+        $label: "Officevibe",
+        to: "/federated-tabs/officevibe"
     }, {
         menuId: "/federated-tabs"
     });
 
     runtime.registerNavigationItem({
-        to: "/federated-tabs/skills",
-        label: "Skills",
-        priority: 999
+        $label: "Skills",
+        $priority: 999,
+        to: "/federated-tabs/skills"
     }, {
         menuId: "/federated-tabs"
     });

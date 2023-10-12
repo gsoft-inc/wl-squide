@@ -62,7 +62,7 @@ export class Runtime extends AbstractRuntime<Route, RootNavigationItem> {
         const pendingRegistrations = this.#routeRegistry.pendingRegistrations;
 
         if (pendingRegistrations.size > 0) {
-            if (pendingRegistrations.has(ManagedRoutes.name!)) {
+            if (pendingRegistrations.has(ManagedRoutes.$name!)) {
                 // eslint-disable-next-line max-len
                 throw new Error("[squide] The \"ManagedRoutes\" outlet route is missing from the router configuration. The \"ManagedRoutes\" outlet route must be added as a children of an hoisted route. Did you forget to include the \"ManagedRoutes\" outlet route or hoist the parent route that includes the \"ManagedRoutes\" outlet route?");
             }
@@ -78,7 +78,7 @@ export class Runtime extends AbstractRuntime<Route, RootNavigationItem> {
                 message += "    Pending registrations:\r\n";
 
                 for (const x of nestedRoutes) {
-                    message += `        - "${x.path ?? x.name ?? "(no identifier)"}"\r\n`;
+                    message += `        - "${x.path ?? x.$name ?? "(no identifier)"}"\r\n`;
                 }
 
                 message += "\r\n";

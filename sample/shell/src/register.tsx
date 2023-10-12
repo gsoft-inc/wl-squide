@@ -10,13 +10,13 @@ import { RootLayout } from "./RootLayout.tsx";
 function registerRoutes(runtime: Runtime, sessionManager: SessionManager) {
     runtime.registerRoute({
         // Pathless route to declare a root layout and a root error boundary.
-        visibility: "public",
+        $visibility: "public",
         element: <RootLayout />,
         children: [
             {
                 // Public pages like the login and logout pages will be rendered under this pathless route.
-                visibility: "public",
-                name: "root-error-boundary",
+                $visibility: "public",
+                $name: "root-error-boundary",
                 errorElement: <RootErrorBoundary />,
                 children: [
                     {
@@ -65,7 +65,7 @@ function registerRoutes(runtime: Runtime, sessionManager: SessionManager) {
     });
 
     runtime.registerRoute({
-        visibility: "public",
+        $visibility: "public",
         path: "/login",
         lazy: async () => {
             const { Login } = await import("./Login.tsx");
@@ -79,7 +79,7 @@ function registerRoutes(runtime: Runtime, sessionManager: SessionManager) {
     });
 
     runtime.registerRoute({
-        visibility: "public",
+        $visibility: "public",
         path: "/logout",
         lazy: async () => {
             const { Logout } = await import("./Logout.tsx");
@@ -93,7 +93,7 @@ function registerRoutes(runtime: Runtime, sessionManager: SessionManager) {
     });
 
     runtime.registerRoute({
-        visibility: "public",
+        $visibility: "public",
         path: "*",
         lazy: async () => {
             const { NoMatch } = await import("./NoMatch.tsx");

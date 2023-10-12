@@ -13,19 +13,19 @@ function registerRoutes(runtime: Runtime) {
     });
 
     runtime.registerNavigationItem({
-        to: "/about",
-        label: "About"
+        $label: "About",
+        to: "/about"
     });
 
     runtime.registerNavigationItem({
-        to: "/message",
-        label: "Message",
+        $label: "Message",
         // Higher numbers gets rendered first.
-        priority: 999,
+        $priority: 999,
         // Will be forwarded to the host application render function.
-        additionalProps: {
+        $additionalProps: {
             highlight: true
-        }
+        },
+        to: "/message"
     });
 
     // Register federated tabs.
@@ -38,8 +38,8 @@ function registerRoutes(runtime: Runtime) {
     });
 
     runtime.registerNavigationItem({
-        to: "/federated-tabs",
-        label: "Workleap"
+        $label: "Workleap",
+        to: "/federated-tabs"
     }, {
         menuId: "/federated-tabs"
     });

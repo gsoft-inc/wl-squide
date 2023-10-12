@@ -18,30 +18,30 @@ test("when no menu id is specified, returns all the registered navigation items 
     const runtime = new Runtime();
 
     runtime.registerNavigationItem({
-        to: "/item-1",
-        label: "Item 1"
+        $label: "Item 1",
+        to: "/item-1"
     });
 
     runtime.registerNavigationItem({
-        to: "/item-2",
-        label: "Item 2"
+        $label: "Item 2",
+        to: "/item-2"
     });
 
     runtime.registerNavigationItem({
-        to: "/item-3",
-        label: "Item 3"
+        $label: "Item 3",
+        to: "/item-3"
     });
 
     runtime.registerNavigationItem({
-        to: "/item-4",
-        label: "Item 4"
+        $label: "Item 4",
+        to: "/item-4"
     }, {
         menuId: "menu-1"
     });
 
     runtime.registerNavigationItem({
-        to: "/item-5",
-        label: "Item 5"
+        $label: "Item 5",
+        to: "/item-5"
     }, {
         menuId: "menu-2"
     });
@@ -55,30 +55,30 @@ test("when a menu id is specified, returns all the registered navigation items f
     const runtime = new Runtime();
 
     runtime.registerNavigationItem({
-        to: "/item-1",
-        label: "Item 1"
+        $label: "Item 1",
+        to: "/item-1"
     });
 
     runtime.registerNavigationItem({
-        to: "/item-2",
-        label: "Item 2"
+        $label: "Item 2",
+        to: "/item-2"
     });
 
     runtime.registerNavigationItem({
-        to: "/item-3",
-        label: "Item 3"
+        $label: "Item 3",
+        to: "/item-3"
     });
 
     runtime.registerNavigationItem({
-        to: "/item-4",
-        label: "Item 4"
+        $label: "Item 4",
+        to: "/item-4"
     }, {
         menuId: "menu-1"
     });
 
     runtime.registerNavigationItem({
-        to: "/item-5",
-        label: "Item 5"
+        $label: "Item 5",
+        to: "/item-5"
     }, {
         menuId: "menu-2"
     });
@@ -92,8 +92,8 @@ test("returned array is immutable", () => {
     const runtime = new Runtime();
 
     runtime.registerNavigationItem({
-        to: "/foo",
-        label: "Foo"
+        $label: "Foo",
+        to: "/foo"
     });
 
     const { result, rerender } = renderWithRuntime(runtime);
@@ -106,8 +106,8 @@ test("returned array is immutable", () => {
     const array2 = result.current;
 
     runtime.registerNavigationItem({
-        to: "/bar",
-        label: "Bar"
+        $label: "Bar",
+        to: "/bar"
     });
 
     // Added a new navigation item, the returned array should be a new instance.

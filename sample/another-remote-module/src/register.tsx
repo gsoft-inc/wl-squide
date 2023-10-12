@@ -8,7 +8,7 @@ function registerRoutes(runtime: Runtime) {
 
     runtime.registerNavigationItem({
         to: "/federated-tabs",
-        label: "Tabs"
+        $label: "Tabs"
     });
 }
 

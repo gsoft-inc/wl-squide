@@ -13,7 +13,7 @@ export const registerDev: ModuleRegisterFunction<Runtime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        to: "/federated-tabs",
-        label: "Tabs"
+        $label: "Tabs",
+        to: "/federated-tabs"
     });
 };

@@ -37,7 +37,7 @@ describe("createIndexKey", () => {
 
     test("when the route has a name, return the route name", () => {
         const result = createIndexKey({
-            name: "foo",
+            $name: "foo",
             element: <div>Hello!</div>
         });
 
@@ -60,6 +60,8 @@ describe("add", () => {
         const result = registry.add({
             path: "/root",
             element: <div>Hello</div>
+        }, {
+            hoist: true
         });
 
         expect(result.registrationStatus).toBe("registered");
@@ -85,6 +87,8 @@ describe("add", () => {
         const result = registry.add({
             path: "/root",
             element: <div>Hello</div>
+        }, {
+            hoist: true
         });
 
         expect(result.completedPendingRegistrations![0].path).toBe("/root/another-level-1");
@@ -111,6 +115,8 @@ describe("add", () => {
         const result = registry.add({
             path: "/toto",
             element: <div>Hello</div>
+        }, {
+            hoist: true
         });
 
         expect(result.completedPendingRegistrations!.length).toBe(0);
@@ -135,6 +141,8 @@ describe("add", () => {
         registry.add({
             path: "/root",
             element: <div>Hello</div>
+        }, {
+            hoist: true
         });
 
         const result = registry.add({
@@ -147,7 +155,7 @@ describe("add", () => {
         expect(result.registrationStatus).toBe("registered");
     });
 
-    test("when a nested route is added and complete the pending registration of nested routes, add the registered routes to the to the returned \"completedPendingRegistrations\" array", () => {
+    test("when a nested route is added and complete the pending registration of nested routes, add the registered routes to the returned \"completedPendingRegistrations\" array", () => {
         const registry = new RouteRegistry();
 
         registry.add({
@@ -167,6 +175,8 @@ describe("add", () => {
         registry.add({
             path: "/root",
             element: <div>Hello</div>
+        }, {
+            hoist: true
         });
 
         const result = registry.add({

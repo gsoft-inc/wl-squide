@@ -19,7 +19,7 @@ export function Fetch() {
     return (
         <div>
             <h2>Fetch</h2>
-            <p>An example fetching data with React Router loaders.</p>
+            <p>An example fetching data with React Query.</p>
             <div>
                 {characters.map((x: Character) => {
                     return (

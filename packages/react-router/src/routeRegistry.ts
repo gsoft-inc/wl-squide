@@ -5,13 +5,13 @@ import { ManagedRoutesOutletName, isManagedRoutesOutletRoute } from "./outlets.t
 export type RouteVisibility = "public" | "protected";
 
 export interface IndexRoute extends IndexRouteObject {
-    name?: string;
-    visibility?: RouteVisibility;
+    $name?: string;
+    $visibility?: RouteVisibility;
 }
 
 export interface NonIndexRoute extends Omit<NonIndexRouteObject, "children"> {
-    name?: string;
-    visibility?: RouteVisibility;
+    $name?: string;
+    $visibility?: RouteVisibility;
     children?: Route[];
 }
 
@@ -32,8 +32,8 @@ export function createIndexKey(route: Route) {
         return normalizePath(route.path);
     }
 
-    if (route.name) {
-        return route.name;
+    if (route.$name) {
+        return route.$name;
     }
 
     return undefined;
@@ -77,7 +77,7 @@ export class RouteRegistry {
             // Creates a copy of the route object and add the default properties.
             const route = {
                 ...x,
-                visibility: x.visibility ?? "protected"
+                $visibility: x.$visibility ?? "protected"
             };
 
             if (route.children) {
@@ -130,11 +130,11 @@ export class RouteRegistry {
 
     #validateRouteRegistrationOptions(route: Route, { hoist, parentPath, parentName }: RegisterRouteOptions = {}) {
         if (hoist && parentPath) {
-            throw new Error(`[squide] A route cannot have the "hoist" property when a "publicPath" option is provided. Route id: "${route.path ?? route.name ?? "(no identifier)"}".`);
+            throw new Error(`[squide] A route cannot have the "hoist" property when a "publicPath" option is provided. Route id: "${route.path ?? route.$name ?? "(no identifier)"}".`);
         }
 
         if (hoist && parentName) {
-            throw new Error(`[squide] A route cannot have the "hoist" property when a "parentName" option is provided. Route id: "${route.path ?? route.name ?? "(no identifier)"}".`);
+            throw new Error(`[squide] A route cannot have the "hoist" property when a "parentName" option is provided. Route id: "${route.path ?? route.$name ?? "(no identifier)"}".`);
         }
     }
 

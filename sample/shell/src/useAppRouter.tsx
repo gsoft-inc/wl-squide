@@ -1,16 +1,26 @@
-import type { Session, SessionManager, Subscription } from "@sample/shared";
-import { SubscriptionContext } from "@sample/shared";
+import { SubscriptionContext, TelemetryServiceContext, useTelemetryService, type Session, type SessionManager, type Subscription, type TelemetryService } from "@sample/shared";
 import { useIsMswStarted } from "@squide/msw";
 import { useIsMatchingRouteProtected, useLogger, useRoutes } from "@squide/react-router";
 import { useAreModulesReady } from "@squide/webpack-module-federation";
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Outlet, RouterProvider, createBrowserRouter, useLocation } from "react-router-dom";
 
-export function useAppRouter(waitForMsw: boolean, sessionManager: SessionManager) {
+export function RootRoute() {
+    const location = useLocation();
+    const telemetryService = useTelemetryService();
+
+    useEffect(() => {
+        telemetryService?.track(`Navigated to the "${location.pathname}" page.`);
+    }, [location, telemetryService]);
+
+    return <Outlet />;
+}
+
+export function useAppRouter(waitForMsw: boolean, sessionManager: SessionManager, telemetryService: TelemetryService) {
     const [isReady, setIsReady] = useState(false);
 
-    // Could have been done with a ref (https://react.dev/reference/react/useRef) to save a re-render but for this sample
+    // Could be done with a ref (https://react.dev/reference/react/useRef) to save a re-render but for this sample
     // it seemed unnecessary. If your app have multiple global data structures like this one thought, it should be considered.
     const [subscription, setSubscription] = useState<Subscription>();
 
@@ -80,7 +90,12 @@ export function useAppRouter(waitForMsw: boolean, sessionManager: SessionManager
     }, [areModulesReady, isMswStarted, isActiveRouteProtected, logger, sessionManager]);
 
     const router = useMemo(() => {
-        return createBrowserRouter(routes);
+        return createBrowserRouter([
+            {
+                element: <RootRoute />,
+                children: routes
+            }
+        ]);
     }, [routes]);
 
     if (!isReady) {
@@ -88,11 +103,13 @@ export function useAppRouter(waitForMsw: boolean, sessionManager: SessionManager
     }
 
     return (
-        <SubscriptionContext.Provider value={subscription}>
-            <RouterProvider
-                router={router}
-                fallbackElement={null}
-            />
-        </SubscriptionContext.Provider>
+        <TelemetryServiceContext.Provider value={telemetryService}>
+            <SubscriptionContext.Provider value={subscription}>
+                <RouterProvider
+                    router={router}
+                    fallbackElement={null}
+                />
+            </SubscriptionContext.Provider>
+        </TelemetryServiceContext.Provider>
     );
 }

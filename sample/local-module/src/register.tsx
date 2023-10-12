@@ -1,9 +1,7 @@
 import type { AppContext } from "@sample/shared";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 
-export const registerLocalModule: ModuleRegisterFunction<Runtime, AppContext> = (runtime, context) => {
-    console.log("Local module context: ", context);
-
+function registerRoutes(runtime: Runtime) {
     runtime.registerRoute({
         path: "/about",
         lazy: () => import("./About.tsx")
@@ -45,4 +43,10 @@ export const registerLocalModule: ModuleRegisterFunction<Runtime, AppContext> = 
     }, {
         menuId: "/federated-tabs"
     });
+}
+
+export const registerLocalModule: ModuleRegisterFunction<Runtime, AppContext> = (runtime, context) => {
+    console.log("Local module context: ", context);
+
+    registerRoutes(runtime);
 };

@@ -6,6 +6,14 @@ import { authenticationHandlers } from "../mocks/authenticationHandlers.ts";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 
+// async function lazyPage(componentPath: string, props: object = {}) {
+//     const { Component } = await import(`${componentPath}`);
+
+//     return {
+//         element: <Component {...props} />
+//     };
+// }
+
 function registerRoutes(runtime: Runtime, sessionManager: SessionManager) {
     runtime.registerRoute({
         // Pathless route to declare a root layout and a root error boundary.
@@ -20,6 +28,7 @@ function registerRoutes(runtime: Runtime, sessionManager: SessionManager) {
                 children: [
                     {
                         // Pathless route to declare an authenticated boundary.
+                        // lazy: () => lazyElement("./AuthenticationBoundary.tsx"),
                         lazy: async () => {
                             const { AuthenticationBoundary } = await import("./AuthenticationBoundary.tsx");
 
@@ -30,6 +39,7 @@ function registerRoutes(runtime: Runtime, sessionManager: SessionManager) {
                         children: [
                             {
                                 // Pathless route to declare an authenticated layout.
+                                // lazy: () => lazyPage("./AuthenticatedLayout.tsx", { sessionManager }),
                                 lazy: async () => {
                                     const { AuthenticatedLayout } = await import("./AuthenticatedLayout.tsx");
 

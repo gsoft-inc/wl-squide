@@ -37,6 +37,7 @@
         "@workleap/tsup-configs": "3.0.1",
         "@workleap/typescript-configs": "3.0.2",
         "@workleap/webpack-configs": "1.0.8",
+        "axios": "1.5.1",
         "browserslist": "4.21.10",
         "cross-env": "7.0.3",
         "nodemon": "3.0.1",

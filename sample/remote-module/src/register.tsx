@@ -1,7 +1,30 @@
 import { BackgroundColorContext } from "@sample/shared";
 import { getMswPlugin } from "@squide/msw";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import type { ReactNode } from "react";
 import { requestHandlers } from "../mocks/handlers.ts";
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            refetchOnWindowFocus: false,
+            retry: failureCount => {
+                return failureCount <= 2;
+            }
+        }
+    }
+});
+
+function Providers({ children }: { children: ReactNode }) {
+    return (
+        <QueryClientProvider client={queryClient}>
+            {children}
+            <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+    );
+}
 
 function registerRoutes(runtime: Runtime) {
     runtime.registerRoute({
@@ -11,14 +34,12 @@ function registerRoutes(runtime: Runtime) {
 
     runtime.registerRoute({
         path: "/fetch",
-        lazy: () => import("./Fetch.tsx"),
-        loader: async function loader() {
-            return fetch("https://rickandmortyapi.com/api/character/1,2,3,4,5", {
-                method: "GET",
-                headers: {
-                    "Accept": "application/json"
-                }
-            });
+        lazy: async () => {
+            const { Fetch } = await import("./Fetch.tsx");
+
+            return {
+                element: <Providers><Fetch /></Providers>
+            };
         }
     });
 

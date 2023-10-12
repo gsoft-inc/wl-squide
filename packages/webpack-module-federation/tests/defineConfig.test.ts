@@ -119,6 +119,18 @@ describe("defineDevHostConfig", () => {
 
         expect(result).toBeDefined();
     });
+
+    test("when configuration transformers are provided, the transformers are applied to the configuration", () => {
+        const result = defineDevHostConfig(SwcConfig, "host", 8080, {
+            transformers: [(config: WebpackConfig) => {
+                config.entry = "updated by the dummy transformer";
+
+                return config;
+            }]
+        });
+
+        expect(result.entry).toBe("updated by the dummy transformer");
+    });
 });
 
 
@@ -214,6 +226,18 @@ describe("defineBuildHostConfig", () => {
         const result = findPlugin(config, matchConstructorName(DummyPlugin.name));
 
         expect(result).toBeDefined();
+    });
+
+    test("when configuration transformers are provided, the transformers are applied to the configuration", () => {
+        const result = defineBuildHostConfig(SwcConfig, "host", "http://localhost:8080/", {
+            transformers: [(config: WebpackConfig) => {
+                config.entry = "updated by the dummy transformer";
+
+                return config;
+            }]
+        });
+
+        expect(result.entry).toBe("updated by the dummy transformer");
     });
 });
 
@@ -438,6 +462,20 @@ describe("defineBuildRemoteModuleConfig", () => {
         const result = findPlugin(config, matchConstructorName(DummyPlugin.name));
 
         expect(result).toBeDefined();
+    });
+
+    test("when configuration transformers are provided, the transformers are applied to the configuration", () => {
+        const dummyTransformer = (config: WebpackConfig) => {
+            config.entry = "updated by the dummy transformer";
+
+            return config;
+        };
+
+        const result = defineBuildRemoteModuleConfig(SwcConfig, "remote1", "http://localhost:8081/", {
+            transformers: [dummyTransformer]
+        });
+
+        expect(result.entry).toBe("updated by the dummy transformer");
     });
 });
 

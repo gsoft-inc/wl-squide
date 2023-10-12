@@ -74,8 +74,8 @@ export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, c
     });
 
     runtime.registerNavigationItem({
-        to: "/remote/page",
-        label: "Remote/Page"
+        $label: "Remote/Page",
+        to: "/remote/page"
     });
 }
 ```

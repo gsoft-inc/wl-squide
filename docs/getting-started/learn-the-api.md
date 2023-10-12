@@ -137,7 +137,7 @@ To keep Squide lightweight, not all functionalities should be integrated as a co
 
 First, define a plugin by implementing the [Plugin](../reference/plugins/plugin.md) interface:
 
-```ts !#4 shared/src/mswPlugin.ts
+```ts shared/src/mswPlugin.ts
 import { Plugin } from "@squide/react-router";
 import type { RestHandler } from "msw";
 
@@ -154,7 +154,7 @@ export class MswPlugin extends Plugin {
 
 Then, make the plugin available to every part of the application by passing a service instance to the `Runtime` instance:
 
-```ts !#5 host/src/boostrap.tsx
+```ts host/src/boostrap.tsx
 import { Runtime } from "@squide/react-router";
 import { MswPlugin } from "@squide/msw";
 
@@ -165,7 +165,7 @@ const runtime = new Runtime({
 
 Then, access the plugin instance from the [Runtime](/reference/runtime/runtime-class.md) instance:
 
-```ts !#4
+```ts
 import { MswPlugin } from "@sample/shared";
 import { requetHandlers } from "../mocks/handlers.ts";
 

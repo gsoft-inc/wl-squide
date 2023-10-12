@@ -168,7 +168,7 @@ export function App() {
 
 Then, mark the pages as hoisted and optionally use a new layout:
 
-```tsx #11-12,15,18-19 local-module/src/register.tsx
+```tsx #13,16-17,23 local-module/src/register.tsx
 import { lazy } from "react";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { LocalLayout } from "./LocalLayout.tsx";

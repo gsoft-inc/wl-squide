@@ -59,8 +59,8 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        to: "/federated-tabs",
-        label: "Federated tabs"
+        $label: "Federated tabs",
+        to: "/federated-tabs"
     });
 }
 ```
@@ -166,8 +166,8 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        to: "/federated-tabs",
-        label: "Tab 1"
+        $label: "Tab 1",
+        to: "/federated-tabs"
     }, { 
         // The menu id could be anything, in this example we are using the same path as the nested layout
         // path for convenience.
@@ -190,8 +190,8 @@ export const register: ModuleRegisterFunction<Runtime> = (runtime: Runtime) => {
     });
 
     runtime.registerNavigationItem({
-        to: "/federated-tabs/tab-2",
-        label: "Tab 2"
+        $label: "Tab 2",
+        to: "/federated-tabs/tab-2"
     }, { 
         // The menu id could be anything, in this example we are using the same path as the nested layout
         // path for convenience.
@@ -214,8 +214,8 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        to: "/federated-tabs/tab-3",
-        label: "Tab 3"
+        $label: "Tab 3",
+        to: "/federated-tabs/tab-3"
     }, {
         // The menu id could be anything, in this example we are using the same path as the nested layout
         // path for convenience. 
@@ -294,10 +294,10 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        to: "/federated-tabs/tab-3",
-        label: "Tab 3",
+        $label: "Tab 3",
         // Highest priority goes first.
-        priority: 999
+        $priority: 999,
+        to: "/federated-tabs/tab-3"
     }, { 
         menuId: "/federated-tabs" 
     });

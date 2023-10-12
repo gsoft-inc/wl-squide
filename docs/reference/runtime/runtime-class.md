@@ -60,8 +60,8 @@ runtime.registerRoute(route, options?: {})
 ```
 
 - `route`: accept any properties of a React Router [Route](https://reactrouter.com/en/main/components/route) component with the addition of:
-    - `name`: An optional name for the route.
-    - `visibility`: An optional visibility indicator for the route. Accepted values are `"public"` or `"protected"`.
+    - `$name`: An optional name for the route.
+    - `$visibility`: An optional visibility indicator for the route. Accepted values are `"public"` or `"protected"`.
 - `options`: An optional object literal of options:
     - `hoist`: An optional boolean value to register the route at the root of the router. The default value is `false`.
     - `parentPath`: An optional path of a parent route to register this new route under.
@@ -102,7 +102,7 @@ When registering a route, a hint can be provided, indicating if the route is int
 import { Page } from "./Page.tsx";
 
 runtime.registerRoute({
-    visibility: "public"
+    $visibility: "public"
     path: "/page-1",
     element: <Page />
 });
@@ -115,12 +115,12 @@ import { Layout } from "./Layout.tsx";
 import { Page } from "./Page.tsx";
 
 runtime.registerRoute({
-    visibility: "public"
+    $visibility: "public"
     path: "/layout",
     element: <Layout />,
     children: [
         {
-            visibility: "public",
+            $visibility: "public",
             path: "/page-1",
             element: <Page />,
         }
@@ -134,15 +134,15 @@ When no visibility hint is provided, a route is considered as a `protected` rout
 
 ### Register a named route
 
-The `registerRoute` function accepts a `parentName` property, allowing a route to be [nested under an existing parent route](#register-nested-routes-under-an-existing-route). When searching for the parent route matching the `parentName` property, the `parentName` will be matched against the `name` property of every route.
+The `registerRoute` function accepts a `parentName` property, allowing a route to be [nested under an existing parent route](#register-nested-routes-under-an-existing-route). When searching for the parent route matching the `parentName` property, the `parentName` will be matched against the `$name` property of every route.
 
-> A `name` property should usually only be defined for routes that doesn't have a path like an error boundary or an authentication boundary.
+> A `$name` property should only be defined for routes that doesn't have a path like an error boundary or an authentication boundary.
 
 ```tsx !#4
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
 runtime.registerRoute({
-    name: "error-boundary",
+    $name: "error-boundary",
     element: <RootErrorBoundary />
 });
 ```
@@ -154,10 +154,10 @@ import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 
 runtime.registerRoute({
-    name: "error-boundary",
+    $name: "error-boundary",
     element: <RootErrorBoundary />,
     children: [
-        name: "root-layout",
+        $name: "root-layout",
         element: <RootLayout />
     ]
 });
@@ -220,20 +220,20 @@ runtime.registerNavigationItem(item, options?: {})
 A Squide navigation item can either be a `NavigationLink` or a `NavigationSection`. Both types can be intertwined to create a multi-level menu hierarchy. A `NavigationSection` item is used to setup a new level while a `NavigationLink` define a link.
 
 - `NavigationSection` accept the following properties:
-    - `label`: The section text.
+    - `$label`: The section text.
+    - `$priority`: An order priority affecting the position of the item in the menu (higher first)
+    - `$addiltionalProps`: Additional properties to be forwarded to the section renderer.
     - `children`: The section content.
-    - `priority`: An order priority affecting the position of the item in the menu (higher first)
-    - `addiltionalProps`: Additional properties to be forwarded to the section renderer.
 - `NavigationLink` accept any properties of a React Router [Link](https://reactrouter.com/en/main/components/link) component with the addition of:
-    - `label`: The link text.
-    - `priority`: An order priority affecting the position of the item in the menu (higher first)
-    - `additionalProps`: Additional properties to be forwarded to the link renderer.
+    - `$label`: The link text.
+    - `$priority`: An order priority affecting the position of the item in the menu (higher first)
+    - `$additionalProps`: Additional properties to be forwarded to the link renderer.
 
 ```ts
 // Register a new navigation item from a local or remote module.
 runtime.registerNavigationItem({
-    to: "/page-1",
-    label: "Page 1"
+    $label: "Page 1",
+    to: "/page-1"
 });
 ```
 
@@ -250,99 +250,99 @@ runtime.registerNavigationItem({
 //  --- Nested Link
 //  Link
 runtime.registerNavigationItem({
-    label: "Section",
+    $label: "Section",
     children: [
         {
             label: "Nested Section",
             children: [
                 {
-                    to: "#",
-                    label: "Nested Nested Link",
+                    $label: "Nested Nested Link",
+                    to: "#"
                 }
             ]
         },
         {
-            to: "#",
-            label: "Nested Link"
+            $label: "Nested Link",
+            to: "#"
         }
     ]
 },
 {
-    to: "#",
-    label: "Link"
+    $label: "Link",
+    to: "#"
 });
 ```
 
 ### Sort registered navigation items
 
-A `priority` property can be added to a navigation item to affect it's position in the menu. The sorting algorithm is as follow:
+A `$priority` property can be added to a navigation item to affect it's position in the menu. The sorting algorithm is as follow:
 
 - By default a navigation item have a priority of `0`.
 - If no navigation item have a priority, the items are positioned according to their registration order.
 - If an item have a priority `> 0`, the item will be positioned before any other items with a lower priority (or without an explicit priority value).
 - If an item have a priority `< 0`, the item will be positioned after any other items with a higher priority (or without an explicit priority value).
 
-```ts !#4,12
+```ts !#3,11
 runtime.registerNavigationItem({
-    to: "/about",
-    label: "About",
-    priority: 10
+    $label: "About",
+    $priority: 10,
+    to: "/about"
 });
 
 runtime.registerNavigationItem({
-    to: "/home",
-    label: "Home",
+    $label: "Home",
     // Because the "Home" navigation item has an higher priority, it will be rendered
     // before the "About" navigation item.
-    priority: 100
+    $priority: 100,
+    to: "/home"
 });
 ```
 
 ### Use a React element as navigation item label
 
-```tsx !#5-8
+```tsx !#4-7
 import { QuestionMarkIcon } from "@sample/icons";
 
 runtime.registerNavigationItem({
-    to: "/about",
-    label: (
+    $label: (
         <QuestionMarkIcon />
         <span>About</span>
-    )
+    ),
+    to: "/about"
 });
 ```
 
 ### Style a navigation item
 
-```ts !#4-6
+```ts !#3-5
 runtime.registerNavigationItem({
-    to: "/about",
-    label: "About",
+    $label: "About",
     style: {
         backgroundColor: "#000"
-    }
+    },
+    to: "/about"
 });
 ```
 
 ### Open a navigation link in a new tab
 
-```ts !#4
+```ts !#3
 runtime.registerNavigationItem({
-    to: "/about",
-    label: "About",
-    target: "_blank"
+    $label: "About",
+    target: "_blank",
+    to: "/about"
 });
 ```
 
 ### Render additional props on a navigation item
 
-```ts !#4-6
+```ts !#3-5
 runtime.registerNavigationItem({
-        to: "/about",
-        label: "About",
-        additionalProps: {
+        $label: "About",
+        $additionalProps: {
             highlight: true
-        }
+        },
+        to: "/about"
     });
 ```
 
@@ -352,8 +352,8 @@ By default, every navigation item registered with the `registerNavigationItem` f
 
 ```tsx !#5
 runtime.registerNavigationItem({
-    to: "/layout/page-1",
-    label: "Page 1"
+    $label: "Page 1",
+    to: "/layout/page-1"
 }, { 
     menuId: "my-custom-layout" 
 });

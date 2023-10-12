@@ -97,8 +97,8 @@ export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, c
     });
 
     runtime.registerNavigationItem({
-        to: "/local/page",
-        content: "Local/Page"
+        $label: "Local/Page",
+        to: "/local/page"
     });
 }
 ```

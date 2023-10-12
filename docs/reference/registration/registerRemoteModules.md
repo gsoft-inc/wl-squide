@@ -64,8 +64,8 @@ export function register: ModuleRegisterFunction<Runtime, AppContext>(runtime, c
     });
 
     runtime.registerNavigationItem({
-        to: "/about",
-        label: "About"
+        $label: "About",
+        to: "/about"
     });
 }
 ```

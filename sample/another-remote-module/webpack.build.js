@@ -8,9 +8,6 @@ const publicPath = process.env.NETLIFY === "true" ? "https://squide-another-remo
 
 export default defineBuildRemoteModuleConfig(swcConfig, "remote2", publicPath, {
     sharedDependencies: {
-        "@tanstack/react-query": {
-            singleton: true
-        },
         "@sample/shared": {
             singleton: true
         }

@@ -204,7 +204,7 @@ const devRemoteModuleTransformer: WebpackConfigTransformer = (config: WebpackCon
     return config;
 };
 
-export interface DefineDevRemoteModuleConfigOptions extends Omit<DefineDevConfigOptions, "fastRefresh" | "port"> {
+export interface DefineDevRemoteModuleConfigOptions extends Omit<DefineDevConfigOptions, "fastRefresh" | "port" | "overlay"> {
     router?: Router;
     sharedDependencies?: ModuleFederationPluginOptions["shared"];
     moduleFederationPluginOptions?: ModuleFederationPluginOptions;
@@ -230,6 +230,9 @@ export function defineDevRemoteModuleConfig(swcConfig: SwcConfig, applicationNam
         cache,
         fastRefresh: false,
         htmlWebpackPlugin,
+        // Disable the error overlay by default for remotes as otherwise every remote module's error overlay will be
+        // stack on top of the host application's error overlay.
+        overlay: false,
         plugins: [
             ...plugins,
             new webpack.container.ModuleFederationPlugin(moduleFederationPluginOptions)

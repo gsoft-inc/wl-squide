@@ -3,16 +3,9 @@ import { getMswPlugin } from "@squide/msw";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { ManagedRoutes } from "@squide/react-router";
 import { authenticationHandlers } from "../mocks/authenticationHandlers.ts";
+import { subscriptionHandlers } from "../mocks/subscriptionHandlers.ts";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
-
-// async function lazyPage(componentPath: string, props: object = {}) {
-//     const { Component } = await import(`${componentPath}`);
-
-//     return {
-//         element: <Component {...props} />
-//     };
-// }
 
 function registerRoutes(runtime: Runtime, sessionManager: SessionManager) {
     runtime.registerRoute({
@@ -28,7 +21,6 @@ function registerRoutes(runtime: Runtime, sessionManager: SessionManager) {
                 children: [
                     {
                         // Pathless route to declare an authenticated boundary.
-                        // lazy: () => lazyElement("./AuthenticationBoundary.tsx"),
                         lazy: async () => {
                             const { AuthenticationBoundary } = await import("./AuthenticationBoundary.tsx");
 
@@ -39,7 +31,6 @@ function registerRoutes(runtime: Runtime, sessionManager: SessionManager) {
                         children: [
                             {
                                 // Pathless route to declare an authenticated layout.
-                                // lazy: () => lazyPage("./AuthenticatedLayout.tsx", { sessionManager }),
                                 lazy: async () => {
                                     const { AuthenticatedLayout } = await import("./AuthenticatedLayout.tsx");
 
@@ -119,7 +110,10 @@ function registerRoutes(runtime: Runtime, sessionManager: SessionManager) {
 function registerMsw(runtime: Runtime) {
     const mswPlugin = getMswPlugin(runtime);
 
-    mswPlugin.registerRequestHandlers(authenticationHandlers);
+    mswPlugin.registerRequestHandlers([
+        ...authenticationHandlers,
+        ...subscriptionHandlers
+    ]);
 }
 
 export function registerShell(sessionManager: SessionManager) {

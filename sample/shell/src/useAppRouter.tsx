@@ -1,4 +1,5 @@
-import type { Session, SessionManager } from "@sample/shared";
+import type { Session, SessionManager, Subscription } from "@sample/shared";
+import { SubscriptionContext } from "@sample/shared";
 import { useIsMswStarted } from "@squide/msw";
 import { useIsMatchingRouteProtected, useLogger, useRoutes } from "@squide/react-router";
 import { useAreModulesReady } from "@squide/webpack-module-federation";
@@ -8,6 +9,10 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 export function useAppRouter(waitForMsw: boolean, sessionManager: SessionManager) {
     const [isReady, setIsReady] = useState(false);
+
+    // Could have been done with a ref (https://react.dev/reference/react/useRef) to save a re-render but for this sample
+    // it seemed unnecessary. If your app have multiple global data structures like this one thought, it should be considered.
+    const [subscription, setSubscription] = useState<Subscription>();
 
     const logger = useLogger();
     const routes = useRoutes();
@@ -29,10 +34,11 @@ export function useAppRouter(waitForMsw: boolean, sessionManager: SessionManager
             if (isActiveRouteProtected) {
                 logger.debug(`[shell] Fetching session data as "${window.location}" is a protected route.`);
 
-                axios.get("/session")
+                const sessionPromise = axios.get("/session")
                     .then(({ data }) => {
                         const session: Session = {
                             user: {
+                                id: data.userId,
                                 name: data.username
                             }
                         };
@@ -40,18 +46,30 @@ export function useAppRouter(waitForMsw: boolean, sessionManager: SessionManager
                         logger.debug("[shell] %cSession is ready%c:", "color: white; background-color: green;", "", session);
 
                         sessionManager.setSession(session);
+                    });
 
-                        setIsReady(true);
-                    })
+                const subscriptionPromise = axios.get("/subscription")
+                    .then(({ data }) => {
+                        const _subscription: Subscription = {
+                            status: data.status
+                        };
+
+                        logger.debug("[shell] %cSubscription is ready%c:", "color: white; background-color: green;", "", _subscription);
+
+                        setSubscription(_subscription);
+                    });
+
+                Promise.all([sessionPromise, subscriptionPromise])
                     .catch((error: unknown) => {
-                        setIsReady(true);
-
                         if (axios.isAxiosError(error) && error.response?.status === 401) {
                             // The authentication boundary will redirect to the login page.
                             return;
                         }
 
                         throw error;
+                    })
+                    .finally(() => {
+                        setIsReady(true);
                     });
             } else {
                 logger.debug(`[shell] Passing through as "${window.location}" is a public route.`);
@@ -70,9 +88,11 @@ export function useAppRouter(waitForMsw: boolean, sessionManager: SessionManager
     }
 
     return (
-        <RouterProvider
-            router={router}
-            fallbackElement={null}
-        />
+        <SubscriptionContext.Provider value={subscription}>
+            <RouterProvider
+                router={router}
+                fallbackElement={null}
+            />
+        </SubscriptionContext.Provider>
     );
 }

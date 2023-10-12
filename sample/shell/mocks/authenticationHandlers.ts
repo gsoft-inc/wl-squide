@@ -1,6 +1,5 @@
 import { rest, type RestHandler } from "msw";
-
-const SessionKey = "msw-session";
+import { sessionManager } from "./session.ts";
 
 function simulateDelay(delay: number) {
     return new Promise(resolve => {
@@ -22,9 +21,10 @@ export const authenticationHandlers: RestHandler[] = [
 
         await simulateDelay(2000);
 
-        window.localStorage.setItem(SessionKey, JSON.stringify({
+        sessionManager.setSession({
+            userId: Math.random(),
             username
-        }));
+        });
 
         return res(
             ctx.status(200)
@@ -32,7 +32,7 @@ export const authenticationHandlers: RestHandler[] = [
     }),
 
     rest.post("/logout", async (req, res, ctx) => {
-        window.localStorage.removeItem(SessionKey);
+        sessionManager.clearSession();
 
         return res(
             ctx.status(200)
@@ -40,7 +40,7 @@ export const authenticationHandlers: RestHandler[] = [
     }),
 
     rest.get("/session", async (req, res, ctx) => {
-        const session = window.localStorage.getItem(SessionKey);
+        const session = sessionManager.getSession();
 
         if (!session) {
             return res(
@@ -52,7 +52,7 @@ export const authenticationHandlers: RestHandler[] = [
 
         return res(
             ctx.status(200),
-            ctx.json(JSON.parse(session))
+            ctx.json(session)
         );
     })
 ];

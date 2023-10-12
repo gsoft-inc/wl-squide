@@ -28,9 +28,8 @@ export function RootErrorBoundary() {
             <h2>Unmanaged error</h2>
             <p>An unmanaged error occurred and the application is broken, try refreshing your browser.</p>
             <span role="img" aria-label="pointer">👉</span> {getErrorMessage(error)}
-            <div>
-                <button type="button" onClick={handleReloadButtonClick}>Reload</button>
-            </div>
+            <br /><br />
+            <button type="button" onClick={handleReloadButtonClick}>Reload</button>
         </div>
     );
 }

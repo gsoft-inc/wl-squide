@@ -10,9 +10,6 @@ let config;
 if (!process.env.LOCAL) {
     config = defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
         sharedDependencies: {
-            "@tanstack/react-query": {
-                singleton: true
-            },
             "@sample/shared": {
                 singleton: true
             }
@@ -25,6 +22,7 @@ if (!process.env.LOCAL) {
 } else {
     config = defineDevConfig(swcConfig, {
         entry: path.resolve("./src/dev/index.tsx"),
+        overlay: false,
         environmentVariables: {
             "USE_MSW": process.env.USE_MSW === "true"
         }

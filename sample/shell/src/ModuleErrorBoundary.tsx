@@ -28,9 +28,8 @@ export function ModuleErrorBoundary() {
             <h2>Unmanaged error</h2>
             <p>An unmanaged error occurred inside a module. Still, other parts of the application are fully functional!</p>
             <span role="img" aria-label="pointer">👉</span> {getErrorMessage(error)}
-            <div>
-                <button type="button" onClick={handleReloadButtonClick}>Reload</button>
-            </div>
+            <br /><br />
+            <button type="button" onClick={handleReloadButtonClick}>Reload</button>
         </div>
     );
 }

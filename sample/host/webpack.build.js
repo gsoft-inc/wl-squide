@@ -8,10 +8,6 @@ const publicPath = process.env.NETLIFY === "true" ? "https://squide-host.netlify
 
 export default defineBuildHostConfig(swcConfig, "host", publicPath, {
     sharedDependencies: {
-        "@tanstack/react-query": {
-            singleton: true,
-            eager: true
-        },
         "@sample/shared": {
             singleton: true,
             eager: true

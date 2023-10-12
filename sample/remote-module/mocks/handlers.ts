@@ -2,16 +2,11 @@ import { rest, type RestHandler } from "msw";
 
 export const requestHandlers: RestHandler[] = [
     rest.get("https://rickandmortyapi.com/api/character/1,2,3,4,5", async (req, res, ctx) => {
-        // return res(
-        //     ctx.status(401)
-        // );
-
         return res(
             ctx.status(200),
             ctx.json([{
                 "id": 1,
-                // "name": "Rick Sanchez",
-                "name": "IT'S WORKING",
+                "name": "DATA FROM MSW",
                 "status": "Alive",
                 "species": "Human",
                 "type": "",

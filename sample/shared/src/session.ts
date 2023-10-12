@@ -1,5 +1,6 @@
 export interface Session {
     user: {
+        id: number;
         name: string;
     };
 }

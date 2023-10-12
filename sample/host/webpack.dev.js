@@ -4,11 +4,8 @@ import { defineDevHostConfig } from "@squide/webpack-module-federation/defineCon
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {
+    overlay: false,
     sharedDependencies: {
-        "@tanstack/react-query": {
-            singleton: true,
-            eager: true
-        },
         "@sample/shared": {
             singleton: true,
             eager: true

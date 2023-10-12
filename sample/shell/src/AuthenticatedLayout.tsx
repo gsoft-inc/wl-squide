@@ -1,4 +1,4 @@
-import { useApplicationEventBusListener, type Session, type SessionManager } from "@sample/shared";
+import { toSubscriptionStatusLabel, useApplicationEventBusListener, useSubscription, type Session, type SessionManager } from "@sample/shared";
 import { isNavigationLink, useLogger, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/react-router";
 import axios from "axios";
 import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
@@ -47,7 +47,9 @@ export interface AuthenticatedLayoutProps {
 
 export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps) {
     const logger = useLogger();
+
     const session = useSession() as Session;
+    const subscription = useSubscription();
 
     const navigate = useNavigate();
 
@@ -84,7 +86,7 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
                 </nav>
                 <div style={{ whiteSpace: "nowrap", marginRight: "20px" }}>
                     {/* Must check for a null session because when the disconnect button is clicked, it will clear the session and rerender this layout. */}
-                    (User: <span style={{ fontWeight: "bold" }}>{session?.user?.name}</span>)
+                    (Subscription: <span style={{ fontWeight: "bold" }}>{toSubscriptionStatusLabel(subscription?.status)}</span><span style={{ marginLeft: "10px", marginRight: "10px" }}>-</span>User: <span style={{ fontWeight: "bold" }}>{session?.user?.name}</span>)
                 </div>
                 <div>
                     <button type="button" onClick={onDisconnect}>Disconnect</button>

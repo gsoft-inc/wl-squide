@@ -13,6 +13,7 @@ export default defineBuildRemoteModuleConfig(swcConfig, "remote1", publicPath, {
         }
     },
     environmentVariables: {
-        "NETLIFY": process.env.NETLIFY === "true"
+        "NETLIFY": process.env.NETLIFY === "true",
+        "USE_MSW": process.env.USE_MSW === "true"
     }
 });

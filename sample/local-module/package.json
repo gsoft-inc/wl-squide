@@ -15,7 +15,6 @@
     },
     "scripts": {
         "dev": "nodemon",
-        "dev-msw": "pnpm dev",
         "dev-local": "nodemon --config nodemon.local.json",
         "build": "tsup --config ./tsup.build.ts",
         "serve-build": "pnpm build"

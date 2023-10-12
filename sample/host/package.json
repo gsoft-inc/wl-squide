@@ -7,9 +7,8 @@
     "license": "Apache-2.0",
     "type": "module",
     "scripts": {
-        "dev": "nodemon",
-        "dev-msw": "cross-env USE_MSW=true pnpm dev",
-        "build": "pnpm build:webpack && pnpm build:copy-redirects",
+        "dev": "cross-env USE_MSW=true nodemon",
+        "build": "cross-env USE_MSW=true pnpm build:webpack && pnpm build:copy-redirects",
         "build:webpack": "webpack --config webpack.build.js",
         "build:copy-redirects": "copyfiles _redirects dist",
         "serve-build": "pnpm build && pnpm http-server dist -p 8080 -P http://localhost:8080? -c-1"

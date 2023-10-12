@@ -9,7 +9,7 @@ In a federated application using [Module Federation](https://webpack.js.org/conc
 
 Let's take a simple example using a `BackgroundColorContext`:
 
-```tsx !#16-21 host/src/App.tsx
+```tsx !#15-19 host/src/App.tsx
 import { useAppRouter } from "@sample/shell";
 import { BackgroundColorContext } from "@sample/shared";
 import { useAreModulesReady } from "@squide/webpack-module-federation";
@@ -26,10 +26,7 @@ export function App() {
 
     return (
         <BackgroundColorContext.Provider value="blue">
-            <RouterProvider
-                router={router}
-                fallbackElement={<div>Loading...</div>}
-            />
+            <RouterProvider router={router} />
         </BackgroundColorContext.Provider>
     );
 }
@@ -88,7 +85,7 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
 
 Since there are multiple routes to setup with the new provider, an utility function can be extracted:
 
-```tsx !#6-12,18 remote-module/src/register.tsx
+```tsx !#6-12,17 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { BackgroundColorContext } from "@sample/shared";
 import { ColoredPage } from "./ColoredPage.tsx";
@@ -114,7 +111,7 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
 
 Let's consider a more specific use case where the host application declares a `ThemeContext` from Workleap's new design system, Hopper:
 
-```tsx !#16-21 host/src/App.tsx
+```tsx !#15-19 host/src/App.tsx
 import { useAppRouter } from "@sample/shell";
 import { ThemeContext } from "@hopper/components";
 import { useAreModulesReady } from "@squide/webpack-module-federation";
@@ -131,10 +128,7 @@ export function App() {
 
     return (
         <ThemeContext.Provider value="dark">
-            <RouterProvider
-                router={router}
-                fallbackElement={<div>Loading...</div>}
-            />
+            <RouterProvider router={router} />
         </ThemeContext.Provider>
     );
 }

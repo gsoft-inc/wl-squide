@@ -80,8 +80,7 @@ export {};
 
 Next, to register the modules, instanciate the shell [Runtime](/reference/runtime/runtime-class.md) and register the remote module with the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function (the configuration of the remote module will be covered in the [next section](create-remote-module.md)):
 
-```tsx !#14-16,19-21,24 host/src/bootstrap.tsx
-import { Suspense } from "react";
+```tsx !#13-15,18-20,23 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, Runtime } from "@squide/react-router";
 import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
@@ -110,9 +109,7 @@ const root = createRoot(document.getElementById("root")!);
 
 root.render(
     <RuntimeContext.Provider value={runtime}>
-        <Suspense fallback={<div>Loading...</div>}>
-            <App />
-        </Suspense>
+        <App />
     </RuntimeContext.Provider>
 );
 ```
@@ -158,10 +155,7 @@ export function App() {
 
     // Render the router.
     return (
-        <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-        />
+        <RouterProvider router={router} />
     );
 }
 ```

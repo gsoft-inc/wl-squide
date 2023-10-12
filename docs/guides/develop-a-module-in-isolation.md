@@ -127,10 +127,7 @@ export function App() {
     }
 
     return (
-        <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-        />
+        <RouterProvider router={router} />
     );
 }
 ```
@@ -169,8 +166,7 @@ remote-module
 
 The `index.tsx` file is similar to the `bootstrap.tsx` file of an host application but, tailored for an isolated module. The key distinction is that, since the project is set up for local development, the module is registered with the [registerLocalModules](/reference/registration/registerLocalModules.md) function instead of the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function:
 
-```tsx !#9-11,15 remote-module/src/index.tsx
-import { Suspense } from "react"; 
+```tsx !#8-10,14 remote-module/src/index.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, Runtime, registerLocalModules } from "@squide/react-router";
 import { App } from "./App.tsx";
@@ -190,9 +186,7 @@ const root = createRoot(document.getElementById("root")!);
 
 root.render(
     <RuntimeContext.Provider value={runtime}>
-        <Suspense fallback={<div>Loading...</div>}>
-            <App />
-        </Suspense>
+        <App />
     </RuntimeContext.Provider>
 );
 ```
@@ -217,10 +211,7 @@ export function App() {
     });
 
     return (
-        <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-        />
+        <RouterProvider router={router} />
     );
 }
 ```

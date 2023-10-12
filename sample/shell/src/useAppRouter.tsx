@@ -14,7 +14,9 @@ export function RootRoute() {
         telemetryService?.track(`Navigated to the "${location.pathname}" page.`);
     }, [location, telemetryService]);
 
-    return <Outlet />;
+    return (
+        <Outlet />
+    );
 }
 
 export function useAppRouter(waitForMsw: boolean, sessionManager: SessionManager, telemetryService: TelemetryService) {
@@ -105,10 +107,7 @@ export function useAppRouter(waitForMsw: boolean, sessionManager: SessionManager
     return (
         <TelemetryServiceContext.Provider value={telemetryService}>
             <SubscriptionContext.Provider value={subscription}>
-                <RouterProvider
-                    router={router}
-                    fallbackElement={null}
-                />
+                <RouterProvider router={router} />
             </SubscriptionContext.Provider>
         </TelemetryServiceContext.Provider>
     );

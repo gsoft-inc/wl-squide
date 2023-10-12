@@ -161,12 +161,12 @@ As `@hopper/components` expose the `ThemeContext`, the context must be re-declar
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { ThemeContext } from "@hopper/components";
 import { Page } from "./Page.tsx";
-import type { ReactElement } from "react";
+import type { ReactNode } from "react";
 
-function withHopperTheme(page: ReactElement) {
+function Providers({ children }: { children: ReactNode }) {
     return (
         <ThemeContext.Provider value="dark">
-            {page}
+            {children}
         </ThemeContext.Provider>
     )
 }
@@ -174,7 +174,7 @@ function withHopperTheme(page: ReactElement) {
 export const register: ModuleRegisterFunction<Runtime> = runtime => {
     runtime.registerRoute({
         path: "/page",
-        element: withHopperTheme(<Page />)
+        element: <Providers><Page /></Providers>
     });
 }
 ```

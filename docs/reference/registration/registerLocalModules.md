@@ -24,9 +24,14 @@ registerLocalModules(registerFunctions: [], runtime, options?: { context? })
 
 ### Returns
 
-Nothing
+An array of `LocalModuleRegistrationError` if any happens during the registration.
+
+- `LocalModuleRegistrationError`:
+    - `error`: The original error object.
 
 ## Usage
+
+### Register a local module
 
 ```tsx !#11 host/src/bootstrap.tsx
 import { registerLocalModules, Runtime } from "@squide/react-router";
@@ -58,4 +63,24 @@ export function register: ModuleRegisterFunction<Runtime, AppContext>(runtime, c
         to: "/about"
     });
 }
+```
+
+### Handle the registration errors
+
+```tsx !#11-15 host/src/bootstrap.tsx
+import { registerLocalModules, Runtime } from "@squide/react-router";
+import { register } from "@sample/local-module";
+import type { AppContext } from "@sample/shared";
+
+const runtime = new Runtime();
+
+const context: AppContext = {
+    name: "Test app"
+};
+
+registerLocalModules([register], runtime, { context }).then(errors => {
+    errors.forEach(x => {
+        console.log(x);
+    });
+});
 ```

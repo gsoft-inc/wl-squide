@@ -7,14 +7,19 @@ let registrationStatus: ModuleRegistrationStatus = "none";
 // Aliasing to make the name more explicit to external modules.
 export { registrationStatus as remoteModulesRegistrationStatus };
 
-export interface RegistrationError {
-    // The remote base URL
+// Strictly for testing purpose.
+export function resetRemoteModuleRegistrationStatus() {
+    registrationStatus = "none";
+}
+
+export interface RemoteModuleRegistrationError {
+    // The remote base URL.
     url: string;
-    // The remote container name
+    // The remote container name.
     containerName: string;
-    // The remote resource module name
+    // The remote resource module name.
     moduleName: string;
-    // The registration error
+    // The registration error.
     error: unknown;
 }
 
@@ -27,7 +32,7 @@ export async function registerRemoteModules(remotes: RemoteDefinition[], runtime
         throw new Error("[squide] registerRemoteModules() can only be called once.");
     }
 
-    const errors: RegistrationError[] = [];
+    const errors: RemoteModuleRegistrationError[] = [];
 
     runtime.logger.information(`[squide] Found ${remotes.length} remote module${remotes.length !== 1 ? "s" : ""} to register.`);
 

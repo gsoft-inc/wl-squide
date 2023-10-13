@@ -5,7 +5,7 @@ import { swcConfig } from "./swc.jest.ts";
 import { compilerOptions } from "./tsconfig.json";
 
 const config: Config = {
-    testEnvironment: "node",
+    testEnvironment: "jsdom",
     transformIgnorePatterns: [
         // Must exclude @workleap/webpack-configs from the transform ignore files
         // because it's an ESM only project which must be processed by SWC.
@@ -18,7 +18,7 @@ const config: Config = {
     transform: {
         // Must add the ".js" file extension because the files from @workleap/webpack-configs
         // are ESM only and therefore must be processed by SWC.
-        "^.+\\.(js|ts)$": ["@swc/jest", swcConfig as Record<string, unknown>]
+        "^.+\\.(js|ts|tsx)$": ["@swc/jest", swcConfig as Record<string, unknown>]
     },
     moduleNameMapper: {
         ...pathsToModuleNameMapper(compilerOptions.paths, {

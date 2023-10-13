@@ -24,15 +24,17 @@ registerRemoteModules(remotes: [], runtime, options?: { context? })
 
 ### Returns
 
-A `Promise` object with an array of `RegistrationError` if any happens during the registration.
+A `Promise` object with an array of `RemoteModuleRegistrationError` if any happens during the registration.
 
-- `RegistrationError`:
+- `RemoteModuleRegistrationError`:
     - `url`: The URL of the module federation remote that failed to load.
     - `containerName`: The name of the [dynamic container](https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers) that Squide attempted to recover.
     - `moduleName`: The name of the [module](#name) that Squide attempted to recover.
     - `error`: The original error object.
 
 ## Usage
+
+### Register a remote module
 
 ```tsx !#11-13,15 host/src/bootstrap.tsx
 import { Runtime } from "@squide/react-router";
@@ -68,6 +70,30 @@ export function register: ModuleRegisterFunction<Runtime, AppContext>(runtime, c
         to: "/about"
     });
 }
+```
+
+### Handle the registration errors
+
+```tsx !#15-19 host/src/bootstrap.tsx
+import { Runtime } from "@squide/react-router";
+import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import type { AppContext } from "@sample/shared";
+
+const runtime = new Runtime();
+
+const context: AppContext = {
+    name: "Test app"
+};
+
+const Remotes: RemoteDefinition = [
+    { name: "remote1", url: "http://localhost:8081" }
+];
+
+registerRemoteModules(Remotes, runtime, { context }).then(errors => {
+    errors.forEach(x => {
+        console.log(x);
+    });
+});
 ```
 
 ## Remote definition

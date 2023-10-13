@@ -2,7 +2,7 @@ import { registerShell } from "@basic/shell";
 import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { registerLocalModule } from "../register.tsx";
+import { register as registerModule } from "../register.tsx";
 import { App } from "./App.tsx";
 import { registerDev } from "./register.tsx";
 import { sessionAccessor, sessionManager } from "./session.ts";
@@ -14,7 +14,7 @@ const runtime = new Runtime({
     sessionAccessor
 });
 
-registerLocalModules([registerShell(sessionManager), registerDev, registerLocalModule], runtime);
+registerLocalModules([registerShell(sessionManager), registerDev, registerModule], runtime);
 
 const root = createRoot(document.getElementById("root")!);
 

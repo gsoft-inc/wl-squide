@@ -7,7 +7,7 @@ The following documentation is only for the maintainers of this repository.
 - [Installation](#installation)
 - [Develop the shell packages](#develop-the-shell-packages)
 - [Release the packages](#release-the-packages)
-- [Deploy the sample application](#deploy-the-sample-application)
+- [Deploy the sample applications](#deploy-the-sample-applications)
 - [Available commands](#commands)
 - [CI](#ci)
 - [Add a new package to the monorepo](#add-a-new-package-to-the-monorepo)
@@ -22,7 +22,7 @@ The main difference to account for is that the `devDependencies` must now be ins
 
 ## Project overview
 
-This project is split into two major sections, [packages/](packages/) and [sample/](sample/).
+This project is split into two major sections, [packages/](packages/) and [samples/](samples/).
 
 ### Packages
 
@@ -34,17 +34,18 @@ Under [packages/](packages/) are the actual packages composing the federated app
 
 [@squide/webpack-module-federation](packages/webpack-module-federation/) is module federation implementation for [webpack](https://webpack.js.org/concepts/module-federation/). This implementation is offered as a standalone package because not all application configurations will require module federation and the shell could eventually support alternative module federation application like [Rspack](https://www.rspack.dev/).
 
+[@squide/msw](packages/msw/) is a package including helpers to configure [Mock Service Worker](https://mswjs.io/) for a federated application.
+
 [@squide/fakes](packages/fakes/) is a collection of fake implementations to facilitate the development of federated modules in isolation.
 
-### Sample
+### Samples
 
-Under [sample/](sample/) is a sample application to test the federation application shell functionalities while developing.
+Under [samples/](samples/) are samples application to test the Squide functionalities while developing.
 
-In this sample application would find:
+You'll find two samples:
 
-- [An host application](sample/host/): http://locahost:8080
-- [A static module](sample/static-module/)
-- [A remote module](sample/remote-module/): http://localhost:8081
+- `basic`: A sample application showcasing the basic features or Squide.
+- `endpoints`: A more complexe sample application showcasing the different usecases related to data fetching and management.
 
 ## Installation
 
@@ -78,13 +79,21 @@ With the first terminal, execute the following script:
 pnpm dev
 ```
 
-With the second terminal, execute the following script:
+With the second terminal, execute either the following script:
 
 ```bash
-pnpm dev-sample
+pnpm dev-basic
 ```
 
-You can then open your favorite browser and navigate to `http://localhost:8080/` to get a live preview of your code. To test that the remote module is working correctly, navigate to `http://localhost:8081/remoteEntry.js`
+or
+
+```bash
+pnpm dev-endpoints
+```
+
+You can then open your favorite browser and navigate to `http://localhost:8080/` to get a live preview of your code.
+
+> To test that the remote module is working correctly, navigate to `http://localhost:8081/remoteEntry.js`
 
 ## Release the packages
 
@@ -118,21 +127,43 @@ By default, packages compilation output will be in their respective *dist* direc
 
 If you got linting error, most of the time, they can be fixed automatically using `eslint . --fix`, if not, follow the report provided by `pnpm lint`.
 
-## Deploy the sample application
+## Deploy the sample applications
 
-The sample application is hosted on [Netlify](https://www.netlify.com/). 2 sites are available, one for the host application (https://squide-host.netlify.app/) and one for the remote module application (https://squide-remote-module.netlify.app).
+The sample applications . For each application multiples sites are available.
 
-To deploy both websites, open a terminal at the root of the repository and execute the following script:
+### The "basic" sample
+
+The sites for this sample application are hosted on [Netlify](https://www.netlify.com/):
+
+- [host](https://squide-host.netlify.app/)
+- [remote-module](https://squide-remote-module.netlify.app)
+- [another-remote-module](https://squide-another-remote-module.netlify.app)
+
+To deploy the sample application, open a terminal at the root of the repository and execute the following script:
 
 ```bash
-deploy-sample
+deploy-basic
 ```
 
-It will automatically deploy both sites to production.
+A prompt with a few questions will appear and then  site will automatically be deployed to production.
+
+### The sample with "endpoints"
+
+The sites for this sample application are hosted on [Netlify](https://www.netlify.com/):
+
+- TBD
+
+To deploy the sample application, open a terminal at the root of the repository and execute the following script:
+
+```bash
+deploy-endpoints
+```
+
+A prompt with a few questions will appear and then  site will automatically be deployed to production.
 
 ## Commands
 
-From the project root, you have access to many commands the main ones are:
+From the project root, you have access to many commands. The most important ones are:
 
 ### dev
 
@@ -142,12 +173,20 @@ Build the shell packages for development and start the watch processes.
 pnpm dev
 ```
 
-### dev-sample
+### dev-basic
 
-Build the sample application for development and start the dev servers.
+Build the sample "basic" application for development and start the dev servers.
 
 ```bash
-pnpm dev-sample
+pnpm dev-basic
+```
+
+### dev-endpoints
+
+Build the sample "application with "endpoints" for development and start the dev servers.
+
+```bash
+pnpm dev-endpoints
 ```
 
 ### dev-docs
@@ -166,20 +205,36 @@ Build the packages for release.
 pnpm build
 ```
 
-### build-sample
+### build-basic
 
-Build the sample application for release.
+Build the sample "basic" application for release.
 
 ```bash
-pnpm build-sample
+pnpm build-basic
 ```
 
-### serve-sample
+### build-endpoints
 
-Build the sample application for deployment and start a local web server to serve the application.
+Build the sample application with "endpoints" for release.
 
 ```bash
-pnpm serve-sample
+pnpm build-endpoints
+```
+
+### serve-basic
+
+Build the sample "basic" application for deployment and start a local web server to serve the application.
+
+```bash
+pnpm serve-basic
+```
+
+### serve-endpoints
+
+Build the sample application with "endpoints" for deployment and start a local web server to serve the application.
+
+```bash
+pnpm serve-endpoints
 ```
 
 ### dev-docs

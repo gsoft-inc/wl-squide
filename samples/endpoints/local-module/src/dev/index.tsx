@@ -1,0 +1,40 @@
+import { registerShell } from "@endpoints/shell";
+import { MswPlugin } from "@squide/msw";
+import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { registerLocalModule } from "../register.tsx";
+import { App } from "./App.tsx";
+import { registerDev } from "./register.tsx";
+import { sessionAccessor, sessionManager } from "./session.ts";
+
+const mswPlugin = new MswPlugin();
+
+// Create the shell runtime.
+// Services, loggers and sessionAccessor could be reuse through a shared packages or faked when in isolation.
+const runtime = new Runtime({
+    loggers: [new ConsoleLogger()],
+    sessionAccessor
+});
+
+registerLocalModules([registerShell(sessionManager), registerDev, registerLocalModule], runtime);
+
+// Register MSW after the local modules has been registered since the request handlers
+// will be registered by the modules.
+if (process.env.USE_MSW) {
+    import("../../mocks/browser.ts").then(({ startMsw }) => {
+        startMsw(mswPlugin.requestHandlers);
+    });
+}
+
+const root = createRoot(document.getElementById("root")!);
+
+root.render(
+    <StrictMode>
+        <RuntimeContext.Provider value={runtime}>
+            <App />
+        </RuntimeContext.Provider>
+    </StrictMode>
+);
+
+

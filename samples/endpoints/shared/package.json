@@ -1,0 +1,52 @@
+{
+    "name": "@endpoints/shared",
+    "author": "Workleap",
+    "version": "0.0.0",
+    "description": "Shared package to showcase @squide.",
+    "private": true,
+    "license": "Apache-2.0",
+    "type": "module",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        },
+        "./FederatedTabsLayout.tsx": {
+            "import": "./dist/FederatedTabsLayout.js",
+            "types": "./dist/FederatedTabsLayout.d.ts",
+            "default": "./dist/FederatedTabsLayout.js"
+        }
+    },
+    "scripts": {
+        "dev": "nodemon",
+        "dev-msw": "pnpm nodemon",
+        "build": "tsup --config ./tsup.build.ts",
+        "serve-build": "pnpm build"
+    },
+    "peerDependencies": {
+        "@squide/react-router": "*",
+        "@tanstack/react-query": "*",
+        "react": "*",
+        "react-dom": "*",
+        "react-router-dom": "*",
+        "react-error-boundary": "*"
+    },
+    "devDependencies": {
+        "@remix-run/router": "1.9.0",
+        "@squide/react-router": "workspace:*",
+        "@tanstack/react-query": "4.36.1",
+        "@types/react": "18.2.28",
+        "@types/react-dom": "18.2.13",
+        "@workleap/eslint-plugin": "3.0.0",
+        "@workleap/tsup-configs": "3.0.1",
+        "@workleap/typescript-configs": "3.0.2",
+        "nodemon": "3.0.1",
+        "react": "18.2.0",
+        "react-dom": "18.2.0",
+        "react-router-dom": "6.16.0",
+        "react-error-boundary": "4.0.11",
+        "tsup": "7.2.0",
+        "typescript": "5.2.2"
+    }
+}

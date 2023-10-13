@@ -1,0 +1,9 @@
+export function SkillsTab() {
+    return (
+        <div>
+            <p>This is the <span style={{ fontWeight: "bold" }}>Skills</span> tab from <span style={{ fontWeight: "bold" }}>@basic/remote-module</span>!</p>
+        </div>
+    );
+}
+
+export const Component = SkillsTab;

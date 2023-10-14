@@ -73,7 +73,7 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
                     {renderedNavigationItems}
                 </nav>
                 <div style={{ whiteSpace: "nowrap", marginRight: "20px" }}>
-                    (User: <span style={{ fontWeight: "bold" }}>{session.user.name}</span>)
+                    (User: <span style={{ fontWeight: "bold" }}>{session?.user?.name}</span>)
                 </div>
                 <div>
                     <button type="button" onClick={onDisconnect}>Disconnect</button>

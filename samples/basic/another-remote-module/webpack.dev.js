@@ -20,7 +20,9 @@ if (!process.env.LOCAL) {
     });
 } else {
     config = defineDevConfig(swcConfig, {
-        entry: path.resolve("./src/dev/index.tsx")
+        cache: false,
+        entry: path.resolve("./src/dev/index.tsx"),
+        overlay: false
     });
 }
 

@@ -14,6 +14,7 @@ const mswPlugin = new MswPlugin();
 // Services, loggers and sessionAccessor could be reuse through a shared packages or faked when in isolation.
 const runtime = new Runtime({
     loggers: [new ConsoleLogger()],
+    plugins: [mswPlugin],
     sessionAccessor
 });
 
@@ -24,6 +25,8 @@ registerLocalModules([registerShell(sessionManager), registerDev, registerLocalM
 if (process.env.USE_MSW) {
     import("../../mocks/browser.ts").then(({ startMsw }) => {
         startMsw(mswPlugin.requestHandlers);
+
+        mswPlugin.setAsStarted();
     });
 }
 

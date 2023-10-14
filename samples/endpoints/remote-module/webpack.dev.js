@@ -22,9 +22,11 @@ if (!process.env.LOCAL) {
     });
 } else {
     config = defineDevConfig(swcConfig, {
+        cache: false,
         entry: path.resolve("./src/dev/index.tsx"),
         overlay: false,
         environmentVariables: {
+            "LOCAL": process.env.LOCAL === "true",
             "USE_MSW": process.env.USE_MSW === "true"
         }
     });

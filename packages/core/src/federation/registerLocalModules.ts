@@ -22,23 +22,23 @@ export interface RegisterLocalModulesOptions<TContext> {
 
 export function registerLocalModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext>[], runtime: TRuntime, { context }: RegisterLocalModulesOptions<TContext> = {}) {
     if (registrationStatus !== "none") {
-        throw new Error("[squide] registerLocalModules() can only be called once.");
+        throw new Error("[squide] [local] registerLocalModules() can only be called once.");
     }
 
     const errors: LocalModuleRegistraError[] = [];
 
-    runtime.logger.information(`[squide] Found ${registerFunctions.length} local module${registerFunctions.length !== 1 ? "s" : ""} to register.`);
+    runtime.logger.information(`[squide] [local] Found ${registerFunctions.length} local module${registerFunctions.length !== 1 ? "s" : ""} to register.`);
 
     registrationStatus = "in-progress";
 
     registerFunctions.forEach((x, index) => {
-        runtime.logger.information(`[squide] ${index + 1}/${registerFunctions.length} Registering local module${registerFunctions.length !== 1 ? "s" : ""}.`);
+        runtime.logger.information(`[squide] [local] ${index + 1}/${registerFunctions.length} Registering local module.`);
 
         try {
             x(runtime, context);
         } catch (error: unknown) {
             runtime.logger.error(
-                `[squide] ${index + 1}/${registerFunctions.length} An error occured while registering a local module.`,
+                `[squide] [local] ${index + 1}/${registerFunctions.length} An error occured while registering a local module.`,
                 error
             );
 
@@ -47,7 +47,7 @@ export function registerLocalModules<TRuntime extends AbstractRuntime = Abstract
             });
         }
 
-        runtime.logger.information(`[squide] ${index + 1}/${registerFunctions.length} Local module${registerFunctions.length !== 1 ? "s" : ""} registration completed.`);
+        runtime.logger.information(`[squide] [local] ${index + 1}/${registerFunctions.length} Local module registration completed.`);
     });
 
     registrationStatus = "ready";

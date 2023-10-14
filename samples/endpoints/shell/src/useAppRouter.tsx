@@ -42,6 +42,14 @@ export function useAppRouter(waitForMsw: boolean, sessionManager: SessionManager
     const isActiveRouteProtected = useIsMatchingRouteProtected(window.location);
 
     useEffect(() => {
+        if (areModulesReady && !isMswStarted) {
+            logger.debug("[shell] Modules are ready, waiting for MSW to start.");
+        }
+
+        if (!areModulesReady && isMswStarted) {
+            logger.debug("[shell] MSW is started, waiting for the modules to be ready.");
+        }
+
         if (areModulesReady && isMswStarted) {
             if (isActiveRouteProtected) {
                 logger.debug(`[shell] Fetching session data as "${window.location}" is a protected route.`);

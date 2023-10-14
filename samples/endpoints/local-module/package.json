@@ -15,7 +15,7 @@
     },
     "scripts": {
         "dev": "nodemon",
-        "dev-local": "cross-env USE_MSW=true nodemon --config nodemon.local.json",
+        "dev-local": "cross-env USE_MSW=true LOCAL=true nodemon --config nodemon.local.json",
         "build": "tsup --config ./tsup.build.ts",
         "serve-build": "pnpm build"
     },

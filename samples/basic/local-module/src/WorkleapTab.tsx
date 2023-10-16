@@ -1,8 +1,15 @@
 export function WorkleapTab() {
     return (
-        <div>
-            <p>This is the <span style={{ fontWeight: "bold" }}>Workleap</span> tab from <span style={{ fontWeight: "bold" }}>@basic/local-module</span>!</p>
-        </div>
+        <>
+            <h2>Workleap</h2>
+            <p style={{ backgroundColor: "purple", color: "white", width: "fit-content" }}>This tab is served by <code>@basic/local-module</code></p>
+            <p style={{ backgroundColor: "#d3d3d3", color: "black", width: "fit-content" }}>
+                <p>There are a few distinctive features that are showcased with this tab:</p>
+                <ul>
+                    <li>The tab is marked as the <code>index</code>, which makes him the default tab to be showned.</li>
+                </ul>
+            </p>
+        </>
     );
 }
 

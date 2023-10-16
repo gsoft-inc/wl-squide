@@ -3,11 +3,6 @@ import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 
 function registerRoutes(runtime: Runtime) {
     runtime.registerRoute({
-        path: "/remote",
-        lazy: async () => import("./RemotePage.tsx")
-    });
-
-    runtime.registerRoute({
         path: "/hoisted",
         lazy: () => import("./CustomLayout.tsx"),
         children: [
@@ -41,17 +36,13 @@ function registerRoutes(runtime: Runtime) {
     });
 
     runtime.registerNavigationItem({
-        $label: "Remote",
-        to: "/remote"
-    });
-
-    runtime.registerNavigationItem({
-        $label: <span style={{ color: "green" }}>Hoisted</span>,
+        $label: <span style={{ backgroundColor: "green", color: "white" }}>Hoisted</span>,
         to: "/hoisted"
     });
 
     runtime.registerNavigationItem({
         $label: "Section",
+        $priority: -30,
         children: [
             {
                 to: "#",
@@ -66,11 +57,13 @@ function registerRoutes(runtime: Runtime) {
 
     runtime.registerNavigationItem({
         $label: "No context override",
+        $priority: -20,
         to: "/no-context-override"
     });
 
     runtime.registerNavigationItem({
         $label: "Context override",
+        $priority: -10,
         to: "/context-override"
     });
 

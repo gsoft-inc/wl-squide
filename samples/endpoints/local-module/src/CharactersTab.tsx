@@ -18,7 +18,8 @@ export function CharactersTab() {
 
     return (
         <div>
-            <p>Fetching from <code>@endpoints/local-module</code></p>
+            <h2>Characters</h2>
+            <p style={{ backgroundColor: "purple", color: "white", width: "fit-content" }}>This tab is served by <code>@endpoints/local-module</code></p>
             <div>
                 {characters.map((x: Character) => {
                     return (

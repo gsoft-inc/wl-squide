@@ -4,6 +4,10 @@ import { Suspense, useCallback, type MouseEvent } from "react";
 import { ErrorBoundary, type FallbackProps } from "react-error-boundary";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
+export interface FederatedTabsLayoutProps {
+    host?: string;
+}
+
 const renderItem: RenderItemFunction = (item, index, level) => {
     const { label, linkProps } = item as NavigationLinkRenderProps;
 
@@ -44,14 +48,14 @@ function TabsError({ resetErrorBoundary }: FallbackProps) {
     );
 }
 
-export function FederatedTabsLayout() {
+export function FederatedTabsLayout({ host }: FederatedTabsLayoutProps) {
     const navigationItems = useNavigationItems("/federated-tabs");
     const renderedTabs = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (
-        <div>
-            <h2>Tabs</h2>
-            <p>Every tab is registered by a different module and is lazy loaded.</p>
+        <>
+            <h1>Tabs</h1>
+            {host && <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>This layout is served by <code>{host}</code></p>}
             {renderedTabs}
             <div style={{ paddingTop: "20px" }}>
                 <QueryErrorResetBoundary>
@@ -67,7 +71,7 @@ export function FederatedTabsLayout() {
                     )}
                 </QueryErrorResetBoundary>
             </div>
-        </div>
+        </>
     );
 }
 

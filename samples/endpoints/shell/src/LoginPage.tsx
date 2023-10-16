@@ -3,7 +3,11 @@ import axios from "axios";
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Navigate } from "react-router-dom";
 
-export function LoginPage() {
+export interface LoginPageProps {
+    host?: string;
+}
+
+export function LoginPage({ host }: LoginPageProps) {
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState<string>();
@@ -53,8 +57,9 @@ export function LoginPage() {
     }
 
     return (
-        <main>
+        <>
             <h1>Login</h1>
+            {host && <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>This page is served by <code>{host}</code></p>}
             <form>
                 <div>
                     <label htmlFor="username">Username</label>
@@ -73,7 +78,7 @@ export function LoginPage() {
                 {isBusy && <div style={{ color: "blue" }}>Loading...</div>}
                 {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
             </form>
-        </main>
+        </>
     );
 }
 

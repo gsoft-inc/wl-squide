@@ -2,6 +2,10 @@ import { useNavigationItems, useRenderedNavigationItems, type NavigationLinkRend
 import { Suspense } from "react";
 import { Link, Outlet } from "react-router-dom";
 
+export interface FederatedTabsLayoutProps {
+    host?: string;
+}
+
 const renderItem: RenderItemFunction = (item, index, level) => {
     const { label, linkProps } = item as NavigationLinkRenderProps;
 
@@ -22,20 +26,30 @@ const renderSection: RenderSectionFunction = elements => {
     );
 };
 
-export function FederatedTabsLayout() {
+export function FederatedTabsLayout({ host }: FederatedTabsLayoutProps) {
     const navigationItems = useNavigationItems("/federated-tabs");
     const renderedTabs = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (
-        <div>
-            <p>Every tab is registered by a different module and is lazy loaded.</p>
+        <>
+            <h1>Tabs</h1>
+            {host && <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>This layout is served by <code>{host}</code></p>}
+            <p style={{ backgroundColor: "#d3d3d3", color: "black", width: "fit-content" }}>
+                <p>There are a few distinctive features that are showcased with this pages:</p>
+                <ul>
+                    <li>This is a nested layout that renders tabs <strong>registered by distinct modules</strong>. This is what we call "Federated Tabs".</li>
+                    <li>Every tab is lazy loaded with React Router.</li>
+                    <li>Every tab has its own URL, allowing direct hit to the tab.</li>
+                    <li>This layout takes cares of rendering a loading screen while a tab is being loaded.</li>
+                </ul>
+            </p>
             {renderedTabs}
             <div style={{ paddingTop: "20px" }}>
                 <Suspense fallback={<div>Loading...</div>}>
                     <Outlet />
                 </Suspense>
             </div>
-        </div>
+        </>
     );
 }
 

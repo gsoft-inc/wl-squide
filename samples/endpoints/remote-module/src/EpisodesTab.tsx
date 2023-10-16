@@ -18,7 +18,8 @@ export function EpisodesTab() {
 
     return (
         <div>
-            <p>Fetching from <code>@endpoints/remote-module</code></p>
+            <h2>Episodes</h2>
+            <p style={{ backgroundColor: "purple", color: "white", width: "fit-content" }}>This tab is served by <code>@endpoints/remote-module</code></p>
             <div>
                 {episodes.map((x: Episode) => {
                     return (

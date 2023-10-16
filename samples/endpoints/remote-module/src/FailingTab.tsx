@@ -11,6 +11,9 @@ export function FailingTab() {
     } });
 
     return (
-        <div>Something went wront because the API call should have failed and you shouldn't see this!</div>
+        <>
+            <h2>Expected to fail!</h2>
+            <div>Something went wront because the API call should have failed and you shouldn't see this!</div>
+        </>
     );
 }

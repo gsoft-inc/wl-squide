@@ -2,11 +2,19 @@ import { Link } from "react-router-dom";
 
 export function HoistedPage() {
     return (
-        <div>
+        <>
             <h2>Hoisted</h2>
-            <p>Hello from a remote module! I have been hoisted at the top of React Router routes declaration and therefore doesn't inherit from the root layout and error boundary.</p>
+            <p style={{ backgroundColor: "purple", color: "white", width: "fit-content" }}>This page is served by <code>@basic/remote-module</code></p>
+            <p style={{ backgroundColor: "#d3d3d3", color: "black", width: "fit-content" }}>
+                <p>There are a few distinctive features that are showcased with this page:</p>
+                <ul>
+                    <li>This page is using Squide hoist feature, meaning that it doesn't inherit from the root layout and error boundary.</li>
+                    <li>This page navigation item's label is defined with a custom component, allowing the navigation item color to be rendered green.</li>
+                </ul>
+            </p>
+            <p>This is an hoisted page!</p>
             <Link to="/">Go back to home</Link>
-        </div>
+        </>
     );
 }
 

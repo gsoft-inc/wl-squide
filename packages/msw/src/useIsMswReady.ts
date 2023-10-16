@@ -23,7 +23,6 @@ export function useIsMswStarted(enabled: boolean, { interval = 10 }: UseIsMswSta
                 if (mswPlugin.isStarted) {
                     logger.debug("[squide] %cMSW is ready%c.", "color: white; background-color: green;", "");
 
-                    // Must clear interval before calling "_completeRegistration" in case there's an error.
                     clearInterval(intervalId);
                     setIsStarted(true);
                 }

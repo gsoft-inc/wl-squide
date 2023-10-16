@@ -27,7 +27,7 @@ const runtime = new Runtime({
     sessionAccessor
 });
 
-registerLocalModules([registerShell(sessionManager), registerHost, registerLocalModule], runtime);
+registerLocalModules([registerShell(sessionManager, { host: "@endpoints/host" }), registerHost, registerLocalModule], runtime);
 
 registerRemoteModules(Remotes, runtime).then(() => {
     if (process.env.USE_MSW) {

@@ -18,7 +18,8 @@ export function LocationsTab() {
 
     return (
         <div>
-            <p>Fetching from <code>@endpoints/remote-module</code></p>
+            <h2>Locations</h2>
+            <p style={{ backgroundColor: "purple", color: "white", width: "fit-content" }}>This tab is served by <code>@endpoints/remote-module</code></p>
             <div>
                 {locations.map((x: Location) => {
                     return (

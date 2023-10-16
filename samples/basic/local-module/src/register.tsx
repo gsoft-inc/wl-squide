@@ -3,18 +3,8 @@ import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 
 function registerRoutes(runtime: Runtime) {
     runtime.registerRoute({
-        path: "/about",
-        lazy: () => import("./AboutPage.tsx")
-    });
-
-    runtime.registerRoute({
         path: "/message",
         lazy: () => import("./MessagePage.tsx")
-    });
-
-    runtime.registerNavigationItem({
-        $label: "About",
-        to: "/about"
     });
 
     runtime.registerNavigationItem({

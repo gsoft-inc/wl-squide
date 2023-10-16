@@ -4,8 +4,9 @@ export function SubscriptionPage() {
     const subscription = useSubscription();
 
     return (
-        <div>
-            <h2>Subscription</h2>
+        <>
+            <h1>Subscription</h1>
+            <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>This page is served by <code>@endpoints/local-module</code></p>
             <div>
                 <span>Company: </span><span>{subscription?.company}</span>
             </div>
@@ -16,6 +17,6 @@ export function SubscriptionPage() {
                 <span>Status: </span><span>{toSubscriptionStatusLabel(subscription?.status)}</span>
             </div>
 
-        </div>
+        </>
     );
 }

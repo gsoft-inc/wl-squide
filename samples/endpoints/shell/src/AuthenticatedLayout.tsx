@@ -91,3 +91,5 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
         </>
     );
 }
+
+export const Component = AuthenticatedLayout;

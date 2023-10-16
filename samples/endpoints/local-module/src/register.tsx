@@ -44,7 +44,7 @@ function registerRoutes(runtime: Runtime) {
             const { FederatedTabsLayout } = await import("@endpoints/shared/FederatedTabsLayout.tsx");
 
             return {
-                element: <Providers><FederatedTabsLayout /></Providers>
+                element: <Providers><FederatedTabsLayout host="@endpoints/local-module" /></Providers>
             };
         }
     });

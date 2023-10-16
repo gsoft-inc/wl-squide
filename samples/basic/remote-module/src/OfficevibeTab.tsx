@@ -1,8 +1,9 @@
 export function OfficevibeTab() {
     return (
-        <div>
-            <p>This is the <span style={{ fontWeight: "bold" }}>Officevibe</span> tab from <span style={{ fontWeight: "bold" }}>@basic/remote-module</span>!</p>
-        </div>
+        <>
+            <h2>Officevibe</h2>
+            <p style={{ backgroundColor: "purple", color: "white", width: "fit-content" }}>This tab is served by <code>@basic/remote-module</code></p>
+        </>
     );
 }
 

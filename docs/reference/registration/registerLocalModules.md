@@ -24,7 +24,7 @@ registerLocalModules(registerFunctions: [], runtime, options?: { context? })
 
 ### Returns
 
-An array of `LocalModuleRegistrationError` if any happens during the registration.
+A `Promise` object with an array of `LocalModuleRegistrationError` if any error happens during the registration.
 
 - `LocalModuleRegistrationError`:
     - `error`: The original error object.

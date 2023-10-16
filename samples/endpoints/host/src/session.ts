@@ -10,12 +10,6 @@ export class InMemorySessionManager implements SessionManager {
 
     getSession() {
         return this.#session;
-
-        // return {
-        //     user: {
-        //         name: "John Doe"
-        //     }
-        // };
     }
 
     clearSession() {

@@ -18,7 +18,7 @@ export function CharactersTab() {
 
     return (
         <div>
-            <p>Fetching from the <code>@endpoints/local-module</code></p>
+            <p>Fetching from <code>@endpoints/local-module</code></p>
             <div>
                 {characters.map((x: Character) => {
                     return (

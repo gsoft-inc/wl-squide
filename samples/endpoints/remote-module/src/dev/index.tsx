@@ -25,6 +25,8 @@ registerLocalModules([registerShell(sessionManager), registerDev, registerModule
 // Register MSW after the local modules has been registered since the request handlers
 // will be registered by the modules.
 if (process.env.USE_MSW) {
+    // Files including an import to the "msw" package are included dynamically to prevent adding
+    // MSW stuff to the bundled when it's not used.
     import("../../mocks/browser.ts").then(({ startMsw }) => {
         startMsw(mswPlugin.requestHandlers);
 

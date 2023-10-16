@@ -23,7 +23,7 @@ export function useAppRouter(waitForMsw: boolean, sessionManager: SessionManager
     const [isReady, setIsReady] = useState(false);
 
     // Could be done with a ref (https://react.dev/reference/react/useRef) to save a re-render but for this sample
-    // it seemed unnecessary. If your app have multiple global data structures like this one thought, it should be considered.
+    // it seemed unnecessary. If your application loads a lot of data at bootstrapping, it should be considered.
     const [subscription, setSubscription] = useState<Subscription>();
 
     const logger = useLogger();

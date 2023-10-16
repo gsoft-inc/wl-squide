@@ -24,7 +24,7 @@ registerRemoteModules(remotes: [], runtime, options?: { context? })
 
 ### Returns
 
-A `Promise` object with an array of `RemoteModuleRegistrationError` if any happens during the registration.
+A `Promise` object with an array of `RemoteModuleRegistrationError` if any error happens during the registration.
 
 - `RemoteModuleRegistrationError`:
     - `url`: The URL of the module federation remote that failed to load.

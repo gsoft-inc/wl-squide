@@ -1,6 +1,6 @@
 import type { AbstractRuntime } from "../runtime/abstractRuntime.ts";
 import type { ModuleRegistrationStatus } from "./moduleRegistrationStatus.ts";
-import type { ModuleRegisterFunction } from "./registerModule.ts";
+import { registerModule, type ModuleRegisterFunction } from "./registerModule.ts";
 
 let registrationStatus: ModuleRegistrationStatus = "none";
 
@@ -20,7 +20,7 @@ export interface RegisterLocalModulesOptions<TContext> {
     context?: TContext;
 }
 
-export function registerLocalModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext>[], runtime: TRuntime, { context }: RegisterLocalModulesOptions<TContext> = {}) {
+export async function registerLocalModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext>[], runtime: TRuntime, { context }: RegisterLocalModulesOptions<TContext> = {}) {
     if (registrationStatus !== "none") {
         throw new Error("[squide] [local] registerLocalModules() can only be called once.");
     }
@@ -31,11 +31,11 @@ export function registerLocalModules<TRuntime extends AbstractRuntime = Abstract
 
     registrationStatus = "in-progress";
 
-    registerFunctions.forEach((x, index) => {
+    await Promise.allSettled(registerFunctions.map(async (x, index) => {
         runtime.logger.information(`[squide] [local] ${index + 1}/${registerFunctions.length} Registering local module.`);
 
         try {
-            x(runtime, context);
+            registerModule(x as ModuleRegisterFunction<AbstractRuntime>, runtime, context);
         } catch (error: unknown) {
             runtime.logger.error(
                 `[squide] [local] ${index + 1}/${registerFunctions.length} An error occured while registering a local module.`,
@@ -48,7 +48,7 @@ export function registerLocalModules<TRuntime extends AbstractRuntime = Abstract
         }
 
         runtime.logger.information(`[squide] [local] ${index + 1}/${registerFunctions.length} Local module registration completed.`);
-    });
+    }));
 
     registrationStatus = "ready";
 

@@ -11,6 +11,7 @@
         "build": "pnpm build:webpack && pnpm build:copy-redirects",
         "build:webpack": "webpack --config webpack.build.js",
         "build:copy-redirects": "copyfiles _redirects dist",
+        "build:copy-public-files": "copyfiles -u 1 public/favicon.png dist",
         "serve-build": "pnpm build && pnpm http-server dist -p 8080 -P http://localhost:8080? -c-1"
     },
     "devDependencies": {

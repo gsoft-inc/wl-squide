@@ -3,8 +3,9 @@ import { Navigate, Outlet } from "react-router-dom";
 
 export function AuthenticationBoundary() {
     const logger = useLogger();
+    const isAuthenticated = useIsAuthenticated();
 
-    if (useIsAuthenticated()) {
+    if (isAuthenticated) {
         return <Outlet />;
     }
 

@@ -1,7 +1,5 @@
 import { getMswPlugin } from "@squide/msw";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
-import { episodeHandlers } from "../mocks/episodeHandlers.ts";
-import { locationHandlers } from "../mocks/locationHandlers.ts";
 import { Providers } from "./Providers.tsx";
 
 function registerRoutes(runtime: Runtime) {
@@ -66,16 +64,20 @@ function registerRoutes(runtime: Runtime) {
     });
 }
 
-function registerMsw(runtime: Runtime) {
-    const mswPlugin = getMswPlugin(runtime);
+async function registerMsw(runtime: Runtime) {
+    if (process.env.USE_MSW) {
+        const mswPlugin = getMswPlugin(runtime);
 
-    mswPlugin.registerRequestHandlers([
-        ...episodeHandlers,
-        ...locationHandlers
-    ]);
+        // Files including an import to "msw" package are included dynamically to prevent adding
+        // MSW stuff to the bundled when it's not used.
+        const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
+
+        mswPlugin.registerRequestHandlers(requestHandlers);
+    }
 }
 
-export const register: ModuleRegisterFunction<Runtime> = runtime => {
+export const register: ModuleRegisterFunction<Runtime> = async runtime => {
     registerRoutes(runtime);
-    registerMsw(runtime);
+
+    return registerMsw(runtime);
 };

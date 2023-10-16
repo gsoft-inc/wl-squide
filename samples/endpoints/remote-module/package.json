@@ -7,7 +7,7 @@
     "license": "Apache-2.0",
     "type": "module",
     "scripts": {
-        "dev": "nodemon",
+        "dev": "cross-env USE_MSW=true nodemon",
         "dev-local": "cross-env USE_MSW=true LOCAL=true pnpm dev",
         "build": "cross-env USE_MSW=true webpack --config webpack.build.js",
         "serve-build": "pnpm build && pnpm http-server dist -p 8081 -P http://localhost:8081? -c-1"

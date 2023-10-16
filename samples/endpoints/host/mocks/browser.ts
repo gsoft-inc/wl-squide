@@ -1,7 +1,7 @@
-import { setupWorker, type RestHandler, type StartOptions } from "msw";
+import { setupWorker, type RestHandler } from "msw";
 
-export function startMsw(moduleRequestHandlers: RestHandler[], options?: StartOptions) {
+export function startMsw(moduleRequestHandlers: RestHandler[]) {
     const worker = setupWorker(...moduleRequestHandlers);
 
-    worker.start(options);
+    worker.start();
 }

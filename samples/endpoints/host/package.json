@@ -8,9 +8,10 @@
     "type": "module",
     "scripts": {
         "dev": "cross-env USE_MSW=true nodemon",
-        "build": "cross-env USE_MSW=true pnpm build:webpack && pnpm build:copy-redirects",
+        "build": "cross-env USE_MSW=true pnpm build:webpack && pnpm build:copy-redirects && pnpm build:copy-public-files",
         "build:webpack": "webpack --config webpack.build.js",
         "build:copy-redirects": "copyfiles _redirects dist",
+        "build:copy-public-files": "copyfiles -u 1 public/favicon.png public/mockServiceWorker.js dist",
         "serve-build": "pnpm build && pnpm http-server dist -p 8080 -P http://localhost:8080? -c-1"
     },
     "devDependencies": {

@@ -3,7 +3,6 @@ import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { ReactNode } from "react";
-import { characterHandlers } from "../mocks/characterHandlers.ts";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -82,13 +81,20 @@ function registerRoutes(runtime: Runtime) {
     });
 }
 
-function registerMsw(runtime: Runtime) {
-    const mswPlugin = getMswPlugin(runtime);
+async function registerMsw(runtime: Runtime) {
+    if (process.env.USE_MSW) {
+        const mswPlugin = getMswPlugin(runtime);
 
-    mswPlugin.registerRequestHandlers(characterHandlers);
+        // Files including an import to the "msw" package are included dynamically to prevent adding
+        // MSW stuff to the bundled when it's not used.
+        const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
+
+        mswPlugin.registerRequestHandlers(requestHandlers);
+    }
 }
 
 export const registerLocalModule: ModuleRegisterFunction<Runtime> = runtime => {
     registerRoutes(runtime);
-    registerMsw(runtime);
+
+    return registerMsw(runtime);
 };

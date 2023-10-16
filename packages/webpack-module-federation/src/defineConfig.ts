@@ -60,6 +60,18 @@ export interface DefineHostModuleFederationPluginOptions extends ModuleFederatio
     router?: Router;
 }
 
+const useNamedChunkIdsTransformer: WebpackConfigTransformer = (config: WebpackConfig) => {
+    config.optimization = {
+        ...(config.optimization ?? {}),
+        // Without named chunk ids, there are some Webpack features that do not work
+        // when used with Module Federation. One of these feature is using a dynamic import in
+        // a remote module.
+        chunkIds: "named"
+    };
+
+    return config;
+};
+
 ////////////////////////////  Host  /////////////////////////////
 
 // The function return type is mandatory, otherwise we got an error TS4058.
@@ -134,6 +146,7 @@ export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: str
         cache = false,
         plugins = [],
         htmlWebpackPluginOptions,
+        transformers = [],
         router,
         sharedDependencies,
         moduleFederationPluginOptions = defineHostModuleFederationPluginOptions(applicationName, { router, shared: sharedDependencies }),
@@ -148,6 +161,10 @@ export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: str
         plugins: [
             ...plugins,
             new webpack.container.ModuleFederationPlugin(moduleFederationPluginOptions)
+        ],
+        transformers: [
+            useNamedChunkIdsTransformer,
+            ...transformers
         ],
         ...webpackOptions
     });
@@ -258,6 +275,7 @@ export function defineBuildRemoteModuleConfig(swcConfig: SwcConfig, applicationN
         cache = false,
         plugins = [],
         htmlWebpackPlugin = false,
+        transformers = [],
         router,
         sharedDependencies,
         moduleFederationPluginOptions = defineRemoteModuleFederationPluginOptions(applicationName, { router, shared: sharedDependencies }),
@@ -272,6 +290,10 @@ export function defineBuildRemoteModuleConfig(swcConfig: SwcConfig, applicationN
         plugins: [
             ...plugins,
             new webpack.container.ModuleFederationPlugin(moduleFederationPluginOptions)
+        ],
+        transformers: [
+            useNamedChunkIdsTransformer,
+            ...transformers
         ],
         ...webpackOptions
     });

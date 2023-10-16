@@ -31,12 +31,13 @@ registerLocalModules([registerShell(sessionManager), registerHost, registerLocal
 
 registerRemoteModules(Remotes, runtime).then(() => {
     if (process.env.USE_MSW) {
+        // Files including an import to the "msw" package are included dynamically to prevent adding
+        // MSW stuff to the bundled when it's not used.
         import("../mocks/browser.ts").then(({ startMsw }) => {
             // Will start MSW with the request handlers provided by every module.
             startMsw(mswPlugin.requestHandlers);
 
-            // Indicate to resources that are dependent on MSW
-            // that the service has been started.
+            // Indicate to resources that are dependent on MSW that the service has been started.
             mswPlugin.setAsStarted();
         });
     }

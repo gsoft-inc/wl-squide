@@ -8,7 +8,7 @@
     "type": "module",
     "scripts": {
         "dev": "nodemon",
-        "dev-local": "cross-env LOCAL=true pnpm dev",
+        "dev-isolated": "cross-env ISOLATED=true pnpm dev",
         "build": "webpack --config webpack.build.js",
         "serve-build": "pnpm build && pnpm http-server dist -p 8082 -P http://localhost:8082? -c-1"
     },

@@ -164,7 +164,7 @@ remote-module
 
 ### index.tsx
 
-The `index.tsx` file is similar to the `bootstrap.tsx` file of an host application but, tailored for an isolated module. The key distinction is that, since the project is set up for local development, the module is registered with the [registerLocalModules](/reference/registration/registerLocalModules.md) function instead of the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function:
+The `index.tsx` file is similar to the `bootstrap.tsx` file of an host application but, tailored for an isolated module. The key distinction is that, since the project is set up for isolated development, the module is registered with the [registerLocalModules](/reference/registration/registerLocalModules.md) function instead of the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function:
 
 ```tsx !#8-10,14 remote-module/src/index.tsx
 import { createRoot } from "react-dom/client";
@@ -233,16 +233,16 @@ function DevHome() {
 
 ### Add a new CLI script
 
-Next, add a new `dev-local` script to the `package.json` file to start the local development server in **"isolation"**:
+Next, add a new `dev-isolated` script to the `package.json` file to start the local development server in **"isolation"**:
 
 ```json !#3 remote-module/package.json
 {
     "dev": "webpack serve --config webpack.dev.js",
-    "dev-local": "cross-env LOCAL=true webpack serve --config webpack.dev.js",
+    "dev-isolated": "cross-env ISOLATED=true webpack serve --config webpack.dev.js",
 }
 ```
 
-The `dev-local` script is similar to the `dev` script but introduces a `LOCAL` environment variable. This new environment variable will be utilized by the `webpack.dev.js` file to conditionally setup the development server for **local** development in **isolation** or to be consumed by a host application through the `/remoteEntry.js` entry point:
+The `dev-isolated` script is similar to the `dev` script but introduces a `ISOLATED` environment variable. This new environment variable will be utilized by the `webpack.dev.js` file to conditionally setup the development server for development in **isolation** or to be consumed by a host application through the `/remoteEntry.js` entry point:
 
 ### Configure webpack
 
@@ -271,7 +271,7 @@ extends @workleap/browserslist-config
 
 #### `defineDevConfig`
 
-To configure webpack, open the `webpack.dev.js` file and update the configuration to incorporate the `LOCAL` environment variable and the [defineDevConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) function:
+To configure webpack, open the `webpack.dev.js` file and update the configuration to incorporate the `ISOLATED` environment variable and the [defineDevConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) function:
 
 ```js !#9,12 remote-module/webpack.dev.js
 // @ts-check
@@ -282,7 +282,7 @@ import { swcConfig } from "./swc.dev.js";
 
 let config;
 
-if (!process.env.LOCAL) {
+if (!process.env.ISOLATED) {
     config = defineDevRemoteModuleConfig(swcConfig, "remote1", 8081);
 } else {
     config = defineDevConfig(swcConfig);
@@ -293,7 +293,7 @@ export default config;
 
 ### Try it :rocket:
 
-Start the remote module in isolation by running the `dev-local` script. The application shell should wrap the pages of the module and the default page should be `DevHome`.
+Start the remote module in isolation by running the `dev-isolated` script. The application shell should wrap the pages of the module and the default page should be `DevHome`.
 
 ## Setup a local module
 
@@ -399,17 +399,17 @@ export default defineDevConfig(swcConfig);
 
 ### Add a new CLI script
 
-Next, add a new `dev-local` script to the `package.json` file to start the local development server:
+Next, add a new `dev-isolated` script to the `package.json` file to start the local development server:
 
 ```json local-module/package.json
 {
-    "dev-local": "webpack serve --config webpack.config.js"
+    "dev-isolated": "webpack serve --config webpack.config.js"
 }
 ```
 
 ### Try it :rocket:
 
-Start the remote module in isolation by running the `dev-local` script. The application shell should wrap the pages of the module and the default page should be `DevHome`.
+Start the remote module in isolation by running the `dev-isolated` script. The application shell should wrap the pages of the module and the default page should be `DevHome`.
 
 !!!info
 If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample).

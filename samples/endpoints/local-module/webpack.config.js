@@ -9,7 +9,7 @@ export default defineDevConfig(swcConfig, {
     entry: path.resolve("./src/dev/index.tsx"),
     overlay: false,
     environmentVariables: {
-        "LOCAL": process.env.LOCAL === "true",
+        "ISOLATED": process.env.ISOLATED === "true",
         "USE_MSW": process.env.USE_MSW === "true"
     }
 });

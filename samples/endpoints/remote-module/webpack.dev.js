@@ -7,7 +7,7 @@ import { swcConfig } from "./swc.dev.js";
 
 let config;
 
-if (!process.env.LOCAL) {
+if (!process.env.ISOLATED) {
     config = defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
         sharedDependencies: {
             "@endpoints/shared": {
@@ -16,7 +16,7 @@ if (!process.env.LOCAL) {
         },
         environmentVariables: {
             "NETLIFY": process.env.NETLIFY === "true",
-            "LOCAL": process.env.LOCAL === "true",
+            "ISOLATED": process.env.ISOLATED === "true",
             "USE_MSW": process.env.USE_MSW === "true"
         }
     });
@@ -26,7 +26,7 @@ if (!process.env.LOCAL) {
         entry: path.resolve("./src/dev/index.tsx"),
         overlay: false,
         environmentVariables: {
-            "LOCAL": process.env.LOCAL === "true",
+            "ISOLATED": process.env.ISOLATED === "true",
             "USE_MSW": process.env.USE_MSW === "true"
         }
     });

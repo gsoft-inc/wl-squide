@@ -7,7 +7,7 @@ import { swcConfig } from "./swc.dev.js";
 
 let config;
 
-if (!process.env.LOCAL) {
+if (!process.env.ISOLATED) {
     config = defineDevRemoteModuleConfig(swcConfig, "remote2", 8082, {
         sharedDependencies: {
             "@basic/shared": {

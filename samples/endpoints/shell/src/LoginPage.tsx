@@ -74,7 +74,9 @@ export function LoginPage({ host }: LoginPageProps) {
                         Login
                     </button>
                 </div>
+                <br />
                 <div>Hint: use temp/temp :)</div>
+                <br />
                 {isBusy && <div style={{ color: "blue" }}>Loading...</div>}
                 {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
             </form>

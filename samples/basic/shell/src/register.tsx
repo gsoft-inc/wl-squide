@@ -4,7 +4,12 @@ import { ManagedRoutes } from "@squide/react-router";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 
-function registerRoutes(runtime: Runtime, sessionManager: SessionManager) {
+export interface RegisterShellOptions {
+    // This is only for demo purposed, do not copy this.
+    host?: string;
+}
+
+function registerRoutes(runtime: Runtime, sessionManager: SessionManager, host?: string) {
     runtime.registerRoute({
         // Pathless route to declare a root layout and a root error boundary.
         $visibility: "public",
@@ -56,7 +61,7 @@ function registerRoutes(runtime: Runtime, sessionManager: SessionManager) {
             const { LoginPage } = await import("./LoginPage.tsx");
 
             return {
-                element: <LoginPage sessionManager={sessionManager} />
+                element: <LoginPage sessionManager={sessionManager} host={host} />
             };
         }
     }, {
@@ -66,7 +71,13 @@ function registerRoutes(runtime: Runtime, sessionManager: SessionManager) {
     runtime.registerRoute({
         $visibility: "public",
         path: "/logout",
-        lazy: () => import("./LogoutPage.tsx")
+        lazy: async () => {
+            const { LogoutPage } = await import("./LogoutPage.tsx");
+
+            return {
+                element: <LogoutPage host={host} />
+            };
+        }
     }, {
         parentName: "root-error-boundary"
     });
@@ -78,7 +89,7 @@ function registerRoutes(runtime: Runtime, sessionManager: SessionManager) {
             const { NoMatchPage } = await import("./NoMatchPage.tsx");
 
             return {
-                element: <NoMatchPage path={location.pathname} />
+                element: <NoMatchPage path={location.pathname} host={host} />
             };
         }
     }, {
@@ -86,9 +97,9 @@ function registerRoutes(runtime: Runtime, sessionManager: SessionManager) {
     });
 }
 
-export function registerShell(sessionManager: SessionManager) {
+export function registerShell(sessionManager: SessionManager, { host }: RegisterShellOptions = {}) {
     const register: ModuleRegisterFunction<Runtime> = runtime => {
-        registerRoutes(runtime, sessionManager);
+        registerRoutes(runtime, sessionManager, host);
     };
 
     return register;

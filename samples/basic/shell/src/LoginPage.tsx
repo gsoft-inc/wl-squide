@@ -5,9 +5,10 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 export interface LoginProps {
     sessionManager: SessionManager;
+    host?: string;
 }
 
-export function LoginPage({ sessionManager }: LoginProps) {
+export function LoginPage({ sessionManager, host }: LoginProps) {
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
 
@@ -42,8 +43,9 @@ export function LoginPage({ sessionManager }: LoginProps) {
     }
 
     return (
-        <main>
+        <>
             <h1>Login</h1>
+            {host && <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>This page is served by <code>{host}</code></p>}
             <form>
                 <div>
                     <label htmlFor="username">Username</label>
@@ -58,8 +60,9 @@ export function LoginPage({ sessionManager }: LoginProps) {
                         Login
                     </button>
                 </div>
+                <br />
                 <div>Hint: use temp/temp :)</div>
             </form>
-        </main>
+        </>
     );
 }

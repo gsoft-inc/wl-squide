@@ -29,7 +29,7 @@ const context: AppContext = {
     name: "Test app"
 };
 
-registerLocalModules([registerShell(sessionManager), registerHost, registerLocalModule], runtime, { context });
+registerLocalModules([registerShell(sessionManager, { host: "@basic/host" }), registerHost, registerLocalModule], runtime, { context });
 
 registerRemoteModules(Remotes, runtime, { context });
 

@@ -22,7 +22,7 @@ View the [user's documentation](https://gsoft-inc.github.io/wl-squide/).
 
 ## Live sample
 
-A sample application is hosted at https://squide-host.netlify.app.
+A basic sample application is hosted at https://squide-basic-host.netlify.app.
 
 ## 🤝 Contributing
 

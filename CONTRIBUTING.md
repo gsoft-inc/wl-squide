@@ -135,9 +135,9 @@ The sample applications . For each application multiples sites are available.
 
 The sites for this sample application are hosted on [Netlify](https://www.netlify.com/):
 
-- [host](https://squide-host.netlify.app/)
-- [remote-module](https://squide-remote-module.netlify.app)
-- [another-remote-module](https://squide-another-remote-module.netlify.app)
+- [host](https://squide-basic-host.netlify.app/)
+- [remote-module](https://squide-basic-remote-module.netlify.app)
+- [another-remote-module](https://squide-basic-another-remote-module.netlify.app)
 
 To deploy the sample application, open a terminal at the root of the repository and execute the following script:
 

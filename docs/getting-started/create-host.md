@@ -43,9 +43,10 @@ host
 ├── src
 ├──── App.tsx
 ├──── RootLayout.tsx
-├──── Home.tsx
+├──── HomePage.tsx
 ├──── bootstrap.tsx
 ├──── index.ts
+├──── register.tsx
 ├── .browserslistrc
 ├── swc.dev.js
 ├── swc.build.js
@@ -131,21 +132,9 @@ export function App() {
     // Retrieve the routes registered by the remote modules.
     const routes = useRoutes();
 
-    // Create the router instance with an home page and the remote module routes.
+    // Create the router instance with the registered routes.
     const router = useMemo(() => {
-        return createBrowserRouter([
-            {
-                path: "/",
-                element: <RootLayout />,
-                children: [
-                    {
-                        index: true,
-                        element: <Home />
-                    },
-                    ...routes
-                ]
-            }
-        ]);
+        return createBrowserRouter(...routes);
     }, [routes]);
 
     // Display a loading until the remote modules are registered.
@@ -165,7 +154,7 @@ export function App() {
 Next, create a layout component to [render the navigation items](/reference/routing/useRenderedNavigationItems.md):
 
 ```tsx !#38,41 host/src/RootLayout.tsx
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { 
     useNavigationItems,
@@ -210,7 +199,9 @@ export function RootLayout() {
     return (
         <>
             <nav>{navigationElements}</nav>
-            <Outlet />
+            <Suspense fallback={<div>Loading...</div>}>
+                <Outlet />
+            </Suspense>
         </>
     );
 }
@@ -218,14 +209,68 @@ export function RootLayout() {
 
 ### Homepage
 
-Finally, create the `Home` component that will serve as the homepage for this guide application:
+Finally, create the `HomePage` component that will serve as the homepage for this application:
 
-```tsx host/src/Home.tsx
-export function Home() {
+```tsx host/src/HomePage.tsx
+export function HomePage() {
     return (
         <div>Hello from the Home page!</div>
     );
 }
+```
+
+Then, add a local module at the root of the host application to register the homepage:
+
+```tsx host/src/register.tsx
+import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import { HomePage } from "./HomePage.tsx";
+
+export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
+    runtime.registerRoute({
+        index: true,
+        element: <HomePage />
+    });
+};
+```
+
+And update the bootstrapping code to register the newly created local module:
+
+```tsx !#24 host/src/bootstrap.tsx
+import { createRoot } from "react-dom/client";
+import { ConsoleLogger, RuntimeContext, Runtime } from "@squide/react-router";
+import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import type { AppContext} from "@sample/shared";
+import { App } from "./App.tsx";
+import { registerHost } from "./register.tsx";
+
+// Define the remote modules.
+const Remotes: RemoteDefinition[] = [
+    { url: "http://localhost:8081", name: "remote1" }
+];
+
+// Create the shell runtime.
+const runtime = new Runtime({
+    loggers: [new ConsoleLogger()]
+});
+
+// Create an optional context.
+const context: AppContext = {
+    name: "Demo application"
+};
+
+// Register the newly created local module.
+registerLocalModules([registerHost], runtime, { context });
+
+// Register the remote module.
+registerRemoteModules(Remotes, runtime, { context });
+
+const root = createRoot(document.getElementById("root")!);
+
+root.render(
+    <RuntimeContext.Provider value={runtime}>
+        <App />
+    </RuntimeContext.Provider>
+);
 ```
 
 ## Configure webpack

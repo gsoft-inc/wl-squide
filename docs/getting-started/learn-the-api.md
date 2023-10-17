@@ -172,6 +172,10 @@ import { requetHandlers } from "../mocks/handlers.ts";
 const mswPlugin = runtime.getPlugin(MswPlugin.name) as MswPlugin;
 ```
 
+## MSW
+
+TBD
+
 ## Fakes
 
 For development purposes, have a look at the available [fake implementations](../reference/default.md#fakes).

@@ -31,8 +31,10 @@ expanded: true
 
 ### Routing
 
-- [useHoistedRoutes](routing/useHoistedRoutes.md)
+- [ManagedRoutes](routing/ManagedRoutes.md)
 - [useRenderedNavigationItems](routing/useRenderedNavigationItems.md)
+- [useMatchingRoute](routing/useMatchingRoute.md)
+- [useIsMatchingRouteProtected](routing/useIsMatchingRouteProtected.md)
 
 ### Logging
 
@@ -53,12 +55,18 @@ expanded: true
 
 - [Plugin](plugins/plugin.md)
 
-### Webpack
+### webpack
 
 - [defineDevHostConfig](webpack/defineDevHostConfig.md)
 - [defineDevRemoteModuleConfig](webpack/defineDevRemoteModuleConfig.md)
 - [defineBuildHostConfig](webpack/defineBuildHostConfig.md)
 - [defineBuildRemoteModuleConfig](webpack/defineBuildRemoteModuleConfig.md)
+
+### Mock Service Worker
+
+- [MswPlugin](msw/MswPlugin.md)
+- [getMswPlugin](msw/getMswPlugin.md)
+- [useIsMswReady](msw/useIsMswReady.md)
 
 ## Fakes
 

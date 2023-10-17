@@ -79,7 +79,7 @@ runtime.registerRoute({
 
 ### Register an hoisted route
 
-Unlike a regular page, a hoisted page is added at the root of the router, outside of the boundaries of the host application's root layout. This means that a hoisted page has full control over its rendering.
+Unlike a regular page, a hoisted page is added at the root of the router, outside of the host application's root layout, root error boundary and even root authentication boundary. This means that a hoisted page has full control over its rendering. To mark a route as hoisted, provide a `host` property to the route options.
 
 ```tsx !#7
 import { Page } from "./Page.tsx";
@@ -92,19 +92,59 @@ runtime.registerRoute({
 });
 ```
 
-[!ref text="Setup the host application to accept hoisted routes"](/reference/routing/useHoistedRoutes.md)
+!!!warning
+By declaring a page as hoisted, other parts of the application will not be isolated anymore from this page's failures as the page will be rendered outside of the host application's root error boundary. To **avoid breaking the entire application** when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router's [errorElement](https://reactrouter.com/en/main/route/error-element) property for each hoisted page.
+!!!
+
+!!!warning
+By declaring a page as hoisted, the page will be rendered at the root of the router, therefore, most certainly outside the authenticated boundary of the application. If the hoisted page requires an authentication, make sure to **wrap the page with an authentication boundary** or to handle the authentication within the page.
+!!!
+
+### Register a route with a different layout
+
+!!!info
+For a detailed walkthrough, read the guide on [how to override the host layout](/guides/override-the-host-layout.md).
+!!!
+
+```tsx !#9,12,22
+import { Page } from "./Page.tsx";
+import { RemoteLayout } from "./RemoteLayout.tsx";
+import { RemoteErrorBoundary } from "./RemoteErrorBoundary.tsx";
+
+runtime.registerRoute({
+    path: "/page-1",
+    // Will render the page inside the "RemoteLayout" rather than the "RootLayout".
+    // For more information about React Router's nested routes, view https://reactrouter.com/en/main/start/tutorial#nested-routes.
+    element: <RemoteLayout />,
+    children: [
+        {
+            errorElement: <RemoteErrorBoundary />,
+            children: [
+                {
+                    index: true,
+                    element: <Page />
+                }
+            ]
+        }
+    ]
+}, {
+    hoist: true
+});
+```
 
 ### Register a public route
 
-When registering a route, a hint can be provided, indicating if the route is intended to be displayed as a `public` or `protected` route. This is especially useful when dealing with code that conditionally fetch data for protected routes (e.g. a session).
+When registering a route, a hint can be provided, indicating if the route is intended to be displayed as a `public` or `protected` route. This is especially useful when dealing with code that conditionally fetch data for protected routes (e.g. a session). Don't forget to mark the route as hoisted with the `host` option if the route is nested under an authentication boundary.
 
-```tsx !#4
+```tsx !#4,8
 import { Page } from "./Page.tsx";
 
 runtime.registerRoute({
     $visibility: "public"
     path: "/page-1",
     element: <Page />
+}, {
+    hoist: true
 });
 ```
 
@@ -125,11 +165,13 @@ runtime.registerRoute({
             element: <Page />,
         }
     ]
+}, {
+    hoist: true
 });
 ```
 
 !!!info
-When no visibility hint is provided, a route is considered as a `protected` route.
+When no visibility hint is provided, a route is considered `protected`.
 !!!
 
 ### Register a named route

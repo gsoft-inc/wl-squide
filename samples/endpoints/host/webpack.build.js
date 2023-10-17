@@ -4,7 +4,7 @@ import { defineBuildHostConfig } from "@squide/webpack-module-federation/defineC
 import { swcConfig } from "./swc.build.js";
 
 // The trailing / is very important, otherwise paths will not be resolved correctly.
-const publicPath = process.env.NETLIFY === "true" ? "https://squide-host.netlify.app/" : "http://localhost:8080/";
+const publicPath = process.env.NETLIFY === "true" ? "https://squide-endpoints-host.netlify.app/" : "http://localhost:8080/";
 
 export default defineBuildHostConfig(swcConfig, "host", publicPath, {
     sharedDependencies: {

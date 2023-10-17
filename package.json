@@ -33,8 +33,8 @@
         "build-endpoints": "pnpm --filter \"./samples/endpoints/*\" -r --parallel build",
         "serve-endpoints": "pnpm --filter \"./samples/endpoints/*\" -r --parallel serve-build",
         "deploy-endpoints": "cross-env NETLIFY=true pnpm build-endpoints && pnpm run deploy-endpoints:host && pnpm run deploy-endpoints:remote-module",
-        "deploy-endpoints:host": "netlify deploy --dir=samples/endpoints/host/dist --site=TBD --prod",
-        "deploy-endpoints:remote-module": "netlify deploy --dir=samples/endpoints/remote-module/dist --site=TBD --prod",
+        "deploy-endpoints:host": "netlify deploy --dir=samples/endpoints/host/dist --site=4bde6b8b-cea6-487f-913b-acec9332eb2f --prod",
+        "deploy-endpoints:remote-module": "netlify deploy --dir=samples/endpoints/remote-module/dist --site=a3f091c3-2bc9-4c50-83a0-72fc6d7fa158 --prod",
         "dev-docs": "retype start",
         "list-outdated-deps": "pnpm outdated -r --format list",
         "update-outdated-deps": "pnpm update -r --latest"

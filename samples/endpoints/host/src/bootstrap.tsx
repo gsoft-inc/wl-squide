@@ -13,7 +13,7 @@ import { sessionAccessor, sessionManager } from "./session.ts";
 const Remotes: RemoteDefinition[] = [
     {
         name: "remote1",
-        url: isNetlify ? "https://squide-remote-module.netlify.app" : "http://localhost:8081"
+        url: isNetlify ? "https://squide-endpoints-remote-module.netlify.app" : "http://localhost:8081"
     }
 ];
 

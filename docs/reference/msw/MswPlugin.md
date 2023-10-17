@@ -8,6 +8,8 @@ toc:
 
 A plugin to faciliate the integration of [Mock Service Worker](https://mswjs.io/) (MSW) in a federated application.
 
+> MSW doesn't support having multiple remote modules starting their own service worker as MSW request handlers must be registered to a **service worker that is on the same host as the originator of an HTTP request** (which would always be the host application for a federated application). To circumvent this limitation, `@squide/msw` offers a shared registry to modules, allowing them to register their request handlers in a way that makes them available to the host application. The host application can then retrieve the request handlers registered by the modules and register them to it's own MSW.
+
 ## Reference
 
 ```ts

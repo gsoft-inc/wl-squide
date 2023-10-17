@@ -131,7 +131,7 @@ const isAuthenticated = useIsAuthenticated();
 
 The session is also available from the [Runtime](/reference/runtime/runtime-class.md) instance.
 
-## Plugins
+<!-- ## Plugins
 
 To keep Squide lightweight, not all functionalities should be integrated as a core functionality. However, to accommodate a broad range of technologies, a plugin system has been implemented to fill the gap.
 
@@ -170,11 +170,79 @@ import { MswPlugin } from "@sample/shared";
 import { requetHandlers } from "../mocks/handlers.ts";
 
 const mswPlugin = runtime.getPlugin(MswPlugin.name) as MswPlugin;
+``` -->
+
+## Mock Service Worker
+
+We recommend to mock the API endpoints with [Mock Service Worker](https://mswjs.io/) (MSW) to faciliate the development and encourage an [Contract Design First](https://devblogs.microsoft.com/ise/2023/05/08/design-api-first-with-typespec/) approach.
+
+To help with that, a `@squide/msw` plugin is available.
+
+First, install the plugin, then [register the plugin](../reference/msw/MswPlugin.md#register-the-plugin) at bootstrap:
+
+```ts host/src/boostrap.tsx
+import { Runtime } from "@squide/react-router";
+import { MswPlugin } from "@squide/msw";
+
+const runtime = new Runtime({
+    plugins: [new MswPlugin()]
+});
 ```
 
-## MSW
+Then, [register the modules MSW request handlers](../reference/msw/MswPlugin.md#register-request-handlers) at registration:
 
-TBD
+```ts !#12 remote-module/src/register.tsx
+import { getMswPlugin } from "@squide/msw";
+import type { ModuleRegisterFunction, Runtime } from "@squide/react-router"; 
+
+export const register: ModuleRegisterFunction<Runtime> = async runtime => {
+    if (process.env.USE_MSW) {
+        const mswPlugin = getMswPlugin(runtime);
+
+        // Files including an import to the "msw" package are included dynamically to prevent adding
+        // MSW stuff to the bundled when it's not used.
+        const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
+
+        mswPlugin.registerRequestHandlers(requestHandlers);
+    }
+}
+```
+
+!!!info
+Don't forget to mark the registration function as `async` since there's a dynamic import.
+!!!
+
+Then, [retrieve the modules MSW request handlers](../reference/msw/MswPlugin.md#retrieve-the-request-handlers) in the host application and start MSW:
+
+```ts !#9,12
+import { registerRemoteModules } from "@squide/webpack-module-federation";
+
+registerRemoteModules(Remotes, runtime).then(() => {
+    if (process.env.USE_MSW) {
+        // Files including an import to the "msw" package are included dynamically to prevent adding
+        // MSW stuff to the bundled when it's not used.
+        import("../mocks/browser.ts").then(({ startMsw }) => {
+            // Will start MSW with the request handlers provided by every module.
+            startMsw(mswPlugin.requestHandlers);
+
+            // Indicate to resources that are dependent on MSW that the service has been started.
+            mswPlugin.setAsStarted();
+        });
+    }
+});
+```
+
+Finally, make sure that the [application rendering is delayed](../reference/msw/useIsMswReady.md) until MSW is started:
+
+```ts !#3 host/src/App.tsx
+import { useIsMswStarted } from "@squide/msw";
+
+const isMswReady = useIsMswStarted(process.env.USE_MSW);
+
+if (!isMswReady) {
+    return <div>Loading...</div>
+}
+```
 
 ## Fakes
 

@@ -100,7 +100,7 @@ registerRemoteModules(Remotes, runtime, { context }).then(errors => {
 
 To ease the configuration of remote modules, make sure that you first import the `RemoteDefinition` type and assign it to your remote definitions array declaration.
 
-```ts !#3
+```ts !#3 host/src/bootstrap.tsx
 import type { RemoteDefinition } from "@squide/webpack-module-federation";
 
 const Remotes: RemoteDefinition = [

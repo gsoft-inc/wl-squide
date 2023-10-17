@@ -68,7 +68,7 @@ async function registerMsw(runtime: Runtime) {
     if (process.env.USE_MSW) {
         const mswPlugin = getMswPlugin(runtime);
 
-        // Files including an import to "msw" package are included dynamically to prevent adding
+        // Files including an import to the "msw" package are included dynamically to prevent adding
         // MSW stuff to the bundled when it's not used.
         const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
 

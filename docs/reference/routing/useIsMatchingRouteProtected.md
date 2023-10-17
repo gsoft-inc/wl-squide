@@ -19,7 +19,7 @@ const isProtected = useIsMatchingRouteProtected(locationArg)
 
 ### Returns
 
-A `boolean` value. `true` if there's a matching route and the route is protected, `false` otherwise.
+A `boolean` value indicating whether or not the matching protected. If no route match the given location, an `Error` is thrown.
 
 ## Usage
 

@@ -79,7 +79,7 @@ runtime.registerRoute({
 
 ### Register an hoisted route
 
-Unlike a regular page, a hoisted page is added at the root of the router, outside of the host application's root layout, root error boundary and even root authentication boundary. This means that a hoisted page has full control over its rendering. To mark a route as hoisted, provide a `host` property to the route options.
+Unlike a regular page, a hoisted page is added at the root of the router, outside of the host application's root layout, root error boundary and even root authentication boundary. This means that a hoisted page has full control over its rendering. To mark a route as hoisted, provide an `hoist` property to the route options.
 
 ```tsx !#7
 import { Page } from "./Page.tsx";

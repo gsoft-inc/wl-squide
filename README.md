@@ -20,9 +20,10 @@ To ask a question or propose an idea, feel free to start a new [discussion](http
 
 View the [user's documentation](https://gsoft-inc.github.io/wl-squide/).
 
-## Live sample
+## Live samples
 
-A basic sample application is hosted at https://squide-basic-host.netlify.app.
+- A [basic sample application](https://squide-basic-host.netlify.app) hosted on Netlify.
+- A [sample application with endpoints](https://squide-endpoints-host.netlify.app) hosted on Netlify.
 
 ## 🤝 Contributing
 

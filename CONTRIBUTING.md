@@ -32,7 +32,7 @@ Under [packages/](packages/) are the actual packages composing the federated app
 
 [@squide/react-router](packages/react-router/) is a [React Router](https://reactrouter.com/en/main) implementation of the shell routing capabilities. This implementation is offered as a standalone package because the shell could eventually support alternative routing libraries like [TanStack router](https://tanstack.com/router/v1).
 
-[@squide/webpack-module-federation](packages/webpack-module-federation/) is module federation implementation for [webpack](https://webpack.js.org/concepts/module-federation/). This implementation is offered as a standalone package because not all application configurations will require module federation and the shell could eventually support alternative module federation application like [Rspack](https://www.rspack.dev/).
+[@squide/webpack-module-federation](packages/webpack-module-federation/) is a module federation implementation for [webpack](https://webpack.js.org/concepts/module-federation/). This implementation is offered as a standalone package because not all application will require module federation and the shell could eventually support alternative module federation application like [Rspack](https://www.rspack.dev/).
 
 [@squide/msw](packages/msw/) is a package including helpers to configure [Mock Service Worker](https://mswjs.io/) for a federated application.
 
@@ -40,7 +40,7 @@ Under [packages/](packages/) are the actual packages composing the federated app
 
 ### Samples
 
-Under [samples/](samples/) are samples application to test the Squide functionalities while developing.
+Under [samples/](samples/) are applications to test the Squide functionalities while developing.
 
 You'll find two samples:
 
@@ -49,9 +49,13 @@ You'll find two samples:
 
 ## Installation
 
-This project uses PNPM, therefore, you must [install PNPM](https://pnpm.io/installation):
+This project uses PNPM, therefore, you must [install PNPM](https://pnpm.io/installation) first:
 
-To install the project, open a terminal at the root of the workspace and execute the following command:
+```bash
+npm install -g pnpm
+```
+
+To install the Squide project, open a terminal at the root of the workspace and execute the following command:
 
 ```bash
 pnpm install
@@ -59,7 +63,9 @@ pnpm install
 
 ### Setup Retype
 
-[Retype](https://retype.com/) is the documentation platform that `workleap/web-configs` is using for the documentation. As this project is leveraging a few [Pro features](https://retype.com/pro/) of Retype, you must first setup your [Retype wallet](https://retype.com/guides/cli/#retype-wallet).
+[Retype](https://retype.com/) is the documentation platform that Squide is using for its documentation. As this project is leveraging a few [Pro features](https://retype.com/pro/) of Retype.
+
+Everything should work fine as-is but there are a few limitations to use Retype Pro features without a wallet with a licence. If you want to circumvent these limitations, you can optionally, setup your [Retype wallet](https://retype.com/guides/cli/#retype-wallet).
 
 To do so, first make sure that you retrieve the Retype license from your Vault (or ask IT).
 
@@ -69,9 +75,9 @@ Then, open a terminal at the root of the workspace and execute the following com
 npx retype wallet --add <your-license-key-here>
 ```
 
-## Develop the shell packages
+## Develop the packages
 
-We recommend opening two [VSCode terminals](https://code.visualstudio.com/docs/terminal/basics#_managing-multiple-terminals) to develop the shell packages.
+We recommend opening two [VSCode terminals](https://code.visualstudio.com/docs/terminal/basics#_managing-multiple-terminals) to develop the packages.
 
 With the first terminal, execute the following script:
 
@@ -79,7 +85,7 @@ With the first terminal, execute the following script:
 pnpm dev
 ```
 
-With the second terminal, execute either the following script:
+With the second terminal, start one of the sample application with either the following script:
 
 ```bash
 pnpm dev-basic
@@ -93,13 +99,13 @@ pnpm dev-endpoints
 
 You can then open your favorite browser and navigate to `http://localhost:8080/` to get a live preview of your code.
 
-> To test that the remote module is working correctly, navigate to `http://localhost:8081/remoteEntry.js`
+> To test that a remote module is working correctly, navigate to the remote module entry file. For a remote module hosted on the port `8081`, the URL should be `http://localhost:8081/remoteEntry.js`.
 
 ## Release the packages
 
 When you are ready to release the packages, you must follow the following steps:
 1. Run `pnpm changeset` and follow the prompt. For versioning, always follow the [SemVer standard](https://semver.org/).
-2. Commit the newly generated file in your branch and submit a new Pull Request(PR). Changesets will automatically detect the changes and post a message in your pull request telling you that once the PR closes, the versions will be released.
+2. Commit the newly generated file in your branch and submit a new Pull Request (PR). Changesets will automatically detect the changes and post a message in your pull request telling you that once the PR closes, the versions will be released.
 3. Find someone to review your PR.
 4. Merge the Pull request into `main`. A GitHub action will automatically trigger and update the version of the packages and publish them to [npm](https://www.npmjs.com/). A tag will also be created on GitHub tagging your PR merge commit.
 
@@ -109,7 +115,7 @@ When you are ready to release the packages, you must follow the following steps:
 
 Make sure you're Git is clean (No pending changes).
 
-#### npm
+#### NPM
 
 Make sure GitHub Action has **write access** to the selected npm packages.
 
@@ -129,9 +135,7 @@ If you got linting error, most of the time, they can be fixed automatically usin
 
 ## Deploy the sample applications
 
-The sample applications . For each application multiples sites are available.
-
-### The "basic" sample
+### The "basic" sample application
 
 The sites for this sample application are hosted on [Netlify](https://www.netlify.com/):
 
@@ -145,13 +149,14 @@ To deploy the sample application, open a terminal at the root of the repository 
 deploy-basic
 ```
 
-A prompt with a few questions will appear and then  site will automatically be deployed to production.
+A prompt with a few questions will appear and then the sits will automatically be deployed to production.
 
-### The sample with "endpoints"
+### The sample application with "endpoints"
 
 The sites for this sample application are hosted on [Netlify](https://www.netlify.com/):
 
-- TBD
+- [host](https://squide-endpoints-host.netlify.app/)
+- [remote-module](https://squide-endpoints-remote-module.netlify.app)
 
 To deploy the sample application, open a terminal at the root of the repository and execute the following script:
 
@@ -159,7 +164,7 @@ To deploy the sample application, open a terminal at the root of the repository 
 deploy-endpoints
 ```
 
-A prompt with a few questions will appear and then  site will automatically be deployed to production.
+A prompt with a few questions will appear and then the sites will automatically be deployed to production.
 
 ## Commands
 
@@ -191,7 +196,7 @@ pnpm dev-endpoints
 
 ### dev-docs
 
-Build the docs application for development and start the dev servers.
+Build the [Retype](https://retype.com/) documentation for development and start the Retype dev server. If you are experiencing issue with the license, refer to the [setup Retype section](#setup-retype).
 
 ```bash
 pnpm dev-docs
@@ -235,14 +240,6 @@ Build the sample application with "endpoints" for deployment and start a local w
 
 ```bash
 pnpm serve-endpoints
-```
-
-### dev-docs
-
-Build the [Retype](https://retype.com/) documentation for development and start the Retype dev server. If you are experiencing issue with the license, refer to the [setup Retype section](#setup-retype).
-
-```bash
-pnpm dev-docs
 ```
 
 ### test

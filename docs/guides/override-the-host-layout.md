@@ -9,7 +9,7 @@ order: 100
 In many applications, multiple pages often share a **common layout** that includes elements such as a navigation bar, a user profile menu, and a main content section. In a [React Router](https://reactrouter.com/en/main) application, this shared layout is commonly referred to as a `RootLayout`:
 
 ```tsx !#10,13,17,19 host/src/register.tsx
-import type { ModuleRegisterFunction, Runtime, ManagedRoutes } from "@squide/react-router";
+import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
 import { HomePage } from "./HomePage.tsx";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";

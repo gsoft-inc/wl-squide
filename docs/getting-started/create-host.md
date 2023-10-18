@@ -134,7 +134,7 @@ export function App() {
 
     // Create the router instance with the registered routes.
     const router = useMemo(() => {
-        return createBrowserRouter(...routes);
+        return createBrowserRouter(routes);
     }, [routes]);
 
     // Display a loading until the remote modules are registered.
@@ -236,7 +236,7 @@ export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
 And an [hoisted route](../reference/runtime/runtime-class.md#register-an-hoisted-route) to render the `RootLayout` and the [ManagedRoutes](../reference/routing/ManagedRoutes.md) placeholder:
 
 ```tsx !#8,12,15 host/src/register.tsx
-import type { ModuleRegisterFunction, Runtime, ManagedRoutes } from "@squide/react-router";
+import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
 import { HomePage } from "./HomePage.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 
@@ -264,7 +264,7 @@ export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
 The [ManagedRoutes](../reference/routing/ManagedRoutes.md) placeholder indicates where routes that are neither hoisted or nested with a [parentPath](../reference/runtime/runtime-class.md#register-nested-navigation-items) or [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option will be rendered. In this example, the homepage route is considered a managed route and will be rendered under the `ManagedRoutes` placeholder.
 !!!
 
-Finally, update the bootstrapping code to register the newly created local module:
+Finally, update the bootstrapping code to [register](../reference/registration/registerLocalModules.md) the newly created local module:
 
 ```tsx !#24 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";

@@ -9,7 +9,7 @@ In a federated application using [Module Federation](https://webpack.js.org/conc
 
 Let's take a simple example using a `BackgroundColorContext`:
 
-```tsx !#15-19 host/src/App.tsx
+```tsx !#19-23 host/src/App.tsx
 import { useAppRouter } from "@sample/shell";
 import { BackgroundColorContext } from "@sample/shared";
 import { useAreModulesReady } from "@squide/webpack-module-federation";
@@ -18,7 +18,11 @@ import { RouterProvider } from "react-router-dom";
 export function App() {
     const areModulesReady = useAreModulesReady();
 
-    const router = useAppRouter(sessionManager);
+    const routes = useRoutes();
+
+    const router = useMemo(() => {
+        return createBrowserRouter(routes);
+    }, [routes]);
 
     if (!areModulesReady) {
         return <div>Loading...</div>;

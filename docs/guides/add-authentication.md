@@ -248,7 +248,7 @@ export function RootLayout() {
 Assemble everything with React Router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) and a [register](../reference/registration/registerLocalModules.md) function:
 
 ```tsx !#17,22,25,46-51,55-60 host/src/register.tsx
-import type { ModuleRegisterFunction, Runtime, ManagedRoutes } from "@squide/react-router";
+import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
 import { RootLayout } from "./Rootlayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
@@ -315,81 +315,6 @@ export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
     });
 });
 ```
-
-<!-- ```tsx !#29-30,33-34,38,41 host/src/App.tsx
-import { lazy, useMemo } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { useRoutes } from "@squide/react-router";
-import { useAreModulesReady } from "@squide/webpack-module-federation";
-import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
-import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
-import { RootLayout } from "./RootLayout.tsx";
-import { AuthenticatedLayout } from "./AuthenticatedLayout.tsx";
-import { ModuleErrorBoundary } from "./ModuleErrorBoundary.tsx";
-import { Home } from "./Home.tsx";
-import { Login } from "./Login.tsx";
-import { Logout } from "./Logout.tsx";
-
-export function App() {
-    const areModulesReady = useAreModulesReady();
-
-    const routes = useRoutes();
-
-    const router = useMemo(() => {
-        return createBrowserRouter({
-            element: <RootLayout />,
-            children: [
-                {
-                    errorElement: <RootErrorBoundary />,
-                    children: [
-                        {
-                            // The login and logout page are declared before the authentication boundary,
-                            // therefore they are public page.
-                            path: "/login",
-                            element: <Login />
-                        },
-                        {
-                            path: "/logout",
-                            element: <Logout />
-                        },
-                        {
-                            // Every page beyond the authenticated boundary are protected.
-                            element: <AuthenticationBoundary />,
-                            children: [
-                                {
-                                    element: <AuthenticatedLayout />,
-                                    children: [
-                                        {
-                                            // By having the error boundary under the authenticated layout, modules unmanaged errors
-                                            // will be displayed inside the layout rather than replacing the whole page.
-                                            errorElement: <ModuleErrorBoundary />,
-                                            children: [
-                                                {
-                                                    index: true,
-                                                    element: <Home />
-                                                },
-                                                ...routes
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        });
-    }, [routes]);
-
-    if (!areModulesReady) {
-        return <div>Loading...</div>;
-    }
-
-    return (
-        <RouterProvider router={router} />
-    );
-}
-``` -->
 
 ## Try it :rocket:
 

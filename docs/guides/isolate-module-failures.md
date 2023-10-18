@@ -65,7 +65,7 @@ export function RootLayout() {
 ```
 
 ```tsx !#8,12 host/src/register.tsx
-import type { ModuleRegisterFunction, Runtime, ManagedRoutes } from "@squide/react-router";
+import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
 import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 

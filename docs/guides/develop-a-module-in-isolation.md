@@ -17,6 +17,7 @@ host
 ├─────────── RootLayout.tsx
 ├─────────── RootErrorBoundary.tsx
 ├─────────── useAppRouter.ts
+├─────────── register.tsx
 ├─────────── index.ts
 ├───────── package.json
 ├───────── tsup.dev.ts
@@ -46,9 +47,37 @@ First, create a new package (we'll refer to ours as `shell`) and add the followi
 
 Then, install the package dependencies and configure the new package with [tsup](https://gsoft-inc.github.io/wl-web-configs/tsup/).
 
-Finally, create a `useAppRouter` hook in the shell package. Its purpose is to provide a **reusable router configuration** that can be utilized by both the host application and the isolated modules. By using this hook, modules developed in isolation can utilize the **same application shell and routing configuration** as the host application. 
+<!-- Then, create a `useAppRouter` hook in the shell package. Its purpose is to provide a **reusable router configuration** that can be utilized by both the host application and the isolated modules. By using this hook, modules developed in isolation can utilize the **same application shell and routing configuration** as the host application.  -->
+
+Then, create a `useAppRouter` hook in the shell package to provide a **reusable router configuration** that can be utilized by both the host application and the isolated modules.
 
 ```tsx shell/src/useAppRouter.tsx
+import { useRoutes } from "@squide/react-router";
+import { useAreModulesReady } from "@squide/webpack-module-federation";
+import { useMemo } from "react";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
+export function useAppRouter() {
+    const routes = useRoutes();
+
+    // Re-render the app once all the remotes are registered, otherwise the remotes routes won't be added to the router.
+    const areModulesReady = useAreModulesReady();
+
+    const router = useMemo(() => {
+        return createBrowserRouter(routes);
+    }, [routes]);
+
+    if (!areModulesReady) {
+        return <div>Loading...</div>;
+    }
+
+    return (
+        <RouterProvider router={router} />
+    );
+}
+```
+
+<!-- ```tsx shell/src/useAppRouter.tsx
 import { useMemo, useState } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import { Route, useRoutes } from "@squide/react-router";
@@ -84,6 +113,30 @@ export function useAppRouter({ rootRoutes = [] }: UseAppRouterOptions = {}) {
 
     return router;
 }
+``` -->
+
+Finally, create a local module to register the **application shell** that will also be utilized by the host application and the isolated modules:
+
+```tsx shell/src/register.tsx
+import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
+import { RootLayout } from "./RootLayout.tsx";
+import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
+
+export const registerShell: ModuleRegisterFunction<Runtime> = runtime => {
+    runtime.registerRoute({
+        element: <RootLayout />,
+        children: [
+            {
+                errorElement: <RootErrorBoundary />,
+                children: [
+                    ManagedRoutes
+                ]
+            }
+        ]
+    }, {
+        hoist: true
+    });
+};
 ```
 
 !!!info
@@ -104,32 +157,54 @@ Now, let's revisit the host application by first adding a dependency to the new 
 
 Then, incorporate the newly introduced `useAppRouter` hook:
 
-```tsx !#9-16 host/src/App.tsx
+```tsx !#5 host/src/App.tsx
 import { RouterProvider } from "react-router-dom";
-import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { useAppRouter } from "@sample/shell";
-import { Home } from "./Home.tsx";
 
 export function App() {
-    const areModulesReady = useAreModulesReady();
-
-    const router = useAppRouter({
-        rootRoutes: [
-            {
-                index: true,
-                element: <Home />
-            }
-        ]
-    });
-
-    if (!areModulesReady) {
-        return <div>Loading...</div>;
-    }
+    const router = useAppRouter();
 
     return (
         <RouterProvider router={router} />
     );
 }
+```
+
+And the `registerShell` function to setup the `RootLayout`, the `RootErrorBoundary` and any other shell assets:
+
+```tsx !#22 host/src/bootstrap.tsx
+import { createRoot } from "react-dom/client";
+import { ConsoleLogger, RuntimeContext, Runtime } from "@squide/react-router";
+import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import type { AppContext} from "@sample/shared";
+import { App } from "./App.tsx";
+import { registerHost } from "./register.tsx";
+import { registerShell } from "@sample/shell";
+
+const Remotes: RemoteDefinition[] = [
+    { url: "http://localhost:8081", name: "remote1" }
+];
+
+const runtime = new Runtime({
+    loggers: [new ConsoleLogger()]
+});
+
+const context: AppContext = {
+    name: "Demo application"
+};
+
+// Register the shell module.
+registerLocalModules([registerShell, registerHost], runtime, { context });
+
+registerRemoteModules(Remotes, runtime, { context });
+
+const root = createRoot(document.getElementById("root")!);
+
+root.render(
+    <RuntimeContext.Provider value={runtime}>
+        <App />
+    </RuntimeContext.Provider>
+);
 ```
 
 ## Setup a remote module
@@ -148,14 +223,16 @@ To begin, let's start by adding a dependency to the `@sample/shell` package:
 
 Then, create the following files in the remote module application:
 
-``` !#2-3,7-9
+``` !#2-3,5-7,10-11
 remote-module
 ├── public
 ├──── index.html
 ├── src
+├────── dev
+├────────── DevHome.tsx
+├────────── register.tsx
 ├────── register.tsx
 ├────── Page.tsx
-├────── DevHome.tsx
 ├────── index.tsx
 ├────── App.tsx
 ├── webpack.dev.js
@@ -164,13 +241,15 @@ remote-module
 
 ### index.tsx
 
-The `index.tsx` file is similar to the `bootstrap.tsx` file of an host application but, tailored for an isolated module. The key distinction is that, since the project is set up for isolated development, the module is registered with the [registerLocalModules](/reference/registration/registerLocalModules.md) function instead of the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function:
+The `index.tsx` file is similar to the `bootstrap.tsx` file of an host application but, tailored for an isolated module. The key distinctions are that, since the project is set up for isolated development, the module is registered with the [registerLocalModules](/reference/registration/registerLocalModules.md) function instead of the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function, and a new `registerDev` function is introduced to register the development homepage (which will be covered in an upcoming section):
 
-```tsx !#8-10,14 remote-module/src/index.tsx
+```tsx !#10-12,16 remote-module/src/index.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, Runtime, registerLocalModules } from "@squide/react-router";
 import { App } from "./App.tsx";
-import { register } from "./register.tsx";
+import { register as registerModule } from "./register.tsx";
+import { registerDev } from "./dev/register.tsx";
+import { registerShell } from "@sample/shell";
 
 // Create the shell runtime.
 // Services, loggers and sessionAccessor could be reuse through a shared packages or faked when in isolation.
@@ -180,7 +259,7 @@ const runtime = new Runtime({
 
 // Registering the remote module as a static module because the "register" function 
 // is local when developing in isolation.
-registerLocalModules([register], runtime);
+registerLocalModules([registerModule, registerDev, registerShell], runtime);
 
 const root = createRoot(document.getElementById("root")!);
 
@@ -193,22 +272,14 @@ root.render(
 
 ### App.tsx
 
-The `App.tsx` file uses the newly created `useAppRouter` hook to setup [React Router](https://reactrouter.com/) with the `<RootLayout>`, the `<RootErrorBoundary>` and the other shell assets:
+The `App.tsx` file uses the newly created `useAppRouter` hook to setup [React Router](https://reactrouter.com/):
 
-```tsx !#6-13 remote-module/src/App.tsx
+```tsx !#5 remote-module/src/App.tsx
 import { RouterProvider } from "react-router-dom";
 import { useAppRouter } from "@sample/shell";
-import { DevHome } from "./DevHome.tsx";
 
 export function App() {
-    const router = useAppRouter({
-        rootRoutes: [
-            {
-                index: true,
-                element: <DevHome />
-            }
-        ]
-    });
+    const router = useAppRouter();
 
     return (
         <RouterProvider router={router} />
@@ -220,7 +291,7 @@ export function App() {
 
 The `DevHome` component purpose is strictly to serve as an `index` page when developing the remote module in isolation.
 
-```tsx remote-module/src/DevHome.tsx
+```tsx remote-module/src/dev/DevHome.tsx
 function DevHome() {
     return (
         <div>
@@ -228,6 +299,20 @@ function DevHome() {
             <p>Hey!</p>
         </div>
     );
+}
+```
+
+To register the development homepage, let's create a new local module specifically for registering what is needed to develop the module in isolation:
+
+```tsx remote-module/src/dev/register.tsx
+import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import { DevHome } from "./DevHome.tsx";
+
+export const registerDev: ModuleRegisterFunction<Runtime> = runtime => {
+    runtime.registerRoute({
+        index: true,
+        element: <DevHome />
+    });
 }
 ```
 
@@ -321,14 +406,16 @@ While you can use any package manager to develop an application with Squide, it 
 
 Then, create the following files in the local module application:
 
-``` !#2-3,7-12
+``` !#2-3,5-7,10-11
 local-module
 ├── public
 ├────── index.html
 ├── src
+├────── dev
+├────────── DevHome.tsx
+├────────── register.tsx
 ├────── register.tsx
 ├────── Page.tsx
-├────── DevHome.tsx
 ├────── index.tsx
 ├────── App.tsx
 ├── .browserslistrc
@@ -345,9 +432,9 @@ This file is similar to the `index.tsx` file of the [remote module](#indextsx).
 
 This file is similar to the `App.tsx` file of the [remote module](#apptsx).
 
-### DevHome.tsx
+### DevHome.tsx & registerDev
 
-This file is similar to the `DevHome.tsx` file of the [remote module](#devhometsx).
+These files are similar to the `dev/DevHome.tsx` and `dev/register.tsx` files of the [remote module](#devhometsx).
 
 ### Configure webpack
 
@@ -412,5 +499,5 @@ Next, add a new `dev-isolated` script to the `package.json` file to start the lo
 Start the remote module in isolation by running the `dev-isolated` script. The application shell should wrap the pages of the module and the default page should be `DevHome`.
 
 !!!info
-If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample).
+If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic).
 !!!

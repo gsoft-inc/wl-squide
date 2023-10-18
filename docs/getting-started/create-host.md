@@ -209,7 +209,7 @@ export function RootLayout() {
 
 ### Homepage
 
-Finally, create the `HomePage` component that will serve as the homepage for this application:
+Next, create the `HomePage` component that will serve as the homepage for this application:
 
 ```tsx host/src/HomePage.tsx
 export function HomePage() {
@@ -233,7 +233,38 @@ export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
 };
 ```
 
-And update the bootstrapping code to register the newly created local module:
+And an [hoisted route](../reference/runtime/runtime-class.md#register-an-hoisted-route) to render the `RootLayout` and the [ManagedRoutes](../reference/routing/ManagedRoutes.md) placeholder:
+
+```tsx !#8,12,15 host/src/register.tsx
+import type { ModuleRegisterFunction, Runtime, ManagedRoutes } from "@squide/react-router";
+import { HomePage } from "./HomePage.tsx";
+import { RootLayout } from "./RootLayout.tsx";
+
+export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
+    runtime.registerRoute({
+        // Pathless route to declare a root layout.
+        element: <RootLayout />,
+        children: [
+            // Placeholder to indicate where managed routes (routes that are not hoisted or nested)
+            // will be rendered.
+            ManagedRoutes
+        ]
+    }, {
+        hoist: true
+    });
+
+    runtime.registerRoute({
+        index: true,
+        element: <HomePage />
+    });
+};
+```
+
+!!!info
+The [ManagedRoutes](../reference/routing/ManagedRoutes.md) placeholder indicates where the routes that are nor hoisted or nested with a [parentPath](../reference/runtime/runtime-class.md#register-nested-navigation-items) or [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option will be rendered. In this example, the homepage route is considered a managed route that will be rendered under the `ManagedRoutes` placeholder.
+!!!
+
+Finally, update the bootstrapping code to register the newly created local module:
 
 ```tsx !#24 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";

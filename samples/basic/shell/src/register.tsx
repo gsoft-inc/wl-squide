@@ -11,11 +11,12 @@ export interface RegisterShellOptions {
 
 function registerRoutes(runtime: Runtime, sessionManager: SessionManager, host?: string) {
     runtime.registerRoute({
-        // Pathless route to declare a root layout and a root error boundary.
+        // Pathless route to declare a root layout.
         $visibility: "public",
         element: <RootLayout />,
         children: [
             {
+                // Pathless route to declare a root error boundary.
                 // Public pages like the login and logout pages will be rendered under this pathless route.
                 $visibility: "public",
                 $name: "root-error-boundary",

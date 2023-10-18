@@ -62,10 +62,10 @@ afterEach(() => {
     jest.useRealTimers();
 });
 
-test("when only local modules are registered, return true when all the local modules are registered", () => {
+test("when only local modules are registered, return true when all the local modules are registered", async () => {
     const runtime = new DummyRuntime();
 
-    registerLocalModules([
+    await registerLocalModules([
         () => {},
         () => {},
         () => {}
@@ -121,7 +121,7 @@ test("when local and remote modules are registered, return true when all the rem
 
     const runtime = new DummyRuntime();
 
-    registerLocalModules([
+    await registerLocalModules([
         () => {},
         () => {},
         () => {}
@@ -145,10 +145,10 @@ test("when local and remote modules are registered, return true when all the rem
     expect(result.current).toBeTruthy();
 });
 
-test("when a local module registration fail, return true when all the other modules are registered", () => {
+test("when a local module registration fail, return true when all the other modules are registered", async () => {
     const runtime = new DummyRuntime();
 
-    registerLocalModules([
+    await registerLocalModules([
         () => {},
         () => { throw new Error("Registration failed!"); },
         () => {}

@@ -32,10 +32,12 @@ export async function registerLocalModules<TRuntime extends AbstractRuntime = Ab
     registrationStatus = "in-progress";
 
     await Promise.allSettled(registerFunctions.map(async (x, index) => {
+        let optionalPromise;
+
         runtime.logger.information(`[squide] [local] ${index + 1}/${registerFunctions.length} Registering local module.`);
 
         try {
-            registerModule(x as ModuleRegisterFunction<AbstractRuntime>, runtime, context);
+            optionalPromise = registerModule(x as ModuleRegisterFunction<AbstractRuntime>, runtime, context);
         } catch (error: unknown) {
             runtime.logger.error(
                 `[squide] [local] ${index + 1}/${registerFunctions.length} An error occured while registering a local module.`,
@@ -48,6 +50,8 @@ export async function registerLocalModules<TRuntime extends AbstractRuntime = Ab
         }
 
         runtime.logger.information(`[squide] [local] ${index + 1}/${registerFunctions.length} Local module registration completed.`);
+
+        return optionalPromise;
     }));
 
     registrationStatus = "ready";

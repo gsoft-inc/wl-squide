@@ -4,7 +4,7 @@ order: 80
 
 # Add authentication
 
-Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the Squide [Runtime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/LocalStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
+Most of our applications (if not all) will eventually requires the user to authenticate. To facilitate this process, the Squide [Runtime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/LocalStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the application registration flow is completed, the function will be made accessible to every module of the application.
 
 When combined with a [React Router](https://reactrouter.com/en/main) authentication boundary and a login page, the shared `sessionAccessor` function is of great help to manage authentication concerns.
 
@@ -245,9 +245,78 @@ export function RootLayout() {
 
 ## Setup the routes
 
-Assemble everything with React Router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes):
+Assemble everything with React Router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) and a [register](../reference/registration/registerLocalModules.md) function:
 
-```tsx !#29-30,33-34,38,41 host/src/App.tsx
+```tsx !#17,22,25,46-51,55-60 host/src/register.tsx
+import type { ModuleRegisterFunction, Runtime, ManagedRoutes } from "@squide/react-router";
+import { RootLayout } from "./Rootlayout.tsx";
+import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
+import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
+import { ModuleErrorBoundary } from "./ModuleErrorBoundary.tsx";
+import { LoginPage } from "./LoginPage.tsx";
+import { LogoutPage } from "./LogoutPage.tsx";
+import { HomePage } from "./Homepage.tsx";
+
+export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
+    runtime.registerRoute({
+        element: <RootLayout />,
+        children: [
+            {
+                // The root error boundary is a named route to be able to nest
+                // the loging / logout page under it with the "parentName" optioné
+                $name: "root-error-boundary",
+                errorElement: <RootErrorBoundary />,
+                children: [
+                    {
+                        // Every page beyond the authenticated boundary are protected.
+                        element: <AuthenticationBoundary />,
+                        children: [
+                            {
+                                element: <AuthenticatedLayout />,
+                                children: [
+                                    {
+                                        // By having the error boundary under the authenticated layout, modules unmanaged errors
+                                        // will be displayed inside the layout rather than replacing the whole page.
+                                        errorElement: <ModuleErrorBoundary />,
+                                        children: [
+                                            ManagedRoutes
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    });
+
+    // The login page is nested under the root error boundary to be defined before the
+    // authentication boundary to be publicly accessible.
+    runtime.registerRoute({
+        path: "/login",
+        element: <LoginPage />
+    }, {
+        parentName: "root-error-boundary"
+    });
+
+    // The logout page is nested under the root error boundary to be defined before the
+    // authentication boundary to be publicly accessible.
+    runtime.registerRoute({
+        path: "/logout",
+        element: <LogoutPage />
+    }, {
+        parentName: "root-error-boundary"
+    });
+
+    runtime.registerRoute({
+        index: true,
+        element: <HomePage />
+    });
+});
+```
+
+<!-- ```tsx !#29-30,33-34,38,41 host/src/App.tsx
 import { lazy, useMemo } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useRoutes } from "@squide/react-router";
@@ -320,14 +389,14 @@ export function App() {
         <RouterProvider router={router} />
     );
 }
-```
+``` -->
 
 ## Try it :rocket:
 
 Start the application and attempt navigating to the root page (`/`). You will be redirected to the `/login` page. Login with `"temp"` / `"temp"`, you will be redirected to the root page.
 
 !!!info
-If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/shell).
+If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/shell).
 !!!
 
 

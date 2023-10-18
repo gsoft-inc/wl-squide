@@ -14,7 +14,7 @@ Nevertheless, an application can get very close to iframes failure isolation by 
 
 In the following code sample, a `RootErrorBoundary` is declared below the `RootLayout` but above the routes of the module. By doing so, if a module encounters an unhandled error, the nested error boundary will only replace the section rendered by the `Outlet` component within the `RootLayout` rather than the entire page:
 
-```tsx !#16,20 host/src/App.tsx
+```tsx host/src/App.tsx
 import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useAreModulesReady } from "@squide/webpack-module-federation";
@@ -28,19 +28,7 @@ export function App() {
     const routes = useRoutes();
 
     const router = useMemo(() => {
-        return createBrowserRouter({
-            // Default layout.
-            element: <RootLayout />,
-            children: [
-                {
-                    // Default error boundary.
-                    errorElement: <RootErrorBoundary />,
-                    children: [
-                        ...routes
-                    ]
-                }
-            ]
-        });
+        return createBrowserRouter(routes);
     }, [routes]);
 
     if (!areModulesReady) {
@@ -76,10 +64,34 @@ export function RootLayout() {
 }
 ```
 
+```tsx !#8,12 host/src/register.tsx
+import type { ModuleRegisterFunction, Runtime, ManagedRoutes } from "@squide/react-router";
+import { RootLayout } from "./RootLayout.tsx";
+import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
+
+export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
+    runtime.registerRoute({
+        // Default layout.
+        element: <RootLayout />,
+        children: [
+            {
+                // Default error boundary.
+                errorElement: <RootErrorBoundary />,
+                children: [
+                    ManagedRoutes
+                ]
+            }
+        ]
+    }, {
+        hoist: true
+    });
+};
+```
+
 By implementing this mechanism, the level of failure isolation achieved is **comparable** to that of an **iframes** or **subdomains** implementation. With this mechanism, failure isolation **is as good as** with an **iframes** or **subdomains** implementation.
 
 !!!warning
-If your application is [hoisting pages](/reference/routing/useHoistedRoutes.md), it's important to note that they will be rendered outside of the host application's root error boundary. To prevent breaking the entire application when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router's `errorElement` property for each hoisted page.
+If your application is [hoisting pages](../reference/runtime/runtime-class.md#register-an-hoisted-route), it's important to note that they will be rendered outside of the host application's root error boundary. To prevent breaking the entire application when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router's `errorElement` property for each hoisted page.
 !!!
 
 ## Try it :rocket:
@@ -87,5 +99,5 @@ If your application is [hoisting pages](/reference/routing/useHoistedRoutes.md),
 Start the application in a development environment using the `dev` script. Update any of your application routes that is rendered under the newly created error boundary (e.g. that is not hoisted) and throw an `Error`. The error should be handled by the error boundary instead of breaking the whole application.
 
 !!!info
-If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/shell).
+If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/shell).
 !!!

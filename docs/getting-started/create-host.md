@@ -261,7 +261,7 @@ export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
 ```
 
 !!!info
-The [ManagedRoutes](../reference/routing/ManagedRoutes.md) placeholder indicates where the routes that are nor hoisted or nested with a [parentPath](../reference/runtime/runtime-class.md#register-nested-navigation-items) or [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option will be rendered. In this example, the homepage route is considered a managed route that will be rendered under the `ManagedRoutes` placeholder.
+The [ManagedRoutes](../reference/routing/ManagedRoutes.md) placeholder indicates where routes that are neither hoisted or nested with a [parentPath](../reference/runtime/runtime-class.md#register-nested-navigation-items) or [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option will be rendered. In this example, the homepage route is considered a managed route and will be rendered under the `ManagedRoutes` placeholder.
 !!!
 
 Finally, update the bootstrapping code to register the newly created local module:

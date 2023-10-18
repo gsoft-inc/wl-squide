@@ -11,7 +11,7 @@ export function resetLocalModulesRegistrationStatus() {
     registrationStatus = "none";
 }
 
-export interface LocalModuleRegistraError {
+export interface LocalModuleRegistrationError {
     // The registration error.
     error: unknown;
 }
@@ -25,7 +25,7 @@ export async function registerLocalModules<TRuntime extends AbstractRuntime = Ab
         throw new Error("[squide] [local] registerLocalModules() can only be called once.");
     }
 
-    const errors: LocalModuleRegistraError[] = [];
+    const errors: LocalModuleRegistrationError[] = [];
 
     runtime.logger.information(`[squide] [local] Found ${registerFunctions.length} local module${registerFunctions.length !== 1 ? "s" : ""} to register.`);
 

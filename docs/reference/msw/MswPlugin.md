@@ -61,21 +61,3 @@ if (process.env.USE_MSW) {
 const handlers = mswPlugin.requestHandlers;
 ```
 
-### Mark MSW as started
-
-```ts !#7
-mswPlugin.setAsStarted();
-```
-
-### Retrieve MSW status
-
-```ts !#7
-import { getMswPlugin } from "@squide/msw";
-import { useRuntime } from "@squide/react-router";
-
-const runtime = useRuntime();
-const mswPlugin = getMswPlugin(runtime);
-
-const isMswStarted = mswPlugin.isStarted;
-```
-

@@ -1,5 +1,5 @@
 import { registerShell } from "@endpoints/shell";
-import { MswPlugin } from "@squide/msw";
+import { MswPlugin, setMswAsStarted } from "@squide/msw";
 import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
@@ -30,7 +30,7 @@ if (process.env.USE_MSW) {
     import("../../mocks/browser.ts").then(({ startMsw }) => {
         startMsw(mswPlugin.requestHandlers);
 
-        mswPlugin.setAsStarted();
+        setMswAsStarted();
     });
 }
 

@@ -1,7 +1,7 @@
 import { registerLocalModule } from "@endpoints/local-module";
 import { isNetlify } from "@endpoints/shared";
 import { registerShell } from "@endpoints/shell";
-import { MswPlugin } from "@squide/msw";
+import { MswPlugin, setMswAsStarted } from "@squide/msw";
 import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
 import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
 import { StrictMode } from "react";
@@ -38,7 +38,7 @@ registerRemoteModules(Remotes, runtime).then(() => {
             startMsw(mswPlugin.requestHandlers);
 
             // Indicate to resources that are dependent on MSW that the service has been started.
-            mswPlugin.setAsStarted();
+            setMswAsStarted();
         });
     }
 });

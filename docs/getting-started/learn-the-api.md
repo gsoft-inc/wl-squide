@@ -216,6 +216,7 @@ Then, [retrieve the modules MSW request handlers](../reference/msw/MswPlugin.md#
 
 ```ts !#9,12
 import { registerRemoteModules } from "@squide/webpack-module-federation";
+import { setMswAsStarted } from "@squide/msw";
 
 registerRemoteModules(Remotes, runtime).then(() => {
     if (process.env.USE_MSW) {
@@ -226,7 +227,7 @@ registerRemoteModules(Remotes, runtime).then(() => {
             startMsw(mswPlugin.requestHandlers);
 
             // Indicate to resources that are dependent on MSW that the service has been started.
-            mswPlugin.setAsStarted();
+            setMswAsStarted();
         });
     }
 });

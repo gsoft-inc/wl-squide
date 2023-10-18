@@ -60,7 +60,7 @@ export interface DefineHostModuleFederationPluginOptions extends ModuleFederatio
     router?: Router;
 }
 
-const useNamedChunkIdsTransformer: WebpackConfigTransformer = (config: WebpackConfig) => {
+const setNamedChunkIdsTransformer: WebpackConfigTransformer = (config: WebpackConfig) => {
     config.optimization = {
         ...(config.optimization ?? {}),
         // Without named chunk ids, there are some Webpack features that do not work
@@ -163,7 +163,7 @@ export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: str
             new webpack.container.ModuleFederationPlugin(moduleFederationPluginOptions)
         ],
         transformers: [
-            useNamedChunkIdsTransformer,
+            setNamedChunkIdsTransformer,
             ...transformers
         ],
         ...webpackOptions
@@ -292,7 +292,7 @@ export function defineBuildRemoteModuleConfig(swcConfig: SwcConfig, applicationN
             new webpack.container.ModuleFederationPlugin(moduleFederationPluginOptions)
         ],
         transformers: [
-            useNamedChunkIdsTransformer,
+            setNamedChunkIdsTransformer,
             ...transformers
         ],
         ...webpackOptions

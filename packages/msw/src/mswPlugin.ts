@@ -4,7 +4,6 @@ import { RequestHandlerRegistry } from "./requestHandlerRegistry.ts";
 
 export class MswPlugin extends Plugin {
     readonly #requestHandlerRegistry = new RequestHandlerRegistry();
-    #isMswStarted = false;
 
     constructor() {
         super(MswPlugin.name);
@@ -16,14 +15,6 @@ export class MswPlugin extends Plugin {
 
     get requestHandlers(): RestHandler[] {
         return this.#requestHandlerRegistry.handlers;
-    }
-
-    setAsStarted() {
-        this.#isMswStarted = true;
-    }
-
-    get isStarted() {
-        return this.#isMswStarted;
     }
 }
 

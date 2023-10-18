@@ -1,6 +1,11 @@
-import { useLogger, useRuntime } from "@squide/core";
+import { useLogger } from "@squide/core";
 import { useEffect, useState } from "react";
-import { getMswPlugin } from "./mswPlugin.ts";
+
+let isMswStarted = false;
+
+export function setMswAsStarted() {
+    isMswStarted = true;
+}
 
 export interface UseIsMswStartedOptions {
     // The interval is in milliseconds.
@@ -8,7 +13,6 @@ export interface UseIsMswStartedOptions {
 }
 
 export function useIsMswStarted(enabled: boolean, { interval = 10 }: UseIsMswStartedOptions = {}) {
-    const runtime = useRuntime();
     const logger = useLogger();
 
     // Using a state hook to force a rerender once MSW is started.
@@ -17,10 +21,8 @@ export function useIsMswStarted(enabled: boolean, { interval = 10 }: UseIsMswSta
     // Perform a reload once MSW is started.
     useEffect(() => {
         if (enabled) {
-            const mswPlugin = getMswPlugin(runtime);
-
             const intervalId = setInterval(() => {
-                if (mswPlugin.isStarted) {
+                if (isMswStarted) {
                     logger.debug("[squide] %cMSW is ready%c.", "color: white; background-color: green;", "");
 
                     clearInterval(intervalId);

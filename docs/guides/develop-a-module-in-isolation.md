@@ -47,8 +47,6 @@ First, create a new package (we'll refer to ours as `shell`) and add the followi
 
 Then, install the package dependencies and configure the new package with [tsup](https://gsoft-inc.github.io/wl-web-configs/tsup/).
 
-<!-- Then, create a `useAppRouter` hook in the shell package. Its purpose is to provide a **reusable router configuration** that can be utilized by both the host application and the isolated modules. By using this hook, modules developed in isolation can utilize the **same application shell and routing configuration** as the host application.  -->
-
 Then, create a `useAppRouter` hook in the shell package to provide a **reusable router configuration** that can be utilized by both the host application and the isolated modules.
 
 ```tsx shell/src/useAppRouter.tsx
@@ -76,44 +74,6 @@ export function useAppRouter() {
     );
 }
 ```
-
-<!-- ```tsx shell/src/useAppRouter.tsx
-import { useMemo, useState } from "react";
-import { createBrowserRouter } from "react-router-dom";
-import { Route, useRoutes } from "@squide/react-router";
-import { RootErrorBoundary } from "./RootErrorBoundary";
-import { RootLayout } from "./RootLayout";
-
-export interface UseAppRouterOptions {
-    rootRoutes?: Route[];
-}
-
-export function useAppRouter({ rootRoutes = [] }: UseAppRouterOptions = {}) {
-    // Reuse the same array reference through re-renders.
-    const [memoizedRootRoutes] = useState(rootRoutes);
-
-    const routes = useRoutes();
-
-    const router = useMemo(() => {
-        return createBrowserRouter([
-            {
-                element: <RootLayout />,
-                children: [
-                    {
-                        errorElement: <RootErrorBoundary />,
-                        children: [
-                            ...routes
-                        ]
-                    }
-                ]
-            },
-            ...memoizedRootRoutes
-        ]);
-    }, [routes, memoizedRootRoutes]);
-
-    return router;
-}
-``` -->
 
 Finally, create a local module to register the **application shell** that will also be utilized by the host application and the isolated modules:
 
@@ -157,16 +117,11 @@ Now, let's revisit the host application by first adding a dependency to the new 
 
 Then, incorporate the newly introduced `useAppRouter` hook:
 
-```tsx !#5 host/src/App.tsx
-import { RouterProvider } from "react-router-dom";
+```tsx host/src/App.tsx
 import { useAppRouter } from "@sample/shell";
 
 export function App() {
-    const router = useAppRouter();
-
-    return (
-        <RouterProvider router={router} />
-    );
+    return useAppRouter();
 }
 ```
 
@@ -274,16 +229,11 @@ root.render(
 
 The `App.tsx` file uses the newly created `useAppRouter` hook to setup [React Router](https://reactrouter.com/):
 
-```tsx !#5 remote-module/src/App.tsx
-import { RouterProvider } from "react-router-dom";
+```tsx remote-module/src/App.tsx
 import { useAppRouter } from "@sample/shell";
 
 export function App() {
-    const router = useAppRouter();
-
-    return (
-        <RouterProvider router={router} />
-    );
+    return useAppRouter();
 }
 ```
 

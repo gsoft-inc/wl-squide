@@ -16,7 +16,7 @@ host
 ├───────── src
 ├─────────── RootLayout.tsx
 ├─────────── RootErrorBoundary.tsx
-├─────────── useAppRouter.ts
+├─────────── AppRouter.ts
 ├─────────── register.tsx
 ├─────────── index.ts
 ├───────── package.json
@@ -47,15 +47,15 @@ First, create a new package (we'll refer to ours as `shell`) and add the followi
 
 Then, install the package dependencies and configure the new package with [tsup](https://gsoft-inc.github.io/wl-web-configs/tsup/).
 
-Then, create a `useAppRouter` hook in the shell package to provide a **reusable router configuration** that can be utilized by both the host application and the isolated modules.
+Then, create a `AppRouter` component in the shell package to provide a **reusable router configuration** that can be utilized by both the host application and the isolated modules.
 
-```tsx shell/src/useAppRouter.tsx
+```tsx shell/src/AppRouter.tsx
 import { useRoutes } from "@squide/react-router";
 import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { useMemo } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-export function useAppRouter() {
+export function AppRouter() {
     const routes = useRoutes();
 
     // Re-render the app once all the remotes are registered, otherwise the remotes routes won't be added to the router.
@@ -115,13 +115,13 @@ Now, let's revisit the host application by first adding a dependency to the new 
 }
 ```
 
-Then, incorporate the newly introduced `useAppRouter` hook:
+Then, incorporate the newly introduced `AppRouter` component:
 
 ```tsx host/src/App.tsx
-import { useAppRouter } from "@sample/shell";
+import { AppRouter } from "@sample/shell";
 
 export function App() {
-    return useAppRouter();
+    return <AppRouter />
 }
 ```
 
@@ -227,13 +227,13 @@ root.render(
 
 ### App.tsx
 
-The `App.tsx` file uses the newly created `useAppRouter` hook to setup [React Router](https://reactrouter.com/):
+The `App.tsx` file uses the newly created `AppRouter` component to setup [React Router](https://reactrouter.com/):
 
 ```tsx remote-module/src/App.tsx
-import { useAppRouter } from "@sample/shell";
+import { AppRouter } from "@sample/shell";
 
 export function App() {
-    return useAppRouter();
+    return <AppRouter />;
 }
 ```
 

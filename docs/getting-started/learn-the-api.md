@@ -131,46 +131,28 @@ const isAuthenticated = useIsAuthenticated();
 
 The session is also available from the [Runtime](/reference/runtime/runtime-class.md) instance.
 
-<!-- ## Plugins
+## Plugins
 
-To keep Squide lightweight, not all functionalities should be integrated as a core functionality. However, to accommodate a broad range of technologies, a plugin system has been implemented to fill the gap.
+To keep Squide lightweight, not all functionalities should be integrated as a core functionality. However, to accommodate a broad range of technologies, a [plugin system](../reference/plugins/plugin.md) has been implemented to fill the gap.
 
-First, define a plugin by implementing the [Plugin](../reference/plugins/plugin.md) interface:
-
-```ts shared/src/mswPlugin.ts
-import { Plugin } from "@squide/react-router";
-import type { RestHandler } from "msw";
-
-export class MswPlugin extends Plugin {
-    constructor() {
-        super(MswPlugin.name);
-    }
-
-    registerRequestHandlers(handlers: RestHandler[]) {
-        ...
-    }
-}
-```
-
-Then, make the plugin available to every part of the application by passing a service instance to the `Runtime` instance:
+Plugins can be registered at bootstrapping with the [Runtime](../reference/runtime/runtime-class.md) instance:
 
 ```ts host/src/boostrap.tsx
 import { Runtime } from "@squide/react-router";
-import { MswPlugin } from "@squide/msw";
+import { MyPlugin } from "@sample/my-plugin";
 
 const runtime = new Runtime({
-    plugins: [new MswPlugin()]
+    plugins: [new MyPlugin()]
 });
 ```
 
-Then, access the plugin instance from the [Runtime](/reference/runtime/runtime-class.md) instance:
+Then, the plugins can be accessed anywhere from the `Runtime` instance:
 
 ```ts
-import { MswPlugin } from "@sample/shared";
-import { requetHandlers } from "../mocks/handlers.ts";
+import { MyPlugin } from "@sample/my-plugin";
 
-const mswPlugin = runtime.getPlugin(MswPlugin.name) as MswPlugin;
-``` -->
+const myPlugin = runtime.getPlugin(MyPlugin.name) as MyPlugin;
+```
 
 ## Mock Service Worker
 

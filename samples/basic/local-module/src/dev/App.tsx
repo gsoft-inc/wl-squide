@@ -1,5 +1,5 @@
-import { useAppRouter } from "@basic/shell";
+import { AppRouter } from "@basic/shell";
 
 export function App() {
-    return useAppRouter();
+    return <AppRouter />;
 }

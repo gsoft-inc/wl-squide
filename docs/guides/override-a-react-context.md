@@ -9,28 +9,14 @@ In a federated application using [Module Federation](https://webpack.js.org/conc
 
 Let's take a simple example using a `BackgroundColorContext`:
 
-```tsx !#19-23 host/src/App.tsx
-import { useAppRouter } from "@sample/shell";
+```tsx !#6,8 host/src/App.tsx
+import { AppRouter } from "@sample/shell";
 import { BackgroundColorContext } from "@sample/shared";
-import { useAreModulesReady } from "@squide/webpack-module-federation";
-import { RouterProvider } from "react-router-dom";
 
 export function App() {
-    const areModulesReady = useAreModulesReady();
-
-    const routes = useRoutes();
-
-    const router = useMemo(() => {
-        return createBrowserRouter(routes);
-    }, [routes]);
-
-    if (!areModulesReady) {
-        return <div>Loading...</div>;
-    }
-
     return (
         <BackgroundColorContext.Provider value="blue">
-            <RouterProvider router={router} />
+            <AppRouter />
         </BackgroundColorContext.Provider>
     );
 }
@@ -68,7 +54,7 @@ In the previous code samples, the host application provides a value for the `Bac
 
 Now, suppose the requirements change, and one remote module's pages need to have a `red` background. The context can be overriden for the remote module by declaring a new provider directly in the routes registration:
 
-```tsx !#9-11 remote-module/src/register.tsx
+```tsx !#9,11 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { BackgroundColorContext } from "@sample/shared";
 import { ColoredPage } from "./ColoredPage.tsx";
@@ -115,24 +101,14 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
 
 Let's consider a more specific use case where the host application declares a `ThemeContext` from Workleap's new design system, Hopper:
 
-```tsx !#15-19 host/src/App.tsx
-import { useAppRouter } from "@sample/shell";
+```tsx !#6,8 host/src/App.tsx
+import { AppRouter } from "@sample/shell";
 import { ThemeContext } from "@hopper/components";
-import { useAreModulesReady } from "@squide/webpack-module-federation";
-import { RouterProvider } from "react-router-dom";
 
 export function App() {
-    const areModulesReady = useAreModulesReady();
-
-    const router = useAppRouter(sessionManager);
-
-    if (!areModulesReady) {
-        return <div>Loading...</div>;
-    }
-
     return (
         <ThemeContext.Provider value="dark">
-            <RouterProvider router={router} />
+            <AppRouter />
         </ThemeContext.Provider>
     );
 }

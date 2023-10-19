@@ -3,7 +3,7 @@ import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { useMemo } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-export function useAppRouter() {
+export function AppRouter() {
     const routes = useRoutes();
 
     // Re-render the app once all the remotes are registered, otherwise the remotes routes won't be added to the router.

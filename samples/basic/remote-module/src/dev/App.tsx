@@ -1,12 +1,10 @@
 import { BackgroundColorContext } from "@basic/shared";
-import { useAppRouter } from "@basic/shell";
+import { AppRouter } from "@basic/shell";
 
 export function App() {
-    const appRouter = useAppRouter();
-
     return (
         <BackgroundColorContext.Provider value="blue">
-            {appRouter}
+            <AppRouter />
         </BackgroundColorContext.Provider>
     );
 }

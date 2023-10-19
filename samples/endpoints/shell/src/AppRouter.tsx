@@ -19,7 +19,13 @@ export function RootRoute() {
     );
 }
 
-export function useAppRouter(waitForMsw: boolean, sessionManager: SessionManager, telemetryService: TelemetryService) {
+export interface AppRouterProps {
+    waitForMsw: boolean;
+    sessionManager: SessionManager;
+    telemetryService: TelemetryService;
+}
+
+export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppRouterProps) {
     const [isReady, setIsReady] = useState(false);
 
     // Could be done with a ref (https://react.dev/reference/react/useRef) to save a re-render but for this sample

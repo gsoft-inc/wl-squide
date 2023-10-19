@@ -150,7 +150,7 @@ Althought it's functional, there are still a few configurations needed since the
 
 To decouple the navigation items, similar to what is done for regular federated pages, we'll utilize the [registerNavigationItem](../reference/runtime/runtime-class.md#register-navigation-items) function. In this case, we'll also use the [menuId](../reference/runtime/runtime-class.md#register-navigation-items-for-a-specific-menu) option. Defining the `menuId` option will enable the `FederatedTabsLayout` to retrieve navigation items exclusively for the federated tab component.
 
-First, let's register the navigation items with the `menuId` option:
+First, let's register the navigation items with the `menuId` option. For this example the `menuId` will be `/federated-tabs` (it can be anything):
 
 ```tsx !#19 remote-module-1/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
@@ -224,7 +224,7 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
 }
 ```
 
-Then, update the `FederatedTabsLayout` to render the registered navigation items instead of the hardcoded the URLs:
+Then, update the `FederatedTabsLayout` to render the registered navigation items instead of the hardcoded URLs:
 
 ```tsx !#32 remote-module-3/src/federated-tabs-layout.tsx
 import { 
@@ -281,7 +281,7 @@ Similarly to how the display order of regular navigation items can be configured
 
 To force `Tab 3` to be positioned first, we'll give him a priority of `999`: 
 
-```tsx !#16 local-module/src/register.tsx
+```tsx !#15 local-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { Tab3 } from "./Tab3.tsx";
 

@@ -19,8 +19,6 @@ import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useAreModulesReady } from "@squide/webpack-module-federation";
 import { useRoutes } from "@squide/react-router";
-import { RootLayout } from "./RootLayout.tsx";
-import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
 export function App() {
     const areModulesReady = useAreModulesReady();

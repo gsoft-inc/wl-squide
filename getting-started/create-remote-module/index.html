@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.749578693291">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751057493395">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.749578693291" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.751057493395" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.749578693291" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.751057493395" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.749578693291" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.749578693291" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.751057493395" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.751057493395" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -349,7 +349,7 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>While you can use any package manager to develop an application with Squide, it is highly recommended that you use <a href="https://pnpm.io/" class="outbound" target="_blank">PNPM</a> as the following guide has been developed and tested with PNPM.</p>
+<p>While you can use any package manager to develop an application with Squide, it is highly recommended that you use <a href="https://pnpm.io/" class="outbound" target="_blank">PNPM</a> as the guides has been developed and tested with PNPM.</p>
         </div>
     </div>
 </div>
@@ -385,27 +385,23 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
         <span>Routes registration</span>
     </h3>
 </doc-anchor-target>
-<p>Next, register the remote module routes and navigation items with the <a href="../../reference/runtime/runtime-class/#register-routes">registerRoutes</a> and <a href="../../reference/runtime/runtime-class/#register-navigation-items">registerNavigationItems</a> functions:</p>
+<p>Next, register the remote module routes and navigation items with the <a href="../../reference/runtime/runtime-class/#register-routes">registerRoute</a> and <a href="../../reference/runtime/runtime-class/#register-navigation-items">registerNavigationItem</a> functions:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="6-11,13-18"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="6-9,11-14"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import type { AppContext } from &quot;@sample/shared&quot;;
 import { Page } from &quot;./Page.tsx&quot;;
 
-export const register: ModuleRegisterFunction&lt;Runtime, AppContext&gt; = (runtime: Runtime, context: AppContext) =&gt; {
-    runtime.registerRoutes([
-        {
-            path: &quot;/remote/page&quot;,
-            element: &lt;Page /&gt;
-        }
-    ]);
+export const register: ModuleRegisterFunction&lt;Runtime, AppContext&gt; = (runtime, context) =&gt; {
+    runtime.registerRoute({
+        path: &quot;/remote/page&quot;,
+        element: &lt;Page /&gt;
+    });
 
-    runtime.registerNavigationItems([
-        {
-            to: &quot;/remote/page&quot;,
-            label: &quot;Remote/Page&quot;
-        }
-    ]);
+    runtime.registerNavigationItem({
+        $label: &quot;Remote/Page&quot;,
+        to: &quot;/remote/page&quot;
+    });
 }</code></pre>
 </doc-codeblock></div>
 <p>Then, create the <code v-pre>&lt;Page&gt;</code> component:</p>
@@ -569,7 +565,7 @@ export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, &qu
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>If you are having issues with this guide, have a look at a working example on <a href="https://github.com/gsoft-inc/wl-squide/tree/main/sample/remote-module" class="outbound" target="_blank">GitHub</a>.</p>
+<p>If you are having issues with this guide, have a look at a working example on <a href="https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/remote-module" class="outbound" target="_blank">GitHub</a>.</p>
         </div>
     </div>
 </div>

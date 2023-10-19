@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.749578693291">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751057493395">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.749578693291" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.751057493395" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.749578693291" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.751057493395" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.749578693291" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.749578693291" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.751057493395" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.751057493395" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -348,7 +348,7 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>While you can use any package manager to develop an application with Squide, it is highly recommended that you use <a href="https://pnpm.io/" class="outbound" target="_blank">PNPM</a> as the following guide has been developed and tested with PNPM.</p>
+<p>While you can use any package manager to develop an application with Squide, it is highly recommended that you use <a href="https://pnpm.io/" class="outbound" target="_blank">PNPM</a> as the guides has been developed and tested with PNPM.</p>
         </div>
     </div>
 </div>
@@ -366,9 +366,10 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
 ├── src
 ├──── App.tsx
 ├──── RootLayout.tsx
-├──── Home.tsx
+├──── HomePage.tsx
 ├──── bootstrap.tsx
 ├──── index.ts
+├──── register.tsx
 ├── .browserslistrc
 ├── swc.dev.js
 ├── swc.build.js
@@ -406,8 +407,7 @@ export {};</code></pre>
 <p>Next, to register the modules, instanciate the shell <a href="../../reference/runtime/runtime-class/">Runtime</a> and register the remote module with the <a href="../../reference/registration/registerremotemodules/">registerRemoteModules</a> function (the configuration of the remote module will be covered in the <a href="../create-remote-module/">next section</a>):</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
-<pre class="language-tsx" data-line="14-16,19-21,24"><code v-pre class="language-tsx">import { Suspense } from &quot;react&quot;;
-import { createRoot } from &quot;react-dom/client&quot;;
+<pre class="language-tsx" data-line="13-15,18-20,23"><code v-pre class="language-tsx">import { createRoot } from &quot;react-dom/client&quot;;
 import { ConsoleLogger, RuntimeContext, Runtime } from &quot;@squide/react-router&quot;;
 import { registerRemoteModules, type RemoteDefinition } from &quot;@squide/webpack-module-federation&quot;;
 import type { AppContext} from &quot;@sample/shared&quot;;
@@ -435,9 +435,7 @@ const root = createRoot(document.getElementById(&quot;root&quot;)!);
 
 root.render(
     &lt;RuntimeContext.Provider value={runtime}&gt;
-        &lt;Suspense fallback={&lt;div&gt;Loading...&lt;/div&gt;}&gt;
-            &lt;App /&gt;
-        &lt;/Suspense&gt;
+        &lt;App /&gt;
     &lt;/RuntimeContext.Provider&gt;
 );</code></pre>
 </doc-codeblock></div>
@@ -453,39 +451,24 @@ import { Home } from &quot;./Home.tsx&quot;;
 
 export function App() {
     // Re-render the application once the remote modules are registered.
-    const isReady = useAreModulesReady();
+    const areModulesReady = useAreModulesReady();
 
     // Retrieve the routes registered by the remote modules.
     const routes = useRoutes();
 
-    // Create the router instance with an home page and the remote module routes.
+    // Create the router instance with the registered routes.
     const router = useMemo(() =&gt; {
-        return createBrowserRouter([
-            {
-                path: &quot;/&quot;,
-                element: &lt;RootLayout /&gt;,
-                children: [
-                    {
-                        index: true,
-                        element: &lt;Home /&gt;
-                    },
-                    ...routes
-                ]
-            }
-        ]);
+        return createBrowserRouter(routes);
     }, [routes]);
 
     // Display a loading until the remote modules are registered.
-    if (!isReady) {
+    if (!areModulesReady) {
         return &lt;div&gt;Loading...&lt;/div&gt;;
     }
 
     // Render the router.
     return (
-        &lt;RouterProvider
-            router={router}
-            fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
-        /&gt;
+        &lt;RouterProvider router={router} /&gt;
     );
 }</code></pre>
 </doc-codeblock></div>
@@ -498,7 +481,7 @@ export function App() {
 <p>Next, create a layout component to <a href="../../reference/routing/userenderednavigationitems/">render the navigation items</a>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/RootLayout.tsx</div>
-<pre class="language-tsx" data-line="38,41"><code v-pre class="language-tsx">import type { ReactNode } from &quot;react&quot;;
+<pre class="language-tsx" data-line="38,41"><code v-pre class="language-tsx">import { Suspense, type ReactNode } from &quot;react&quot;;
 import { Link, Outlet } from &quot;react-router-dom&quot;;
 import { 
     useNavigationItems,
@@ -543,7 +526,9 @@ export function RootLayout() {
     return (
         &lt;&gt;
             &lt;nav&gt;{navigationElements}&lt;/nav&gt;
-            &lt;Outlet /&gt;
+            &lt;Suspense fallback={&lt;div&gt;Loading...&lt;/div&gt;}&gt;
+                &lt;Outlet /&gt;
+            &lt;/Suspense&gt;
         &lt;/&gt;
     );
 }</code></pre>
@@ -554,14 +539,109 @@ export function RootLayout() {
         <span>Homepage</span>
     </h3>
 </doc-anchor-target>
-<p>Finally, create the <code v-pre>Home</code> component that will serve as the homepage for this guide application:</p>
+<p>Next, create the <code v-pre>HomePage</code> component that will serve as the homepage for this application:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">host/src/Home.tsx</div>
-<pre class="language-tsx"><code v-pre class="language-tsx">export function Home() {
+<div class="codeblock-title">host/src/HomePage.tsx</div>
+<pre class="language-tsx"><code v-pre class="language-tsx">export function HomePage() {
     return (
         &lt;div&gt;Hello from the Home page!&lt;/div&gt;
     );
 }</code></pre>
+</doc-codeblock></div>
+<p>Then, add a local module at the root of the host application to register the homepage:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/src/register.tsx</div>
+<pre class="language-tsx"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+import { HomePage } from &quot;./HomePage.tsx&quot;;
+
+export const registerHost: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
+    runtime.registerRoute({
+        index: true,
+        element: &lt;HomePage /&gt;
+    });
+};</code></pre>
+</doc-codeblock></div>
+<p>And an <a href="../../reference/runtime/runtime-class/#register-an-hoisted-route">hoisted route</a> to render the <code v-pre>RootLayout</code> and the <a href="../../reference/routing/managedroutes/">ManagedRoutes</a> placeholder:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/src/register.tsx</div>
+<pre class="language-tsx" data-line="8,12,15"><code v-pre class="language-tsx">import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from &quot;@squide/react-router&quot;;
+import { HomePage } from &quot;./HomePage.tsx&quot;;
+import { RootLayout } from &quot;./RootLayout.tsx&quot;;
+
+export const registerHost: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
+    runtime.registerRoute({
+        // Pathless route to declare a root layout.
+        element: &lt;RootLayout /&gt;,
+        children: [
+            // Placeholder to indicate where managed routes (routes that are not hoisted or nested)
+            // will be rendered.
+            ManagedRoutes
+        ]
+    }, {
+        hoist: true
+    });
+
+    runtime.registerRoute({
+        index: true,
+        element: &lt;HomePage /&gt;
+    });
+};</code></pre>
+</doc-codeblock></div>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>The <a href="../../reference/routing/managedroutes/">ManagedRoutes</a> placeholder indicates where routes that are neither hoisted or nested with a <a href="../../reference/runtime/runtime-class/#register-nested-navigation-items">parentPath</a> or <a href="../../reference/runtime/runtime-class/#register-a-named-route">parentName</a> option will be rendered. In this example, the homepage route is considered a managed route and will be rendered under the <code v-pre>ManagedRoutes</code> placeholder.</p>
+        </div>
+    </div>
+</div>
+<p>Finally, update the bootstrapping code to <a href="../../reference/registration/registerlocalmodules/">register</a> the newly created local module:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/src/bootstrap.tsx</div>
+<pre class="language-tsx" data-line="24"><code v-pre class="language-tsx">import { createRoot } from &quot;react-dom/client&quot;;
+import { ConsoleLogger, RuntimeContext, Runtime } from &quot;@squide/react-router&quot;;
+import { registerRemoteModules, type RemoteDefinition } from &quot;@squide/webpack-module-federation&quot;;
+import type { AppContext} from &quot;@sample/shared&quot;;
+import { App } from &quot;./App.tsx&quot;;
+import { registerHost } from &quot;./register.tsx&quot;;
+
+// Define the remote modules.
+const Remotes: RemoteDefinition[] = [
+    { url: &quot;http://localhost:8081&quot;, name: &quot;remote1&quot; }
+];
+
+// Create the shell runtime.
+const runtime = new Runtime({
+    loggers: [new ConsoleLogger()]
+});
+
+// Create an optional context.
+const context: AppContext = {
+    name: &quot;Demo application&quot;
+};
+
+// Register the newly created local module.
+registerLocalModules([registerHost], runtime, { context });
+
+// Register the remote module.
+registerRemoteModules(Remotes, runtime, { context });
+
+const root = createRoot(document.getElementById(&quot;root&quot;)!);
+
+root.render(
+    &lt;RuntimeContext.Provider value={runtime}&gt;
+        &lt;App /&gt;
+    &lt;/RuntimeContext.Provider&gt;
+);</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="configure-webpack">
     <h2>
@@ -734,7 +814,7 @@ export default defineBuildHostConfig(swcConfig, &quot;host&quot;, &quot;http://l
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>If you are having issues with this guide, have a look at a working example on <a href="https://github.com/gsoft-inc/wl-squide/tree/main/sample/host" class="outbound" target="_blank">GitHub</a>.</p>
+<p>If you are having issues with this guide, have a look at a working example on <a href="https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/host" class="outbound" target="_blank">GitHub</a>.</p>
         </div>
     </div>
 </div>

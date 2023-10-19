@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.749578693291">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751057493395">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.749578693291" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.751057493395" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.749578693291" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.751057493395" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.749578693291" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.749578693291" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.751057493395" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.751057493395" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -309,42 +309,27 @@
 <p>Let&#x27;s take a simple example using a <code v-pre>BackgroundColorContext</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="16-21"><code v-pre class="language-tsx">import { useAppRouter } from &quot;@sample/shell&quot;;
+<pre class="language-tsx" data-line="6,8"><code v-pre class="language-tsx">import { AppRouter } from &quot;@sample/shell&quot;;
 import { BackgroundColorContext } from &quot;@sample/shared&quot;;
-import { useAreModulesReady } from &quot;@squide/webpack-module-federation&quot;;
-import { RouterProvider } from &quot;react-router-dom&quot;;
 
 export function App() {
-    const isReady = useAreModulesReady();
-
-    const router = useAppRouter(sessionManager);
-
-    if (!isReady) {
-        return &lt;div&gt;Loading...&lt;/div&gt;;
-    }
-
     return (
         &lt;BackgroundColorContext.Provider value=&quot;blue&quot;&gt;
-            &lt;RouterProvider
-                router={router}
-                fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
-            /&gt;
+            &lt;AppRouter /&gt;
         &lt;/BackgroundColorContext.Provider&gt;
     );
 }</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="8"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="7"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import { ColoredPage } from &quot;./ColoredPage.tsx&quot;;
 
 export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
-    runtime.registerRoutes([
-        {
-            path: &quot;/colored-page&quot;,
-            element: &lt;ColoredPage /&gt;
-        }
-    ]);
+    runtime.registerRoute({
+        path: &quot;/colored-page&quot;,
+        element: &lt;ColoredPage /&gt;
+    });
 }</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -371,21 +356,19 @@ export function ColoredPage() {
 <p>Now, suppose the requirements change, and one remote module&#x27;s pages need to have a <code v-pre>red</code> background. The context can be overriden for the remote module by declaring a new provider directly in the routes registration:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="10-12"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="9,11"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import { BackgroundColorContext } from &quot;@sample/shared&quot;;
 import { ColoredPage } from &quot;./ColoredPage.tsx&quot;;
 
 export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
-    runtime.registerRoutes([
-        {
-            path: &quot;/colored-page&quot;,
-            element: (
-                &lt;BackgroundColorContext.Provider value=&quot;red&quot;&gt;
-                    &lt;ColoredPage /&gt;
-                &lt;/BackgroundColorContext.Provider&gt;
-            )
-        }
-    ]);
+    runtime.registerRoute({
+        path: &quot;/colored-page&quot;,
+        element: (
+            &lt;BackgroundColorContext.Provider value=&quot;red&quot;&gt;
+                &lt;ColoredPage /&gt;
+            &lt;/BackgroundColorContext.Provider&gt;
+        )
+    });
 }</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="extract-an-utility-function">
@@ -397,7 +380,7 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
 <p>Since there are multiple routes to setup with the new provider, an utility function can be extracted:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="6-12,18"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="6-12,17"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import { BackgroundColorContext } from &quot;@sample/shared&quot;;
 import { ColoredPage } from &quot;./ColoredPage.tsx&quot;;
 import type { ReactElement } from &quot;react&quot;;
@@ -411,12 +394,10 @@ function withRedBackground(page: ReactElement) {
 }
 
 export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
-    runtime.registerRoutes([
-        {
-            path: &quot;/colored-page&quot;,
-            element: withRedBackground(&lt;ColoredPage /&gt;)
-        }
-    ]);
+    runtime.registerRoute({
+        path: &quot;/colored-page&quot;,
+        element: withRedBackground(&lt;ColoredPage /&gt;)
+    });
 }</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="update-a-singleton-dependency-version">
@@ -428,26 +409,13 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
 <p>Let&#x27;s consider a more specific use case where the host application declares a <code v-pre>ThemeContext</code> from Workleap&#x27;s new design system, Hopper:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="16-21"><code v-pre class="language-tsx">import { useAppRouter } from &quot;@sample/shell&quot;;
+<pre class="language-tsx" data-line="6,8"><code v-pre class="language-tsx">import { AppRouter } from &quot;@sample/shell&quot;;
 import { ThemeContext } from &quot;@hopper/components&quot;;
-import { useAreModulesReady } from &quot;@squide/webpack-module-federation&quot;;
-import { RouterProvider } from &quot;react-router-dom&quot;;
 
 export function App() {
-    const isReady = useAreModulesReady();
-
-    const router = useAppRouter(sessionManager);
-
-    if (!isReady) {
-        return &lt;div&gt;Loading...&lt;/div&gt;;
-    }
-
     return (
         &lt;ThemeContext.Provider value=&quot;dark&quot;&gt;
-            &lt;RouterProvider
-                router={router}
-                fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
-            /&gt;
+            &lt;AppRouter /&gt;
         &lt;/ThemeContext.Provider&gt;
     );
 }</code></pre>
@@ -473,26 +441,24 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
 <p>As <code v-pre>@hopper/components</code> expose the <code v-pre>ThemeContext</code>, the context must be re-declared in each remote module until every part of the federated application has been updated to the latest version of Hopper:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="6-12,18"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="6-12,17"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import { ThemeContext } from &quot;@hopper/components&quot;;
 import { Page } from &quot;./Page.tsx&quot;;
-import type { ReactElement } from &quot;react&quot;;
+import type { ReactNode } from &quot;react&quot;;
 
-function withHopperTheme(page: ReactElement) {
+function Providers({ children }: { children: ReactNode }) {
     return (
         &lt;ThemeContext.Provider value=&quot;dark&quot;&gt;
-            {page}
+            {children}
         &lt;/ThemeContext.Provider&gt;
     )
 }
 
 export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
-    runtime.registerRoutes([
-        {
-            path: &quot;/page&quot;,
-            element: withHopperTheme(&lt;Page /&gt;)
-        }
-    ]);
+    runtime.registerRoute({
+        path: &quot;/page&quot;,
+        element: &lt;Providers&gt;&lt;Page /&gt;&lt;/Providers&gt;
+    });
 }</code></pre>
 </doc-codeblock></div>
 <p>Thankfully, <a href="https://reactrouter.com/en/main" class="outbound" target="_blank">React Router</a> makes it very easy to declare contexts in a remote module.</p>

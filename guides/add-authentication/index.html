@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.749578693291">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751057493395">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Add authentication</title>
     <meta name="title" content="Add authentication">
-    <meta name="description" content="Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the Squide ">
+    <meta name="description" content="Most of our applications (if not all) will eventually requires the user to authenticate. To facilitate this process, the Squide ">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/guides/add-authentication/">
@@ -21,23 +21,23 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/guides/add-authentication/">
     <meta property="og:title" content="Add authentication">
-    <meta property="og:description" content="Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the Squide ">
+    <meta property="og:description" content="Most of our applications (if not all) will eventually requires the user to authenticate. To facilitate this process, the Squide ">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/guides/add-authentication/">
     <meta property="twitter:title" content="Add authentication">
-    <meta property="twitter:description" content="Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the Squide ">
+    <meta property="twitter:description" content="Most of our applications (if not all) will eventually requires the user to authenticate. To facilitate this process, the Squide ">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.749578693291" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.751057493395" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.749578693291" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.751057493395" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.749578693291" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.749578693291" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.751057493395" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.751057493395" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -305,7 +305,7 @@
         <span>Add authentication</span>
     </h1>
 </doc-anchor-target>
-<p>Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the Squide <a href="../../reference/runtime/runtime-class/">Runtime</a> class accepts a <a href="../../reference/fakes/localstoragesessionmanager/#integrate-with-a-runtime-instance">sessionAccessor</a> function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.</p>
+<p>Most of our applications (if not all) will eventually requires the user to authenticate. To facilitate this process, the Squide <a href="../../reference/runtime/runtime-class/">Runtime</a> class accepts a <a href="../../reference/fakes/localstoragesessionmanager/#integrate-with-a-runtime-instance">sessionAccessor</a> function. Once the application registration flow is completed, the function will be made accessible to every module of the application.</p>
 <p>When combined with a <a href="https://reactrouter.com/en/main" class="outbound" target="_blank">React Router</a> authentication boundary and a login page, the shared <code v-pre>sessionAccessor</code> function is of great help to manage authentication concerns.</p>
 <doc-anchor-target id="create-a-session-accessor-function">
     <h2>
@@ -313,19 +313,29 @@
         <span>Create a session accessor function</span>
     </h2>
 </doc-anchor-target>
-<p>Define a <code v-pre>sessionAccessor</code> function wrapping a <code v-pre>LocalStorageSessionManager</code> instance:</p>
+<p>First, create a shared type for the session:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">shared/src/session.ts</div>
+<pre class="language-typescript"><code v-pre class="language-typescript">export interface Session {
+    user: {
+        name: string;
+    };
+}</code></pre>
+</doc-codeblock></div>
+<p>Then, define a <code v-pre>sessionAccessor</code> function wrapping a <code v-pre>LocalStorageSessionManager</code> instance:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/session.ts</div>
 <pre class="language-typescript"><code v-pre class="language-typescript">import type { SessionAccessorFunction } from &quot;@squide/react-router&quot;;
 import { LocalStorageSessionManager } from &quot;@squide/fakes&quot;;
+import type { Session } from &quot;@sample/shared&quot;;
 
 export const sessionManager = new LocalStorageSessionManager&lt;Session&gt;();
 
-const sessionAccessor: SessionAccessorFunction = () =&gt; {
+export const sessionAccessor: SessionAccessorFunction = () =&gt; {
     return sessionManager.getSession();
 };</code></pre>
 </doc-codeblock></div>
-<p>Then, create the <a href="../../reference/runtime/runtime-class/">Runtime</a> instance with the new <code v-pre>sessionAccessor</code> function:</p>
+<p>Finally, create the <a href="../../reference/runtime/runtime-class/">Runtime</a> instance with the new <code v-pre>sessionAccessor</code> function:</p>
 <div class="codeblock-wrapper"><doc-codeblock line-numbers>
 <div class="codeblock-title">host/src/boostrap.tsx</div>
 <pre class="language-typescript" data-line="5"><code v-pre class="language-typescript">import { Runtime } from &quot;@squide/react-router&quot;;
@@ -561,84 +571,75 @@ export function RootLayout() {
         <span>Setup the routes</span>
     </h2>
 </doc-anchor-target>
-<p>Assemble everything with React Router <a href="https://reactrouter.com/en/main/start/tutorial#nested-routes" class="outbound" target="_blank">nested routes</a>:</p>
+<p>Assemble everything with React Router <a href="https://reactrouter.com/en/main/start/tutorial#nested-routes" class="outbound" target="_blank">nested routes</a> and a <a href="../../reference/registration/registerlocalmodules/">register</a> function:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="29-30,33-34,38,41"><code v-pre class="language-tsx">import { lazy, useMemo } from &quot;react&quot;;
-import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
-import { useRoutes } from &quot;@squide/react-router&quot;;
-import { useAreModulesReady } from &quot;@squide/webpack-module-federation&quot;;
-import { AuthenticationBoundary } from &quot;./AuthenticationBoundary.tsx&quot;;
+<div class="codeblock-title">host/src/register.tsx</div>
+<pre class="language-tsx" data-line="17,22,25,46-51,55-60"><code v-pre class="language-tsx">import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from &quot;@squide/react-router&quot;;
+import { RootLayout } from &quot;./Rootlayout.tsx&quot;;
 import { RootErrorBoundary } from &quot;./RootErrorBoundary.tsx&quot;;
-import { RootLayout } from &quot;./RootLayout.tsx&quot;;
-import { AuthenticatedLayout } from &quot;./AuthenticatedLayout.tsx&quot;;
+import { AuthenticationBoundary } from &quot;./AuthenticationBoundary.tsx&quot;;
 import { ModuleErrorBoundary } from &quot;./ModuleErrorBoundary.tsx&quot;;
-import { Home } from &quot;./Home.tsx&quot;;
-import { Login } from &quot;./Login.tsx&quot;;
-import { Logout } from &quot;./Logout.tsx&quot;;
+import { LoginPage } from &quot;./LoginPage.tsx&quot;;
+import { LogoutPage } from &quot;./LogoutPage.tsx&quot;;
+import { HomePage } from &quot;./Homepage.tsx&quot;;
 
-export function App() {
-    const isReady = useAreModulesReady();
+export const registerHost: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
+    runtime.registerRoute({
+        element: &lt;RootLayout /&gt;,
+        children: [
+            {
+                // The root error boundary is a named route to be able to nest
+                // the loging / logout page under it with the &quot;parentName&quot; optioné
+                $name: &quot;root-error-boundary&quot;,
+                errorElement: &lt;RootErrorBoundary /&gt;,
+                children: [
+                    {
+                        // Every page beyond the authenticated boundary are protected.
+                        element: &lt;AuthenticationBoundary /&gt;,
+                        children: [
+                            {
+                                element: &lt;AuthenticatedLayout /&gt;,
+                                children: [
+                                    {
+                                        // By having the error boundary under the authenticated layout, modules unmanaged errors
+                                        // will be displayed inside the layout rather than replacing the whole page.
+                                        errorElement: &lt;ModuleErrorBoundary /&gt;,
+                                        children: [
+                                            ManagedRoutes
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    });
 
-    const routes = useRoutes();
+    // The login page is nested under the root error boundary to be defined before the
+    // authentication boundary to be publicly accessible.
+    runtime.registerRoute({
+        path: &quot;/login&quot;,
+        element: &lt;LoginPage /&gt;
+    }, {
+        parentName: &quot;root-error-boundary&quot;
+    });
 
-    const router = useMemo(() =&gt; {
-        return createBrowserRouter({
-            element: &lt;RootLayout /&gt;,
-            children: [
-                {
-                    errorElement: &lt;RootErrorBoundary /&gt;,
-                    children: [
-                        {
-                            // The login and logout page are declared before the authentication boundary,
-                            // therefore they are public page.
-                            path: &quot;/login&quot;,
-                            element: &lt;Login /&gt;
-                        },
-                        {
-                            path: &quot;/logout&quot;,
-                            element: &lt;Logout /&gt;
-                        },
-                        {
-                            // Every page beyond the authenticated boundary are protected.
-                            element: &lt;AuthenticationBoundary /&gt;,
-                            children: [
-                                {
-                                    element: &lt;AuthenticatedLayout /&gt;,
-                                    children: [
-                                        {
-                                            // By having the error boundary under the authenticated layout, modules unmanaged errors
-                                            // will be displayed inside the layout rather than replacing the whole page.
-                                            errorElement: &lt;ModuleErrorBoundary /&gt;,
-                                            children: [
-                                                {
-                                                    index: true,
-                                                    element: &lt;Home /&gt;
-                                                },
-                                                ...routes
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        });
-    }, [routes]);
+    // The logout page is nested under the root error boundary to be defined before the
+    // authentication boundary to be publicly accessible.
+    runtime.registerRoute({
+        path: &quot;/logout&quot;,
+        element: &lt;LogoutPage /&gt;
+    }, {
+        parentName: &quot;root-error-boundary&quot;
+    });
 
-    if (!isReady) {
-        return &lt;div&gt;Loading...&lt;/div&gt;;
-    }
-
-    return (
-        &lt;RouterProvider
-            router={router}
-            fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
-        /&gt;
-    );
-}</code></pre>
+    runtime.registerRoute({
+        index: true,
+        element: &lt;HomePage /&gt;
+    });
+});</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="try-it">
     <h2>
@@ -660,7 +661,7 @@ export function App() {
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>If you are having issues with this guide, have a look at a working example on <a href="https://github.com/gsoft-inc/wl-squide/tree/main/sample/shell" class="outbound" target="_blank">GitHub</a>.</p>
+<p>If you are having issues with this guide, have a look at a working example on <a href="https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/shell" class="outbound" target="_blank">GitHub</a>.</p>
         </div>
     </div>
 </div>

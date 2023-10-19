@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.749578693291">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751057493395">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -34,12 +34,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.749578693291" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.751057493395" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.749578693291" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.751057493395" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.749578693291" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.749578693291" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.751057493395" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.751057493395" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -332,7 +332,7 @@
 <pre class="language-tsx" data-line="9-11,15"><code v-pre class="language-tsx">import { Suspense } from &quot;react&quot;;
 import { Link, Outlet } from &quot;react-router-dom&quot;;
 
-export default function FederatedTabsLayout() {
+export function FederatedTabsLayout() {
     return (
         &lt;div&gt;
             &lt;p&gt;Every tab is registered by a different module.&lt;/p&gt;
@@ -351,27 +351,23 @@ export default function FederatedTabsLayout() {
 }</code></pre>
 </doc-codeblock></div>
 <p>In the previous code sample, the <code v-pre>FederatedTabsLayout</code> is similar to the <code v-pre>RootLayout</code> introduced in previous guides. However, the key distinction is that this layout is nested under the <code v-pre>/federated-tabs</code> URL segment. By nesting the layout under a specific path, it will only render when the user navigates to one of the federated tab pages (e.g. <code v-pre>/federated-tabs/tab-1</code>, <code v-pre>/federated-tabs/tab-2</code>, <code v-pre>/federated-tabs/tab-3</code>).</p>
-<p>To register the newly created layout as a nested layout, use the <a href="../../reference/registration/registerremotemodules/">registerRemoteModules</a> function:</p>
+<p>To register the newly created layout as a nested layout, use the <a href="../../reference/runtime/runtime-class/#register-routes">registerRoute</a> function:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module-3/src/register.tsx</div>
-<pre class="language-tsx" data-line="8-9"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="7-8"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import { FederatedTabsLayout } from &quot;./FederatedTabsLayout.tsx&quot;;
 
 export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
-    runtime.registerRoutes([
-        {
-            // Register the layout as a nested layout under the &quot;/federated-tabs&quot; URL segment.
-            path: &quot;/federated-tabs&quot;,
-            element: &lt;FederatedTabsLayout /&gt;
-        }
-    ]);
+    runtime.registerRoute({
+        // Register the layout as a nested layout under the &quot;/federated-tabs&quot; URL segment.
+        path: &quot;/federated-tabs&quot;,
+        element: &lt;FederatedTabsLayout /&gt;
+    });
 
-    runtime.registerNavigationItems([
-        {
-            to: &quot;/federated-tabs&quot;,
-            label: &quot;Federated tabs&quot;
-        }
-    ]);
+    runtime.registerNavigationItem({
+        $label: &quot;Federated tabs&quot;,
+        to: &quot;/federated-tabs&quot;
+    });
 }</code></pre>
 </doc-codeblock></div>
 <p>With this nested layout in place, thanks to the React Router <a href="https://reactrouter.com/en/main/components/outlet" class="outbound" target="_blank">Outlet</a> component, the content of the tabs can now reside in <strong>distinct pages</strong> (registered by different modules) while still delivering a <strong>cohesive user experience</strong>. Whenever a user navigates between the tabs, the URL will be updated, and the tab content will change, but the shared portion of the layout will remain consistent.</p>
@@ -382,20 +378,20 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
         <span>Create the tab routes</span>
     </h2>
 </doc-anchor-target>
-<p>Next, let&#x27;s add the actual tab pages to the modules. To do so, we&#x27;ll use the <a href="../../reference/runtime/runtime-class/#register-routes-under-a-specific-nested-layout-route">layoutPath</a> option of the <a href="../../reference/runtime/runtime-class/#register-routes">registerRoutes</a> function to register the routes under the <code v-pre>FederatedTabsLayout</code>:</p>
+<p>Next, let&#x27;s add the actual tab pages to the modules. To do so, we&#x27;ll use the <a href="../../reference/runtime/runtime-class/#register-nested-routes-under-an-existing-route">parentPath</a> option of the <a href="../../reference/runtime/runtime-class/#register-routes">registerRoute</a> function to register the routes under the <code v-pre>FederatedTabsLayout</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module-1/src/register.tsx</div>
-<pre class="language-tsx" data-line="8,11"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="7,10"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import { Tab1 } from &quot;./Tab1.tsx&quot;;
 
 export const register: ModuleRegisterFunction&lt;Runtime&gt; = (runtime: Runtime) =&gt; {
-    runtime.registerRoutes([
-        {
-            // Using &quot;index: true&quot; instead of a path because this is the default active tab.
-            index: true
-            element: &lt;Tab1 /&gt;
-        }
-    ], { layoutPath: &quot;/federated-tabs&quot; });
+    runtime.registerRoute({
+        // Using &quot;index: true&quot; instead of a path because this is the default active tab.
+        index: true
+        element: &lt;Tab1 /&gt;
+    }, { 
+        parentPath: &quot;/federated-tabs&quot;
+    });
 }</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -408,17 +404,17 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = (runtime: Runtime
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module-2/src/register.tsx</div>
-<pre class="language-tsx" data-line="8,11"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="7,10"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import { Tab2 } from &quot;./Tab2.tsx&quot;;
 
 export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
-    runtime.registerRoutes([
-        {
-            // The first part of the &quot;path&quot; must be the same as the nested layout path (FederatedTabsLayout).
-            path: &quot;/federated-tabs/tab-2&quot;
-            element: &lt;Tab2 /&gt;
-        }
-    ], { layoutPath: &quot;/federated-tabs&quot; });
+    runtime.registerRoute({
+        // The first part of the &quot;path&quot; must be the same as the nested layout path (FederatedTabsLayout).
+        path: &quot;/federated-tabs/tab-2&quot;
+        element: &lt;Tab2 /&gt;
+    }, { 
+        parentPath: &quot;/federated-tabs&quot;
+    });
 }</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -431,17 +427,17 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="8,11"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="7,10"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import { Tab3 } from &quot;./Tab3.tsx&quot;;
 
 export const register: ModuleRegisterFunction&lt;Runtime&gt; = (runtime: Runtime) =&gt; {
-    runtime.registerRoutes([
-        {
-            // The first part of the &quot;path&quot; must be the same as the nested layout path (FederatedTabsLayout).
-            path: &quot;/federated-tabs/tab-3&quot;
-            element: &lt;Tab3 /&gt;
-        }
-    ], { layoutPath: &quot;/federated-tabs&quot; });
+    runtime.registerRoute({
+        // The first part of the &quot;path&quot; must be the same as the nested layout path (FederatedTabsLayout).
+        path: &quot;/federated-tabs/tab-3&quot;
+        element: &lt;Tab3 /&gt;
+    }, {
+        parentPath: &quot;/federated-tabs&quot;
+    });
 }</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -460,78 +456,78 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = (runtime: Runtime
     </h2>
 </doc-anchor-target>
 <p>Althought it&#x27;s functional, there are still a few configurations needed since the modules are currently coupled by hardcoded URLs within the <code v-pre>FederatedTabsLayout</code>.</p>
-<p>To decouple the navigation items, similar to what is done for regular federated pages, we&#x27;ll utilize the <a href="../../reference/runtime/runtime-class/#register-navigation-items">registerNavigationItems</a> function. In this case, we&#x27;ll also use the <a href="../../reference/runtime/runtime-class/#register-navigation-items-for-a-specific-menu">menuId</a> option. Defining the <code v-pre>menuId</code> option will enable the <code v-pre>FederatedTabsLayout</code> to retrieve navigation items exclusively for the federated tab component.</p>
+<p>To decouple the navigation items, similar to what is done for regular federated pages, we&#x27;ll utilize the <a href="../../reference/runtime/runtime-class/#register-navigation-items">registerNavigationItem</a> function. In this case, we&#x27;ll also use the <a href="../../reference/runtime/runtime-class/#register-navigation-items-for-a-specific-menu">menuId</a> option. Defining the <code v-pre>menuId</code> option will enable the <code v-pre>FederatedTabsLayout</code> to retrieve navigation items exclusively for the federated tab component.</p>
 <p>First, let&#x27;s register the navigation items with the <code v-pre>menuId</code> option:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module-1/src/register.tsx</div>
-<pre class="language-tsx" data-line="20"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="19"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import { Tab1 } from &quot;./Tab1.tsx&quot;;
 
 export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
-    runtime.registerRoutes([
-        {
-            // Using &quot;index: true&quot; instead of a path because this is the default active tab.
-            index: true
-            element: &lt;Tab1 /&gt;
-        }
-    ], { layoutPath: &quot;/federated-tabs&quot; });
+    runtime.registerRoute({
+        // Using &quot;index: true&quot; instead of a path because this is the default active tab.
+        index: true
+        element: &lt;Tab1 /&gt;
+    }, { 
+        parentPath: &quot;/federated-tabs&quot; 
+    });
 
-    runtime.registerNavigationItems([
-        {
-            to: &quot;/federated-tabs&quot;,
-            label: &quot;Tab 1&quot;
-        }
-    // The menu id could be anything, in this example we are using the same path as the nested layout
-    // path for convenience.
-    ], { menuId: &quot;/federated-tabs&quot; });
+    runtime.registerNavigationItem({
+        $label: &quot;Tab 1&quot;,
+        to: &quot;/federated-tabs&quot;
+    }, { 
+        // The menu id could be anything, in this example we are using the same path as the nested layout
+        // path for convenience.
+        menuId: &quot;/federated-tabs&quot;
+    });
 }</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module-2/src/register.tsx</div>
-<pre class="language-tsx" data-line="20"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="19"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import { Tab2 } from &quot;./Tab2.tsx&quot;;
 
 export const register: ModuleRegisterFunction&lt;Runtime&gt; = (runtime: Runtime) =&gt; {
-    runtime.registerRoutes([
-        {
-            // The first part of the &quot;path&quot; must be the same as the nested layout path (FederatedTabsLayout).
-            path: &quot;/federated-tabs/tab-2&quot;
-            element: &lt;Tab2 /&gt;
-        }
-    ], { layoutPath: &quot;/federated-tabs&quot; });
+    runtime.registerRoute({
+        // The first part of the &quot;path&quot; must be the same as the nested layout path (FederatedTabsLayout).
+        path: &quot;/federated-tabs/tab-2&quot;
+        element: &lt;Tab2 /&gt;
+    }, { 
+        parentPath: &quot;/federated-tabs&quot;
+    });
 
-    runtime.registerNavigationItems([
-        {
-            to: &quot;/federated-tabs/tab-2&quot;,
-            label: &quot;Tab 2&quot;
-        }
-    // The menu id could be anything, in this example we are using the same path as the nested layout
-    // path for convenience.
-    ], { menuId: &quot;/federated-tabs&quot; });
+    runtime.registerNavigationItem({
+        $label: &quot;Tab 2&quot;,
+        to: &quot;/federated-tabs/tab-2&quot;
+    }, { 
+        // The menu id could be anything, in this example we are using the same path as the nested layout
+        // path for convenience.
+        menuId: &quot;/federated-tabs&quot;
+    });
 }</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="20"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="19"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import { Tab3 } from &quot;./Tab3.tsx&quot;;
 
 export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
-    runtime.registerRoutes([
-        {
-            // The first part of the &quot;path&quot; must be the same as the nested layout path (FederatedTabsLayout).
-            path: &quot;/federated-tabs/tab-3&quot;
-            element: &lt;Tab3 /&gt;
-        }
-    ], { layoutPath: &quot;/federated-tabs&quot; });
+    runtime.registerRoute({
+        // The first part of the &quot;path&quot; must be the same as the nested layout path (FederatedTabsLayout).
+        path: &quot;/federated-tabs/tab-3&quot;
+        element: &lt;Tab3 /&gt;
+    }, { 
+        parentPath: &quot;/federated-tabs&quot;
+    });
 
-        runtime.registerNavigationItems([
-        {
-            to: &quot;/federated-tabs/tab-3&quot;,
-            label: &quot;Tab 3&quot;
-        }
-    // The menu id could be anything, in this example we are using the same path as the nested layout
-    // path for convenience.
-    ], { menuId: &quot;/federated-tabs&quot; });
+    runtime.registerNavigationItem({
+        $label: &quot;Tab 3&quot;,
+        to: &quot;/federated-tabs/tab-3&quot;
+    }, {
+        // The menu id could be anything, in this example we are using the same path as the nested layout
+        // path for convenience. 
+        menuId: &quot;/federated-tabs&quot; 
+    });
 }</code></pre>
 </doc-codeblock></div>
 <p>Then, update the <code v-pre>FederatedTabsLayout</code> to render the registered navigation items instead of the hardcoded the URLs:</p>
@@ -567,7 +563,7 @@ const renderSection: RenderSectionFunction = elements =&gt; {
     );
 };
 
-export default function FederatedTabsLayout() {
+export function FederatedTabsLayout() {
     const navigationItems = useNavigationItems(&quot;/federated-tabs&quot;);
     const renderedTabs = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
@@ -591,28 +587,28 @@ export default function FederatedTabsLayout() {
     </h2>
 </doc-anchor-target>
 <p>Similarly to how the display order of regular navigation items can be configured, a federated tab position can be affected with the <a href="http://localhost:5000/wl-squide/reference/runtime/runtime-class/#sort-registered-navigation-items" class="outbound" target="_blank">priority</a> property.</p>
-<p>To force <code v-pre>Tab 3</code> to be positioned first:</p>
+<p>To force <code v-pre>Tab 3</code> to be positioned first, we&#x27;ll give him a priority of <code v-pre>999</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="17"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="16"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import { Tab3 } from &quot;./Tab3.tsx&quot;;
 
 export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
-    runtime.registerRoutes([
-        {
-            path: &quot;/federated-tabs/tab-3&quot;
-            element: &lt;Tab3 /&gt;
-        }
-    ], { layoutPath: &quot;/federated-tabs&quot; });
+    runtime.registerRoute({
+        path: &quot;/federated-tabs/tab-3&quot;
+        element: &lt;Tab3 /&gt;
+    }, { 
+        parentPath: &quot;/federated-tabs&quot;
+    });
 
-    runtime.registerNavigationItems([
-        {
-            to: &quot;/federated-tabs/tab-3&quot;,
-            label: &quot;Tab 3&quot;,
-            // Highest priority goes first.
-            priority: 999
-        }
-    ], { menuId: &quot;/federated-tabs&quot; });
+    runtime.registerNavigationItem({
+        $label: &quot;Tab 3&quot;,
+        // Highest priority goes first.
+        $priority: 999,
+        to: &quot;/federated-tabs/tab-3&quot;
+    }, { 
+        menuId: &quot;/federated-tabs&quot; 
+    });
 }</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="try-it">

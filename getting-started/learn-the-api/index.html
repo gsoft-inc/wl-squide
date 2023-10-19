@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.749578693291">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751057493395">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.749578693291" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.751057493395" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.749578693291" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.751057493395" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.749578693291" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.749578693291" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.751057493395" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.751057493395" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -363,7 +363,7 @@ const logger = useLogger();
 
 logger.debug(&quot;Hello&quot;, { world: &quot;!&quot; });</code></pre>
 </doc-codeblock></div>
-<p>The logger is also available from the <a href="../../reference/runtime/runtime-class/">Runtime</a> instance.</p>
+<p>The logger is also available from the <a href="../../reference/runtime/runtime-class/#use-the-logger">Runtime</a> instance.</p>
 <doc-anchor-target id="messaging">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#messaging">#</doc-anchor-trigger>
@@ -391,7 +391,7 @@ const dispatch = useEventBusDispatcher();
 dispatch(&quot;foo&quot;, &quot;bar&quot;);</code></pre>
 </doc-codeblock></div>
 <p>You can use the event bus to enable various communication scenarios, such as notifying components of state changes, broadcasting messages across modules, or triggering actions based on specific events.</p>
-<p>The event bus is also available from the <a href="../../reference/runtime/runtime-class/">Runtime</a> instance.</p>
+<p>The event bus is also available from the <a href="../../reference/runtime/runtime-class/#use-the-event-bus">Runtime</a> instance.</p>
 <doc-anchor-target id="session">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#session">#</doc-anchor-trigger>
@@ -399,7 +399,7 @@ dispatch(&quot;foo&quot;, &quot;bar&quot;);</code></pre>
     </h2>
 </doc-anchor-target>
 <p>Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the Squide <a href="../../reference/runtime/runtime-class/">Runtime</a> class accepts a <a href="../../reference/fakes/localstoragesessionmanager/#integrate-with-a-runtime-instance">sessionAccessor</a> function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.</p>
-<p>First, let&#x27;s define a <code v-pre>sessionAccessor</code> function:</p>
+<p>First, define a <code v-pre>sessionAccessor</code> function:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/session.ts</div>
 <pre class="language-typescript"><code v-pre class="language-typescript">import type { SessionAccessorFunction } from &quot;@squide/react-router&quot;;
@@ -450,33 +450,112 @@ const session = useSession();</code></pre>
 const isAuthenticated = useIsAuthenticated();</code></pre>
 </doc-codeblock></div>
 <p>The session is also available from the <a href="../../reference/runtime/runtime-class/">Runtime</a> instance.</p>
-<doc-anchor-target id="services">
+<doc-anchor-target id="plugins">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#services">#</doc-anchor-trigger>
-        <span>Services</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#plugins">#</doc-anchor-trigger>
+        <span>Plugins</span>
     </h2>
 </doc-anchor-target>
-<p>While Squide provides a range of built-in functionalities, by no mean these alone can support the needs of every mature application. Therefore, the shell <a href="../../reference/runtime/runtime-class/">Runtime</a> allows the addition of custom services.</p>
-<p>First, make the service available to every part of the application by passing a service instance to the <code v-pre>Runtime</code> instance:</p>
+<p>To keep Squide lightweight, not all functionalities should be integrated as a core functionality. However, to accommodate a broad range of technologies, a <a href="../../reference/plugins/plugin/">plugin system</a> has been implemented to fill the gap.</p>
+<p>Plugins can be registered at bootstrapping with the <a href="../../reference/runtime/runtime-class/">Runtime</a> instance:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/boostrap.tsx</div>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { Runtime } from &quot;@squide/react-router&quot;;
-import { UserService } from &quot;@sample/shared&quot;;
+import { MyPlugin } from &quot;@sample/my-plugin&quot;;
 
 const runtime = new Runtime({
-    services: {
-        &quot;user-service&quot;: new UserService()
+    plugins: [new MyPlugin()]
+});</code></pre>
+</doc-codeblock></div>
+<p>Then, the plugins can be accessed anywhere from the <code v-pre>Runtime</code> instance:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-typescript"><code v-pre class="language-typescript">import { MyPlugin } from &quot;@sample/my-plugin&quot;;
+
+const myPlugin = runtime.getPlugin(MyPlugin.name) as MyPlugin;</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="mock-service-worker">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#mock-service-worker">#</doc-anchor-trigger>
+        <span>Mock Service Worker</span>
+    </h2>
+</doc-anchor-target>
+<p>We recommend to mock the API endpoints with <a href="https://mswjs.io/" class="outbound" target="_blank">Mock Service Worker</a> (MSW) to faciliate the development and encourage an <a href="https://devblogs.microsoft.com/ise/2023/05/08/design-api-first-with-typespec/" class="outbound" target="_blank">Contract Design First</a> approach.</p>
+<p>To help with that, a <code v-pre>@squide/msw</code> package is available.</p>
+<p>First, install the plugin, then <a href="../../reference/msw/mswplugin/#register-the-plugin">register the plugin</a> at bootstrap:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/src/boostrap.tsx</div>
+<pre class="language-typescript"><code v-pre class="language-typescript">import { Runtime } from &quot;@squide/react-router&quot;;
+import { MswPlugin } from &quot;@squide/msw&quot;;
+
+const runtime = new Runtime({
+    plugins: [new MswPlugin()]
+});</code></pre>
+</doc-codeblock></div>
+<p>Then, <a href="../../reference/msw/mswplugin/#register-request-handlers">register the modules MSW request handlers</a> at registration:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">remote-module/src/register.tsx</div>
+<pre class="language-typescript" data-line="12"><code v-pre class="language-typescript">import { getMswPlugin } from &quot;@squide/msw&quot;;
+import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;; 
+
+export const register: ModuleRegisterFunction&lt;Runtime&gt; = async runtime =&gt; {
+    if (process.env.USE_MSW) {
+        const mswPlugin = getMswPlugin(runtime);
+
+        // Files including an import to the &quot;msw&quot; package are included dynamically to prevent adding
+        // MSW stuff to the bundled when it's not used.
+        const requestHandlers = (await import(&quot;../mocks/handlers.ts&quot;)).requestHandlers;
+
+        mswPlugin.registerRequestHandlers(requestHandlers);
+    }
+}</code></pre>
+</doc-codeblock></div>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>Don&#x27;t forget to mark the registration function as <code v-pre>async</code> since there&#x27;s a dynamic import.</p>
+        </div>
+    </div>
+</div>
+<p>Then, <a href="../../reference/msw/mswplugin/#retrieve-the-request-handlers">retrieve the modules MSW request handlers</a> in the host application and start MSW:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-typescript" data-line="9,12"><code v-pre class="language-typescript">import { registerRemoteModules } from &quot;@squide/webpack-module-federation&quot;;
+import { setMswAsStarted } from &quot;@squide/msw&quot;;
+
+registerRemoteModules(Remotes, runtime).then(() =&gt; {
+    if (process.env.USE_MSW) {
+        // Files including an import to the &quot;msw&quot; package are included dynamically to prevent adding
+        // MSW stuff to the bundled when it's not used.
+        import(&quot;../mocks/browser.ts&quot;).then(({ startMsw }) =&gt; {
+            // Will start MSW with the request handlers provided by every module.
+            startMsw(mswPlugin.requestHandlers);
+
+            // Indicate to resources that are dependent on MSW that the service has been started.
+            setMswAsStarted();
+        });
     }
 });</code></pre>
 </doc-codeblock></div>
-<p>Then, access the service instance from anywhere with the <a href="../../reference/runtime/useservice/">useService</a> hook:</p>
+<p>Finally, make sure that the <a href="../../reference/msw/useismswready/">application rendering is delayed</a> until MSW is started:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript"><code v-pre class="language-typescript">import { useService } from &quot;@squide/react-router&quot;;
-import { type UserService } from &quot;@sample/shared&quot;;
+<div class="codeblock-title">host/src/App.tsx</div>
+<pre class="language-typescript" data-line="3"><code v-pre class="language-typescript">import { useIsMswStarted } from &quot;@squide/msw&quot;;
 
-const service = useService(&quot;user-service&quot;) as UserService;</code></pre>
+const isMswReady = useIsMswStarted(process.env.USE_MSW);
+
+if (!isMswReady) {
+    return &lt;div&gt;Loading...&lt;/div&gt;
+}</code></pre>
 </doc-codeblock></div>
-<p>The services are also available from the <a href="../../reference/runtime/runtime-class/">Runtime</a> instance.</p>
 <doc-anchor-target id="fakes">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#fakes">#</doc-anchor-trigger>

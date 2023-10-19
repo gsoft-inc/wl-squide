@@ -40,7 +40,7 @@ npm install @squide/core @squide/react-router react react-dom react-router-dom
 +++
 
 !!!warning
-While you can use any package manager to develop an application with Squide, it is highly recommend that you use [PNPM](https://pnpm.io/) as the following guide has been developed and tested with PNPM.
+While you can use any package manager to develop an application with Squide, it is highly recommend that you use [PNPM](https://pnpm.io/) as the guides has been developed and tested with PNPM.
 !!!
 
 ## Setup the application
@@ -83,27 +83,23 @@ Finally, configure the package to be shareable by adding the `name`, `version`, 
 
 ### Routes registration
 
-Next, register the local module routes and navigation items with [registerRoutes](/reference/runtime/runtime-class.md#register-routes) and [registerNavigationItems](/reference/runtime/runtime-class.md#register-navigation-items) functions:
+Next, register the local module routes and navigation items with [registerRoute](/reference/runtime/runtime-class.md#register-routes) and [registerNavigationItem](/reference/runtime/runtime-class.md#register-navigation-items) functions:
 
-```tsx !#6-11,13-18 local-module/src/register.tsx
+```tsx !#6-9,11-14 local-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import type { AppContext } from "@sample/shared";
 import { Page } from "./Page.tsx";
 
 export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, context) => {
-    runtime.registerRoutes([
-        {
-            path: "/local/page",
-            element: <Page />
-        }
-    ]);
+    runtime.registerRoute({
+        path: "/local/page",
+        element: <Page />
+    });
 
-    runtime.registerNavigationItems([
-        {
-            to: "/local/page",
-            content: "Local/Page"
-        }
-    ]);
+    runtime.registerNavigationItem({
+        $label: "Local/Page",
+        to: "/local/page"
+    });
 }
 ```
 
@@ -222,5 +218,5 @@ To troubleshoot module registration issues, open the DevTools console. You'll fi
 !!!
 
 !!!info
-If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/local-module).
+If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/local-module).
 !!!

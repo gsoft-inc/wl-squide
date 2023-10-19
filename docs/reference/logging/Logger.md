@@ -1,18 +1,15 @@
----
-toc:
-    depth: 2-3
----
-
 # Logger
 
-A basic logger interface.
+An abstract base class to define a logger.
 
 ## Usage
+
+### Define a custom logger
 
 ```ts
 import { Logger } from "@squide/react-router";
 
-class CustomLogger: Logger {
+export class CustomLogger: Logger {
     debug(log) { ... }
     information(log) { ... }
     warning(log) { ... }

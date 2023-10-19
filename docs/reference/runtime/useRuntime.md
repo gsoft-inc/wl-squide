@@ -9,7 +9,7 @@ toc:
 Retrive a shared `Runtime` instance.
 
 !!!info
-When possible, prefer [useRoutes](useRoutes.md), [useNavigationItems](useNavigationItems.md), [useLogger](useLogger.md), [useServices](useServices.md), [useService](useService.md) to `useRuntime`.
+When possible, prefer [useRoutes](useRoutes.md), [useNavigationItems](useNavigationItems.md), [useLogger](useLogger.md) to `useRuntime`.
 !!!
 
 ## Reference

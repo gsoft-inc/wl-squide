@@ -20,8 +20,6 @@ expanded: true
 - [useRoutes](runtime/useRoutes.md)
 - [useNavigationItems](runtime/useNavigationItems.md)
 - [useLogger](runtime/useLogger.md)
-- [useService](runtime/useService.md)
-- [useServices](runtime/useServices.md)
 - [useSession](runtime/useSession.md)
 
 ### Registration
@@ -33,8 +31,10 @@ expanded: true
 
 ### Routing
 
-- [useHoistedRoutes](routing/useHoistedRoutes.md)
+- [ManagedRoutes](routing/ManagedRoutes.md)
 - [useRenderedNavigationItems](routing/useRenderedNavigationItems.md)
+- [useRouteMatch](routing/useRouteMatch.md)
+- [useIsRouteMatchProtected](routing/useIsRouteMatchProtected.md)
 
 ### Logging
 
@@ -51,12 +51,23 @@ expanded: true
 
 - [useIsAuthenticated](session/useIsAuthenticated.md)
 
-### Webpack
+### Plugins
+
+- [Plugin](plugins/plugin.md)
+
+### webpack
 
 - [defineDevHostConfig](webpack/defineDevHostConfig.md)
 - [defineDevRemoteModuleConfig](webpack/defineDevRemoteModuleConfig.md)
 - [defineBuildHostConfig](webpack/defineBuildHostConfig.md)
 - [defineBuildRemoteModuleConfig](webpack/defineBuildRemoteModuleConfig.md)
+
+### Mock Service Worker
+
+- [MswPlugin](msw/MswPlugin.md)
+- [getMswPlugin](msw/getMswPlugin.md)
+- [useIsMswReady](msw/useIsMswReady.md)
+- [setMswAsStarted](msw/setMswAsStarted.md)
 
 ## Fakes
 

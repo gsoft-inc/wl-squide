@@ -17,37 +17,34 @@ function renderWithRuntime(runtime: Runtime, menuId?: string) {
 test("when no menu id is specified, returns all the registered navigation items for the root menu", () => {
     const runtime = new Runtime();
 
-    runtime.registerNavigationItems([
-        {
-            to: "/item-1",
-            label: "Item 1"
-        },
-        {
-            to: "/item-2",
-            label: "Item 2"
-        }
-    ]);
+    runtime.registerNavigationItem({
+        $label: "Item 1",
+        to: "/item-1"
+    });
 
-    runtime.registerNavigationItems([
-        {
-            to: "/item-3",
-            label: "Item 3"
-        }
-    ]);
+    runtime.registerNavigationItem({
+        $label: "Item 2",
+        to: "/item-2"
+    });
 
-    runtime.registerNavigationItems([
-        {
-            to: "/item-4",
-            label: "Item 4"
-        }
-    ], { menuId: "menu-1" });
+    runtime.registerNavigationItem({
+        $label: "Item 3",
+        to: "/item-3"
+    });
 
-    runtime.registerNavigationItems([
-        {
-            to: "/item-5",
-            label: "Item 5"
-        }
-    ], { menuId: "menu-2" });
+    runtime.registerNavigationItem({
+        $label: "Item 4",
+        to: "/item-4"
+    }, {
+        menuId: "menu-1"
+    });
+
+    runtime.registerNavigationItem({
+        $label: "Item 5",
+        to: "/item-5"
+    }, {
+        menuId: "menu-2"
+    });
 
     const { result } = renderWithRuntime(runtime);
 
@@ -57,37 +54,34 @@ test("when no menu id is specified, returns all the registered navigation items 
 test("when a menu id is specified, returns all the registered navigation items for that specific menu", () => {
     const runtime = new Runtime();
 
-    runtime.registerNavigationItems([
-        {
-            to: "/item-1",
-            label: "Item 1"
-        },
-        {
-            to: "/item-2",
-            label: "Item 2"
-        }
-    ]);
+    runtime.registerNavigationItem({
+        $label: "Item 1",
+        to: "/item-1"
+    });
 
-    runtime.registerNavigationItems([
-        {
-            to: "/item-3",
-            label: "Item 3"
-        }
-    ]);
+    runtime.registerNavigationItem({
+        $label: "Item 2",
+        to: "/item-2"
+    });
 
-    runtime.registerNavigationItems([
-        {
-            to: "/item-4",
-            label: "Item 4"
-        }
-    ], { menuId: "menu-1" });
+    runtime.registerNavigationItem({
+        $label: "Item 3",
+        to: "/item-3"
+    });
 
-    runtime.registerNavigationItems([
-        {
-            to: "/item-5",
-            label: "Item 5"
-        }
-    ], { menuId: "menu-2" });
+    runtime.registerNavigationItem({
+        $label: "Item 4",
+        to: "/item-4"
+    }, {
+        menuId: "menu-1"
+    });
+
+    runtime.registerNavigationItem({
+        $label: "Item 5",
+        to: "/item-5"
+    }, {
+        menuId: "menu-2"
+    });
 
     const { result } = renderWithRuntime(runtime, "menu-1");
 
@@ -97,9 +91,10 @@ test("when a menu id is specified, returns all the registered navigation items f
 test("returned array is immutable", () => {
     const runtime = new Runtime();
 
-    runtime.registerNavigationItems([
-        { to: "/foo", label: "Foo" }
-    ]);
+    runtime.registerNavigationItem({
+        $label: "Foo",
+        to: "/foo"
+    });
 
     const { result, rerender } = renderWithRuntime(runtime);
 
@@ -110,9 +105,10 @@ test("returned array is immutable", () => {
 
     const array2 = result.current;
 
-    runtime.registerNavigationItems([
-        { to: "/bar", label: "Bar" }
-    ]);
+    runtime.registerNavigationItem({
+        $label: "Bar",
+        to: "/bar"
+    });
 
     // Added a new navigation item, the returned array should be a new instance.
     rerender();

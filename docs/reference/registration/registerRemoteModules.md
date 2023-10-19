@@ -24,15 +24,17 @@ registerRemoteModules(remotes: [], runtime, options?: { context? })
 
 ### Returns
 
-A `Promise` object with an array of `RegistrationError` if any happens during the registration.
+A `Promise` object with an array of `RemoteModuleRegistrationError` if any error happens during the registration.
 
-- `RegistrationError`:
+- `RemoteModuleRegistrationError`:
     - `url`: The URL of the module federation remote that failed to load.
     - `containerName`: The name of the [dynamic container](https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers) that Squide attempted to recover.
     - `moduleName`: The name of the [module](#name) that Squide attempted to recover.
     - `error`: The original error object.
 
 ## Usage
+
+### Register a remote module
 
 ```tsx !#11-13,15 host/src/bootstrap.tsx
 import { Runtime } from "@squide/react-router";
@@ -52,35 +54,53 @@ const Remotes: RemoteDefinition = [
 registerRemoteModules(Remotes, runtime, { context });
 ```
 
-```tsx !#7-21 remote-module/src/register.tsx
-import { lazy } from "react";
+```tsx !#5-15 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import type { AppContext } from "@sample/shared";
-
-const About = lazy(() => import("./About.tsx"));
+import { About } from "./About.tsx";
 
 export function register: ModuleRegisterFunction<Runtime, AppContext>(runtime, context) {
-    runtime.registerRoutes([
-        {
-            path: "/about",
-            element: <About />
-        }
-    ]);
+    runtime.registerRoute({
+        path: "/about",
+        element: <About />
+    });
 
-    runtime.registerNavigationItems([
-        {
-            to: "/about",
-            label: "About"
-        }
-    ]);
+    runtime.registerNavigationItem({
+        $label: "About",
+        to: "/about"
+    });
 }
+```
+
+### Handle the registration errors
+
+```tsx !#15-19 host/src/bootstrap.tsx
+import { Runtime } from "@squide/react-router";
+import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import type { AppContext } from "@sample/shared";
+
+const runtime = new Runtime();
+
+const context: AppContext = {
+    name: "Test app"
+};
+
+const Remotes: RemoteDefinition = [
+    { name: "remote1", url: "http://localhost:8081" }
+];
+
+registerRemoteModules(Remotes, runtime, { context }).then(errors => {
+    errors.forEach(x => {
+        console.log(x);
+    });
+});
 ```
 
 ## Remote definition
 
 To ease the configuration of remote modules, make sure that you first import the `RemoteDefinition` type and assign it to your remote definitions array declaration.
 
-```ts !#3
+```ts !#3 host/src/bootstrap.tsx
 import type { RemoteDefinition } from "@squide/webpack-module-federation";
 
 const Remotes: RemoteDefinition = [

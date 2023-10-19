@@ -3,15 +3,15 @@ import type { ReactNode } from "react";
 import type { LinkProps } from "react-router-dom";
 
 export interface NavigationLink extends Omit<LinkProps, "children"> {
-    label: ReactNode;
-    additionalProps?: Record<string, unknown>;
+    $label: ReactNode;
+    $additionalProps?: Record<string, unknown>;
     children?: never;
 }
 
 export interface NavigationSection {
-    label: ReactNode;
+    $label: ReactNode;
+    $additionalProps?: Record<string, unknown>;
     children: NavigationItem[];
-    additionalProps?: Record<string, unknown>;
     to?: never;
 }
 
@@ -24,17 +24,17 @@ export function isLinkItem(item: NavigationItem): item is NavigationLink {
 
 export type RootNavigationItem = NavigationItem & {
     // Highest priority is rendered first.
-    priority?: number;
+    $priority?: number;
 };
 
 export class NavigationItemRegistry {
     readonly #menus: Map<string, RootNavigationItem[]> = new Map();
 
-    add(menuId: string, navigationItems: RootNavigationItem[]) {
+    add(menuId: string, navigationItem: RootNavigationItem) {
         // Create a new array so the navigation items array is immutable.
         const items = [
             ...(this.#menus.get(menuId) ?? []),
-            ...navigationItems
+            navigationItem
         ];
 
         this.#menus.set(menuId, items);

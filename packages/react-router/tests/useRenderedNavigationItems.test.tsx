@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react";
 import { useCallback, type ReactNode } from "react";
 import renderer from "react-test-renderer";
-import type { RootNavigationItem } from "../src/navigationItemRegistry.ts";
+import type { NavigationItem, RootNavigationItem } from "../src/navigationItemRegistry.ts";
 import { isNavigationLink, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "../src/useRenderedNavigationItems.tsx";
 
 type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
@@ -63,22 +63,22 @@ function TestComponent({ navigationItems }: TestComponentProps) {
 test("highest priority goes first", () => {
     const navigationItems: RootNavigationItem[] = [
         {
-            to: "/foo",
-            label: "Foo"
+            $label: "Foo",
+            to: "/foo"
         },
         {
-            to: "/bar",
-            label: "Bar",
-            priority: 5
+            $label: "Bar",
+            $priority: 5,
+            to: "/bar"
         },
         {
-            to: "/toto",
-            label: "Toto",
-            priority: 99
+            $label: "Toto",
+            $priority: 99,
+            to: "/toto"
         },
         {
-            to: "/tutu",
-            label: "Tutu"
+            $label: "Tutu",
+            to: "/tutu"
         }
     ];
 
@@ -92,21 +92,21 @@ test("highest priority goes first", () => {
 test("negative priority goes last", () => {
     const navigationItems: RootNavigationItem[] = [
         {
-            to: "/foo",
-            label: "Foo"
+            $label: "Foo",
+            to: "/foo"
         },
         {
-            to: "/bar",
-            label: "Bar"
+            $label: "Bar",
+            to: "/bar"
         },
         {
-            to: "/toto",
-            label: "Toto",
-            priority: -1
+            $label: "Toto",
+            $priority: -1,
+            to: "/toto"
         },
         {
-            to: "/tutu",
-            label: "Tutu"
+            $label: "Tutu",
+            to: "/tutu"
         }
     ];
 
@@ -120,19 +120,19 @@ test("negative priority goes last", () => {
 test("support 2 section levels", () => {
     const navigationItems: RootNavigationItem[] = [
         {
-            to: "/foo",
-            label: "Foo"
+            $label: "Foo",
+            to: "/foo"
         },
         {
-            label: "Bar",
+            $label: "Bar",
             children: [
                 {
-                    to: "/toto",
-                    label: "Toto"
+                    $label: "Toto",
+                    to: "/toto"
                 },
                 {
-                    to: "/tutu",
-                    label: "Tutu"
+                    $label: "Tutu",
+                    to: "/tutu"
                 }
             ]
         }
@@ -148,22 +148,22 @@ test("support 2 section levels", () => {
 test("support 3 section levels", () => {
     const navigationItems: RootNavigationItem[] = [
         {
-            to: "/foo",
-            label: "Foo"
+            $label: "Foo",
+            to: "/foo"
         },
         {
-            label: "Bar",
+            $label: "Bar",
             children: [
                 {
-                    to: "/toto",
-                    label: "Toto"
+                    $label: "Toto",
+                    to: "/toto"
                 },
                 {
-                    label: "Tutu",
+                    $label: "Tutu",
                     children: [
                         {
-                            to: "/titi",
-                            label: "Titi"
+                            $label: "Titi",
+                            to: "/titi"
                         }
                     ]
                 }
@@ -181,15 +181,15 @@ test("support 3 section levels", () => {
 test("Link item additionalProps are rendered", () => {
     const navigationItems: RootNavigationItem[] = [
         {
-            to: "/foo",
-            label: "Foo",
-            additionalProps: {
+            $label: "Foo",
+            $additionalProps: {
                 style: { color: "red" }
-            }
+            },
+            to: "/foo"
         },
         {
-            to: "/bar",
-            label: "Bar"
+            $label: "Bar",
+            to: "/bar"
         }
     ];
 
@@ -203,14 +203,14 @@ test("Link item additionalProps are rendered", () => {
 test("Section item additionalProps are rendered", () => {
     const navigationItems: RootNavigationItem[] = [
         {
-            label: "Foo",
+            $label: "Foo",
             children: [
                 {
-                    to: "/bar",
-                    label: "Bar"
+                    $label: "Bar",
+                    to: "/bar"
                 }
             ],
-            additionalProps: {
+            $additionalProps: {
                 style: { color: "red" }
             }
         }
@@ -224,10 +224,10 @@ test("Section item additionalProps are rendered", () => {
 });
 
 test("doesn't rerender when the navigation items haven't changed", () => {
-    const initialItems = [
+    const initialItems: NavigationItem[] = [
         {
-            to: "/foo",
-            label: "Foo"
+            $label: "Foo",
+            to: "/foo"
         }
     ];
 
@@ -249,10 +249,10 @@ test("doesn't rerender when the navigation items haven't changed", () => {
 });
 
 test("rerender when the navigation items change", () => {
-    const initialItems = [
+    const initialItems: NavigationItem[] = [
         {
-            to: "/foo",
-            label: "Foo"
+            $label: "Foo",
+            to: "/foo"
         }
     ];
 
@@ -268,8 +268,8 @@ test("rerender when the navigation items change", () => {
     rerender({
         navigationItems: [
             {
-                to: "/bar",
-                label: "Bar"
+                $label: "Bar",
+                to: "/bar"
             }
         ]
     });

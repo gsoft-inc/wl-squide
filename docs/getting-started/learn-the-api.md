@@ -48,7 +48,7 @@ const logger = useLogger();
 logger.debug("Hello", { world: "!" });
 ```
 
-The logger is also available from the [Runtime](/reference/runtime/runtime-class.md) instance.
+The logger is also available from the [Runtime](/reference/runtime/runtime-class.md#use-the-logger) instance.
 
 ## Messaging
 
@@ -79,13 +79,13 @@ dispatch("foo", "bar");
 
 You can use the event bus to enable various communication scenarios, such as notifying components of state changes, broadcasting messages across modules, or triggering actions based on specific events.
 
-The event bus is also available from the [Runtime](/reference/runtime/runtime-class.md) instance.
+The event bus is also available from the [Runtime](/reference/runtime/runtime-class.md#use-the-event-bus) instance.
 
 ## Session
 
 Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the Squide [Runtime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/LocalStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
 
-First, let's define a `sessionAccessor` function:
+First, define a `sessionAccessor` function:
 
 ```ts host/src/session.ts
 import type { SessionAccessorFunction } from "@squide/react-router";
@@ -131,33 +131,101 @@ const isAuthenticated = useIsAuthenticated();
 
 The session is also available from the [Runtime](/reference/runtime/runtime-class.md) instance.
 
-## Services
+## Plugins
 
-While Squide provides a range of built-in functionalities, by no mean these alone can support the needs of every mature application. Therefore, the shell [Runtime](/reference/runtime/runtime-class.md) allows the addition of custom services.
+To keep Squide lightweight, not all functionalities should be integrated as a core functionality. However, to accommodate a broad range of technologies, a [plugin system](../reference/plugins/plugin.md) has been implemented to fill the gap.
 
-First, make the service available to every part of the application by passing a service instance to the `Runtime` instance:
+Plugins can be registered at bootstrapping with the [Runtime](../reference/runtime/runtime-class.md) instance:
 
 ```ts host/src/boostrap.tsx
 import { Runtime } from "@squide/react-router";
-import { UserService } from "@sample/shared";
+import { MyPlugin } from "@sample/my-plugin";
 
 const runtime = new Runtime({
-    services: {
-        "user-service": new UserService()
+    plugins: [new MyPlugin()]
+});
+```
+
+Then, the plugins can be accessed anywhere from the `Runtime` instance:
+
+```ts
+import { MyPlugin } from "@sample/my-plugin";
+
+const myPlugin = runtime.getPlugin(MyPlugin.name) as MyPlugin;
+```
+
+## Mock Service Worker
+
+We recommend to mock the API endpoints with [Mock Service Worker](https://mswjs.io/) (MSW) to faciliate the development and encourage an [Contract Design First](https://devblogs.microsoft.com/ise/2023/05/08/design-api-first-with-typespec/) approach.
+
+To help with that, a `@squide/msw` package is available.
+
+First, install the plugin, then [register the plugin](../reference/msw/MswPlugin.md#register-the-plugin) at bootstrap:
+
+```ts host/src/boostrap.tsx
+import { Runtime } from "@squide/react-router";
+import { MswPlugin } from "@squide/msw";
+
+const runtime = new Runtime({
+    plugins: [new MswPlugin()]
+});
+```
+
+Then, [register the modules MSW request handlers](../reference/msw/MswPlugin.md#register-request-handlers) at registration:
+
+```ts !#12 remote-module/src/register.tsx
+import { getMswPlugin } from "@squide/msw";
+import type { ModuleRegisterFunction, Runtime } from "@squide/react-router"; 
+
+export const register: ModuleRegisterFunction<Runtime> = async runtime => {
+    if (process.env.USE_MSW) {
+        const mswPlugin = getMswPlugin(runtime);
+
+        // Files including an import to the "msw" package are included dynamically to prevent adding
+        // MSW stuff to the bundled when it's not used.
+        const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
+
+        mswPlugin.registerRequestHandlers(requestHandlers);
+    }
+}
+```
+
+!!!info
+Don't forget to mark the registration function as `async` since there's a dynamic import.
+!!!
+
+Then, [retrieve the modules MSW request handlers](../reference/msw/MswPlugin.md#retrieve-the-request-handlers) in the host application and start MSW:
+
+```ts !#9,12
+import { registerRemoteModules } from "@squide/webpack-module-federation";
+import { setMswAsStarted } from "@squide/msw";
+
+registerRemoteModules(Remotes, runtime).then(() => {
+    if (process.env.USE_MSW) {
+        // Files including an import to the "msw" package are included dynamically to prevent adding
+        // MSW stuff to the bundled when it's not used.
+        import("../mocks/browser.ts").then(({ startMsw }) => {
+            // Will start MSW with the request handlers provided by every module.
+            startMsw(mswPlugin.requestHandlers);
+
+            // Indicate to resources that are dependent on MSW that the service has been started.
+            setMswAsStarted();
+        });
     }
 });
 ```
 
-Then, access the service instance from anywhere with the [useService](/reference/runtime/useService.md) hook:
+Finally, make sure that the [application rendering is delayed](../reference/msw/useIsMswReady.md) until MSW is started:
 
-```ts
-import { useService } from "@squide/react-router";
-import { type UserService } from "@sample/shared";
+```ts !#3 host/src/App.tsx
+import { useIsMswStarted } from "@squide/msw";
 
-const service = useService("user-service") as UserService;
+const isMswReady = useIsMswStarted(process.env.USE_MSW);
+
+if (!isMswReady) {
+    return <div>Loading...</div>
+}
 ```
-
-The services are also available from the [Runtime](/reference/runtime/runtime-class.md) instance.
 
 ## Fakes
 

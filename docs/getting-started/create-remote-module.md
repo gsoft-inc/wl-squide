@@ -30,7 +30,7 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
 +++
 
 !!!warning
-While you can use any package manager to develop an application with Squide, it is highly recommended that you use [PNPM](https://pnpm.io/) as the following guide has been developed and tested with PNPM.
+While you can use any package manager to develop an application with Squide, it is highly recommended that you use [PNPM](https://pnpm.io/) as the guides has been developed and tested with PNPM.
 !!!
 
 ## Setup the application
@@ -60,27 +60,23 @@ Then, ensure that you are developing your module using [ESM syntax](https://deve
 
 ### Routes registration
 
-Next, register the remote module routes and navigation items with the [registerRoutes](/reference/runtime/runtime-class.md#register-routes) and [registerNavigationItems](/reference/runtime/runtime-class.md#register-navigation-items) functions:
+Next, register the remote module routes and navigation items with the [registerRoute](/reference/runtime/runtime-class.md#register-routes) and [registerNavigationItem](/reference/runtime/runtime-class.md#register-navigation-items) functions:
 
-```tsx !#6-11,13-18 remote-module/src/register.tsx
+```tsx !#6-9,11-14 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import type { AppContext } from "@sample/shared";
 import { Page } from "./Page.tsx";
 
-export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime: Runtime, context: AppContext) => {
-    runtime.registerRoutes([
-        {
-            path: "/remote/page",
-            element: <Page />
-        }
-    ]);
+export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, context) => {
+    runtime.registerRoute({
+        path: "/remote/page",
+        element: <Page />
+    });
 
-    runtime.registerNavigationItems([
-        {
-            to: "/remote/page",
-            label: "Remote/Page"
-        }
-    ]);
+    runtime.registerNavigationItem({
+        $label: "Remote/Page",
+        to: "/remote/page"
+    });
 }
 ```
 
@@ -193,6 +189,6 @@ To troubleshoot module registration issues, open the DevTools console. You'll fi
 !!!
 
 !!!info
-If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/remote-module).
+If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/remote-module).
 !!!
 

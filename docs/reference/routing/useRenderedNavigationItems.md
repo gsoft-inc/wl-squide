@@ -79,7 +79,7 @@ const renderSection: RenderSectionFunction = (elements, index, level) => {
     );
 };
 
-export default function RootLayout() {
+export function RootLayout() {
     const navigationItems = useNavigationItems();
     const navigationElements = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 

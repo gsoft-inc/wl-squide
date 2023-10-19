@@ -29,7 +29,7 @@ npm install @squide/core @squide/react-router @squide/webpack-module-federation 
 +++
 
 !!!warning
-While you can use any package manager to develop an application with Squide, it is highly recommended that you use [PNPM](https://pnpm.io/) as the following guide has been developed and tested with PNPM.
+While you can use any package manager to develop an application with Squide, it is highly recommended that you use [PNPM](https://pnpm.io/) as the guides has been developed and tested with PNPM.
 !!!
 
 ## Setup the application
@@ -43,9 +43,10 @@ host
 ├── src
 ├──── App.tsx
 ├──── RootLayout.tsx
-├──── Home.tsx
+├──── HomePage.tsx
 ├──── bootstrap.tsx
 ├──── index.ts
+├──── register.tsx
 ├── .browserslistrc
 ├── swc.dev.js
 ├── swc.build.js
@@ -80,8 +81,7 @@ export {};
 
 Next, to register the modules, instanciate the shell [Runtime](/reference/runtime/runtime-class.md) and register the remote module with the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function (the configuration of the remote module will be covered in the [next section](create-remote-module.md)):
 
-```tsx !#14-16,19-21,24 host/src/bootstrap.tsx
-import { Suspense } from "react";
+```tsx !#13-15,18-20,23 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, Runtime } from "@squide/react-router";
 import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
@@ -110,9 +110,7 @@ const root = createRoot(document.getElementById("root")!);
 
 root.render(
     <RuntimeContext.Provider value={runtime}>
-        <Suspense fallback={<div>Loading...</div>}>
-            <App />
-        </Suspense>
+        <App />
     </RuntimeContext.Provider>
 );
 ```
@@ -129,39 +127,24 @@ import { Home } from "./Home.tsx";
 
 export function App() {
     // Re-render the application once the remote modules are registered.
-    const isReady = useAreModulesReady();
+    const areModulesReady = useAreModulesReady();
 
     // Retrieve the routes registered by the remote modules.
     const routes = useRoutes();
 
-    // Create the router instance with an home page and the remote module routes.
+    // Create the router instance with the registered routes.
     const router = useMemo(() => {
-        return createBrowserRouter([
-            {
-                path: "/",
-                element: <RootLayout />,
-                children: [
-                    {
-                        index: true,
-                        element: <Home />
-                    },
-                    ...routes
-                ]
-            }
-        ]);
+        return createBrowserRouter(routes);
     }, [routes]);
 
     // Display a loading until the remote modules are registered.
-    if (!isReady) {
+    if (!areModulesReady) {
         return <div>Loading...</div>;
     }
 
     // Render the router.
     return (
-        <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-        />
+        <RouterProvider router={router} />
     );
 }
 ```
@@ -171,7 +154,7 @@ export function App() {
 Next, create a layout component to [render the navigation items](/reference/routing/useRenderedNavigationItems.md):
 
 ```tsx !#38,41 host/src/RootLayout.tsx
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { 
     useNavigationItems,
@@ -216,7 +199,9 @@ export function RootLayout() {
     return (
         <>
             <nav>{navigationElements}</nav>
-            <Outlet />
+            <Suspense fallback={<div>Loading...</div>}>
+                <Outlet />
+            </Suspense>
         </>
     );
 }
@@ -224,14 +209,99 @@ export function RootLayout() {
 
 ### Homepage
 
-Finally, create the `Home` component that will serve as the homepage for this guide application:
+Next, create the `HomePage` component that will serve as the homepage for this application:
 
-```tsx host/src/Home.tsx
-export function Home() {
+```tsx host/src/HomePage.tsx
+export function HomePage() {
     return (
         <div>Hello from the Home page!</div>
     );
 }
+```
+
+Then, add a local module at the root of the host application to register the homepage:
+
+```tsx host/src/register.tsx
+import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import { HomePage } from "./HomePage.tsx";
+
+export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
+    runtime.registerRoute({
+        index: true,
+        element: <HomePage />
+    });
+};
+```
+
+And an [hoisted route](../reference/runtime/runtime-class.md#register-an-hoisted-route) to render the `RootLayout` and the [ManagedRoutes](../reference/routing/ManagedRoutes.md) placeholder:
+
+```tsx !#8,12,15 host/src/register.tsx
+import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
+import { HomePage } from "./HomePage.tsx";
+import { RootLayout } from "./RootLayout.tsx";
+
+export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
+    runtime.registerRoute({
+        // Pathless route to declare a root layout.
+        element: <RootLayout />,
+        children: [
+            // Placeholder to indicate where managed routes (routes that are not hoisted or nested)
+            // will be rendered.
+            ManagedRoutes
+        ]
+    }, {
+        hoist: true
+    });
+
+    runtime.registerRoute({
+        index: true,
+        element: <HomePage />
+    });
+};
+```
+
+!!!info
+The [ManagedRoutes](../reference/routing/ManagedRoutes.md) placeholder indicates where routes that are neither hoisted or nested with a [parentPath](../reference/runtime/runtime-class.md#register-nested-navigation-items) or [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option will be rendered. In this example, the homepage route is considered a managed route and will be rendered under the `ManagedRoutes` placeholder.
+!!!
+
+Finally, update the bootstrapping code to [register](../reference/registration/registerLocalModules.md) the newly created local module:
+
+```tsx !#24 host/src/bootstrap.tsx
+import { createRoot } from "react-dom/client";
+import { ConsoleLogger, RuntimeContext, Runtime } from "@squide/react-router";
+import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import type { AppContext} from "@sample/shared";
+import { App } from "./App.tsx";
+import { registerHost } from "./register.tsx";
+
+// Define the remote modules.
+const Remotes: RemoteDefinition[] = [
+    { url: "http://localhost:8081", name: "remote1" }
+];
+
+// Create the shell runtime.
+const runtime = new Runtime({
+    loggers: [new ConsoleLogger()]
+});
+
+// Create an optional context.
+const context: AppContext = {
+    name: "Demo application"
+};
+
+// Register the newly created local module.
+registerLocalModules([registerHost], runtime, { context });
+
+// Register the remote module.
+registerRemoteModules(Remotes, runtime, { context });
+
+const root = createRoot(document.getElementById("root")!);
+
+root.render(
+    <RuntimeContext.Provider value={runtime}>
+        <App />
+    </RuntimeContext.Provider>
+);
 ```
 
 ## Configure webpack
@@ -354,6 +424,6 @@ To troubleshoot module registration issues, open the DevTools console. You'll fi
 !!!
 
 !!!info
-If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/sample/host).
+If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/host).
 !!!
 

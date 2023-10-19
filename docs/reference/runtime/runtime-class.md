@@ -11,7 +11,7 @@ A runtime instance give modules access to functionalities such as routing, navig
 ## Reference
 
 ```ts
-const runtime = new Runtime(options?: { loggers?: [], services?: {}, sessionAccessor?: () => {} })
+const runtime = new Runtime(options?: { loggers?: [], plugins?: [], sessionAccessor?: () => {} })
 ```
 
 ### Parameters
@@ -19,7 +19,7 @@ const runtime = new Runtime(options?: { loggers?: [], services?: {}, sessionAcce
 - `options`: An optional object literal of options:
     - `mode`: An optional mode to optimize Squide for `production`. Values are `"development"` (default) and `"production"`.
     - `loggers`: An optional array of `Logger` instances.
-    - `services`: An optional string-keyed object literal of custom service instances.
+    - `plugins`: An optional array of custom plugin instances.
     - `sessionAccessor`: An optional function returning the current session.
 
 ## Usage
@@ -29,15 +29,14 @@ const runtime = new Runtime(options?: { loggers?: [], services?: {}, sessionAcce
 ```ts
 import { ConsoleLogger, Runtime } from "@squide/react-router";
 import { LocalStorageSessionManager } from "@squide/fakes";
-import { UserService, type UserService, type AppSession } from "@sample/shared";
+import { MswPlugin } from "@squide/msw";
+import { type AppSession } from "@sample/shared";
 
 const sessionManager = new LocalStorageSessionManager();
 
 const runtime = new Runtime({
     loggers: [new ConsoleLogger()],
-    services: {
-        "user-service": new UserService()
-    },
+    plugins: [new MswPlugin()],
     sessionAccessor: () => {
         return sessionManager.getSession();
     };
@@ -56,103 +55,191 @@ const runtime = new Runtime({
 
 ### Register routes
 
-A Squide route accept any properties of a React Router [Route](https://reactrouter.com/en/main/components/route) component with the addition of an `hoist` property.
+```ts
+runtime.registerRoute(route, options?: {})
+```
+
+- `route`: accept any properties of a React Router [Route](https://reactrouter.com/en/main/components/route) component with the addition of:
+    - `$name`: An optional name for the route.
+    - `$visibility`: An optional visibility indicator for the route. Accepted values are `"public"` or `"protected"`.
+- `options`: An optional object literal of options:
+    - `hoist`: An optional boolean value to register the route at the root of the router. The default value is `false`.
+    - `parentPath`: An optional path of a parent route to register this new route under.
+    - `parentName`: An optional name of a parent route to register this new route under.
 
 ```tsx
-import { lazy } from "react";
-
-const Page = lazy(() => import("./Page.tsx"));
+import { Page } from "./Page.tsx"
 
 // Register a new route from a local or remote module.
-runtime.registerRoutes([
-    {
-        path: "/page-1",
-        element: <Page />
-    }
-]);
+runtime.registerRoute({
+    path: "/page-1",
+    element: <Page />
+});
 ```
 
-### Register an hoisted page
+### Register an hoisted route
 
-Unlike a regular page, a hoisted page is added at the root of the router, outside of the boundaries of the host application's root layout. This means that a hoisted page has full control over its rendering.
+Unlike a regular page, a hoisted page is added at the root of the router, outside of the host application's root layout, root error boundary and even root authentication boundary. This means that a hoisted page has full control over its rendering. To mark a route as hoisted, provide an `hoist` property to the route options.
 
-```tsx !#9
-import { lazy } from "react";
+```tsx !#7
+import { Page } from "./Page.tsx";
 
-const Page = lazy(() => import("./Page.tsx"));
-
-runtime.registerRoutes([
-    {
-        path: "/page-1",
-        element: <Page />,
-        hoist: true
-    }
-]);
+runtime.registerRoute({
+    path: "/page-1",
+    element: <Page />
+}, {
+    hoist: true
+});
 ```
 
-[!ref text="Setup the host application to accept hoisted routes"](/reference/routing/useHoistedRoutes.md)
+!!!warning
+By declaring a page as hoisted, other parts of the application will not be isolated anymore from this page's failures as the page will be rendered outside of the host application's root error boundary. To **avoid breaking the entire application** when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router's [errorElement](https://reactrouter.com/en/main/route/error-element) property for each hoisted page.
+!!!
 
-### Register routes under a specific nested layout route
+!!!warning
+By declaring a page as hoisted, the page will be rendered at the root of the router, therefore, most certainly outside the authenticated boundary of the application. If the hoisted page requires an authentication, make sure to **wrap the page with an authentication boundary** or to handle the authentication within the page.
+!!!
 
-React router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) enable applications to render nested layouts at various points within the router tree. This is quite helpful for federated applications as it enables composable and decoupled UI.
+### Register a route with a different layout
 
-To fully harness the power of nested routes, the `registerRoutes` function allows a route to be registered **under any** previously registered **nested layout route**, even if that route was registered by another module.
+!!!info
+For a detailed walkthrough, read the guide on [how to override the host layout](/guides/override-the-host-layout.md).
+!!!
 
-When registering a new route with the `registerRoutes` function, to render the route under a specific nested layout route, specify a `layoutPath` property that matches the nested layout route's `path` property. The only requirement is that the **nested layout route** must be registered with `registerRoutes`.
+```tsx !#9,12,22
+import { Page } from "./Page.tsx";
+import { RemoteLayout } from "./RemoteLayout.tsx";
+import { RemoteErrorBoundary } from "./RemoteErrorBoundary.tsx";
+
+runtime.registerRoute({
+    path: "/page-1",
+    // Will render the page inside the "RemoteLayout" rather than the "RootLayout".
+    // For more information about React Router's nested routes, view https://reactrouter.com/en/main/start/tutorial#nested-routes.
+    element: <RemoteLayout />,
+    children: [
+        {
+            errorElement: <RemoteErrorBoundary />,
+            children: [
+                {
+                    index: true,
+                    element: <Page />
+                }
+            ]
+        }
+    ]
+}, {
+    hoist: true
+});
+```
+
+### Register a public route
+
+When registering a route, a hint can be provided, indicating if the route is intended to be displayed as a `public` or `protected` route. This is especially useful when dealing with code that conditionally fetch data for protected routes (e.g. a session). Don't forget to mark the route as hoisted with the `host` option if the route is nested under an authentication boundary.
+
+```tsx !#4,8
+import { Page } from "./Page.tsx";
+
+runtime.registerRoute({
+    $visibility: "public"
+    path: "/page-1",
+    element: <Page />
+}, {
+    hoist: true
+});
+```
+
+A nested route can also have a visibility hint:
 
 ```tsx !#10
-import { lazy } from "react";
+import { Layout } from "./Layout.tsx";
+import { Page } from "./Page.tsx";
 
-const Page = lazy(() => import("./Page.tsx"));
-
-runtime.registerRoutes([
-    {
-        path: "/layout/page-1",
-        element: <Page />
-    }
-], { layoutPath: "/layout" }); // Register the page under the "/layout" nested layout.
+runtime.registerRoute({
+    $visibility: "public"
+    path: "/layout",
+    element: <Layout />,
+    children: [
+        {
+            $visibility: "public",
+            path: "/page-1",
+            element: <Page />,
+        }
+    ]
+}, {
+    hoist: true
+});
 ```
 
 !!!info
-Likewise any other React Router routes, the `path` property of a page rendered under a nested layout must be an absolute path. For example, if a nested layout `path` is `/layout`, the `path` property of a page rendered under that layout route and responding to the `/page-1` url, should be `/layout/page-1`.
+When no visibility hint is provided, a route is considered `protected`.
 !!!
 
-#### Index routes
+### Register a named route
 
-Although nested layout routes that serve as indexes (e.g. `{ index: true, element: <Layout /> }`) are not very common, Squide still supports this scenario. To register a route **under an index route**, set the `layoutPath` property as the concatenation of the index route's parent path and `/$index$`. 
+The `registerRoute` function accepts a `parentName` property, allowing a route to be [nested under an existing parent route](#register-nested-routes-under-an-existing-route). When searching for the parent route matching the `parentName` property, the `parentName` will be matched against the `$name` property of every route.
 
-```tsx !#8,12 host/src/register.tsx
-import { lazy } from "react";
+> A `$name` property should only be defined for routes that doesn't have a path like an error boundary or an authentication boundary.
 
-const Page = lazy(() => import("./Page.tsx"));
-const Layout = lazy(() => import("./Layout.tsx"));
+```tsx !#4
+import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
-runtime.registerRoutes([
-    {
-        path: "/page-1",
-        element: <Page />,
-        children: [
-            {
-                index: true,
-                element: <Layout />
-            }
-        ]
-    }
-]);
+runtime.registerRoute({
+    $name: "error-boundary",
+    element: <RootErrorBoundary />
+});
 ```
 
-```tsx !#10 remote-module/src/register.tsx
-import { lazy } from "react";
+A nested route can also be named:
 
-const Page = lazy(() => import("./Page.tsx"));
+```tsx !#8
+import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
+import { RootLayout } from "./RootLayout.tsx";
 
-runtime.registerRoutes([
-    {
-        path: "/page-1/page-2",
-        element: <Page />
-    }
-], { layoutPath: "/page-1/$index$" }); // Using $index$ to match "index: true"
+runtime.registerRoute({
+    $name: "error-boundary",
+    element: <RootErrorBoundary />,
+    children: [
+        $name: "root-layout",
+        element: <RootLayout />
+    ]
+});
 ```
+
+### Register nested routes under an existing route
+
+React router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) enable applications to render nested layouts at various points within the router tree. This is quite helpful for federated applications as it enables composable and decoupled UI.
+
+To fully harness the power of nested routes, the `registerRoute` function allows a route to be registered **under any** previously **registered route**, even if that route was registered by another module. The only requirement is that the **parent route** must have been registered with the `registerRoute` function.
+
+When registering a new route with the `registerRoute` function, to render the route under a parent route, specify a `parentPath` property that matches the parent route's `path` property:
+
+```tsx !#7
+import { Page } from "./Page.tsx";
+
+runtime.registerRoute({
+    path: "/layout/page-1",
+    element: <Page />
+}, { 
+    parentPath: "/layout" // Register the page under an existing route having "/layout" as its "path".
+});
+```
+
+Or a `parentName` property that matches the parent route's `name` property:
+
+```tsx !#7
+import { Page } from "./Page.tsx";
+
+runtime.registerRoute({
+    path: "/page-1",
+    element: <Page />
+}, { 
+    parentName: "error-boundary" // Register the page under an existing route having "error-boundary" as its "name".
+});
+```
+
+!!!info
+Likewise any other React Router routes, the `path` property of a page rendered under an existing parent route must be an absolute path. For example, if a parent route `path` is `/layout`, the `path` property of a page rendered under that parent route and responding to the `/page-1` url, should be `/layout/page-1`.
+!!!
 
 ### Retrieve routes
 
@@ -164,26 +251,32 @@ const routes = runtime.routes;
 
 ### Register navigation items
 
+```ts
+runtime.registerNavigationItem(item, options?: {})
+```
+
+- `item`: `NavigationSection | NavigationLink`.
+- `options`: An optional object literal of options:
+    - `menuId`: An optional menu id to associate the item with.
+
 A Squide navigation item can either be a `NavigationLink` or a `NavigationSection`. Both types can be intertwined to create a multi-level menu hierarchy. A `NavigationSection` item is used to setup a new level while a `NavigationLink` define a link.
 
 - `NavigationSection` accept the following properties:
-    - `label`: The section text.
+    - `$label`: The section text.
+    - `$priority`: An order priority affecting the position of the item in the menu (higher first)
+    - `$addiltionalProps`: Additional properties to be forwarded to the section renderer.
     - `children`: The section content.
-    - `priority`: An order priority affecting the position of the item in the menu (higher first)
-    - `addiltionalProps`: Additional properties to be forwarded to the section renderer.
 - `NavigationLink` accept any properties of a React Router [Link](https://reactrouter.com/en/main/components/link) component with the addition of:
-    - `label`: The link text.
-    - `priority`: An order priority affecting the position of the item in the menu (higher first)
-    - `additionalProps`: Additional properties to be forwarded to the link renderer.
+    - `$label`: The link text.
+    - `$priority`: An order priority affecting the position of the item in the menu (higher first)
+    - `$additionalProps`: Additional properties to be forwarded to the link renderer.
 
 ```ts
 // Register a new navigation item from a local or remote module.
-runtime.registerNavigationItems([
-    {
-        to: "/page-1",
-        label: "Page 1"
-    }
-]);
+runtime.registerNavigationItem({
+    $label: "Page 1",
+    to: "/page-1"
+});
 ```
 
 [!ref text="Setup the host application to render navigation items"](/reference/routing/useRenderedNavigationItems.md)
@@ -198,125 +291,114 @@ runtime.registerNavigationItems([
 //  ------- Nested Nested Link
 //  --- Nested Link
 //  Link
-runtime.registerNavigationItems([
-    {
-        label: "Section",
-        children: [
-            {
-                label: "Nested Section",
-                children: [
-                    {
-                        to: "#",
-                        label: "Nested Nested Link",
-                    }
-                ]
-            },
-            {
-                to: "#",
-                label: "Nested Link"
-            }
-        ]
-    },
-    {
-        to: "#",
-        label: "Link"
-    }
-]);
+runtime.registerNavigationItem({
+    $label: "Section",
+    children: [
+        {
+            label: "Nested Section",
+            children: [
+                {
+                    $label: "Nested Nested Link",
+                    to: "#"
+                }
+            ]
+        },
+        {
+            $label: "Nested Link",
+            to: "#"
+        }
+    ]
+},
+{
+    $label: "Link",
+    to: "#"
+});
 ```
 
 ### Sort registered navigation items
 
-A `priority` property can be added to a navigation item to affect it's position in the menu. The sorting algorithm is as follow:
+A `$priority` property can be added to a navigation item to affect it's position in the menu. The sorting algorithm is as follow:
 
 - By default a navigation item have a priority of `0`.
 - If no navigation item have a priority, the items are positioned according to their registration order.
 - If an item have a priority `> 0`, the item will be positioned before any other items with a lower priority (or without an explicit priority value).
 - If an item have a priority `< 0`, the item will be positioned after any other items with a higher priority (or without an explicit priority value).
 
-```ts !#5,12
-runtime.registerNavigationItems([
-    {
-        to: "/about",
-        label: "About",
-        priority: 10
-    },
-    {
-        to: "/home",
-        label: "Home",
-        // Because the "Home" navigation item has an higher priority, it will be rendered
-        // before the "About" navigation item.
-        priority: 100
-    }
-]);
+```ts !#3,11
+runtime.registerNavigationItem({
+    $label: "About",
+    $priority: 10,
+    to: "/about"
+});
+
+runtime.registerNavigationItem({
+    $label: "Home",
+    // Because the "Home" navigation item has an higher priority, it will be rendered
+    // before the "About" navigation item.
+    $priority: 100,
+    to: "/home"
+});
 ```
 
 ### Use a React element as navigation item label
 
-```tsx !#6-9
+```tsx !#4-7
 import { QuestionMarkIcon } from "@sample/icons";
 
-runtime.registerNavigationItems([
-    {
-        to: "/about",
-        label: (
-            <QuestionMarkIcon />
-            <span>About</span>
-        )
-    }
-]);
+runtime.registerNavigationItem({
+    $label: (
+        <QuestionMarkIcon />
+        <span>About</span>
+    ),
+    to: "/about"
+});
 ```
 
 ### Style a navigation item
 
-```ts !#5-7
-runtime.registerNavigationItems([
-    {
-        to: "/about",
-        label: "About",
-        style: {
-            backgroundColor: "#000"
-        }
-    }
-]);
+```ts !#3-5
+runtime.registerNavigationItem({
+    $label: "About",
+    style: {
+        backgroundColor: "#000"
+    },
+    to: "/about"
+});
 ```
 
 ### Open a navigation link in a new tab
 
-```ts !#5
-runtime.registerNavigationItems([
-    {
-        to: "/about",
-        label: "About",
-        target: "_blank"
-    }
-]);
+```ts !#3
+runtime.registerNavigationItem({
+    $label: "About",
+    target: "_blank",
+    to: "/about"
+});
 ```
 
 ### Render additional props on a navigation item
 
-```ts !#5-7
-runtime.registerNavigationItems([
-    {
-        to: "/about",
-        label: "About",
-        additionalProps: {
+```ts !#3-5
+runtime.registerNavigationItem({
+        $label: "About",
+        $additionalProps: {
             highlight: true
-        }
-    }
-]);
+        },
+        to: "/about"
+    });
 ```
 
 ### Register navigation items for a specific menu
 
-By default, every navigation item registered with the `registerNavigationItems` function is registered as part of the `root` navigation menu. To register a navigation item for a different navigation menu, specify a `menuId` property when registering the items.
+By default, every navigation item registered with the `registerNavigationItem` function is registered as part of the `root` navigation menu. To register a navigation item for a different navigation menu, specify a `menuId` property when registering the items.
 
-```tsx !#6
-runtime.registerNavigationItems([
-    {
-        to: "/layout/page-1",
-        label: "Page 1"
-    }
-], { menuId: "my-custom-layout" });
+```tsx !#5
+runtime.registerNavigationItem({
+    $label: "Page 1",
+    to: "/layout/page-1"
+}, { 
+    menuId: "my-custom-layout" 
+});
 ```
 
 ### Retrieve navigation items
@@ -353,12 +435,14 @@ runtime.eventBus.addListener("write-to-host", () => {});
 runtime.eventBus.dispatch("write-to-host", "Hello host!");
 ```
 
-### Retrieve a service
+### Retrieve a plugin
 
 ```ts
-// If the service isn't registered, undefined will be returned.
-const service = runtime.getService("user-service") as UserService;
+// If the plugin isn't registered, an exception will be thrown.
+const plugin = runtime.getPlugin(MswPlugin.name) as MswPlugin;
 ```
+
+[!ref Learn more about plugins](../plugins/plugin.md)
 
 ### Retrieve the current session
 

@@ -1,8 +1,7 @@
-import { useMemo, type ReactNode } from "react";
-import { isLinkItem, type NavigationItem, type NavigationLink, type NavigationSection, type RootNavigationItem } from "./navigationItemRegistry.ts";
-
 import { isNil } from "@squide/core";
+import { useMemo, type ReactNode } from "react";
 import type { LinkProps } from "react-router-dom";
+import { isLinkItem, type NavigationItem, type NavigationLink, type NavigationSection, type RootNavigationItem } from "./navigationItemRegistry.ts";
 
 export interface NavigationLinkRenderProps {
     label: ReactNode;
@@ -26,19 +25,19 @@ export type RenderItemFunction = (item: NavigationItemRenderProps, index: number
 
 export type RenderSectionFunction = (elements: ReactNode[], index: number, level: number) => ReactNode;
 
-function toLinkProps({ label, additionalProps, ...linkProps }: NavigationLink): NavigationLinkRenderProps {
+function toLinkProps({ $label, $additionalProps, ...linkProps }: NavigationLink): NavigationLinkRenderProps {
     return {
-        label,
+        label: $label,
         linkProps,
-        additionalProps: additionalProps ?? {}
+        additionalProps: $additionalProps ?? {}
     };
 }
 
-function toMenuProps({ label, additionalProps }: NavigationSection, sectionElement: ReactNode): NavigationSectionRenderProps {
+function toMenuProps({ $label, $additionalProps }: NavigationSection, sectionElement: ReactNode): NavigationSectionRenderProps {
     return {
-        label,
+        label: $label,
         section: sectionElement,
-        additionalProps: additionalProps ?? {}
+        additionalProps: $additionalProps ?? {}
     };
 }
 
@@ -70,8 +69,8 @@ export function useRenderedNavigationItems(
         const sortedItems = [...navigationItems]
             .sort((x, y) => {
                 // Default an item priority to 0 to support negative priority.
-                const xp = x.priority ?? 0;
-                const yp = y.priority ?? 0;
+                const xp = x.$priority ?? 0;
+                const yp = y.$priority ?? 0;
 
                 if (xp === yp) {
                     return 0;
@@ -81,7 +80,7 @@ export function useRenderedNavigationItems(
             })
             // priority is intentionally omitted.
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            .map(({ priority, ...itemProps }) => itemProps);
+            .map(({ $priority, ...itemProps }) => itemProps);
 
         return renderItems(sortedItems, renderItem, renderSection, 0, 0);
     }, [navigationItems, renderItem, renderSection]);

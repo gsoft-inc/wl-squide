@@ -1,32 +1,61 @@
 import type { AbstractRuntime } from "../runtime/abstractRuntime.ts";
 import type { ModuleRegistrationStatus } from "./moduleRegistrationStatus.ts";
-import type { ModuleRegisterFunction } from "./registerModule.ts";
+import { registerModule, type ModuleRegisterFunction } from "./registerModule.ts";
 
 let registrationStatus: ModuleRegistrationStatus = "none";
 
-// Aliasing to make the name more explicit to external modules.
-export { registrationStatus as localModulesRegistrationStatus };
+export function getLocalModulesRegistrationStatus() {
+    return registrationStatus;
+}
+
+export function resetLocalModulesRegistrationStatus() {
+    registrationStatus = "none";
+}
+
+export interface LocalModuleRegistrationError {
+    // The registration error.
+    error: unknown;
+}
 
 export interface RegisterLocalModulesOptions<TContext> {
     context?: TContext;
 }
 
-export function registerLocalModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext>[], runtime: TRuntime, { context }: RegisterLocalModulesOptions<TContext> = {}) {
+export async function registerLocalModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext>[], runtime: TRuntime, { context }: RegisterLocalModulesOptions<TContext> = {}) {
     if (registrationStatus !== "none") {
-        throw new Error("[squide] The \"registerLocalModules\" function can only be called once.");
+        throw new Error("[squide] [local] registerLocalModules() can only be called once.");
     }
+
+    const errors: LocalModuleRegistrationError[] = [];
+
+    runtime.logger.information(`[squide] [local] Found ${registerFunctions.length} local module${registerFunctions.length !== 1 ? "s" : ""} to register.`);
 
     registrationStatus = "in-progress";
 
-    runtime.logger.information(`[squide] Found ${registerFunctions.length} local module${registerFunctions.length !== 1 ? "s" : ""} to register.`);
+    await Promise.allSettled(registerFunctions.map(async (x, index) => {
+        let optionalPromise;
 
-    registerFunctions.forEach((x, index) => {
-        runtime.logger.information(`[squide] ${index + 1}/${registerFunctions.length} Registering local module${registerFunctions.length !== 1 ? "s" : ""}.`);
+        runtime.logger.information(`[squide] [local] ${index + 1}/${registerFunctions.length} Registering local module.`);
 
-        x(runtime, context);
+        try {
+            optionalPromise = registerModule(x as ModuleRegisterFunction<AbstractRuntime>, runtime, context);
+        } catch (error: unknown) {
+            runtime.logger.error(
+                `[squide] [local] ${index + 1}/${registerFunctions.length} An error occured while registering a local module.`,
+                error
+            );
 
-        runtime.logger.information(`[squide] ${index + 1}/${registerFunctions.length} Local module${registerFunctions.length !== 1 ? "s" : ""} registration completed.`);
-    });
+            errors.push({
+                error
+            });
+        }
+
+        runtime.logger.information(`[squide] [local] ${index + 1}/${registerFunctions.length} Local module registration completed.`);
+
+        return optionalPromise;
+    }));
 
     registrationStatus = "ready";
+
+    return errors;
 }

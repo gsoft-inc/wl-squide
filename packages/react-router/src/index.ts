@@ -1,13 +1,11 @@
 export * from "@squide/core";
 
-export * from "./runtime.ts";
-
-export * from "./routeRegistry.ts";
-
-export * from "./useHoistedRoutes.ts";
-export * from "./useRoutes.ts";
-
 export * from "./navigationItemRegistry.ts";
+export * from "./outlets.ts";
+export * from "./routeRegistry.ts";
+export * from "./runtime.ts";
 export * from "./useNavigationItems.ts";
 export * from "./useRenderedNavigationItems.tsx";
+export * from "./useRouteMatch.ts";
+export * from "./useRoutes.ts";
 

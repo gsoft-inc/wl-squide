@@ -1,81 +1,179 @@
-import type { RegisterRoutesOptions } from "@squide/core";
-import type { RouteObject } from "react-router-dom";
+import type { RegisterRouteOptions } from "@squide/core";
+import type { IndexRouteObject, NonIndexRouteObject } from "react-router-dom";
+import { ManagedRoutesOutletName, isManagedRoutesOutletRoute } from "./outlets.ts";
 
-export type Route = RouteObject;
+export type RouteVisibility = "public" | "protected";
 
-export type RootRoute = Route & {
-    hoist?: boolean;
-};
+export interface IndexRoute extends IndexRouteObject {
+    $name?: string;
+    $visibility?: RouteVisibility;
+}
 
-const IndexToken = "$index$";
+export interface NonIndexRoute extends Omit<NonIndexRouteObject, "children"> {
+    $name?: string;
+    $visibility?: RouteVisibility;
+    children?: Route[];
+}
 
-function normalizePath(routePath: string) {
-    if (routePath !== "/" && routePath.endsWith("/")) {
+export type Route = IndexRoute | NonIndexRoute;
+
+export type RouteRegistrationStatus = "pending" | "registered";
+
+function normalizePath(routePath?: string) {
+    if (routePath && routePath !== "/" && routePath.endsWith("/")) {
         return routePath.substring(0, routePath.length - 1);
     }
 
     return routePath;
 }
 
-export function createIndexKey(route: Route, layoutPath: string) {
-    if (route.index) {
-        return layoutPath.endsWith("/") ? `${layoutPath}${IndexToken}` : `${layoutPath}/${IndexToken}`;
+export function createIndexKey(route: Route) {
+    if (route.path) {
+        return normalizePath(route.path);
     }
 
-    return normalizePath(route.path!);
+    if (route.$name) {
+        return route.$name;
+    }
+
+    return undefined;
 }
 
-export type RouteRegistrationStatus = "pending" | "registered";
-
-export interface AddRouteReturnType {
-    registrationStatus: RouteRegistrationStatus;
-    completedPendingRegistrations?: Route[];
-}
 
 export class RouteRegistry {
-    #routes: RootRoute[];
+    #routes: Route[];
 
     // Using an index to speed up the look up of parent routes.
-    // <indexKey, RootRoute | Route>
-    readonly #routesIndex: Map<string, RootRoute | Route> = new Map();
+    // <indexKey, Route>
+    readonly #routesIndex: Map<string, Route> = new Map();
 
     // A collection of pending routes to registered once their layout is registered.
-    // <layoutPath, Route[]>
+    // <parentPath | parentName, Route[]>
     readonly #pendingRegistrations: Map<string, Route[]> = new Map();
 
     constructor() {
         this.#routes = [];
     }
 
-    add(routes: RootRoute[] | Route[], { layoutPath }: RegisterRoutesOptions = {}) {
-        if (layoutPath) {
-            return this.#addNestedRoutes(routes, layoutPath);
+    #addIndex(route: Route) {
+        const key = createIndexKey(route);
+
+        if (key) {
+            if (this.#routesIndex.has(key)) {
+                throw new Error(`[squide] A route index has already been registered for the key: "${key}". Did you register two routes with the same "path" or "name" property?`);
+            }
+
+            this.#routesIndex.set(key, route);
         }
 
-        return this.#addRootRoutes(routes);
+        return key;
     }
 
-    #addRootRoutes(routes: RootRoute[]): AddRouteReturnType {
-        // Add index entries to speed up the registration of future nested routes.
-        routes.forEach(x => {
-            const key = createIndexKey(x, "/");
+    #recursivelyAddRoutes(routes: Route[]) {
+        const newRoutes: Route[] = [];
+        const completedPendingRegistrations: Route[] = [];
 
-            this.#routesIndex.set(key, x);
+        routes.forEach((x: Route) => {
+            // Creates a copy of the route object and add the default properties.
+            const route = {
+                ...x,
+                $visibility: x.$visibility ?? "protected"
+            };
+
+            if (route.children) {
+                // Recursively go through the children.
+                const result = this.#recursivelyAddRoutes(route.children);
+
+                route.children = result.newRoutes;
+
+                completedPendingRegistrations.push(...result.completedPendingRegistrations);
+            }
+
+            // Add index entries to speed up the registration of future nested routes.
+            const indexKey = this.#addIndex(route);
+
+            // IMPORTANT: do not handle the pending registrations before recursively going through the children.
+            // Otherwise pending routes will be handled twice (one time as a pending registration and one time as child
+            // of the route).
+            if (indexKey) {
+                const pendingRegistrations = this.#tryRegisterPendingRoutes(indexKey);
+
+                completedPendingRegistrations.unshift(...pendingRegistrations);
+            }
+
+            newRoutes.push(route);
         });
+
+        return {
+            newRoutes,
+            completedPendingRegistrations
+        };
+    }
+
+    #tryRegisterPendingRoutes(parentId: string) {
+        const pendingRegistrations = this.#pendingRegistrations.get(parentId);
+
+        if (pendingRegistrations) {
+            // Try to register the pending routes.
+            const { registrationStatus } = this.#addNestedRoutes(pendingRegistrations, parentId);
+
+            if (registrationStatus === "registered") {
+                // Remove the pending registrations.
+                this.#pendingRegistrations.delete(parentId);
+
+                return pendingRegistrations;
+            }
+        }
+
+        return [];
+    }
+
+    #validateRouteRegistrationOptions(route: Route, { hoist, parentPath, parentName }: RegisterRouteOptions = {}) {
+        if (hoist && parentPath) {
+            throw new Error(`[squide] A route cannot have the "hoist" property when a "publicPath" option is provided. Route id: "${route.path ?? route.$name ?? "(no identifier)"}".`);
+        }
+
+        if (hoist && parentName) {
+            throw new Error(`[squide] A route cannot have the "hoist" property when a "parentName" option is provided. Route id: "${route.path ?? route.$name ?? "(no identifier)"}".`);
+        }
+    }
+
+    add(route: Route, options: RegisterRouteOptions = {}) {
+        let parentName = options.parentName;
+
+        // By default, a route that is not hoisted nor nested under a known
+        // parent will be rendered under the ManagedRoutes outlet.
+        if (!options.hoist && !parentName && !isManagedRoutesOutletRoute(route)) {
+            parentName = ManagedRoutesOutletName;
+        }
+
+        this.#validateRouteRegistrationOptions(route, options);
+
+        return this.#addRoute(route, {
+            ...options,
+            parentName
+        });
+    }
+
+    #addRoute(route: Route, { parentPath, parentName }: RegisterRouteOptions) {
+        if (parentPath) {
+            // The normalized path cannot be undefined because it's been provided by the consumer
+            // (e.g. it cannot be a pathless route).
+            return this.#addNestedRoutes([route], normalizePath(parentPath)!);
+        }
+
+        if (parentName) {
+            return this.#addNestedRoutes([route], parentName);
+        }
+
+        return this.#addRootRoutes([route]);
+    }
+
+    #addRootRoutes(routes: Route[]) {
+        const { newRoutes, completedPendingRegistrations } = this.#recursivelyAddRoutes(routes);
 
         // Create a new array so the routes array is immutable.
-        this.#routes = [...this.#routes, ...routes];
-
-        let completedPendingRegistrations;
-
-        routes.forEach(x => {
-            // Since the layoutPath is used as the key for pending routes and the
-            // layoutPath is the same as the index key, an index key for the route must be created
-            // to retrieve the route pending registrations.
-            const key = createIndexKey(x, "/");
-
-            completedPendingRegistrations = this.#tryRegisterPendingRoutes(key);
-        });
+        this.#routes = [...this.#routes, ...newRoutes];
 
         return {
             registrationStatus: "registered",
@@ -83,72 +181,40 @@ export class RouteRegistry {
         };
     }
 
-    #addNestedRoutes(routes: Route[], layoutPath: string): AddRouteReturnType {
-        const indexKey = normalizePath(layoutPath);
-        const layoutRoute = this.#routesIndex.get(indexKey);
+    #addNestedRoutes(routes: Route[], parentId: string) {
+        const layoutRoute = this.#routesIndex.get(parentId);
 
         if (!layoutRoute) {
-            const pendingRegistration = this.#pendingRegistrations.get(layoutPath);
+            const pendingRegistration = this.#pendingRegistrations.get(parentId);
 
             if (pendingRegistration) {
                 pendingRegistration.push(...routes);
             } else {
-                this.#pendingRegistrations.set(layoutPath, [...routes]);
+                this.#pendingRegistrations.set(parentId, [...routes]);
             }
 
             return {
-                registrationStatus: "pending"
+                registrationStatus: "pending",
+                completedPendingRegistrations: []
             };
         }
+
+        const { newRoutes, completedPendingRegistrations } = this.#recursivelyAddRoutes(routes);
 
         // Register new nested routes as children of their layout route.
         layoutRoute.children = [
             ...(layoutRoute.children ?? []),
-            ...routes
+            ...newRoutes
         ];
-
-        // Add index entries to speed up the registration of future nested routes.
-        routes.forEach(x => {
-            const key = createIndexKey(x, layoutPath);
-
-            this.#routesIndex.set(key, x);
-        });
 
         // Create a new array since the routes array is immutable and a nested
         // object has been updated.
         this.#routes = [...this.#routes];
 
-        let completedPendingRegistrations;
-
-        routes.forEach(x => {
-            // Since the layoutPath is used as the key for pending routes and the
-            // layoutPath is the same as the index key, an index key for the route must be created
-            // to retrieve the route pending registrations.
-            const key = createIndexKey(x, "/");
-
-            this.#tryRegisterPendingRoutes(key);
-        });
-
         return {
             registrationStatus: "registered",
             completedPendingRegistrations
         };
-    }
-
-    #tryRegisterPendingRoutes(layoutPath: string) {
-        const pendingRegistrations = this.#pendingRegistrations.get(layoutPath);
-
-        if (pendingRegistrations) {
-            // Try to register the pending routes.
-            this.#addNestedRoutes(pendingRegistrations, layoutPath);
-
-            // Remove the pending registrations.
-            this.#pendingRegistrations.delete(layoutPath);
-
-            return pendingRegistrations;
-        }
-
-        return undefined;
     }
 
     get routes() {

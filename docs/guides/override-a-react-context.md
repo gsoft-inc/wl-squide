@@ -9,14 +9,29 @@ In a federated application using [Module Federation](https://webpack.js.org/conc
 
 Let's take a simple example using a `BackgroundColorContext`:
 
-```tsx !#6,8 host/src/App.tsx
-import { AppRouter } from "@sample/shell";
+```tsx !#21,23 host/src/App.tsx
+import { useMemo } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useAreModulesReady } from "@squide/webpack-module-federation";
+import { useRoutes } from "@squide/react-router";
 import { BackgroundColorContext } from "@sample/shared";
 
 export function App() {
+    const areModulesReady = useAreModulesReady();
+
+    const routes = useRoutes();
+
+    const router = useMemo(() => {
+        return createBrowserRouter(routes);
+    }, [routes]);
+
+    if (!areModulesReady) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <BackgroundColorContext.Provider value="blue">
-            <AppRouter />
+            <RouterProvider router={router} />
         </BackgroundColorContext.Provider>
     );
 }
@@ -101,14 +116,29 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
 
 Let's consider a more specific use case where the host application declares a `ThemeContext` from Workleap's new design system, Hopper:
 
-```tsx !#6,8 host/src/App.tsx
-import { AppRouter } from "@sample/shell";
+```tsx !#21,23 host/src/App.tsx
+import { useMemo } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useAreModulesReady } from "@squide/webpack-module-federation";
+import { useRoutes } from "@squide/react-router";
 import { ThemeContext } from "@hopper/components";
 
 export function App() {
+    const areModulesReady = useAreModulesReady();
+
+    const routes = useRoutes();
+
+    const router = useMemo(() => {
+        return createBrowserRouter(routes);
+    }, [routes]);
+
+    if (!areModulesReady) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <ThemeContext.Provider value="dark">
-            <AppRouter />
+            <RouterProvider router={router} />
         </ThemeContext.Provider>
     );
 }

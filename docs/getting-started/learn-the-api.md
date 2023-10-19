@@ -196,7 +196,7 @@ Don't forget to mark the registration function as `async` since there's a dynami
 
 Then, [retrieve the modules MSW request handlers](../reference/msw/MswPlugin.md#retrieve-the-request-handlers) in the host application and start MSW:
 
-```ts !#9,12
+```ts !#10,13
 import { registerRemoteModules } from "@squide/webpack-module-federation";
 import { setMswAsStarted } from "@squide/msw";
 

@@ -10,8 +10,8 @@ To achieve this, the first step is to extract the application shell from the hos
 
 ``` !#4
 host
+├── app
 ├── packages
-├────── app
 ├────── shell
 ├───────── src
 ├─────────── RootLayout.tsx

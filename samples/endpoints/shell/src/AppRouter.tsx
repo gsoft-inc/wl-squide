@@ -42,7 +42,7 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
     const isMswStarted = useIsMswStarted(waitForMsw);
 
     // Ideally "useLocation" would be used so the component re-renderer everytime the location change but it doesn't
-    // seem feasible (at least  not easily) as public and private routes go through this component.
+    // seem feasible (at least not easily) as public and private routes go through this component.
     // Anyhow, since all the Workleap apps will authenticate through a third party authentication provider, it
     // doesn't seems like a big deal as the application will be reloaded anyway after the user logged in on the third party.
     const isActiveRouteProtected = useIsMatchingRouteProtected(window.location);

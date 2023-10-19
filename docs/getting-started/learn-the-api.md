@@ -176,7 +176,7 @@ const mswPlugin = runtime.getPlugin(MswPlugin.name) as MswPlugin;
 
 We recommend to mock the API endpoints with [Mock Service Worker](https://mswjs.io/) (MSW) to faciliate the development and encourage an [Contract Design First](https://devblogs.microsoft.com/ise/2023/05/08/design-api-first-with-typespec/) approach.
 
-To help with that, a `@squide/msw` plugin is available.
+To help with that, a `@squide/msw` package is available.
 
 First, install the plugin, then [register the plugin](../reference/msw/MswPlugin.md#register-the-plugin) at bootstrap:
 

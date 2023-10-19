@@ -1,6 +1,6 @@
 import { SubscriptionContext, TelemetryServiceContext, useTelemetryService, type Session, type SessionManager, type Subscription, type TelemetryService } from "@endpoints/shared";
 import { useIsMswStarted } from "@squide/msw";
-import { useIsMatchingRouteProtected, useLogger, useRoutes } from "@squide/react-router";
+import { useIsRouteMatchProtected, useLogger, useRoutes } from "@squide/react-router";
 import { useAreModulesReady } from "@squide/webpack-module-federation";
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
@@ -45,7 +45,7 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
     // seem feasible (at least not easily) as public and private routes go through this component.
     // Anyhow, since all the Workleap apps will authenticate through a third party authentication provider, it
     // doesn't seems like a big deal as the application will be reloaded anyway after the user logged in on the third party.
-    const isActiveRouteProtected = useIsMatchingRouteProtected(window.location);
+    const isActiveRouteProtected = useIsRouteMatchProtected(window.location);
 
     useEffect(() => {
         if (areModulesReady && !isMswStarted) {

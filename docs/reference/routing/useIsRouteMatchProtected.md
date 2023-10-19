@@ -3,14 +3,14 @@ toc:
     depth: 2-3
 ---
 
-# useIsMatchingRouteProtected
+# useIsRouteMatchProtected
 
 Execute [React Router's matching algorithm](https://reactrouter.com/en/main/utils/match-routes) against the registered routes and a given `location` to determine if any route match the location and whether or not that matching route is protected.
 
 ## Reference
 
 ```ts
-const isProtected = useIsMatchingRouteProtected(locationArg)
+const isProtected = useIsRouteMatchProtected(locationArg)
 ```
 
 ### Parameters
@@ -19,7 +19,7 @@ const isProtected = useIsMatchingRouteProtected(locationArg)
 
 ### Returns
 
-A `boolean` value indicating whether or not the matching protected. If no route match the given location, an `Error` is thrown.
+A `boolean` value indicating whether or not the matching route is protected. If no route match the given location, an `Error` is thrown.
 
 ## Usage
 
@@ -27,16 +27,16 @@ A `boolean` value indicating whether or not the matching protected. If no route 
 
 ```ts
 import { useLocation } from "react-router-dom";
-import { useIsMatchingRouteProtected } from "@squide/react-router";
+import { useIsRouteMatchProtected } from "@squide/react-router";
 
 const location = useLocation();
-const isActiveRouteProtected = useIsMatchingRouteProtected(location);
+const isActiveRouteProtected = useIsRouteMatchProtected(location);
 ```
 
 ### Using `window.location`
 
 ```ts
-import { useIsMatchingRouteProtected } from "@squide/react-router";
+import { useIsRouteMatchProtected } from "@squide/react-router";
 
-const isActiveRouteProtected = useIsMatchingRouteProtected(window.location);
+const isActiveRouteProtected = useIsRouteMatchProtected(window.location);
 ```

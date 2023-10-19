@@ -1,7 +1,7 @@
 import { matchRoutes } from "react-router-dom";
 import { useRoutes } from "./useRoutes.ts";
 
-export function useMatchingRoute(locationArg: Partial<Location>) {
+export function useRouteMatch(locationArg: Partial<Location>) {
     const routes = useRoutes();
 
     const matchingRoutes = matchRoutes(routes, locationArg) ?? [];
@@ -15,8 +15,8 @@ export function useMatchingRoute(locationArg: Partial<Location>) {
     return undefined;
 }
 
-export function useIsMatchingRouteProtected(locationArg: Partial<Location>) {
-    const activeRoute = useMatchingRoute(locationArg);
+export function useIsRouteMatchProtected(locationArg: Partial<Location>) {
+    const activeRoute = useRouteMatch(locationArg);
 
     if (!activeRoute) {
         throw new Error(`[squide] There's no matching route for the location: "${locationArg.pathname}". Did you add routes to React Router without using the runtime.registerRoute() function?`);

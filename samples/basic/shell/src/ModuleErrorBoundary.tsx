@@ -1,5 +1,5 @@
 import { useLogger } from "@squide/react-router";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { isRouteErrorResponse, useLocation, useRouteError } from "react-router-dom";
 
 function getErrorMessage(error: unknown) {
@@ -21,7 +21,9 @@ export function ModuleErrorBoundary() {
         window.location.reload();
     }, []);
 
-    logger.error(`[shell] An unmanaged error occurred while rendering the route with path ${location.pathname}`, error);
+    useEffect(() => {
+        logger.error(`[shell] An unmanaged error occurred while rendering the route with path ${location.pathname}`, error);
+    }, [location.pathname, error, logger]);
 
     return (
         <div style={{ color: "red" }}>

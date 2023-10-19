@@ -55,7 +55,7 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
 
     useApplicationEventBusListener("write-to-host", handleModulesMessage);
 
-    const onDisconnect = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
+    const handleDisconnect = useCallback((event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
         sessionManager.clearSession();
@@ -76,7 +76,7 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
                     (User: <span style={{ fontWeight: "bold" }}>{session?.user?.name}</span>)
                 </div>
                 <div>
-                    <button type="button" onClick={onDisconnect}>Disconnect</button>
+                    <button type="button" onClick={handleDisconnect}>Disconnect</button>
                 </div>
             </div>
             <Suspense fallback={<div>Loading...</div>}>

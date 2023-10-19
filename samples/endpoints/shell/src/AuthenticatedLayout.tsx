@@ -52,10 +52,10 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
 
     const navigate = useNavigate();
 
-    const onDisconnect = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
+    const handleDisconnect = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
-        axios.post("/api/logout")
+        await axios.post("/api/logout")
             .then(() => {
                 sessionManager.clearSession();
 
@@ -82,7 +82,7 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
                     (Subscription: <span style={{ fontWeight: "bold" }}>{toSubscriptionStatusLabel(subscription?.status)}</span><span style={{ marginLeft: "10px", marginRight: "10px" }}>-</span>User: <span style={{ fontWeight: "bold" }}>{session?.user?.name}</span>)
                 </div>
                 <div>
-                    <button type="button" onClick={onDisconnect}>Disconnect</button>
+                    <button type="button" onClick={handleDisconnect}>Disconnect</button>
                 </div>
             </div>
             <Suspense fallback={<div>Loading...</div>}>

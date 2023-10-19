@@ -33,8 +33,8 @@ expanded: true
 
 - [ManagedRoutes](routing/ManagedRoutes.md)
 - [useRenderedNavigationItems](routing/useRenderedNavigationItems.md)
-- [useMatchingRoute](routing/useMatchingRoute.md)
-- [useIsMatchingRouteProtected](routing/useIsMatchingRouteProtected.md)
+- [useRouteMatch](routing/useRouteMatch.md)
+- [useIsRouteMatchProtected](routing/useIsRouteMatchProtected.md)
 
 ### Logging
 

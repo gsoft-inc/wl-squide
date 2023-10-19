@@ -20,20 +20,10 @@ A boolean indicating if MSW is started.
 
 ## Usage
 
-### Delay rendering until MSW is started
-
 ```ts
 import { useIsMswStarted } from "@squide/msw";
 
 const isMswStarted = useIsMswStarted(process.env.USE_MSW);
 ```
 
-### Mark MSW as started
-
-```ts
-import { setMswAsStarted } from "@squide/msw";
-
-// Indicates to the "useIsMswStarted" hook that MSW is started and the app can be rendered.
-setMswAsStarted();
-```
-
+[!ref Also take a look at the `setIsMswAsStarted` function](./setMswAsStarted.md)

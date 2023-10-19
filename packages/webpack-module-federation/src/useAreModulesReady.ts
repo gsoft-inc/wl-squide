@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { localModulesRegistrationStatus, useRuntime } from "@squide/core";
-import { remoteModulesRegistrationStatus } from "./registerRemoteModules.ts";
+import { getLocalModulesRegistrationStatus, useRuntime } from "@squide/core";
+import { getRemoteModulesRegistrationStatus } from "./registerRemoteModules.ts";
 
 export interface UseAreModulesReadyOptions {
     // The interval is in milliseconds.
@@ -11,7 +11,7 @@ export interface UseAreModulesReadyOptions {
 function areModulesReady() {
     // Validating for "in-progress" instead of "ready" for the local module because "registerLocalModules"
     // could never be called.
-    return localModulesRegistrationStatus !== "in-progress" && remoteModulesRegistrationStatus !== "in-progress";
+    return getLocalModulesRegistrationStatus() !== "in-progress" && getRemoteModulesRegistrationStatus() !== "in-progress";
 }
 
 export function useAreModulesReady({ interval = 10 }: UseAreModulesReadyOptions = {}) {

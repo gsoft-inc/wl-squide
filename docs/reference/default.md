@@ -67,6 +67,7 @@ expanded: true
 - [MswPlugin](msw/MswPlugin.md)
 - [getMswPlugin](msw/getMswPlugin.md)
 - [useIsMswReady](msw/useIsMswReady.md)
+- [setMswAsStarted](msw/setMswAsStarted.md)
 
 ## Fakes
 

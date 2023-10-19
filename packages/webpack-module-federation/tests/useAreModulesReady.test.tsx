@@ -2,7 +2,7 @@ import { AbstractRuntime, RuntimeContext, registerLocalModules, resetLocalModule
 import { act, renderHook } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { loadRemote } from "../src/loadRemote.ts";
-import { registerRemoteModules, resetRemoteModuleRegistrationStatus } from "../src/registerRemoteModules.ts";
+import { registerRemoteModules, resetRemoteModulesRegistrationStatus } from "../src/registerRemoteModules.ts";
 import { useAreModulesReady } from "../src/useAreModulesReady.ts";
 
 // The mock implementation is defined directly in the tests.
@@ -43,7 +43,7 @@ beforeEach(() => {
     // Since the module registration status variables are singletons,
     // they are not reseted between the tests.
     resetLocalModulesRegistrationStatus();
-    resetRemoteModuleRegistrationStatus();
+    resetRemoteModulesRegistrationStatus();
 
     // Typing a mocked imported function is too complicated.
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

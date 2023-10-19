@@ -4,11 +4,12 @@ import { RemoteEntryPoint, RemoteModuleName, type RemoteDefinition } from "./rem
 
 let registrationStatus: ModuleRegistrationStatus = "none";
 
-// Aliasing to make the name more explicit to external modules.
-export { registrationStatus as remoteModulesRegistrationStatus };
+export function getRemoteModulesRegistrationStatus() {
+    return registrationStatus;
+}
 
 // Strictly for testing purpose.
-export function resetRemoteModuleRegistrationStatus() {
+export function resetRemoteModulesRegistrationStatus() {
     registrationStatus = "none";
 }
 

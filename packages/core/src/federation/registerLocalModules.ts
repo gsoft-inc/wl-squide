@@ -4,8 +4,9 @@ import { registerModule, type ModuleRegisterFunction } from "./registerModule.ts
 
 let registrationStatus: ModuleRegistrationStatus = "none";
 
-// Aliasing to make the name more explicit to external modules.
-export { registrationStatus as localModulesRegistrationStatus };
+export function getLocalModulesRegistrationStatus() {
+    return registrationStatus;
+}
 
 export function resetLocalModulesRegistrationStatus() {
     registrationStatus = "none";

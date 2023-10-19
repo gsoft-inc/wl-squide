@@ -1,5 +1,17 @@
 # @squide/webpack-module-federation
 
+## 2.0.0
+
+### Major Changes
+
+- [#93](https://github.com/gsoft-inc/wl-squide/pull/93) [`d66a196`](https://github.com/gsoft-inc/wl-squide/commit/d66a196db9346803e1c996ef64089eda9aeff180) Thanks [@patricklafrance](https://github.com/patricklafrance)! - - The devserver error overlay is now disabled by default for the remote modules to prevent them from stacking on top of the host application error overlay.
+  - Remote modules `register` functions can now be `async`.
+
+### Patch Changes
+
+- Updated dependencies [[`d66a196`](https://github.com/gsoft-inc/wl-squide/commit/d66a196db9346803e1c996ef64089eda9aeff180)]:
+  - @squide/core@2.0.0
+
 ## 1.0.5
 
 ### Patch Changes

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751062187351">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751062938341">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -34,12 +34,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.751062187351" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.751062938341" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.751062187351" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.751062938341" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.751062187351" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.751062187351" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.751062938341" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.751062938341" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -457,7 +457,7 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = (runtime: Runtime
 </doc-anchor-target>
 <p>Althought it&#x27;s functional, there are still a few configurations needed since the modules are currently coupled by hardcoded URLs within the <code v-pre>FederatedTabsLayout</code>.</p>
 <p>To decouple the navigation items, similar to what is done for regular federated pages, we&#x27;ll utilize the <a href="../../reference/runtime/runtime-class/#register-navigation-items">registerNavigationItem</a> function. In this case, we&#x27;ll also use the <a href="../../reference/runtime/runtime-class/#register-navigation-items-for-a-specific-menu">menuId</a> option. Defining the <code v-pre>menuId</code> option will enable the <code v-pre>FederatedTabsLayout</code> to retrieve navigation items exclusively for the federated tab component.</p>
-<p>First, let&#x27;s register the navigation items with the <code v-pre>menuId</code> option:</p>
+<p>First, let&#x27;s register the navigation items with the <code v-pre>menuId</code> option. For this example the <code v-pre>menuId</code> will be <code v-pre>/federated-tabs</code> (it can be anything):</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module-1/src/register.tsx</div>
 <pre class="language-tsx" data-line="19"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
@@ -530,7 +530,7 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
     });
 }</code></pre>
 </doc-codeblock></div>
-<p>Then, update the <code v-pre>FederatedTabsLayout</code> to render the registered navigation items instead of the hardcoded the URLs:</p>
+<p>Then, update the <code v-pre>FederatedTabsLayout</code> to render the registered navigation items instead of the hardcoded URLs:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module-3/src/federated-tabs-layout.tsx</div>
 <pre class="language-tsx" data-line="32"><code v-pre class="language-tsx">import { 
@@ -590,7 +590,7 @@ export function FederatedTabsLayout() {
 <p>To force <code v-pre>Tab 3</code> to be positioned first, we&#x27;ll give him a priority of <code v-pre>999</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="16"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="15"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import { Tab3 } from &quot;./Tab3.tsx&quot;;
 
 export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {

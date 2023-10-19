@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751062187351">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751062938341">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.751062187351" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.751062938341" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.751062187351" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.751062938341" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.751062187351" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.751062187351" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.751062938341" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.751062938341" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -309,13 +309,28 @@
 <p>Let&#x27;s take a simple example using a <code v-pre>BackgroundColorContext</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="6,8"><code v-pre class="language-tsx">import { AppRouter } from &quot;@sample/shell&quot;;
+<pre class="language-tsx" data-line="21,23"><code v-pre class="language-tsx">import { useMemo } from &quot;react&quot;;
+import { createBrowserRouter, RouterProvider } from &quot;react-router-dom&quot;;
+import { useAreModulesReady } from &quot;@squide/webpack-module-federation&quot;;
+import { useRoutes } from &quot;@squide/react-router&quot;;
 import { BackgroundColorContext } from &quot;@sample/shared&quot;;
 
 export function App() {
+    const areModulesReady = useAreModulesReady();
+
+    const routes = useRoutes();
+
+    const router = useMemo(() =&gt; {
+        return createBrowserRouter(routes);
+    }, [routes]);
+
+    if (!areModulesReady) {
+        return &lt;div&gt;Loading...&lt;/div&gt;;
+    }
+
     return (
         &lt;BackgroundColorContext.Provider value=&quot;blue&quot;&gt;
-            &lt;AppRouter /&gt;
+            &lt;RouterProvider router={router} /&gt;
         &lt;/BackgroundColorContext.Provider&gt;
     );
 }</code></pre>
@@ -409,13 +424,28 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
 <p>Let&#x27;s consider a more specific use case where the host application declares a <code v-pre>ThemeContext</code> from Workleap&#x27;s new design system, Hopper:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="6,8"><code v-pre class="language-tsx">import { AppRouter } from &quot;@sample/shell&quot;;
+<pre class="language-tsx" data-line="21,23"><code v-pre class="language-tsx">import { useMemo } from &quot;react&quot;;
+import { createBrowserRouter, RouterProvider } from &quot;react-router-dom&quot;;
+import { useAreModulesReady } from &quot;@squide/webpack-module-federation&quot;;
+import { useRoutes } from &quot;@squide/react-router&quot;;
 import { ThemeContext } from &quot;@hopper/components&quot;;
 
 export function App() {
+    const areModulesReady = useAreModulesReady();
+
+    const routes = useRoutes();
+
+    const router = useMemo(() =&gt; {
+        return createBrowserRouter(routes);
+    }, [routes]);
+
+    if (!areModulesReady) {
+        return &lt;div&gt;Loading...&lt;/div&gt;;
+    }
+
     return (
         &lt;ThemeContext.Provider value=&quot;dark&quot;&gt;
-            &lt;AppRouter /&gt;
+            &lt;RouterProvider router={router} /&gt;
         &lt;/ThemeContext.Provider&gt;
     );
 }</code></pre>

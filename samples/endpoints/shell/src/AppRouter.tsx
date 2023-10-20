@@ -14,8 +14,6 @@ async function fetchProtectedData(
     setSubscription: SetSubscription,
     logger: Logger
 ) {
-    logger.debug(`[shell] Fetching session data as "${window.location}" is a protected route.`);
-
     const sessionPromise = axios.get("/api/session")
         .then(({ data }) => {
             const session: Session = {
@@ -85,6 +83,8 @@ export function RootRoute({ setSession, setSubscription }: RootRouteProps) {
         if (isActiveRouteProtected && !isAuthenticated) {
             setIsReady(false);
 
+            logger.debug(`[shell] Fetching protected data as "${location}" is a protected route.`);
+
             fetchProtectedData(setSession, setSubscription, logger).finally(() => {
                 setIsReady(true);
             });
@@ -144,6 +144,8 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
 
         if (areModulesReady && isMswStarted) {
             if (isActiveRouteProtected) {
+                logger.debug(`[shell] Fetching protected data as "${window.location}" is a protected route.`);
+
                 fetchProtectedData(setSession, setSubscription, logger).finally(() => {
                     setIsReady(true);
                 });

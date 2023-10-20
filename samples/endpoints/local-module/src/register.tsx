@@ -28,6 +28,14 @@ function Providers({ children }: { children: ReactNode }) {
 
 function registerRoutes(runtime: Runtime) {
     runtime.registerRoute({
+        $visibility: "public",
+        path: "/public",
+        lazy: () => import("./PublicPage.tsx")
+    }, {
+        hoist: true
+    });
+
+    runtime.registerRoute({
         path: "/subscription",
         lazy: async () => {
             const { SubscriptionPage } = await import("./SubscriptionPage.tsx");

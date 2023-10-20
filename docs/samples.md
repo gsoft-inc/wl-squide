@@ -17,6 +17,7 @@ icon: command-palette
 
 - :icon-mark-github: [Host application](https://github.com/gsoft-inc/wl-squide/tree/main/samples/endpoints/host)
 - :icon-mark-github: [Remote module](https://github.com/gsoft-inc/wl-squide/tree/main/samples/endpoints/remote-module)
+- :icon-mark-github: [Local module](https://github.com/gsoft-inc/wl-squide/tree/main/samples/endpoints/local-module)
 - :icon-mark-github: [Shared application shell](https://github.com/gsoft-inc/wl-squide/tree/main/samples/endpoints/shell)
 - :icon-mark-github: [Shared library](https://github.com/gsoft-inc/wl-squide/tree/main/samples/endpoints/shared)
 - :icon-cloud: [Live sample](https://squide-endpoints-host.netlify.app/)

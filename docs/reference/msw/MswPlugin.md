@@ -23,10 +23,62 @@ None
 ## Usage
 
 !!!info
-Do not include MSW in production code. To address this, we recommend conditionally importing the code using the [msw](https://www.npmjs.com/package/msw) package based on an environment variable.
+Do not include MSW in production code. To address this, we recommend conditionally importing the code that includes the [msw](https://www.npmjs.com/package/msw) package based on an environment variable.
 !!!
 
-### Register the plugin
+To do so, first use [cross-env](https://www.npmjs.com/package/cross-env) to define a `USE_MSW` environment variable in a PNPM script:
+
+```json package.json
+{
+    "scripts": {
+        "dev": "cross-env USE_MSW=true webpack serve --config webpack.dev.js"
+    }
+}
+```
+
+Then, forward the `USE_MSW` environment variable to the application code bundles:
+
+```js !#7 webpack.dev.js
+// @ts-check
+
+import { defineDevHostConfig } from "@squide/webpack-module-federation";
+
+export default defineDevHostConfig(swcConfig, "host", 8080, {
+    environmentVariables: {
+        "USE_MSW": process.env.USE_MSW === "true"
+    }
+});
+```
+
+> For more information about the `environmentVariables` predefined option, refer to the [webpack configuration documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/#define-environment-variables).
+
+Finally, use the `USE_MSW` environment variable to conditionally import any files that includes the [msw](https://www.npmjs.com/package/msw) package:
+
+```ts mocks/handlers.ts
+import { rest, type RestHandler } from "msw";
+
+export const requestHandlers: RestHandler[] = [
+    rest.get("/api/character/1", async (req, res, ctx) => {
+        return res(
+            ctx.status(200),
+            ctx.json([{
+                "id": 1,
+                "name": "Rick Sanchez",
+                "status": "Alive"
+            }]);
+        )
+    })
+];
+```
+
+```ts !#1 register.tsx
+if (process.env.USE_MSW) {
+    const requestHandlers = (await import("./mocks/handlers.ts")).requestHandlers;
+    ...
+}
+```
+
+### Register the MSW plugin
 
 ```ts !#7
 import { MswPlugin } from "@squide/msw";
@@ -41,7 +93,7 @@ const runtime = new Runtime({
 
 ### Register request handlers
 
-```ts !#10
+```ts !#3,10
 import { getMswPlugin } from "@squide/msw";
 
 if (process.env.USE_MSW) {
@@ -49,7 +101,7 @@ if (process.env.USE_MSW) {
 
     // Files including an import to the "msw" package are included dynamically to prevent adding
     // MSW stuff to the bundled when it's not used.
-    const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
+    const requestHandlers = (await import("./mocks/handlers.ts")).requestHandlers;
 
     mswPlugin.registerRequestHandlers(requestHandlers);
 }

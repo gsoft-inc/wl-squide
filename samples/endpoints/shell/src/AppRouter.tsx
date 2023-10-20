@@ -76,6 +76,12 @@ export function RootRoute({ setSession, setSubscription }: RootRouteProps) {
         // If the user is already authenticated and come back later with a direct hit to a public page,
         // without this code, once the user attempt to navigate to a protected page, the user will be asked
         // to login again because the AppRouter code is not re-rendered when the location change.
+        // To try this out:
+        // - Authenticate to the app with temp/temp
+        // - Navigate to the /public page and force a full refresh
+        // - Click on "Go to the protected home page" link
+        // - If this code work, you should be redirected directly to the home page without having to login
+        // - If this code fail, you will be redirected to the login page
         if (isActiveRouteProtected && !isAuthenticated) {
             setIsReady(false);
 

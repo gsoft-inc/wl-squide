@@ -23,12 +23,12 @@ export function LoginPage({ host }: LoginPageProps) {
             .then(() => {
                 setIsBusy(false);
 
-                // Reloading the whole application so the "App.tsx" component is re-rendered. Ideally, "useNavigate" would be
-                // used so "App.tsx" component would re-renderer everytime the location change but it doesn't
-                // seem feasible (at least  not easily) as public and private routes go through the "App.tsx" component.
+                // Reloading the whole application so the "RootRoute" component states are reinitialize.
+                // If we use navigate("/") instead, since "isProtectedDataLoaded" might already be true in the case
+                // of Logout -> Login, the rendering will bypass the loading of the protected data (including the session)
+                // which will result in an incoherent state.
                 // Anyhow, since all the Workleap apps will authenticate through a third party authentication provider, it
-                // doesn't seems like a big deal as the application will be reloaded anyway after the user logged in on the third party.
-                // application will be reloaded anyway after the login on the third party.
+                // doesn't seems like a big deal as the application will be reloaded anyway after the user logged in with the third party.
                 window.location.href = "/";
             })
             .catch((error: unknown) => {

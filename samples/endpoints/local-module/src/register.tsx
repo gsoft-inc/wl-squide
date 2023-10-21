@@ -76,6 +76,11 @@ function registerRoutes(runtime: Runtime) {
     });
 
     runtime.registerNavigationItem({
+        $label: "Public page",
+        to: "/public"
+    });
+
+    runtime.registerNavigationItem({
         $label: "Tabs",
         $priority: 100,
         to: "/federated-tabs"

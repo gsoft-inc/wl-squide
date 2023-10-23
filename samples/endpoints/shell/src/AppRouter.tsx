@@ -1,7 +1,7 @@
 import { FeatureFlagsContext, SubscriptionContext, TelemetryServiceContext, useTelemetryService, type FeatureFlags, type Session, type SessionManager, type Subscription, type TelemetryService } from "@endpoints/shared";
 import { useIsMswStarted } from "@squide/msw";
-import { completeLocalModuleRegistration, useIsRouteMatchProtected, useLogger, useRoutes, type Logger } from "@squide/react-router";
-import { completeRemoteModuleRegistration, useAreModulesReady, useAreModulesRegistered } from "@squide/webpack-module-federation";
+import { useIsRouteMatchProtected, useLogger, useRoutes, type Logger } from "@squide/react-router";
+import { completeModuleRegistration, useAreModulesReady, useAreModulesRegistered } from "@squide/webpack-module-federation";
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { Outlet, RouterProvider, createBrowserRouter, useLocation } from "react-router-dom";
@@ -176,12 +176,9 @@ export function RootRoute({ waitForMsw, sessionManager, areModulesRegistered, ar
     useEffect(() => {
         if (areModulesRegistered && isMswStarted && isPublicDataLoaded) {
             if (!areModulesReady) {
-                const data = {
+                completeModuleRegistration(logger, {
                     featureFlags
-                };
-
-                completeLocalModuleRegistration(logger, data);
-                completeRemoteModuleRegistration(logger, data);
+                });
             }
         }
     }, [logger, areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded, featureFlags]);

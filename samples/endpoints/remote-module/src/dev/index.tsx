@@ -27,10 +27,10 @@ await registerLocalModules([registerShell(sessionManager), registerDev, register
 if (process.env.USE_MSW) {
     // Files including an import to the "msw" package are included dynamically to prevent adding
     // MSW stuff to the bundled when it's not used.
-    import("../../mocks/browser.ts").then(({ startMsw }) => {
-        startMsw(mswPlugin.requestHandlers);
-        setMswAsStarted();
-    });
+    const startMsw = (await import("../../mocks/browser.ts")).startMsw;
+
+    startMsw(mswPlugin.requestHandlers);
+    setMswAsStarted();
 }
 
 const root = createRoot(document.getElementById("root")!);

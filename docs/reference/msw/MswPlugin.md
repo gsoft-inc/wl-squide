@@ -93,7 +93,7 @@ const runtime = new Runtime({
 
 ### Register request handlers
 
-```ts !#3,10
+```ts !#3,8,10
 import { getMswPlugin } from "@squide/msw";
 
 if (process.env.USE_MSW) {

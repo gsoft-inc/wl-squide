@@ -12,17 +12,17 @@
 
   ```ts
   const mswPlugin = getMswPlugin(runtime);
+
   mswPlugin.registerRequestHandlers(requestHandlers);
   ```
 
   **In the host app:**
 
   ```ts
-  import("../mocks/browser.ts").then(({ startMsw }) => {
-    startMsw(mswPlugin.requestHandlers);
+  const startMsw = (await import("../mocks/browser.ts")).startMsw;
 
-    setMswAsStarted();
-  });
+  startMsw(mswPlugin.requestHandlers);
+  setMswAsStarted();
   ```
 
   And offer an utility to wait for MSW to be started before rendering the app:

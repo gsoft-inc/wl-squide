@@ -34,13 +34,13 @@ await registerRemoteModules(Remotes, runtime);
 if (process.env.USE_MSW) {
     // Files including an import to the "msw" package are included dynamically to prevent adding
     // MSW stuff to the bundled when it's not used.
-    import("../mocks/browser.ts").then(({ startMsw }) => {
-        // Will start MSW with the request handlers provided by every module.
-        startMsw(mswPlugin.requestHandlers);
+    const startMsw = (await import("../mocks/browser.ts")).startMsw;
 
-        // Indicate to resources that are dependent on MSW that the service has been started.
-        setMswAsStarted();
-    });
+    // Will start MSW with the request handlers provided by every module.
+    startMsw(mswPlugin.requestHandlers);
+
+    // Indicate to resources that are dependent on MSW that the service has been started.
+    setMswAsStarted();
 }
 
 const root = createRoot(document.getElementById("root")!);

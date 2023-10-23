@@ -1,3 +1,4 @@
+import type { FeatureFlags } from "@endpoints/shared";
 import { getMswPlugin } from "@squide/msw";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { Providers } from "./Providers.tsx";
@@ -62,6 +63,32 @@ function registerRoutes(runtime: Runtime) {
     }, {
         menuId: "/federated-tabs"
     });
+
+    return ({ featureFlags }: { featureFlags?: FeatureFlags } = {}) => {
+        if (featureFlags?.featureB) {
+            runtime.registerRoute({
+                path: "/feature-b",
+                lazy: () => import("./FeatureBPage.tsx")
+            });
+
+            runtime.registerNavigationItem({
+                $label: "Feature B",
+                to: "/feature-b"
+            });
+        }
+
+        if (featureFlags?.featureC) {
+            runtime.registerRoute({
+                path: "/feature-c",
+                lazy: () => import("./FeatureCPage.tsx")
+            });
+
+            runtime.registerNavigationItem({
+                $label: "Feature C",
+                to: "/feature-c"
+            });
+        }
+    };
 }
 
 async function registerMsw(runtime: Runtime) {
@@ -77,7 +104,7 @@ async function registerMsw(runtime: Runtime) {
 }
 
 export const register: ModuleRegisterFunction<Runtime> = async runtime => {
-    registerRoutes(runtime);
+    await registerMsw(runtime);
 
-    return registerMsw(runtime);
+    return registerRoutes(runtime);
 };

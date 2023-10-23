@@ -86,5 +86,5 @@ function registerRoutes(runtime: Runtime) {
 }
 
 export const register: ModuleRegisterFunction<Runtime> = runtime => {
-    registerRoutes(runtime);
+    return registerRoutes(runtime);
 };

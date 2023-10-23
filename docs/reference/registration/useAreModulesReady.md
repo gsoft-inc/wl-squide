@@ -36,7 +36,7 @@ const Remotes: RemoteDefinition = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
-registerRemoteModules(Remotes, runtime);
+await registerRemoteModules(Remotes, runtime);
 
 const root = createRoot(document.getElementById("root")!);
 

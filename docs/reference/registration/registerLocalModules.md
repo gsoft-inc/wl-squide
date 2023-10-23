@@ -44,7 +44,7 @@ const context: AppContext = {
     name: "Test app"
 };
 
-registerLocalModules([register], runtime, { context });
+await registerLocalModules([register], runtime, { context });
 ```
 
 ```tsx !#5-15 local-module/src/register.tsx
@@ -67,7 +67,7 @@ export function register: ModuleRegisterFunction<Runtime, AppContext>(runtime, c
 
 ### Handle the registration errors
 
-```tsx !#11-15 host/src/bootstrap.tsx
+```tsx !#11-13 host/src/bootstrap.tsx
 import { registerLocalModules, Runtime } from "@squide/react-router";
 import { register } from "@sample/local-module";
 import type { AppContext } from "@sample/shared";
@@ -78,9 +78,7 @@ const context: AppContext = {
     name: "Test app"
 };
 
-registerLocalModules([register], runtime, { context }).then(errors => {
-    errors.forEach(x => {
-        console.log(x);
-    });
+(await registerLocalModules([register], runtime, { context })).forEach(x => {
+    console.log(x);
 });
 ```

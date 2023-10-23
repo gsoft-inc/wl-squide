@@ -9,9 +9,8 @@ export interface UseAreModulesReadyOptions {
 }
 
 function areModulesReady() {
-    // Validating for "in-progress" instead of "ready" for the local module because "registerLocalModules"
-    // could never be called.
-    return getLocalModulesRegistrationStatus() !== "in-progress" && getRemoteModulesRegistrationStatus() !== "in-progress";
+    return (getLocalModulesRegistrationStatus() === "none" || getLocalModulesRegistrationStatus() === "ready") &&
+           (getRemoteModulesRegistrationStatus() === "none" || getRemoteModulesRegistrationStatus() === "ready");
 }
 
 export function useAreModulesReady({ interval = 10 }: UseAreModulesReadyOptions = {}) {

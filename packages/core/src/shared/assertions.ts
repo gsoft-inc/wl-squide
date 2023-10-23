@@ -17,3 +17,8 @@ export function isNil(value: unknown): value is null | undefined {
 export function isNilOrEmpty(value: unknown): value is null | undefined | "" {
     return isNil(value) || value === "";
 }
+
+export function isFunction(value: unknown): value is (...args: unknown[]) => unknown {
+    return typeof value === "function";
+}
+

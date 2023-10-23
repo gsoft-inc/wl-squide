@@ -16,7 +16,7 @@ const runtime = new Runtime({
 
 // Registering the remote module as a static module because the "register" function
 // is local when developing in isolation.
-registerLocalModules([registerShell(sessionManager), registerDev, registerModule], runtime);
+await registerLocalModules([registerShell(sessionManager), registerDev, registerModule], runtime);
 
 const root = createRoot(document.getElementById("root")!);
 

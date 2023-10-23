@@ -38,5 +38,5 @@ function registerRoutes(runtime: Runtime) {
 export const registerLocalModule: ModuleRegisterFunction<Runtime, AppContext> = (runtime, context) => {
     console.log("Local module context: ", context);
 
-    registerRoutes(runtime);
+    return registerRoutes(runtime);
 };

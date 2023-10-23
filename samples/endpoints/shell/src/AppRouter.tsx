@@ -1,7 +1,7 @@
-import { SubscriptionContext, TelemetryServiceContext, useTelemetryService, type Session, type SessionManager, type Subscription, type TelemetryService } from "@endpoints/shared";
+import { FeatureFlagsContext, SubscriptionContext, TelemetryServiceContext, useTelemetryService, type FeatureFlags, type Session, type SessionManager, type Subscription, type TelemetryService } from "@endpoints/shared";
 import { useIsMswStarted } from "@squide/msw";
-import { useIsAuthenticated, useIsRouteMatchProtected, useLogger, useRoutes, type Logger } from "@squide/react-router";
-import { useAreModulesReady } from "@squide/webpack-module-federation";
+import { completeLocalModuleRegistration, useIsRouteMatchProtected, useLogger, useRoutes, type Logger } from "@squide/react-router";
+import { completeRemoteModuleRegistration, useAreModulesReady, useAreModulesRegistered } from "@squide/webpack-module-federation";
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { Outlet, RouterProvider, createBrowserRouter, useLocation } from "react-router-dom";
@@ -40,6 +40,26 @@ export function AppRouter() {
 }
 
 */
+
+async function fetchPublicData(
+    setFeatureFlags: (featureFlags: FeatureFlags) => void,
+    logger: Logger
+) {
+    const featureFlagsPromise = axios.get("/api/feature-flags")
+        .then(({ data }) => {
+            const featureFlags: FeatureFlags = {
+                featureA: data.featureA,
+                featureB: data.featureB,
+                featureC: data.featureC
+            };
+
+            logger.debug("[shell] %cFeature flags are ready%c:", "color: white; background-color: green;", "", featureFlags);
+
+            setFeatureFlags(featureFlags);
+        });
+
+    return featureFlagsPromise;
+}
 
 async function fetchProtectedData(
     setSession: (session: Session) => void,
@@ -87,16 +107,19 @@ async function fetchProtectedData(
 interface RootRouteProps {
     waitForMsw: boolean;
     sessionManager: SessionManager;
+    areModulesRegistered: boolean;
     areModulesReady: boolean;
 }
 
 // Most of the bootstrapping logic has been moved to this component because AppRouter
 // cannot leverage "useLocation" since it's depend on "RouterProvider".
-export function RootRoute({ waitForMsw, sessionManager, areModulesReady }: RootRouteProps) {
+export function RootRoute({ waitForMsw, sessionManager, areModulesRegistered, areModulesReady }: RootRouteProps) {
+    const [isPublicDataLoaded, setIsPublicDataLoaded] = useState(false);
     const [isProtectedDataLoaded, setIsProtectedDataLoaded] = useState(false);
 
     // Could be done with a ref (https://react.dev/reference/react/useRef) to save a re-render but for this sample
     // it seemed unnecessary. If your application loads a lot of data at bootstrapping, it should be considered.
+    const [featureFlags, setFeatureFlags] = useState<FeatureFlags>();
     const [subscription, setSubscription] = useState<Subscription>();
 
     const logger = useLogger();
@@ -107,21 +130,34 @@ export function RootRoute({ waitForMsw, sessionManager, areModulesReady }: RootR
     const isMswStarted = useIsMswStarted(waitForMsw);
 
     const isActiveRouteProtected = useIsRouteMatchProtected(location);
-    const isAuthenticated = useIsAuthenticated();
 
     useEffect(() => {
-        if (areModulesReady && !isMswStarted) {
-            logger.debug("[shell] Modules are ready, waiting for MSW to start.");
+        if ((areModulesRegistered || areModulesReady) && !isMswStarted) {
+            logger.debug(`[shell] Modules are ${areModulesReady ? "ready" : "registered"}, waiting for MSW to start...`);
         }
 
-        if (!areModulesReady && isMswStarted) {
-            logger.debug("[shell] MSW is started, waiting for the modules to be ready.");
+        if (!areModulesRegistered && !areModulesReady && isMswStarted) {
+            logger.debug("[shell] MSW is started, waiting for the modules...");
         }
+    }, [logger, areModulesRegistered, areModulesReady, isMswStarted]);
 
-        if (areModulesReady && isMswStarted) {
+    useEffect(() => {
+        if ((areModulesRegistered || areModulesReady) && isMswStarted) {
+            if (!isPublicDataLoaded) {
+                logger.debug("[shell] Fetching public initial data.");
+
+                fetchPublicData(setFeatureFlags, logger).finally(() => {
+                    setIsPublicDataLoaded(true);
+                });
+            }
+        }
+    }, [logger, areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded]);
+
+    useEffect(() => {
+        if ((areModulesRegistered || areModulesReady) && isMswStarted) {
             if (isActiveRouteProtected) {
-                if (!isAuthenticated) {
-                    logger.debug(`[shell] Fetching protected data as "${location.pathname}" is a protected route.`);
+                if (!isProtectedDataLoaded) {
+                    logger.debug(`[shell] Fetching protected initial data as "${location.pathname}" is a protected route.`);
 
                     const setSession = (session: Session) => {
                         sessionManager.setSession(session);
@@ -132,23 +168,38 @@ export function RootRoute({ waitForMsw, sessionManager, areModulesReady }: RootR
                     });
                 }
             } else {
-                logger.debug(`[shell] Passing through as "${location.pathname}" is a public route.`);
+                logger.debug(`[shell] Not fetching protected initial data as "${location.pathname}" is a public route.`);
             }
         }
-    }, [logger, location, sessionManager, areModulesReady, isMswStarted, isActiveRouteProtected, isAuthenticated]);
+    }, [logger, location, sessionManager, areModulesRegistered, areModulesReady, isMswStarted, isActiveRouteProtected, isProtectedDataLoaded]);
+
+    useEffect(() => {
+        if (areModulesRegistered && isMswStarted && isPublicDataLoaded) {
+            if (!areModulesReady) {
+                const data = {
+                    featureFlags
+                };
+
+                completeLocalModuleRegistration(logger, data);
+                completeRemoteModuleRegistration(logger, data);
+            }
+        }
+    }, [logger, areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded, featureFlags]);
 
     useEffect(() => {
         telemetryService?.track(`Navigated to the "${location.pathname}" page.`);
     }, [location, telemetryService]);
 
-    if (!areModulesReady || !isMswStarted || (isActiveRouteProtected && !isProtectedDataLoaded)) {
+    if (!areModulesReady || !isMswStarted || !isPublicDataLoaded || (isActiveRouteProtected && !isProtectedDataLoaded)) {
         return <div>Loading...</div>;
     }
 
     return (
-        <SubscriptionContext.Provider value={subscription}>
-            <Outlet />
-        </SubscriptionContext.Provider>
+        <FeatureFlagsContext.Provider value={featureFlags}>
+            <SubscriptionContext.Provider value={subscription}>
+                <Outlet />
+            </SubscriptionContext.Provider>
+        </FeatureFlagsContext.Provider>
     );
 }
 
@@ -159,7 +210,10 @@ export interface AppRouterProps {
 }
 
 export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppRouterProps) {
-    // Re-render the app once all the remotes are registered, otherwise the remotes routes won't be added to the router.
+    // Re-render the app once all the remote modules are registered, otherwise the remote modules routes won't be added to the router.
+    const areModulesRegistered = useAreModulesRegistered();
+
+    // Re-render the app once all the remote modules are ready, otherwise the deferred remote modules routes won't be added to the router.
     const areModulesReady = useAreModulesReady();
 
     const routes = useRoutes();
@@ -171,13 +225,14 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
                     <RootRoute
                         waitForMsw={waitForMsw}
                         sessionManager={sessionManager}
+                        areModulesRegistered={areModulesRegistered}
                         areModulesReady={areModulesReady}
                     />
                 ),
                 children: routes
             }
         ]);
-    }, [areModulesReady, routes, waitForMsw, sessionManager]);
+    }, [areModulesRegistered, areModulesReady, routes, waitForMsw, sessionManager]);
 
     return (
         <TelemetryServiceContext.Provider value={telemetryService}>

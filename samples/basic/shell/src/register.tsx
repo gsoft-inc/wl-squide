@@ -100,7 +100,7 @@ function registerRoutes(runtime: Runtime, sessionManager: SessionManager, host?:
 
 export function registerShell(sessionManager: SessionManager, { host }: RegisterShellOptions = {}) {
     const register: ModuleRegisterFunction<Runtime> = runtime => {
-        registerRoutes(runtime, sessionManager, host);
+        return registerRoutes(runtime, sessionManager, host);
     };
 
     return register;

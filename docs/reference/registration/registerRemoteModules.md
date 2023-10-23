@@ -51,7 +51,7 @@ const Remotes: RemoteDefinition = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
-registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime, { context });
 ```
 
 ```tsx !#5-15 remote-module/src/register.tsx
@@ -74,7 +74,7 @@ export function register: ModuleRegisterFunction<Runtime, AppContext>(runtime, c
 
 ### Handle the registration errors
 
-```tsx !#15-19 host/src/bootstrap.tsx
+```tsx !#15-17 host/src/bootstrap.tsx
 import { Runtime } from "@squide/react-router";
 import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
 import type { AppContext } from "@sample/shared";
@@ -89,10 +89,8 @@ const Remotes: RemoteDefinition = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
-registerRemoteModules(Remotes, runtime, { context }).then(errors => {
-    errors.forEach(x => {
-        console.log(x);
-    });
+(await registerRemoteModules(Remotes, runtime, { context })).forEach(x => {
+    console.log(x);
 });
 ```
 

@@ -1,6 +1,10 @@
 import type { AbstractRuntime } from "../runtime/abstractRuntime.ts";
 
-export type ModuleRegisterFunction<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown> = (runtime: TRuntime, context?: TContext) => void;
+// TODO: Alex, helppppp!
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type DeferedRegisterationFunction = (data?: any) => Promise<void> | void;
+
+export type ModuleRegisterFunction<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown> = (runtime: TRuntime, context?: TContext) => Promise<DeferedRegisterationFunction> | Promise<void> | void;
 
 export async function registerModule(register: ModuleRegisterFunction, runtime: AbstractRuntime, context?: unknown) {
     return register(runtime, context);

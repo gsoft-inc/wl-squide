@@ -18,7 +18,7 @@ const runtime = new Runtime({
     sessionAccessor
 });
 
-registerLocalModules([registerShell(sessionManager), registerDev, registerLocalModule], runtime);
+await registerLocalModules([registerShell(sessionManager), registerDev, registerLocalModule], runtime);
 
 // Register MSW after the local modules has been registered since the request handlers
 // will be registered by the modules.
@@ -27,7 +27,6 @@ if (process.env.USE_MSW) {
     // MSW stuff to the bundled when it's not used.
     import("../../mocks/browser.ts").then(({ startMsw }) => {
         startMsw(mswPlugin.requestHandlers);
-
         setMswAsStarted();
     });
 }

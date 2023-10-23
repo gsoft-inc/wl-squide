@@ -200,19 +200,19 @@ Then, [retrieve the modules MSW request handlers](../reference/msw/MswPlugin.md#
 import { registerRemoteModules } from "@squide/webpack-module-federation";
 import { setMswAsStarted } from "@squide/msw";
 
-registerRemoteModules(Remotes, runtime).then(() => {
-    if (process.env.USE_MSW) {
-        // Files including an import to the "msw" package are included dynamically to prevent adding
-        // MSW stuff to the bundled when it's not used.
-        import("../mocks/browser.ts").then(({ startMsw }) => {
-            // Will start MSW with the request handlers provided by every module.
-            startMsw(mswPlugin.requestHandlers);
+await registerRemoteModules(Remotes, runtime);
 
-            // Indicate to resources that are dependent on MSW that the service has been started.
-            setMswAsStarted();
-        });
-    }
-});
+if (process.env.USE_MSW) {
+    // Files including an import to the "msw" package are included dynamically to prevent adding
+    // MSW stuff to the bundled when it's not used.
+    import("../mocks/browser.ts").then(({ startMsw }) => {
+        // Will start MSW with the request handlers provided by every module.
+        startMsw(mswPlugin.requestHandlers);
+
+        // Indicate to resources that are dependent on MSW that the service has been started.
+        setMswAsStarted();
+    });
+}
 ```
 
 Finally, make sure that the [application rendering is delayed](../reference/msw/useIsMswReady.md) until MSW is started:

@@ -8,7 +8,7 @@ export function useRuntime() {
     const runtime = useContext(RuntimeContext);
 
     if (isNil(runtime)) {
-        throw new Error("[squide] useRuntime() is called before a Runtime instance has been provided.");
+        throw new Error("[squide] The useRuntime function is called before a Runtime instance has been provided.");
     }
 
     return runtime;

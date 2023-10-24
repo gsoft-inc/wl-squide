@@ -119,13 +119,3 @@ export function registerShell(sessionManager: SessionManager, { host }: Register
 
     return register;
 }
-
-// export function registerShell(sessionManager: SessionManager, { host }: RegisterShellOptions = {}) {
-//     const register: ModuleRegisterFunction<Runtime> = runtime => {
-//         registerRoutes(runtime, sessionManager, host);
-
-//         return registerMsw(runtime);
-//     };
-
-//     return register;
-// }

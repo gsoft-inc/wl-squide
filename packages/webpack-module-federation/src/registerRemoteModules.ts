@@ -1,29 +1,16 @@
-import { isFunction, isNil, registerModule, type AbstractRuntime, type DeferedRegisterationFunction, type Logger, type ModuleRegistrationStatus } from "@squide/core";
-import { loadRemote } from "./loadRemote.ts";
+import { isFunction, isNil, registerModule, type AbstractRuntime, type DeferredRegisterationFunction, type Logger, type ModuleRegistrationStatus } from "@squide/core";
+import { loadRemote as loadModuleFederationRemote, type LoadRemoteFunction } from "./loadRemote.ts";
 import { RemoteEntryPoint, RemoteModuleName, type RemoteDefinition } from "./remoteDefinition.ts";
 
-let registrationStatus: ModuleRegistrationStatus = "none";
-
-export function getRemoteModulesRegistrationStatus() {
-    return registrationStatus;
-}
-
-// Added to facilitate the unit tests.
-export function resetRemoteModulesRegistrationStatus() {
-    registrationStatus = "none";
-}
-
-interface DeferedRegistration {
+interface DeferredRegistration {
     url: string;
     containerName: string;
     index: string;
-    fct: DeferedRegisterationFunction;
+    fct: DeferredRegisterationFunction;
 }
 
-const deferedRegistrations: DeferedRegistration[] = [];
-
-export interface RegisterRemoteModulesOptions {
-    context?: unknown;
+export interface RegisterRemoteModulesOptions<TContext> {
+    context?: TContext;
 }
 
 export interface RemoteModuleRegistrationError {
@@ -37,113 +24,157 @@ export interface RemoteModuleRegistrationError {
     error: unknown;
 }
 
-export async function registerRemoteModules(remotes: RemoteDefinition[], runtime: AbstractRuntime, { context }: RegisterRemoteModulesOptions = {}) {
-    if (registrationStatus !== "none") {
-        throw new Error("[squide] [remote] registerRemoteModules() can only be called once.");
+export class RemoteModuleRegistry {
+    #registrationStatus: ModuleRegistrationStatus = "none";
+
+    readonly #deferredRegistrations: DeferredRegistration[] = [];
+    readonly #loadRemote: LoadRemoteFunction;
+
+    constructor(loadRemote: LoadRemoteFunction) {
+        this.#loadRemote = loadRemote;
     }
 
-    const errors: RemoteModuleRegistrationError[] = [];
+    #logSharedScope(logger: Logger) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (__webpack_share_scopes__) {
+            logger.debug(
+                "[squide] [remote] Module Federation shared scope is available:",
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                __webpack_share_scopes__.default
+            );
+        }
+    }
 
-    runtime.logger.information(`[squide] [remote] Found ${remotes.length} remote module${remotes.length !== 1 ? "s" : ""} to register.`);
+    async registerModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown>(remotes: RemoteDefinition[], runtime: TRuntime, { context }: RegisterRemoteModulesOptions<TContext> = {}) {
+        const errors: RemoteModuleRegistrationError[] = [];
 
-    registrationStatus = "in-progress";
+        if (this.#registrationStatus !== "none") {
+            throw new Error("[squide] [remote] The registerRemoteModules function can only be called once.");
+        }
 
-    await Promise.allSettled(remotes.map(async (x, index) => {
-        let remoteUrl;
+        runtime.logger.debug(`[squide] [remote] Found ${remotes.length} remote module${remotes.length !== 1 ? "s" : ""} to register.`);
 
-        const containerName = x.name;
+        this.#registrationStatus = "in-progress";
 
-        try {
-            // Is included in the try/catch becase the URL could be invalid and cause an error.
-            remoteUrl = new URL(RemoteEntryPoint, x.url).toString();
+        await Promise.allSettled(remotes.map(async (x, index) => {
+            let remoteUrl;
 
-            runtime.logger.information(`[squide] [remote] ${index + 1}/${remotes.length} Loading module "${RemoteModuleName}" from container "${containerName}" of remote "${remoteUrl}".`);
+            const containerName = x.name;
 
-            const module = await loadRemote(remoteUrl, containerName, RemoteModuleName);
+            try {
+                // Is included in the try/catch becase the URL could be invalid and cause an error.
+                remoteUrl = new URL(RemoteEntryPoint, x.url).toString();
 
-            if (isNil(module.register)) {
-                throw new Error(`[squide] [remote] A "register" function is not available for module "${RemoteModuleName}" of container "${containerName}" from remote "${remoteUrl}". Make sure your remote "./register.js" file export a function named "register".`);
+                runtime.logger.debug(`[squide] [remote] ${index + 1}/${remotes.length} Loading module "${RemoteModuleName}" from container "${containerName}" of remote "${remoteUrl}".`);
+
+                const module = await this.#loadRemote(remoteUrl, containerName, RemoteModuleName);
+
+                if (isNil(module.register)) {
+                    throw new Error(`[squide] [remote] A "register" function is not available for module "${RemoteModuleName}" of container "${containerName}" from remote "${remoteUrl}". Make sure your remote "./register.js" file export a function named "register".`);
+                }
+
+                runtime.logger.debug(`[squide] [remote] ${index + 1}/${remotes.length} Registering module "${RemoteModuleName}" from container "${containerName}" of remote "${remoteUrl}".`);
+
+                const optionalDeferedRegistration = await registerModule(module.register, runtime, context);
+
+                if (isFunction(optionalDeferedRegistration)) {
+                    this.#deferredRegistrations.push({
+                        url: remoteUrl,
+                        containerName: x.name,
+                        index: `${index + 1}/${remotes.length}`,
+                        fct: optionalDeferedRegistration
+                    });
+                }
+
+                runtime.logger.debug(`[squide] [remote] ${index + 1}/${remotes.length} Container "${containerName}" of remote "${remoteUrl}" registration completed.`);
+            } catch (error: unknown) {
+                runtime.logger.error(
+                    `[squide] [remote] ${index + 1}/${remotes.length} An error occured while registering module "${RemoteModuleName}" from container "${containerName}" of remote "${remoteUrl}".`,
+                    error
+                );
+
+                errors.push({
+                    url: remoteUrl ?? `Partial URL is: "${x.url}"`,
+                    containerName,
+                    moduleName: RemoteModuleName,
+                    error
+                });
             }
+        }));
 
-            runtime.logger.information(`[squide] [remote] ${index + 1}/${remotes.length} Registering module "${RemoteModuleName}" from container "${containerName}" of remote "${remoteUrl}".`);
+        this.#registrationStatus = this.#deferredRegistrations.length > 0 ? "registered" : "ready";
 
-            const optionalDeferedRegistration = await registerModule(module.register, runtime, context);
+        if (this.#registrationStatus === "ready") {
+            this.#logSharedScope(runtime.logger);
+        }
 
-            if (isFunction(optionalDeferedRegistration)) {
-                deferedRegistrations.push({
-                    url: remoteUrl,
-                    containerName: x.name,
-                    index: `${index + 1}/${remotes.length}`,
-                    fct: optionalDeferedRegistration
+        return errors;
+    }
+
+    async completeRegistrations<TRuntime extends AbstractRuntime = AbstractRuntime, TData = unknown>(runtime: TRuntime, data?: TData) {
+        const errors: RemoteModuleRegistrationError[] = [];
+
+        if (this.#registrationStatus === "none" || this.#registrationStatus === "in-progress") {
+            throw new Error("[squide] [remote] The completeRemoteModuleRegistration function can only be called once the registerRemoteModules function terminated.");
+        }
+
+        if (this.#registrationStatus !== "registered" && this.#deferredRegistrations.length > 0) {
+            throw new Error("[squide] [remote] The completeRemoteModuleRegistration function can only be called once.");
+        }
+
+        if (this.#registrationStatus === "ready") {
+            // No defered registrations were returned by the remote modules, skip the completion process.
+            return Promise.resolve(errors);
+        }
+
+        this.#registrationStatus = "in-completion";
+
+        await Promise.allSettled(this.#deferredRegistrations.map(async ({ url, containerName, index, fct: deferredRegister }) => {
+            runtime.logger.debug(`[squide] [remote] ${index} Completing registration for module "${RemoteModuleName}" from container "${containerName}" of remote "${url}".`);
+
+            try {
+                await deferredRegister(data);
+            } catch (error: unknown) {
+                runtime.logger.error(
+                    `[squide] [remote] ${index} An error occured while completing the registration for module "${RemoteModuleName}" from container "${containerName}" of remote "${url}".`,
+                    error
+                );
+
+                errors.push({
+                    url,
+                    containerName,
+                    moduleName: RemoteModuleName,
+                    error
                 });
             }
 
-            runtime.logger.information(`[squide] [remote] ${index + 1}/${remotes.length} Container "${containerName}" of remote "${remoteUrl}" registration completed.`);
-        } catch (error: unknown) {
-            runtime.logger.error(
-                `[squide] [remote] ${index + 1}/${remotes.length} An error occured while registering module "${RemoteModuleName}" from container "${containerName}" of remote "${remoteUrl}".`,
-                error
-            );
+            runtime.logger.debug(`[squide] [remote] ${index} Completed registration for module "${RemoteModuleName}" from container "${containerName}" of remote "${url}".`);
+        }));
 
-            errors.push({
-                url: remoteUrl ?? `Partial URL is: "${x.url}"`,
-                containerName,
-                moduleName: RemoteModuleName,
-                error
-            });
-        }
-    }));
+        this.#registrationStatus = "ready";
 
-    registrationStatus = deferedRegistrations.length > 0 ? "registered" : "ready";
+        this.#logSharedScope(runtime.logger);
 
-    return errors;
+        return errors;
+    }
+
+    get registrationStatus() {
+        return this.#registrationStatus;
+    }
 }
 
-export async function completeRemoteModuleRegistration<TData = unknown>(logger: Logger, data?: TData) {
-    if (registrationStatus === "none" || registrationStatus === "in-progress") {
-        throw new Error("[squide] [remote] completeRemoteModuleRegistration() can only be called once registerRemoteModules() terminated.");
-    }
+const remoteModuleRegistry = new RemoteModuleRegistry(loadModuleFederationRemote);
 
-    if (registrationStatus !== "registered" && deferedRegistrations.length > 0) {
-        throw new Error("[squide] [remote] completeRemoteModuleRegistration() can only be called once.");
-    }
+export function registerRemoteModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown>(remotes: RemoteDefinition[], runtime: TRuntime, options?: RegisterRemoteModulesOptions<TContext>) {
+    return remoteModuleRegistry.registerModules(remotes, runtime, options);
+}
 
-    if (registrationStatus === "ready") {
-        // No defered registrations were returned by the remote modules, skip the completion process.
-        return Promise.resolve();
-    }
+export function completeRemoteModuleRegistrations<TRuntime extends AbstractRuntime = AbstractRuntime, TData = unknown>(runtime: TRuntime, data?: TData) {
+    return remoteModuleRegistry.completeRegistrations(runtime, data);
+}
 
-    registrationStatus = "in-completion";
-
-    const errors: RemoteModuleRegistrationError[] = [];
-
-    await Promise.allSettled(deferedRegistrations.map(({ url, containerName, index, fct }) => {
-        let optionalPromise;
-
-        logger.information(`[squide] [remote] ${index} Completing registration for module "${RemoteModuleName}" from container "${containerName}" of remote "${url}".`);
-
-        try {
-            optionalPromise = fct(data);
-        } catch (error: unknown) {
-            logger.error(
-                `[squide] [remote] ${index} An error occured while completing the registration for module "${RemoteModuleName}" from container "${containerName}" of remote "${url}".`,
-                error
-            );
-
-            errors.push({
-                url,
-                containerName,
-                moduleName: RemoteModuleName,
-                error
-            });
-        }
-
-        logger.information(`[squide] [remote] ${index} Completed registration for module "${RemoteModuleName}" from container "${containerName}" of remote "${url}".`);
-
-        return optionalPromise;
-    }));
-
-    registrationStatus = "ready";
-
-    return errors;
+export function getRemoteModulesRegistrationStatus() {
+    return remoteModuleRegistry.registrationStatus;
 }

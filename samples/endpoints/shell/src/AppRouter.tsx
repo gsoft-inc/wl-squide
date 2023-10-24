@@ -1,7 +1,7 @@
 import { FeatureFlagsContext, SubscriptionContext, TelemetryServiceContext, useTelemetryService, type FeatureFlags, type Session, type SessionManager, type Subscription, type TelemetryService } from "@endpoints/shared";
 import { useIsMswStarted } from "@squide/msw";
-import { useIsRouteMatchProtected, useLogger, useRoutes, type Logger } from "@squide/react-router";
-import { completeModuleRegistration, useAreModulesReady, useAreModulesRegistered } from "@squide/webpack-module-federation";
+import { useIsRouteMatchProtected, useLogger, useRoutes, useRuntime, type Logger } from "@squide/react-router";
+import { completeModuleRegistrations, useAreModulesReady, useAreModulesRegistered } from "@squide/webpack-module-federation";
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { Outlet, RouterProvider, createBrowserRouter, useLocation } from "react-router-dom";
@@ -122,6 +122,7 @@ export function RootRoute({ waitForMsw, sessionManager, areModulesRegistered, ar
     const [featureFlags, setFeatureFlags] = useState<FeatureFlags>();
     const [subscription, setSubscription] = useState<Subscription>();
 
+    const runtime = useRuntime();
     const logger = useLogger();
     const location = useLocation();
     const telemetryService = useTelemetryService();
@@ -176,12 +177,12 @@ export function RootRoute({ waitForMsw, sessionManager, areModulesRegistered, ar
     useEffect(() => {
         if (areModulesRegistered && isMswStarted && isPublicDataLoaded) {
             if (!areModulesReady) {
-                completeModuleRegistration(logger, {
+                completeModuleRegistrations(runtime, {
                     featureFlags
                 });
             }
         }
-    }, [logger, areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded, featureFlags]);
+    }, [runtime, areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded, featureFlags]);
 
     useEffect(() => {
         telemetryService?.track(`Navigated to the "${location.pathname}" page.`);

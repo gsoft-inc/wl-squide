@@ -64,7 +64,7 @@ export class Runtime extends AbstractRuntime<Route, RootNavigationItem> {
         if (pendingRegistrations.size > 0) {
             if (pendingRegistrations.has(ManagedRoutes.$name!)) {
                 // eslint-disable-next-line max-len
-                throw new Error("[squide] The \"ManagedRoutes\" outlet route is missing from the router configuration. The \"ManagedRoutes\" outlet route must be added as a children of an hoisted route. Did you forget to include the \"ManagedRoutes\" outlet route or hoist the parent route that includes the \"ManagedRoutes\" outlet route?");
+                throw new Error("[squide] The ManagedRoutes placeholder is missing from the router configuration. The ManagedRoutes placeholder must be defined as a children of an hoisted route. Did you include a ManagedRoutes placeholder and hoist the ManagedRoutes placeholder's parent route?");
             }
 
             let message = `[squide] ${pendingRegistrations.size} parent route${pendingRegistrations.size !== 1 ? "s" : ""} were expected to be registered but ${pendingRegistrations.size !== 0 ? "are" : "is"} missing:\r\n\r\n`;
@@ -86,8 +86,9 @@ export class Runtime extends AbstractRuntime<Route, RootNavigationItem> {
 
             message += `If you are certain that the parent route${pendingRegistrations.size !== 1 ? "s" : ""} has been registered, make sure that the following conditions are met:\r\n`;
             message += "- The missing parent routes \"path\" or \"name\" property perfectly match the provided \"parentPath\" or \"parentName\" (make sure that there's no leading or trailing \"/\" that differs).\r\n";
-            message += "- The missing parent routes has been registered with the \"registerRoute()\" function. A route cannot be registered under a parent route that has not be registered with the \"registerRoute()\" function.\r\n";
-            message += "For more information about nested routes, refers to https://gsoft-inc.github.io/wl-squide/reference/runtime/runtime-class/#register-routes-under-a-specific-nested-layout-route.";
+            message += "- The missing parent routes has been registered with the runtime.registerRoute function. A route cannot be registered under a parent route that has not be registered with the runtime.registerRoute function.\r\n";
+            message += "For more information about nested routes, refers to https://gsoft-inc.github.io/wl-squide/reference/runtime/runtime-class/#register-nested-routes-under-an-existing-route.\r\n";
+            message += "For more information about the ManagedRoutes placeholder, refers to https://gsoft-inc.github.io/wl-squide/reference/routing/managedroutes.";
 
             if (this._mode === "development") {
                 throw new Error(message);

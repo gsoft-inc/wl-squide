@@ -24,6 +24,11 @@ const config: Config = {
         ...pathsToModuleNameMapper(compilerOptions.paths, {
             prefix: "<rootDir>"
         })
+    },
+    globals: {
+        __webpack_share_scopes__: {
+            default: {}
+        }
     }
 };
 

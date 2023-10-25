@@ -73,7 +73,7 @@ test("when called twice, throw an error", async () => {
     await expect(async () => registry.registerModules([() => {}], runtime)).rejects.toThrow(/The registerLocalModules function can only be called once/);
 });
 
-test("when there are no deferred modules, once all the modules are registered, set the status to \"ready\"", async () => {
+test("when there are no deferred registrations, once all the modules are registered, set the status to \"ready\"", async () => {
     const registry = new LocalModuleRegistry();
 
     await registry.registerModules([
@@ -84,7 +84,7 @@ test("when there are no deferred modules, once all the modules are registered, s
     expect(registry.registrationStatus).toBe("ready");
 });
 
-test("when there are deferred modules, once all the modules are registered, set the status to \"registered\"", async () => {
+test("when there are deferred registrations, once all the modules are registered, set the status to \"registered\"", async () => {
     const registry = new LocalModuleRegistry();
 
     await registry.registerModules([

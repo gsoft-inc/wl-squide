@@ -1,16 +1,22 @@
 import { useEffect, useState } from "react";
 
-import { getLocalModulesRegistrationStatus } from "@squide/core";
-import { getRemoteModulesRegistrationStatus } from "./registerRemoteModules.ts";
+import { getLocalModuleRegistrationStatus, type ModuleRegistrationStatus } from "@squide/core";
+import { getRemoteModuleRegistrationStatus } from "./registerRemoteModules.ts";
 
 export interface UseAreModulesRegisteredOptions {
     // The interval is in milliseconds.
     interval?: number;
 }
 
-function areModulesRegistered() {
-    return (getLocalModulesRegistrationStatus() === "none" || getLocalModulesRegistrationStatus() === "registered") &&
-           (getRemoteModulesRegistrationStatus() === "none" || getRemoteModulesRegistrationStatus() === "registered");
+export function areModulesRegistered(localModuleRegistrationStatus: ModuleRegistrationStatus, remoteModuleRegistrationStatus: ModuleRegistrationStatus) {
+    if (localModuleRegistrationStatus === "none" && remoteModuleRegistrationStatus === "none") {
+        return false;
+    }
+
+    // The registration for local or remote modules could be "none" if an application doesn't register either local or remote modules.
+    // The registration statuses could be at "ready" if there's no deferred registrations.
+    return (localModuleRegistrationStatus === "none" || localModuleRegistrationStatus === "registered" || localModuleRegistrationStatus === "ready") &&
+           (remoteModuleRegistrationStatus === "none" || remoteModuleRegistrationStatus === "registered" || remoteModuleRegistrationStatus === "ready");
 }
 
 export function useAreModulesRegistered({ interval = 10 }: UseAreModulesRegisteredOptions = {}) {
@@ -20,7 +26,7 @@ export function useAreModulesRegistered({ interval = 10 }: UseAreModulesRegister
     // Perform a reload once the modules are registered.
     useEffect(() => {
         const intervalId = setInterval(() => {
-            if (areModulesRegistered()) {
+            if (areModulesRegistered(getLocalModuleRegistrationStatus(), getRemoteModuleRegistrationStatus())) {
                 clearInterval(intervalId);
 
                 setAreModulesRegistered(true);

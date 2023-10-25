@@ -32,7 +32,7 @@ const runtime = new DummyRuntime();
 test("when called before registerRemoteModules, throw an error", async () => {
     const registry = new RemoteModuleRegistry(jest.fn());
 
-    await expect(() => registry.completeRegistrations(runtime)).rejects.toThrow(/The completeRemoteModuleRegistration function can only be called once the registerRemoteModules function terminated/);
+    await expect(() => registry.completeModuleRegistrations(runtime)).rejects.toThrow(/The completeRemoteModuleRegistration function can only be called once the registerRemoteModules function terminated/);
 });
 
 test("when called twice, throw an error", async () => {
@@ -47,9 +47,9 @@ test("when called twice, throw an error", async () => {
         { name: "Dummy-2", url: "http://anything2.com" }
     ], runtime);
 
-    await registry.completeRegistrations(runtime);
+    await registry.completeModuleRegistrations(runtime);
 
-    await expect(() => registry.completeRegistrations(runtime)).rejects.toThrow(/The completeRemoteModuleRegistration function can only be called once/);
+    await expect(() => registry.completeModuleRegistrations(runtime)).rejects.toThrow(/The completeRemoteModuleRegistration function can only be called once/);
 });
 
 test("when called for the first time but the registration status is already \"ready\", return a resolving promise", async () => {
@@ -67,12 +67,12 @@ test("when called for the first time but the registration status is already \"re
 
     expect(registry.registrationStatus).toBe("ready");
 
-    await registry.completeRegistrations(runtime);
+    await registry.completeModuleRegistrations(runtime);
 
     expect(registry.registrationStatus).toBe("ready");
 });
 
-test("can complete all the deferred modules registration", async () => {
+test("can complete all the deferred registrations", async () => {
     const register1 = jest.fn();
     const register2 = jest.fn();
     const register3 = jest.fn();
@@ -98,14 +98,14 @@ test("can complete all the deferred modules registration", async () => {
         { name: "Dummy-3", url: "http://anything3.com" }
     ], runtime);
 
-    await registry.completeRegistrations(runtime);
+    await registry.completeModuleRegistrations(runtime);
 
     expect(register1).toHaveBeenCalled();
     expect(register2).toHaveBeenCalled();
     expect(register3).toHaveBeenCalled();
 });
 
-test("when all the deferred modules are registered, set the status to \"ready\"", async () => {
+test("when all the deferred registrations are completed, set the status to \"ready\"", async () => {
     const loadRemote = jest.fn().mockResolvedValue({
         register: () => () => {}
     });
@@ -120,12 +120,12 @@ test("when all the deferred modules are registered, set the status to \"ready\""
 
     expect(registry.registrationStatus).toBe("registered");
 
-    await registry.completeRegistrations(runtime);
+    await registry.completeModuleRegistrations(runtime);
 
     expect(registry.registrationStatus).toBe("ready");
 });
 
-test("when a deferred module is asynchronous, the function can be awaited", async () => {
+test("when a deferred registration is asynchronous, the function can be awaited", async () => {
     const loadRemote = jest.fn();
 
     loadRemote
@@ -153,12 +153,12 @@ test("when a deferred module is asynchronous, the function can be awaited", asyn
         { name: "Dummy-3", url: "http://anything3.com" }
     ], runtime);
 
-    await registry.completeRegistrations(runtime);
+    await registry.completeModuleRegistrations(runtime);
 
     expect(hasBeenCompleted).toBeTruthy();
 });
 
-test("when a deferred module registration fail, register the remaining deferred modules", async () => {
+test("when a deferred registration fail, complete the remaining deferred registrations", async () => {
     const register1 = jest.fn();
     const register3 = jest.fn();
 
@@ -183,13 +183,13 @@ test("when a deferred module registration fail, register the remaining deferred 
         { name: "Dummy-3", url: "http://anything3.com" }
     ], runtime);
 
-    await registry.completeRegistrations(runtime);
+    await registry.completeModuleRegistrations(runtime);
 
     expect(register1).toHaveBeenCalled();
     expect(register3).toHaveBeenCalled();
 });
 
-test("when a deferred module registration fail, return the error", async () => {
+test("when a deferred registration fail, return the error", async () => {
     const loadRemote = jest.fn();
 
     loadRemote
@@ -197,7 +197,7 @@ test("when a deferred module registration fail, return the error", async () => {
             register: () => () => {}
         })
         .mockResolvedValueOnce({
-            register: () => () => { throw new Error("Module 2 registration failed"); }
+            register: () => () => { throw new Error("Module 2 deferred registration failed"); }
         })
         .mockResolvedValueOnce({
             register: () => () => {}
@@ -211,13 +211,13 @@ test("when a deferred module registration fail, return the error", async () => {
         { name: "Dummy-3", url: "http://anything3.com" }
     ], runtime);
 
-    const errors = await registry.completeRegistrations(runtime);
+    const errors = await registry.completeModuleRegistrations(runtime);
 
     expect(errors.length).toBe(1);
-    expect(errors[0]!.error!.toString()).toContain("Module 2 registration failed");
+    expect(errors[0]!.error!.toString()).toContain("Module 2 deferred registration failed");
 });
 
-test("when data is provided, all the deferred module registrations receive the data object", async () => {
+test("when data is provided, all the deferred registrations receive the data object", async () => {
     const register1 = jest.fn();
     const register2 = jest.fn();
     const register3 = jest.fn();
@@ -247,7 +247,7 @@ test("when data is provided, all the deferred module registrations receive the d
         foo: "bar"
     };
 
-    await registry.completeRegistrations(runtime, data);
+    await registry.completeModuleRegistrations(runtime, data);
 
     expect(register1).toHaveBeenCalledWith(data);
     expect(register2).toHaveBeenCalledWith(data);

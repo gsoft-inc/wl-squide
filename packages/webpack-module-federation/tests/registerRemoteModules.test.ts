@@ -64,7 +64,7 @@ test("when called twice, throw an error", async () => {
     await expect(async () => registry.registerModules([{ name: "Dummy-1", url: "http://anything1.com" }], runtime)).rejects.toThrow(/The registerRemoteModules function can only be called once/);
 });
 
-test("when there are no deferred modules, once all the modules are registered, set the status to \"ready\"", async () => {
+test("when there are no deferred registrations, once all the modules are registered, set the status to \"ready\"", async () => {
     const loadRemote = jest.fn().mockResolvedValue({
         register: () => {}
     });
@@ -79,7 +79,7 @@ test("when there are no deferred modules, once all the modules are registered, s
     expect(registry.registrationStatus).toBe("ready");
 });
 
-test("when there are deferred modules, once all the modules are registered, set the status to \"registered\"", async () => {
+test("when there are deferred registrations, once all the modules are registered, set the status to \"registered\"", async () => {
     const loadRemote = jest.fn().mockResolvedValue({
         register: () => () => {}
     });

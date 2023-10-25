@@ -64,7 +64,7 @@ export class LocalModuleRegistry {
         return errors;
     }
 
-    async completeRegistrations<TRuntime extends AbstractRuntime = AbstractRuntime, TData = unknown>(runtime: TRuntime, data?: TData) {
+    async completeModuleRegistrations<TRuntime extends AbstractRuntime = AbstractRuntime, TData = unknown>(runtime: TRuntime, data?: TData) {
         const errors: LocalModuleRegistrationError[] = [];
 
         if (this.#registrationStatus === "none" || this.#registrationStatus === "in-progress") {
@@ -118,9 +118,9 @@ export function registerLocalModules<TRuntime extends AbstractRuntime = Abstract
 }
 
 export function completeLocalModuleRegistrations<TRuntime extends AbstractRuntime = AbstractRuntime, TData = unknown>(runtime: TRuntime, data?: TData) {
-    return localModuleRegistry.completeRegistrations(runtime, data);
+    return localModuleRegistry.completeModuleRegistrations(runtime, data);
 }
 
-export function getLocalModulesRegistrationStatus() {
+export function getLocalModuleRegistrationStatus() {
     return localModuleRegistry.registrationStatus;
 }

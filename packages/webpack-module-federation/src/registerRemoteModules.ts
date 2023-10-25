@@ -113,7 +113,7 @@ export class RemoteModuleRegistry {
         return errors;
     }
 
-    async completeRegistrations<TRuntime extends AbstractRuntime = AbstractRuntime, TData = unknown>(runtime: TRuntime, data?: TData) {
+    async completeModuleRegistrations<TRuntime extends AbstractRuntime = AbstractRuntime, TData = unknown>(runtime: TRuntime, data?: TData) {
         const errors: RemoteModuleRegistrationError[] = [];
 
         if (this.#registrationStatus === "none" || this.#registrationStatus === "in-progress") {
@@ -163,6 +163,11 @@ export class RemoteModuleRegistry {
     get registrationStatus() {
         return this.#registrationStatus;
     }
+
+    // Required to test hooks that dependent on the registration status.
+    resetRegistrationStatus() {
+        this.#registrationStatus = "none";
+    }
 }
 
 const remoteModuleRegistry = new RemoteModuleRegistry(loadModuleFederationRemote);
@@ -172,9 +177,14 @@ export function registerRemoteModules<TRuntime extends AbstractRuntime = Abstrac
 }
 
 export function completeRemoteModuleRegistrations<TRuntime extends AbstractRuntime = AbstractRuntime, TData = unknown>(runtime: TRuntime, data?: TData) {
-    return remoteModuleRegistry.completeRegistrations(runtime, data);
+    return remoteModuleRegistry.completeModuleRegistrations(runtime, data);
 }
 
-export function getRemoteModulesRegistrationStatus() {
+export function getRemoteModuleRegistrationStatus() {
     return remoteModuleRegistry.registrationStatus;
+}
+
+// Required to test hooks that dependent on the registration status.
+export function resetRemoteModuleRegistrationStatus() {
+
 }

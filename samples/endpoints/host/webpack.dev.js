@@ -6,6 +6,10 @@ import { swcConfig } from "./swc.dev.js";
 export default defineDevHostConfig(swcConfig, "host", 8080, {
     overlay: false,
     sharedDependencies: {
+        "@squide/msw": {
+            singleton: true,
+            eager: true
+        },
         "@endpoints/shared": {
             singleton: true,
             eager: true

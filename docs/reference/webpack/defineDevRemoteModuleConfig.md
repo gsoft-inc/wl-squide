@@ -21,6 +21,9 @@ const webpackConfig = defineDevRemoteModuleConfig(swcConfig: {}, applicationName
 - `port`: The remote module application port.
 - `options`: An optional object literal of options:
     - Accepts most of webpack `definedDevConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/#3-set-predefined-options).
+    - `features`: An optional object literal of feature switches to define additional shared dependencies.
+        - `router`: Currently hardcoded to `"react-router"` as it's the only supported router (`@squide/react-router` and `@react-router-dom` are currently considered as default shared dependencies).
+        - `msw`: Whether or not to add `@squide/msw` as a shared dependency.
     - `sharedDependencies`: An optional object literal of additional (or updated) module federation shared dependencies.
     - `moduleFederationPluginOptions`: An optional object literal of [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) options.
 
@@ -63,6 +66,11 @@ The `defineDevRemoteModuleConfig` function will add the following shared depende
 
 For the full shared dependencies configuration, have a look at the [defineConfig.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/webpack-module-federation/src/defineConfig.ts) file on Github.
 
+## Optional shared dependencies
+
+The following shared dependencies can be added through feature switches:
+- [`@squide/msw`](https://www.npmjs.com/package/@squide/msw)
+
 ## Usage
 
 ### Define a webpack config
@@ -74,6 +82,25 @@ import { defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/d
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8080);
+```
+
+### Activate additional features
+
+!!!info
+Features must be activated on the host application as well as every remote module.
+!!!
+
+```js !#7-9 remote-module/webpack.dev.js
+// @ts-check
+
+import { defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { swcConfig } from "./swc.dev.js";
+
+export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8080, {
+    features: {
+        msw: true
+    }
+});
 ```
 
 ### Specify additional shared dependencies

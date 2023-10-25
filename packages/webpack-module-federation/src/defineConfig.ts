@@ -11,7 +11,7 @@ export type ModuleFederationPluginOptions = ConstructorParameters<typeof webpack
 
 // Generally, only the host application should have eager dependencies.
 // For more informations about shared dependencies refer to: https://github.com/patricklafrance/wmf-versioning
-export function getDefaultSharedDependencies(isHost: boolean) {
+function getDefaultSharedDependencies(isHost: boolean) {
     return {
         "react": {
             singleton: true,
@@ -32,9 +32,16 @@ export function getDefaultSharedDependencies(isHost: boolean) {
     };
 }
 
+export type Router = "react-router";
+
+export interface Features {
+    router?: Router;
+    msw?: boolean;
+}
+
 // Generally, only the host application should have eager dependencies.
 // For more informations about shared dependencies refer to: https://github.com/patricklafrance/wmf-versioning
-export function getReactRouterSharedDependencies(isHost: boolean) {
+function getReactRouterSharedDependencies(isHost: boolean) {
     return {
         "react-router-dom": {
             singleton: true,
@@ -47,17 +54,27 @@ export function getReactRouterSharedDependencies(isHost: boolean) {
     };
 }
 
-export type Router = "react-router";
-
-export function resolveDefaultSharedDependencies(router: Router, isHost: boolean) {
+function getMswSharedDependency(isHost: boolean) {
     return {
-        ...getDefaultSharedDependencies(isHost),
-        ...(router === "react-router" ? getReactRouterSharedDependencies(isHost) : {})
+        "@squide/msw": {
+            singleton: true,
+            eager: isHost ? true : undefined
+        }
     };
 }
 
-export interface DefineHostModuleFederationPluginOptions extends ModuleFederationPluginOptions {
-    router?: Router;
+function getFeaturesDependencies({ router = "react-router", msw }: Features, isHost: boolean) {
+    return {
+        ...(router === "react-router" ? getReactRouterSharedDependencies(isHost) : {}),
+        ...(msw ? getMswSharedDependency(isHost) : {})
+    };
+}
+
+function resolveDefaultSharedDependencies(features: Features, isHost: boolean) {
+    return {
+        ...getDefaultSharedDependencies(isHost),
+        ...getFeaturesDependencies(features, isHost)
+    };
 }
 
 const forceNamedChunkIdsTransformer: WebpackConfigTransformer = (config: WebpackConfig) => {
@@ -74,16 +91,20 @@ const forceNamedChunkIdsTransformer: WebpackConfigTransformer = (config: Webpack
 
 ////////////////////////////  Host  /////////////////////////////
 
+export interface DefineHostModuleFederationPluginOptions extends ModuleFederationPluginOptions {
+    features?: Features;
+}
+
 // The function return type is mandatory, otherwise we got an error TS4058.
 export function defineHostModuleFederationPluginOptions(applicationName: string, options: DefineHostModuleFederationPluginOptions): ModuleFederationPluginOptions {
     const {
-        router = "react-router",
+        features = {},
         shared = {},
         ...rest
     } = options;
 
 
-    const defaultSharedDependencies = resolveDefaultSharedDependencies(router, true);
+    const defaultSharedDependencies = resolveDefaultSharedDependencies(features, true);
 
     return {
         name: applicationName,
@@ -100,7 +121,7 @@ export function defineHostModuleFederationPluginOptions(applicationName: string,
 
 export interface DefineDevHostConfigOptions extends Omit<DefineDevConfigOptions, "htmlWebpackPlugin" | "fastRefresh" | "port"> {
     htmlWebpackPluginOptions?: HtmlWebpackPlugin.Options;
-    router?: Router;
+    features?: Features;
     sharedDependencies?: ModuleFederationPluginOptions["shared"];
     moduleFederationPluginOptions?: ModuleFederationPluginOptions;
 }
@@ -112,9 +133,9 @@ export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: strin
         cache = false,
         plugins = [],
         htmlWebpackPluginOptions,
-        router,
+        features,
         sharedDependencies,
-        moduleFederationPluginOptions = defineHostModuleFederationPluginOptions(applicationName, { router, shared: sharedDependencies }),
+        moduleFederationPluginOptions = defineHostModuleFederationPluginOptions(applicationName, { features, shared: sharedDependencies }),
         ...webpackOptions
     } = options;
 
@@ -134,7 +155,7 @@ export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: strin
 
 export interface DefineBuildHostConfigOptions extends Omit<DefineBuildConfigOptions, "htmlWebpackPlugin" | "publicPath"> {
     htmlWebpackPluginOptions?: HtmlWebpackPlugin.Options;
-    router?: Router;
+    features?: Features;
     sharedDependencies?: ModuleFederationPluginOptions["shared"];
     moduleFederationPluginOptions?: ModuleFederationPluginOptions;
 }
@@ -147,9 +168,9 @@ export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: str
         plugins = [],
         htmlWebpackPluginOptions,
         transformers = [],
-        router,
+        features,
         sharedDependencies,
-        moduleFederationPluginOptions = defineHostModuleFederationPluginOptions(applicationName, { router, shared: sharedDependencies }),
+        moduleFederationPluginOptions = defineHostModuleFederationPluginOptions(applicationName, { features, shared: sharedDependencies }),
         ...webpackOptions
     } = options;
 
@@ -173,19 +194,19 @@ export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: str
 ////////////////////////////  Remote  /////////////////////////////
 
 export interface DefineRemoteModuleFederationPluginOptions extends ModuleFederationPluginOptions {
-    router?: Router;
+    features?: Features;
 }
 
 // The function return type is mandatory, otherwise we got an error TS4058.
 export function defineRemoteModuleFederationPluginOptions(applicationName: string, options: DefineRemoteModuleFederationPluginOptions): ModuleFederationPluginOptions {
     const {
-        router = "react-router",
+        features = {},
         exposes = {},
         shared = {},
         ...rest
     } = options;
 
-    const defaultSharedDependencies = resolveDefaultSharedDependencies(router, false);
+    const defaultSharedDependencies = resolveDefaultSharedDependencies(features, false);
 
     return {
         name: applicationName,
@@ -222,7 +243,7 @@ const devRemoteModuleTransformer: WebpackConfigTransformer = (config: WebpackCon
 };
 
 export interface DefineDevRemoteModuleConfigOptions extends Omit<DefineDevConfigOptions, "fastRefresh" | "port" | "overlay"> {
-    router?: Router;
+    features?: Features;
     sharedDependencies?: ModuleFederationPluginOptions["shared"];
     moduleFederationPluginOptions?: ModuleFederationPluginOptions;
 }
@@ -235,9 +256,9 @@ export function defineDevRemoteModuleConfig(swcConfig: SwcConfig, applicationNam
         plugins = [],
         htmlWebpackPlugin = false,
         transformers = [],
-        router,
+        features,
         sharedDependencies,
-        moduleFederationPluginOptions = defineRemoteModuleFederationPluginOptions(applicationName, { router, shared: sharedDependencies }),
+        moduleFederationPluginOptions = defineRemoteModuleFederationPluginOptions(applicationName, { features, shared: sharedDependencies }),
         ...webpackOptions
     } = options;
 
@@ -263,7 +284,7 @@ export function defineDevRemoteModuleConfig(swcConfig: SwcConfig, applicationNam
 }
 
 export interface DefineBuildRemoteModuleConfigOptions extends Omit<DefineBuildConfigOptions, "publicPath"> {
-    router?: Router;
+    features?: Features;
     sharedDependencies?: ModuleFederationPluginOptions["shared"];
     moduleFederationPluginOptions?: ModuleFederationPluginOptions;
 }
@@ -276,9 +297,9 @@ export function defineBuildRemoteModuleConfig(swcConfig: SwcConfig, applicationN
         plugins = [],
         htmlWebpackPlugin = false,
         transformers = [],
-        router,
+        features,
         sharedDependencies,
-        moduleFederationPluginOptions = defineRemoteModuleFederationPluginOptions(applicationName, { router, shared: sharedDependencies }),
+        moduleFederationPluginOptions = defineRemoteModuleFederationPluginOptions(applicationName, { features, shared: sharedDependencies }),
         ...webpackOptions
     } = options;
 

@@ -6,41 +6,6 @@ import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { Outlet, RouterProvider, createBrowserRouter, useLocation } from "react-router-dom";
 
-/*
-AppRouter
-    - loader
-    - onFetchInitialData -> (doit passer un "signal")
-    - onFetchSession
-    - onFetchProtectedData -> Si fournie, est inclus dans le isReady - (doit passer un "signal")
-    - waitForMsw
-    - rootRoute - Si fournis est-ce le parent de la root route du AppRouter?
-    - routerProviderOptions
-*/
-
-/*
-
-import { AppRouter as SquideAppRouter } from "@squide/shell";
-
-export function AppRouter() {
-    const [subscription, setSubscription] = useState<Subscription>();
-
-    onFetchProtectedData() {
-        ....
-
-
-    }
-
-    return (
-        <TelemetryContext.Provider value={}>
-            <SubcriptionContext.Provider value={subscription}
-                <SquideAppRouter onFetchProtectedData={onFetchProtectedData} />
-            </SubcriptionContext.Provider >
-        </TelemetryContext.Provider value={}>
-    )
-}
-
-*/
-
 async function fetchPublicData(
     setFeatureFlags: (featureFlags: FeatureFlags) => void,
     logger: Logger

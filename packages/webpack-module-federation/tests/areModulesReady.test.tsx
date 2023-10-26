@@ -26,12 +26,6 @@ class DummyRuntime extends AbstractRuntime<unknown, unknown> {
 
 const runtime = new DummyRuntime();
 
-/*
-- when local module deferred registrations and remote module deferred registrations are registered and only the local module deferred registrations are completed, return false
-- when local module deferred registrations and remote module deferred registrations are registered and only the remote module deferred registrations are completed, return false
-
-*/
-
 test("when no modules are registered, return false", async () => {
     const localModuleRegistry = new LocalModuleRegistry();
 

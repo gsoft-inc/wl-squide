@@ -5,7 +5,11 @@ toc:
 
 # useAreModulesReady
 
-Force the application to re-render once all the modules are registered. Without this hook, the page is rendered with an empty router as it happens before the remote modules registered their routes and navigation items.
+Force the application to re-render once the registration process has been completed for all the modules. Without this hook, the page is rendered with an empty router as it happens before the remote modules registered their routes and navigation items.
+
+!!!info
+If your application supports [deferred registrations](./registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items), make sure to pair this hook with the [useAreModulesRegistered](./useAreModulesRegistered.md) hook. 
+!!!
 
 ## Reference
 
@@ -20,7 +24,7 @@ const areModulesReady = useAreModulesReady(options?: { interval? })
 
 ### Returns
 
-A boolean indicating if the registration is completed.
+A boolean indicating if the registration process is completed.
 
 ## Usage
 

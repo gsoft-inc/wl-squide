@@ -26,7 +26,10 @@ expanded: true
 
 - [registerLocalModules](registration/registerLocalModules.md)
 - [registerRemoteModules](registration/registerRemoteModules.md)
-- [registrationStatus](registration/registrationStatus.md)
+- [completeModuleRegistrations](registration/completeModuleRegistrations.md)
+- [completeLocalModuleRegistrations](registration/completeLocalModuleRegistrations.md)
+- [completeRemoteModuleRegistrations](registration/completeRemoteModuleRegistrations.md)
+- [useAreModulesRegistered](registration/useAreModulesRegistered.md)
 - [useAreModulesReady](registration/useAreModulesReady.md)
 
 ### Routing

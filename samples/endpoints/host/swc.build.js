@@ -4,22 +4,20 @@ import { browserslistToSwc, defineBuildConfig } from "@workleap/swc-configs";
 
 const targets = browserslistToSwc();
 
-console.log("@@@@@@@@@@@@@@@@@@@@@@", targets);
-
-function tempTransformer(config) {
-    // config.minify = false;
-    // config.jsc.loose = true;
-
-    // config.jsc.transform.react.useBuiltins = false;
-    // config.jsc.keepClassNames = true;
-
-    // config.jsc.transform.useDefineForClassFields = false;
-
-    config.jsc.minify.mangle = false;
+/**
+ * Temporary transformer to enable loose mode until https://github.com/swc-project/swc/issues/8178 is fixed.
+ * @typedef {import("@workleap/swc-configs").SwcConfig} SwcConfig
+ * @param {SwcConfig} config
+ * @returns {SwcConfig}
+ */
+function temporaryEnablingLooseMode(config) {
+    if (config && config.jsc) {
+        config.jsc.loose = true;
+    }
 
     return config;
 }
 
 export const swcConfig = defineBuildConfig(targets, {
-    transformers: [tempTransformer]
+    transformers: [temporaryEnablingLooseMode]
 });

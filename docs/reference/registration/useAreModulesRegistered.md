@@ -6,7 +6,7 @@ order: 50
 
 # useAreModulesRegistered
 
-Force the application to re-render once all the modules are registered.
+Force the application to re-render once all the modules are registered (but not ready).
 
 !!!info
 This hook should only be used by applications that support [deferred registrations](./registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) and should be pair with the [useAreModulesReady](./useAreModulesReady.md) hook.

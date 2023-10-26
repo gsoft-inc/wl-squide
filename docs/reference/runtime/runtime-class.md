@@ -128,7 +128,7 @@ runtime.registerRoute({
 });
 ```
 
-[!ref text="For a detailed walkthrough, read the how to override the host layout guide"](../../guides/override-the-host-layout.md)
+[!ref text="For a detailed walkthrough, refer to the how to override the host layout guide"](../../guides/override-the-host-layout.md)
 
 ### Register a public route
 

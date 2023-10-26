@@ -25,31 +25,22 @@ None
 
 ## Usage
 
-The registration of the route including the `ManagedRoutes` placeholder must be [hoisted](../runtime/runtime-class.md#register-an-hoisted-route), otherwise there will be an infinite loop as the placeholder will render in the placeholder.
+The route including the `ManagedRoutes` placeholder must be [hoisted](../runtime/runtime-class.md#register-an-hoisted-route); otherwise, there will be an infinite loop as the `ManagedRoutes` placeholder will render within itself.
 
-```tsx !#20,27 shell/src/register.tsx
+```tsx !#13,18 shell/src/register.tsx
 import { ManagedRoutes } from "@squide/react-router";
 import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
-import { AuthenticatedLayout } from "./AuthenticatedLayout.tsx";
 
 runtime.registerRoute({
     // Pathless route to declare a root layout.
-    $visibility: "public",
     element: <RootLayout />,
     children: [
         {
             // Pathless route to declare a root error boundary.
-            $visibility: "public",
             errorElement: <RootErrorBoundary />,
             children: [
-                {
-                    // Pathless route to declare an authenticated layout.
-                    element: <AuthenticatedLayout />
-                    children: [
-                        ManagedRoutes
-                    ]
-                }
+                ManagedRoutes
             ]
         }
     ]

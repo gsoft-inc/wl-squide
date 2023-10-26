@@ -9,10 +9,10 @@ let config;
 
 if (!process.env.ISOLATED) {
     config = defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
+        features: {
+            msw: true
+        },
         sharedDependencies: {
-            "@squide/msw": {
-                singleton: true
-            },
             "@endpoints/shared": {
                 singleton: true
             }

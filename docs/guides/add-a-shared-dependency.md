@@ -57,7 +57,7 @@ If the version difference between a host application and a remote module is a **
 
 Libraries matching the following criterias are strong candidates to be configured as shared dependencies:
 
-- Medium to large libraries that are used by multiple modules..
+- Medium to large libraries that are used by multiple modules.
 - Libraries that requires a [single instance](#react-dependencies-requirements) to work properly (like `react`).
 - Libraries exporting [React contexts](#react-context-limitations).
 

@@ -263,7 +263,7 @@ export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
         children: [
             {
                 // The root error boundary is a named route to be able to nest
-                // the loging / logout page under it with the "parentName" optioné
+                // the loging / logout page under it with the "parentName" option.
                 $name: "root-error-boundary",
                 errorElement: <RootErrorBoundary />,
                 children: [

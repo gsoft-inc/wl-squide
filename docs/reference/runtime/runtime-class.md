@@ -102,10 +102,6 @@ By declaring a page as hoisted, the page will be rendered at the root of the rou
 
 ### Register a route with a different layout
 
-!!!info
-For a detailed walkthrough, read the guide on [how to override the host layout](/guides/override-the-host-layout.md).
-!!!
-
 ```tsx !#9,12,22
 import { Page } from "./Page.tsx";
 import { RemoteLayout } from "./RemoteLayout.tsx";
@@ -132,9 +128,11 @@ runtime.registerRoute({
 });
 ```
 
+[!ref text="For a detailed walkthrough, read the how to override the host layout guide"](../../guides/override-the-host-layout.md)
+
 ### Register a public route
 
-When registering a route, a hint can be provided, indicating if the route is intended to be displayed as a `public` or `protected` route. This is especially useful when dealing with code that conditionally fetch data for protected routes (e.g. a session). Don't forget to mark the route as hoisted with the `host` option if the route is nested under an authentication boundary.
+When registering a route, a hint can be provided, indicating if the route is intended to be displayed as a `public` or `protected` route. This is especially useful when dealing with code that conditionally fetch data for protected routes (e.g. a session).
 
 ```tsx !#4,8
 import { Page } from "./Page.tsx";
@@ -170,8 +168,14 @@ runtime.registerRoute({
 });
 ```
 
+If the route is nested under an authentication boundary, don't forget to either mark the route as [hoisted](#register-an-hoisted-route) or to [nest the route](#register-nested-routes-under-an-existing-route) under a public parent.
+
 !!!info
-When no visibility hint is provided, a route is considered `protected`.
+A `$visibility` hint only takes effect if your application is using the [useIsRouteMatchProtected](../routing/useIsRouteMatchProtected.md) hook.
+!!!
+
+!!!info
+When no `$visibility` hint is provided, a route is considered `protected`.
 !!!
 
 ### Register a named route

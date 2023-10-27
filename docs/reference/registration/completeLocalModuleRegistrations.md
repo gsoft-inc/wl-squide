@@ -57,11 +57,11 @@ await completeLocalModuleRegistrations(runtime, { featureFlags });
 
 ```tsx !#19-32 local-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
-import type { AppContext, FeatureFlags } from "@sample/shared";
+import type { AppContext, DeferredRegistrationData } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 import { FeatureAPage } from "./FeatureAPage.tsx";
 
-export function register: ModuleRegisterFunction<Runtime, AppContext>(runtime, context) {
+export const register: ModuleRegisterFunction<Runtime, AppContext, DeferredRegistrationData> = async (runtime, context) => {
     runtime.registerRoute({
         path: "/about",
         element: <AboutPage />
@@ -74,7 +74,7 @@ export function register: ModuleRegisterFunction<Runtime, AppContext>(runtime, c
 
     // Once the feature flags has been loaded by the host application, by completing the module registrations process,
     // the deferred registration function will be called with the feature flags data.
-    return ({ featureFlags }: { featureFlags: FeatureFlags }) => {
+    return ({ featureFlags } = {}) => {
         // Only register the "feature-a" route and navigation item if the feature is active.
         if (featureFlags.featureA) {
             runtime.registerRoute({

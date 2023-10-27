@@ -148,7 +148,7 @@ export function RootRoute({ waitForMsw, sessionManager, areModulesRegistered, ar
             if (!areModulesReady) {
                 completeModuleRegistrations(runtime, {
                     featureFlags
-                } satisfies DeferredRegistrationData);
+                });
             }
         }
     }, [runtime, areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded, featureFlags]);

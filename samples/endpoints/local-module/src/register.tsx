@@ -124,5 +124,5 @@ async function registerMsw(runtime: Runtime) {
 export const registerLocalModule: ModuleRegisterFunction<Runtime, unknown, DeferredRegistrationData> = async runtime => {
     await registerMsw(runtime);
 
-    return await registerRoutes(runtime);
+    return registerRoutes(runtime);
 };

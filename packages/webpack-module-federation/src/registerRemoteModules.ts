@@ -2,11 +2,11 @@ import { isFunction, isNil, registerModule, type AbstractRuntime, type DeferredR
 import { loadRemote as loadModuleFederationRemote, type LoadRemoteFunction } from "./loadRemote.ts";
 import { RemoteEntryPoint, RemoteModuleName, type RemoteDefinition } from "./remoteDefinition.ts";
 
-interface DeferredRegistration {
+interface DeferredRegistration<TData = unknown> {
     url: string;
     containerName: string;
     index: string;
-    fct: DeferredRegisterationFunction;
+    fct: DeferredRegisterationFunction<TData>;
 }
 
 export interface RegisterRemoteModulesOptions<TContext> {
@@ -47,7 +47,7 @@ export class RemoteModuleRegistry {
         }
     }
 
-    async registerModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown>(remotes: RemoteDefinition[], runtime: TRuntime, { context }: RegisterRemoteModulesOptions<TContext> = {}) {
+    async registerModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown, TData = unknown>(remotes: RemoteDefinition[], runtime: TRuntime, { context }: RegisterRemoteModulesOptions<TContext> = {}) {
         const errors: RemoteModuleRegistrationError[] = [];
 
         if (this.#registrationStatus !== "none") {
@@ -77,14 +77,14 @@ export class RemoteModuleRegistry {
 
                 runtime.logger.debug(`[squide] [remote] ${index + 1}/${remotes.length} Registering module "${RemoteModuleName}" from container "${containerName}" of remote "${remoteUrl}".`);
 
-                const optionalDeferedRegistration = await registerModule(module.register, runtime, context);
+                const optionalDeferedRegistration = await registerModule<TRuntime, TContext, TData>(module.register, runtime, context);
 
                 if (isFunction(optionalDeferedRegistration)) {
                     this.#deferredRegistrations.push({
                         url: remoteUrl,
                         containerName: x.name,
                         index: `${index + 1}/${remotes.length}`,
-                        fct: optionalDeferedRegistration
+                        fct: optionalDeferedRegistration as DeferredRegisterationFunction<unknown>
                     });
                 }
 
@@ -172,8 +172,8 @@ export class RemoteModuleRegistry {
 
 const remoteModuleRegistry = new RemoteModuleRegistry(loadModuleFederationRemote);
 
-export function registerRemoteModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown>(remotes: RemoteDefinition[], runtime: TRuntime, options?: RegisterRemoteModulesOptions<TContext>) {
-    return remoteModuleRegistry.registerModules(remotes, runtime, options);
+export function registerRemoteModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown, TData = unknown>(remotes: RemoteDefinition[], runtime: TRuntime, options?: RegisterRemoteModulesOptions<TContext>) {
+    return remoteModuleRegistry.registerModules<TRuntime, TContext, TData>(remotes, runtime, options);
 }
 
 export function completeRemoteModuleRegistrations<TRuntime extends AbstractRuntime = AbstractRuntime, TData = unknown>(runtime: TRuntime, data?: TData) {

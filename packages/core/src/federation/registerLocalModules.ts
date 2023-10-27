@@ -3,9 +3,9 @@ import type { AbstractRuntime } from "../runtime/abstractRuntime.ts";
 import type { ModuleRegistrationStatus } from "./moduleRegistrationStatus.ts";
 import { registerModule, type DeferredRegisterationFunction, type ModuleRegisterFunction } from "./registerModule.ts";
 
-interface DeferredRegisteration {
+interface DeferredRegisteration<TData = unknown> {
     index: string;
-    fct: DeferredRegisterationFunction;
+    fct: DeferredRegisterationFunction<TData>;
 }
 
 export interface RegisterLocalModulesOptions<TContext> {
@@ -42,7 +42,7 @@ export class LocalModuleRegistry {
                 if (isFunction(optionalDeferedRegistration)) {
                     this.#deferredRegistrations.push({
                         index: `${index + 1}/${registerFunctions.length}`,
-                        fct: optionalDeferedRegistration
+                        fct: optionalDeferedRegistration as DeferredRegisterationFunction
                     });
                 }
             } catch (error: unknown) {

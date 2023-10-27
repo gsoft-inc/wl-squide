@@ -1,4 +1,4 @@
-import type { FeatureFlags } from "@endpoints/shared";
+import type { DeferredRegistrationData } from "@endpoints/shell";
 import { getMswPlugin } from "@squide/msw";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -27,7 +27,7 @@ function Providers({ children }: { children: ReactNode }) {
     );
 }
 
-function registerRoutes(runtime: Runtime) {
+const registerRoutes: ModuleRegisterFunction<Runtime, unknown, DeferredRegistrationData> = runtime => {
     runtime.registerRoute({
         $visibility: "public",
         path: "/public",
@@ -94,7 +94,7 @@ function registerRoutes(runtime: Runtime) {
         menuId: "/federated-tabs"
     });
 
-    return ({ featureFlags }: { featureFlags?: FeatureFlags } = {}) => {
+    return ({ featureFlags } = {}) => {
         if (featureFlags?.featureA) {
             runtime.registerRoute({
                 path: "/feature-a",
@@ -107,7 +107,7 @@ function registerRoutes(runtime: Runtime) {
             });
         }
     };
-}
+};
 
 async function registerMsw(runtime: Runtime) {
     if (process.env.USE_MSW) {
@@ -121,8 +121,8 @@ async function registerMsw(runtime: Runtime) {
     }
 }
 
-export const registerLocalModule: ModuleRegisterFunction<Runtime> = async runtime => {
+export const registerLocalModule: ModuleRegisterFunction<Runtime, unknown, DeferredRegistrationData> = async runtime => {
     await registerMsw(runtime);
 
-    return registerRoutes(runtime);
+    return await registerRoutes(runtime);
 };

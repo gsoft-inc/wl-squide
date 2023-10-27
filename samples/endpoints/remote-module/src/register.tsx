@@ -1,9 +1,9 @@
-import type { FeatureFlags } from "@endpoints/shared";
+import type { DeferredRegistrationData } from "@endpoints/shell";
 import { getMswPlugin } from "@squide/msw";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { Providers } from "./Providers.tsx";
 
-function registerRoutes(runtime: Runtime) {
+const registerRoutes: ModuleRegisterFunction<Runtime, unknown, DeferredRegistrationData> = runtime => {
     runtime.registerRoute({
         path: "/federated-tabs/episodes",
         lazy: async () => {
@@ -64,7 +64,7 @@ function registerRoutes(runtime: Runtime) {
         menuId: "/federated-tabs"
     });
 
-    return ({ featureFlags }: { featureFlags?: FeatureFlags } = {}) => {
+    return ({ featureFlags } = {}) => {
         if (featureFlags?.featureB) {
             runtime.registerRoute({
                 path: "/feature-b",
@@ -89,7 +89,7 @@ function registerRoutes(runtime: Runtime) {
             });
         }
     };
-}
+};
 
 async function registerMsw(runtime: Runtime) {
     if (process.env.USE_MSW) {
@@ -103,7 +103,7 @@ async function registerMsw(runtime: Runtime) {
     }
 }
 
-export const register: ModuleRegisterFunction<Runtime> = async runtime => {
+export const register: ModuleRegisterFunction<Runtime, unknown, DeferredRegistrationData> = async runtime => {
     await registerMsw(runtime);
 
     return registerRoutes(runtime);

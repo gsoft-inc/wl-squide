@@ -76,6 +76,10 @@ interface RootRouteProps {
     areModulesReady: boolean;
 }
 
+export interface DeferredRegistrationData {
+    featureFlags?: FeatureFlags;
+}
+
 // Most of the bootstrapping logic has been moved to this component because AppRouter
 // cannot leverage "useLocation" since it's depend on "RouterProvider".
 export function RootRoute({ waitForMsw, sessionManager, areModulesRegistered, areModulesReady }: RootRouteProps) {
@@ -144,7 +148,7 @@ export function RootRoute({ waitForMsw, sessionManager, areModulesRegistered, ar
             if (!areModulesReady) {
                 completeModuleRegistrations(runtime, {
                     featureFlags
-                });
+                } satisfies DeferredRegistrationData);
             }
         }
     }, [runtime, areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded, featureFlags]);

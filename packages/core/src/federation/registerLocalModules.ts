@@ -22,7 +22,7 @@ export class LocalModuleRegistry {
 
     readonly #deferredRegistrations: DeferredRegistration[] = [];
 
-    async registerModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext>[], runtime: TRuntime, { context }: RegisterLocalModulesOptions<TContext> = {}) {
+    async registerModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown, TData = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext, TData>[], runtime: TRuntime, { context }: RegisterLocalModulesOptions<TContext> = {}) {
         const errors: LocalModuleRegistrationError[] = [];
 
         if (this.#registrationStatus !== "none") {
@@ -37,7 +37,7 @@ export class LocalModuleRegistry {
             runtime.logger.debug(`[squide] [local] ${index + 1}/${registerFunctions.length} Registering local module.`);
 
             try {
-                const optionalDeferredRegistration = await registerModule(x as ModuleRegisterFunction<AbstractRuntime>, runtime, context);
+                const optionalDeferredRegistration = await registerModule(x as ModuleRegisterFunction<AbstractRuntime, TContext, TData>, runtime, context);
 
                 if (isFunction(optionalDeferredRegistration)) {
                     this.#deferredRegistrations.push({
@@ -113,7 +113,7 @@ export class LocalModuleRegistry {
 
 const localModuleRegistry = new LocalModuleRegistry();
 
-export function registerLocalModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext>[], runtime: TRuntime, options?: RegisterLocalModulesOptions<TContext>) {
+export function registerLocalModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown, TData = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext, TData>[], runtime: TRuntime, options?: RegisterLocalModulesOptions<TContext>) {
     return localModuleRegistry.registerModules(registerFunctions, runtime, options);
 }
 

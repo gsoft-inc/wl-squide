@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751643892889">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751742817055">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.751643892889" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.751742817055" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.751643892889" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.751742817055" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.751643892889" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.751643892889" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.751742817055" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.751742817055" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -313,7 +313,7 @@
         <span>registerLocalModules</span>
     </h1>
 </doc-anchor-target>
-<p>Register one or many local module(s). During the registration process, the specified registration function will be invoked with a <code v-pre>Runtime</code> instance and an optional <code v-pre>context</code> object.</p>
+<p>Register one or many local module(s). During the registration process, the specified registration function will be invoked with a <code v-pre>Runtime</code> instance and an optional <code v-pre>context</code> object. To <strong>defer the registration</strong> of specific routes or navigation items, a registration function can return an anonymous function.</p>
 <blockquote>
 <p>A local module is a regular module that is part of the <strong>host application build</strong> and is bundled at build time, as opposed to remote module which is loaded at runtime from a remote server. Local modules are particularly valuable when undergoing a <strong>migration</strong> from a monolithic application to a federated application or when <strong>launching a new product</strong> with an evolving business domain.</p>
 </blockquote>
@@ -379,18 +379,18 @@ const context: AppContext = {
     name: &quot;Test app&quot;
 };
 
-registerLocalModules([register], runtime, { context });</code></pre>
+await registerLocalModules([register], runtime, { context });</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/src/register.tsx</div>
 <pre class="language-tsx" data-line="5-15"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
 import type { AppContext } from &quot;@sample/shared&quot;;
-import { About } from &quot;./About.tsx&quot;;
+import { AboutPage } from &quot;./AboutPage.tsx&quot;;
 
 export function register: ModuleRegisterFunction&lt;Runtime, AppContext&gt;(runtime, context) {
     runtime.registerRoute({
         path: &quot;/about&quot;,
-        element: &lt;About /&gt;
+        element: &lt;AboutPage /&gt;
     });
 
     runtime.registerNavigationItem({
@@ -399,6 +399,91 @@ export function register: ModuleRegisterFunction&lt;Runtime, AppContext&gt;(runt
     });
 }</code></pre>
 </doc-codeblock></div>
+<doc-anchor-target id="defer-the-registration-of-routes-or-navigation-items">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#defer-the-registration-of-routes-or-navigation-items">#</doc-anchor-trigger>
+        <span>Defer the registration of routes or navigation items</span>
+    </h3>
+</doc-anchor-target>
+<p>Sometimes, data must be fetched to determine which routes or navigation items should be registered by a given module. To address this, Squide offers a <strong>two-phase registration mechanism</strong>:</p>
+<ol>
+<li><p>The first phase allows modules to register their routes and navigation items that are not dependent on initial data (in addition to their MSW request handlers when fake endpoints are available).</p>
+</li>
+<li><p>The second phase enables modules to register routes and navigation items that are dependent on initial data. Such a use case would be determining whether a route should be registered based on a feature flag. We refer to this second phase as <strong>deferred registrations</strong>.</p>
+</li>
+</ol>
+<p>To defer a registration to the second phase, a module registration function can <strong>return an anonymous function</strong>. Once the modules are registered and the <a href="../completelocalmoduleregistrations/">completeLocalModuleRegistrations</a> function is called, the deferred registration functions will be executed.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/src/bootstrap.tsx</div>
+<pre class="language-tsx" data-line="15,18"><code v-pre class="language-tsx">import { completeLocalModuleRegistrations, registerLocalModules, Runtime } from &quot;@squide/react-router&quot;;
+import { register } from &quot;@sample/local-module&quot;;
+import { fetchFeatureFlags, type AppContext } from &quot;@sample/shared&quot;;
+
+const runtime = new Runtime();
+
+const context: AppContext = {
+    name: &quot;Test app&quot;
+};
+
+await registerLocalModules([register], runtime, { context });
+
+// Don't fetch data in the bootstrapping code for a real application. This is done here
+// strictly for demonstration purpose.
+const featureFlags = await fetchFeatureFlags();
+
+// Complete the module registrations with the feature flags data.
+await completeLocalModuleRegistrations(runtime, { featureFlags });</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">local-module/src/register.tsx</div>
+<pre class="language-tsx" data-line="19-32"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+import type { AppContext, FeatureFlags } from &quot;@sample/shared&quot;;
+import { AboutPage } from &quot;./AboutPage.tsx&quot;;
+import { FeatureAPage } from &quot;./FeatureAPage.tsx&quot;;
+
+export function register: ModuleRegisterFunction&lt;Runtime, AppContext&gt;(runtime, context) {
+    runtime.registerRoute({
+        path: &quot;/about&quot;,
+        element: &lt;AboutPage /&gt;
+    });
+
+    runtime.registerNavigationItem({
+        $label: &quot;About&quot;,
+        to: &quot;/about&quot;
+    });
+
+    // Once the feature flags has been loaded by the host application, by completing the module registrations process,
+    // the deferred registration function will be called with the feature flags data.
+    return ({ featureFlags }: { featureFlags: FeatureFlags }) =&gt; {
+        // Only register the &quot;feature-a&quot; route and navigation item if the feature is active.
+        if (featureFlags.featureA) {
+            runtime.registerRoute({
+                path: &quot;/feature-a&quot;,
+                element: &lt;FeatureAPage /&gt;
+            });
+
+            runtime.registerNavigationItem({
+                $label: &quot;Feature A&quot;,
+                to: &quot;/feature-a&quot;
+            });
+        }
+    };
+}</code></pre>
+</doc-codeblock></div>
+<p>
+<div class="mb-6 px-5 py-4 flex justify-between relative border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded transition-colors duration-150">
+    <div class="flex items-center text-blue-500 dark:text-blue-400">
+        <span class="inline-block mb-px">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" role="presentation" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z"/></svg>
+        </span>
+        <span class="inline-block font-medium ml-2">completeLocalModuleRegistrations</span>
+    </div>
+    <div class="flex items-center text-xs text-gray-400 dark:text-dark-400">
+        <span>../completelocalmoduleregistrations/</span>
+    </div>
+    <a href="../completelocalmoduleregistrations/" class="absolute block inset-0"></a>
+</div>
+</p>
 <doc-anchor-target id="handle-the-registration-errors">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#handle-the-registration-errors">#</doc-anchor-trigger>
@@ -407,7 +492,7 @@ export function register: ModuleRegisterFunction&lt;Runtime, AppContext&gt;(runt
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
-<pre class="language-tsx" data-line="11-15"><code v-pre class="language-tsx">import { registerLocalModules, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="11-13"><code v-pre class="language-tsx">import { registerLocalModules, Runtime } from &quot;@squide/react-router&quot;;
 import { register } from &quot;@sample/local-module&quot;;
 import type { AppContext } from &quot;@sample/shared&quot;;
 
@@ -417,10 +502,8 @@ const context: AppContext = {
     name: &quot;Test app&quot;
 };
 
-registerLocalModules([register], runtime, { context }).then(errors =&gt; {
-    errors.forEach(x =&gt; {
-        console.log(x);
-    });
+(await registerLocalModules([register], runtime, { context })).forEach(x =&gt; {
+    console.log(x);
 });</code></pre>
 </doc-codeblock></div>
 

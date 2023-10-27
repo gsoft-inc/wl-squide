@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751643892889">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751742817055">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.751643892889" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.751742817055" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.751643892889" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.751742817055" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.751643892889" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.751643892889" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.751742817055" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.751742817055" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -494,7 +494,7 @@ const runtime = new Runtime({
 <p>Then, <a href="../../reference/msw/mswplugin/#register-request-handlers">register the modules MSW request handlers</a> at registration:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
-<pre class="language-typescript" data-line="12"><code v-pre class="language-typescript">import { getMswPlugin } from &quot;@squide/msw&quot;;
+<pre class="language-typescript" data-line="10,12"><code v-pre class="language-typescript">import { getMswPlugin } from &quot;@squide/msw&quot;;
 import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;; 
 
 export const register: ModuleRegisterFunction&lt;Runtime&gt; = async runtime =&gt; {
@@ -528,22 +528,22 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = async runtime =&g
 </div>
 <p>Then, <a href="../../reference/msw/mswplugin/#retrieve-the-request-handlers">retrieve the modules MSW request handlers</a> in the host application and start MSW:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript" data-line="10,13"><code v-pre class="language-typescript">import { registerRemoteModules } from &quot;@squide/webpack-module-federation&quot;;
+<pre class="language-typescript" data-line="9,12"><code v-pre class="language-typescript">import { registerRemoteModules } from &quot;@squide/webpack-module-federation&quot;;
 import { setMswAsStarted } from &quot;@squide/msw&quot;;
 
-registerRemoteModules(Remotes, runtime).then(() =&gt; {
-    if (process.env.USE_MSW) {
-        // Files including an import to the &quot;msw&quot; package are included dynamically to prevent adding
-        // MSW stuff to the bundled when it's not used.
-        import(&quot;../mocks/browser.ts&quot;).then(({ startMsw }) =&gt; {
-            // Will start MSW with the request handlers provided by every module.
-            startMsw(mswPlugin.requestHandlers);
+await registerRemoteModules(Remotes, runtime);
 
-            // Indicate to resources that are dependent on MSW that the service has been started.
-            setMswAsStarted();
-        });
-    }
-});</code></pre>
+if (process.env.USE_MSW) {
+    // Files including an import to the &quot;msw&quot; package are included dynamically to prevent adding
+    // MSW stuff to the bundled when it's not used.
+    const startMsw = (await import(&quot;../mocks/browser.ts&quot;)).startMsw;
+
+    // Will start MSW with the request handlers provided by every module.
+    startMsw(mswPlugin.requestHandlers);
+
+    // Indicate to resources that are dependent on MSW that the service has been started.
+    setMswAsStarted();
+}</code></pre>
 </doc-codeblock></div>
 <p>Finally, make sure that the <a href="../../reference/msw/useismswready/">application rendering is delayed</a> until MSW is started:</p>
 <div class="codeblock-wrapper"><doc-codeblock>

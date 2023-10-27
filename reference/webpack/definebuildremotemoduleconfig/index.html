@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751643892889">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751742817055">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.751643892889" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.751742817055" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.751643892889" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.751742817055" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.751643892889" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.751643892889" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.751742817055" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.751742817055" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -336,6 +336,12 @@
 <li><code v-pre>options</code>: An optional object literal of options:
 <ul>
 <li>Accepts most of webpack <code v-pre>definedDevConfig</code> <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/#3-set-predefined-options" class="outbound" target="_blank">predefined options</a>.</li>
+<li><code v-pre>features</code>: An optional object literal of feature switches to define additional shared dependencies.
+<ul>
+<li><code v-pre>router</code>: Currently hardcoded to <code v-pre>&quot;react-router&quot;</code> as it&#x27;s the only supported router (<code v-pre>@squide/react-router</code> and <code v-pre>@react-router-dom</code> are currently considered as default shared dependencies).</li>
+<li><code v-pre>msw</code>: Whether or not to add <code v-pre>@squide/msw</code> as a shared dependency.</li>
+</ul>
+</li>
 <li><code v-pre>sharedDependencies</code>: An optional object literal of additional (or updated) module federation shared dependencies.</li>
 <li><code v-pre>moduleFederationPluginOptions</code>: An optional object literal of <a href="https://webpack.js.org/plugins/module-federation-plugin/" class="outbound" target="_blank">ModuleFederationPlugin</a> options.</li>
 </ul>
@@ -402,6 +408,16 @@ export default {
 <li><a href="https://www.npmjs.com/package/@squide/webpack-module-federation" class="outbound" target="_blank">@squide/webpack-module-federation</a></li>
 </ul>
 <p>For the full shared dependencies configuration, have a look at the <a href="https://github.com/gsoft-inc/wl-squide/blob/main/packages/webpack-module-federation/src/defineConfig.ts" class="outbound" target="_blank">defineConfig.ts</a> file on Github.</p>
+<doc-anchor-target id="optional-shared-dependencies">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#optional-shared-dependencies">#</doc-anchor-trigger>
+        <span>Optional shared dependencies</span>
+    </h2>
+</doc-anchor-target>
+<p>The following shared dependencies can be added through feature switches:</p>
+<ul>
+<li><a href="https://www.npmjs.com/package/@squide/msw" class="outbound" target="_blank"><code v-pre>@squide/msw</code></a></li>
+</ul>
 <doc-anchor-target id="usage">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#usage">#</doc-anchor-trigger>
@@ -422,6 +438,42 @@ import { defineBuildRemoteModuleConfig } from &quot;@squide/webpack-module-feder
 import { swcConfig } from &quot;./swc.build.js&quot;;
 
 export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, &quot;http://localhost:8080/&quot;);</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="activate-additional-features">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#activate-additional-features">#</doc-anchor-trigger>
+        <span>Activate additional features</span>
+    </h3>
+</doc-anchor-target>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>Features must be activated on the host application as well as every remote module.</p>
+        </div>
+    </div>
+</div>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">remote-module/webpack.build.js</div>
+<pre class="language-javascript" data-line="7-9"><code v-pre class="language-javascript">// @ts-check
+
+import { defineBuildRemoteModuleConfig } from &quot;@squide/webpack-module-federation/defineConfig.js&quot;;
+import { swcConfig } from &quot;./swc.build.js&quot;;
+
+export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, &quot;http://localhost:8080/&quot;, {
+    features: {
+        msw: true
+    }
+});</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="specify-additional-shared-dependencies">
     <h3>

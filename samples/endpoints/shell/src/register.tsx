@@ -2,8 +2,6 @@ import type { SessionManager } from "@endpoints/shared";
 import { getMswPlugin } from "@squide/msw";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { ManagedRoutes } from "@squide/react-router";
-import { authenticationHandlers } from "../mocks/authenticationHandlers.ts";
-import { subscriptionHandlers } from "../mocks/subscriptionHandlers.ts";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 
@@ -100,19 +98,23 @@ function registerRoutes(runtime: Runtime, sessionManager: SessionManager, host?:
     });
 }
 
-function registerMsw(runtime: Runtime) {
-    const mswPlugin = getMswPlugin(runtime);
+async function registerMsw(runtime: Runtime) {
+    if (process.env.USE_MSW) {
+        const mswPlugin = getMswPlugin(runtime);
 
-    mswPlugin.registerRequestHandlers([
-        ...authenticationHandlers,
-        ...subscriptionHandlers
-    ]);
+        // Files including an import to the "msw" package are included dynamically to prevent adding
+        // MSW stuff to the bundled when it's not used.
+        const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
+
+        mswPlugin.registerRequestHandlers(requestHandlers);
+    }
 }
 
 export function registerShell(sessionManager: SessionManager, { host }: RegisterShellOptions = {}) {
-    const register: ModuleRegisterFunction<Runtime> = runtime => {
-        registerRoutes(runtime, sessionManager, host);
-        registerMsw(runtime);
+    const register: ModuleRegisterFunction<Runtime> = async runtime => {
+        await registerMsw(runtime);
+
+        return registerRoutes(runtime, sessionManager, host);
     };
 
     return register;

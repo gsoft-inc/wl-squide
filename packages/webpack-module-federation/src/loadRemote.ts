@@ -64,9 +64,12 @@ function loadRemoteScript(url: string, { timeoutDelay = 2000 }: LoadRemoteScript
 
 export type LoadRemoteOptions = LoadRemoteScriptOptions;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type LoadRemoteFunction = (url: string, containerName: string, moduleName: string, options?: LoadRemoteOptions) => Promise<any>;
+
 // Implementation of https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers.
 // It's done this way rather than using the managed mecanism provided with ModuleFederationPlugin config because it's doesn't throw an error if a module is not available.
-export async function loadRemote(url: string, containerName: string, moduleName: string, options: LoadRemoteOptions = {}) {
+export const loadRemote: LoadRemoteFunction = async (url: string, containerName: string, moduleName: string, options: LoadRemoteOptions = {}) => {
     await loadRemoteScript(url, options);
 
     // Initializes the share scope. It fills the scope with known provided modules from this build and all remotes.
@@ -91,4 +94,4 @@ export async function loadRemote(url: string, containerName: string, moduleName:
     }
 
     return factory();
-}
+};

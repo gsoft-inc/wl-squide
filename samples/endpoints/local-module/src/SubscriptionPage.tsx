@@ -20,3 +20,5 @@ export function SubscriptionPage() {
         </>
     );
 }
+
+export const Component = SubscriptionPage;

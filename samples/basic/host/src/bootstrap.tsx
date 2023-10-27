@@ -29,9 +29,9 @@ const context: AppContext = {
     name: "Test app"
 };
 
-registerLocalModules([registerShell(sessionManager, { host: "@basic/host" }), registerHost, registerLocalModule], runtime, { context });
+await registerLocalModules([registerShell(sessionManager, { host: "@basic/host" }), registerHost, registerLocalModule], runtime, { context });
 
-registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime, { context });
 
 const root = createRoot(document.getElementById("root")!);
 

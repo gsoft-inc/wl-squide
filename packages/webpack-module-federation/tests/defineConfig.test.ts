@@ -100,9 +100,23 @@ describe("defineDevHostConfig", () => {
 
     test("when the router is not react-router, do not add react-router shared dependencies", () => {
         const config = defineDevHostConfig(SwcConfig, "host", 8080, {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            router: "another-router"
+            features: {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                router: "another-router"
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
+
+        expect(result).toMatchSnapshot();
+    });
+
+    test("when msw is activated, add msw shared dependency", () => {
+        const config = defineDevHostConfig(SwcConfig, "host", 8080, {
+            features: {
+                msw: true
+            }
         });
 
         const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
@@ -208,9 +222,23 @@ describe("defineBuildHostConfig", () => {
 
     test("when the router is not react-router, do not add react-router shared dependencies", () => {
         const config = defineBuildHostConfig(SwcConfig, "host", "http://localhost:8080/", {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            router: "another-router"
+            features: {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                router: "another-router"
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
+
+        expect(result).toMatchSnapshot();
+    });
+
+    test("when msw is activated, add msw shared dependency", () => {
+        const config = defineBuildHostConfig(SwcConfig, "host", "http://localhost:8080/", {
+            features: {
+                msw: true
+            }
         });
 
         const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
@@ -327,9 +355,23 @@ describe("defineDevRemoteModuleConfig", () => {
 
     test("when the router is not react-router, do not add react-router shared dependencies", () => {
         const config = defineDevRemoteModuleConfig(SwcConfig, "remote1", 8081, {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            router: "another-router"
+            features: {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                router: "another-router"
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
+
+        expect(result).toMatchSnapshot();
+    });
+
+    test("when msw is activated, add msw shared dependency", () => {
+        const config = defineDevRemoteModuleConfig(SwcConfig, "remote1", 8081, {
+            features: {
+                msw: true
+            }
         });
 
         const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
@@ -444,9 +486,23 @@ describe("defineBuildRemoteModuleConfig", () => {
 
     test("when the router is not react-router, do not add react-router shared dependencies", () => {
         const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", "http://localhost:8081/", {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            router: "another-router"
+            features: {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                router: "another-router"
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
+
+        expect(result).toMatchSnapshot();
+    });
+
+    test("when msw is activated, add msw shared dependency", () => {
+        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", "http://localhost:8081/", {
+            features: {
+                msw: true
+            }
         });
 
         const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));

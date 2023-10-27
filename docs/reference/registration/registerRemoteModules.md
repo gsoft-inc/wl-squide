@@ -1,11 +1,12 @@
 ---
 toc:
     depth: 2-3
+order: 90
 ---
 
 # registerRemoteModules
 
-Register one or many remote module(s). During the registration process, the module `register` function will be invoked with a `Runtime` instance and an optional `context` object.
+Register one or many remote module(s). During the registration process, the module `register` function will be invoked with a `Runtime` instance and an optional `context` object. To **defer the registration** of specific routes or navigation items, a registration function can return an anonymous function.
 
 > A remote module is a module that is not part of the current build but is **loaded at runtime** from a remote server.
 
@@ -51,18 +52,18 @@ const Remotes: RemoteDefinition = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
-registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime, { context });
 ```
 
 ```tsx !#5-15 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import type { AppContext } from "@sample/shared";
-import { About } from "./About.tsx";
+import { AboutPage } from "./AboutPage.tsx";
 
 export function register: ModuleRegisterFunction<Runtime, AppContext>(runtime, context) {
     runtime.registerRoute({
         path: "/about",
-        element: <About />
+        element: <AboutPage />
     });
 
     runtime.registerNavigationItem({
@@ -72,9 +73,82 @@ export function register: ModuleRegisterFunction<Runtime, AppContext>(runtime, c
 }
 ```
 
+### Defer the registration of routes or navigation items
+
+Sometimes, data must be fetched to determine which routes or navigation items should be registered by a given module. To address this, Squide offers a **two-phase registration mechanism**:
+
+1. The first phase allows modules to register their routes and navigation items that are not dependent on initial data (in addition to their MSW request handlers when fake endpoints are available).
+
+2. The second phase enables modules to register routes and navigation items that are dependent on initial data. Such a use case would be determining whether a route should be registered based on a feature flag. We refer to this second phase as **deferred registrations**.
+
+To defer a registration to the second phase, a module registration function can **return an anonymous function**. Once the modules are registered and the [completeRemoteModuleRegistrations](./completeRemoteModuleRegistrations.md) function is called, the deferred registration functions will be executed.
+
+```tsx !#19,22 host/src/bootstrap.tsx
+import { Runtime } from "@squide/react-router";
+import { completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import { fetchFeatureFlags, type AppContext } from "@sample/shared";
+
+const runtime = new Runtime();
+
+const context: AppContext = {
+    name: "Test app"
+};
+
+const Remotes: RemoteDefinition = [
+    { name: "remote1", url: "http://localhost:8081" }
+];
+
+await registerRemoteModules(Remotes, runtime, { context });
+
+// Don't fetch data in the bootstrapping code for a real application. This is done here
+// strictly for demonstration purpose.
+const featureFlags = await fetchFeatureFlags();
+
+// Complete the module registrations with the feature flags data.
+await completeRemoteModuleRegistrations(runtime, { featureFlags });
+```
+
+```tsx !#19-32 remote-module/src/register.tsx
+import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { AppContext, FeatureFlags } from "@sample/shared";
+import { AboutPage } from "./AboutPage.tsx";
+import { FeatureAPage } from "./FeatureAPage.tsx";
+
+export function register: ModuleRegisterFunction<Runtime, AppContext>(runtime, context) {
+    runtime.registerRoute({
+        path: "/about",
+        element: <AboutPage />
+    });
+
+    runtime.registerNavigationItem({
+        $label: "About",
+        to: "/about"
+    });
+
+    // Once the feature flags has been loaded by the host application, by completing the module registrations process,
+    // the deferred registration function will be called with the feature flags data.
+    return ({ featureFlags }: { featureFlags: FeatureFlags }) => {
+        // Only register the "feature-a" route and navigation item if the feature is active.
+        if (featureFlags.featureA) {
+            runtime.registerRoute({
+                path: "/feature-a",
+                element: <FeatureAPage />
+            });
+
+            runtime.registerNavigationItem({
+                $label: "Feature A",
+                to: "/feature-a"
+            });
+        }
+    };
+}
+```
+
+[!ref completeRemoteModuleRegistrations](./completeRemoteModuleRegistrations.md)
+
 ### Handle the registration errors
 
-```tsx !#15-19 host/src/bootstrap.tsx
+```tsx !#15-17 host/src/bootstrap.tsx
 import { Runtime } from "@squide/react-router";
 import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
 import type { AppContext } from "@sample/shared";
@@ -89,10 +163,8 @@ const Remotes: RemoteDefinition = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
-registerRemoteModules(Remotes, runtime, { context }).then(errors => {
-    errors.forEach(x => {
-        console.log(x);
-    });
+(await registerRemoteModules(Remotes, runtime, { context })).forEach(x => {
+    console.log(x);
 });
 ```
 

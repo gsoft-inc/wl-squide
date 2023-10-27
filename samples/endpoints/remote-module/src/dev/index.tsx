@@ -20,18 +20,17 @@ const runtime = new Runtime({
 
 // Registering the remote module as a static module because the "register" function
 // is local when developing in isolation.
-registerLocalModules([registerShell(sessionManager), registerDev, registerModule], runtime);
+await registerLocalModules([registerShell(sessionManager), registerDev, registerModule], runtime);
 
 // Register MSW after the local modules has been registered since the request handlers
 // will be registered by the modules.
 if (process.env.USE_MSW) {
     // Files including an import to the "msw" package are included dynamically to prevent adding
     // MSW stuff to the bundled when it's not used.
-    import("../../mocks/browser.ts").then(({ startMsw }) => {
-        startMsw(mswPlugin.requestHandlers);
+    const startMsw = (await import("../../mocks/browser.ts")).startMsw;
 
-        setMswAsStarted();
-    });
+    startMsw(mswPlugin.requestHandlers);
+    setMswAsStarted();
 }
 
 const root = createRoot(document.getElementById("root")!);

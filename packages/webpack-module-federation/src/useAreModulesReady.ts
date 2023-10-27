@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
 
-import { getLocalModulesRegistrationStatus, useRuntime } from "@squide/core";
-import { getRemoteModulesRegistrationStatus } from "./registerRemoteModules.ts";
+import { getLocalModuleRegistrationStatus, useRuntime, type ModuleRegistrationStatus } from "@squide/core";
+import { getRemoteModuleRegistrationStatus } from "./registerRemoteModules.ts";
 
 export interface UseAreModulesReadyOptions {
     // The interval is in milliseconds.
     interval?: number;
 }
 
-function areModulesReady() {
-    // Validating for "in-progress" instead of "ready" for the local module because "registerLocalModules"
-    // could never be called.
-    return getLocalModulesRegistrationStatus() !== "in-progress" && getRemoteModulesRegistrationStatus() !== "in-progress";
+export function areModulesReady(localModuleRegistrationStatus: ModuleRegistrationStatus, remoteModuleRegistrationStatus: ModuleRegistrationStatus) {
+    if (localModuleRegistrationStatus === "none" && remoteModuleRegistrationStatus === "none") {
+        return false;
+    }
+
+    // The registration for local or remote modules could be "none" if an application doesn't register either local or remote modules.
+    return (localModuleRegistrationStatus === "none" || localModuleRegistrationStatus === "ready") &&
+           (remoteModuleRegistrationStatus === "none" || remoteModuleRegistrationStatus === "ready");
 }
 
 export function useAreModulesReady({ interval = 10 }: UseAreModulesReadyOptions = {}) {
@@ -23,7 +27,7 @@ export function useAreModulesReady({ interval = 10 }: UseAreModulesReadyOptions 
     // Perform a reload once the modules are registered.
     useEffect(() => {
         const intervalId = setInterval(() => {
-            if (areModulesReady()) {
+            if (areModulesReady(getLocalModuleRegistrationStatus(), getRemoteModuleRegistrationStatus())) {
                 // Must clear interval before calling "_completeRegistration" in case there's an error.
                 clearInterval(intervalId);
 

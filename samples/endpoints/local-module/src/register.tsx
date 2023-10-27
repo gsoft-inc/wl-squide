@@ -1,3 +1,4 @@
+import type { DeferredRegistrationData } from "@endpoints/shell";
 import { getMswPlugin } from "@squide/msw";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -26,7 +27,15 @@ function Providers({ children }: { children: ReactNode }) {
     );
 }
 
-function registerRoutes(runtime: Runtime) {
+const registerRoutes: ModuleRegisterFunction<Runtime, unknown, DeferredRegistrationData> = runtime => {
+    runtime.registerRoute({
+        $visibility: "public",
+        path: "/public",
+        lazy: () => import("./PublicPage.tsx")
+    }, {
+        hoist: true
+    });
+
     runtime.registerRoute({
         path: "/subscription",
         lazy: async () => {
@@ -68,6 +77,11 @@ function registerRoutes(runtime: Runtime) {
     });
 
     runtime.registerNavigationItem({
+        $label: "Public page",
+        to: "/public"
+    });
+
+    runtime.registerNavigationItem({
         $label: "Tabs",
         $priority: 100,
         to: "/federated-tabs"
@@ -79,7 +93,21 @@ function registerRoutes(runtime: Runtime) {
     }, {
         menuId: "/federated-tabs"
     });
-}
+
+    return ({ featureFlags } = {}) => {
+        if (featureFlags?.featureA) {
+            runtime.registerRoute({
+                path: "/feature-a",
+                lazy: () => import("./FeatureAPage.tsx")
+            });
+
+            runtime.registerNavigationItem({
+                $label: "Feature A",
+                to: "/feature-a"
+            });
+        }
+    };
+};
 
 async function registerMsw(runtime: Runtime) {
     if (process.env.USE_MSW) {
@@ -93,8 +121,8 @@ async function registerMsw(runtime: Runtime) {
     }
 }
 
-export const registerLocalModule: ModuleRegisterFunction<Runtime> = runtime => {
-    registerRoutes(runtime);
+export const registerLocalModule: ModuleRegisterFunction<Runtime, unknown, DeferredRegistrationData> = async runtime => {
+    await registerMsw(runtime);
 
-    return registerMsw(runtime);
+    return registerRoutes(runtime);
 };

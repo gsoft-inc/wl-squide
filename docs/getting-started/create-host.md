@@ -104,7 +104,7 @@ const context: AppContext = {
 };
 
 // Register the remote module.
-registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime, { context });
 
 const root = createRoot(document.getElementById("root")!);
 
@@ -290,10 +290,10 @@ const context: AppContext = {
 };
 
 // Register the newly created local module.
-registerLocalModules([registerHost], runtime, { context });
+await registerLocalModules([registerHost], runtime, { context });
 
 // Register the remote module.
-registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime, { context });
 
 const root = createRoot(document.getElementById("root")!);
 

@@ -1,11 +1,6 @@
 import { useLogger } from "@squide/core";
 import { useEffect, useState } from "react";
-
-let isMswStarted = false;
-
-export function setMswAsStarted() {
-    isMswStarted = true;
-}
+import { isMswStarted } from "./setMswAsStarted.ts";
 
 export interface UseIsMswStartedOptions {
     // The interval is in milliseconds.
@@ -22,7 +17,7 @@ export function useIsMswStarted(enabled: boolean, { interval = 10 }: UseIsMswSta
     useEffect(() => {
         if (enabled) {
             const intervalId = setInterval(() => {
-                if (isMswStarted) {
+                if (isMswStarted()) {
                     logger.debug("[squide] %cMSW is ready%c.", "color: white; background-color: green;", "");
 
                     clearInterval(intervalId);

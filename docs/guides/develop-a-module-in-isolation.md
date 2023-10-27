@@ -1,5 +1,5 @@
 ---
-order: 50
+order: 60
 ---
 
 # Develop a module in isolation
@@ -149,9 +149,9 @@ const context: AppContext = {
 };
 
 // Register the shell module.
-registerLocalModules([registerShell, registerHost], runtime, { context });
+await registerLocalModules([registerShell, registerHost], runtime, { context });
 
-registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime, { context });
 
 const root = createRoot(document.getElementById("root")!);
 
@@ -214,7 +214,7 @@ const runtime = new Runtime({
 
 // Registering the remote module as a static module because the "register" function 
 // is local when developing in isolation.
-registerLocalModules([registerModule, registerDev, registerShell], runtime);
+await registerLocalModules([registerModule, registerDev, registerShell], runtime);
 
 const root = createRoot(document.getElementById("root")!);
 

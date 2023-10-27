@@ -151,7 +151,7 @@ const context: AppContext = {
 };
 
 // Register the remote module.
-registerRemoteModules(Remotes, runtime, context);
+await registerRemoteModules(Remotes, runtime, context);
 
 // Register the local module.
 registerLocalModule([registerLocalModule], runtime, context);

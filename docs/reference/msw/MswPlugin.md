@@ -22,9 +22,11 @@ None
 
 ## Usage
 
-!!!info
-Do not include MSW in production code. To address this, we recommend conditionally importing the code that includes the [msw](https://www.npmjs.com/package/msw) package based on an environment variable.
+!!! warning
+Don't forget to [activate the msw feature](../webpack/defineDevHostConfig.md#activate-optional-features) on the host application as well as every remote module.
 !!!
+
+Do not include MSW in production code. To address this, we recommend conditionally importing the code that includes the [msw](https://www.npmjs.com/package/msw) package based on an environment variable.
 
 To do so, first use [cross-env](https://www.npmjs.com/package/cross-env) to define a `USE_MSW` environment variable in a PNPM script:
 
@@ -93,7 +95,7 @@ const runtime = new Runtime({
 
 ### Register request handlers
 
-```ts !#3,10
+```ts !#3,8,10
 import { getMswPlugin } from "@squide/msw";
 
 if (process.env.USE_MSW) {

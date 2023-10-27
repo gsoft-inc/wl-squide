@@ -7,6 +7,9 @@ import { swcConfig } from "./swc.build.js";
 const publicPath = process.env.NETLIFY === "true" ? "https://squide-endpoints-remote-module.netlify.app/" : "http://localhost:8081/";
 
 export default defineBuildRemoteModuleConfig(swcConfig, "remote1", publicPath, {
+    features: {
+        msw: true
+    },
     sharedDependencies: {
         "@endpoints/shared": {
             singleton: true

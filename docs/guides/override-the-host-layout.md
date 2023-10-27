@@ -71,7 +71,7 @@ export function RootLayout() {
 }
 ```
 
-In the previous code sample, the `RootLayout` serves as the default layout for the homepage as well as for every page (route) registered by a module that are not nested with either the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) or the [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option.
+In the previous code sample, the `RootLayout` serves as the default layout for the homepage as well as for every page (route) registered by a module that are not nested under a parent route with either the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) or the [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option.
 
 For most pages, this is the behavior expected by the author. However, for pages such as a login, the default `RootLayout` isn't suitable because the page is not bound to a user session (the user is not even authenticated yet).
 

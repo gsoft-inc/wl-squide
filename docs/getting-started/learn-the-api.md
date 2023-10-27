@@ -173,7 +173,7 @@ const runtime = new Runtime({
 
 Then, [register the modules MSW request handlers](../reference/msw/MswPlugin.md#register-request-handlers) at registration:
 
-```ts !#12 remote-module/src/register.tsx
+```ts !#10,12 remote-module/src/register.tsx
 import { getMswPlugin } from "@squide/msw";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router"; 
 
@@ -196,23 +196,23 @@ Don't forget to mark the registration function as `async` since there's a dynami
 
 Then, [retrieve the modules MSW request handlers](../reference/msw/MswPlugin.md#retrieve-the-request-handlers) in the host application and start MSW:
 
-```ts !#10,13
+```ts !#9,12
 import { registerRemoteModules } from "@squide/webpack-module-federation";
 import { setMswAsStarted } from "@squide/msw";
 
-registerRemoteModules(Remotes, runtime).then(() => {
-    if (process.env.USE_MSW) {
-        // Files including an import to the "msw" package are included dynamically to prevent adding
-        // MSW stuff to the bundled when it's not used.
-        import("../mocks/browser.ts").then(({ startMsw }) => {
-            // Will start MSW with the request handlers provided by every module.
-            startMsw(mswPlugin.requestHandlers);
+await registerRemoteModules(Remotes, runtime);
 
-            // Indicate to resources that are dependent on MSW that the service has been started.
-            setMswAsStarted();
-        });
-    }
-});
+if (process.env.USE_MSW) {
+    // Files including an import to the "msw" package are included dynamically to prevent adding
+    // MSW stuff to the bundled when it's not used.
+    const startMsw = (await import("../mocks/browser.ts")).startMsw;
+
+    // Will start MSW with the request handlers provided by every module.
+    startMsw(mswPlugin.requestHandlers);
+
+    // Indicate to resources that are dependent on MSW that the service has been started.
+    setMswAsStarted();
+}
 ```
 
 Finally, make sure that the [application rendering is delayed](../reference/msw/useIsMswReady.md) until MSW is started:

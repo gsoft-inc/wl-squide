@@ -53,8 +53,8 @@ async function registerMsw(runtime: Runtime) {
     }
 }
 
-export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
-    registerRoutes(runtime);
+export const registerHost: ModuleRegisterFunction<Runtime> = async runtime => {
+    await registerMsw(runtime);
 
-    return registerMsw(runtime);
+    return registerRoutes(runtime);
 };

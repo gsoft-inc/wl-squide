@@ -7,6 +7,9 @@ import { swcConfig } from "./swc.build.js";
 const publicPath = process.env.NETLIFY === "true" ? "https://squide-endpoints-host.netlify.app/" : "http://localhost:8080/";
 
 export default defineBuildHostConfig(swcConfig, "host", publicPath, {
+    features: {
+        msw: true
+    },
     sharedDependencies: {
         "@endpoints/shared": {
             singleton: true,

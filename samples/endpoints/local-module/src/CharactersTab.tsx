@@ -36,3 +36,5 @@ export function CharactersTab() {
         </div>
     );
 }
+
+export const Component = CharactersTab;

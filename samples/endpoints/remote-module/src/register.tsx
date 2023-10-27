@@ -1,8 +1,9 @@
+import type { DeferredRegistrationData } from "@endpoints/shell";
 import { getMswPlugin } from "@squide/msw";
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { Providers } from "./Providers.tsx";
 
-function registerRoutes(runtime: Runtime) {
+const registerRoutes: ModuleRegisterFunction<Runtime, unknown, DeferredRegistrationData> = runtime => {
     runtime.registerRoute({
         path: "/federated-tabs/episodes",
         lazy: async () => {
@@ -62,7 +63,33 @@ function registerRoutes(runtime: Runtime) {
     }, {
         menuId: "/federated-tabs"
     });
-}
+
+    return ({ featureFlags } = {}) => {
+        if (featureFlags?.featureB) {
+            runtime.registerRoute({
+                path: "/feature-b",
+                lazy: () => import("./FeatureBPage.tsx")
+            });
+
+            runtime.registerNavigationItem({
+                $label: "Feature B",
+                to: "/feature-b"
+            });
+        }
+
+        if (featureFlags?.featureC) {
+            runtime.registerRoute({
+                path: "/feature-c",
+                lazy: () => import("./FeatureCPage.tsx")
+            });
+
+            runtime.registerNavigationItem({
+                $label: "Feature C",
+                to: "/feature-c"
+            });
+        }
+    };
+};
 
 async function registerMsw(runtime: Runtime) {
     if (process.env.USE_MSW) {
@@ -76,8 +103,8 @@ async function registerMsw(runtime: Runtime) {
     }
 }
 
-export const register: ModuleRegisterFunction<Runtime> = async runtime => {
-    registerRoutes(runtime);
+export const register: ModuleRegisterFunction<Runtime, unknown, DeferredRegistrationData> = async runtime => {
+    await registerMsw(runtime);
 
-    return registerMsw(runtime);
+    return registerRoutes(runtime);
 };

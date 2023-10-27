@@ -14,7 +14,7 @@ const runtime = new Runtime({
     sessionAccessor
 });
 
-registerLocalModules([registerShell(sessionManager), registerDev, registerModule], runtime);
+await registerLocalModules([registerShell(sessionManager), registerDev, registerModule], runtime);
 
 const root = createRoot(document.getElementById("root")!);
 

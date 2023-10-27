@@ -1,4 +1,4 @@
-import { isFunction, isNil, registerModule, type AbstractRuntime, type DeferredRegisterationFunction, type Logger, type ModuleRegistrationStatus } from "@squide/core";
+import { isFunction, isNil, registerModule, type AbstractRuntime, type DeferredRegistrationFunction, type Logger, type ModuleRegistrationStatus } from "@squide/core";
 import { loadRemote as loadModuleFederationRemote, type LoadRemoteFunction } from "./loadRemote.ts";
 import { RemoteEntryPoint, RemoteModuleName, type RemoteDefinition } from "./remoteDefinition.ts";
 
@@ -6,7 +6,7 @@ interface DeferredRegistration<TData = unknown> {
     url: string;
     containerName: string;
     index: string;
-    fct: DeferredRegisterationFunction<TData>;
+    fct: DeferredRegistrationFunction<TData>;
 }
 
 export interface RegisterRemoteModulesOptions<TContext> {
@@ -77,14 +77,14 @@ export class RemoteModuleRegistry {
 
                 runtime.logger.debug(`[squide] [remote] ${index + 1}/${remotes.length} Registering module "${RemoteModuleName}" from container "${containerName}" of remote "${remoteUrl}".`);
 
-                const optionalDeferedRegistration = await registerModule<TRuntime, TContext, TData>(module.register, runtime, context);
+                const optionalDeferredRegistration = await registerModule<TRuntime, TContext, TData>(module.register, runtime, context);
 
-                if (isFunction(optionalDeferedRegistration)) {
+                if (isFunction(optionalDeferredRegistration)) {
                     this.#deferredRegistrations.push({
                         url: remoteUrl,
                         containerName: x.name,
                         index: `${index + 1}/${remotes.length}`,
-                        fct: optionalDeferedRegistration as DeferredRegisterationFunction<unknown>
+                        fct: optionalDeferredRegistration as DeferredRegistrationFunction<unknown>
                     });
                 }
 
@@ -125,7 +125,7 @@ export class RemoteModuleRegistry {
         }
 
         if (this.#registrationStatus === "ready") {
-            // No defered registrations were returned by the remote modules, skip the completion process.
+            // No deferred registrations were returned by the remote modules, skip the completion process.
             return Promise.resolve(errors);
         }
 

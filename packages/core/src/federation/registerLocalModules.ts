@@ -1,11 +1,11 @@
 import { isFunction } from "../index.ts";
 import type { AbstractRuntime } from "../runtime/abstractRuntime.ts";
 import type { ModuleRegistrationStatus } from "./moduleRegistrationStatus.ts";
-import { registerModule, type DeferredRegisterationFunction, type ModuleRegisterFunction } from "./registerModule.ts";
+import { registerModule, type DeferredRegistrationFunction, type ModuleRegisterFunction } from "./registerModule.ts";
 
-interface DeferredRegisteration<TData = unknown> {
+interface DeferredRegistration<TData = unknown> {
     index: string;
-    fct: DeferredRegisterationFunction<TData>;
+    fct: DeferredRegistrationFunction<TData>;
 }
 
 export interface RegisterLocalModulesOptions<TContext> {
@@ -20,7 +20,7 @@ export interface LocalModuleRegistrationError {
 export class LocalModuleRegistry {
     #registrationStatus: ModuleRegistrationStatus = "none";
 
-    readonly #deferredRegistrations: DeferredRegisteration[] = [];
+    readonly #deferredRegistrations: DeferredRegistration[] = [];
 
     async registerModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext>[], runtime: TRuntime, { context }: RegisterLocalModulesOptions<TContext> = {}) {
         const errors: LocalModuleRegistrationError[] = [];
@@ -37,12 +37,12 @@ export class LocalModuleRegistry {
             runtime.logger.debug(`[squide] [local] ${index + 1}/${registerFunctions.length} Registering local module.`);
 
             try {
-                const optionalDeferedRegistration = await registerModule(x as ModuleRegisterFunction<AbstractRuntime>, runtime, context);
+                const optionalDeferredRegistration = await registerModule(x as ModuleRegisterFunction<AbstractRuntime>, runtime, context);
 
-                if (isFunction(optionalDeferedRegistration)) {
+                if (isFunction(optionalDeferredRegistration)) {
                     this.#deferredRegistrations.push({
                         index: `${index + 1}/${registerFunctions.length}`,
-                        fct: optionalDeferedRegistration as DeferredRegisterationFunction
+                        fct: optionalDeferredRegistration as DeferredRegistrationFunction
                     });
                 }
             } catch (error: unknown) {
@@ -76,7 +76,7 @@ export class LocalModuleRegistry {
         }
 
         if (this.#registrationStatus === "ready") {
-            // No defered registrations were returned by the local modules, skip the completion process.
+            // No deferred registrations were returned by the local modules, skip the completion process.
             return Promise.resolve(errors);
         }
 

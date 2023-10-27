@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751742817055">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751745436341">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.751742817055" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.751745436341" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.751742817055" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.751745436341" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.751742817055" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.751742817055" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.751745436341" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.751745436341" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -390,11 +390,11 @@ await completeModuleRegistrations(runtime, { featureFlags });</code></pre>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
 <pre class="language-tsx" data-line="19-32"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
-import type { AppContext, FeatureFlags } from &quot;@sample/shared&quot;;
+import type { AppContext, DeferredRegistrationData } from &quot;@sample/shared&quot;;
 import { AboutPage } from &quot;./AboutPage.tsx&quot;;
 import { FeatureAPage } from &quot;./FeatureAPage.tsx&quot;;
 
-export function register: ModuleRegisterFunction&lt;Runtime, AppContext&gt;(runtime, context) {
+export const register: ModuleRegisterFunction&lt;Runtime, AppContext, DeferredRegistrationData&gt; = async (runtime, context) =&gt; {
     runtime.registerRoute({
         path: &quot;/about&quot;,
         element: &lt;AboutPage /&gt;
@@ -407,7 +407,7 @@ export function register: ModuleRegisterFunction&lt;Runtime, AppContext&gt;(runt
 
     // Once the feature flags has been loaded by the host application, by completing the module registrations process,
     // the deferred registration function will be called with the feature flags data.
-    return ({ featureFlags }: { featureFlags: FeatureFlags }) =&gt; {
+    return ({ featureFlags } = {}) =&gt; {
         // Only register the &quot;feature-a&quot; route and navigation item if the feature is active.
         if (featureFlags.featureA) {
             runtime.registerRoute({

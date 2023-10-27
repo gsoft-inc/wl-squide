@@ -1,5 +1,22 @@
 # @squide/webpack-module-federation
 
+## 2.1.0
+
+### Minor Changes
+
+- [#101](https://github.com/gsoft-inc/wl-squide/pull/101) [`1e77dca`](https://github.com/gsoft-inc/wl-squide/commit/1e77dcaf26660e42f2d5054b3fa1cd018c2ec009) Thanks [@patricklafrance](https://github.com/patricklafrance)! - This release introduces new APIs to support deferred routes registration with the ultimate goal of conditionally adding routes based on feature flags.
+
+  - Added a `completeRemoteModuleRegistrations` function to complete the second phase of the registration process for local remote modules.
+  - Added a `completeModuleRegistrations` function to execute `completeLocalModuleRegistrations` and `completeRemoteModuleRegistrations` in a single call.
+  - Added the `useAreModulesRegistered` hook to re-render the application once all the modules are registered (but not ready).
+  - Reworked the `useAreModulesReady` hook to be complimentary to the `useAreModulesRegistered` hook when deferred registrations are registered. The hook is backward compatible and includes no breaking changes.
+  - Added a `features` section to the defineConfig functions options.
+
+### Patch Changes
+
+- Updated dependencies [[`1e77dca`](https://github.com/gsoft-inc/wl-squide/commit/1e77dcaf26660e42f2d5054b3fa1cd018c2ec009)]:
+  - @squide/core@2.1.0
+
 ## 2.0.0
 
 ### Major Changes

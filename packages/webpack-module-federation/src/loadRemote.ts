@@ -64,7 +64,6 @@ function loadRemoteScript(url: string, { timeoutDelay = 2000 }: LoadRemoteScript
 
 export type LoadRemoteOptions = LoadRemoteScriptOptions;
 
-// TBD: Alex helpppp
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type LoadRemoteFunction = (url: string, containerName: string, moduleName: string, options?: LoadRemoteOptions) => Promise<any>;
 

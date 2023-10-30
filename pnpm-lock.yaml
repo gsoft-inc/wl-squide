@@ -131,6 +131,52 @@ importers:
         specifier: 5.2.2
         version: 5.2.2
 
+  packages/firefly:
+    dependencies:
+      '@squide/msw':
+        specifier: workspace:*
+        version: link:../msw
+      '@squide/react-router':
+        specifier: workspace:*
+        version: link:../react-router
+      '@squide/webpack-module-federation':
+        specifier: workspace:*
+        version: link:../webpack-module-federation
+    devDependencies:
+      '@types/react':
+        specifier: 18.2.28
+        version: 18.2.28
+      '@types/react-dom':
+        specifier: 18.2.13
+        version: 18.2.13
+      '@workleap/eslint-plugin':
+        specifier: 3.0.0
+        version: 3.0.0(@typescript-eslint/parser@6.8.0)(eslint@8.51.0)(jest@29.7.0)(typescript@5.2.2)
+      '@workleap/tsup-configs':
+        specifier: 3.0.1
+        version: 3.0.1(tsup@7.2.0)(typescript@5.2.2)
+      '@workleap/typescript-configs':
+        specifier: 3.0.2
+        version: 3.0.2(typescript@5.2.2)
+      msw:
+        specifier: 1.3.2
+        version: 1.3.2(typescript@5.2.2)
+      react:
+        specifier: 18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: 18.2.0
+        version: 18.2.0(react@18.2.0)
+      react-router-dom:
+        specifier: 6.17.0
+        version: 6.17.0(react-dom@18.2.0)(react@18.2.0)
+      tsup:
+        specifier: 7.2.0
+        version: 7.2.0(@swc/core@1.3.93)(postcss@8.4.31)(ts-node@10.9.1)(typescript@5.2.2)
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
+
   packages/msw:
     dependencies:
       '@squide/core':
@@ -3612,7 +3658,7 @@ packages:
       detect-libc: 2.0.2
       https-proxy-agent: 5.0.1(supports-color@9.4.0)
       make-dir: 3.1.0
-      node-fetch: 2.6.12
+      node-fetch: 2.7.0
       nopt: 5.0.0
       npmlog: 5.0.1
       rimraf: 3.0.2
@@ -4237,7 +4283,7 @@ packages:
       '@octokit/request-error': 3.0.3
       '@octokit/types': 9.3.2
       is-plain-object: 5.0.0
-      node-fetch: 2.6.12
+      node-fetch: 2.7.0
       universal-user-agent: 6.0.0
     transitivePeerDependencies:
       - encoding

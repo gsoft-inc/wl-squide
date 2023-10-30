@@ -7,6 +7,12 @@ import { swcConfig } from "./swc.dev.js";
 
 let config;
 
+function tempTransformer(config) {
+    config.output.publicPath = "auto";
+
+    return config;
+}
+
 if (!process.env.ISOLATED) {
     config = defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
         features: {
@@ -21,7 +27,8 @@ if (!process.env.ISOLATED) {
             "NETLIFY": process.env.NETLIFY === "true",
             "ISOLATED": process.env.ISOLATED === "true",
             "USE_MSW": process.env.USE_MSW === "true"
-        }
+        },
+        transformers: [tempTransformer]
     });
 } else {
     config = defineDevConfig(swcConfig, {

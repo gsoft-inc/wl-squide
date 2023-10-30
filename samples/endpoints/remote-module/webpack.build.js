@@ -6,6 +6,12 @@ import { swcConfig } from "./swc.build.js";
 // The trailing / is very important, otherwise paths will not be resolved correctly.
 const publicPath = process.env.NETLIFY === "true" ? "https://squide-endpoints-remote-module.netlify.app/" : "http://localhost:8081/";
 
+function tempTransformer(config) {
+    config.output.publicPath = "auto";
+
+    return config;
+}
+
 export default defineBuildRemoteModuleConfig(swcConfig, "remote1", publicPath, {
     features: {
         msw: true
@@ -18,5 +24,6 @@ export default defineBuildRemoteModuleConfig(swcConfig, "remote1", publicPath, {
     environmentVariables: {
         "NETLIFY": process.env.NETLIFY === "true",
         "USE_MSW": process.env.USE_MSW === "true"
-    }
+    },
+    transformers: [tempTransformer]
 });

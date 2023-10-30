@@ -119,6 +119,15 @@ export function defineHostModuleFederationPluginOptions(applicationName: string,
     };
 }
 
+function trySetHtmlWebpackPluginPublicPath(htmlWebpackPluginOptions: HtmlWebpackPlugin.Options) {
+    if (!htmlWebpackPluginOptions.publicPath) {
+        // Fix HMR and page reloads when using `publicPath: auto` in the host and remotes webpack configuration.
+        htmlWebpackPluginOptions.publicPath = "/";
+    }
+
+    return htmlWebpackPluginOptions;
+}
+
 export interface DefineDevHostConfigOptions extends Omit<DefineDevConfigOptions, "htmlWebpackPlugin" | "fastRefresh" | "port"> {
     htmlWebpackPluginOptions?: HtmlWebpackPlugin.Options;
     features?: Features;
@@ -144,7 +153,7 @@ export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: strin
         port,
         cache,
         fastRefresh: false,
-        htmlWebpackPlugin: htmlWebpackPluginOptions,
+        htmlWebpackPlugin: trySetHtmlWebpackPluginPublicPath(htmlWebpackPluginOptions ?? {}),
         plugins: [
             ...plugins,
             new webpack.container.ModuleFederationPlugin(moduleFederationPluginOptions)
@@ -161,7 +170,7 @@ export interface DefineBuildHostConfigOptions extends Omit<DefineBuildConfigOpti
 }
 
 // The function return type is mandatory, otherwise we got an error TS4058.
-export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: string, publicPath: string, options: DefineBuildHostConfigOptions = {}): webpack.Configuration {
+export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: string, publicPath: `${string}/`, options: DefineBuildHostConfigOptions = {}): webpack.Configuration {
     const {
         entry = path.resolve("./src/index.ts"),
         cache = false,
@@ -178,7 +187,7 @@ export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: str
         entry,
         publicPath,
         cache,
-        htmlWebpackPlugin: htmlWebpackPluginOptions,
+        htmlWebpackPlugin: trySetHtmlWebpackPluginPublicPath(htmlWebpackPluginOptions ?? {}),
         plugins: [
             ...plugins,
             new webpack.container.ModuleFederationPlugin(moduleFederationPluginOptions)
@@ -290,7 +299,7 @@ export interface DefineBuildRemoteModuleConfigOptions extends Omit<DefineBuildCo
 }
 
 // The function return type is mandatory, otherwise we got an error TS4058.
-export function defineBuildRemoteModuleConfig(swcConfig: SwcConfig, applicationName: string, publicPath: string, options: DefineBuildRemoteModuleConfigOptions = {}): webpack.Configuration {
+export function defineBuildRemoteModuleConfig(swcConfig: SwcConfig, applicationName: string, publicPath: `${string}/`, options: DefineBuildRemoteModuleConfigOptions = {}): webpack.Configuration {
     const {
         entry = path.resolve("./src/register.tsx"),
         cache = false,

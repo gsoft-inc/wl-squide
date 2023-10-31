@@ -35,6 +35,11 @@
         "react": "*",
         "react-dom": "*"
     },
+    "peerDependenciesMeta": {
+        "msw": {
+            "optional": true
+        }
+    },
     "devDependencies": {
         "@types/jest": "29.5.6",
         "@types/react": "18.2.33",

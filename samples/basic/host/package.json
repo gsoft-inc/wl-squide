@@ -39,6 +39,7 @@
         "@basic/local-module": "workspace:*",
         "@basic/shared": "workspace:*",
         "@basic/shell": "workspace:*",
+        "@squide/firefly": "workspace:*",
         "@squide/react-router": "workspace:*",
         "@squide/webpack-module-federation": "workspace:*",
         "react": "18.2.0",

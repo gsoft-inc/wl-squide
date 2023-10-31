@@ -62,6 +62,7 @@
         "@endpoints/shared": "workspace:*",
         "@endpoints/shell": "workspace:*",
         "@squide/fakes": "workspace:*",
+        "@squide/firefly": "workspace:*",
         "@squide/msw": "workspace:*",
         "@squide/react-router": "workspace:*",
         "@tanstack/react-query": "^5.4.3",

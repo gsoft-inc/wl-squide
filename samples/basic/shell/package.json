@@ -20,6 +20,7 @@
     },
     "peerDependencies": {
         "@basic/shared": "*",
+        "@squide/firefly": "*",
         "@squide/react-router": "*",
         "@squide/webpack-module-federation": "*",
         "react": "*",
@@ -29,6 +30,7 @@
     "devDependencies": {
         "@basic/shared": "workspace:*",
         "@remix-run/router": "1.10.0",
+        "@squide/firefly": "workspace:*",
         "@squide/react-router": "workspace:*",
         "@squide/webpack-module-federation": "workspace:*",
         "@types/react": "18.2.33",

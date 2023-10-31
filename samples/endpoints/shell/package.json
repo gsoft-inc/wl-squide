@@ -21,6 +21,7 @@
     "peerDependencies": {
         "@endpoints/shared": "*",
         "@squide/fakes": "*",
+        "@squide/firefly": "*",
         "@squide/msw": "*",
         "@squide/react-router": "*",
         "@squide/webpack-module-federation": "*",
@@ -33,6 +34,7 @@
     "devDependencies": {
         "@endpoints/shared": "workspace:*",
         "@remix-run/router": "1.10.0",
+        "@squide/firefly": "workspace:*",
         "@squide/fakes": "workspace:*",
         "@squide/msw": "workspace:*",
         "@squide/react-router": "workspace:*",

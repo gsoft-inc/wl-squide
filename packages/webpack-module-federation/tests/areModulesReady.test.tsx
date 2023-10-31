@@ -49,7 +49,7 @@ test("when only local modules are registered and they are ready, return true", a
         () => {}
     ], runtime);
 
-    await localModuleRegistry.completeModuleRegistrations(runtime);
+    await localModuleRegistry.completeModuleRegistrations(runtime, {});
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeTruthy();
 });
@@ -67,7 +67,7 @@ test("when only remote modules are registered and they are ready, return true", 
         { name: "Dummy-3", url: "http://anything3.com" }
     ], runtime);
 
-    await remoteModuleRegistry.completeModuleRegistrations(runtime);
+    await remoteModuleRegistry.completeModuleRegistrations(runtime, {});
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeTruthy();
 });
@@ -85,7 +85,7 @@ test("when only local module deferred registrations are registered and they are 
         () => () => {}
     ], runtime);
 
-    await localModuleRegistry.completeModuleRegistrations(runtime);
+    await localModuleRegistry.completeModuleRegistrations(runtime, {});
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeTruthy();
 });
@@ -104,7 +104,7 @@ test("when only remote module deferred registrations are registered and they are
     ], runtime);
 
 
-    await remoteModuleRegistry.completeModuleRegistrations(runtime);
+    await remoteModuleRegistry.completeModuleRegistrations(runtime, {});
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeTruthy();
 });
@@ -128,8 +128,8 @@ test("when local module deferred registrations and remote module deferred regist
         { name: "Dummy-3", url: "http://anything3.com" }
     ], runtime);
 
-    await localModuleRegistry.completeModuleRegistrations(runtime);
-    await remoteModuleRegistry.completeModuleRegistrations(runtime);
+    await localModuleRegistry.completeModuleRegistrations(runtime, {});
+    await remoteModuleRegistry.completeModuleRegistrations(runtime, {});
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeTruthy();
 });
@@ -153,8 +153,8 @@ test("when local module deferred registrations and remote modules are registered
         { name: "Dummy-3", url: "http://anything3.com" }
     ], runtime);
 
-    await localModuleRegistry.completeModuleRegistrations(runtime);
-    await remoteModuleRegistry.completeModuleRegistrations(runtime);
+    await localModuleRegistry.completeModuleRegistrations(runtime, {});
+    await remoteModuleRegistry.completeModuleRegistrations(runtime, {});
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeTruthy();
 });
@@ -178,8 +178,8 @@ test("when local modules and remote module deferred registrations are registered
         { name: "Dummy-3", url: "http://anything3.com" }
     ], runtime);
 
-    await localModuleRegistry.completeModuleRegistrations(runtime);
-    await remoteModuleRegistry.completeModuleRegistrations(runtime);
+    await localModuleRegistry.completeModuleRegistrations(runtime, {});
+    await remoteModuleRegistry.completeModuleRegistrations(runtime, {});
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeTruthy();
 });
@@ -257,7 +257,7 @@ test("when local module deferred registrations and remote module deferred regist
         { name: "Dummy-3", url: "http://anything3.com" }
     ], runtime);
 
-    await localModuleRegistry.completeModuleRegistrations(runtime);
+    await localModuleRegistry.completeModuleRegistrations(runtime, {});
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeFalsy();
 });
@@ -281,7 +281,7 @@ test("when local module deferred registrations and remote module deferred regist
         { name: "Dummy-3", url: "http://anything3.com" }
     ], runtime);
 
-    await remoteModuleRegistry.completeModuleRegistrations(runtime);
+    await remoteModuleRegistry.completeModuleRegistrations(runtime, {});
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeFalsy();
 });

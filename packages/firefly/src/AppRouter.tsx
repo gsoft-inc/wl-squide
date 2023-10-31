@@ -1,124 +1,128 @@
 import { useIsMswStarted } from "@squide/msw";
-import { useIsRouteMatchProtected, useLogger, useRoutes, useRuntime, type Logger } from "@squide/react-router";
-import { completeModuleRegistrations, useAreModulesReady, useAreModulesRegistered } from "@squide/webpack-module-federation";
-import { useEffect, useMemo, useState } from "react";
-import { Outlet, RouterProvider, createBrowserRouter, useLocation } from "react-router-dom";
+import { useIsRouteMatchProtected, useLogger, useRoutes, type Route } from "@squide/react-router";
+import { useAreModulesReady, useAreModulesRegistered } from "@squide/webpack-module-federation";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { Outlet, RouterProvider, createBrowserRouter, useLocation, type RouterProviderProps } from "react-router-dom";
 
-/*
-AppRouter
-    - loader - fallback would be better
-    - onFetchInitialData -> (doit passer un "signal") - Fetch c'est un peu bad car ça pourrait être in memory - onRetrieveInitialData ?!?! - onLoadInitialData - La valeur par défaut est Promise.resolve
-        -> onLoadPublicData
-    - onFetchSession -> onLoadSession
-    - onFetchProtectedData -> Si fournie, est inclus dans le isReady - (doit passer un "signal") -> onLoadProtectedData
-    - waitForMsw
-    - rootRoute - Si fournis est-ce le parent de la root route du AppRouter?
-    - routerProviderOptions
-*/
+export type OnLoadPublicDataFunction = (signal: AbortSignal) => Promise<unknown>;
 
-/*
+export type onLoadProtectedDataFunction = (signal: AbortSignal) => Promise<unknown>;
 
-import { AppRouter as FireflyAppRouter } from "@squide/firefly";
-
-export function AppRouter() {
-    const [subscription, setSubscription] = useState<Subscription>();
-
-    onFetchProtectedData() {
-        ....
-
-
-    }
-
-    return (
-        <TelemetryContext.Provider value={}>
-            <SubcriptionContext.Provider value={subscription}
-                <FireflyAppRouter onFetchProtectedData={onFetchProtectedData} />
-            </SubcriptionContext.Provider >
-        </TelemetryContext.Provider value={}>
-    )
-}
-
-*/
-
+export type OnCompleteRegistrationFunction = () => Promise<unknown>;
 
 interface RootRouteProps {
+    fallback: ReactNode;
+    onLoadPublicData?: OnLoadPublicDataFunction;
+    onLoadProtectedData?: onLoadProtectedDataFunction;
+    onCompleteRegistration?: OnCompleteRegistrationFunction;
     waitForMsw: boolean;
     areModulesRegistered: boolean;
     areModulesReady: boolean;
 }
 
 // Most of the bootstrapping logic has been moved to this component because AppRouter
-// cannot leverage "useLocation" since it's depend on "RouterProvider".
-export function RootRoute({ waitForMsw, areModulesRegistered, areModulesReady }: RootRouteProps) {
-    const [isPublicDataLoaded, setIsPublicDataLoaded] = useState(false);
-    const [isProtectedDataLoaded, setIsProtectedDataLoaded] = useState(false);
+// cannot leverage "useLocation" since it must be used in a child component of "RouterProvider".
+export function RootRoute(props: RootRouteProps) {
+    const {
+        fallback,
+        onLoadPublicData,
+        onLoadProtectedData,
+        onCompleteRegistration,
+        waitForMsw,
+        areModulesRegistered,
+        areModulesReady
+    } = props;
 
-    const runtime = useRuntime();
+    // Initialize as loaded if no handler is provided to load the public data.
+    const [isPublicDataLoaded, setIsPublicDataLoaded] = useState(!onLoadPublicData);
+
+    // Initialize as loaded if no handler is provided to load the protected data.
+    const [isProtectedDataLoaded, setIsProtectedDataLoaded] = useState(!onLoadProtectedData);
+
     const logger = useLogger();
     const location = useLocation();
 
     // Re-render the app once MSW is started, otherwise, the API calls for module routes will return a 404 status.
     const isMswStarted = useIsMswStarted(waitForMsw);
 
+    useEffect(() => {
+        // Only log these messages if MSW is enabled.
+        if (waitForMsw) {
+            if ((areModulesRegistered || areModulesReady) && !isMswStarted) {
+                logger.debug(`[shell] Modules are ${areModulesReady ? "ready" : "registered"}, waiting for MSW to start...`);
+            }
+
+            if (!areModulesRegistered && !areModulesReady && isMswStarted) {
+                logger.debug("[shell] MSW is started, waiting for the modules...");
+            }
+        }
+    }, [logger, areModulesRegistered, areModulesReady, isMswStarted, waitForMsw]);
+
+    useEffect(() => {
+        // Don't go further if no handler has been provided to load public data.
+        if (onLoadPublicData) {
+            if ((areModulesRegistered || areModulesReady) && isMswStarted) {
+                if (!isPublicDataLoaded) {
+                    logger.debug("[shell] Loading public data.");
+
+                    const abordController = new AbortController();
+
+                    onLoadPublicData(abordController.signal).finally(() => {
+                        setIsPublicDataLoaded(true);
+
+                        logger.debug("[shell] Public data has been loaded.");
+                    });
+
+                    return () => {
+                        abordController.abort();
+                    };
+                }
+            }
+        }
+    }, [logger, areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded, onLoadPublicData]);
+
     const isActiveRouteProtected = useIsRouteMatchProtected(location);
 
     useEffect(() => {
-        if ((areModulesRegistered || areModulesReady) && !isMswStarted) {
-            logger.debug(`[firefly] Modules are ${areModulesReady ? "ready" : "registered"}, waiting for MSW to start...`);
-        }
+        // Don't go further if no handler has been provided to load protected data.
+        if (onLoadProtectedData) {
+            if ((areModulesRegistered || areModulesReady) && isMswStarted) {
+                if (isActiveRouteProtected) {
+                    if (!isProtectedDataLoaded) {
+                        logger.debug(`[shell] Loading protected data as "${location.pathname}" is a protected route.`);
 
-        if (!areModulesRegistered && !areModulesReady && isMswStarted) {
-            logger.debug("[firefly] MSW is started, waiting for the modules...");
-        }
-    }, [logger, areModulesRegistered, areModulesReady, isMswStarted]);
+                        const abordController = new AbortController();
 
-    useEffect(() => {
-        if ((areModulesRegistered || areModulesReady) && isMswStarted) {
-            if (!isPublicDataLoaded) {
-                logger.debug("[firefly] Fetching public data.");
+                        onLoadProtectedData(abordController.signal).finally(() => {
+                            setIsProtectedDataLoaded(true);
 
-                // fetchPublicData(setFeatureFlags, logger).finally(() => {
-                //     setIsPublicDataLoaded(true);
-                // });
-            }
-        }
-    }, [logger, areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded]);
+                            logger.debug("[shell] Protected data has been loaded.");
+                        });
 
-    useEffect(() => {
-        if ((areModulesRegistered || areModulesReady) && isMswStarted) {
-            if (isActiveRouteProtected) {
-                if (!isProtectedDataLoaded) {
-                    logger.debug(`[firefly] Fetching protected data as "${location.pathname}" is a protected route.`);
-
-                    // onLoadSession
-
-                    // fetchProtectedData(setSession, setSubscription, logger).finally(() => {
-                    //     setIsProtectedDataLoaded(true);
-                    // });
+                        return () => {
+                            abordController.abort();
+                        };
+                    }
+                } else {
+                    logger.debug(`[shell] Not loading protected data as "${location.pathname}" is a public route.`);
                 }
-            } else {
-                logger.debug(`[firefly] Not fetching protected data as "${location.pathname}" is a public route.`);
             }
         }
-    }, [logger, location, areModulesRegistered, areModulesReady, isMswStarted, isActiveRouteProtected, isProtectedDataLoaded]);
+    }, [logger, location, areModulesRegistered, areModulesReady, isMswStarted, isActiveRouteProtected, isProtectedDataLoaded, onLoadProtectedData]);
 
     useEffect(() => {
-        if (areModulesRegistered && isMswStarted && isPublicDataLoaded) {
-            if (!areModulesReady) {
-                // TBD: The completion data should be everything that has been fetched (will the component have access to this?!?!)
-                // - Otherwise, there could also have something like an onLoadCompletionData
-                // - Or there could simply be a "registrationCompletionData" prop
-                // - Or deferredRegistrationData <---- this one is better
-
-                // completeModuleRegistrations(runtime, {
-                //     featureFlags
-                // });
+        // Don't go further if no handler has been provided to complete the registration.
+        if (onCompleteRegistration) {
+            if (areModulesRegistered && isMswStarted && isPublicDataLoaded) {
+                if (!areModulesReady) {
+                    onCompleteRegistration();
+                }
             }
         }
-    }, [runtime, areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded]);
+    }, [areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded, onCompleteRegistration]);
 
     if (!areModulesReady || !isMswStarted || !isPublicDataLoaded || (isActiveRouteProtected && !isProtectedDataLoaded)) {
-        return <div>Loading...</div>;
+        return fallback;
     }
 
     return (
@@ -127,10 +131,26 @@ export function RootRoute({ waitForMsw, areModulesRegistered, areModulesReady }:
 }
 
 export interface AppRouterProps {
+    fallback: ReactNode;
+    onLoadPublicData?: OnLoadPublicDataFunction;
+    onLoadProtectedData?: onLoadProtectedDataFunction;
+    onCompleteRegistration?: OnCompleteRegistrationFunction;
     waitForMsw: boolean;
+    routerProvidersProps?: RouterProviderProps;
+    wrapRootRoute?: (rootRoute: Route) => Route;
 }
 
-export function AppRouter({ waitForMsw }: AppRouterProps) {
+export function AppRouter(props: AppRouterProps) {
+    const {
+        fallback,
+        onLoadPublicData,
+        onLoadProtectedData,
+        onCompleteRegistration,
+        waitForMsw,
+        routerProvidersProps = {},
+        wrapRootRoute
+    } = props;
+
     // Re-render the app once all the remote modules are registered, otherwise the remote modules routes won't be added to the router.
     const areModulesRegistered = useAreModulesRegistered();
 
@@ -140,21 +160,29 @@ export function AppRouter({ waitForMsw }: AppRouterProps) {
     const routes = useRoutes();
 
     const router = useMemo(() => {
-        return createBrowserRouter([
-            {
-                element: (
-                    <RootRoute
-                        waitForMsw={waitForMsw}
-                        areModulesRegistered={areModulesRegistered}
-                        areModulesReady={areModulesReady}
-                    />
-                ),
-                children: routes
-            }
-        ]);
-    }, [areModulesRegistered, areModulesReady, routes, waitForMsw]);
+        let rootRoute: Route = {
+            element: (
+                <RootRoute
+                    fallback={fallback}
+                    onLoadPublicData={onLoadPublicData}
+                    onLoadProtectedData={onLoadProtectedData}
+                    onCompleteRegistration={onCompleteRegistration}
+                    waitForMsw={waitForMsw}
+                    areModulesRegistered={areModulesRegistered}
+                    areModulesReady={areModulesReady}
+                />
+            ),
+            children: routes
+        };
+
+        if (wrapRootRoute) {
+            rootRoute = wrapRootRoute(rootRoute);
+        }
+
+        return createBrowserRouter([rootRoute]);
+    }, [areModulesRegistered, areModulesReady, routes, onLoadPublicData, onLoadProtectedData, onCompleteRegistration, waitForMsw, wrapRootRoute]);
 
     return (
-        <RouterProvider router={router} />
+        <RouterProvider {...routerProvidersProps} router={router} />
     );
 }

@@ -377,6 +377,9 @@ importers:
       '@squide/fakes':
         specifier: workspace:*
         version: link:../../../packages/fakes
+      '@squide/firefly':
+        specifier: workspace:*
+        version: link:../../../packages/firefly
       '@squide/react-router':
         specifier: workspace:*
         version: link:../../../packages/react-router
@@ -459,6 +462,9 @@ importers:
       '@basic/shell':
         specifier: workspace:*
         version: link:../shell
+      '@squide/firefly':
+        specifier: workspace:*
+        version: link:../../../packages/firefly
       '@squide/react-router':
         specifier: workspace:*
         version: link:../../../packages/react-router
@@ -544,6 +550,9 @@ importers:
       '@squide/fakes':
         specifier: workspace:*
         version: link:../../../packages/fakes
+      '@squide/firefly':
+        specifier: workspace:*
+        version: link:../../../packages/firefly
       '@squide/react-router':
         specifier: workspace:*
         version: link:../../../packages/react-router
@@ -629,6 +638,9 @@ importers:
       '@squide/fakes':
         specifier: workspace:*
         version: link:../../../packages/fakes
+      '@squide/firefly':
+        specifier: workspace:*
+        version: link:../../../packages/firefly
       '@squide/react-router':
         specifier: workspace:*
         version: link:../../../packages/react-router
@@ -750,6 +762,9 @@ importers:
       '@remix-run/router':
         specifier: 1.10.0
         version: 1.10.0
+      '@squide/firefly':
+        specifier: workspace:*
+        version: link:../../../packages/firefly
       '@squide/react-router':
         specifier: workspace:*
         version: link:../../../packages/react-router
@@ -801,6 +816,9 @@ importers:
       '@endpoints/shell':
         specifier: workspace:*
         version: link:../shell
+      '@squide/firefly':
+        specifier: workspace:*
+        version: link:../../../packages/firefly
       '@squide/msw':
         specifier: workspace:*
         version: link:../../../packages/msw
@@ -904,6 +922,9 @@ importers:
       '@squide/fakes':
         specifier: workspace:*
         version: link:../../../packages/fakes
+      '@squide/firefly':
+        specifier: workspace:*
+        version: link:../../../packages/firefly
       '@squide/msw':
         specifier: workspace:*
         version: link:../../../packages/msw
@@ -1010,6 +1031,9 @@ importers:
       '@squide/fakes':
         specifier: workspace:*
         version: link:../../../packages/fakes
+      '@squide/firefly':
+        specifier: workspace:*
+        version: link:../../../packages/firefly
       '@squide/msw':
         specifier: workspace:*
         version: link:../../../packages/msw
@@ -1161,6 +1185,9 @@ importers:
       '@squide/fakes':
         specifier: workspace:*
         version: link:../../../packages/fakes
+      '@squide/firefly':
+        specifier: workspace:*
+        version: link:../../../packages/firefly
       '@squide/msw':
         specifier: workspace:*
         version: link:../../../packages/msw

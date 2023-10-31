@@ -19,6 +19,12 @@ export type Route = IndexRoute | NonIndexRoute;
 
 export type RouteRegistrationStatus = "pending" | "registered";
 
+export interface RouteRegistrationResult {
+    registrationStatus: RouteRegistrationStatus;
+    completedPendingRegistrations: Route[];
+    parentId?: string;
+}
+
 function normalizePath(routePath?: string) {
     if (routePath && routePath !== "/" && routePath.endsWith("/")) {
         return routePath.substring(0, routePath.length - 1);
@@ -166,11 +172,11 @@ export class RouteRegistry {
             return this.#addNestedRoutes([route], parentName);
         }
 
-        return this.#addRootRoutes([route]);
+        return this.#addRootRoute(route);
     }
 
-    #addRootRoutes(routes: Route[]) {
-        const { newRoutes, completedPendingRegistrations } = this.#recursivelyAddRoutes(routes);
+    #addRootRoute(route: Route): RouteRegistrationResult {
+        const { newRoutes, completedPendingRegistrations } = this.#recursivelyAddRoutes([route]);
 
         // Create a new array so the routes array is immutable.
         this.#routes = [...this.#routes, ...newRoutes];
@@ -181,7 +187,7 @@ export class RouteRegistry {
         };
     }
 
-    #addNestedRoutes(routes: Route[], parentId: string) {
+    #addNestedRoutes(routes: Route[], parentId: string): RouteRegistrationResult {
         const layoutRoute = this.#routesIndex.get(parentId);
 
         if (!layoutRoute) {
@@ -195,7 +201,8 @@ export class RouteRegistry {
 
             return {
                 registrationStatus: "pending",
-                completedPendingRegistrations: []
+                completedPendingRegistrations: [],
+                parentId
             };
         }
 
@@ -213,7 +220,8 @@ export class RouteRegistry {
 
         return {
             registrationStatus: "registered",
-            completedPendingRegistrations
+            completedPendingRegistrations,
+            parentId
         };
     }
 

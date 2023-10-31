@@ -43,6 +43,7 @@
         "@endpoints/shared": "workspace:*",
         "@endpoints/shell": "workspace:*",
         "@squide/fakes": "workspace:*",
+        "@squide/firefly": "workspace:*",
         "@squide/msw": "workspace:*",
         "@squide/react-router": "workspace:*",
         "@squide/webpack-module-federation": "workspace:*",

@@ -54,6 +54,7 @@
         "@basic/shared": "workspace:*",
         "@basic/shell": "workspace:*",
         "@squide/fakes": "workspace:*",
+        "@squide/firefly": "workspace:*",
         "@squide/react-router": "workspace:*",
         "react": "18.2.0",
         "react-dom": "18.2.0",

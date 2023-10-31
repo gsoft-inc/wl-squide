@@ -1,5 +1,5 @@
 import { registerLocalModule } from "@endpoints/local-module";
-import { isNetlify } from "@endpoints/shared";
+import { isNetlify, registerLayouts } from "@endpoints/shared";
 import { registerShell } from "@endpoints/shell";
 import { MswPlugin, setMswAsStarted } from "@squide/msw";
 import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
@@ -27,7 +27,7 @@ const runtime = new Runtime({
     sessionAccessor
 });
 
-await registerLocalModules([registerShell(sessionManager, { host: "@endpoints/host" }), registerHost, registerLocalModule], runtime);
+await registerLocalModules([registerShell(sessionManager, { host: "@endpoints/host" }), registerLayouts({ host: "@endpoints/host" }), registerHost, registerLocalModule], runtime);
 
 await registerRemoteModules(Remotes, runtime);
 

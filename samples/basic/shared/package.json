@@ -11,11 +11,6 @@
             "import": "./dist/index.js",
             "types": "./dist/index.d.ts",
             "default": "./dist/index.js"
-        },
-        "./FederatedTabsLayout.tsx": {
-            "import": "./dist/FederatedTabsLayout.js",
-            "types": "./dist/FederatedTabsLayout.d.ts",
-            "default": "./dist/FederatedTabsLayout.js"
         }
     },
     "scripts": {

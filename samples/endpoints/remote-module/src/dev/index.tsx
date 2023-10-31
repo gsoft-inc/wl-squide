@@ -1,3 +1,4 @@
+import { registerLayouts } from "@endpoints/shared";
 import { registerShell } from "@endpoints/shell";
 import { MswPlugin, setMswAsStarted } from "@squide/msw";
 import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
@@ -20,7 +21,7 @@ const runtime = new Runtime({
 
 // Registering the remote module as a static module because the "register" function
 // is local when developing in isolation.
-await registerLocalModules([registerShell(sessionManager), registerDev, registerModule], runtime);
+await registerLocalModules([registerShell(sessionManager), registerLayouts(), registerDev, registerModule], runtime);
 
 // Register MSW after the local modules has been registered since the request handlers
 // will be registered by the modules.

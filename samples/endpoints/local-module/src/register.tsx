@@ -48,17 +48,6 @@ const registerRoutes: ModuleRegisterFunction<Runtime, unknown, DeferredRegistrat
     });
 
     runtime.registerRoute({
-        path: "/federated-tabs",
-        lazy: async () => {
-            const { FederatedTabsLayout } = await import("@endpoints/shared/FederatedTabsLayout.tsx");
-
-            return {
-                element: <Providers><FederatedTabsLayout host="@endpoints/local-module" /></Providers>
-            };
-        }
-    });
-
-    runtime.registerRoute({
         index: true,
         lazy: async () => {
             const { CharactersTab } = await import("./CharactersTab.tsx");
@@ -79,12 +68,6 @@ const registerRoutes: ModuleRegisterFunction<Runtime, unknown, DeferredRegistrat
     runtime.registerNavigationItem({
         $label: "Public page",
         to: "/public"
-    });
-
-    runtime.registerNavigationItem({
-        $label: "Tabs",
-        $priority: 100,
-        to: "/federated-tabs"
     });
 
     runtime.registerNavigationItem({

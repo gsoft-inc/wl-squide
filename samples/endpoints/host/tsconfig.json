@@ -10,7 +10,6 @@
             "@squide/fakes": ["../../../packages/fakes/src/index.ts"],
             "@endpoints/shell": ["../shell/src/index.ts"],
             "@endpoints/shared": ["../shared/src/index.ts"],
-            "@endpoints/shared/FederatedTabsLayout.tsx": ["../shared/src/FederatedTabsLayout.tsx"],
             "@endpoints/local-module": ["../local-module/src/register.ts"]
         }
     },

@@ -304,15 +304,14 @@ Then, open the `.browserslist` file and copy/paste the following content:
 extends @workleap/browserslist-config
 ```
 
-#### `defineDevConfig`
+#### Isolated environment configuration
 
-To configure webpack, open the `webpack.dev.js` file and update the configuration to incorporate the `ISOLATED` environment variable and the [defineDevConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) function:
+To configure webpack, open the `webpack.dev.js` file and update the configuration to incorporate the `ISOLATED` environment variable and the [defineDevHostConfig](../reference/webpack/defineDevHostConfig.md) function:
 
-```js !#9,12 remote-module/webpack.dev.js
+```js !#8,11 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
-import { defineDevConfig } from "@workleap/webpack-configs";
+import { defineDevRemoteModuleConfig, defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
 let config;
@@ -320,7 +319,7 @@ let config;
 if (!process.env.ISOLATED) {
     config = defineDevRemoteModuleConfig(swcConfig, "remote1", 8081);
 } else {
-    config = defineDevConfig(swcConfig);
+    config = defineDevHostConfig(swcConfig, "remote1", 8080);
 }
 
 export default config;
@@ -423,15 +422,15 @@ const targets = browserslistToSwc();
 export const swcConfig = defineDevConfig(targets);
 ```
 
-Finally, open the `webpack.config.js` file and use the the [defineDevConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) function to configure webpack:
+Finally, open the `webpack.config.js` file and use the the [defineDevHostConfig](../reference/webpack/defineDevHostConfig.md) function to configure webpack:
 
 ```js local-module/webpack.config.js
 // @ts-check
 
-import { defineDevConfig } from "@workleap/webpack-configs";
+import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.config.js";
 
-export default defineDevConfig(swcConfig);
+export default defineDevHostConfig(swcConfig, "local1", 8080);
 ```
 
 ### Add a new CLI script

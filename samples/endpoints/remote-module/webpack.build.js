@@ -1,29 +1,34 @@
 // @ts-check
 
-import { defineBuildRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineBuildHostConfig, defineBuildRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import path from "node:path";
 import { swcConfig } from "./swc.build.js";
 
-// The trailing / is very important, otherwise paths will not be resolved correctly.
-const publicPath = process.env.NETLIFY === "true" ? "https://squide-endpoints-remote-module.netlify.app/" : "http://localhost:8081/";
+let config;
 
-function tempTransformer(config) {
-    config.output.publicPath = "auto";
-
-    return config;
+if (!process.env.ISOLATED) {
+    config = defineBuildRemoteModuleConfig(swcConfig, "remote1", {
+        features: {
+            msw: true
+        },
+        sharedDependencies: {
+            "@endpoints/shared": {
+                singleton: true
+            }
+        },
+        environmentVariables: {
+            "NETLIFY": process.env.NETLIFY === "true",
+            "USE_MSW": process.env.USE_MSW === "true"
+        }
+    });
+} else {
+    config = defineBuildHostConfig(swcConfig, "remote1", {
+        entry: path.resolve("./src/dev/index.tsx"),
+        environmentVariables: {
+            "NETLIFY": process.env.NETLIFY === "true",
+            "USE_MSW": process.env.USE_MSW === "true"
+        }
+    });
 }
 
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1", publicPath, {
-    features: {
-        msw: true
-    },
-    sharedDependencies: {
-        "@endpoints/shared": {
-            singleton: true
-        }
-    },
-    environmentVariables: {
-        "NETLIFY": process.env.NETLIFY === "true",
-        "USE_MSW": process.env.USE_MSW === "true"
-    },
-    transformers: [tempTransformer]
-});
+export default config;

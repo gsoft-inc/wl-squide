@@ -157,6 +157,7 @@ The sites for this sample application are hosted on [Netlify](https://www.netlif
 
 - [host](https://squide-endpoints-host.netlify.app/)
 - [remote-module](https://squide-endpoints-remote-module.netlify.app)
+- [remote-module (isolated)](https://squide-endpoints-remote-isolated.netlify.app/)
 
 To deploy the sample application, open a terminal at the root of the repository and execute the following script:
 
@@ -165,6 +166,14 @@ deploy-endpoints
 ```
 
 A prompt with a few questions will appear and then the sites will automatically be deployed to production.
+
+Then, execute the following script:
+
+```bash
+deploy-endpoints-isolated
+```
+
+Another prompt with a few questions will appear and then the sites will automatically be deployed to production.
 
 ## Commands
 
@@ -221,6 +230,14 @@ pnpm build-basic
 ### build-endpoints
 
 Build the sample application with "endpoints" for release.
+
+```bash
+pnpm build-endpoints
+```
+
+### build-endpoints-isolated
+
+Build for an isolated setup the sample application with "endpoints" for release.
 
 ```bash
 pnpm build-endpoints

@@ -1,17 +1,10 @@
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
-import { defineDevConfig } from "@workleap/webpack-configs";
+import { defineDevHostConfig, defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import path from "node:path";
 import { swcConfig } from "./swc.dev.js";
 
 let config;
-
-function tempTransformer(config) {
-    config.output.publicPath = "auto";
-
-    return config;
-}
 
 if (!process.env.ISOLATED) {
     config = defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
@@ -27,14 +20,12 @@ if (!process.env.ISOLATED) {
             "NETLIFY": process.env.NETLIFY === "true",
             "ISOLATED": process.env.ISOLATED === "true",
             "USE_MSW": process.env.USE_MSW === "true"
-        },
-        transformers: [tempTransformer]
+        }
     });
 } else {
-    config = defineDevConfig(swcConfig, {
-        cache: false,
-        entry: path.resolve("./src/dev/index.tsx"),
+    config = defineDevHostConfig(swcConfig, "remote1", 8080, {
         overlay: false,
+        entry: path.resolve("./src/dev/index.tsx"),
         environmentVariables: {
             "ISOLATED": process.env.ISOLATED === "true",
             "USE_MSW": process.env.USE_MSW === "true"

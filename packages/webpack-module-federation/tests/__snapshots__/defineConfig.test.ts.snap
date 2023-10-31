@@ -74,6 +74,18 @@ exports[`defineBuildHostConfig the module federation plugin configuration includ
 }
 `;
 
+exports[`defineBuildHostConfig when a public path option is provided for the html webpack plugin, do not alter the provided public path option 1`] = `
+{
+  "index": 0,
+  "plugin": HtmlWebpackPlugin {
+    "userOptions": {
+      "publicPath": "/toto",
+    },
+    "version": 5,
+  },
+}
+`;
+
 exports[`defineBuildHostConfig when additional options are provided for an existing default shared dependency, add the consumer options to the default options 1`] = `
 {
   "index": 3,
@@ -193,6 +205,32 @@ exports[`defineBuildHostConfig when msw is activated, add msw shared dependency 
         },
       },
     },
+  },
+}
+`;
+
+exports[`defineBuildHostConfig when no options are provided for the html webpack plugin, add a public path option 1`] = `
+{
+  "index": 0,
+  "plugin": HtmlWebpackPlugin {
+    "userOptions": {
+      "publicPath": "/",
+      "template": "C:\\Dev\\gsoft\\wl-squide\\public\\index.html",
+    },
+    "version": 5,
+  },
+}
+`;
+
+exports[`defineBuildHostConfig when options others than the public path option are provided for the html webpack plugin, add a public path option 1`] = `
+{
+  "index": 0,
+  "plugin": HtmlWebpackPlugin {
+    "userOptions": {
+      "favicon": "toto.png",
+      "publicPath": "/",
+    },
+    "version": 5,
   },
 }
 `;
@@ -628,6 +666,18 @@ exports[`defineDevHostConfig the module federation plugin configuration includes
 }
 `;
 
+exports[`defineDevHostConfig when a public path option is provided for the html webpack plugin, do not alter the provided public path option 1`] = `
+{
+  "index": 0,
+  "plugin": HtmlWebpackPlugin {
+    "userOptions": {
+      "publicPath": "/toto",
+    },
+    "version": 5,
+  },
+}
+`;
+
 exports[`defineDevHostConfig when additional options are provided for an existing default shared dependency, add the consumer options to the default options 1`] = `
 {
   "index": 2,
@@ -747,6 +797,32 @@ exports[`defineDevHostConfig when msw is activated, add msw shared dependency 1`
         },
       },
     },
+  },
+}
+`;
+
+exports[`defineDevHostConfig when no options are provided for the html webpack plugin, add a public path option 1`] = `
+{
+  "index": 0,
+  "plugin": HtmlWebpackPlugin {
+    "userOptions": {
+      "publicPath": "/",
+      "template": "C:\\Dev\\gsoft\\wl-squide\\public\\index.html",
+    },
+    "version": 5,
+  },
+}
+`;
+
+exports[`defineDevHostConfig when options others than the public path option are provided for the html webpack plugin, add a public path option 1`] = `
+{
+  "index": 0,
+  "plugin": HtmlWebpackPlugin {
+    "userOptions": {
+      "favicon": "toto.png",
+      "publicPath": "/",
+    },
+    "version": 5,
   },
 }
 `;

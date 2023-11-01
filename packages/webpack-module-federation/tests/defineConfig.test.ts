@@ -165,6 +165,9 @@ describe("defineDevHostConfig", () => {
 
         const result = findPlugin(config, matchConstructorName(HtmlWebpackPlugin.name));
 
+        // This is an option that is relative to the environment running the test and breaks on CI.
+        delete (result.plugin as HtmlWebpackPlugin.Options)["template"];
+
         expect(result).toMatchSnapshot();
     });
 
@@ -326,6 +329,9 @@ describe("defineBuildHostConfig", () => {
         const config = defineBuildHostConfig(SwcConfig, "host");
 
         const result = findPlugin(config, matchConstructorName(HtmlWebpackPlugin.name));
+
+        // This is an option that is relative to the environment running the test and breaks on CI.
+        delete (result.plugin as HtmlWebpackPlugin.Options)["template"];
 
         expect(result).toMatchSnapshot();
     });

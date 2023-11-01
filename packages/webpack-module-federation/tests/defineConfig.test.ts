@@ -166,6 +166,7 @@ describe("defineDevHostConfig", () => {
         const result = findPlugin(config, matchConstructorName(HtmlWebpackPlugin.name));
 
         // This is an option that is relative to the environment running the test and breaks on CI.
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         delete (result.plugin.userOptions as HtmlWebpackPlugin.Options)["template"];
 
@@ -332,6 +333,7 @@ describe("defineBuildHostConfig", () => {
         const result = findPlugin(config, matchConstructorName(HtmlWebpackPlugin.name));
 
         // This is an option that is relative to the environment running the test and breaks on CI.
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         delete (result.plugin.userOptions as HtmlWebpackPlugin.Options)["template"];
 

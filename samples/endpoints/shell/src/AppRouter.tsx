@@ -20,6 +20,8 @@ function fetchPublicData(
     logger: Logger,
     signal: AbortSignal
 ) {
+    // React Query "queryClient.fetchQuery" could be used instead of using axios directly.
+    // https://tanstack.com/query/latest/docs/react/reference/QueryClient#queryclientfetchquery
     const featureFlagsPromise = axios.get("/api/feature-flags", { signal })
         .then(({ data }) => {
             const featureFlags: FeatureFlags = {
@@ -42,6 +44,8 @@ function fetchProtectedData(
     logger: Logger,
     signal: AbortSignal
 ) {
+    // React Query "queryClient.fetchQuery" could be used instead of using axios directly.
+    // https://tanstack.com/query/latest/docs/react/reference/QueryClient#queryclientfetchquery
     const sessionPromise = axios.get("/api/session", { signal })
         .then(({ data }) => {
             const session: Session = {
@@ -56,6 +60,8 @@ function fetchProtectedData(
             setSession(session);
         });
 
+    // React Query "queryClient.fetchQuery" could be used instead of using axios directly.
+    // https://tanstack.com/query/latest/docs/react/reference/QueryClient#queryclientfetchquery
     const subscriptionPromise = axios.get("/api/subscription", { signal })
         .then(({ data }) => {
             const subscription: Subscription = {

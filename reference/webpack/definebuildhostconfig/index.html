@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751745851249">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.752250792121">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.751745851249" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.752250792121" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.751745851249" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.752250792121" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.751745851249" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.751745851249" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.752250792121" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.752250792121" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -321,7 +321,7 @@
     </h2>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript"><code v-pre class="language-typescript">const webpackConfig = defineBuildHostConfig(swcConfig: {}, applicationName, publicPath, options?: {})</code></pre>
+<pre class="language-typescript"><code v-pre class="language-typescript">const webpackConfig = defineBuildHostConfig(swcConfig: {}, applicationName, options?: {})</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="parameters">
     <h2>
@@ -332,7 +332,6 @@
 <ul>
 <li><code v-pre>swcConfig</code>: An SWC <a href="https://swc.rs/docs/configuration/swcrc" class="outbound" target="_blank">configuration object</a>.</li>
 <li><code v-pre>applicationName</code>: The host application name.</li>
-<li><code v-pre>publicPath</code>: The host application public path.</li>
 <li><code v-pre>options</code>: An optional object literal of options:
 <ul>
 <li>Accepts most of webpack <code v-pre>definedBuildConfig</code> <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/#3-set-predefined-options" class="outbound" target="_blank">predefined options</a>.</li>
@@ -432,7 +431,7 @@ export default defineBuildHostConfig(swcConfig, &quot;host&quot;, &quot;http://l
 import { defineBuildHostConfig } from &quot;@squide/webpack-module-federation/defineConfig.js&quot;;
 import { swcConfig } from &quot;./swc.build.js&quot;;
 
-export default defineBuildHostConfig(swcConfig, &quot;host&quot;, &quot;http://localhost:8080/&quot;, {
+export default defineBuildHostConfig(swcConfig, &quot;host&quot;, {
     features: {
         msw: true
     }
@@ -468,7 +467,7 @@ export default defineBuildHostConfig(swcConfig, &quot;host&quot;, &quot;http://l
 import { defineBuildHostConfig } from &quot;@squide/webpack-module-federation/defineConfig.js&quot;;
 import { swcConfig } from &quot;./swc.build.js&quot;;
 
-export default defineBuildHostConfig(swcConfig, &quot;host&quot;, &quot;http://localhost:8080/&quot;, {
+export default defineBuildHostConfig(swcConfig, &quot;host&quot;, {
     sharedDependencies: {
         &quot;@sample/shared&quot;: {
             singleton: true
@@ -489,7 +488,7 @@ export default defineBuildHostConfig(swcConfig, &quot;host&quot;, &quot;http://l
 import { defineBuildHostConfig } from &quot;@squide/webpack-module-federation/defineConfig.js&quot;;
 import { swcConfig } from &quot;./swc.build.js&quot;;
 
-export default defineBuildHostConfig(swcConfig, &quot;host&quot;, &quot;http://localhost:8080/&quot;, {
+export default defineBuildHostConfig(swcConfig, &quot;host&quot;, {
     sharedDependencies: {
         &quot;react&quot;: {
             strictVersion: &quot;18.2.0&quot;
@@ -520,7 +519,7 @@ export default defineBuildHostConfig(swcConfig, &quot;host&quot;, &quot;http://l
 import { defineBuildHostConfig } from &quot;@squide/webpack-module-federation/defineConfig.js&quot;;
 import { swcConfig } from &quot;./swc.build.js&quot;;
 
-export default defineBuildHostConfig(swcConfig, &quot;host&quot;, &quot;http://localhost:8080/&quot;, {
+export default defineBuildHostConfig(swcConfig, &quot;host&quot;, {
     sharedDependencies: {
         &quot;react&quot;: {
             singleton: false
@@ -551,7 +550,7 @@ export default defineBuildHostConfig(swcConfig, &quot;host&quot;, &quot;http://l
 import { defineBuildHostConfig, defineHostModuleFederationPluginOptions } from &quot;@squide/webpack-module-federation/defineConfig.js&quot;;
 import { swcConfig } from &quot;./swc.build.js&quot;;
 
-export default defineBuildHostConfig(swcConfig, &quot;host&quot;, &quot;http://localhost:8080/&quot;, {
+export default defineBuildHostConfig(swcConfig, &quot;host&quot;, {
     moduleFederationPluginOptions: defineHostModuleFederationPluginOptions(&quot;host&quot;, {
         runtime: &quot;my-runtime-name&quot;
     })

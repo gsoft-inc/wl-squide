@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.751745851249">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.752250792121">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.751745851249" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.752250792121" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.751745851249" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.752250792121" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.751745851249" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.751745851249" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.752250792121" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.752250792121" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -642,19 +642,18 @@ export const registerDev: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; 
 <div class="codeblock-title">host/.browserslistrc</div>
 <pre class="language-none"><code v-pre class="language-none">extends @workleap/browserslist-config</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="definedevconfig">
+<doc-anchor-target id="isolated-environment-configuration">
     <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#definedevconfig">#</doc-anchor-trigger>
-        <span><code v-pre>defineDevConfig</code></span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#isolated-environment-configuration">#</doc-anchor-trigger>
+        <span>Isolated environment configuration</span>
     </h4>
 </doc-anchor-target>
-<p>To configure webpack, open the <code v-pre>webpack.dev.js</code> file and update the configuration to incorporate the <code v-pre>ISOLATED</code> environment variable and the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/" class="outbound" target="_blank">defineDevConfig</a> function:</p>
+<p>To configure webpack, open the <code v-pre>webpack.dev.js</code> file and update the configuration to incorporate the <code v-pre>ISOLATED</code> environment variable and the <a href="../../reference/webpack/definedevhostconfig/">defineDevHostConfig</a> function:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/webpack.dev.js</div>
-<pre class="language-javascript" data-line="9,12"><code v-pre class="language-javascript">// @ts-check
+<pre class="language-javascript" data-line="8,11"><code v-pre class="language-javascript">// @ts-check
 
-import { defineDevRemoteModuleConfig } from &quot;@squide/webpack-module-federation/defineConfig.js&quot;;
-import { defineDevConfig } from &quot;@workleap/webpack-configs&quot;;
+import { defineDevRemoteModuleConfig, defineDevHostConfig } from &quot;@squide/webpack-module-federation/defineConfig.js&quot;;
 import { swcConfig } from &quot;./swc.dev.js&quot;;
 
 let config;
@@ -662,7 +661,7 @@ let config;
 if (!process.env.ISOLATED) {
     config = defineDevRemoteModuleConfig(swcConfig, &quot;remote1&quot;, 8081);
 } else {
-    config = defineDevConfig(swcConfig);
+    config = defineDevHostConfig(swcConfig, &quot;remote1&quot;, 8080);
 }
 
 export default config;</code></pre>
@@ -808,15 +807,15 @@ const targets = browserslistToSwc();
 
 export const swcConfig = defineDevConfig(targets);</code></pre>
 </doc-codeblock></div>
-<p>Finally, open the <code v-pre>webpack.config.js</code> file and use the the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/" class="outbound" target="_blank">defineDevConfig</a> function to configure webpack:</p>
+<p>Finally, open the <code v-pre>webpack.config.js</code> file and use the the <a href="../../reference/webpack/definedevhostconfig/">defineDevHostConfig</a> function to configure webpack:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/webpack.config.js</div>
 <pre class="language-javascript"><code v-pre class="language-javascript">// @ts-check
 
-import { defineDevConfig } from &quot;@workleap/webpack-configs&quot;;
+import { defineDevHostConfig } from &quot;@squide/webpack-module-federation/defineConfig.js&quot;;
 import { swcConfig } from &quot;./swc.config.js&quot;;
 
-export default defineDevConfig(swcConfig);</code></pre>
+export default defineDevHostConfig(swcConfig, &quot;local1&quot;, 8080);</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="add-a-new-cli-script-1">
     <h3>

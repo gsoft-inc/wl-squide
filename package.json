@@ -30,7 +30,7 @@
         "deploy-basic:remote-module": "netlify deploy --dir=samples/basic/remote-module/dist --site=43234f6e-a884-410e-9b4d-f290459f841f --prod",
         "deploy-basic:another-remote-module": "netlify deploy --dir=samples/basic/another-remote-module/dist --site=2673b626-74aa-4c03-8a8f-8c794e90fd07 --prod",
         "dev-endpoints": "pnpm --filter \"./samples/endpoints/*\" -r --parallel dev",
-        "build-endpoints": "pnpm --filter \"./samples/endpoints/*\" -r --parallel build",
+        "build-endpoints": "pnpm --filter \"./samples/endpoints/*\" -r build",
         "serve-endpoints": "pnpm --filter \"./samples/endpoints/*\" -r --parallel serve-build",
         "deploy-endpoints": "cross-env NETLIFY=true pnpm build-endpoints && pnpm run deploy-endpoints:host && pnpm run deploy-endpoints:remote-module",
         "deploy-endpoints:host": "netlify deploy --dir=samples/endpoints/host/dist --site=4bde6b8b-cea6-487f-913b-acec9332eb2f --prod",

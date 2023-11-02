@@ -4,6 +4,7 @@ import { useLogger, useRuntime, type Logger } from "@squide/react-router";
 import { completeModuleRegistrations } from "@squide/webpack-module-federation";
 import axios from "axios";
 import { useCallback, useState } from "react";
+import { BootstrappingErrorBoundary } from "./BootstrappingErrorBoundary.tsx";
 
 export interface DeferredRegistrationData {
     featureFlags?: FeatureFlags;
@@ -86,7 +87,7 @@ function fetchProtectedData(
         });
 }
 
-function Loader() {
+function Loading() {
     return (
         <div>Loading...</div>
     );
@@ -124,7 +125,8 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
             <SubscriptionContext.Provider value={subscription}>
                 <TelemetryServiceContext.Provider value={telemetryService}>
                     <FireflyAppRouter
-                        fallback={<Loader />}
+                        fallbackElement={<Loading />}
+                        errorElement={<BootstrappingErrorBoundary />}
                         waitForMsw={waitForMsw}
                         onLoadPublicData={handleLoadPublicData}
                         onLoadProtectedData={handleLoadProtectedData}

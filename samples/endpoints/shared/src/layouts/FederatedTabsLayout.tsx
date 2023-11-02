@@ -30,7 +30,7 @@ const renderSection: RenderSectionFunction = elements => {
 function TabsError() {
     const navigate = useNavigate();
 
-    const handleReset = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+    const handleTryAgain = useCallback((event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
         // Reload the page to reset the error boundary.
@@ -42,7 +42,7 @@ function TabsError() {
             <div style={{ color: "red", marginBottom: "10px" }}>
                 An error occured while rendering the tab.
             </div>
-            <button type="button" onClick={handleReset}>Reset</button>
+            <button type="button" onClick={handleTryAgain}>Try again</button>
         </div>
     );
 }

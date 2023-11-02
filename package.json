@@ -10,7 +10,7 @@
     },
     "scripts": {
         "postinstall": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf node_modules/.cache && pnpm temporary-script-until-build-order-topology-is-fixed",
-        "temporary-script-until-build-order-topology-is-fixed": "pnpm build && pnpm build-basic && pnpm build-endpoints",
+        "temporary-script-until-build-order-topology-is-fixed": "pnpm build && pnpm build-basic",
         "dev": "pnpm --filter \"./packages/*\" -r --parallel dev",
         "build": "pnpm --filter \"./packages/*\" -r --parallel build",
         "test": "jest",

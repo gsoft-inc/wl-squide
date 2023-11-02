@@ -4353,8 +4353,8 @@ packages:
       execa: 6.1.0
     dev: true
 
-  /@netlify/serverless-functions-api@1.10.1:
-    resolution: {integrity: sha512-KtaC+Z77HUxXEOPhmq4W773CTr0e1zIhXWZRONrfM1AkdphK5c5G+dItj+BQe6LorNSWNNVihBDA5h7WIF2nDQ==}
+  /@netlify/serverless-functions-api@1.11.0:
+    resolution: {integrity: sha512-3splAsr2CekL7VTwgo6yTvzD2+f269/s+TJafYazonqMNNo31yzvFxD5HpLtni4DNE1ppymVKZ4X/rLN3yl0vQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
     dependencies:
       '@netlify/node-cookies': 0.1.0
@@ -4369,7 +4369,7 @@ packages:
       '@babel/parser': 7.23.0
       '@babel/types': 7.22.19
       '@netlify/binary-info': 1.0.0
-      '@netlify/serverless-functions-api': 1.10.1
+      '@netlify/serverless-functions-api': 1.11.0
       '@vercel/nft': 0.23.1(supports-color@9.4.0)
       archiver: 6.0.1
       common-path-prefix: 3.0.0
@@ -4411,7 +4411,7 @@ packages:
       '@babel/parser': 7.23.0
       '@babel/types': 7.23.0
       '@netlify/binary-info': 1.0.0
-      '@netlify/serverless-functions-api': 1.10.1
+      '@netlify/serverless-functions-api': 1.11.0
       '@vercel/nft': 0.23.1(supports-color@9.4.0)
       archiver: 6.0.1
       common-path-prefix: 3.0.0

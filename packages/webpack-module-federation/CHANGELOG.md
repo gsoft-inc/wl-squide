@@ -1,5 +1,18 @@
 # @squide/webpack-module-federation
 
+## 2.2.0
+
+### Minor Changes
+
+- [#103](https://github.com/gsoft-inc/wl-squide/pull/103) [`b72fca3`](https://github.com/gsoft-inc/wl-squide/commit/b72fca38385ddacbcd80376c9afd0c9485658d90) Thanks [@patricklafrance](https://github.com/patricklafrance)! - - `defineBuildHostConfig`, `defineDevHostConfig`, `defineBuildRemoteModuleConfig` and `defineDevRemoteModuleConfig` `publicPath` prop is not mandatory anymore. It's default value is now `auto`.
+  - `defineBuildHostConfig` and `defineBuildRemoteModuleConfig` set the `HtmlWebpackPlugin` `publicPath` prop to `/` by default.
+  - `completeRemoteModuleRegistrations` `data` argument is now required.
+
+### Patch Changes
+
+- Updated dependencies [[`b72fca3`](https://github.com/gsoft-inc/wl-squide/commit/b72fca38385ddacbcd80376c9afd0c9485658d90)]:
+  - @squide/core@2.2.0
+
 ## 2.1.0
 
 ### Minor Changes

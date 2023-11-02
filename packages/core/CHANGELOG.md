@@ -1,5 +1,12 @@
 # @squide/core
 
+## 2.2.0
+
+### Minor Changes
+
+- [#103](https://github.com/gsoft-inc/wl-squide/pull/103) [`b72fca3`](https://github.com/gsoft-inc/wl-squide/commit/b72fca38385ddacbcd80376c9afd0c9485658d90) Thanks [@patricklafrance](https://github.com/patricklafrance)! - - The `completeLocalModuleRegistrations` function `data` argument is now required.
+  - Internal cleanup
+
 ## 2.1.0
 
 ### Minor Changes

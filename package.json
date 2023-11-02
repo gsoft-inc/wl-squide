@@ -23,7 +23,7 @@
         "reset": "pnpm clean && pnpm reset:modules",
         "reset:modules": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf node_modules pnpm-lock.yaml",
         "dev-basic": "pnpm --filter \"./samples/basic/*\" -r --parallel dev",
-        "build-basic": "pnpm --filter \"./samples/basic/*\" -r --parallel build",
+        "build-basic": "pnpm --filter \"./samples/basic/*\" -r build",
         "serve-basic": "pnpm --filter \"./samples/basic/*\" -r --parallel serve-build",
         "deploy-basic": "cross-env NETLIFY=true pnpm build-basic && pnpm run deploy-basic:host && pnpm run deploy-basic:remote-module && pnpm run deploy-basic:another-remote-module",
         "deploy-basic:host": "netlify deploy --dir=samples/basic/host/dist --site=ae684cea-e6b1-4293-95d6-fc82462654c8 --prod",

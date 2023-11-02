@@ -26,15 +26,15 @@ export class LocalModuleRegistry {
         const errors: LocalModuleRegistrationError[] = [];
 
         if (this.#registrationStatus !== "none") {
-            throw new Error("[squide] [local] The registerLocalModules function can only be called once.");
+            throw new Error("[squide] The registerLocalModules function can only be called once.");
         }
 
-        runtime.logger.debug(`[squide] [local] Found ${registerFunctions.length} local module${registerFunctions.length !== 1 ? "s" : ""} to register.`);
+        runtime.logger.debug(`[squide] Found ${registerFunctions.length} local module${registerFunctions.length !== 1 ? "s" : ""} to register.`);
 
         this.#registrationStatus = "in-progress";
 
         await Promise.allSettled(registerFunctions.map(async (x, index) => {
-            runtime.logger.debug(`[squide] [local] ${index + 1}/${registerFunctions.length} Registering local module.`);
+            runtime.logger.debug(`[squide] ${index + 1}/${registerFunctions.length} Registering local module.`);
 
             try {
                 const optionalDeferredRegistration = await registerModule(x as ModuleRegisterFunction<AbstractRuntime, TContext, TData>, runtime, context);
@@ -47,7 +47,7 @@ export class LocalModuleRegistry {
                 }
             } catch (error: unknown) {
                 runtime.logger.error(
-                    `[squide] [local] ${index + 1}/${registerFunctions.length} An error occured while registering a local module.`,
+                    `[squide] ${index + 1}/${registerFunctions.length} An error occured while registering a local module.`,
                     error
                 );
 
@@ -56,7 +56,7 @@ export class LocalModuleRegistry {
                 });
             }
 
-            runtime.logger.debug(`[squide] [local] ${index + 1}/${registerFunctions.length} Local module registration completed.`);
+            runtime.logger.debug(`[squide] ${index + 1}/${registerFunctions.length} Local module registration completed.`);
         }));
 
         this.#registrationStatus = this.#deferredRegistrations.length > 0 ? "registered" : "ready";
@@ -64,15 +64,15 @@ export class LocalModuleRegistry {
         return errors;
     }
 
-    async completeModuleRegistrations<TRuntime extends AbstractRuntime = AbstractRuntime, TData = unknown>(runtime: TRuntime, data?: TData) {
+    async completeModuleRegistrations<TRuntime extends AbstractRuntime = AbstractRuntime, TData = unknown>(runtime: TRuntime, data: TData) {
         const errors: LocalModuleRegistrationError[] = [];
 
         if (this.#registrationStatus === "none" || this.#registrationStatus === "in-progress") {
-            throw new Error("[squide] [local] The completeLocalModuleRegistration function can only be called once the registerLocalModules function terminated.");
+            throw new Error("[squide] The completeLocalModuleRegistration function can only be called once the registerLocalModules function terminated.");
         }
 
         if (this.#registrationStatus !== "registered" && this.#deferredRegistrations.length > 0) {
-            throw new Error("[squide] [local] The completeLocalModuleRegistration function can only be called once.");
+            throw new Error("[squide] The completeLocalModuleRegistration function can only be called once.");
         }
 
         if (this.#registrationStatus === "ready") {
@@ -83,13 +83,13 @@ export class LocalModuleRegistry {
         this.#registrationStatus = "in-completion";
 
         await Promise.allSettled(this.#deferredRegistrations.map(async ({ index, fct: deferredRegister }) => {
-            runtime.logger.debug(`[squide] [local] ${index} Completing local module deferred registration.`);
+            runtime.logger.debug(`[squide] ${index} Completing local module deferred registration.`, "Data:", data);
 
             try {
                 await deferredRegister(data);
             } catch (error: unknown) {
                 runtime.logger.error(
-                    `[squide] [local] ${index} An error occured while completing the registration of a local module.`,
+                    `[squide] ${index} An error occured while completing the registration of a local module.`,
                     error
                 );
 
@@ -98,7 +98,7 @@ export class LocalModuleRegistry {
                 });
             }
 
-            runtime.logger.debug(`[squide] [local] ${index} Completed local module deferred registration.`);
+            runtime.logger.debug(`[squide] ${index} Completed local module deferred registration.`);
         }));
 
         this.#registrationStatus = "ready";
@@ -117,7 +117,7 @@ export function registerLocalModules<TRuntime extends AbstractRuntime = Abstract
     return localModuleRegistry.registerModules(registerFunctions, runtime, options);
 }
 
-export function completeLocalModuleRegistrations<TRuntime extends AbstractRuntime = AbstractRuntime, TData = unknown>(runtime: TRuntime, data?: TData) {
+export function completeLocalModuleRegistrations<TRuntime extends AbstractRuntime = AbstractRuntime, TData = unknown>(runtime: TRuntime, data: TData) {
     return localModuleRegistry.completeModuleRegistrations(runtime, data);
 }
 

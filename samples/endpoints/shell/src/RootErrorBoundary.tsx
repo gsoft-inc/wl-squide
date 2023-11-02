@@ -13,7 +13,7 @@ function getErrorMessage(error: unknown) {
 }
 
 export function RootErrorBoundary() {
-    const error = useRouteError();
+    const error = useRouteError() as Error;
     const location = useLocation();
     const logger = useLogger();
 
@@ -24,11 +24,12 @@ export function RootErrorBoundary() {
     logger.error(`[shell] An unmanaged error occurred while rendering the route with path ${location.pathname}`, error);
 
     return (
-        <div style={{ color: "red" }}>
+        <div>
             <h2>Unmanaged error</h2>
-            <p>An unmanaged error occurred and the application is broken, try refreshing your browser.</p>
-            <span role="img" aria-label="pointer">👉</span> {getErrorMessage(error)}
-            <br /><br />
+            <p style={{ color: "red" }}>An unmanaged error occurred and the application is broken, try refreshing your browser.</p>
+            <p style={{ color: "red" }}><span role="img" aria-label="pointer">👉</span> {getErrorMessage(error)}</p>
+            <p style={{ color: "gray" }}><code>{error.stack}</code></p>
+            <br />
             <button type="button" onClick={handleReloadButtonClick}>Reload</button>
         </div>
     );

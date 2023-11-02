@@ -1,7 +1,15 @@
 import { AbstractRuntime, RootMenuId, type RegisterNavigationItemOptions, type RegisterRouteOptions } from "@squide/core";
 import { NavigationItemRegistry, type RootNavigationItem } from "./navigationItemRegistry.ts";
-import { ManagedRoutes } from "./outlets.ts";
+import { ManagedRoutes, ManagedRoutesOutletName } from "./outlets.ts";
 import { RouteRegistry, type Route } from "./routeRegistry.ts";
+
+function translateManagedRoutesParentId(parentId?: string) {
+    if (parentId === ManagedRoutesOutletName) {
+        return "managed-routes-placeholder";
+    }
+
+    return parentId;
+}
 
 export class Runtime extends AbstractRuntime<Route, RootNavigationItem> {
     readonly #routeRegistry = new RouteRegistry();
@@ -10,13 +18,15 @@ export class Runtime extends AbstractRuntime<Route, RootNavigationItem> {
     registerRoute(route: Route, options: RegisterRouteOptions = {}) {
         const result = this.#routeRegistry.add(route, options);
 
+        const parentId = translateManagedRoutesParentId(result.parentId);
+
         if (result.registrationStatus === "registered") {
-            const parentId = options.parentPath ?? options.parentName;
-            const parentLog = parentId ? ` as children of the "${parentId}" route` : "";
+            const parentLog = parentId ? ` as a children of the "${parentId}" route` : "";
 
             this._logger.debug(
                 `[squide] The following route has been %cregistered%c${parentLog}.`, "color: white; background-color: green;", "%s",
-                "Newly registered route:", route,
+                "Newly registered item:",
+                route,
                 "All registered routes:", this.#routeRegistry.routes
             );
 
@@ -28,8 +38,6 @@ export class Runtime extends AbstractRuntime<Route, RootNavigationItem> {
                 );
             }
         } else {
-            const parentId = options.parentPath ?? options.parentName;
-
             this._logger.debug(
                 `[squide] The following route registration is %cpending%c until "${parentId}" is registered.`, "color: black; background-color: yellow;", "%s",
                 "Pending registration:", route,

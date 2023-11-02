@@ -1,6 +1,7 @@
 import { useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/react-router";
-import { Suspense } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Suspense, useCallback, type MouseEvent } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 export interface FederatedTabsLayoutProps {
     host?: string;
@@ -26,6 +27,26 @@ const renderSection: RenderSectionFunction = elements => {
     );
 };
 
+function TabsError() {
+    const navigate = useNavigate();
+
+    const handleTryAgain = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+
+        // Reload the page to reset the error boundary.
+        navigate(0);
+    }, [navigate]);
+
+    return (
+        <div>
+            <div style={{ color: "red", marginBottom: "10px" }}>
+                An error occured while rendering the tab.
+            </div>
+            <button type="button" onClick={handleTryAgain}>Try again</button>
+        </div>
+    );
+}
+
 export function FederatedTabsLayout({ host }: FederatedTabsLayoutProps) {
     const navigationItems = useNavigationItems("/federated-tabs");
     const renderedTabs = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
@@ -34,25 +55,16 @@ export function FederatedTabsLayout({ host }: FederatedTabsLayoutProps) {
         <>
             <h1>Tabs</h1>
             {host && <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>This layout is served by <code>{host}</code></p>}
-            <p style={{ backgroundColor: "#d3d3d3", color: "black", width: "fit-content" }}>
-                <p>There are a few distinctive features that are showcased with this pages:</p>
-                <ul>
-                    <li>This is a nested layout that renders tabs <strong>registered by distinct modules</strong>. This is what we call "Federated Tabs".</li>
-                    <li>Every tab is lazy loaded with React Router.</li>
-                    <li>Every tab has its own URL, allowing direct hit to the tab.</li>
-                    <li>This layout takes cares of rendering a loading screen while a tab is being loaded.</li>
-                </ul>
-            </p>
             {renderedTabs}
             <div style={{ paddingTop: "20px" }}>
-                <Suspense fallback={<div>Loading...</div>}>
-                    <Outlet />
-                </Suspense>
+                <ErrorBoundary FallbackComponent={TabsError}>
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Outlet />
+                    </Suspense>
+                </ErrorBoundary>
             </div>
         </>
     );
 }
-
-export const Component = FederatedTabsLayout;
 
 

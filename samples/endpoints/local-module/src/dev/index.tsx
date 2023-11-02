@@ -1,3 +1,4 @@
+import { registerLayouts } from "@endpoints/shared";
 import { registerShell } from "@endpoints/shell";
 import { MswPlugin, setMswAsStarted } from "@squide/msw";
 import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
@@ -18,7 +19,7 @@ const runtime = new Runtime({
     sessionAccessor
 });
 
-await registerLocalModules([registerShell(sessionManager), registerDev, registerLocalModule], runtime);
+await registerLocalModules([registerShell(sessionManager), registerLayouts(), registerDev, registerLocalModule], runtime);
 
 // Register MSW after the local modules has been registered since the request handlers
 // will be registered by the modules.

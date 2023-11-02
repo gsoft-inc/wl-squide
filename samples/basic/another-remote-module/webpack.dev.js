@@ -1,7 +1,6 @@
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
-import { defineDevConfig } from "@workleap/webpack-configs";
+import { defineDevHostConfig, defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import path from "node:path";
 import { swcConfig } from "./swc.dev.js";
 
@@ -19,10 +18,12 @@ if (!process.env.ISOLATED) {
         }
     });
 } else {
-    config = defineDevConfig(swcConfig, {
-        cache: false,
+    config = defineDevHostConfig(swcConfig, "remote2", 8080, {
         entry: path.resolve("./src/dev/index.tsx"),
-        overlay: false
+        overlay: false,
+        environmentVariables: {
+            "NETLIFY": process.env.NETLIFY === "true"
+        }
     });
 }
 

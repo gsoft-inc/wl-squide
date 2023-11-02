@@ -1,20 +1,20 @@
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 
 function registerRoutes(runtime: Runtime) {
-    runtime.registerRoute({
-        path: "/federated-tabs",
-        lazy: async () => {
-            const { FederatedTabsLayout } = await import("@basic/shared/FederatedTabsLayout.tsx");
+    // Register federated tab.
 
-            return {
-                element: <FederatedTabsLayout host="@basic/another-remote-module" />
-            };
-        }
+    runtime.registerRoute({
+        path: "/federated-tabs/officevibe",
+        lazy: () => import("./OfficevibeTab.tsx")
+    }, {
+        parentPath: "/federated-tabs"
     });
 
     runtime.registerNavigationItem({
-        $label: "Tabs",
-        to: "/federated-tabs"
+        $label: "Officevibe",
+        to: "/federated-tabs/officevibe"
+    }, {
+        menuId: "/federated-tabs"
     });
 }
 

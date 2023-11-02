@@ -1,3 +1,4 @@
+import { registerLayouts } from "@basic/shared";
 import { registerShell } from "@basic/shell";
 import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
 import { StrictMode } from "react";
@@ -16,7 +17,7 @@ const runtime = new Runtime({
 
 // Registering the remote module as a static module because the "register" function
 // is local when developing in isolation.
-await registerLocalModules([registerShell(sessionManager), registerDev, registerModule], runtime);
+await registerLocalModules([registerShell(sessionManager), registerLayouts(), registerDev, registerModule], runtime);
 
 const root = createRoot(document.getElementById("root")!);
 

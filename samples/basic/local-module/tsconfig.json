@@ -8,8 +8,7 @@
             "@squide/webpack-module-federation/defineConfig.js": ["../../../packages/webpack-module-federation/src/defineConfig.js"],
             "@squide/fakes": ["../../../packages/fakes/src/index.ts"],
             "@basic/shell": ["../shell/src/index.ts"],
-            "@basic/shared": ["../shared/src/index.ts"],
-            "@basic/shared/FederatedTabsLayout.tsx": ["../shared/src/FederatedTabsLayout.tsx"]
+            "@basic/shared": ["../shared/src/index.ts"]
         }
     },
     "exclude": ["dist", "node_modules"]

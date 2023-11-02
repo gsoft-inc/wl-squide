@@ -1,5 +1,6 @@
 import { defineBuildConfig as defineSwcBuildConfig, defineDevConfig as defineSwcDevConfig } from "@workleap/swc-configs";
 import { findPlugin, matchConstructorName, type WebpackConfig } from "@workleap/webpack-configs";
+import HtmlWebpackPlugin from "html-webpack-plugin";
 import webpack from "webpack";
 import { defineBuildHostConfig, defineBuildRemoteModuleConfig, defineDevHostConfig, defineDevRemoteModuleConfig, defineHostModuleFederationPluginOptions, defineRemoteModuleFederationPluginOptions } from "../src/defineConfig.ts";
 
@@ -34,7 +35,20 @@ describe("defineDevHostConfig", () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         expect(result.devServer.port).toBe(8080);
-        expect(result.output?.publicPath).toMatch(/8080/i);
+    });
+
+    test("when no public path is provided, the default public path is \"auto\"", () => {
+        const config = defineDevHostConfig(SwcConfig, "host", 8080);
+
+        expect(config.output?.publicPath).toBe("auto");
+    });
+
+    test("when a public path is provided, use the provided public path", () => {
+        const config = defineDevHostConfig(SwcConfig, "host", 8080, {
+            publicPath: "http://localhost:8080/"
+        });
+
+        expect(config.output?.publicPath).toBe("http://localhost:8080/");
     });
 
     test("fast refresh is disabled", () => {
@@ -145,6 +159,43 @@ describe("defineDevHostConfig", () => {
 
         expect(result.entry).toBe("updated by the dummy transformer");
     });
+
+    test("when no options are provided for the html webpack plugin, add a public path option", () => {
+        const config = defineDevHostConfig(SwcConfig, "host", 8080);
+
+        const result = findPlugin(config, matchConstructorName(HtmlWebpackPlugin.name));
+
+        // This is an option that is relative to the environment running the test and breaks on CI.
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        delete (result.plugin.userOptions as HtmlWebpackPlugin.Options)["template"];
+
+        expect(result).toMatchSnapshot();
+    });
+
+    test("when options others than the public path option are provided for the html webpack plugin, add a public path option", () => {
+        const config = defineDevHostConfig(SwcConfig, "host", 8080, {
+            htmlWebpackPluginOptions: {
+                favicon: "toto.png"
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(HtmlWebpackPlugin.name));
+
+        expect(result).toMatchSnapshot();
+    });
+
+    test("when a public path option is provided for the html webpack plugin, do not alter the provided public path option", () => {
+        const config = defineDevHostConfig(SwcConfig, "host", 8080, {
+            htmlWebpackPluginOptions: {
+                publicPath: "/toto"
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(HtmlWebpackPlugin.name));
+
+        expect(result).toMatchSnapshot();
+    });
 });
 
 
@@ -154,27 +205,35 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("the application name is set as the federation plugin application name", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", "http://localhost:8080/");
+        const config = defineBuildHostConfig(SwcConfig, "host");
         const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
 
         expect(result).toMatchSnapshot();
     });
 
-    test("the public path is forwarded", () => {
-        const result = defineBuildHostConfig(SwcConfig, "host", "http://localhost:8080/");
+    test("when no public path is provided, the default public path is \"auto\"", () => {
+        const config = defineBuildHostConfig(SwcConfig, "host");
 
-        expect(result.output?.publicPath).toBe("http://localhost:8080/");
+        expect(config.output?.publicPath).toBe("auto");
+    });
+
+    test("when a public path is provided, use the provided public path", () => {
+        const config = defineBuildHostConfig(SwcConfig, "host", {
+            publicPath: "http://localhost:8080/"
+        });
+
+        expect(config.output?.publicPath).toBe("http://localhost:8080/");
     });
 
     test("the module federation plugin configuration includes the default shared dependencies", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", "http://localhost:8080/");
+        const config = defineBuildHostConfig(SwcConfig, "host");
         const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
 
         expect(result).toMatchSnapshot();
     });
 
     test("when additional shared dependencies are provided, add the dependencies to the module federation plugin configuration", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", "http://localhost:8080/", {
+        const config = defineBuildHostConfig(SwcConfig, "host", {
             sharedDependencies: {
                 "first": {
                     singleton: true
@@ -192,7 +251,7 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("when additional options are provided for an existing default shared dependency, add the consumer options to the default options", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", "http://localhost:8080/", {
+        const config = defineBuildHostConfig(SwcConfig, "host", {
             sharedDependencies: {
                 "react": {
                     requiredVersion: "1.2.3"
@@ -206,7 +265,7 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("when overriding options are provided for a default shared dependency, use the consumer option", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", "http://localhost:8080/", {
+        const config = defineBuildHostConfig(SwcConfig, "host", {
             sharedDependencies: {
                 "react": {
                     eager: false,
@@ -221,7 +280,7 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("when the router is not react-router, do not add react-router shared dependencies", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", "http://localhost:8080/", {
+        const config = defineBuildHostConfig(SwcConfig, "host", {
             features: {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
@@ -235,7 +294,7 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("when msw is activated, add msw shared dependency", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", "http://localhost:8080/", {
+        const config = defineBuildHostConfig(SwcConfig, "host", {
             features: {
                 msw: true
             }
@@ -247,7 +306,7 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("when additional plugins are provided, the plugins are added to the configuration", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", "http://localhost:8080/", {
+        const config = defineBuildHostConfig(SwcConfig, "host", {
             plugins: [new DummyPlugin({})]
         });
 
@@ -257,7 +316,7 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("when configuration transformers are provided, the transformers are applied to the configuration", () => {
-        const result = defineBuildHostConfig(SwcConfig, "host", "http://localhost:8080/", {
+        const result = defineBuildHostConfig(SwcConfig, "host", {
             transformers: [(config: WebpackConfig) => {
                 config.entry = "updated by the dummy transformer";
 
@@ -266,6 +325,43 @@ describe("defineBuildHostConfig", () => {
         });
 
         expect(result.entry).toBe("updated by the dummy transformer");
+    });
+
+    test("when no options are provided for the html webpack plugin, add a public path option", () => {
+        const config = defineBuildHostConfig(SwcConfig, "host");
+
+        const result = findPlugin(config, matchConstructorName(HtmlWebpackPlugin.name));
+
+        // This is an option that is relative to the environment running the test and breaks on CI.
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        delete (result.plugin.userOptions as HtmlWebpackPlugin.Options)["template"];
+
+        expect(result).toMatchSnapshot();
+    });
+
+    test("when options others than the public path option are provided for the html webpack plugin, add a public path option", () => {
+        const config = defineBuildHostConfig(SwcConfig, "host", {
+            htmlWebpackPluginOptions: {
+                favicon: "toto.png"
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(HtmlWebpackPlugin.name));
+
+        expect(result).toMatchSnapshot();
+    });
+
+    test("when a public path option is provided for the html webpack plugin, do not alter the provided public path option", () => {
+        const config = defineBuildHostConfig(SwcConfig, "host", {
+            htmlWebpackPluginOptions: {
+                publicPath: "/toto"
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(HtmlWebpackPlugin.name));
+
+        expect(result).toMatchSnapshot();
     });
 });
 
@@ -282,14 +378,27 @@ describe("defineDevRemoteModuleConfig", () => {
         expect(result).toMatchSnapshot();
     });
 
-    test("the port number is set as the dev server port and the public path port", () => {
+    test("the port number is set as the dev server port", () => {
         const result = defineDevRemoteModuleConfig(SwcConfig, "remote1", 8081);
 
         // "devServer" does exist but webpack types are a messed.
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         expect(result.devServer.port).toBe(8081);
-        expect(result.output?.publicPath).toMatch(/8081/i);
+    });
+
+    test("when no public path is provided, the default public path is \"auto\"", () => {
+        const config = defineDevRemoteModuleConfig(SwcConfig, "host", 8081);
+
+        expect(config.output?.publicPath).toBe("auto");
+    });
+
+    test("when a public path is provided, use the provided public path", () => {
+        const config = defineDevRemoteModuleConfig(SwcConfig, "host", 8081, {
+            publicPath: "http://localhost:8081/"
+        });
+
+        expect(config.output?.publicPath).toBe("http://localhost:8081/");
     });
 
     test("fast refresh is disabled", () => {
@@ -418,27 +527,35 @@ describe("defineBuildRemoteModuleConfig", () => {
     });
 
     test("the application name is set as the federation plugin application name", () => {
-        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", "http://localhost:8081/");
+        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1");
         const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
 
         expect(result).toMatchSnapshot();
     });
 
-    test("the public path is forwarded", () => {
-        const result = defineBuildRemoteModuleConfig(SwcConfig, "remote1", "http://localhost:8081/");
+    test("when no public path is provided, the default public path is \"auto\"", () => {
+        const config = defineBuildRemoteModuleConfig(SwcConfig, "host");
 
-        expect(result.output?.publicPath).toBe("http://localhost:8081/");
+        expect(config.output?.publicPath).toBe("auto");
+    });
+
+    test("when a public path is provided, use the provided public path", () => {
+        const config = defineBuildRemoteModuleConfig(SwcConfig, "host", {
+            publicPath: "http://localhost:8080/"
+        });
+
+        expect(config.output?.publicPath).toBe("http://localhost:8080/");
     });
 
     test("the module federation plugin configuration includes the default shared dependencies", () => {
-        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", "http://localhost:8081/");
+        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1");
         const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
 
         expect(result).toMatchSnapshot();
     });
 
     test("when additional shared dependencies are provided, add the dependencies to the module federation plugin configuration", () => {
-        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", "http://localhost:8081/", {
+        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", {
             sharedDependencies: {
                 "first": {
                     singleton: true
@@ -456,7 +573,7 @@ describe("defineBuildRemoteModuleConfig", () => {
     });
 
     test("when additional options are provided for an existing default shared dependency, add the consumer options to the default options", () => {
-        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", "http://localhost:8081/", {
+        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", {
             sharedDependencies: {
                 "react": {
                     requiredVersion: "1.2.3"
@@ -470,7 +587,7 @@ describe("defineBuildRemoteModuleConfig", () => {
     });
 
     test("when overriding options are provided for a default shared dependency, use the consumer option", () => {
-        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", "http://localhost:8081/", {
+        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", {
             sharedDependencies: {
                 "react": {
                     eager: false,
@@ -485,7 +602,7 @@ describe("defineBuildRemoteModuleConfig", () => {
     });
 
     test("when the router is not react-router, do not add react-router shared dependencies", () => {
-        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", "http://localhost:8081/", {
+        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", {
             features: {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
@@ -499,7 +616,7 @@ describe("defineBuildRemoteModuleConfig", () => {
     });
 
     test("when msw is activated, add msw shared dependency", () => {
-        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", "http://localhost:8081/", {
+        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", {
             features: {
                 msw: true
             }
@@ -511,7 +628,7 @@ describe("defineBuildRemoteModuleConfig", () => {
     });
 
     test("when additional plugins are provided, the plugins are added to the configuration", () => {
-        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", "http://localhost:8081/", {
+        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", {
             plugins: [new DummyPlugin({})]
         });
 
@@ -527,7 +644,7 @@ describe("defineBuildRemoteModuleConfig", () => {
             return config;
         };
 
-        const result = defineBuildRemoteModuleConfig(SwcConfig, "remote1", "http://localhost:8081/", {
+        const result = defineBuildRemoteModuleConfig(SwcConfig, "remote1", {
             transformers: [dummyTransformer]
         });
 

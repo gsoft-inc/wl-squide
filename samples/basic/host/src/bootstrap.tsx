@@ -1,5 +1,5 @@
 import { registerLocalModule } from "@basic/local-module";
-import { isNetlify, type AppContext } from "@basic/shared";
+import { isNetlify, registerLayouts, type AppContext } from "@basic/shared";
 import { registerShell } from "@basic/shell";
 import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
 import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
@@ -29,7 +29,7 @@ const context: AppContext = {
     name: "Test app"
 };
 
-await registerLocalModules([registerShell(sessionManager, { host: "@basic/host" }), registerHost, registerLocalModule], runtime, { context });
+await registerLocalModules([registerShell(sessionManager, { host: "@basic/host" }), registerLayouts({ host: "@basic/host" }), registerHost, registerLocalModule], runtime, { context });
 
 await registerRemoteModules(Remotes, runtime, { context });
 

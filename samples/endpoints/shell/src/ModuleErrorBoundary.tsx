@@ -13,7 +13,7 @@ function getErrorMessage(error: unknown) {
 }
 
 export function ModuleErrorBoundary() {
-    const error = useRouteError();
+    const error = useRouteError() as Error;
     const location = useLocation();
     const logger = useLogger();
 
@@ -26,11 +26,12 @@ export function ModuleErrorBoundary() {
     }, [location.pathname, error, logger]);
 
     return (
-        <div style={{ color: "red" }}>
+        <div>
             <h2>Unmanaged error</h2>
-            <p>An unmanaged error occurred inside a module. Still, other parts of the application are fully functional!</p>
-            <span role="img" aria-label="pointer">👉</span> {getErrorMessage(error)}
-            <br /><br />
+            <p style={{ color: "red" }}>An unmanaged error occurred inside a module. Still, other parts of the application are fully functional!</p>
+            <p style={{ color: "red" }}><span role="img" aria-label="pointer">👉</span> {getErrorMessage(error)}</p>
+            <p style={{ color: "gray" }}><code>{error.stack}</code></p>
+            <br />
             <button type="button" onClick={handleReloadButtonClick}>Reload</button>
         </div>
     );

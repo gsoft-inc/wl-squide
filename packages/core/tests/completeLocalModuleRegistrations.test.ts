@@ -32,7 +32,7 @@ const runtime = new DummyRuntime();
 test("when called before registerLocalModules, throw an error", async () => {
     const registry = new LocalModuleRegistry();
 
-    await expect(() => registry.completeModuleRegistrations(runtime)).rejects.toThrow(/The completeLocalModuleRegistration function can only be called once the registerLocalModules function terminated/);
+    await expect(() => registry.completeModuleRegistrations(runtime, {})).rejects.toThrow(/The completeLocalModuleRegistration function can only be called once the registerLocalModules function terminated/);
 });
 
 test("when called twice, throw an error", async () => {
@@ -43,9 +43,9 @@ test("when called twice, throw an error", async () => {
         () => () => {}
     ], runtime);
 
-    await registry.completeModuleRegistrations(runtime);
+    await registry.completeModuleRegistrations(runtime, {});
 
-    await expect(() => registry.completeModuleRegistrations(runtime)).rejects.toThrow(/The completeLocalModuleRegistration function can only be called once/);
+    await expect(() => registry.completeModuleRegistrations(runtime, {})).rejects.toThrow(/The completeLocalModuleRegistration function can only be called once/);
 });
 
 test("when called for the first time but the registration status is already \"ready\", return a resolving promise", async () => {
@@ -59,7 +59,7 @@ test("when called for the first time but the registration status is already \"re
 
     expect(registry.registrationStatus).toBe("ready");
 
-    await registry.completeModuleRegistrations(runtime);
+    await registry.completeModuleRegistrations(runtime, {});
 
     expect(registry.registrationStatus).toBe("ready");
 });
@@ -77,7 +77,7 @@ test("can complete all the deferred registrations", async () => {
         () => register3
     ], runtime);
 
-    await registry.completeModuleRegistrations(runtime);
+    await registry.completeModuleRegistrations(runtime, {});
 
     expect(register1).toHaveBeenCalled();
     expect(register2).toHaveBeenCalled();
@@ -94,7 +94,7 @@ test("when all the deferred registrations are completed, set the status to \"rea
 
     expect(registry.registrationStatus).toBe("registered");
 
-    await registry.completeModuleRegistrations(runtime);
+    await registry.completeModuleRegistrations(runtime, {});
 
     expect(registry.registrationStatus).toBe("ready");
 });
@@ -114,7 +114,7 @@ test("when a deferred registration is asynchronous, the function can be awaited"
         () => () => {}
     ], runtime);
 
-    await registry.completeModuleRegistrations(runtime);
+    await registry.completeModuleRegistrations(runtime, {});
 
     expect(hasBeenCompleted).toBeTruthy();
 });
@@ -131,7 +131,7 @@ test("when a deferred registration fail, complete the remaining deferred registr
         () => register3
     ], runtime);
 
-    await registry.completeModuleRegistrations(runtime);
+    await registry.completeModuleRegistrations(runtime, {});
 
     expect(register1).toHaveBeenCalled();
     expect(register3).toHaveBeenCalled();
@@ -146,7 +146,7 @@ test("when a deferred registration fail, return the error", async () => {
         () => () => {}
     ], runtime);
 
-    const errors = await registry.completeModuleRegistrations(runtime);
+    const errors = await registry.completeModuleRegistrations(runtime, {});
 
     expect(errors.length).toBe(1);
     expect(errors[0]!.error!.toString()).toContain("Module 2 deferred registration failed");

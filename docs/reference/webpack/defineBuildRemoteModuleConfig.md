@@ -11,14 +11,13 @@ Creates a webpack [configuration object](https://webpack.js.org/concepts/configu
 ## Reference
 
 ```ts
-const webpackConfig = defineBuildRemoteModuleConfig(swcConfig: {}, applicationName, publicPath, options?: {})
+const webpackConfig = defineBuildRemoteModuleConfig(swcConfig: {}, applicationName, options?: {})
 ```
 
 ## Parameters
 
 - `swcConfig`: An SWC [configuration object](https://swc.rs/docs/configuration/swcrc).
 - `applicationName`: The remote module application name.
-- `publicPath`: The remote module application public path.
 - `options`: An optional object literal of options:
     - Accepts most of webpack `definedDevConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/#3-set-predefined-options).
     - `features`: An optional object literal of feature switches to define additional shared dependencies.
@@ -81,7 +80,7 @@ The following shared dependencies can be added through feature switches:
 import { defineBuildRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://localhost:8080/");
+export default defineBuildRemoteModuleConfig(swcConfig, "remote1");
 ```
 
 ### Activate additional features
@@ -96,7 +95,7 @@ Features must be activated on the host application as well as every remote modul
 import { defineBuildRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://localhost:8080/", {
+export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
     features: {
         msw: true
     }
@@ -115,7 +114,7 @@ Additional shared dependencies must be configured on the host application as wel
 import { defineBuildRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://localhost:8080/", {
+export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true
@@ -132,7 +131,7 @@ export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://local
 import { defineBuildRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://localhost:8080/", {
+export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
     sharedDependencies: {
         "react": {
             strictVersion: "18.2.0"
@@ -161,7 +160,7 @@ In the previous example, the `react` shared dependency will be **augmented** wit
 import { defineBuildRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://localhost:8080/", {
+export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
     sharedDependencies: {
         "react": {
             singleton: false
@@ -191,7 +190,7 @@ While you could customize the [ModuleFederationPlugin](https://webpack.js.org/pl
 import { defineBuildRemoteModuleConfig, defineRemoteModuleFederationPluginOptions } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://localhost:8080/", {
+export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
     moduleFederationPluginOptions: defineRemoteModuleFederationPluginOptions("remote1", {
         runtime: "my-runtime-name"
     })
@@ -209,7 +208,7 @@ export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://local
 import { defineBuildRemoteModuleConfig, defineRemoteModuleFederationPluginOptions } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://localhost:8080/", {
+export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
         moduleFederationPluginOptions: defineRemoteModuleFederationPluginOptions("remote1", {
             exposes: {
                 "./foo": "./src/bar"

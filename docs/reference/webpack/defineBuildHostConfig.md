@@ -11,14 +11,13 @@ Creates a webpack [configuration object](https://webpack.js.org/concepts/configu
 ## Reference
 
 ```ts
-const webpackConfig = defineBuildHostConfig(swcConfig: {}, applicationName, publicPath, options?: {})
+const webpackConfig = defineBuildHostConfig(swcConfig: {}, applicationName, options?: {})
 ```
 
 ## Parameters
 
 - `swcConfig`: An SWC [configuration object](https://swc.rs/docs/configuration/swcrc).
 - `applicationName`: The host application name.
-- `publicPath`: The host application public path.
 - `options`: An optional object literal of options:
     - Accepts most of webpack `definedBuildConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/#3-set-predefined-options).
     - `htmlWebpackPluginOptions`: An optional object literal accepting any property of the [HtmlWebpackPlugin](https://github.com/jantimon/html-webpack-plugin#options).
@@ -74,7 +73,7 @@ Features must be activated on the host application as well as every remote modul
 import { defineBuildHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/", {
+export default defineBuildHostConfig(swcConfig, "host", {
     features: {
         msw: true
     }
@@ -93,7 +92,7 @@ Additional shared dependencies must be configured on the host application as wel
 import { defineBuildHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/", {
+export default defineBuildHostConfig(swcConfig, "host", {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true
@@ -110,7 +109,7 @@ export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/"
 import { defineBuildHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/", {
+export default defineBuildHostConfig(swcConfig, "host", {
     sharedDependencies: {
         "react": {
             strictVersion: "18.2.0"
@@ -139,7 +138,7 @@ In the previous example, the `react` shared dependency will be **augmented** wit
 import { defineBuildHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/", {
+export default defineBuildHostConfig(swcConfig, "host", {
     sharedDependencies: {
         "react": {
             singleton: false
@@ -169,7 +168,7 @@ While you could customize the [ModuleFederationPlugin](https://webpack.js.org/pl
 import { defineBuildHostConfig, defineHostModuleFederationPluginOptions } from "@squide/webpack-module-federation/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/", {
+export default defineBuildHostConfig(swcConfig, "host", {
     moduleFederationPluginOptions: defineHostModuleFederationPluginOptions("host", {
         runtime: "my-runtime-name"
     })

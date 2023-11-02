@@ -1,5 +1,5 @@
 import type { SwcConfig } from "@workleap/swc-configs";
-import { defineBuildConfig, defineDevConfig, type DefineBuildConfigOptions, type DefineDevConfigOptions, type WebpackConfig, type WebpackConfigTransformer } from "@workleap/webpack-configs";
+import { defineBuildConfig, defineBuildHtmlWebpackPluginConfig, defineDevConfig, defineDevHtmlWebpackPluginConfig, type DefineBuildConfigOptions, type DefineDevConfigOptions, type WebpackConfig, type WebpackConfigTransformer } from "@workleap/webpack-configs";
 import merge from "deepmerge";
 import type HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "node:path";
@@ -119,6 +119,16 @@ export function defineHostModuleFederationPluginOptions(applicationName: string,
     };
 }
 
+// Fixing HMR and page reloads when using `publicPath: auto` either in the host or remotes webpack configuration.
+// Otherwise, when a nested page that belongs to a remote module is reloaded, an "Unexpected token" error will be thrown.
+function trySetHtmlWebpackPluginPublicPath(options: HtmlWebpackPlugin.Options) {
+    if (!options.publicPath) {
+        options.publicPath = "/";
+    }
+
+    return options;
+}
+
 export interface DefineDevHostConfigOptions extends Omit<DefineDevConfigOptions, "htmlWebpackPlugin" | "fastRefresh" | "port"> {
     htmlWebpackPluginOptions?: HtmlWebpackPlugin.Options;
     features?: Features;
@@ -130,6 +140,7 @@ export interface DefineDevHostConfigOptions extends Omit<DefineDevConfigOptions,
 export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: string, port: number, options: DefineDevHostConfigOptions = {}): webpack.Configuration {
     const {
         entry = path.resolve("./src/index.ts"),
+        publicPath = "auto",
         cache = false,
         plugins = [],
         htmlWebpackPluginOptions,
@@ -142,9 +153,10 @@ export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: strin
     return defineDevConfig(swcConfig, {
         entry,
         port,
+        publicPath,
         cache,
         fastRefresh: false,
-        htmlWebpackPlugin: htmlWebpackPluginOptions,
+        htmlWebpackPlugin: trySetHtmlWebpackPluginPublicPath(htmlWebpackPluginOptions ?? defineBuildHtmlWebpackPluginConfig()),
         plugins: [
             ...plugins,
             new webpack.container.ModuleFederationPlugin(moduleFederationPluginOptions)
@@ -153,7 +165,7 @@ export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: strin
     });
 }
 
-export interface DefineBuildHostConfigOptions extends Omit<DefineBuildConfigOptions, "htmlWebpackPlugin" | "publicPath"> {
+export interface DefineBuildHostConfigOptions extends Omit<DefineBuildConfigOptions, "htmlWebpackPlugin"> {
     htmlWebpackPluginOptions?: HtmlWebpackPlugin.Options;
     features?: Features;
     sharedDependencies?: ModuleFederationPluginOptions["shared"];
@@ -161,9 +173,10 @@ export interface DefineBuildHostConfigOptions extends Omit<DefineBuildConfigOpti
 }
 
 // The function return type is mandatory, otherwise we got an error TS4058.
-export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: string, publicPath: string, options: DefineBuildHostConfigOptions = {}): webpack.Configuration {
+export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: string, options: DefineBuildHostConfigOptions = {}): webpack.Configuration {
     const {
         entry = path.resolve("./src/index.ts"),
+        publicPath = "auto",
         cache = false,
         plugins = [],
         htmlWebpackPluginOptions,
@@ -178,7 +191,7 @@ export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: str
         entry,
         publicPath,
         cache,
-        htmlWebpackPlugin: htmlWebpackPluginOptions,
+        htmlWebpackPlugin: trySetHtmlWebpackPluginPublicPath(htmlWebpackPluginOptions ?? defineDevHtmlWebpackPluginConfig()),
         plugins: [
             ...plugins,
             new webpack.container.ModuleFederationPlugin(moduleFederationPluginOptions)
@@ -252,6 +265,7 @@ export interface DefineDevRemoteModuleConfigOptions extends Omit<DefineDevConfig
 export function defineDevRemoteModuleConfig(swcConfig: SwcConfig, applicationName: string, port: number, options: DefineDevRemoteModuleConfigOptions = {}): webpack.Configuration {
     const {
         entry = path.resolve("./src/register.tsx"),
+        publicPath = "auto",
         cache = false,
         plugins = [],
         htmlWebpackPlugin = false,
@@ -265,6 +279,7 @@ export function defineDevRemoteModuleConfig(swcConfig: SwcConfig, applicationNam
     return defineDevConfig(swcConfig, {
         entry,
         port,
+        publicPath,
         cache,
         fastRefresh: false,
         htmlWebpackPlugin,
@@ -283,16 +298,17 @@ export function defineDevRemoteModuleConfig(swcConfig: SwcConfig, applicationNam
     });
 }
 
-export interface DefineBuildRemoteModuleConfigOptions extends Omit<DefineBuildConfigOptions, "publicPath"> {
+export interface DefineBuildRemoteModuleConfigOptions extends DefineBuildConfigOptions {
     features?: Features;
     sharedDependencies?: ModuleFederationPluginOptions["shared"];
     moduleFederationPluginOptions?: ModuleFederationPluginOptions;
 }
 
 // The function return type is mandatory, otherwise we got an error TS4058.
-export function defineBuildRemoteModuleConfig(swcConfig: SwcConfig, applicationName: string, publicPath: string, options: DefineBuildRemoteModuleConfigOptions = {}): webpack.Configuration {
+export function defineBuildRemoteModuleConfig(swcConfig: SwcConfig, applicationName: string, options: DefineBuildRemoteModuleConfigOptions = {}): webpack.Configuration {
     const {
         entry = path.resolve("./src/register.tsx"),
+        publicPath = "auto",
         cache = false,
         plugins = [],
         htmlWebpackPlugin = false,

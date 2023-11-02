@@ -1,3 +1,4 @@
+import { registerLayouts } from "@basic/shared";
 import { registerShell } from "@basic/shell";
 import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
 import { StrictMode } from "react";
@@ -14,7 +15,7 @@ const runtime = new Runtime({
     sessionAccessor
 });
 
-await registerLocalModules([registerShell(sessionManager), registerDev, registerLocalModule], runtime);
+await registerLocalModules([registerShell(sessionManager), registerLayouts(), registerDev, registerLocalModule], runtime);
 
 const root = createRoot(document.getElementById("root")!);
 

@@ -9,7 +9,7 @@
             "@squide/fakes": ["../../../packages/fakes/src/index.ts"],
             "@basic/shell": ["../shell/src/index.ts"],
             "@basic/shared": ["../shared/src/index.ts"],
-            "@basic/local-module": ["../local-module/src/register.ts"]
+            "@basic/local-module": ["../local-module/src/register.tsx"]
         }
     },
     "exclude": ["dist", "node_modules"]

@@ -57,18 +57,15 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
 Finally, use the `USE_MSW` environment variable to conditionally import any files that includes the [msw](https://www.npmjs.com/package/msw) package:
 
 ```ts mocks/handlers.ts
-import { rest, type RestHandler } from "msw";
+import { HttpResponse, http, type HttpHandler } from "msw";
 
-export const requestHandlers: RestHandler[] = [
-    rest.get("/api/character/1", async (req, res, ctx) => {
-        return res(
-            ctx.status(200),
-            ctx.json([{
-                "id": 1,
-                "name": "Rick Sanchez",
-                "status": "Alive"
-            }]);
-        )
+export const requestHandlers: HttpHandler[] = [
+    http.get("/api/character/1", async () => {
+        return HttpResponse.json([{
+            "id": 1,
+            "name": "Rick Sanchez",
+            "status": "Alive"
+        }]);
     })
 ];
 ```

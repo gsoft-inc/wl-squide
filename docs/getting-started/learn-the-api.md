@@ -171,7 +171,23 @@ const runtime = new Runtime({
 });
 ```
 
-Then, [register the modules MSW request handlers](../reference/msw/MswPlugin.md#register-request-handlers) at registration:
+Then, define an MSW request handler in a remote module:
+
+```ts remote-module/mocks/handlers.ts
+import { HttpResponse, http, type HttpHandler } from "msw";
+
+export const requestHandlers: HttpHandler[] = [
+    http.get("/api/character/1", async () => {
+        return HttpResponse.json([{
+            "id": 1,
+            "name": "Rick Sanchez",
+            "status": "Alive"
+        }]);
+    })
+];
+```
+
+Then, using the MSW plugin, [register the module MSW request handlers](../reference/msw/MswPlugin.md#register-request-handlers):
 
 ```ts !#10,12 remote-module/src/register.tsx
 import { getMswPlugin } from "@squide/msw";
@@ -194,7 +210,7 @@ export const register: ModuleRegisterFunction<Runtime> = async runtime => {
 Don't forget to mark the registration function as `async` since there's a dynamic import.
 !!!
 
-Then, [retrieve the modules MSW request handlers](../reference/msw/MswPlugin.md#retrieve-the-request-handlers) in the host application and start MSW:
+Finally, [retrieve the modules MSW request handlers](../reference/msw/MswPlugin.md#retrieve-the-request-handlers) in the host application and start MSW:
 
 ```ts !#9,12
 import { registerRemoteModules } from "@squide/webpack-module-federation";
@@ -212,18 +228,6 @@ if (process.env.USE_MSW) {
 
     // Indicate to resources that are dependent on MSW that the service has been started.
     setMswAsStarted();
-}
-```
-
-Finally, make sure that the [application rendering is delayed](../reference/msw/useIsMswReady.md) until MSW is started:
-
-```ts !#3 host/src/App.tsx
-import { useIsMswStarted } from "@squide/msw";
-
-const isMswReady = useIsMswStarted(process.env.USE_MSW);
-
-if (!isMswReady) {
-    return <div>Loading...</div>
 }
 ```
 

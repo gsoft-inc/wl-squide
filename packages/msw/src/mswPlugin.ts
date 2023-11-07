@@ -1,5 +1,5 @@
 import { Plugin, type AbstractRuntime } from "@squide/core";
-import type { RestHandler } from "msw";
+import type { RequestHandler } from "msw";
 import { RequestHandlerRegistry } from "./requestHandlerRegistry.ts";
 
 export class MswPlugin extends Plugin {
@@ -9,11 +9,11 @@ export class MswPlugin extends Plugin {
         super(MswPlugin.name);
     }
 
-    registerRequestHandlers(handlers: RestHandler[]) {
+    registerRequestHandlers(handlers: RequestHandler[]) {
         this.#requestHandlerRegistry.add(handlers);
     }
 
-    get requestHandlers(): RestHandler[] {
+    get requestHandlers(): RequestHandler[] {
         return this.#requestHandlerRegistry.handlers;
     }
 }

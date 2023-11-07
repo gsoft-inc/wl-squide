@@ -1,4 +1,4 @@
-import { rest, type RestHandler } from "msw";
+import { HttpResponse, http, type HttpHandler } from "msw";
 
 function simulateDelay(delay: number) {
     return new Promise(resolve => {
@@ -8,17 +8,14 @@ function simulateDelay(delay: number) {
     });
 }
 
-export const featureFlagHandlers: RestHandler[] = [
-    rest.get("/api/feature-flags", async (req, res, ctx) => {
+export const featureFlagHandlers: HttpHandler[] = [
+    http.get("/api/feature-flags", async () => {
         await simulateDelay(500);
 
-        return res(
-            ctx.status(200),
-            ctx.json({
-                featureA: true,
-                featureB: true,
-                featureC: false
-            })
-        );
+        return HttpResponse.json({
+            featureA: true,
+            featureB: true,
+            featureC: false
+        });
     })
 ];

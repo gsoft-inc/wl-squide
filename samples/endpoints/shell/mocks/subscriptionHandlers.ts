@@ -1,21 +1,18 @@
-import { rest, type RestHandler } from "msw";
+import { HttpResponse, http, type HttpHandler } from "msw";
 import { sessionManager } from "./session.ts";
 
-export const subscriptionHandlers: RestHandler[] = [
-    rest.get("/api/subscription", async (req, res, ctx) => {
+export const subscriptionHandlers: HttpHandler[] = [
+    http.get("/api/subscription", async () => {
         if (!sessionManager.getSession()) {
-            return res(
-                ctx.status(401)
-            );
+            return new HttpResponse(null, {
+                status: 401
+            });
         }
 
-        return res(
-            ctx.status(200),
-            ctx.json({
-                company: "Workleap",
-                contact: "John Doe",
-                status: "paid"
-            })
-        );
+        return HttpResponse.json({
+            company: "Workleap",
+            contact: "John Doe",
+            status: "paid"
+        });
     })
 ];

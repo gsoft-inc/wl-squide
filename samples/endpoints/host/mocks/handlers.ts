@@ -1,4 +1,4 @@
-import type { RestHandler } from "msw";
+import type { HttpHandler } from "msw";
 import { characterHandlers } from "./characterHandlers.ts";
 
-export const requestHandlers: RestHandler[] = characterHandlers;
+export const requestHandlers: HttpHandler[] = characterHandlers;

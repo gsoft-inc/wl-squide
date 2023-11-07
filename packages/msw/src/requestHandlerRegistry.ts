@@ -12,8 +12,8 @@ export class RequestHandlerRegistry {
         this.#handlers.push(...handlers);
     }
 
-    // Must specify the return type, otherwise we get the following error:
-    // TS2742: The inferred type of 'handlers' cannot be named without a reference to X. This is likely not portable. A type annotation is necessary.
+    // Must specify the return type, otherwise we get a TS2742: The inferred type cannot be named without a reference to X. This is likely not portable.
+    // A type annotation is necessary.
     get handlers(): RequestHandler[] {
         return this.#handlers;
     }

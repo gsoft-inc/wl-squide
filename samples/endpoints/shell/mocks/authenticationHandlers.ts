@@ -14,6 +14,8 @@ function simulateDelay(delay: number) {
     });
 }
 
+// Must specify the return type, otherwise we get a TS2742: The inferred type cannot be named without a reference to X. This is likely not portable.
+// A type annotation is necessary.
 export const authenticationHandlers: HttpHandler[] = [
     http.post("/api/login", async ({ request }) => {
         const { username, password } = await request.json() as LoginCredentials;

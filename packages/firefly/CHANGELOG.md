@@ -1,5 +1,12 @@
 # @squide/firefly
 
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies [[`58097a2`](https://github.com/gsoft-inc/wl-squide/commit/58097a2fbaa7e5942cbe6f9b765fe471d52758d8)]:
+  - @squide/msw@2.0.3
+
 ## 1.0.0
 
 ### Major Changes

@@ -1,5 +1,11 @@
 # @squide/msw
 
+## 2.0.3
+
+### Patch Changes
+
+- [#108](https://github.com/gsoft-inc/wl-squide/pull/108) [`58097a2`](https://github.com/gsoft-inc/wl-squide/commit/58097a2fbaa7e5942cbe6f9b765fe471d52758d8) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Updated types in the function signatures for MSW 2.0
+
 ## 2.0.2
 
 ### Patch Changes

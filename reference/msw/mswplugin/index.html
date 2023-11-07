@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.752684146269">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.752706691086">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.752684146269" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.752706691086" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.752684146269" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.752706691086" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.752684146269" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.752684146269" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.752706691086" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.752706691086" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -384,18 +384,15 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
 <p>Finally, use the <code v-pre>USE_MSW</code> environment variable to conditionally import any files that includes the <a href="https://www.npmjs.com/package/msw" class="outbound" target="_blank">msw</a> package:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">mocks/handlers.ts</div>
-<pre class="language-typescript"><code v-pre class="language-typescript">import { rest, type RestHandler } from &quot;msw&quot;;
+<pre class="language-typescript"><code v-pre class="language-typescript">import { HttpResponse, http, type HttpHandler } from &quot;msw&quot;;
 
-export const requestHandlers: RestHandler[] = [
-    rest.get(&quot;/api/character/1&quot;, async (req, res, ctx) =&gt; {
-        return res(
-            ctx.status(200),
-            ctx.json([{
-                &quot;id&quot;: 1,
-                &quot;name&quot;: &quot;Rick Sanchez&quot;,
-                &quot;status&quot;: &quot;Alive&quot;
-            }]);
-        )
+export const requestHandlers: HttpHandler[] = [
+    http.get(&quot;/api/character/1&quot;, async () =&gt; {
+        return HttpResponse.json([{
+            &quot;id&quot;: 1,
+            &quot;name&quot;: &quot;Rick Sanchez&quot;,
+            &quot;status&quot;: &quot;Alive&quot;
+        }]);
     })
 ];</code></pre>
 </doc-codeblock></div>

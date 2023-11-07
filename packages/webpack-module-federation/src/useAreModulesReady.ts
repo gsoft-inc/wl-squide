@@ -22,26 +22,28 @@ export function useAreModulesReady({ interval = 10 }: UseAreModulesReadyOptions 
     const runtime = useRuntime();
 
     // Using a state hook to force a rerender once ready.
-    const [value, setAreModulesReady] = useState(false);
+    const [value, setAreModulesReady] = useState(areModulesReady(getLocalModuleRegistrationStatus(), getRemoteModuleRegistrationStatus()));
 
     // Perform a reload once the modules are registered.
     useEffect(() => {
-        const intervalId = setInterval(() => {
-            if (areModulesReady(getLocalModuleRegistrationStatus(), getRemoteModuleRegistrationStatus())) {
-                // Must clear interval before calling "_completeRegistration" in case there's an error.
-                clearInterval(intervalId);
+        if (!value) {
+            const intervalId = setInterval(() => {
+                if (areModulesReady(getLocalModuleRegistrationStatus(), getRemoteModuleRegistrationStatus())) {
+                    // Must clear interval before calling "_completeRegistration" in case there's an error.
+                    clearInterval(intervalId);
 
-                runtime._completeRegistration();
+                    runtime._completeRegistration();
 
-                setAreModulesReady(true);
-            }
-        }, interval);
+                    setAreModulesReady(true);
+                }
+            }, interval);
 
-        return () => {
-            if (intervalId) {
-                clearInterval(intervalId);
-            }
-        };
+            return () => {
+                if (intervalId) {
+                    clearInterval(intervalId);
+                }
+            };
+        }
     }, []);
 
     return value;

@@ -18,12 +18,11 @@ export interface AppRouterProps {
 
 function fetchPublicData(
     setFeatureFlags: (featureFlags: FeatureFlags) => void,
-    logger: Logger,
-    signal: AbortSignal
+    logger: Logger
 ) {
     // React Query "queryClient.fetchQuery" could be used instead of using axios directly.
     // https://tanstack.com/query/latest/docs/react/reference/QueryClient#queryclientfetchquery
-    const featureFlagsPromise = axios.get("/api/feature-flags", { signal })
+    const featureFlagsPromise = axios.get("/api/feature-flags")
         .then(({ data }) => {
             const featureFlags: FeatureFlags = {
                 featureA: data.featureA,
@@ -42,12 +41,11 @@ function fetchPublicData(
 function fetchProtectedData(
     setSession: (session: Session) => void,
     setSubscription: (subscription: Subscription) => void,
-    logger: Logger,
-    signal: AbortSignal
+    logger: Logger
 ) {
     // React Query "queryClient.fetchQuery" could be used instead of using axios directly.
     // https://tanstack.com/query/latest/docs/react/reference/QueryClient#queryclientfetchquery
-    const sessionPromise = axios.get("/api/session", { signal })
+    const sessionPromise = axios.get("/api/session")
         .then(({ data }) => {
             const session: Session = {
                 user: {
@@ -63,7 +61,7 @@ function fetchProtectedData(
 
     // React Query "queryClient.fetchQuery" could be used instead of using axios directly.
     // https://tanstack.com/query/latest/docs/react/reference/QueryClient#queryclientfetchquery
-    const subscriptionPromise = axios.get("/api/subscription", { signal })
+    const subscriptionPromise = axios.get("/api/subscription")
         .then(({ data }) => {
             const subscription: Subscription = {
                 company: data.company,
@@ -102,19 +100,19 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
     const logger = useLogger();
     const runtime = useRuntime();
 
-    const handleLoadPublicData = useCallback((signal: AbortSignal) => {
-        return fetchPublicData(setFeatureFlags, logger, signal);
+    const handleLoadPublicData = useCallback(() => {
+        return fetchPublicData(setFeatureFlags, logger);
     }, [logger]);
 
-    const handleLoadProtectedData = useCallback((signal: AbortSignal) => {
+    const handleLoadProtectedData = useCallback(() => {
         const setSession = (session: Session) => {
             sessionManager.setSession(session);
         };
 
-        return fetchProtectedData(setSession, setSubscription, logger, signal);
+        return fetchProtectedData(setSession, setSubscription, logger);
     }, [logger, sessionManager]);
 
-    const handleCompleteRegistration = useCallback(() => {
+    const handleCompleteRegistrations = useCallback(() => {
         return completeModuleRegistrations(runtime, {
             featureFlags
         });
@@ -130,7 +128,7 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
                         waitForMsw={waitForMsw}
                         onLoadPublicData={handleLoadPublicData}
                         onLoadProtectedData={handleLoadProtectedData}
-                        onCompleteRegistration={handleCompleteRegistration}
+                        onCompleteRegistrations={handleCompleteRegistrations}
                     />
                 </TelemetryServiceContext.Provider>
             </SubscriptionContext.Provider>

@@ -5,17 +5,17 @@ import { cloneElement, useCallback, useEffect, useMemo, useState, type ReactElem
 import { ErrorBoundary, useErrorBoundary } from "react-error-boundary";
 import { Outlet, RouterProvider, createBrowserRouter, useLocation, type RouterProviderProps } from "react-router-dom";
 
-export type OnLoadPublicDataFunction = (signal: AbortSignal) => Promise<unknown>;
+export type OnLoadPublicDataFunction = () => Promise<unknown>;
 
-export type OnLoadProtectedDataFunction = (signal: AbortSignal) => Promise<unknown>;
+export type OnLoadProtectedDataFunction = () => Promise<unknown>;
 
-export type OnCompleteRegistrationFunction = () => Promise<unknown>;
+export type OnCompleteRegistrationsFunction = () => Promise<unknown>;
 
 interface BootstrappingRouteProps {
     fallbackElement: ReactElement;
     onLoadPublicData?: OnLoadPublicDataFunction;
     onLoadProtectedData?: OnLoadProtectedDataFunction;
-    onCompleteRegistration?: OnCompleteRegistrationFunction;
+    onCompleteRegistrations?: OnCompleteRegistrationsFunction;
     waitForMsw: boolean;
     areModulesRegistered: boolean;
     areModulesReady: boolean;
@@ -28,7 +28,7 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
         fallbackElement,
         onLoadPublicData,
         onLoadProtectedData,
-        onCompleteRegistration,
+        onCompleteRegistrations,
         waitForMsw,
         areModulesRegistered,
         areModulesReady
@@ -66,9 +66,7 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
                 if (!isPublicDataLoaded) {
                     logger.debug("[shell] Loading public data.");
 
-                    const abordController = new AbortController();
-
-                    onLoadPublicData(abordController.signal)
+                    onLoadPublicData()
                         .then(() => {
                             setIsPublicDataLoaded(true);
 
@@ -77,16 +75,13 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
                         .catch(error => {
                             showBoundary(error);
                         });
-
-                    return () => {
-                        abordController.abort();
-                    };
                 }
             }
         }
     }, [logger, areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded, onLoadPublicData]);
 
-    const isActiveRouteProtected = useIsRouteMatchProtected(location);
+    // Only throw when there's no match if the modules has been registered, otherwise it's expected that there are no registered routes.
+    const isActiveRouteProtected = useIsRouteMatchProtected(location, { throwWhenThereIsNoMatch: areModulesReady });
 
     useEffect(() => {
         // Don't go further if no handler has been provided to load protected data.
@@ -96,9 +91,7 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
                     if (!isProtectedDataLoaded) {
                         logger.debug(`[shell] Loading protected data as "${location.pathname}" is a protected route.`);
 
-                        const abordController = new AbortController();
-
-                        onLoadProtectedData(abordController.signal)
+                        onLoadProtectedData()
                             .then(() => {
                                 setIsProtectedDataLoaded(true);
 
@@ -107,10 +100,6 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
                             .catch(error => {
                                 showBoundary(error);
                             });
-
-                        return () => {
-                            abordController.abort();
-                        };
                     }
                 } else {
                     logger.debug(`[shell] Not loading protected data as "${location.pathname}" is a public route.`);
@@ -121,14 +110,14 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
 
     useEffect(() => {
         // Don't go further if no handler has been provided to complete the registration.
-        if (onCompleteRegistration) {
+        if (onCompleteRegistrations) {
             if (areModulesRegistered && isMswStarted && isPublicDataLoaded) {
                 if (!areModulesReady) {
-                    onCompleteRegistration();
+                    onCompleteRegistrations();
                 }
             }
         }
-    }, [areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded, onCompleteRegistration]);
+    }, [areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded, onCompleteRegistrations]);
 
     if (!areModulesReady || !isMswStarted || !isPublicDataLoaded || (isActiveRouteProtected && !isProtectedDataLoaded)) {
         return fallbackElement;
@@ -144,7 +133,7 @@ export interface AppRouterProps {
     errorElement: ReactElement;
     onLoadPublicData?: OnLoadPublicDataFunction;
     onLoadProtectedData?: OnLoadProtectedDataFunction;
-    onCompleteRegistration?: OnCompleteRegistrationFunction;
+    onCompleteRegistrations?: OnCompleteRegistrationsFunction;
     waitForMsw: boolean;
     routerProvidersProps?: RouterProviderProps;
 }
@@ -155,7 +144,7 @@ export function AppRouter(props: AppRouterProps) {
         errorElement,
         onLoadPublicData,
         onLoadProtectedData,
-        onCompleteRegistration,
+        onCompleteRegistrations,
         waitForMsw,
         routerProvidersProps = {}
     } = props;
@@ -183,7 +172,7 @@ export function AppRouter(props: AppRouterProps) {
                             fallbackElement={fallbackElement}
                             onLoadPublicData={onLoadPublicData}
                             onLoadProtectedData={onLoadProtectedData}
-                            onCompleteRegistration={onCompleteRegistration}
+                            onCompleteRegistrations={onCompleteRegistrations}
                             waitForMsw={waitForMsw}
                             areModulesRegistered={areModulesRegistered}
                             areModulesReady={areModulesReady}
@@ -193,7 +182,7 @@ export function AppRouter(props: AppRouterProps) {
                 children: routes
             }
         ]);
-    }, [areModulesRegistered, areModulesReady, routes, onLoadPublicData, onLoadProtectedData, onCompleteRegistration, waitForMsw]);
+    }, [areModulesRegistered, areModulesReady, routes, onLoadPublicData, onLoadProtectedData, onCompleteRegistrations, waitForMsw]);
 
     return (
         <RouterProvider {...routerProvidersProps} router={router} />

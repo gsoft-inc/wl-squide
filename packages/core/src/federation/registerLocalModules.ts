@@ -19,8 +19,7 @@ export interface LocalModuleRegistrationError {
 
 export class LocalModuleRegistry {
     #registrationStatus: ModuleRegistrationStatus = "none";
-
-    readonly #deferredRegistrations: DeferredRegistration[] = [];
+    #deferredRegistrations: DeferredRegistration[] = [];
 
     async registerModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown, TData = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext, TData>[], runtime: TRuntime, { context }: RegisterLocalModulesOptions<TContext> = {}) {
         const errors: LocalModuleRegistrationError[] = [];
@@ -109,6 +108,12 @@ export class LocalModuleRegistry {
     get registrationStatus() {
         return this.#registrationStatus;
     }
+
+    // Strictly for Jest tests, this is NOT ideal.
+    __reset() {
+        this.#registrationStatus = "none";
+        this.#deferredRegistrations = [];
+    }
 }
 
 const localModuleRegistry = new LocalModuleRegistry();
@@ -123,4 +128,9 @@ export function completeLocalModuleRegistrations<TRuntime extends AbstractRuntim
 
 export function getLocalModuleRegistrationStatus() {
     return localModuleRegistry.registrationStatus;
+}
+
+// Strictly for Jest tests, this is NOT ideal.
+export function __resetLocalModuleRegistrations() {
+    localModuleRegistry.__reset();
 }

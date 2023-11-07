@@ -183,8 +183,3 @@ export function completeRemoteModuleRegistrations<TRuntime extends AbstractRunti
 export function getRemoteModuleRegistrationStatus() {
     return remoteModuleRegistry.registrationStatus;
 }
-
-// Required to test hooks that dependent on the registration status.
-export function resetRemoteModuleRegistrationStatus() {
-
-}

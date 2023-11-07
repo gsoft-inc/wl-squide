@@ -21,23 +21,25 @@ export function areModulesRegistered(localModuleRegistrationStatus: ModuleRegist
 
 export function useAreModulesRegistered({ interval = 10 }: UseAreModulesRegisteredOptions = {}) {
     // Using a state hook to force a rerender once registered.
-    const [value, setAreModulesRegistered] = useState(false);
+    const [value, setAreModulesRegistered] = useState(areModulesRegistered(getLocalModuleRegistrationStatus(), getRemoteModuleRegistrationStatus()));
 
     // Perform a reload once the modules are registered.
     useEffect(() => {
-        const intervalId = setInterval(() => {
-            if (areModulesRegistered(getLocalModuleRegistrationStatus(), getRemoteModuleRegistrationStatus())) {
-                clearInterval(intervalId);
+        if (!value) {
+            const intervalId = setInterval(() => {
+                if (areModulesRegistered(getLocalModuleRegistrationStatus(), getRemoteModuleRegistrationStatus())) {
+                    clearInterval(intervalId);
 
-                setAreModulesRegistered(true);
-            }
-        }, interval);
+                    setAreModulesRegistered(true);
+                }
+            }, interval);
 
-        return () => {
-            if (intervalId) {
-                clearInterval(intervalId);
-            }
-        };
+            return () => {
+                if (intervalId) {
+                    clearInterval(intervalId);
+                }
+            };
+        }
     }, []);
 
     return value;

@@ -18,10 +18,12 @@ const isProtected = useIsRouteMatchProtected(locationArg)
 ### Parameters
 
 - `locationArg`: The location to match the route paths against.
+- `options`: An optional object literal of options:
+    - `throwWhenThereIsNoMatch`: Whether or not to throw an `Error` if no route match `locationArg`.
 
 ### Returns
 
-A `boolean` value indicating whether or not the matching route is `protected`. If no route match the given location, an `Error` is thrown.
+A `boolean` value indicating whether or not the matching route is `protected`. If `throwWhenThereIsNoMatch` is enabled and no route match the given location, an `Error` is thrown.
 
 ## Usage
 

@@ -7,3 +7,8 @@ export function setMswAsStarted() {
 export function isMswStarted() {
     return isStarted;
 }
+
+// Strictly for Jest tests, this is NOT ideal.
+export function __resetMswStatus() {
+    isStarted = false;
+}

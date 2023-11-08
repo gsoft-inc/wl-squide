@@ -1,5 +1,5 @@
 import { AppRouter as FireflyAppRouter } from "@squide/firefly";
-import { BootstrappingErrorBoundary } from "./BootstrappingErrorBoundary.tsx";
+import { AppRouterErrorBoundary } from "./AppRouterErrorBoundary.tsx";
 
 function Loading() {
     return (
@@ -11,7 +11,7 @@ export function AppRouter() {
     return (
         <FireflyAppRouter
             fallbackElement={<Loading />}
-            errorElement={<BootstrappingErrorBoundary />}
+            errorElement={<AppRouterErrorBoundary />}
             waitForMsw={false}
         />
     );

@@ -19,7 +19,7 @@ runtime.registerRoute({
 }, { hoist: true });
 ```
 
-### Parameters
+### Properties
 
 None
 

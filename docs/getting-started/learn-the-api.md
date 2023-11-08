@@ -233,5 +233,8 @@ if (process.env.USE_MSW) {
 
 ## Fakes
 
-For development purposes, have a look at the available [fake implementations](../reference/default.md#fakes).
+Have a look at the [fake implementations](../reference/default.md#fakes). Their goal is to faciliate the development set up to develop federated modules in isolation.
 
+## Guides
+
+Explore the [guides](../guides/default.md) to learn about Squide advanced features.

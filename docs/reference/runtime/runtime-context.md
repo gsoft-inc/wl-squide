@@ -16,7 +16,7 @@ toc:
 </RuntimeContext.Provider>
 ```
 
-### Parameters
+### Properties
 
 - `value`: A `Runtime` instance.
 

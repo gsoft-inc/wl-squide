@@ -4,7 +4,7 @@ import { useLogger, useRuntime, type Logger } from "@squide/react-router";
 import { completeModuleRegistrations } from "@squide/webpack-module-federation";
 import axios from "axios";
 import { useCallback, useState } from "react";
-import { BootstrappingErrorBoundary } from "./BootstrappingErrorBoundary.tsx";
+import { AppRouterErrorBoundary } from "./AppRouterErrorBoundary.tsx";
 
 export interface DeferredRegistrationData {
     featureFlags?: FeatureFlags;
@@ -22,7 +22,7 @@ function fetchPublicData(
 ) {
     // React Query "queryClient.fetchQuery" could be used instead of using axios directly.
     // https://tanstack.com/query/latest/docs/react/reference/QueryClient#queryclientfetchquery
-    const featureFlagsPromise = axios.get("/api/feature-flags")
+    return axios.get("/api/feature-flags")
         .then(({ data }) => {
             const featureFlags: FeatureFlags = {
                 featureA: data.featureA,
@@ -34,8 +34,6 @@ function fetchPublicData(
 
             setFeatureFlags(featureFlags);
         });
-
-    return featureFlagsPromise;
 }
 
 function fetchProtectedData(
@@ -124,7 +122,7 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
                 <TelemetryServiceContext.Provider value={telemetryService}>
                     <FireflyAppRouter
                         fallbackElement={<Loading />}
-                        errorElement={<BootstrappingErrorBoundary />}
+                        errorElement={<AppRouterErrorBoundary />}
                         waitForMsw={waitForMsw}
                         onLoadPublicData={handleLoadPublicData}
                         onLoadProtectedData={handleLoadProtectedData}

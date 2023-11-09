@@ -64,20 +64,10 @@ function getMswSharedDependency(isHost: boolean) {
     };
 }
 
-function getFireflySharedDependency(isHost: boolean) {
-    return {
-        "@squide/firefly": {
-            singleton: true,
-            eager: isHost ? true : undefined
-        }
-    };
-}
-
-function getFeaturesDependencies({ router = "react-router", msw, firefly = true }: Features, isHost: boolean) {
+function getFeaturesDependencies({ router = "react-router", msw = true }: Features, isHost: boolean) {
     return {
         ...(router === "react-router" ? getReactRouterSharedDependencies(isHost) : {}),
-        ...(msw || firefly ? getMswSharedDependency(isHost) : {}),
-        ...(firefly ? getFireflySharedDependency(isHost) : {})
+        ...(msw ? getMswSharedDependency(isHost) : {})
     };
 }
 

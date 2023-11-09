@@ -47,30 +47,18 @@ First, create a new package (we'll refer to ours as `shell`) and add the followi
 
 Then, install the package dependencies and configure the new package with [tsup](https://gsoft-inc.github.io/wl-web-configs/tsup/).
 
-Then, create a `AppRouter` component in the shell package to provide a **reusable router configuration** that can be utilized by both the host application and the isolated modules.
+Then, create a `AppRouter` component in the shell package to provide a **reusable router configuration** that can be utilized by both the host application and the isolated modules. The new `AppRouter` component should be based on the `@squide/firefly` [AppRouter](../reference/routing/appRouter.md) component:
 
 ```tsx shell/src/AppRouter.tsx
-import { useRoutes } from "@squide/react-router";
-import { useAreModulesReady } from "@squide/webpack-module-federation";
-import { useMemo } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { AppRouter as FireflyAppRouter } from "@squide/firefly";
 
 export function AppRouter() {
-    const routes = useRoutes();
-
-    // Re-render the app once all the remotes are registered, otherwise the remotes routes won't be added to the router.
-    const areModulesReady = useAreModulesReady();
-
-    const router = useMemo(() => {
-        return createBrowserRouter(routes);
-    }, [routes]);
-
-    if (!areModulesReady) {
-        return <div>Loading...</div>;
-    }
-
     return (
-        <RouterProvider router={router} />
+        <FireflyAppRouter
+            fallbackElement={<div>Loading...</div>}
+            errorElement={<div>An error occured!</div>}
+            waitForMsw={false}
+        />
     );
 }
 ```
@@ -121,7 +109,9 @@ Then, incorporate the newly introduced `AppRouter` component:
 import { AppRouter } from "@sample/shell";
 
 export function App() {
-    return <AppRouter />
+    return (
+        <AppRouter />
+    );
 }
 ```
 
@@ -233,7 +223,9 @@ The `App.tsx` file uses the newly created `AppRouter` component to setup [React 
 import { AppRouter } from "@sample/shell";
 
 export function App() {
-    return <AppRouter />;
+    return (
+        <AppRouter />
+    );
 }
 ```
 
@@ -381,7 +373,7 @@ This file is similar to the `index.tsx` file of the [remote module](#indextsx).
 
 This file is similar to the `App.tsx` file of the [remote module](#apptsx).
 
-### DevHome.tsx & registerDev
+### DevHome.tsx and registerDev
 
 These files are similar to the `dev/DevHome.tsx` and `dev/register.tsx` files of the [remote module](#devhometsx).
 

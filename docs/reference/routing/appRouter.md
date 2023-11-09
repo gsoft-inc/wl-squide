@@ -51,7 +51,7 @@ export function App() {
         <AppRouter
             fallbackElement={<Loading />}
             errorElement={<div>An error occured!</div>}
-            waitForMsw={process.env.USE_MSW as unknown as boolean}
+            waitForMsw={true}
         />
     );
 }
@@ -84,7 +84,7 @@ export function App() {
         <AppRouter
             fallbackElement={<Loading />}
             errorElement={<ErrorBoundary />}
-            waitForMsw={process.env.USE_MSW as unknown as boolean}
+            waitForMsw={true}
         />
     );
 }
@@ -123,7 +123,7 @@ export function App() {
         <AppRouter
             fallbackElement={<Loading />}
             errorElement={<ErrorBoundary />}
-            waitForMsw={process.env.USE_MSW as unknown as boolean}
+            waitForMsw={true}
             onLoadPublicData={handleLoadPublicData}
         />
     );
@@ -169,7 +169,7 @@ export function App() {
         <AppRouter
             fallbackElement={<Loading />}
             errorElement={<ErrorBoundary />}
-            waitForMsw={process.env.USE_MSW as unknown as boolean}
+            waitForMsw={true}
             onLoadProtectedData={handleLoadProtectedData}
         />
     );
@@ -215,7 +215,7 @@ export function App() {
         <AppRouter
             fallbackElement={<Loading />}
             errorElement={<ErrorBoundary />}
-            waitForMsw={process.env.USE_MSW as unknown as boolean}
+            waitForMsw={true}
             onLoadPublicData={handleLoadPublicData}
             onCompleteRegistrations={handleCompleteRegistrations}
         />

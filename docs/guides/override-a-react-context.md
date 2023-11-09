@@ -9,29 +9,18 @@ In a federated application using [Module Federation](https://webpack.js.org/conc
 
 Let's take a simple example using a `BackgroundColorContext`:
 
-```tsx !#21,23 host/src/App.tsx
-import { useMemo } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useAreModulesReady } from "@squide/webpack-module-federation";
-import { useRoutes } from "@squide/react-router";
+```tsx !#6,12 host/src/App.tsx
+import { AppRouter } from "@squide/firefly";
 import { BackgroundColorContext } from "@sample/shared";
 
 export function App() {
-    const areModulesReady = useAreModulesReady();
-
-    const routes = useRoutes();
-
-    const router = useMemo(() => {
-        return createBrowserRouter(routes);
-    }, [routes]);
-
-    if (!areModulesReady) {
-        return <div>Loading...</div>;
-    }
-
     return (
         <BackgroundColorContext.Provider value="blue">
-            <RouterProvider router={router} />
+            <AppRouter
+                fallbackElement={<div>Loading...</div>}
+                errorElement={<div>An error occured!</div>}
+                waitForMsw={false}
+            />
         </BackgroundColorContext.Provider>
     );
 }
@@ -86,59 +75,48 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
 }
 ```
 
-### Extract an utility function
+### Extract an utility component
 
-Since there are multiple routes to setup with the new provider, an utility function can be extracted:
+Since there are multiple routes to setup with the new provider, an utility component can be extracted:
 
 ```tsx !#6-12,17 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
 import { BackgroundColorContext } from "@sample/shared";
 import { ColoredPage } from "./ColoredPage.tsx";
-import type { ReactElement } from "react";
+import type { ReactNode } from "react";
 
-function withRedBackground(page: ReactElement) {
+function RedBackground({ children }: { children: ReactNode }) {
     return (
         <BackgroundColorContext.Provider value="red">
-            {page}
+            {children}
         </BackgroundColorContext.Provider>
-    )
+    );
 }
 
 export const register: ModuleRegisterFunction<Runtime> = runtime => {
     runtime.registerRoute({
         path: "/colored-page",
-        element: withRedBackground(<ColoredPage />)
+        element: <RedBackground><ColoredPage /></RedBackground>
     });
 }
 ```
 
 ## Update a singleton dependency version
 
-Let's consider a more specific use case where the host application declares a `ThemeContext` from Workleap's new design system, Hopper:
+Let's consider a more specific use case where the host application declares a `ThemeContext` from Workleap's new design system, [Hopper](https://hopper.workleap.design/):
 
-```tsx !#21,23 host/src/App.tsx
-import { useMemo } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useAreModulesReady } from "@squide/webpack-module-federation";
-import { useRoutes } from "@squide/react-router";
+```tsx !#6,12 host/src/App.tsx
+import { AppRouter } from "@squide/firefly";
 import { ThemeContext } from "@hopper/components";
 
 export function App() {
-    const areModulesReady = useAreModulesReady();
-
-    const routes = useRoutes();
-
-    const router = useMemo(() => {
-        return createBrowserRouter(routes);
-    }, [routes]);
-
-    if (!areModulesReady) {
-        return <div>Loading...</div>;
-    }
-
     return (
         <ThemeContext.Provider value="dark">
-            <RouterProvider router={router} />
+            <AppRouter
+                fallbackElement={<div>Loading...</div>}
+                errorElement={<div>An error occured!</div>}
+                waitForMsw={false}
+            />
         </ThemeContext.Provider>
     );
 }

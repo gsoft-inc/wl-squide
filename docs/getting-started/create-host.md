@@ -14,17 +14,17 @@ Create a new application (we'll refer to ours as `host`), then open a terminal a
 +++ pnpm
 ```bash
 pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript
-pnpm add @squide/core @squide/react-router @squide/webpack-module-federation @squide/msw @squide/firefly react react-dom react-router-dom msw
+pnpm add @squide/core @squide/react-router @squide/webpack-module-federation @squide/msw @squide/firefly react react-dom react-router-dom
 ```
 +++ yarn
 ```bash
 yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript
-yarn add @squide/core @squide/react-router @squide/webpack-module-federation @squide/msw @squide/firefly react react-dom react-router-dom msw
+yarn add @squide/core @squide/react-router @squide/webpack-module-federation @squide/msw @squide/firefly react react-dom react-router-dom
 ```
 +++ npm
 ```bash
 npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript
-npm install @squide/core @squide/react-router @squide/webpack-module-federation @squide/msw @squide/firefly react react-dom react-router-dom msw
+npm install @squide/core @squide/react-router @squide/webpack-module-federation @squide/msw @squide/firefly react react-dom react-router-dom
 ```
 +++
 
@@ -115,36 +115,18 @@ root.render(
 );
 ```
 
-Then, retrieve the routes that have been registered by the remote module with the [useRoutes](/reference/runtime/useRoutes.md) hook and create a router instance:
+Then, render the [AppRouter](../reference/routing/appRouter.md) component. The `AppRouter` component will render a React Router [browser instance](https://reactrouter.com/en/main/routers/create-browser-router) configured with the registered routes:
 
-```tsx !#10,13,17 host/src/App.tsx
-import { useMemo } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { useRoutes } from "@squide/react-router";
-import { useAreModulesReady } from "@squide/webpack-module-federation";
-import { RootLayout } from "./RootLayout.tsx";
-import { Home } from "./Home.tsx";
+```tsx host/src/App.tsx
+import { AppRouter } from "@squide/firefly";
 
 export function App() {
-    // Re-render the application once the remote modules are registered.
-    const areModulesReady = useAreModulesReady();
-
-    // Retrieve the routes registered by the remote modules.
-    const routes = useRoutes();
-
-    // Create the router instance with the registered routes.
-    const router = useMemo(() => {
-        return createBrowserRouter(routes);
-    }, [routes]);
-
-    // Display a loading until the remote modules are registered.
-    if (!areModulesReady) {
-        return <div>Loading...</div>;
-    }
-
-    // Render the router.
     return (
-        <RouterProvider router={router} />
+        <AppRouter
+            fallbackElement={<div>Loading...</div>}
+            errorElement={<div>An error occured!</div>}
+            waitForMsw={false}
+        />
     );
 }
 ```

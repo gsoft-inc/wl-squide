@@ -8,6 +8,10 @@ toc:
 Force the application to re-render once the registration process has been completed for all the modules. Without this hook, the page is rendered with an empty router as it happens before the remote modules registered their routes and navigation items.
 
 !!!info
+If your application is using the [AppRouter](../routing/appRouter.md) component, there's no need for this hook.
+!!!
+
+!!!info
 If your application supports [deferred registrations](./registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items), make sure to pair this hook with the [useAreModulesRegistered](./useAreModulesRegistered.md) hook. 
 !!!
 

@@ -9,6 +9,10 @@ order: 50
 Force the application to re-render once all the modules are registered (but not ready).
 
 !!!info
+If your application is using the [AppRouter](../routing/appRouter.md) component, there's no need for this hook.
+!!!
+
+!!!info
 This hook should only be used by applications that support [deferred registrations](./registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) and should be pair with the [useAreModulesReady](./useAreModulesReady.md) hook.
 !!!
 

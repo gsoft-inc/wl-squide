@@ -15,10 +15,7 @@ export interface AppRouterProps {
     telemetryService: TelemetryService;
 }
 
-async function fetchPublicData(
-    setFeatureFlags: (featureFlags: FeatureFlags) => void,
-    logger: Logger
-) {
+async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void, logger: Logger) {
     const data = await fetchJson("/api/feature-flags");
 
     logger.debug("[shell] %cFeature flags are ready%c:", "color: white; background-color: green;", "", data);

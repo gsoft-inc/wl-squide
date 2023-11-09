@@ -94,23 +94,21 @@ export function App() {
 
 The handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), and the consumer application must handle the loaded public data, as the `AppRouter` component will ignore any data resolved by the returned Promise object.
 
-```tsx !#23,34 host/src/App.tsx
+```tsx !#20,31 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { Loading } from "./Loading.tsx";
 import { ErrorBoundary } from "./ErrorBoundary.tsx";
 import type { FeatureFlags } from "@sample/shared";
 
-function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void) {
-    return axios.get("/api/feature-flags")
-        .then(({ data }) => {
-            const featureFlags: FeatureFlags = {
-                featureA: data.featureA,
-                featureB: data.featureB
-            };
+async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void) {
+    const response = await fetch("/api/feature-flags");
+    
+    if (response.ok) {
+        const data = await response.json();
 
-            setFeatureFlags(featureFlags);
-        });
+        setFeatureFlags(data);
+    }
 }
 
 export function App() {
@@ -144,18 +142,19 @@ import { Loading } from "./Loading.tsx";
 import { ErrorBoundary } from "./ErrorBoundary.tsx";
 import type { Session } from "@sample/shared";
 
-function fetchProtectedData(setSession: (session: Session) => void) {
-    return axios.get("/api/session")
-        .then(({ data }) => {
-            const session: Session = {
-                user: {
-                    id: data.userId,
-                    name: data.username
-                }
-            };
+async function fetchProtectedData(setSession: (session: Session) => void) {
+    const response = await fetch("/api/session");
+    
+    if (response.ok) {
+        const content = await response.json();
 
-            setSession(session);
+        setSession({
+            user: {
+                id: data.userId,
+                name: data.username
+            }
         });
+    }
 }
 
 export function App() {
@@ -180,7 +179,7 @@ export function App() {
 
 ### Complete deferred registrations
 
-```tsx !#30-32,41 host/src/App.tsx
+```tsx !#27-29,38 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { completeModuleRegistrations } from "@squide/webpack-module-federation";
@@ -188,16 +187,14 @@ import { Loading } from "./Loading.tsx";
 import { ErrorBoundary } from "./ErrorBoundary.tsx";
 import type { FeatureFlags } from "@sample/shared";
 
-function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void) {
-    return axios.get("/api/feature-flags")
-        .then(({ data }) => {
-            const featureFlags: FeatureFlags = {
-                featureA: data.featureA,
-                featureB: data.featureB
-            };
+async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void) {
+    const response = await fetch("/api/feature-flags");
+    
+    if (response.ok) {
+        const data = await response.json();
 
-            setFeatureFlags(featureFlags);
-        });
+        setFeatureFlags(data);
+    }
 }
 
 export function App() {

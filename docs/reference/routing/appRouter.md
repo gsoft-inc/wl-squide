@@ -94,7 +94,7 @@ export function App() {
 
 The handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), and the consumer application must handle the loaded public data, as the `AppRouter` component will ignore any data resolved by the returned Promise object.
 
-```tsx !#20,31 host/src/App.tsx
+```tsx !#19,30 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { Loading } from "./Loading.tsx";
@@ -106,7 +106,6 @@ async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => 
     
     if (response.ok) {
         const data = await response.json();
-
         setFeatureFlags(data);
     }
 }
@@ -146,7 +145,7 @@ async function fetchProtectedData(setSession: (session: Session) => void) {
     const response = await fetch("/api/session");
     
     if (response.ok) {
-        const content = await response.json();
+        const data = await response.json();
 
         setSession({
             user: {
@@ -179,7 +178,7 @@ export function App() {
 
 ### Complete deferred registrations
 
-```tsx !#27-29,38 host/src/App.tsx
+```tsx !#28-30,39 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { completeModuleRegistrations } from "@squide/webpack-module-federation";
@@ -192,12 +191,13 @@ async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => 
     
     if (response.ok) {
         const data = await response.json();
-
         setFeatureFlags(data);
     }
 }
 
 export function App() {
+    // The loaded data is kept in memory by this state hook of the consumer application and
+    // will be used to complete the deferred registrations.
     const [featureFlags, setFeatureFlags] = useState<FeatureFlags>();
 
     const handleLoadPublicData = useCallback(() => {

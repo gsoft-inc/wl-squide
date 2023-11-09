@@ -6,7 +6,7 @@ toc:
 
 # AppRouter
 
-A component that sets up a React Router instance with Squide [registration primitives](../default.md#registration), [routing primitives](../default.md#routing) and the Mock Service Worker [plugin](../msw/mswPlugin.md).
+A component that sets up Squide federated primitives and render a React Router instance.
 
 > The `AppRouter` component is part of the [@squide/firefly](https://www.npmjs.com/package/@squide/firefly) technology stack, which includes [React Router](https://reactrouter.com/en/main), [Webpack Module Federation](https://webpack.js.org/plugins/module-federation-plugin/) and [Mock Service Worker](https://mswjs.io/).
 
@@ -32,6 +32,8 @@ A component that sets up a React Router instance with Squide [registration primi
 
 ## Usage
 
+### Define a loading component
+
 ```tsx host/src/Loading.tsx
 export function Loading() {
     return (
@@ -39,6 +41,25 @@ export function Loading() {
     );
 }
 ```
+
+```tsx !#7 host/src/App.tsx
+import { AppRouter } from "@squide/firefly";
+import { Loading } from "./Loading.tsx";
+
+export function App() {
+    return (
+        <AppRouter
+            fallbackElement={<Loading />}
+            errorElement={<div>An error occured!</div>}
+            waitForMsw={process.env.USE_MSW as unknown as boolean}
+        />
+    );
+}
+```
+
+### Define an error component
+
+An error component receives the current `error` as a prop. 
 
 ```tsx host/src/ErrorBoundary.tsx
 export function ErrorBoundary({ error }: { error?: Error }) {
@@ -53,7 +74,7 @@ export function ErrorBoundary({ error }: { error?: Error }) {
 }
 ```
 
-```tsx host/src/App.tsx
+```tsx !#9 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
 import { Loading } from "./Loading.tsx";
 import { ErrorBoundary } from "./ErrorBoundary.tsx";
@@ -71,9 +92,10 @@ export function App() {
 
 ### Load public data
 
-```tsx !#34 host/src/App.tsx
+The handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), and the consumer application must handle the loaded public data, as the `AppRouter` component will ignore any data resolved by the returned Promise object.
+
+```tsx !#23,34 host/src/App.tsx
 import { useState, useCallback } from "react";
-import axios from "axios";
 import { AppRouter } from "@squide/firefly";
 import { Loading } from "./Loading.tsx";
 import { ErrorBoundary } from "./ErrorBoundary.tsx";
@@ -92,13 +114,13 @@ function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void) 
 }
 
 export function App() {
+    // The loaded data is kept in memory by this state hook of the consumer application and
+    // will be used at a later time.
     const [featureFlags, setFeatureFlags] = useState<FeatureFlags>();
 
     const handleLoadPublicData = useCallback(() => {
         return fetchPublicData(setFeatureFlags);
     }, []);
-
-    // Do something with "featureFlags"...
 
     return (
         <AppRouter
@@ -113,9 +135,10 @@ export function App() {
 
 ### Load protected data
 
-```tsx !#36 host/src/App.tsx
+The handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), and the consumer application must handle the loaded protected data, as the `AppRouter` component will ignore any data resolved by the returned Promise object.
+
+```tsx !#25,36 host/src/App.tsx
 import { useState, useCallback } from "react";
-import axios from "axios";
 import { AppRouter } from "@squide/firefly";
 import { Loading } from "./Loading.tsx";
 import { ErrorBoundary } from "./ErrorBoundary.tsx";
@@ -136,13 +159,13 @@ function fetchProtectedData(setSession: (session: Session) => void) {
 }
 
 export function App() {
+    // The loaded data is kept in memory by this state hook of the consumer application and
+    // will be used at a later time.
     const [session, setSession] = useState<Session>();
 
     const handleLoadProtectedData = useCallback(() => {
         return fetchProtectedData(setSession);
     }, []);
-
-    // Do something with "session"...
 
     return (
         <AppRouter
@@ -157,9 +180,8 @@ export function App() {
 
 ### Complete deferred registrations
 
-```tsx !#28-32,40 host/src/App.tsx
+```tsx !#30-32,41 host/src/App.tsx
 import { useState, useCallback } from "react";
-import axios from "axios";
 import { AppRouter } from "@squide/firefly";
 import { completeModuleRegistrations } from "@squide/webpack-module-federation";
 import { Loading } from "./Loading.tsx";
@@ -186,6 +208,7 @@ export function App() {
     }, []);
 
     const handleCompleteRegistrations = useCallback(() => {
+        // The consumer application takes care of providing the public data to the deferred registrations.
         return completeModuleRegistrations(runtime, {
             featureFlags
         });

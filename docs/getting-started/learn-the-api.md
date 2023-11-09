@@ -233,7 +233,7 @@ if (process.env.USE_MSW) {
 
 ## Fakes
 
-Have a look at the [fake implementations](../reference/default.md#fakes). Their goal is to faciliate the development set up to develop federated modules in isolation.
+Take a look at the [fake implementations](../reference/default.md#fakes). These implementations are designed to facilitate the set up of a module isolated environment.
 
 ## Guides
 

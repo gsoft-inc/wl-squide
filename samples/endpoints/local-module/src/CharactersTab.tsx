@@ -1,5 +1,5 @@
+import { fetchJson } from "@endpoints/shared";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import axios from "axios";
 
 interface Character {
     id: number;
@@ -9,11 +9,7 @@ interface Character {
 
 export function CharactersTab() {
     const { data: characters } = useSuspenseQuery({ queryKey: ["/api/character/1,2"], queryFn: () => {
-        return axios
-            .get("/api/character/1,2")
-            .then(({ data }) => {
-                return data;
-            });
+        return fetchJson("/api/character/1,2");
     } });
 
     return (

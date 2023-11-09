@@ -1,5 +1,5 @@
+import { isApiError, postJson } from "@endpoints/shared";
 import { useIsAuthenticated } from "@squide/react-router";
-import axios from "axios";
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Navigate } from "react-router-dom";
 
@@ -19,7 +19,7 @@ export function LoginPage({ host }: LoginPageProps) {
         setIsBusy(true);
         setErrorMessage(undefined);
 
-        axios.post("/api/login", { username, password })
+        postJson("/api/login", { username, password })
             .then(() => {
                 setIsBusy(false);
 
@@ -34,7 +34,7 @@ export function LoginPage({ host }: LoginPageProps) {
             .catch((error: unknown) => {
                 setIsBusy(false);
 
-                if (axios.isAxiosError(error) && error.response?.status === 401) {
+                if (isApiError(error) && error.status === 401) {
                     setErrorMessage("Invalid credentials, please try again.");
                 } else {
                     throw error;

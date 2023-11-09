@@ -178,6 +178,8 @@ export function App() {
 
 ### Complete deferred registrations
 
+For more information about deferred registrations, refer to the [registerRemoteModules](../registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) and [completeModuleRegistrations](../registration/completeModuleRegistrations.md) documentation.
+
 ```tsx !#28-30,39 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";

@@ -1,5 +1,5 @@
 ---
-order: 10
+order: 0
 label: Add a shared dependency
 ---
 

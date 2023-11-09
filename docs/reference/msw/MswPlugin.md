@@ -22,10 +22,6 @@ None
 
 ## Usage
 
-!!! warning
-Don't forget to [activate the msw feature](../webpack/defineDevHostConfig.md#activate-optional-features) on the host application as well as every remote module.
-!!!
-
 Do not include MSW in production code. To address this, we recommend conditionally importing the code that includes the [msw](https://www.npmjs.com/package/msw) package based on an environment variable.
 
 To do so, first use [cross-env](https://www.npmjs.com/package/cross-env) to define a `USE_MSW` environment variable in a PNPM script:
@@ -53,6 +49,10 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
 ```
 
 > For more information about the `environmentVariables` predefined option, refer to the [webpack configuration documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/#define-environment-variables).
+
+!!!warning
+Don't forget to define the `USE_MSW` environment variable for the build script as well (the one using `defineBuildHostConfig`).
+!!!
 
 Finally, use the `USE_MSW` environment variable to conditionally import any files that includes the [msw](https://www.npmjs.com/package/msw) package:
 
@@ -98,8 +98,8 @@ import { getMswPlugin } from "@squide/msw";
 if (process.env.USE_MSW) {
     const mswPlugin = getMswPlugin(runtime);
 
-    // Files including an import to the "msw" package are included dynamically to prevent adding
-    // MSW stuff to the bundled when it's not used.
+    // Files that includes an import to the "msw" package are included dynamically to prevent adding
+    // unused MSW stuff to the code bundles.
     const requestHandlers = (await import("./mocks/handlers.ts")).requestHandlers;
 
     mswPlugin.registerRequestHandlers(requestHandlers);

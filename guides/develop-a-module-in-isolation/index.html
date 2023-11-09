@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.752706850838">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.752869852550">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.752706850838" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.752869852550" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.752706850838" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.752869852550" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.752706850838" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.752706850838" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.752869852550" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.752869852550" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -348,30 +348,18 @@
 }</code></pre>
 </doc-codeblock></div>
 <p>Then, install the package dependencies and configure the new package with <a href="https://gsoft-inc.github.io/wl-web-configs/tsup/" class="outbound" target="_blank">tsup</a>.</p>
-<p>Then, create a <code v-pre>AppRouter</code> component in the shell package to provide a <strong>reusable router configuration</strong> that can be utilized by both the host application and the isolated modules.</p>
+<p>Then, create a <code v-pre>AppRouter</code> component in the shell package to provide a <strong>reusable router configuration</strong> that can be utilized by both the host application and the isolated modules. The new <code v-pre>AppRouter</code> component should be based on the <code v-pre>@squide/firefly</code> <a href="../../reference/routing/approuter/">AppRouter</a> component:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">shell/src/AppRouter.tsx</div>
-<pre class="language-tsx"><code v-pre class="language-tsx">import { useRoutes } from &quot;@squide/react-router&quot;;
-import { useAreModulesReady } from &quot;@squide/webpack-module-federation&quot;;
-import { useMemo } from &quot;react&quot;;
-import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
+<pre class="language-tsx"><code v-pre class="language-tsx">import { AppRouter as FireflyAppRouter } from &quot;@squide/firefly&quot;;
 
 export function AppRouter() {
-    const routes = useRoutes();
-
-    // Re-render the app once all the remotes are registered, otherwise the remotes routes won't be added to the router.
-    const areModulesReady = useAreModulesReady();
-
-    const router = useMemo(() =&gt; {
-        return createBrowserRouter(routes);
-    }, [routes]);
-
-    if (!areModulesReady) {
-        return &lt;div&gt;Loading...&lt;/div&gt;;
-    }
-
     return (
-        &lt;RouterProvider router={router} /&gt;
+        &lt;FireflyAppRouter
+            fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
+            errorElement={&lt;div&gt;An error occured!&lt;/div&gt;}
+            waitForMsw={false}
+        /&gt;
     );
 }</code></pre>
 </doc-codeblock></div>
@@ -436,7 +424,9 @@ export const registerShell: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt
 <pre class="language-tsx"><code v-pre class="language-tsx">import { AppRouter } from &quot;@sample/shell&quot;;
 
 export function App() {
-    return &lt;AppRouter /&gt;
+    return (
+        &lt;AppRouter /&gt;
+    );
 }</code></pre>
 </doc-codeblock></div>
 <p>And the <code v-pre>registerShell</code> function to setup the <code v-pre>RootLayout</code>, the <code v-pre>RootErrorBoundary</code> and any other shell assets:</p>
@@ -553,7 +543,9 @@ root.render(
 <pre class="language-tsx"><code v-pre class="language-tsx">import { AppRouter } from &quot;@sample/shell&quot;;
 
 export function App() {
-    return &lt;AppRouter /&gt;;
+    return (
+        &lt;AppRouter /&gt;
+    );
 }</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="devhometsx">
@@ -749,10 +741,10 @@ export default config;</code></pre>
     </h3>
 </doc-anchor-target>
 <p>This file is similar to the <code v-pre>App.tsx</code> file of the <doc-anchor-trigger to="#apptsx">remote module</doc-anchor-trigger>.</p>
-<doc-anchor-target id="devhometsx--registerdev">
+<doc-anchor-target id="devhometsx-and-registerdev">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#devhometsx--registerdev">#</doc-anchor-trigger>
-        <span>DevHome.tsx &amp; registerDev</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#devhometsx-and-registerdev">#</doc-anchor-trigger>
+        <span>DevHome.tsx and registerDev</span>
     </h3>
 </doc-anchor-target>
 <p>These files are similar to the <code v-pre>dev/DevHome.tsx</code> and <code v-pre>dev/register.tsx</code> files of the <doc-anchor-trigger to="#devhometsx">remote module</doc-anchor-trigger>.</p>

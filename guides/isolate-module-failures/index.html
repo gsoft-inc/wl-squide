@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.752706850838">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.752869852550">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.752706850838" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.752869852550" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.752706850838" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.752869852550" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.752706850838" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.752706850838" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.752869852550" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.752869852550" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -317,26 +317,15 @@
 <p>In the following code sample, a <code v-pre>RootErrorBoundary</code> is declared below the <code v-pre>RootLayout</code> but above the routes of the module. By doing so, if a module encounters an unhandled error, the nested error boundary will only replace the section rendered by the <code v-pre>Outlet</code> component within the <code v-pre>RootLayout</code> rather than the entire page:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx"><code v-pre class="language-tsx">import { useMemo } from &quot;react&quot;;
-import { createBrowserRouter, RouterProvider } from &quot;react-router-dom&quot;;
-import { useAreModulesReady } from &quot;@squide/webpack-module-federation&quot;;
-import { useRoutes } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx"><code v-pre class="language-tsx">import { AppRouter } from &quot;@squide/firefly&quot;;
 
 export function App() {
-    const areModulesReady = useAreModulesReady();
-
-    const routes = useRoutes();
-
-    const router = useMemo(() =&gt; {
-        return createBrowserRouter(routes);
-    }, [routes]);
-
-    if (!areModulesReady) {
-        return &lt;div&gt;Loading...&lt;/div&gt;;
-    }
-
     return (
-        &lt;RouterProvider router={router} /&gt;
+        &lt;AppRouter
+            fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
+            errorElement={&lt;div&gt;An error occured!&lt;/div&gt;}
+            waitForMsw={false}
+        /&gt;
     );
 }</code></pre>
 </doc-codeblock></div>

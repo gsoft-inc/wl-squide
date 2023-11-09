@@ -160,7 +160,7 @@ We recommend to mock the API endpoints with [Mock Service Worker](https://mswjs.
 
 To help with that, a `@squide/msw` package is available.
 
-First, install the plugin, then [register the plugin](../reference/msw/MswPlugin.md#register-the-msw-plugin) at bootstrap:
+First, install the `@squide/msw`, then [register the plugin](../reference/msw/MswPlugin.md#register-the-msw-plugin) at bootstrap:
 
 ```ts host/src/boostrap.tsx
 import { Runtime } from "@squide/react-router";
@@ -197,8 +197,8 @@ export const register: ModuleRegisterFunction<Runtime> = async runtime => {
     if (process.env.USE_MSW) {
         const mswPlugin = getMswPlugin(runtime);
 
-        // Files including an import to the "msw" package are included dynamically to prevent adding
-        // MSW stuff to the bundled when it's not used.
+        // Files that includes an import to the "msw" package are included dynamically to prevent adding
+        // unused MSW stuff to the code bundles.
         const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
 
         mswPlugin.registerRequestHandlers(requestHandlers);

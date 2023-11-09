@@ -32,8 +32,8 @@ await registerLocalModules([registerShell(sessionManager, { host: "@endpoints/ho
 await registerRemoteModules(Remotes, runtime);
 
 if (process.env.USE_MSW) {
-    // Files including an import to the "msw" package are included dynamically to prevent adding
-    // MSW stuff to the bundled when it's not used.
+    // Files that includes an import to the "msw" package are included dynamically to prevent adding
+    // unused MSW stuff to the code bundles.
     const startMsw = (await import("../mocks/browser.ts")).startMsw;
 
     // Will start MSW with the request handlers provided by every module.

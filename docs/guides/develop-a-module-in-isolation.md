@@ -103,6 +103,10 @@ Now, let's revisit the host application by first adding a dependency to the new 
 }
 ```
 
+!!!warning
+Don't forget to add the `peerDependencies` of `@sample/shell`.
+!!!
+
 Then, incorporate the newly introduced `AppRouter` component:
 
 ```tsx host/src/App.tsx
@@ -165,6 +169,10 @@ To begin, let's start by adding a dependency to the `@sample/shell` package:
     }
 }
 ```
+
+!!!warning
+Don't forget to add the `peerDependencies` of `@sample/shell`.
+!!!
 
 Then, create the following files in the remote module application:
 
@@ -343,6 +351,20 @@ npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browser
 
 !!!warning
 While you can use any package manager to develop an application with Squide, it is highly recommended that you use [PNPM](https://pnpm.io/) as the guides has been developed and tested with PNPM.
+!!!
+
+Then, install add a dependency to the `@sample/shell` package:
+
+```json local-module/package.json
+{
+    "dependencies": {
+        "@sample/shell": "0.0.1"
+    }
+}
+```
+
+!!!warning
+Don't forget to add the `peerDependencies` of `@sample/shell`.
 !!!
 
 Then, create the following files in the local module application:

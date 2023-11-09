@@ -37,6 +37,7 @@ export type Router = "react-router";
 export interface Features {
     router?: Router;
     msw?: boolean;
+    firefly?: boolean;
 }
 
 // Generally, only the host application should have eager dependencies.
@@ -63,10 +64,20 @@ function getMswSharedDependency(isHost: boolean) {
     };
 }
 
-function getFeaturesDependencies({ router = "react-router", msw }: Features, isHost: boolean) {
+function getFireflySharedDependency(isHost: boolean) {
+    return {
+        "@squide/firefly": {
+            singleton: true,
+            eager: isHost ? true : undefined
+        }
+    };
+}
+
+function getFeaturesDependencies({ router = "react-router", msw, firefly = true }: Features, isHost: boolean) {
     return {
         ...(router === "react-router" ? getReactRouterSharedDependencies(isHost) : {}),
-        ...(msw ? getMswSharedDependency(isHost) : {})
+        ...(msw || firefly ? getMswSharedDependency(isHost) : {}),
+        ...(firefly ? getFireflySharedDependency(isHost) : {})
     };
 }
 

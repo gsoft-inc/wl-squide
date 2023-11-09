@@ -2,7 +2,7 @@ import { useLogger } from "@squide/react-router";
 import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export function BootstrappingErrorBoundary({ error }: { error?: Error }) {
+export function AppRouterErrorBoundary({ error }: { error?: Error }) {
     const logger = useLogger();
     const navigate = useNavigate();
 

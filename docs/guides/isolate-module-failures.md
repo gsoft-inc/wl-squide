@@ -15,26 +15,15 @@ Nevertheless, an application can get very close to iframes failure isolation by 
 In the following code sample, a `RootErrorBoundary` is declared below the `RootLayout` but above the routes of the module. By doing so, if a module encounters an unhandled error, the nested error boundary will only replace the section rendered by the `Outlet` component within the `RootLayout` rather than the entire page:
 
 ```tsx host/src/App.tsx
-import { useMemo } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useAreModulesReady } from "@squide/webpack-module-federation";
-import { useRoutes } from "@squide/react-router";
+import { AppRouter } from "@squide/firefly";
 
 export function App() {
-    const areModulesReady = useAreModulesReady();
-
-    const routes = useRoutes();
-
-    const router = useMemo(() => {
-        return createBrowserRouter(routes);
-    }, [routes]);
-
-    if (!areModulesReady) {
-        return <div>Loading...</div>;
-    }
-
     return (
-        <RouterProvider router={router} />
+        <AppRouter
+            fallbackElement={<div>Loading...</div>}
+            errorElement={<div>An error occured!</div>}
+            waitForMsw={false}
+        />
     );
 }
 ```

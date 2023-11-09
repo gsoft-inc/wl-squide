@@ -2,6 +2,10 @@
 
 Force the application to re-render once [Mock Service Worker](https://mswjs.io/) (MSW) is started. Without this hook, the page is rendered before all the request handlers are registered to MSW which could results in 404 errors.
 
+!!!info
+If your application is using the [AppRouter](../routing/appRouter.md) component, there's no need for this hook.
+!!!
+
 ## Reference
 
 ```ts

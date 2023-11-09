@@ -1,6 +1,5 @@
-import { toSubscriptionStatusLabel, useSubscription, type Session, type SessionManager } from "@endpoints/shared";
+import { postJson, toSubscriptionStatusLabel, useSubscription, type Session, type SessionManager } from "@endpoints/shared";
 import { isNavigationLink, useLogger, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/react-router";
-import axios from "axios";
 import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
@@ -55,7 +54,7 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
     const handleDisconnect = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
-        await axios.post("/api/logout")
+        await postJson("/api/logout")
             .then(() => {
                 sessionManager.clearSession();
 

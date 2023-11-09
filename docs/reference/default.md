@@ -34,6 +34,7 @@ expanded: true
 
 ### Routing
 
+- [AppRouter](routing/AppRouter.md)
 - [ManagedRoutes](routing/ManagedRoutes.md)
 - [useRenderedNavigationItems](routing/useRenderedNavigationItems.md)
 - [useRouteMatch](routing/useRouteMatch.md)
@@ -74,6 +75,6 @@ expanded: true
 
 ## Fakes
 
-Squide offers a collection of fake implementations to facilitate the development of modules in isolation from the other parts of the application.
+Squide offers a collection of fake implementations designed to facilitate the set up of a module isolated environment.
 
 - [LocalStorageSessionManager](fakes/LocalStorageSessionManager.md)

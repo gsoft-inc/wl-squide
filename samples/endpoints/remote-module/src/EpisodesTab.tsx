@@ -1,5 +1,5 @@
+import { fetchJson } from "@endpoints/shared";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import axios from "axios";
 
 interface Episode {
     id: number;
@@ -9,11 +9,7 @@ interface Episode {
 
 export function EpisodesTab() {
     const { data: episodes } = useSuspenseQuery({ queryKey: ["/api/episode/1,2,3,4,5,6,7"], queryFn: () => {
-        return axios
-            .get("/api/episode/1,2,3,4,5,6,7")
-            .then(({ data }) => {
-                return data;
-            });
+        return fetchJson("/api/episode/1,2,3,4,5,6,7");
     } });
 
     return (

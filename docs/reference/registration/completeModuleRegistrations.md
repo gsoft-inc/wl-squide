@@ -32,8 +32,8 @@ completeModuleRegistrations(runtime, data?)
 ### Complete module registrations
 
 ```tsx !#16-17,24 host/src/bootstrap.tsx
-import { completeLocalModuleRegistrations, registerLocalModules, Runtime } from "@squide/react-router";
-import { completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import { registerLocalModules, Runtime } from "@squide/react-router";
+import { completeModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
 import { register } from "@sample/local-module";
 import { fetchFeatureFlags, type AppContext } from "@sample/shared";
 
@@ -97,8 +97,8 @@ export const register: ModuleRegisterFunction<Runtime, AppContext, DeferredRegis
 ### Handle the completion errors
 
 ```tsx !#23-31 host/src/bootstrap.tsx
-import { completeLocalModuleRegistrations, registerLocalModules, Runtime } from "@squide/react-router";
-import { completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import { registerLocalModules, Runtime } from "@squide/react-router";
+import { completeModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
 import { register } from "@sample/local-module";
 import { fetchFeatureFlags, type AppContext } from "@sample/shared";
 

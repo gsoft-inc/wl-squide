@@ -45,7 +45,6 @@
     "@squide/msw": "workspace:*",
     "@squide/react-router": "workspace:*",
     "@squide/webpack-module-federation": "workspace:*",
-    "axios": "1.6.0",
     "msw": "2.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",

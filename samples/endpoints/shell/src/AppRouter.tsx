@@ -1,10 +1,9 @@
-import { FeatureFlagsContext, SubscriptionContext, TelemetryServiceContext, type FeatureFlags, type Session, type SessionManager, type Subscription, type TelemetryService } from "@endpoints/shared";
+import { FeatureFlagsContext, SubscriptionContext, TelemetryServiceContext, fetchJson, isApiError, type FeatureFlags, type Session, type SessionManager, type Subscription, type TelemetryService } from "@endpoints/shared";
 import { AppRouter as FireflyAppRouter } from "@squide/firefly";
 import { useLogger, useRuntime, type Logger } from "@squide/react-router";
 import { completeModuleRegistrations } from "@squide/webpack-module-federation";
-import axios from "axios";
 import { useCallback, useState } from "react";
-import { BootstrappingErrorBoundary } from "./BootstrappingErrorBoundary.tsx";
+import { AppRouterErrorBoundary } from "./AppRouterErrorBoundary.tsx";
 
 export interface DeferredRegistrationData {
     featureFlags?: FeatureFlags;
@@ -16,26 +15,35 @@ export interface AppRouterProps {
     telemetryService: TelemetryService;
 }
 
-function fetchPublicData(
-    setFeatureFlags: (featureFlags: FeatureFlags) => void,
-    logger: Logger
-) {
-    // React Query "queryClient.fetchQuery" could be used instead of using axios directly.
-    // https://tanstack.com/query/latest/docs/react/reference/QueryClient#queryclientfetchquery
-    const featureFlagsPromise = axios.get("/api/feature-flags")
-        .then(({ data }) => {
-            const featureFlags: FeatureFlags = {
-                featureA: data.featureA,
-                featureB: data.featureB,
-                featureC: data.featureC
-            };
+async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void, logger: Logger) {
+    const data = await fetchJson("/api/feature-flags");
 
-            logger.debug("[shell] %cFeature flags are ready%c:", "color: white; background-color: green;", "", featureFlags);
+    logger.debug("[shell] %cFeature flags are ready%c:", "color: white; background-color: green;", "", data);
 
-            setFeatureFlags(featureFlags);
-        });
+    setFeatureFlags(data);
+}
 
-    return featureFlagsPromise;
+async function fetchSession(setSession: (session: Session) => void, logger: Logger) {
+    const data = await fetchJson("/api/session");
+
+    const session: Session = {
+        user: {
+            id: data.userId,
+            name: data.username
+        }
+    };
+
+    logger.debug("[shell] %cSession is ready%c:", "color: white; background-color: green;", "", session);
+
+    setSession(session);
+}
+
+async function fetchSubscription(setSubscription: (subscription: Subscription) => void, logger: Logger) {
+    const data = await fetchJson("/api/subscription");
+
+    logger.debug("[shell] %cSubscription is ready%c:", "color: white; background-color: green;", "", data);
+
+    setSubscription(data);
 }
 
 function fetchProtectedData(
@@ -43,40 +51,12 @@ function fetchProtectedData(
     setSubscription: (subscription: Subscription) => void,
     logger: Logger
 ) {
-    // React Query "queryClient.fetchQuery" could be used instead of using axios directly.
-    // https://tanstack.com/query/latest/docs/react/reference/QueryClient#queryclientfetchquery
-    const sessionPromise = axios.get("/api/session")
-        .then(({ data }) => {
-            const session: Session = {
-                user: {
-                    id: data.userId,
-                    name: data.username
-                }
-            };
-
-            logger.debug("[shell] %cSession is ready%c:", "color: white; background-color: green;", "", session);
-
-            setSession(session);
-        });
-
-    // React Query "queryClient.fetchQuery" could be used instead of using axios directly.
-    // https://tanstack.com/query/latest/docs/react/reference/QueryClient#queryclientfetchquery
-    const subscriptionPromise = axios.get("/api/subscription")
-        .then(({ data }) => {
-            const subscription: Subscription = {
-                company: data.company,
-                contact: data.contact,
-                status: data.status
-            };
-
-            logger.debug("[shell] %cSubscription is ready%c:", "color: white; background-color: green;", "", subscription);
-
-            setSubscription(subscription);
-        });
+    const sessionPromise = fetchSession(setSession, logger);
+    const subscriptionPromise = fetchSubscription(setSubscription, logger);
 
     return Promise.all([sessionPromise, subscriptionPromise])
         .catch((error: unknown) => {
-            if (axios.isAxiosError(error) && error.response?.status === 401) {
+            if (isApiError(error) && error.status === 401) {
                 // The authentication boundary will redirect to the login page.
                 return;
             }
@@ -124,7 +104,7 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
                 <TelemetryServiceContext.Provider value={telemetryService}>
                     <FireflyAppRouter
                         fallbackElement={<Loading />}
-                        errorElement={<BootstrappingErrorBoundary />}
+                        errorElement={<AppRouterErrorBoundary />}
                         waitForMsw={waitForMsw}
                         onLoadPublicData={handleLoadPublicData}
                         onLoadProtectedData={handleLoadProtectedData}

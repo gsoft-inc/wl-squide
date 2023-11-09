@@ -91,7 +91,7 @@ Package managers supporting workspaces such as Yarn and NPM call this mechanism 
 
 Squide has a built-in [hoist](../reference/runtime/runtime-class.md#register-an-hoisted-route) functionality capable of raising module routes marked as `hoist` at the root of the routes array, before the `RootLayout` declaration. Thus, an hoisted page will not be wrapped by the `RootLayout` (or the `AuthenticationBoundary`) and will have full control over its rendering.
 
-To hoist module pages, simple add the [hoist](../reference/runtime/runtime-class.md#register-an-hoisted-route) option to the route options at registration and optionally use a new layout:
+To hoist module pages, add the [hoist](../reference/runtime/runtime-class.md#register-an-hoisted-route) option to the route registration options and optionally use a different layout:
 
 ```tsx !#9,12,22 local-module/src/register.tsx
 import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";

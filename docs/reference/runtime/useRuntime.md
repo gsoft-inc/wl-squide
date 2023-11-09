@@ -6,7 +6,7 @@ toc:
 
 # useRuntime
 
-Retrive a shared `Runtime` instance.
+Retrieve a shared `Runtime` instance.
 
 !!!info
 When possible, prefer [useRoutes](useRoutes.md), [useNavigationItems](useNavigationItems.md), [useLogger](useLogger.md) to `useRuntime`.

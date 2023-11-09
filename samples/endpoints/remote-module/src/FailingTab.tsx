@@ -1,13 +1,9 @@
+import { fetchJson } from "@endpoints/shared";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import axios from "axios";
 
 export function FailingTab() {
     useSuspenseQuery({ queryKey: ["/api/location/failing"], queryFn: () => {
-        return axios
-            .get("/api/location/failing")
-            .then(({ data }) => {
-                return data;
-            });
+        return fetchJson("/api/location/failing");
     } });
 
     return (

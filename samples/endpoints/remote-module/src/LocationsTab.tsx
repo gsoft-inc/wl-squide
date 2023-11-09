@@ -1,5 +1,5 @@
+import { fetchJson } from "@endpoints/shared";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import axios from "axios";
 
 interface Location {
     id: number;
@@ -9,11 +9,7 @@ interface Location {
 
 export function LocationsTab() {
     const { data: locations } = useSuspenseQuery({ queryKey: ["/api/location/1,2,3"], queryFn: () => {
-        return axios
-            .get("/api/location/1,2,3")
-            .then(({ data }) => {
-                return data;
-            });
+        return fetchJson("/api/location/1,2,3");
     } });
 
     return (

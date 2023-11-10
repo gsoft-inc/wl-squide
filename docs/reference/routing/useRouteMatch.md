@@ -27,7 +27,7 @@ A `Route` object if there's a matching route, otherwise an `Error` is thrown.
 
 ```ts
 import { useLocation } from "react-router-dom";
-import { useRouteMatch } from "@squide/react-router";
+import { useRouteMatch } from "@squide/firefly";
 
 const location = useLocation();
 const activeRoute = useRouteMatch(location);
@@ -36,7 +36,7 @@ const activeRoute = useRouteMatch(location);
 ### Using `window.location`
 
 ```ts
-import { useRouteMatch } from "@squide/react-router";
+import { useRouteMatch } from "@squide/firefly";
 
 const activeRoute = useRouteMatch(window.location);
 ```

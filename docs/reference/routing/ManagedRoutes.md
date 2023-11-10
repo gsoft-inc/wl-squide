@@ -28,7 +28,7 @@ None
 The route including the `ManagedRoutes` placeholder must be [hoisted](../runtime/runtime-class.md#register-an-hoisted-route); otherwise, there will be an infinite loop as the `ManagedRoutes` placeholder will render within itself.
 
 ```tsx !#13,18 shell/src/register.tsx
-import { ManagedRoutes } from "@squide/react-router";
+import { ManagedRoutes } from "@squide/firefly";
 import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 

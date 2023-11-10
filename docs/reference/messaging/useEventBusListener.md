@@ -26,7 +26,7 @@ Nothing
 
 ```ts
 import { useCallback } from "react";
-import { useEventBusListener } from "@squide/react-router";
+import { useEventBusListener } from "@squide/firefly";
 
 const handleFoo = useCallback((data, context) => {
     // do something...

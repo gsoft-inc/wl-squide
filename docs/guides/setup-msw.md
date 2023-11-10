@@ -60,10 +60,9 @@ The `USE_MSW` environment variable will prevent including MSW related code into 
 
 Then, update the host application bootstrapping code to [registrer the MSW plugin](../reference/msw/mswPlugin.md#register-the-msw-plugin) and start MSW once all the request handlers has been registered:
 
-```tsx !#15,22-32 host/src/bootstrap.tsx
+```tsx !#14,21-31 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, Runtime } from "@squide/react-router";
-import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import { ConsoleLogger, RuntimeContext, Runtime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { MswPlugin } from "@squide/msw";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
@@ -141,9 +140,8 @@ export const requestHandlers: HttpHandler[] = [
 
 Then, register the request handler with the shared registry:
 
-```ts !#5,10,12 remote-module/src/register.tsx
-import { getMswPlugin } from "@squide/msw";
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router"; 
+```ts !#4,9,11 remote-module/src/register.tsx
+import { getMswPlugin, type ModuleRegisterFunction, type Runtime } from "@squide/firefly"; 
 
 export const register: ModuleRegisterFunction<Runtime> = async runtime => {
     if (process.env.USE_MSW) {

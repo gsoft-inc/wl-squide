@@ -33,10 +33,9 @@ A boolean indicating if the modules are registered.
 
 ## Usage
 
-```tsx !#13-14 host/src/bootstrap.tsx
+```tsx !#12-13 host/src/bootstrap.tsx
 import { createRoot } from "react";
-import { registerLocalModules, Runtime } from "@squide/react-router";
-import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import { registerLocalModules, Runtime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { register } from "@sample/local-module";
 import { App } from "./App.tsx";
 
@@ -58,11 +57,10 @@ root.render(
 );
 ```
 
-```tsx !#11,18-30 host/src/App.tsx
+```tsx !#10,17-29 host/src/App.tsx
 import { useMemo, useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { completeModuleRegistrations, useAreModulesRegistered, useAreModulesReady } from "@squide/webpack-module-federation";
-import { useRoutes, useRuntime } from "@squide/react-router";
+import { completeModuleRegistrations, useAreModulesRegistered, useAreModulesReady, useRoutes, useRuntime } from "@squide/firefly";
 import { fetchFeatureFlags, type FeatureFlags } from "@sample/shared";
 
 export function App() {

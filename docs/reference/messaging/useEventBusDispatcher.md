@@ -24,7 +24,7 @@ A dispatch function.
 ## Usage
 
 ```ts
-import { useEventBusDispatcher } from "@squide/react-router";
+import { useEventBusDispatcher } from "@squide/firefly";
 
 const dispatch = useEventBusDispatcher();
 

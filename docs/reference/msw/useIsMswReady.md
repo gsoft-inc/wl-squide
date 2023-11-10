@@ -25,7 +25,7 @@ A boolean indicating if MSW is started.
 ## Usage
 
 ```ts
-import { useIsMswStarted } from "@squide/msw";
+import { useIsMswStarted } from "@squide/firefly";
 
 const isMswStarted = useIsMswStarted(process.env.USE_MSW);
 ```

@@ -25,7 +25,7 @@ An array of `Route`.
 ## Usage
 
 ```ts
-import { useRoutes } from "@squide/react-router";
+import { useRoutes } from "@squide/firefly";
 
 const routes = useRoutes();
 ```

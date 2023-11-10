@@ -29,7 +29,7 @@ A `Runtime` instance.
 ## Usage
 
 ```ts
-import { useRuntime } from "@squide/react-router";
+import { useRuntime } from "@squide/firefly";
 
 const runtime = useRuntime();
 

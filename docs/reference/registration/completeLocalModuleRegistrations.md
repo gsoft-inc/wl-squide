@@ -35,7 +35,7 @@ A `Promise` object with an array of `LocalModuleRegistrationError` if any error 
 ### Complete local module registrations
 
 ```tsx !#15,18 host/src/bootstrap.tsx
-import { completeLocalModuleRegistrations, registerLocalModules, Runtime } from "@squide/react-router";
+import { completeLocalModuleRegistrations, registerLocalModules, Runtime } from "@squide/firefly";
 import { register } from "@sample/local-module";
 import { fetchFeatureFlags, type AppContext } from "@sample/shared";
 
@@ -56,7 +56,7 @@ await completeLocalModuleRegistrations(runtime, { featureFlags });
 ```
 
 ```tsx !#19-32 local-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
 import type { AppContext, DeferredRegistrationData } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 import { FeatureAPage } from "./FeatureAPage.tsx";
@@ -94,7 +94,7 @@ export const register: ModuleRegisterFunction<Runtime, AppContext, DeferredRegis
 ### Handle the completion errors
 
 ```tsx !#17-19 host/src/bootstrap.tsx
-import { completeLocalModuleRegistrations, registerLocalModules, Runtime } from "@squide/react-router";
+import { completeLocalModuleRegistrations, registerLocalModules, Runtime } from "@squide/firefly";
 import { register } from "@sample/local-module";
 import { fetchFeatureFlags, type AppContext } from "@sample/shared";
 

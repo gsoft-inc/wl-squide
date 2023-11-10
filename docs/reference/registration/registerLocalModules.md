@@ -35,7 +35,7 @@ A `Promise` object with an array of `LocalModuleRegistrationError` if any error 
 ### Register a local module
 
 ```tsx !#11 host/src/bootstrap.tsx
-import { registerLocalModules, Runtime } from "@squide/react-router";
+import { registerLocalModules, Runtime } from "@squide/firefly";
 import { register } from "@sample/local-module";
 import type { AppContext } from "@sample/shared";
 
@@ -49,7 +49,7 @@ await registerLocalModules([register], runtime, { context });
 ```
 
 ```tsx !#5-15 local-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
 import type { AppContext } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 
@@ -77,7 +77,7 @@ Sometimes, data must be fetched to determine which routes or navigation items sh
 To defer a registration to the second phase, a module registration function can **return an anonymous function**. Once the modules are registered and the [completeLocalModuleRegistrations](./completeLocalModuleRegistrations.md) function is called, the deferred registration functions will be executed.
 
 ```tsx !#15,18 host/src/bootstrap.tsx
-import { completeLocalModuleRegistrations, registerLocalModules, Runtime } from "@squide/react-router";
+import { completeLocalModuleRegistrations, registerLocalModules, Runtime } from "@squide/firefly";
 import { register } from "@sample/local-module";
 import { fetchFeatureFlags, type AppContext } from "@sample/shared";
 
@@ -98,7 +98,7 @@ await completeLocalModuleRegistrations(runtime, { featureFlags });
 ```
 
 ```tsx !#19-32 local-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
 import type { AppContext, DeferredRegistrationData } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 import { FeatureAPage } from "./FeatureAPage.tsx";
@@ -138,7 +138,7 @@ export const register: ModuleRegisterFunction<Runtime, AppContext, DeferredRegis
 ### Handle the registration errors
 
 ```tsx !#11-13 host/src/bootstrap.tsx
-import { registerLocalModules, Runtime } from "@squide/react-router";
+import { registerLocalModules, Runtime } from "@squide/firefly";
 import { register } from "@sample/local-module";
 import type { AppContext } from "@sample/shared";
 

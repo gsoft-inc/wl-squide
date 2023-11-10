@@ -31,9 +31,8 @@ completeModuleRegistrations(runtime, data?)
 
 ### Complete module registrations
 
-```tsx !#16-17,24 host/src/bootstrap.tsx
-import { registerLocalModules, Runtime } from "@squide/react-router";
-import { completeModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+```tsx !#15-16,23 host/src/bootstrap.tsx
+import { registerLocalModules, Runtime, completeModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { register } from "@sample/local-module";
 import { fetchFeatureFlags, type AppContext } from "@sample/shared";
 
@@ -59,7 +58,7 @@ await completeModuleRegistrations(runtime, { featureFlags });
 ```
 
 ```tsx !#19-32 remote-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
 import type { AppContext, DeferredRegistrationData } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 import { FeatureAPage } from "./FeatureAPage.tsx";
@@ -96,9 +95,8 @@ export const register: ModuleRegisterFunction<Runtime, AppContext, DeferredRegis
 
 ### Handle the completion errors
 
-```tsx !#23-31 host/src/bootstrap.tsx
-import { registerLocalModules, Runtime } from "@squide/react-router";
-import { completeModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+```tsx !#22-30 host/src/bootstrap.tsx
+import { registerLocalModules, Runtime, completeModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { register } from "@sample/local-module";
 import { fetchFeatureFlags, type AppContext } from "@sample/shared";
 

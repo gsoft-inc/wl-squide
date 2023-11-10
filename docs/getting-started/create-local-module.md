@@ -86,7 +86,7 @@ Finally, configure the package to be shareable by adding the `name`, `version`, 
 Next, register the local module routes and navigation items with [registerRoute](/reference/runtime/runtime-class.md#register-routes) and [registerNavigationItem](/reference/runtime/runtime-class.md#register-navigation-items) functions:
 
 ```tsx !#6-9,11-14 local-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
 import type { AppContext } from "@sample/shared";
 import { Page } from "./Page.tsx";
 
@@ -127,10 +127,9 @@ Go back to the `host` application add a dependency to the `@sample/local-module`
 
 Then, register the local module with the [registerLocalModule](/reference/registration/registerLocalModules.md) function:
 
-```tsx !#5,27 host/src/bootstrap.tsx
+```tsx !#4,26 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, Runtime } from "@squide/react-router";
-import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import { ConsoleLogger, RuntimeContext, Runtime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import type { AppContext } from "@sample/shared";
 import { register as registerLocalModule } from "@sample/local-module";
 import { App } from "./App.tsx";

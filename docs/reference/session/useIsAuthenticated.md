@@ -26,7 +26,7 @@ A boolean value.
 ## Usage
 
 ```ts
-import { useIsAuthenticated } from "@squide/react-router";
+import { useIsAuthenticated } from "@squide/firefly";
  
 const isAuthentication = useIsAuthenticated();
 ```

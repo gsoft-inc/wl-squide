@@ -8,8 +8,6 @@ toc:
 
 A component that sets up Squide federated primitives and render a React Router instance.
 
-> The `AppRouter` component is part of the [@squide/firefly](https://www.npmjs.com/package/@squide/firefly) technology stack, which includes [React Router](https://reactrouter.com/en/main), [Webpack Module Federation](https://webpack.js.org/plugins/module-federation-plugin/) and [Mock Service Worker](https://mswjs.io/).
-
 ## Reference
 
 ```tsx

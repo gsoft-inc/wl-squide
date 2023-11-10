@@ -9,7 +9,7 @@ order: 100
 In many applications, multiple pages often share a **common layout** that includes elements such as a navigation bar, a user profile menu, and a main content section. In a [React Router](https://reactrouter.com/en/main) application, this shared layout is commonly referred to as a `RootLayout`:
 
 ```tsx !#10,13,17,19 host/src/register.tsx
-import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
+import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/firefly";
 import { HomePage } from "./HomePage.tsx";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
@@ -47,7 +47,7 @@ export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
 ```tsx host/src/RootLayout.tsx
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
-import { useNavigationItems, useRenderedNavigationItems } from "@squide/react-router";
+import { useNavigationItems, useRenderedNavigationItems } from "@squide/firefly";
 import { UserMenu } from "./UserMenu.tsx";
 
 export function RootLayout() {
@@ -94,7 +94,7 @@ Squide has a built-in [hoist](../reference/runtime/runtime-class.md#register-an-
 To hoist module pages, add the [hoist](../reference/runtime/runtime-class.md#register-an-hoisted-route) option to the route registration options and optionally use a different layout:
 
 ```tsx !#9,12,22 local-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
 import { LocalLayout } from "./LocalLayout.tsx";
 import { LocalErrorBoundary } from "./LocalErrorBoundary.tsx";
 import { LoginPage } from "./LoginPage.tsx";

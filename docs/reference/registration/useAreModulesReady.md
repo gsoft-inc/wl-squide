@@ -32,10 +32,9 @@ A boolean indicating if the registration process is completed.
 
 ## Usage
 
-```tsx !#12 host/src/bootstrap.tsx
+```tsx !#11 host/src/bootstrap.tsx
 import { createRoot } from "react";
-import { Runtime } from "@squide/react-router";
-import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import { Runtime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { App } from "./App.tsx";
 
 const runtime = new Runtime();
@@ -55,11 +54,10 @@ root.render(
 );
 ```
 
-```tsx !#10,18-20 host/src/App.tsx
+```tsx !#9,17-19 host/src/App.tsx
 import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useAreModulesReady } from "@squide/webpack-module-federation";
-import { useRoutes } from "@squide/react-router";
+import { useAreModulesReady, useRoutes } from "@squide/firefly";
 
 export function App() {
     // Re-render the application once all the modules are registered.

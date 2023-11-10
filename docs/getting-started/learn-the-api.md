@@ -6,16 +6,12 @@ order: 60
 
 Now that we've created a host application, loaded a few modules and registered routes and navigation items, let's delve into the APIs provided by this shell.
 
-!!!info
-For a comprehensive list of the Squide API, refer to the [References](/reference#api) section.
-!!!
-
 ## Runtime mode
 
 In an effort to optimize the development experience, Squide can be bootstrapped in `development` or `production` mode:
 
 ```ts host/src/bootstrap.tsx
-import { Runtime, ConsoleLogger, type LogLevel } from "@squide/react-router";
+import { Runtime, ConsoleLogger, type LogLevel } from "@squide/firefly";
 
 const runtime = new Runtime({
     mode: "production"
@@ -31,7 +27,7 @@ Squide includes a built-in logging feature that integrates with the [Runtime](/r
 First, register your own custom logger by implementing the [Logger](/reference/logging/Logger.md) interface or register Squide built-in [ConsoleLogger](/reference/logging/ConsoleLogger):
 
 ```ts host/src/bootstrap.tsx
-import { Runtime, ConsoleLogger, type LogLevel } from "@squide/react-router";
+import { Runtime, ConsoleLogger, type LogLevel } from "@squide/firefly";
 
 const runtime = new Runtime({
     loggers: [new ConsoleLogger(LogLevel.debug)]
@@ -41,7 +37,7 @@ const runtime = new Runtime({
 Then, log entries from any parts of your federated application with the `useLogger` hook:
 
 ```ts
-import { useLogger } from "@squide/react-router";
+import { useLogger } from "@squide/firefly";
 
 const logger = useLogger();
 
@@ -58,7 +54,7 @@ First, listen to an event with the [useEventBusListener](/reference/messaging/us
 
 ```ts
 import { useCallback } from "react";
-import { useEventBusListener } from "@squide/react-router";
+import { useEventBusListener } from "@squide/firefly";
 
 const handleFoo = useCallback((data, context) => {
     // do something...
@@ -70,7 +66,7 @@ useEventBusListener("foo", handleFoo);
 Then, dispatch an event from anywhere with the [useEventBusDispatcher](/reference/messaging/useEventBusDispatcher.md) hook:
 
 ```ts
-import { useEventDispatcher } from "@squide/react-router";
+import { useEventDispatcher } from "@squide/firefly";
 
 const dispatch = useEventBusDispatcher();
 
@@ -88,7 +84,7 @@ Most of our applications (if not all) will eventually require the user to authen
 First, define a `sessionAccessor` function:
 
 ```ts host/src/session.ts
-import type { SessionAccessorFunction } from "@squide/react-router";
+import type { SessionAccessorFunction } from "@squide/firefly";
 import { LocalStorageSessionManager } from "@squide/fakes";
 
 export const sessionManager = new LocalStorageSessionManager<Session>();
@@ -105,7 +101,7 @@ Our security department reminds you to refrain from using a fake `LocalStorageSe
 Then register the accessor function:
 
 ```ts host/src/boostrap.tsx
-import { Runtime } from "@squide/react-router";
+import { Runtime } from "@squide/firefly";
 import { sessionAccessor } from "./session.ts";
 
 const runtime = new Runtime({
@@ -116,7 +112,7 @@ const runtime = new Runtime({
 Finally, access the session from any parts of the application with the [useSession](/reference/runtime/useSession.md) hook:
 
 ```ts
-import { useSession } from "@squide/react-router";
+import { useSession } from "@squide/firefly";
 
 const session = useSession();
 ```
@@ -124,7 +120,7 @@ const session = useSession();
 Or determine whether or not the user is authenticated with the [useIsAuthenticated](/reference/session/useIsAuthenticated.md) hook:
 
 ```ts
-import { useIsAuthenticated } from "@squide/react-router";
+import { useIsAuthenticated } from "@squide/firefly";
 
 const isAuthenticated = useIsAuthenticated();
 ```
@@ -138,7 +134,7 @@ To keep Squide lightweight, not all functionalities should be integrated as a co
 Plugins can be registered at bootstrapping with the [Runtime](../reference/runtime/runtime-class.md) instance:
 
 ```ts host/src/boostrap.tsx
-import { Runtime } from "@squide/react-router";
+import { Runtime } from "@squide/firefly";
 import { MyPlugin } from "@sample/my-plugin";
 
 const runtime = new Runtime({
@@ -160,7 +156,7 @@ Take a look at the [fake implementations](../reference/default.md#fakes). These 
 
 ## Reference
 
-Take a look at the [reference](../reference/default.md) section for an overview of the complete API.
+For a comprehensive list of the Squide API, refer to the [reference](../reference/default.md) section.
 
 ## Guides
 

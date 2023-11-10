@@ -66,7 +66,7 @@ export function AppRouter() {
 Finally, create a local module to register the **application shell** that will also be utilized by the host application and the isolated modules:
 
 ```tsx shell/src/register.tsx
-import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
+import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/firefly";
 import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
@@ -121,10 +121,9 @@ export function App() {
 
 And the `registerShell` function to setup the `RootLayout`, the `RootErrorBoundary` and any other shell assets:
 
-```tsx !#22 host/src/bootstrap.tsx
+```tsx !#21 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, Runtime } from "@squide/react-router";
-import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import { ConsoleLogger, RuntimeContext, Runtime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import type { AppContext} from "@sample/shared";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
@@ -198,7 +197,7 @@ The `index.tsx` file is similar to the `bootstrap.tsx` file of an host applicati
 
 ```tsx !#10-12,16 remote-module/src/index.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, Runtime, registerLocalModules } from "@squide/react-router";
+import { ConsoleLogger, RuntimeContext, Runtime, registerLocalModules } from "@squide/firefly";
 import { App } from "./App.tsx";
 import { register as registerModule } from "./register.tsx";
 import { registerDev } from "./dev/register.tsx";
@@ -255,7 +254,7 @@ function DevHome() {
 To register the development homepage, let's create a new local module specifically for registering what is needed to develop the module in isolation:
 
 ```tsx remote-module/src/dev/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
 import { DevHome } from "./DevHome.tsx";
 
 export const registerDev: ModuleRegisterFunction<Runtime> = runtime => {
@@ -311,7 +310,7 @@ To configure webpack, open the `webpack.dev.js` file and update the configuratio
 ```js !#8,11 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig, defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevRemoteModuleConfig, defineDevHostConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
 let config;
@@ -441,7 +440,7 @@ Finally, open the `webpack.config.js` file and use the the [defineDevHostConfig]
 ```js local-module/webpack.config.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevHostConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.config.js";
 
 export default defineDevHostConfig(swcConfig, "local1", 8080);

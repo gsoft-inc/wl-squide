@@ -19,7 +19,7 @@ Nothing
 ## Usage
 
 ```ts
-import { setMswAsStarted } from "@squide/msw";
+import { setMswAsStarted } from "@squide/firefly";
 
 setMswAsStarted();
 ```

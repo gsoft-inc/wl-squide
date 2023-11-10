@@ -27,7 +27,7 @@ An array of `NavigationItem`.
 ### Retrieve the items for the `root` menu
 
 ```ts
-import { useNavigationItems } from "@squide/react-router";
+import { useNavigationItems } from "@squide/firefly";
 
 const items = useNavigationItems();
 ```
@@ -35,7 +35,7 @@ const items = useNavigationItems();
 ### Retrieve the items for a specific menu
 
 ```ts
-import { useNavigationItems } from "@squide/react-router";
+import { useNavigationItems } from "@squide/firefly";
 
 const items = useNavigationItems("my-custom-menu");
 ```

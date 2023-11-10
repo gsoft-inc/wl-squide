@@ -24,7 +24,7 @@ A `RuntimeLogger` instance.
 ## Usage
 
 ```ts
-import { useLogger } from "@squide/react-router";
+import { useLogger } from "@squide/firefly";
 
 const logger = useLogger();
 

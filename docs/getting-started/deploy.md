@@ -21,7 +21,7 @@ To enable support for direct page hits, add the following redirect rule to your 
 Configure the remote modules production URL:
 
 ```ts
-import { RemoteDefinition } from "@squide/webpack-module-federation";
+import { RemoteDefinition } from "@squide/firefly";
 
 const Remotes: RemoteDefinition[] = [
     {
@@ -36,7 +36,7 @@ const Remotes: RemoteDefinition[] = [
 Don't forget to change the [Runtime mode](../reference/runtime/runtime-class.md#change-the-runtime-mode) to `production`:
 
 ```ts
-import { Runtime } from "@squide/react-router";
+import { Runtime } from "@squide/firefly";
 
 const runtime = new Runtime({
     mode: process.env.isNetlify ? "production" : "development"
@@ -48,7 +48,7 @@ const runtime = new Runtime({
 Remove the [ConsoleLogger](../reference/logging/ConsoleLogger.md) from the production build:
 
 ```ts
-import { ConsoleLogger, Runtime } from "@squide/react-router";
+import { ConsoleLogger, Runtime } from "@squide/firefly";
 
 const runtime = new Runtime({
     loggers: process.env.isNetlify ? [] : [new ConsoleLogger()]

@@ -54,7 +54,7 @@ For the full shared dependencies configuration, have a look at the [defineConfig
 ```js !#6 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevHostConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080);
@@ -65,7 +65,7 @@ export default defineDevHostConfig(swcConfig, "host", 8080);
 ```js !#7-11 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevHostConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {
@@ -86,7 +86,7 @@ Additional shared dependencies must be configured on the host application as wel
 ```js !#7-11 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevHostConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {
@@ -115,7 +115,7 @@ In the previous example, the `react` shared dependency will be **augmented** wit
 ```js !#7-11 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevHostConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {
@@ -145,7 +145,7 @@ While you could customize the [ModuleFederationPlugin](https://webpack.js.org/pl
 ```js !#7-9 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig, defineHostModuleFederationPluginOptions } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevHostConfig, defineHostModuleFederationPluginOptions } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {

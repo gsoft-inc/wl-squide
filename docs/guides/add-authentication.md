@@ -23,7 +23,7 @@ export interface Session {
 Then, define a `sessionAccessor` function wrapping a `LocalStorageSessionManager` instance:
 
 ```ts host/src/session.ts
-import type { SessionAccessorFunction } from "@squide/react-router";
+import type { SessionAccessorFunction } from "@squide/firefly";
 import { LocalStorageSessionManager } from "@squide/fakes";
 import type { Session } from "@sample/shared";
 
@@ -37,7 +37,7 @@ export const sessionAccessor: SessionAccessorFunction = () => {
 Finally, create the [Runtime](/reference/runtime/runtime-class.md) instance with the new `sessionAccessor` function:
 
 ```ts #5 host/src/boostrap.tsx
-import { Runtime } from "@squide/react-router";
+import { Runtime } from "@squide/firefly";
 import { sessionAccessor } from "./session.ts";
 
 const runtime = new Runtime({
@@ -57,7 +57,7 @@ Create a new React Router authentication boundary component using the [useIsAuth
 
 ```tsx !#5 host/src/AuthenticationBoundary.tsx
 import { Navigate, Outlet } from "react-router-dom";
-import { useIsAuthenticated } from "@squide/react-router";
+import { useIsAuthenticated } from "@squide/firefly";
 
 export function AuthenticationBoundary() {
     return useIsAuthenticated() ? <Outlet /> : <Navigate to="/login" />;
@@ -71,7 +71,7 @@ Add a login page to the application:
 ```tsx !#17-21 host/src/Login.tsx
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { useIsAuthenticated } from "@squide/react-router";
+import { useIsAuthenticated } from "@squide/firefly";
 import { sessionManager } from "./session.ts";
 
 export function Login() {
@@ -248,7 +248,7 @@ export function RootLayout() {
 Assemble everything with React Router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) and a [register](../reference/registration/registerLocalModules.md) function:
 
 ```tsx !#17,22,25,46-51,55-60 host/src/register.tsx
-import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
+import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/firefly";
 import { RootLayout } from "./Rootlayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";

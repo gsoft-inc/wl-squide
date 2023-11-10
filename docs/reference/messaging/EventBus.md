@@ -23,7 +23,7 @@ const eventBus = new EventBus(options?: { logger? })
 ### Create an `EventBus` instance
 
 ```ts
-import { EventBus, ConsoleLogger } from "@squide/react-router";
+import { EventBus, ConsoleLogger } from "@squide/firefly";
 
 const eventBus = new EventBus({
     logger: new ConsoleLogger()

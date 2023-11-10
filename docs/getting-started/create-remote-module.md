@@ -63,7 +63,7 @@ Then, ensure that you are developing your module using [ESM syntax](https://deve
 Next, register the remote module routes and navigation items with the [registerRoute](/reference/runtime/runtime-class.md#register-routes) and [registerNavigationItem](/reference/runtime/runtime-class.md#register-navigation-items) functions:
 
 ```tsx !#6-9,11-14 remote-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
 import type { AppContext } from "@sample/shared";
 import { Page } from "./Page.tsx";
 
@@ -115,7 +115,7 @@ Then, open the `webpack.dev.js` file and use the the [defineDevRemoteModuleConfi
 ```js !#6-12 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
@@ -148,7 +148,7 @@ Then, open the `webpack.build.js` file and use the the [defineBuildRemoteModuleC
 ```js !#6-12 remote-module/webpack.build.js
 // @ts-check
 
-import { defineBuildRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineBuildRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
 export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://localhost:8081/", {

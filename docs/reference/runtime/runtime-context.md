@@ -26,7 +26,7 @@ toc:
 
 ```tsx !#9-11
 import { createRoot } from "react-dom/client";
-import { Runtime, RuntimeContext } from "@squide/react-router";
+import { Runtime, RuntimeContext } from "@squide/firefly";
 
 const runtime = new Runtime();
 
@@ -42,7 +42,7 @@ root.render(
 ### Retrieve a `Runtime` instance
 
 ```ts !#3
-import { useRuntime } from "@squide/react-router";
+import { useRuntime } from "@squide/firefly";
 
 const runtime = useRuntime();
 

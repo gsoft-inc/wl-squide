@@ -24,7 +24,7 @@ An `MswPlugin` instance if the plugin has been registered, otherwise an `Error` 
 ## Usage
 
 ```ts
-import { getMswPlugin } from "@squide/msw";
+import { getMswPlugin } from "@squide/firefly";
 
 const plugin = getMswPlugin(runtime);
 ```

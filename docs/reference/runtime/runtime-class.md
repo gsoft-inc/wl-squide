@@ -27,9 +27,8 @@ const runtime = new Runtime(options?: { loggers?: [], plugins?: [], sessionAcces
 ### Create a `Runtime` instance
 
 ```ts
-import { ConsoleLogger, Runtime } from "@squide/react-router";
+import { ConsoleLogger, Runtime, MswPlugin } from "@squide/firefly";
 import { LocalStorageSessionManager } from "@squide/fakes";
-import { MswPlugin } from "@squide/msw";
 import { type AppSession } from "@sample/shared";
 
 const sessionManager = new LocalStorageSessionManager();
@@ -46,7 +45,7 @@ const runtime = new Runtime({
 ### Change the runtime mode
 
 ```ts
-import { Runtime } from "@squide/react-router";
+import { Runtime } from "@squide/firefly";
 
 const runtime = new Runtime({
     mode: "production"

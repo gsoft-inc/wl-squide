@@ -31,7 +31,7 @@ export function App() {
 ```tsx !#16 host/src/RootLayout.tsx
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
-import { useNavigationItems, useRenderedNavigationItems } from "@squide/react-router";
+import { useNavigationItems, useRenderedNavigationItems } from "@squide/firefly";
 
 export function RootLayout() {
     const navigationItems = useNavigationItems();
@@ -52,7 +52,7 @@ export function RootLayout() {
 ```
 
 ```tsx !#8,12 host/src/register.tsx
-import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
+import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/firefly";
 import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 

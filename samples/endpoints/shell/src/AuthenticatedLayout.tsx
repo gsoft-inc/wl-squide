@@ -1,5 +1,5 @@
 import { postJson, toSubscriptionStatusLabel, useSubscription, type Session, type SessionManager } from "@endpoints/shared";
-import { isNavigationLink, useLogger, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/react-router";
+import { isNavigationLink, useLogger, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 

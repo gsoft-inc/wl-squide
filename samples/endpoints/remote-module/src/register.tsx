@@ -1,6 +1,5 @@
 import type { DeferredRegistrationData } from "@endpoints/shell";
-import { getMswPlugin } from "@squide/msw";
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import { getMswPlugin, type ModuleRegisterFunction, type Runtime } from "@squide/firefly";
 import { Providers } from "./Providers.tsx";
 
 const registerRoutes: ModuleRegisterFunction<Runtime, unknown, DeferredRegistrationData> = runtime => {

@@ -1,4 +1,4 @@
-import type { Logger } from "@squide/react-router";
+import type { Logger } from "@squide/firefly";
 import { createContext, useContext } from "react";
 
 export interface TelemetryService {

@@ -1,6 +1,6 @@
 import { registerLayouts } from "@basic/shared";
 import { registerShell } from "@basic/shell";
-import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
+import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/firefly";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { registerLocalModule } from "../register.tsx";

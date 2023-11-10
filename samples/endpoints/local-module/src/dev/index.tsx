@@ -1,7 +1,6 @@
 import { registerLayouts } from "@endpoints/shared";
 import { registerShell } from "@endpoints/shell";
-import { MswPlugin, setMswAsStarted } from "@squide/msw";
-import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
+import { ConsoleLogger, MswPlugin, Runtime, RuntimeContext, registerLocalModules, setMswAsStarted } from "@squide/firefly";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { registerLocalModule } from "../register.tsx";

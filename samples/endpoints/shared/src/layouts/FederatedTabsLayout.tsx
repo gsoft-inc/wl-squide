@@ -1,4 +1,4 @@
-import { useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/react-router";
+import { useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { Suspense, useCallback, type MouseEvent } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Link, Outlet, useNavigate } from "react-router-dom";

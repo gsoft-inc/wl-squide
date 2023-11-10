@@ -25,9 +25,6 @@ const webpackConfig = defineBuildHostConfig(swcConfig: {}, applicationName, opti
 - `options`: An optional object literal of options:
     - Accepts most of webpack `definedBuildConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/#3-set-predefined-options).
     - `htmlWebpackPluginOptions`: An optional object literal accepting any property of the [HtmlWebpackPlugin](https://github.com/jantimon/html-webpack-plugin#options).
-    - `features`: An optional object literal of feature switches to define additional shared dependencies.
-        - `router`: Currently hardcoded to `"react-router"` as it's the only supported router (`@squide/react-router` and `@react-router-dom` are currently considered as default shared dependencies).
-        - `msw`: Whether or not to add `@squide/msw` as a shared dependency (`@squide/msw` is currently considered as a default shared dependency).
     - `sharedDependencies`: An optional object literal of additional (or updated) module federation shared dependencies.
     - `moduleFederationPluginOptions`: An optional object literal of [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) options.
 
@@ -45,14 +42,9 @@ The `defineBuildHostConfig` function will add the following shared dependencies 
 - [@squide/react-router](https://www.npmjs.com/package/@squide/react-router)
 - [@squide/webpack-module-federation](https://www.npmjs.com/package/@squide/webpack-module-federation)
 - [@squide/msw](https://www.npmjs.com/package/@squide/msw)
+- [@squide/firefly](https://www.npmjs.com/package/@squide/firefly)
 
 For the full shared dependencies configuration, have a look at the [defineConfig.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/webpack-module-federation/src/defineConfig.ts) file on GitHub.
-
-## Optional shared dependencies
-
-The following shared dependencies can be removed through [feature switches](#deactivate-optional-features):
-
-- [@squide/msw](https://www.npmjs.com/package/@squide/msw)
 
 ## Usage
 
@@ -66,25 +58,6 @@ import { swcConfig } from "./swc.build.js";
 
 export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/");
 ```
-
-### Deactivate optional features
-
-```js !#7-9 host/webpack.build.js
-// @ts-check
-
-import { defineBuildHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
-import { swcConfig } from "./swc.build.js";
-
-export default defineBuildHostConfig(swcConfig, "host", {
-    features: {
-        msw: false
-    }
-});
-```
-
-!!!info
-Features must be deactivated on the host application as well as every remote module.
-!!!
 
 ### Specify additional shared dependencies
 

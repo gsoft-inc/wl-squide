@@ -1,5 +1,6 @@
+import { RuntimeContext, __resetLocalModuleRegistrations, registerLocalModules } from "@squide/core";
 import { __resetMswStatus, setMswAsStarted } from "@squide/msw";
-import { Runtime, RuntimeContext, __resetLocalModuleRegistrations, registerLocalModules } from "@squide/react-router";
+import { Runtime } from "@squide/react-router";
 import { completeModuleRegistrations } from "@squide/webpack-module-federation";
 import { render, screen } from "@testing-library/react";
 import type { ReactElement, ReactNode } from "react";

@@ -24,9 +24,6 @@ const webpackConfig = defineBuildRemoteModuleConfig(swcConfig: {}, applicationNa
 - `applicationName`: The remote module application name.
 - `options`: An optional object literal of options:
     - Accepts most of webpack `definedDevConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/#3-set-predefined-options).
-    - `features`: An optional object literal of feature switches to define additional shared dependencies.
-        - `router`: Currently hardcoded to `"react-router"` as it's the only supported router (`@squide/react-router` and `@react-router-dom` are currently considered as default shared dependencies).
-        - `msw`: Whether or not to add `@squide/msw` as a shared dependency (`@squide/msw` is currently considered as a default shared dependency).
     - `sharedDependencies`: An optional object literal of additional (or updated) module federation shared dependencies.
     - `moduleFederationPluginOptions`: An optional object literal of [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) options.
 
@@ -67,14 +64,9 @@ The `defineBuildRemoteModuleConfig` function will add the following shared depen
 - [@squide/react-router](https://www.npmjs.com/package/@squide/react-router)
 - [@squide/webpack-module-federation](https://www.npmjs.com/package/@squide/webpack-module-federation)
 - [@squide/msw](https://www.npmjs.com/package/@squide/msw)
+- [@squide/firefly](https://www.npmjs.com/package/@squide/firefly)
 
 For the full shared dependencies configuration, have a look at the [defineConfig.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/webpack-module-federation/src/defineConfig.ts) file on Github.
-
-## Optional shared dependencies
-
-The following shared dependencies can be removed through [feature switches](#deactivate-optional-features):
-
-- [@squide/msw](https://www.npmjs.com/package/@squide/msw)
 
 ## Usage
 
@@ -88,25 +80,6 @@ import { swcConfig } from "./swc.build.js";
 
 export default defineBuildRemoteModuleConfig(swcConfig, "remote1");
 ```
-
-### Deactivate optional features
-
-```js !#7-9 remote-module/webpack.build.js
-// @ts-check
-
-import { defineBuildRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
-import { swcConfig } from "./swc.build.js";
-
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
-    features: {
-        msw: false
-    }
-});
-```
-
-!!!info
-Features must be deactivated on the host application as well as every remote module.
-!!!
 
 ### Specify additional shared dependencies
 

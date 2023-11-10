@@ -1,6 +1,5 @@
 import type { DeferredRegistrationData } from "@endpoints/shell";
-import { getMswPlugin } from "@squide/msw";
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import { getMswPlugin, type ModuleRegisterFunction, type Runtime } from "@squide/firefly";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { ReactNode } from "react";

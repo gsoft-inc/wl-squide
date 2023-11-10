@@ -1,5 +1,5 @@
 import { useApplicationEventBusListener, type Session, type SessionManager } from "@basic/shared";
-import { isNavigationLink, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/react-router";
+import { isNavigationLink, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 

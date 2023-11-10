@@ -1,10 +1,10 @@
+import { RemoteEntryPoint, RemoteModuleName } from "@squide/webpack-module-federation";
 import type { SwcConfig } from "@workleap/swc-configs";
 import { defineBuildConfig, defineBuildHtmlWebpackPluginConfig, defineDevConfig, defineDevHtmlWebpackPluginConfig, type DefineBuildConfigOptions, type DefineDevConfigOptions, type WebpackConfig, type WebpackConfigTransformer } from "@workleap/webpack-configs";
 import merge from "deepmerge";
 import type HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "node:path";
 import webpack from "webpack";
-import { RemoteEntryPoint, RemoteModuleName } from "./remoteDefinition.ts";
 
 // Webpack doesn't export ModuleFederationPlugin typings.
 export type ModuleFederationPluginOptions = ConstructorParameters<typeof webpack.container.ModuleFederationPlugin>[0];

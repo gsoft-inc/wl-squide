@@ -1,5 +1,5 @@
 import type { SessionManager } from "@basic/shared";
-import { useIsAuthenticated } from "@squide/react-router";
+import { useIsAuthenticated } from "@squide/firefly";
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 

@@ -1,5 +1,6 @@
+import { useLogger } from "@squide/core";
 import { useIsMswStarted } from "@squide/msw";
-import { useIsRouteMatchProtected, useLogger, useRoutes } from "@squide/react-router";
+import { useIsRouteMatchProtected, useRoutes } from "@squide/react-router";
 import { useAreModulesReady, useAreModulesRegistered } from "@squide/webpack-module-federation";
 import { cloneElement, useCallback, useEffect, useMemo, useState, type ReactElement } from "react";
 import { ErrorBoundary, useErrorBoundary } from "react-error-boundary";

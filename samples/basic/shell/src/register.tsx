@@ -1,6 +1,5 @@
 import type { SessionManager } from "@basic/shared";
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
-import { ManagedRoutes } from "@squide/react-router";
+import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/firefly";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 

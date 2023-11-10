@@ -19,6 +19,11 @@
             "import": "./dist/index.js",
             "types": "./dist/index.d.ts",
             "default": "./dist/index.js"
+        },
+        "./defineConfig.js": {
+            "import": "./dist/defineConfig.js",
+            "types": "./dist/defineConfig.d.ts",
+            "default": "./dist/defineConfig.js"
         }
     },
     "files": [
@@ -31,18 +36,27 @@
         "build": "tsup --config ./tsup.build.ts"
     },
     "peerDependencies": {
+        "@squide/webpack-configs": "*",
         "msw": "*",
         "react": "*",
         "react-dom": "*",
         "react-error-boundary": "*",
-        "react-router-dom": "*"
+        "react-router-dom": "*",
+        "webpack": ">=5.0.0"
     },
     "peerDependenciesMeta": {
+        "@squide/webpack-configs": {
+            "optional": true
+        },
         "msw": {
+            "optional": true
+        },
+        "webpack": {
             "optional": true
         }
     },
     "devDependencies": {
+        "@squide/webpack-configs": "workspace:*",
         "@swc/core": "1.3.96",
         "@swc/helpers": "0.5.3",
         "@swc/jest": "0.2.29",
@@ -67,6 +81,7 @@
         "typescript": "5.2.2"
     },
     "dependencies": {
+        "@squide/core": "workspace:*",
         "@squide/msw": "workspace:*",
         "@squide/react-router": "workspace:*",
         "@squide/webpack-module-federation": "workspace:*"

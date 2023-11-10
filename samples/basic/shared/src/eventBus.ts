@@ -1,4 +1,4 @@
-import { useEventBusDispatcher, useEventBusListener } from "@squide/react-router";
+import { useEventBusDispatcher, useEventBusListener } from "@squide/firefly";
 
 export type MessageTypes = "write-to-host";
 

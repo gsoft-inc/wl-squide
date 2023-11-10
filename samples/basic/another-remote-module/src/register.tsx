@@ -1,8 +1,6 @@
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
 
 function registerRoutes(runtime: Runtime) {
-    // Register federated tab.
-
     runtime.registerRoute({
         path: "/federated-tabs/officevibe",
         lazy: () => import("./OfficevibeTab.tsx")

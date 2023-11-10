@@ -1,9 +1,7 @@
 import { registerLocalModule } from "@endpoints/local-module";
 import { isNetlify, registerLayouts } from "@endpoints/shared";
 import { registerShell } from "@endpoints/shell";
-import { MswPlugin, setMswAsStarted } from "@squide/msw";
-import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
-import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import { ConsoleLogger, MswPlugin, Runtime, RuntimeContext, registerLocalModules, registerRemoteModules, setMswAsStarted, type RemoteDefinition } from "@squide/firefly";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App.tsx";

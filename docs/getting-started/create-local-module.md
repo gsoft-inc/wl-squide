@@ -25,17 +25,17 @@ Create a new application (we'll refer to ours as `local-module`), then open a te
 +++ pnpm
 ```bash
 pnpm add -D @workleap/tsup-configs tsup typescript
-pnpm add @squide/core @squide/react-router react react-dom react-router-dom
+pnpm add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ yarn
 ```bash
 pnpm add -D @workleap/tsup-configs tsup typescript
-yarn add @squide/core @squide/react-router react react-dom react-router-dom
+yarn add @squide/firefly react @squide/firefly react-dom react-router-dom react-error-boundary
 ```
 +++ npm
 ```bash
 pnpm add -D @workleap/tsup-configs tsup typescript
-npm install @squide/core @squide/react-router react react-dom react-router-dom
+npm install @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++
 

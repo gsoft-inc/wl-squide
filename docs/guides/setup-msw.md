@@ -3,6 +3,21 @@ order: 30
 label: Setup Mock Service Worker
 ---
 
+<!-- 
+
+TBD
+
+Must REDO this doc:
+
+- First step must be to install"msw" (dont need to install @squide/msw it's already a dependency of @squide/firefly)
+- Should to 2 distinct section:
+    - Setup the host application
+    - Setup a module
+        For this example, we will use a remote module but the same goes for a local module....
+    
+-->
+
+
 # Setup Mock Service Worker
 
 [Mock Service Worker](https://mswjs.io/) (MSW) is a great tool to fake API endpoints. It has the advantage of working directly in the browser, which means that unlike alternative solutions, it doesn't require running an additional process to host the fake API endpoints.

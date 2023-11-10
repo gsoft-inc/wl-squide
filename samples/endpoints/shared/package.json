@@ -20,7 +20,7 @@
         "serve-build": "pnpm build"
     },
     "peerDependencies": {
-        "@squide/react-router": "*",
+        "@squide/firefly": "*",
         "react": "*",
         "react-dom": "*",
         "react-error-boundary": "*",
@@ -28,7 +28,7 @@
     },
     "devDependencies": {
         "@remix-run/router": "1.11.0",
-        "@squide/react-router": "workspace:*",
+        "@squide/firefly": "workspace:*",
         "@tanstack/react-query": "5.7.2",
         "@types/react": "18.2.36",
         "@types/react-dom": "18.2.14",

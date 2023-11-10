@@ -1,4 +1,4 @@
-import { useLogger } from "@squide/react-router";
+import { useLogger } from "@squide/firefly";
 import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 

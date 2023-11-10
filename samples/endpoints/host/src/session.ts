@@ -1,5 +1,5 @@
 import type { Session, SessionManager } from "@endpoints/shared";
-import type { SessionAccessorFunction } from "@squide/react-router";
+import type { SessionAccessorFunction } from "@squide/firefly";
 
 export class InMemorySessionManager implements SessionManager {
     #session?: Session;

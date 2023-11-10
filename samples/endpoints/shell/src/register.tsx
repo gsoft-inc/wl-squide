@@ -1,7 +1,5 @@
 import type { SessionManager } from "@endpoints/shared";
-import { getMswPlugin } from "@squide/msw";
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
-import { ManagedRoutes } from "@squide/react-router";
+import { ManagedRoutes, getMswPlugin, type ModuleRegisterFunction, type Runtime } from "@squide/firefly";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 

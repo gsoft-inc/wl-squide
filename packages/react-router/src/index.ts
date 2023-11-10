@@ -1,5 +1,3 @@
-export * from "@squide/core";
-
 export * from "./navigationItemRegistry.ts";
 export * from "./outlets.ts";
 export * from "./routeRegistry.ts";

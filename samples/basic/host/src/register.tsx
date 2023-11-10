@@ -1,4 +1,4 @@
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
 
 function registerRoutes(runtime: Runtime) {
     runtime.registerRoute({

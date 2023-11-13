@@ -52,11 +52,11 @@ export function RootLayout() {
 ```
 
 ```tsx !#8,12 host/src/register.tsx
-import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/firefly";
+import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
-export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
+export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         // Default layout.
         element: <RootLayout />,

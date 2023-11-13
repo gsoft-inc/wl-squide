@@ -11,9 +11,9 @@ Now that we've created a host application, loaded a few modules and registered r
 In an effort to optimize the development experience, Squide can be bootstrapped in `development` or `production` mode:
 
 ```ts host/src/bootstrap.tsx
-import { Runtime, ConsoleLogger, type LogLevel } from "@squide/firefly";
+import { FireflyRuntime, ConsoleLogger, type LogLevel } from "@squide/firefly";
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     mode: "production"
 });
 ```
@@ -22,14 +22,14 @@ By default, the Runtime [mode](../reference/runtime/runtime-class.md#change-the-
 
 ## Logging
 
-Squide includes a built-in logging feature that integrates with the [Runtime](/reference/runtime/runtime-class.md) class and the [useLogger](/reference/runtime/useLogger.md) hook.
+Squide includes a built-in logging feature that integrates with the [FireflyRuntime](/reference/runtime/runtime-class.md) class and the [useLogger](/reference/runtime/useLogger.md) hook.
 
 First, register your own custom logger by implementing the [Logger](/reference/logging/Logger.md) interface or register Squide built-in [ConsoleLogger](/reference/logging/ConsoleLogger):
 
 ```ts host/src/bootstrap.tsx
-import { Runtime, ConsoleLogger, type LogLevel } from "@squide/firefly";
+import { FireflyRuntime, ConsoleLogger, type LogLevel } from "@squide/firefly";
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger(LogLevel.debug)]
 });
 ```
@@ -44,7 +44,7 @@ const logger = useLogger();
 logger.debug("Hello", { world: "!" });
 ```
 
-The logger is also available from the [Runtime](/reference/runtime/runtime-class.md#use-the-logger) instance.
+The logger is also available from the [FireflyRuntime](/reference/runtime/runtime-class.md#use-the-logger) instance.
 
 ## Messaging
 
@@ -75,11 +75,11 @@ dispatch("foo", "bar");
 
 You can use the event bus to enable various communication scenarios, such as notifying components of state changes, broadcasting messages across modules, or triggering actions based on specific events.
 
-The event bus is also available from the [Runtime](/reference/runtime/runtime-class.md#use-the-event-bus) instance.
+The event bus is also available from the [FireflyRuntime](/reference/runtime/runtime-class.md#use-the-event-bus) instance.
 
 ## Session
 
-Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the Squide [Runtime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/LocalStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
+Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the Squide [FireflyRuntime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/LocalStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
 
 First, define a `sessionAccessor` function:
 
@@ -101,10 +101,10 @@ Our security department reminds you to refrain from using a fake `LocalStorageSe
 Then register the accessor function:
 
 ```ts host/src/boostrap.tsx
-import { Runtime } from "@squide/firefly";
+import { FireflyRuntime } from "@squide/firefly";
 import { sessionAccessor } from "./session.ts";
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     sessionAccessor
 });
 ```
@@ -125,24 +125,24 @@ import { useIsAuthenticated } from "@squide/firefly";
 const isAuthenticated = useIsAuthenticated();
 ```
 
-The session is also available from the [Runtime](/reference/runtime/runtime-class.md) instance.
+The session is also available from the [FireflyRuntime](/reference/runtime/runtime-class.md) instance.
 
 ## Plugins
 
 To keep Squide lightweight, not all functionalities should be integrated as a core functionality. However, to accommodate a broad range of technologies, a [plugin system](../reference/plugins/plugin.md) has been implemented to fill the gap.
 
-Plugins can be registered at bootstrapping with the [Runtime](../reference/runtime/runtime-class.md) instance:
+Plugins can be registered at bootstrapping with the [FireflyRuntime](../reference/runtime/runtime-class.md) instance:
 
 ```ts host/src/boostrap.tsx
-import { Runtime } from "@squide/firefly";
+import { FireflyRuntime } from "@squide/firefly";
 import { MyPlugin } from "@sample/my-plugin";
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     plugins: [new MyPlugin()]
 });
 ```
 
-Then, the plugins can be accessed anywhere from the `Runtime` instance:
+Then, the plugins can be accessed anywhere from the `FireflyRuntime` instance:
 
 ```ts
 import { MyPlugin } from "@sample/my-plugin";

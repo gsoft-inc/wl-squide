@@ -66,11 +66,11 @@ export function AppRouter() {
 Finally, create a local module to register the **application shell** that will also be utilized by the host application and the isolated modules:
 
 ```tsx shell/src/register.tsx
-import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/firefly";
+import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
-export const registerShell: ModuleRegisterFunction<Runtime> = runtime => {
+export const registerShell: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         element: <RootLayout />,
         children: [
@@ -123,7 +123,7 @@ And the `registerShell` function to setup the `RootLayout`, the `RootErrorBounda
 
 ```tsx !#21 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, Runtime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
+import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import type { AppContext} from "@sample/shared";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
@@ -133,7 +133,7 @@ const Remotes: RemoteDefinition[] = [
     { url: "http://localhost:8081", name: "remote1" }
 ];
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger()]
 });
 
@@ -197,7 +197,7 @@ The `index.tsx` file is similar to the `bootstrap.tsx` file of an host applicati
 
 ```tsx !#10-12,16 remote-module/src/index.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, Runtime, registerLocalModules } from "@squide/firefly";
+import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerLocalModules } from "@squide/firefly";
 import { App } from "./App.tsx";
 import { register as registerModule } from "./register.tsx";
 import { registerDev } from "./dev/register.tsx";
@@ -205,7 +205,7 @@ import { registerShell } from "@sample/shell";
 
 // Create the shell runtime.
 // Services, loggers and sessionAccessor could be reuse through a shared packages or faked when in isolation.
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger()]
 });
 
@@ -254,10 +254,10 @@ function DevHome() {
 To register the development homepage, let's create a new local module specifically for registering what is needed to develop the module in isolation:
 
 ```tsx remote-module/src/dev/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { DevHome } from "./DevHome.tsx";
 
-export const registerDev: ModuleRegisterFunction<Runtime> = runtime => {
+export const registerDev: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         index: true,
         element: <DevHome />

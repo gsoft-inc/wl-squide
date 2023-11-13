@@ -34,10 +34,10 @@ A boolean indicating if the registration process is completed.
 
 ```tsx !#11 host/src/bootstrap.tsx
 import { createRoot } from "react";
-import { Runtime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
+import { FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { App } from "./App.tsx";
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const Remotes: RemoteDefinition = [
     { name: "remote1", url: "http://localhost:8081" }

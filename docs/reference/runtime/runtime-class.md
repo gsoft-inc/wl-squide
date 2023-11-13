@@ -4,14 +4,14 @@ toc:
     depth: 2-3
 ---
 
-# Runtime class
+# FireflyRuntime class
 
-A runtime instance give modules access to functionalities such as routing, navigation and logging.
+A runtime instance give modules access to functionalities such as routing, navigation, request handlers and logging.
 
 ## Reference
 
 ```ts
-const runtime = new Runtime(options?: { loggers?: [], plugins?: [], sessionAccessor?: () => {} })
+const runtime = new FireflyRuntime(options?: { loggers?: [], plugins?: [], sessionAccessor?: () => {} })
 ```
 
 ### Parameters
@@ -24,18 +24,17 @@ const runtime = new Runtime(options?: { loggers?: [], plugins?: [], sessionAcces
 
 ## Usage
 
-### Create a `Runtime` instance
+### Create a runtime instance
 
 ```ts
-import { ConsoleLogger, Runtime, MswPlugin } from "@squide/firefly";
+import { ConsoleLogger, FireflyRuntime } from "@squide/firefly";
 import { LocalStorageSessionManager } from "@squide/fakes";
 import { type AppSession } from "@sample/shared";
 
 const sessionManager = new LocalStorageSessionManager();
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger()],
-    plugins: [new MswPlugin()],
     sessionAccessor: () => {
         return sessionManager.getSession();
     };
@@ -45,9 +44,9 @@ const runtime = new Runtime({
 ### Change the runtime mode
 
 ```ts
-import { Runtime } from "@squide/firefly";
+import { FireflyRuntime } from "@squide/firefly";
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     mode: "production"
 });
 ```
@@ -246,7 +245,7 @@ Likewise any other React Router routes, the `path` property of a page rendered u
 
 ### Retrieve routes
 
-A federated application routes are accessible from a `Runtime` instance, but keep in mind that the preferred way to retrieve the routes is with the [useRoutes](./useRoutes) hook.
+A federated application routes are accessible from a `FireflyRuntime` instance, but keep in mind that the preferred way to retrieve the routes is with the [useRoutes](./useRoutes) hook.
 
 ```tsx
 const routes = runtime.routes;
@@ -406,7 +405,7 @@ runtime.registerNavigationItem({
 
 ### Retrieve navigation items
 
-A federated application navigation items are accessible from a `Runtime` instance, but keep in mind that the preferred way to retrieve the navigation items is with the [useNavigationItems](./useNavigationItems) hook.
+A federated application navigation items are accessible from a `FireflyRuntime` instance, but keep in mind that the preferred way to retrieve the navigation items is with the [useNavigationItems](./useNavigationItems) hook.
 
 By default, the `getNavigationItems` will return the navigation items for the `root` menu:
 

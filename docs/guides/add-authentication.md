@@ -4,7 +4,7 @@ order: 80
 
 # Add authentication
 
-Most of our applications (if not all) will eventually requires the user to authenticate. To facilitate this process, the Squide [Runtime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/LocalStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the application registration flow is completed, the function will be made accessible to every module of the application.
+Most of our applications (if not all) will eventually requires the user to authenticate. To facilitate this process, the Squide [FireflyRuntime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/LocalStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the application registration flow is completed, the function will be made accessible to every module of the application.
 
 When combined with a [React Router](https://reactrouter.com/en/main) authentication boundary and a login page, the shared `sessionAccessor` function is of great help to manage authentication concerns.
 
@@ -34,13 +34,13 @@ export const sessionAccessor: SessionAccessorFunction = () => {
 };
 ```
 
-Finally, create the [Runtime](/reference/runtime/runtime-class.md) instance with the new `sessionAccessor` function:
+Finally, create the [FireflyRuntime](/reference/runtime/runtime-class.md) instance with the new `sessionAccessor` function:
 
 ```ts #5 host/src/boostrap.tsx
-import { Runtime } from "@squide/firefly";
+import { FireflyRuntime } from "@squide/firefly";
 import { sessionAccessor } from "./session.ts";
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     sessionAccessor
 });
 ```
@@ -248,7 +248,7 @@ export function RootLayout() {
 Assemble everything with React Router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) and a [register](../reference/registration/registerLocalModules.md) function:
 
 ```tsx !#17,22,25,46-51,55-60 host/src/register.tsx
-import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/firefly";
+import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { RootLayout } from "./Rootlayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
@@ -257,7 +257,7 @@ import { LoginPage } from "./LoginPage.tsx";
 import { LogoutPage } from "./LogoutPage.tsx";
 import { HomePage } from "./Homepage.tsx";
 
-export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
+export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         element: <RootLayout />,
         children: [

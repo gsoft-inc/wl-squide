@@ -14,7 +14,7 @@ expanded: true
 
 ### Runtime
 
-- [Runtime class](runtime/runtime-class.md)
+- [FireflyRuntime class](runtime/runtime-class.md)
 - [RuntimeContext](runtime/runtime-context.md)
 - [useRuntime](runtime/useRuntime.md)
 - [useRoutes](runtime/useRoutes.md)
@@ -68,8 +68,6 @@ expanded: true
 
 ### Mock Service Worker
 
-- [MswPlugin](msw/MswPlugin.md)
-- [getMswPlugin](msw/getMswPlugin.md)
 - [useIsMswReady](msw/useIsMswReady.md)
 - [setMswAsStarted](msw/setMswAsStarted.md)
 

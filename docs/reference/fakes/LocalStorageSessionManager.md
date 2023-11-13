@@ -47,7 +47,7 @@ const session = sessionManager.getSession();
 sessionManager.clearSession();
 ```
 
-### Integrate with a `Runtime` instance
+### Integrate with a runtime instance
 
 ```ts !#8 host/src/session.ts
 import type { SessionAccessorFunction } from "@squide/firefly";
@@ -63,11 +63,11 @@ export const sessionAccessor: SessionAccessorFunction = () => {
 
 ```tsx !#4,6-8 host/src/bootstrap.tsx
 import { createRoot } from "react";
-import { Runtime, RuntimeContext } from "@squide/firefly";
+import { FireflyRuntime, RuntimeContext } from "@squide/firefly";
 import { App } from "./App";
 import { sessionAccessor } from "./session";
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     sessionAccessor
 });
 

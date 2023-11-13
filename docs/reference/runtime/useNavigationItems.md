@@ -6,7 +6,7 @@ toc:
 
 # useNavigationItems
 
-Retrieve the registered navigation items from the `Runtime` instance provided by `RuntimeContext`.
+Retrieve the registered navigation items from the `FireflyRuntime` instance.
 
 ## Reference
 
@@ -24,7 +24,7 @@ An array of `NavigationItem`.
 
 ## Usage
 
-### Retrieve the items for the `root` menu
+### Retrieve the items for the root menu
 
 ```ts
 import { useNavigationItems } from "@squide/firefly";

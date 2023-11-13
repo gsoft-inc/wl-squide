@@ -6,7 +6,7 @@ toc:
 
 # useRuntime
 
-Retrieve a shared `Runtime` instance.
+Retrieve a `FireflyRuntime` instance.
 
 !!!info
 When possible, prefer [useRoutes](useRoutes.md), [useNavigationItems](useNavigationItems.md), [useLogger](useLogger.md) to `useRuntime`.
@@ -24,7 +24,7 @@ None
 
 ### Returns
 
-A `Runtime` instance.
+A `FireflyRuntime` instance.
 
 ## Usage
 

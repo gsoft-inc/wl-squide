@@ -20,7 +20,7 @@ const eventBus = new EventBus(options?: { logger? })
 
 ## Usage
 
-### Create an `EventBus` instance
+### Create an event bus instance
 
 ```ts
 import { EventBus, ConsoleLogger } from "@squide/firefly";

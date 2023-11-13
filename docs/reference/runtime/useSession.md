@@ -5,7 +5,7 @@ toc:
 
 # useSession
 
-Retrieve the current session from the `Runtime` instance provided by `RuntimeContext`.
+Retrieve the current session from the `FireflyRuntime` instance.
 
 ## Reference
 

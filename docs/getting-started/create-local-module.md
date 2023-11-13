@@ -86,11 +86,11 @@ Finally, configure the package to be shareable by adding the `name`, `version`, 
 Next, register the local module routes and navigation items with [registerRoute](/reference/runtime/runtime-class.md#register-routes) and [registerNavigationItem](/reference/runtime/runtime-class.md#register-navigation-items) functions:
 
 ```tsx !#6-9,11-14 local-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import type { AppContext } from "@sample/shared";
 import { Page } from "./Page.tsx";
 
-export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, context) => {
+export const register: ModuleRegisterFunction<FireflyRuntime, AppContext> = (runtime, context) => {
     runtime.registerRoute({
         path: "/local/page",
         element: <Page />
@@ -129,7 +129,7 @@ Then, register the local module with the [registerLocalModule](/reference/regist
 
 ```tsx !#4,26 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, Runtime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
+import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import type { AppContext } from "@sample/shared";
 import { register as registerLocalModule } from "@sample/local-module";
 import { App } from "./App.tsx";
@@ -140,7 +140,7 @@ const Remotes: RemoteDefinition[] = [
 ];
 
 // Create the shell runtime.
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger()]
 });
 

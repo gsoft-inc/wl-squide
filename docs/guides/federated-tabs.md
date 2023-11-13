@@ -48,10 +48,10 @@ In the previous code sample, the `FederatedTabsLayout` is similar to the `RootLa
 To register the newly created layout as a nested layout, use the [registerRoute](../reference/runtime/runtime-class.md#register-routes) function:
 
 ```tsx !#7-8 remote-module-3/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { FederatedTabsLayout } from "./FederatedTabsLayout.tsx";
 
-export const register: ModuleRegisterFunction<Runtime> = runtime => {
+export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         // Register the layout as a nested layout under the "/federated-tabs" URL segment.
         path: "/federated-tabs",
@@ -74,10 +74,10 @@ As a bonus, each individual tab will have its own dedicated URL! :partying_face:
 Next, let's add the actual tab pages to the modules. To do so, we'll use the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) option of the [registerRoute](../reference/runtime/runtime-class.md#register-routes) function to register the routes under the `FederatedTabsLayout`:
 
 ```tsx !#7,10 remote-module-1/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab1 } from "./Tab1.tsx";
 
-export const register: ModuleRegisterFunction<Runtime> = (runtime: Runtime) => {
+export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         // Using "index: true" instead of a path because this is the default active tab.
         index: true
@@ -97,10 +97,10 @@ export function Tab1() {
 ```
 
 ```tsx !#7,10 remote-module-2/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab2 } from "./Tab2.tsx";
 
-export const register: ModuleRegisterFunction<Runtime> = runtime => {
+export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         // The first part of the "path" must be the same as the nested layout path (FederatedTabsLayout).
         path: "/federated-tabs/tab-2"
@@ -120,10 +120,10 @@ export function Tab2() {
 ```
 
 ```tsx !#7,10 local-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab3 } from "./Tab3.tsx";
 
-export const register: ModuleRegisterFunction<Runtime> = (runtime: Runtime) => {
+export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         // The first part of the "path" must be the same as the nested layout path (FederatedTabsLayout).
         path: "/federated-tabs/tab-3"
@@ -153,10 +153,10 @@ To decouple the navigation items, similar to what is done for regular federated 
 First, let's register the navigation items with the `menuId` option. For this example the `menuId` will be `/federated-tabs` (it can be anything):
 
 ```tsx !#19 remote-module-1/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab1 } from "./Tab1.tsx";
 
-export const register: ModuleRegisterFunction<Runtime> = runtime => {
+export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         // Using "index: true" instead of a path because this is the default active tab.
         index: true
@@ -177,10 +177,10 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
 ```
 
 ```tsx !#19 remote-module-2/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab2 } from "./Tab2.tsx";
 
-export const register: ModuleRegisterFunction<Runtime> = (runtime: Runtime) => {
+export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         // The first part of the "path" must be the same as the nested layout path (FederatedTabsLayout).
         path: "/federated-tabs/tab-2"
@@ -201,10 +201,10 @@ export const register: ModuleRegisterFunction<Runtime> = (runtime: Runtime) => {
 ```
 
 ```tsx !#19 local-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab3 } from "./Tab3.tsx";
 
-export const register: ModuleRegisterFunction<Runtime> = runtime => {
+export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         // The first part of the "path" must be the same as the nested layout path (FederatedTabsLayout).
         path: "/federated-tabs/tab-3"
@@ -282,10 +282,10 @@ Similarly to how the display order of regular navigation items can be configured
 To force `Tab 3` to be positioned first, we'll give him a priority of `999`: 
 
 ```tsx !#15 local-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab3 } from "./Tab3.tsx";
 
-export const register: ModuleRegisterFunction<Runtime> = runtime => {
+export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         path: "/federated-tabs/tab-3"
         element: <Tab3 />

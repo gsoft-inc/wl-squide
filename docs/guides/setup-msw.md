@@ -62,7 +62,7 @@ Then, update the host application bootstrapping code to [registrer the MSW plugi
 
 ```tsx !#14,21-31 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, Runtime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
+import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { MswPlugin } from "@squide/msw";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
@@ -71,7 +71,7 @@ const Remotes: RemoteDefinition[] = [
     { url: "http://localhost:8081", name: "remote1" }
 ];
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger()],
     // Register MSW plugin to the application runtime.
     plugins: [new MswPlugin()]
@@ -141,9 +141,9 @@ export const requestHandlers: HttpHandler[] = [
 Then, register the request handler with the shared registry:
 
 ```ts !#4,9,11 remote-module/src/register.tsx
-import { getMswPlugin, type ModuleRegisterFunction, type Runtime } from "@squide/firefly"; 
+import { getMswPlugin, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly"; 
 
-export const register: ModuleRegisterFunction<Runtime> = async runtime => {
+export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
     if (process.env.USE_MSW) {
         const mswPlugin = getMswPlugin(runtime);
 

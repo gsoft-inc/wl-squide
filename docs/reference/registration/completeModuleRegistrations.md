@@ -18,7 +18,7 @@ completeModuleRegistrations(runtime, data?)
 
 ### Parameters
 
-- `runtime`: A `Runtime` instance.
+- `runtime`: A `FireflyRuntime` instance.
 - `data`: An optional object with data to forward to the deferred registration functions.
 
 ### Returns
@@ -32,11 +32,11 @@ completeModuleRegistrations(runtime, data?)
 ### Complete module registrations
 
 ```tsx !#15-16,23 host/src/bootstrap.tsx
-import { registerLocalModules, Runtime, completeModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
+import { registerLocalModules, FireflyRuntime, completeModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { register } from "@sample/local-module";
 import { fetchFeatureFlags, type AppContext } from "@sample/shared";
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: "Test app"
@@ -58,12 +58,12 @@ await completeModuleRegistrations(runtime, { featureFlags });
 ```
 
 ```tsx !#19-32 remote-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import type { AppContext, DeferredRegistrationData } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 import { FeatureAPage } from "./FeatureAPage.tsx";
 
-export const register: ModuleRegisterFunction<Runtime, AppContext, DeferredRegistrationData> = async (runtime, context) => {
+export const register: ModuleRegisterFunction<FireflyRuntime, AppContext, DeferredRegistrationData> = async (runtime, context) => {
     runtime.registerRoute({
         path: "/about",
         element: <AboutPage />
@@ -96,11 +96,11 @@ export const register: ModuleRegisterFunction<Runtime, AppContext, DeferredRegis
 ### Handle the completion errors
 
 ```tsx !#22-30 host/src/bootstrap.tsx
-import { registerLocalModules, Runtime, completeModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
+import { registerLocalModules, FireflyRuntime, completeModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { register } from "@sample/local-module";
 import { fetchFeatureFlags, type AppContext } from "@sample/shared";
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: "Test app"

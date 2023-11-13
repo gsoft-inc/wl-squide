@@ -35,11 +35,11 @@ A boolean indicating if the modules are registered.
 
 ```tsx !#12-13 host/src/bootstrap.tsx
 import { createRoot } from "react";
-import { registerLocalModules, Runtime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
+import { registerLocalModules, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { register } from "@sample/local-module";
 import { App } from "./App.tsx";
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const Remotes: RemoteDefinition = [
     { name: "remote1", url: "http://localhost:8081" }

@@ -6,7 +6,7 @@ toc:
 
 # useRoutes
 
-Retrieve the registered routes from the `Runtime` instance provided by `RuntimeContext`.
+Retrieve the registered routes from the `FireflyRuntime` instance.
 
 ## Reference
 

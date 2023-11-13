@@ -5,7 +5,7 @@ toc:
 
 # useLogger
 
-Retrieve a `RuntimeLogger` instance from the `Runtime` instance provided by `RuntimeContext`.
+Retrieve a `RuntimeLogger` instance from the `FireflyRuntime` instance.
 
 ## Reference
 

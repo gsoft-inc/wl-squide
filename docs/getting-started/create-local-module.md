@@ -222,4 +222,4 @@ If you are having issues with this guide, have a look at a working example on [G
 
 ## Mock Service Worker
 
-To setup MSW, refer to the [guide](../guides/setup-msw.md).
+To setup MSW, refer to the [setup Mock Service Worker guide](../guides/setup-msw.md).

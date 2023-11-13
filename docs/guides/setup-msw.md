@@ -80,7 +80,7 @@ export function startMsw(moduleRequestHandlers: RequestHandler[]) {
 }
 ```
 
-Then, update the bootstrapping code to [start the MSW service](https://mswjs.io/docs/integrations/browser#setup) if MSW is enabled and [set MSW as started](../reference/msw/setMswAsStarted.md):
+Then, update the bootstrapping code to [start the service](https://mswjs.io/docs/integrations/browser#setup) and [mark MSW as started](../reference/msw/setMswAsStarted.md) if MSW is enabled:
 
 ```tsx !#18-29 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
@@ -140,13 +140,25 @@ export function App() {
 }
 ```
 
-## Setup a module
+## Setup a remote module
 
-!!!info
-This is example will show how to setup a remote module but the same goes for a local module.
-!!!
+First, open a terminal at the root of the remote module application and install the [msw](https://www.npmjs.com/package/msw) package:
 
-Next, define an [MSW request handler](https://mswjs.io/docs/concepts/request-handler/) in a remote module:
++++ pnpm
+```bash
+pnpm add msw
+```
++++ yarn
+```bash
+yarn add msw
+```
++++ npm
+```bash
+npm install msw
+```
++++
+
+Then, define an MSW [request handler](https://mswjs.io/docs/concepts/request-handler/):
 
 ```ts remote-module/mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
@@ -162,9 +174,9 @@ export const requestHandlers: HttpHandler[] = [
 ];
 ```
 
-Then, register the request handler using the [FireflyRuntime](../reference/runtime/runtime-class.md) instance:
+Finally, register the request handler with the [FireflyRuntime](../reference/runtime/runtime-class.md) instance:
 
-```ts !#4,9,11 remote-module/src/register.tsx
+```ts !#4,7,9 remote-module/src/register.tsx
 import { type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly"; 
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
@@ -182,8 +194,12 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
 Don't forget to mark the registration function as `async` since there's a dynamic import.
 !!!
 
+## Setup a local module
+
+Follow the same steps as for a [remote module](#setup-a-remote-module).
+
 ## Try it :rocket:
 
 Update a page component code to fetch the `/api/character/1` fake API endpoint, then start the application in development mode using the `dev` script. You should notice that the data has been fetched from the MSW request handler.
 
-> In Chrome devtools, the status code for a successful network call to an MSW request handler will be `200 OK (from service worker)`.
+> In Chrome [devtools](https://developer.chrome.com/docs/devtools/), the status code for a successful network call that has been handled by an MSW request handler will be `200 OK (from service worker)`.

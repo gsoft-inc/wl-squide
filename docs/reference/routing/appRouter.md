@@ -222,3 +222,24 @@ export function App() {
     );
 }
 ```
+
+### Specify additional router options
+
+```tsx !#11-13 host/src/App.tsx
+import { AppRouter } from "@squide/firefly";
+import { Loading } from "./Loading.tsx";
+import { ErrorBoundary } from "./ErrorBoundary.tsx";
+
+export function App() {
+    return (
+        <AppRouter
+            fallbackElement={<Loading />}
+            errorElement={<ErrorBoundary />}
+            waitForMsw={true}
+            routerProvidersProps={{
+                future: { v7_startTransition: true }
+            }}
+        />
+    );
+}
+```

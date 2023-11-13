@@ -7,7 +7,7 @@ toc:
 
 Execute [React Router's matching algorithm](https://reactrouter.com/en/main/utils/match-routes) against the registered routes and a given `location` to determine if any route match the location and whether or not that matching route is `protected`.
 
-To take advantage of this hook, make sure to add a [$visibility hint](../runtime/runtime-class.md#register-a-public-route) to your public pages.
+> To take advantage of this hook, make sure to add a [$visibility hint](../runtime/runtime-class.md#register-a-public-route) to your public pages.
 
 ## Reference
 

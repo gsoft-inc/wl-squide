@@ -8,7 +8,7 @@ toc:
 
 Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a Squide host application in **development** mode.
 
-!!!warning
+!!!info
 This function is a wrapper built on top of [@workleap/web-configs](https://www.npmjs.com/package/@workleap/webpack-configs). Make sure to read the [defineDevConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) documentation first.
 !!!
 
@@ -43,9 +43,8 @@ The `defineDevHostConfig` function will add the following shared dependencies as
 - [@squide/react-router](https://www.npmjs.com/package/@squide/react-router)
 - [@squide/webpack-module-federation](https://www.npmjs.com/package/@squide/webpack-module-federation)
 - [@squide/msw](https://www.npmjs.com/package/@squide/msw)
-- [@squide/firefly](https://www.npmjs.com/package/@squide/firefly)
 
-For the full shared dependencies configuration, have a look at the [defineConfig.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/webpack-module-federation/src/defineConfig.ts) file on Github.
+For the full shared dependencies configuration, have a look at the [defineConfig.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/firefly/src/defineConfig.ts) file on Github.
 
 ## Usage
 

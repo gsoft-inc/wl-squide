@@ -9,7 +9,7 @@ order: 50
 Force the application to re-render once all the modules are registered (but not ready).
 
 !!!info
-If your application is using the [AppRouter](../routing/appRouter.md) component, there's no need for this hook.
+If your application is using the [AppRouter](../routing/appRouter.md) component, you shouldn't use this hook.
 !!!
 
 !!!info

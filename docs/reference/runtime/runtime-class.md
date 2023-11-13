@@ -91,11 +91,10 @@ runtime.registerRoute({
 ```
 
 !!!warning
-By declaring a page as hoisted, other parts of the application will not be isolated anymore from this page's failures as the page will be rendered outside of the host application's root error boundary. To **avoid breaking the entire application** when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router's [errorElement](https://reactrouter.com/en/main/route/error-element) property for each hoisted page.
-!!!
+By declaring a page as hoisted, other parts of the application will not be isolated anymore from this page's failures and the page will not be protected anymore by the application authenticated boundary.
 
-!!!warning
-By declaring a page as hoisted, the page will be rendered at the root of the router, therefore, most certainly outside the authenticated boundary of the application. If the hoisted page requires an authentication, make sure to **wrap the page with an authentication boundary** or to handle the authentication within the page.
+- To **avoid breaking the entire application** when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router's [errorElement](https://reactrouter.com/en/main/route/error-element) property for each hoisted page.
+- If the hoisted page requires an authentication, make sure to **wrap the page with an authentication boundary** or to handle the authentication within the page.
 !!!
 
 ### Register a route with a different layout
@@ -169,11 +168,7 @@ runtime.registerRoute({
 If the route is nested under an authentication boundary, don't forget to either mark the route as [hoisted](#register-an-hoisted-route) or to [nest the route](#register-nested-routes-under-an-existing-route) under a public parent.
 
 !!!info
-A `$visibility` hint only takes effect if your application is using the [useIsRouteMatchProtected](../routing/useIsRouteMatchProtected.md) hook.
-!!!
-
-!!!info
-When no `$visibility` hint is provided, a route is considered `protected`.
+A `$visibility` hint only takes effect if your application is using the [useIsRouteMatchProtected](../routing/useIsRouteMatchProtected.md) hook. When no `$visibility` hint is provided, a route is considered `protected`.
 !!!
 
 ### Register a named route
@@ -417,6 +412,22 @@ To retrieve the navigation items for a **specific** navigation menu, provide a `
 
 ```tsx
 const navigationItems = runtime.getNavigationItems("my-custom-layout");
+```
+
+### Register request handlers
+
+The registered handlers must be [Mock Service Worker](https://mswjs.io/docs/concepts/request-handler) request handlers:
+
+```tsx
+import { requestHandlers } from "../mocks/handlers.ts";
+
+runtime.registerRequestHandlers(requestHandlers);
+```
+
+### Retrieve request handlers
+
+```tsx
+const requestHandlers = runtime.requestHandlers;
 ```
 
 ### Use the logger

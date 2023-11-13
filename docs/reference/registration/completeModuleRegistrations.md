@@ -8,7 +8,9 @@ order: 80
 
 Completes the registration process for modules that have been registred using [registerLocalModules](./registerLocalModules.md) and [registerRemoteModules](./registerRemoteModules.md) by executing the registered **deferred registration** functions.
 
-This function serves as a utility for executing both [completeLocalModuleRegistrations](./completeLocalModuleRegistrations.md) and [completeRemoteModuleRegistrations](./completeRemoteModuleRegistrations.md) in a single call.
+!!!info
+This function should only be used by applications that support [deferred registrations](./registerLocalModules.md#defer-the-registration-of-routes-or-navigation-items).
+!!!
 
 ## Reference
 

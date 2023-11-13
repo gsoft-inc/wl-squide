@@ -3,28 +3,37 @@ order: 30
 label: Setup Mock Service Worker
 ---
 
-<!-- 
-
-TBD
-
-Must REDO this doc:
-
-- First step must be to install"msw" (dont need to install @squide/msw it's already a dependency of @squide/firefly)
-- Should to 2 distinct section:
-    - Setup the host application
-    - Setup a module
-        For this example, we will use a remote module but the same goes for a local module....
-    
--->
-
-
 # Setup Mock Service Worker
 
-[Mock Service Worker](https://mswjs.io/) (MSW) is a great tool to fake API endpoints. It has the advantage of working directly in the browser, which means that unlike alternative solutions, it doesn't require running an additional process to host the fake API endpoints.
+To speed up frontend development and encourage an [API first](https://swagger.io/resources/articles/adopting-an-api-first-approach/) approach, Squide has built-in support for [Mock Service Worker](https://mswjs.io/) (MSW).
 
-## Add an environment variable
+MSW is a tool to fake API endpoints that has the advantage of working directly in the browser. This means that unlike alternative solutions, it doesn't require running an additional process to host the fake API endpoints.
 
-First, let's update the PNPM script to define with [cross-env](https://www.npmjs.com/package/cross-env) a `USE_MSW` environment variable that will conditionally enable MSW:
+## Setup the host application
+
+Let's start by configuring the host application. First, open a terminal at the root of the host application and install the [msw](https://www.npmjs.com/package/msw) package:
+
++++ pnpm
+```bash
+pnpm add msw
+```
++++ yarn
+```bash
+yarn add msw
+```
++++ npm
+```bash
+npm install msw
+```
++++
+
+!!!warning
+While you can use any package manager to develop an application with Squide, it is highly recommended that you use [PNPM](https://pnpm.io/) as the guides has been developed and tested with PNPM.
+!!!
+
+### Add an environment variable
+
+Then, update the `dev` PNPM script to define with [cross-env](https://www.npmjs.com/package/cross-env) an `USE_MSW` environment variable that will [conditionally include MSW code](https://mswjs.io/docs/integrations/browser#conditionally-enable-mocking) into the application bundles:
 
 ```json package.json
 {
@@ -34,7 +43,7 @@ First, let's update the PNPM script to define with [cross-env](https://www.npmjs
 }
 ```
 
-Then, forward the `USE_MSW` environment variable to the application code bundles:
+Then, update the development [webpack](https://webpack.js.org/) configuration file to include the `USE_MSW` environment variable into the application bundles:
 
 ```js !#7 webpack.dev.js
 // @ts-check
@@ -51,19 +60,31 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
 > For more information about the `environmentVariables` predefined option, refer to the [webpack configuration documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/#define-environment-variables).
 
 !!!warning
-Don't forget to define the `USE_MSW` environment variable for the build script as well (the one using `defineBuildHostConfig`).
+Don't forget to define the `USE_MSW` environment variable for the build script and webpack configuration as well.
 !!!
 
-The `USE_MSW` environment variable will prevent including MSW related code into the application code bundles when MSW is disabled.
+### Start the service
 
-## Register the plugin and start MSW
+With the newly added `USE_MSW` environment variable, the host application bootstrapping code can now be updated to conditionally start MSW when all the request handlers has been registered.
 
-Then, update the host application bootstrapping code to [registrer the MSW plugin](../reference/msw/mswPlugin.md#register-the-msw-plugin) and start MSW once all the request handlers has been registered:
+First, define a function to start MSW:
 
-```tsx !#14,21-31 host/src/bootstrap.tsx
+```ts host/mocks/browser.ts
+import type { RequestHandler } from "msw";
+import { setupWorker } from "msw/browser";
+
+export function startMsw(moduleRequestHandlers: RequestHandler[]) {
+    const worker = setupWorker(...moduleRequestHandlers);
+
+    worker.start();
+}
+```
+
+Then, update the bootstrapping code to [start the MSW service](https://mswjs.io/docs/integrations/browser#setup) if MSW is enabled and [set MSW as started](../reference/msw/setMswAsStarted.md):
+
+```tsx !#18-29 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
-import { MswPlugin } from "@squide/msw";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
 
@@ -72,24 +93,23 @@ const Remotes: RemoteDefinition[] = [
 ];
 
 const runtime = new FireflyRuntime({
-    loggers: [new ConsoleLogger()],
-    // Register MSW plugin to the application runtime.
-    plugins: [new MswPlugin()]
+    loggers: [new ConsoleLogger()]
 });
 
 await registerLocalModules([registerHost], runtime);
 
 await registerRemoteModules(Remotes, runtime);
 
+// Once both register functions are done, we can safely assume that all the request handlers has been registered.
 if (process.env.USE_MSW) {
     // Files that includes an import to the "msw" package are included dynamically to prevent adding
-    // unused MSW stuff to the code bundles.
+    // unused MSW stuff to the application bundles.
     const startMsw = (await import("../mocks/browser.ts")).startMsw;
 
-    // Will start MSW with the request handlers provided by every module.
-    startMsw(mswPlugin.requestHandlers);
+    // Will start MSW with the modules request handlers.
+    startMsw(runtime.requestHandlers);
 
-    // Indicate to resources that are dependent on MSW that the service has been started.
+    // Indicate that MSW has been started and the routes can now be safely rendered.
     setMswAsStarted();
 }
 
@@ -102,9 +122,9 @@ root.render(
 );
 ```
 
-## Delay the routes rendering until MSW is started
+### Delay routes rendering until the service is started
 
-Then, update the host application code to delay the rendering of the application routes until MSW is started. This is done by activating the `waitForMsw` property of the [AppRouter](../reference/routing/appRouter.md) component:
+Finally, update the host application code to delay the rendering of the routes until MSW is started. This is done by setting the `waitForMsw` property of the [AppRouter](../reference/routing/appRouter.md) component to `true`:
 
 ```tsx !#8 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
@@ -120,11 +140,15 @@ export function App() {
 }
 ```
 
-## Register request handlers
+## Setup a module
 
-Next, define an MSW request handler in a remote module (or local module):
+!!!info
+This is example will show how to setup a remote module but the same goes for a local module.
+!!!
 
-```ts
+Next, define an [MSW request handler](https://mswjs.io/docs/concepts/request-handler/) in a remote module:
+
+```ts remote-module/mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
 
 export const requestHandlers: HttpHandler[] = [
@@ -138,20 +162,18 @@ export const requestHandlers: HttpHandler[] = [
 ];
 ```
 
-Then, register the request handler with the shared registry:
+Then, register the request handler using the [FireflyRuntime](../reference/runtime/runtime-class.md) instance:
 
 ```ts !#4,9,11 remote-module/src/register.tsx
-import { getMswPlugin, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly"; 
+import { type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly"; 
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
     if (process.env.USE_MSW) {
-        const mswPlugin = getMswPlugin(runtime);
-
         // Files that includes an import to the "msw" package are included dynamically to prevent adding
-        // unused MSW stuff to the code bundles.
+        // unused MSW stuff to the application bundles.
         const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
 
-        mswPlugin.registerRequestHandlers(requestHandlers);
+        runtime.registerRequestHandlers(requestHandlers);
     }
 }
 ```

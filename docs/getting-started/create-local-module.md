@@ -219,3 +219,7 @@ To troubleshoot module registration issues, open the DevTools console. You'll fi
 !!!info
 If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/local-module).
 !!!
+
+## Mock Service Worker
+
+To setup MSW, refer to the [guide](../guides/setup-msw.md).

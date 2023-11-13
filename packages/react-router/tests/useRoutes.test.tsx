@@ -1,9 +1,9 @@
 import { RuntimeContext } from "@squide/core";
 import { renderHook, type RenderHookOptions } from "@testing-library/react";
-import { Runtime } from "../src/runtime.ts";
+import { ReactRouterRuntime } from "../src/reactRouterRuntime.ts";
 import { useRoutes } from "../src/useRoutes.ts";
 
-function renderWithRuntime<TProps>(runtime: Runtime, additionalProps: RenderHookOptions<TProps> = {}) {
+function renderWithRuntime<TProps>(runtime: ReactRouterRuntime, additionalProps: RenderHookOptions<TProps> = {}) {
     return renderHook(() => useRoutes(), {
         wrapper: ({ children }) => (
             <RuntimeContext.Provider value={runtime}>
@@ -15,7 +15,7 @@ function renderWithRuntime<TProps>(runtime: Runtime, additionalProps: RenderHook
 }
 
 test("returns all the registered routes", () => {
-    const runtime = new Runtime();
+    const runtime = new ReactRouterRuntime();
 
     runtime.registerRoute({
         path: "/foo",
@@ -37,7 +37,7 @@ test("returns all the registered routes", () => {
 });
 
 test("returned array is immutable", () => {
-    const runtime = new Runtime();
+    const runtime = new ReactRouterRuntime();
 
     runtime.registerRoute({
         path: "/foo",

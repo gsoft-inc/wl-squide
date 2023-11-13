@@ -1,10 +1,10 @@
 import { ManagedRoutes, isManagedRoutesOutletRoute } from "../src/outlets.ts";
+import { ReactRouterRuntime } from "../src/reactRouterRuntime.ts";
 import type { Route } from "../src/routeRegistry.ts";
-import { Runtime } from "../src/runtime.ts";
 
 describe("registerRoute", () => {
     describe("managed routes", () => {
-        function registerManagedRoutesOutlet(runtime: Runtime) {
+        function registerManagedRoutesOutlet(runtime: ReactRouterRuntime) {
             runtime.registerRoute(ManagedRoutes);
         }
 
@@ -25,7 +25,7 @@ describe("registerRoute", () => {
         }
 
         test("when the outlet is not registered, route registrations are pending", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/foo",
@@ -36,7 +36,7 @@ describe("registerRoute", () => {
         });
 
         test("when the outlet is registered, pending route registrations are completed", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/foo",
@@ -56,7 +56,7 @@ describe("registerRoute", () => {
         });
 
         test("can register an index route", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             registerManagedRoutesOutlet(runtime);
 
@@ -72,7 +72,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a pathless route", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             registerManagedRoutesOutlet(runtime);
 
@@ -88,7 +88,7 @@ describe("registerRoute", () => {
         });
 
         test("can register multiple pathless routes", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             registerManagedRoutesOutlet(runtime);
 
@@ -114,7 +114,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a deeply nested route with pathless parent routes", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             registerManagedRoutesOutlet(runtime);
 
@@ -140,7 +140,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a deeply nested index route with pathless parent routes", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             registerManagedRoutesOutlet(runtime);
 
@@ -166,7 +166,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a root route with a \"public\" visibility", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             registerManagedRoutesOutlet(runtime);
 
@@ -184,7 +184,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a root route with a \"protected\" visibility", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             registerManagedRoutesOutlet(runtime);
 
@@ -202,7 +202,7 @@ describe("registerRoute", () => {
         });
 
         test("when a root route has no visibility property, it is considered as an \"protected\" route", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             registerManagedRoutesOutlet(runtime);
 
@@ -219,7 +219,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a nested route with a \"public\" visibility", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             registerManagedRoutesOutlet(runtime);
 
@@ -242,7 +242,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a nested route with a \"protected\" visibility", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             registerManagedRoutesOutlet(runtime);
 
@@ -265,7 +265,7 @@ describe("registerRoute", () => {
         });
 
         test("when a nested route has no visibility property, it is considered as a \"protected\" route", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             registerManagedRoutesOutlet(runtime);
 
@@ -287,7 +287,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a root route with a name", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             registerManagedRoutesOutlet(runtime);
 
@@ -303,7 +303,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a nested route with a name", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             registerManagedRoutesOutlet(runtime);
 
@@ -326,7 +326,7 @@ describe("registerRoute", () => {
 
     describe("hoisted", () => {
         test("can register an index route", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 index: true,
@@ -340,7 +340,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a pathless route", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 element: <div>Hello!</div>
@@ -354,7 +354,7 @@ describe("registerRoute", () => {
         });
 
         test("can register multiple pathless routes", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 element: <div>Hello!</div>
@@ -384,7 +384,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a deeply nested route with pathless parent routes", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 element: <div>Hello</div>,
@@ -408,7 +408,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a deeply nested index route with pathless parent routes", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 element: <div>Hello</div>,
@@ -432,7 +432,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a root route with a \"public\" visibility", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 $visibility: "public",
@@ -447,7 +447,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a root route with a \"protected\" visibility", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 $visibility: "protected",
@@ -462,7 +462,7 @@ describe("registerRoute", () => {
         });
 
         test("when a root route has no visibility property, it is considered as an \"protected\" route", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/foo",
@@ -476,7 +476,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a nested route with a \"public\" visibility", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/layout",
@@ -497,7 +497,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a nested route with a \"protected\" visibility", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/layout",
@@ -518,7 +518,7 @@ describe("registerRoute", () => {
         });
 
         test("when a nested route has no visibility property, it is considered as an \"protected\" route", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/layout",
@@ -538,7 +538,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a root route with a name", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 $name: "foo",
@@ -552,7 +552,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a nested route with a name", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 element: <div>Hello</div>,
@@ -573,7 +573,7 @@ describe("registerRoute", () => {
 
     describe("parentPath", () => {
         test("when the parent route has already been registered, register the nested route", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/layout",
@@ -596,7 +596,7 @@ describe("registerRoute", () => {
         });
 
         test("when the parent route has not been registered, do not register the nested route", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/layout/nested",
@@ -609,7 +609,7 @@ describe("registerRoute", () => {
         });
 
         test("when the parent route has not been registered, register the pending route once the parent route is registered", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/layout/nested",
@@ -649,7 +649,7 @@ describe("registerRoute", () => {
         });
 
         test("when the parent route has not been registered, and the parent route is nested in a pending registration single block, register the pending route once the parent route is registered", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/layout/nested",
@@ -683,7 +683,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a route under a deeply nested layout", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/layout",
@@ -711,7 +711,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a route under a deeply nested layout that has been registered in a single block", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 element: <div>Hello</div>,
@@ -752,7 +752,7 @@ describe("registerRoute", () => {
         });
 
         test("when the specified parent path has a trailing separator but the parent route path doesn't have a trailing separator, the nested route is registered", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/layout",
@@ -772,7 +772,7 @@ describe("registerRoute", () => {
         });
 
         test("when the specified parent path doesn't have a trailing separator but the parent route path have a trailing separator, the nested route is registered", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/layout/",
@@ -792,7 +792,7 @@ describe("registerRoute", () => {
         });
 
         test("when a route is hoisted, it cannot be nested under another route", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             expect(() => runtime.registerRoute({
                 element: <div>Hello</div>
@@ -805,7 +805,7 @@ describe("registerRoute", () => {
 
     describe("parentName", () => {
         test("when the parent route has already been registered, register the nested route", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 $name: "layout",
@@ -828,7 +828,7 @@ describe("registerRoute", () => {
         });
 
         test("when the parent route has not been registered, do not register the nested route", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/layout/nested",
@@ -841,7 +841,7 @@ describe("registerRoute", () => {
         });
 
         test("when the parent route has not been registered, register the pending route once the parent route is registered", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/layout/nested",
@@ -881,7 +881,7 @@ describe("registerRoute", () => {
         });
 
         test("when the parent route has not been registered, and the parent route is nested in a pending registration single block, register the pending route once the parent route is registered", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/layout/nested",
@@ -915,7 +915,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a route under a deeply nested layout", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 $name: "layout",
@@ -944,7 +944,7 @@ describe("registerRoute", () => {
         });
 
         test("can register a route under a deeply nested layout that has been registered in a single block", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 element: <div>Hello</div>,
@@ -985,7 +985,7 @@ describe("registerRoute", () => {
         });
 
         test("when a route is hoisted, it cannot be nested under another route", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             expect(() => runtime.registerRoute({
                 element: <div>Hello</div>
@@ -999,7 +999,7 @@ describe("registerRoute", () => {
 
 describe("registerNavigationItem", () => {
     test("can register a root navigation link", () => {
-        const runtime = new Runtime();
+        const runtime = new ReactRouterRuntime();
 
         runtime.registerNavigationItem({
             $label: "Root",
@@ -1010,7 +1010,7 @@ describe("registerNavigationItem", () => {
     });
 
     test("can register a root navigation section", () => {
-        const runtime = new Runtime();
+        const runtime = new ReactRouterRuntime();
 
         runtime.registerNavigationItem({
             $label: "Section",
@@ -1026,7 +1026,7 @@ describe("registerNavigationItem", () => {
     });
 
     test("can register a navigation link for a specific menu id", () => {
-        const runtime = new Runtime();
+        const runtime = new ReactRouterRuntime();
 
         runtime.registerNavigationItem({
             $label: "Link",
@@ -1039,7 +1039,7 @@ describe("registerNavigationItem", () => {
     });
 
     test("can register a navigation section for a specific menu id", () => {
-        const runtime = new Runtime();
+        const runtime = new ReactRouterRuntime();
 
         runtime.registerNavigationItem({
             $label: "Section",
@@ -1059,7 +1059,7 @@ describe("registerNavigationItem", () => {
 
 describe("getNavigationItems", () => {
     test("when no menu id is specified, returns all the registered navigation items for the root menu", () => {
-        const runtime = new Runtime();
+        const runtime = new ReactRouterRuntime();
 
         runtime.registerNavigationItem({
             $label: "Item 1",
@@ -1096,7 +1096,7 @@ describe("getNavigationItems", () => {
     });
 
     test("when no menu id is specified, returns all the registered navigation items for that specific menu", () => {
-        const runtime = new Runtime();
+        const runtime = new ReactRouterRuntime();
 
         runtime.registerNavigationItem({
             $label: "Item 1",
@@ -1134,7 +1134,7 @@ describe("getNavigationItems", () => {
 describe("_completeRegistration", () => {
     describe("managed routes", () => {
         test("when the outlet is missing, the error message mentions the ManagedRoutes outlet", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
             let errorMessage;
 
             runtime.registerRoute({
@@ -1154,7 +1154,7 @@ describe("_completeRegistration", () => {
 
     describe("parentPath", () => {
         test("when the registration is completed and there are no pending registrations, do nothing", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/layout/nested",
@@ -1174,7 +1174,7 @@ describe("_completeRegistration", () => {
         });
 
         test("when the registration is completed and there are pending registrations, throw an error", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/layout/nested",
@@ -1189,7 +1189,7 @@ describe("_completeRegistration", () => {
 
     describe("parentName", () => {
         test("when the registration is completed and there are no pending registrations, do nothing", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/layout/nested",
@@ -1209,7 +1209,7 @@ describe("_completeRegistration", () => {
         });
 
         test("when the registration is completed and there are pending registrations, throw an error", () => {
-            const runtime = new Runtime();
+            const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
                 path: "/layout/nested",

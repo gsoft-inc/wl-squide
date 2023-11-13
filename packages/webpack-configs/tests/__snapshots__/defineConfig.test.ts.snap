@@ -11,14 +11,6 @@ exports[`defineBuildHostConfig the application name is set as the federation plu
           "eager": true,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": true,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": true,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": true,
           "singleton": true,
@@ -28,10 +20,6 @@ exports[`defineBuildHostConfig the application name is set as the federation plu
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": true,
           "singleton": true,
         },
@@ -52,14 +40,6 @@ exports[`defineBuildHostConfig the module federation plugin configuration includ
           "eager": true,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": true,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": true,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": true,
           "singleton": true,
@@ -69,10 +49,6 @@ exports[`defineBuildHostConfig the module federation plugin configuration includ
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": true,
           "singleton": true,
         },
@@ -105,14 +81,6 @@ exports[`defineBuildHostConfig when additional options are provided for an exist
           "eager": true,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": true,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": true,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": true,
           "singleton": true,
@@ -123,10 +91,6 @@ exports[`defineBuildHostConfig when additional options are provided for an exist
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": true,
           "singleton": true,
         },
@@ -147,14 +111,6 @@ exports[`defineBuildHostConfig when additional shared dependencies are provided,
           "eager": true,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": true,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": true,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": true,
           "singleton": true,
@@ -167,10 +123,6 @@ exports[`defineBuildHostConfig when additional shared dependencies are provided,
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": true,
           "singleton": true,
         },
@@ -199,10 +151,6 @@ exports[`defineBuildHostConfig when msw is activated, add msw shared dependency 
           "eager": true,
           "singleton": true,
         },
-        "@squide/react-router": {
-          "eager": true,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": true,
           "singleton": true,
@@ -212,10 +160,6 @@ exports[`defineBuildHostConfig when msw is activated, add msw shared dependency 
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": true,
           "singleton": true,
         },
@@ -261,14 +205,6 @@ exports[`defineBuildHostConfig when overriding options are provided for a defaul
           "eager": true,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": true,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": true,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": true,
           "singleton": true,
@@ -281,17 +217,13 @@ exports[`defineBuildHostConfig when overriding options are provided for a defaul
           "eager": true,
           "singleton": true,
         },
-        "react-router-dom": {
-          "eager": true,
-          "singleton": true,
-        },
       },
     },
   },
 }
 `;
 
-exports[`defineBuildHostConfig when the router is not react-router, do not add react-router shared dependencies 1`] = `
+exports[`defineBuildHostConfig when the router is react-router, add react-router shared dependencies 1`] = `
 {
   "index": 3,
   "plugin": ModuleFederationPlugin {
@@ -302,7 +234,7 @@ exports[`defineBuildHostConfig when the router is not react-router, do not add r
           "eager": true,
           "singleton": true,
         },
-        "@squide/msw": {
+        "@squide/react-router": {
           "eager": true,
           "singleton": true,
         },
@@ -315,6 +247,10 @@ exports[`defineBuildHostConfig when the router is not react-router, do not add r
           "singleton": true,
         },
         "react-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-router-dom": {
           "eager": true,
           "singleton": true,
         },
@@ -339,14 +275,6 @@ exports[`defineBuildRemoteModuleConfig the application name is set as the federa
           "eager": undefined,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": undefined,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": undefined,
           "singleton": true,
@@ -356,10 +284,6 @@ exports[`defineBuildRemoteModuleConfig the application name is set as the federa
           "singleton": true,
         },
         "react-dom": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": undefined,
           "singleton": true,
         },
@@ -384,14 +308,6 @@ exports[`defineBuildRemoteModuleConfig the module federation plugin configuratio
           "eager": undefined,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": undefined,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": undefined,
           "singleton": true,
@@ -401,10 +317,6 @@ exports[`defineBuildRemoteModuleConfig the module federation plugin configuratio
           "singleton": true,
         },
         "react-dom": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": undefined,
           "singleton": true,
         },
@@ -429,14 +341,6 @@ exports[`defineBuildRemoteModuleConfig when additional options are provided for 
           "eager": undefined,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": undefined,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": undefined,
           "singleton": true,
@@ -447,10 +351,6 @@ exports[`defineBuildRemoteModuleConfig when additional options are provided for 
           "singleton": true,
         },
         "react-dom": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": undefined,
           "singleton": true,
         },
@@ -475,14 +375,6 @@ exports[`defineBuildRemoteModuleConfig when additional shared dependencies are p
           "eager": undefined,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": undefined,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": undefined,
           "singleton": true,
@@ -495,10 +387,6 @@ exports[`defineBuildRemoteModuleConfig when additional shared dependencies are p
           "singleton": true,
         },
         "react-dom": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": undefined,
           "singleton": true,
         },
@@ -531,10 +419,6 @@ exports[`defineBuildRemoteModuleConfig when msw is activated, add msw shared dep
           "eager": undefined,
           "singleton": true,
         },
-        "@squide/react-router": {
-          "eager": undefined,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": undefined,
           "singleton": true,
@@ -544,10 +428,6 @@ exports[`defineBuildRemoteModuleConfig when msw is activated, add msw shared dep
           "singleton": true,
         },
         "react-dom": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": undefined,
           "singleton": true,
         },
@@ -572,14 +452,6 @@ exports[`defineBuildRemoteModuleConfig when overriding options are provided for 
           "eager": undefined,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": undefined,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": undefined,
           "singleton": true,
@@ -592,17 +464,13 @@ exports[`defineBuildRemoteModuleConfig when overriding options are provided for 
           "eager": undefined,
           "singleton": true,
         },
-        "react-router-dom": {
-          "eager": undefined,
-          "singleton": true,
-        },
       },
     },
   },
 }
 `;
 
-exports[`defineBuildRemoteModuleConfig when the router is not react-router, do not add react-router shared dependencies 1`] = `
+exports[`defineBuildRemoteModuleConfig when the router is react-router, add react-router shared dependencies 1`] = `
 {
   "index": 2,
   "plugin": ModuleFederationPlugin {
@@ -617,7 +485,7 @@ exports[`defineBuildRemoteModuleConfig when the router is not react-router, do n
           "eager": undefined,
           "singleton": true,
         },
-        "@squide/msw": {
+        "@squide/react-router": {
           "eager": undefined,
           "singleton": true,
         },
@@ -630,6 +498,10 @@ exports[`defineBuildRemoteModuleConfig when the router is not react-router, do n
           "singleton": true,
         },
         "react-dom": {
+          "eager": undefined,
+          "singleton": true,
+        },
+        "react-router-dom": {
           "eager": undefined,
           "singleton": true,
         },
@@ -650,14 +522,6 @@ exports[`defineDevHostConfig the application name is set as the federation plugi
           "eager": true,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": true,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": true,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": true,
           "singleton": true,
@@ -667,10 +531,6 @@ exports[`defineDevHostConfig the application name is set as the federation plugi
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": true,
           "singleton": true,
         },
@@ -691,14 +551,6 @@ exports[`defineDevHostConfig the module federation plugin configuration includes
           "eager": true,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": true,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": true,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": true,
           "singleton": true,
@@ -708,10 +560,6 @@ exports[`defineDevHostConfig the module federation plugin configuration includes
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": true,
           "singleton": true,
         },
@@ -744,14 +592,6 @@ exports[`defineDevHostConfig when additional options are provided for an existin
           "eager": true,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": true,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": true,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": true,
           "singleton": true,
@@ -762,10 +602,6 @@ exports[`defineDevHostConfig when additional options are provided for an existin
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": true,
           "singleton": true,
         },
@@ -786,14 +622,6 @@ exports[`defineDevHostConfig when additional shared dependencies are provided, a
           "eager": true,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": true,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": true,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": true,
           "singleton": true,
@@ -806,10 +634,6 @@ exports[`defineDevHostConfig when additional shared dependencies are provided, a
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": true,
           "singleton": true,
         },
@@ -838,10 +662,6 @@ exports[`defineDevHostConfig when msw is activated, add msw shared dependency 1`
           "eager": true,
           "singleton": true,
         },
-        "@squide/react-router": {
-          "eager": true,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": true,
           "singleton": true,
@@ -851,10 +671,6 @@ exports[`defineDevHostConfig when msw is activated, add msw shared dependency 1`
           "singleton": true,
         },
         "react-dom": {
-          "eager": true,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": true,
           "singleton": true,
         },
@@ -900,14 +716,6 @@ exports[`defineDevHostConfig when overriding options are provided for a default 
           "eager": true,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": true,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": true,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": true,
           "singleton": true,
@@ -920,17 +728,13 @@ exports[`defineDevHostConfig when overriding options are provided for a default 
           "eager": true,
           "singleton": true,
         },
-        "react-router-dom": {
-          "eager": true,
-          "singleton": true,
-        },
       },
     },
   },
 }
 `;
 
-exports[`defineDevHostConfig when the router is not react-router, do not add react-router shared dependencies 1`] = `
+exports[`defineDevHostConfig when the router, add react-router shared dependencies 1`] = `
 {
   "index": 2,
   "plugin": ModuleFederationPlugin {
@@ -941,7 +745,7 @@ exports[`defineDevHostConfig when the router is not react-router, do not add rea
           "eager": true,
           "singleton": true,
         },
-        "@squide/msw": {
+        "@squide/react-router": {
           "eager": true,
           "singleton": true,
         },
@@ -954,6 +758,10 @@ exports[`defineDevHostConfig when the router is not react-router, do not add rea
           "singleton": true,
         },
         "react-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-router-dom": {
           "eager": true,
           "singleton": true,
         },
@@ -978,14 +786,6 @@ exports[`defineDevRemoteModuleConfig the application name is set as the federati
           "eager": undefined,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": undefined,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": undefined,
           "singleton": true,
@@ -995,10 +795,6 @@ exports[`defineDevRemoteModuleConfig the application name is set as the federati
           "singleton": true,
         },
         "react-dom": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": undefined,
           "singleton": true,
         },
@@ -1023,14 +819,6 @@ exports[`defineDevRemoteModuleConfig the module federation plugin configuration 
           "eager": undefined,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": undefined,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": undefined,
           "singleton": true,
@@ -1040,10 +828,6 @@ exports[`defineDevRemoteModuleConfig the module federation plugin configuration 
           "singleton": true,
         },
         "react-dom": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": undefined,
           "singleton": true,
         },
@@ -1068,14 +852,6 @@ exports[`defineDevRemoteModuleConfig when additional options are provided for an
           "eager": undefined,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": undefined,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": undefined,
           "singleton": true,
@@ -1086,10 +862,6 @@ exports[`defineDevRemoteModuleConfig when additional options are provided for an
           "singleton": true,
         },
         "react-dom": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": undefined,
           "singleton": true,
         },
@@ -1114,14 +886,6 @@ exports[`defineDevRemoteModuleConfig when additional shared dependencies are pro
           "eager": undefined,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": undefined,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": undefined,
           "singleton": true,
@@ -1134,10 +898,6 @@ exports[`defineDevRemoteModuleConfig when additional shared dependencies are pro
           "singleton": true,
         },
         "react-dom": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": undefined,
           "singleton": true,
         },
@@ -1170,10 +930,6 @@ exports[`defineDevRemoteModuleConfig when msw is activated, add msw shared depen
           "eager": undefined,
           "singleton": true,
         },
-        "@squide/react-router": {
-          "eager": undefined,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": undefined,
           "singleton": true,
@@ -1183,10 +939,6 @@ exports[`defineDevRemoteModuleConfig when msw is activated, add msw shared depen
           "singleton": true,
         },
         "react-dom": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "react-router-dom": {
           "eager": undefined,
           "singleton": true,
         },
@@ -1211,14 +963,6 @@ exports[`defineDevRemoteModuleConfig when overriding options are provided for a 
           "eager": undefined,
           "singleton": true,
         },
-        "@squide/msw": {
-          "eager": undefined,
-          "singleton": true,
-        },
-        "@squide/react-router": {
-          "eager": undefined,
-          "singleton": true,
-        },
         "@squide/webpack-module-federation": {
           "eager": undefined,
           "singleton": true,
@@ -1231,17 +975,13 @@ exports[`defineDevRemoteModuleConfig when overriding options are provided for a 
           "eager": undefined,
           "singleton": true,
         },
-        "react-router-dom": {
-          "eager": undefined,
-          "singleton": true,
-        },
       },
     },
   },
 }
 `;
 
-exports[`defineDevRemoteModuleConfig when the router is not react-router, do not add react-router shared dependencies 1`] = `
+exports[`defineDevRemoteModuleConfig when the router is react-router, add react-router shared dependencies 1`] = `
 {
   "index": 1,
   "plugin": ModuleFederationPlugin {
@@ -1256,7 +996,7 @@ exports[`defineDevRemoteModuleConfig when the router is not react-router, do not
           "eager": undefined,
           "singleton": true,
         },
-        "@squide/msw": {
+        "@squide/react-router": {
           "eager": undefined,
           "singleton": true,
         },
@@ -1269,6 +1009,10 @@ exports[`defineDevRemoteModuleConfig when the router is not react-router, do not
           "singleton": true,
         },
         "react-dom": {
+          "eager": undefined,
+          "singleton": true,
+        },
+        "react-router-dom": {
           "eager": undefined,
           "singleton": true,
         },

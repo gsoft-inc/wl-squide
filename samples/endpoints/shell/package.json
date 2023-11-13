@@ -21,6 +21,7 @@
     "peerDependencies": {
         "@endpoints/shared": "*",
         "@squide/firefly": "*",
+        "@squide/fakes": "*",
         "msw": "*",
         "react": "*",
         "react-dom": "*",
@@ -31,6 +32,7 @@
         "@endpoints/shared": "workspace:*",
         "@remix-run/router": "1.11.0",
         "@squide/firefly": "workspace:*",
+        "@squide/fakes": "workspace:*",
         "@types/node": "20.8.10",
         "@types/react": "18.2.36",
         "@types/react-dom": "18.2.14",

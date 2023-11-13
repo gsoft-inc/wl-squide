@@ -11,7 +11,7 @@ function translateManagedRoutesParentId(parentId?: string) {
     return parentId;
 }
 
-export class Runtime extends AbstractRuntime<Route, RootNavigationItem> {
+export class ReactRouterRuntime extends AbstractRuntime<Route, RootNavigationItem> {
     readonly #routeRegistry = new RouteRegistry();
     readonly #navigationItemRegistry = new NavigationItemRegistry();
 

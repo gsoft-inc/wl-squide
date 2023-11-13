@@ -112,12 +112,10 @@ describe("defineDevHostConfig", () => {
         expect(result).toMatchSnapshot();
     });
 
-    test("when the router is not react-router, do not add react-router shared dependencies", () => {
+    test("when the router, add react-router shared dependencies", () => {
         const config = defineDevHostConfig(SwcConfig, "host", 8080, {
             features: {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                router: "another-router"
+                router: "react-router"
             }
         });
 
@@ -279,12 +277,10 @@ describe("defineBuildHostConfig", () => {
         expect(result).toMatchSnapshot();
     });
 
-    test("when the router is not react-router, do not add react-router shared dependencies", () => {
+    test("when the router is react-router, add react-router shared dependencies", () => {
         const config = defineBuildHostConfig(SwcConfig, "host", {
             features: {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                router: "another-router"
+                router: "react-router"
             }
         });
 
@@ -462,12 +458,10 @@ describe("defineDevRemoteModuleConfig", () => {
         expect(result).toMatchSnapshot();
     });
 
-    test("when the router is not react-router, do not add react-router shared dependencies", () => {
+    test("when the router is react-router, add react-router shared dependencies", () => {
         const config = defineDevRemoteModuleConfig(SwcConfig, "remote1", 8081, {
             features: {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                router: "another-router"
+                router: "react-router"
             }
         });
 
@@ -521,6 +515,7 @@ describe("defineDevRemoteModuleConfig", () => {
         expect(result.entry).toBe("updated by the dummy transformer");
     });
 });
+
 describe("defineBuildRemoteModuleConfig", () => {
     const SwcConfig = defineSwcBuildConfig({
         chrome: "116"
@@ -601,12 +596,10 @@ describe("defineBuildRemoteModuleConfig", () => {
         expect(result).toMatchSnapshot();
     });
 
-    test("when the router is not react-router, do not add react-router shared dependencies", () => {
+    test("when the router is react-router, add react-router shared dependencies", () => {
         const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", {
             features: {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                router: "another-router"
+                router: "react-router"
             }
         });
 

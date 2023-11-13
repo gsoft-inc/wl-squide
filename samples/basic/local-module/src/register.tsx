@@ -1,7 +1,7 @@
 import type { AppContext } from "@basic/shared";
-import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
+import type { FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
 
-function registerRoutes(runtime: Runtime) {
+function registerRoutes(runtime: FireflyRuntime) {
     runtime.registerRoute({
         path: "/message",
         lazy: () => import("./MessagePage.tsx")
@@ -35,7 +35,7 @@ function registerRoutes(runtime: Runtime) {
     });
 }
 
-export const registerLocalModule: ModuleRegisterFunction<Runtime, AppContext> = (runtime, context) => {
+export const registerLocalModule: ModuleRegisterFunction<FireflyRuntime, AppContext> = (runtime, context) => {
     console.log("Local module context: ", context);
 
     return registerRoutes(runtime);

@@ -145,9 +145,6 @@ importers:
       '@squide/webpack-module-federation':
         specifier: workspace:*
         version: link:../webpack-module-federation
-      webpack:
-        specifier: '>=5.0.0'
-        version: 5.89.0(@swc/core@1.3.96)(esbuild@0.18.20)(webpack-cli@5.1.4)
     devDependencies:
       '@squide/webpack-configs':
         specifier: workspace:*
@@ -188,6 +185,9 @@ importers:
       '@workleap/typescript-configs':
         specifier: 3.0.2
         version: 3.0.2(typescript@5.2.2)
+      '@workleap/webpack-configs':
+        specifier: 1.2.1
+        version: 1.2.1(@swc/core@1.3.96)(@swc/helpers@0.5.3)(browserslist@4.22.1)(esbuild@0.18.20)(postcss@8.4.31)(react-refresh@0.14.0)(typescript@5.2.2)(webpack@5.89.0)
       jest:
         specifier: 29.7.0
         version: 29.7.0(@types/node@20.8.10)(ts-node@10.9.1)
@@ -218,6 +218,9 @@ importers:
       typescript:
         specifier: 5.2.2
         version: 5.2.2
+      webpack:
+        specifier: 5.89.0
+        version: 5.89.0(@swc/core@1.3.96)(esbuild@0.18.20)(webpack-cli@5.1.4)
 
   packages/msw:
     dependencies:
@@ -1262,6 +1265,9 @@ importers:
       '@remix-run/router':
         specifier: 1.11.0
         version: 1.11.0
+      '@squide/fakes':
+        specifier: workspace:*
+        version: link:../../../packages/fakes
       '@squide/firefly':
         specifier: workspace:*
         version: link:../../../packages/firefly

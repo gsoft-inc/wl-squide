@@ -1,7 +1,7 @@
 import { BackgroundColorContext } from "@basic/shared";
-import type { ModuleRegisterFunction, Runtime } from "@squide/firefly";
+import type { FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
 
-function registerRoutes(runtime: Runtime) {
+function registerRoutes(runtime: FireflyRuntime) {
     runtime.registerRoute({
         path: "/hoisted",
         lazy: () => import("./CustomLayout.tsx"),
@@ -85,6 +85,6 @@ function registerRoutes(runtime: Runtime) {
     });
 }
 
-export const register: ModuleRegisterFunction<Runtime> = runtime => {
+export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     return registerRoutes(runtime);
 };

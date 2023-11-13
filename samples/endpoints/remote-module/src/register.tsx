@@ -1,8 +1,8 @@
 import type { DeferredRegistrationData } from "@endpoints/shell";
-import { getMswPlugin, type ModuleRegisterFunction, type Runtime } from "@squide/firefly";
+import type { FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
 import { Providers } from "./Providers.tsx";
 
-const registerRoutes: ModuleRegisterFunction<Runtime, unknown, DeferredRegistrationData> = runtime => {
+const registerRoutes: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = runtime => {
     runtime.registerRoute({
         path: "/federated-tabs/episodes",
         lazy: async () => {
@@ -90,19 +90,17 @@ const registerRoutes: ModuleRegisterFunction<Runtime, unknown, DeferredRegistrat
     };
 };
 
-async function registerMsw(runtime: Runtime) {
+async function registerMsw(runtime: FireflyRuntime) {
     if (process.env.USE_MSW) {
-        const mswPlugin = getMswPlugin(runtime);
-
         // Files including an import to the "msw" package are included dynamically to prevent adding
         // MSW stuff to the bundled when it's not used.
         const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
 
-        mswPlugin.registerRequestHandlers(requestHandlers);
+        runtime.registerRequestHandlers(requestHandlers);
     }
 }
 
-export const register: ModuleRegisterFunction<Runtime, unknown, DeferredRegistrationData> = async runtime => {
+export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = async runtime => {
     await registerMsw(runtime);
 
     return registerRoutes(runtime);

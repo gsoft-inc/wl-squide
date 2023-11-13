@@ -1,8 +1,8 @@
 import { useRuntime } from "@squide/core";
-import type { Runtime } from "./runtime.ts";
+import type { ReactRouterRuntime } from "./reactRouterRuntime.ts";
 
 export function useNavigationItems(menuId?: string) {
-    const runtime = useRuntime() as Runtime;
+    const runtime = useRuntime() as ReactRouterRuntime;
 
     return runtime.getNavigationItems(menuId);
 }

@@ -2,7 +2,7 @@
     "name": "@basic/local-module",
     "author": "Workleap",
     "version": "0.0.0",
-    "description": "Local module to showcase @squide.",
+    "description": "Local module to showcase Squide.",
     "private": true,
     "license": "Apache-2.0",
     "type": "module",

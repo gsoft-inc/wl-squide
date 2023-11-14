@@ -2,7 +2,7 @@
     "name": "@basic/shell",
     "author": "Workleap",
     "version": "0.0.0",
-    "description": "Application shell package to showcase @squide.",
+    "description": "Application shell package to showcase Squide.",
     "private": true,
     "license": "Apache-2.0",
     "type": "module",

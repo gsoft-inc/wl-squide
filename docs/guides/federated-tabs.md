@@ -307,3 +307,11 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 ## Try it :rocket:
 
 To ensure everything is still working correctly, start the development servers using the `dev` script and navigate to the `/federated-tabs` page. You should see all three tabs, and you should be able to switch between them by clicking on the tab headers.
+
+### Troubleshoot issues
+
+If you are experiencing issues with this guide:
+
+- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
+- Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic).
+- Refer to the [troubleshooting](../troubleshooting.md) page.

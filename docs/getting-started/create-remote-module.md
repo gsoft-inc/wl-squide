@@ -184,15 +184,11 @@ To build the module, add the following script to the application `package.json` 
 
 Start the `host` and the `remote-module` applications in development mode using the `dev` script. You should notice an additional link in the navigation menu. Click on the link to navigate to the page of your new **remote** module!
 
-<!-- ## Mock Service Worker
+### Troubleshoot issues
 
-To setup MSW, refer to the [setup Mock Service Worker guide](../guides/setup-msw.md). -->
+If you are experiencing issues with this guide:
 
-## Troubleshoot issues
-
-If you are experiencing module registration issues, try:
-
-- Opening the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
+- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
 - Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/remote-module).
 - Refer to the [troubleshooting](../troubleshooting.md) page.
 

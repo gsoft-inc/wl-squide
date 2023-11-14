@@ -132,6 +132,10 @@ By declaring a page as hoisted, the page will be rendered at the root of the rou
 
 Start the application in a development environment using the `dev` script and navigate to the `/login` page. The page should be displayed even if you are not authenticated.
 
-!!!info
-If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/shell).
-!!!
+### Troubleshoot issues
+
+If you are experiencing issues with this guide:
+
+- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
+- Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/blob/main/samples/basic/remote-module/src/register.tsx).
+- Refer to the [troubleshooting](../troubleshooting.md) page.

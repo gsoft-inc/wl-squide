@@ -399,15 +399,11 @@ To build the application, add the following script to the application `package.j
 
 Start the application in a development environment using the `dev` script. You should see the home page. Even if the remote module application is not yet available, the host application will gracefully load.
 
-<!-- ## Mock Service Worker
+### Troubleshoot issues
 
-To setup MSW, refer to the [setup Mock Service Worker guide](../guides/setup-msw.md). -->
+If you are experiencing issues with this guide:
 
-## Troubleshoot issues
-
-If you are experiencing module registration issues, try:
-
-- Opening the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
+- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
 - Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/host).
 - Refer to the [troubleshooting](../troubleshooting.md) page.
 

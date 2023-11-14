@@ -1,7 +1,5 @@
 import { FeatureFlagsContext, SubscriptionContext, TelemetryServiceContext, fetchJson, isApiError, type FeatureFlags, type Session, type SessionManager, type Subscription, type TelemetryService } from "@endpoints/shared";
-import { AppRouter as FireflyAppRouter } from "@squide/firefly";
-import { useLogger, useRuntime, type Logger } from "@squide/react-router";
-import { completeModuleRegistrations } from "@squide/webpack-module-federation";
+import { AppRouter as FireflyAppRouter, completeModuleRegistrations, useLogger, useRuntime, type Logger } from "@squide/firefly";
 import { useCallback, useState } from "react";
 import { AppRouterErrorBoundary } from "./AppRouterErrorBoundary.tsx";
 

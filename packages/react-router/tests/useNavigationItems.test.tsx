@@ -1,10 +1,10 @@
 import { RuntimeContext } from "@squide/core";
 import { renderHook } from "@testing-library/react";
 import type { ReactNode } from "react";
-import { Runtime } from "../src/runtime.ts";
+import { ReactRouterRuntime } from "../src/reactRouterRuntime.ts";
 import { useNavigationItems } from "../src/useNavigationItems.ts";
 
-function renderWithRuntime(runtime: Runtime, menuId?: string) {
+function renderWithRuntime(runtime: ReactRouterRuntime, menuId?: string) {
     return renderHook(() => useNavigationItems(menuId), {
         wrapper: ({ children }: { children?: ReactNode }) => (
             <RuntimeContext.Provider value={runtime}>
@@ -15,7 +15,7 @@ function renderWithRuntime(runtime: Runtime, menuId?: string) {
 }
 
 test("when no menu id is specified, returns all the registered navigation items for the root menu", () => {
-    const runtime = new Runtime();
+    const runtime = new ReactRouterRuntime();
 
     runtime.registerNavigationItem({
         $label: "Item 1",
@@ -52,7 +52,7 @@ test("when no menu id is specified, returns all the registered navigation items 
 });
 
 test("when a menu id is specified, returns all the registered navigation items for that specific menu", () => {
-    const runtime = new Runtime();
+    const runtime = new ReactRouterRuntime();
 
     runtime.registerNavigationItem({
         $label: "Item 1",
@@ -89,7 +89,7 @@ test("when a menu id is specified, returns all the registered navigation items f
 });
 
 test("returned array is immutable", () => {
-    const runtime = new Runtime();
+    const runtime = new ReactRouterRuntime();
 
     runtime.registerNavigationItem({
         $label: "Foo",

@@ -5,7 +5,7 @@ toc:
 
 # useLogger
 
-Retrieve a `RuntimeLogger` instance from the `Runtime` instance provided by `RuntimeContext`.
+Retrieve a `RuntimeLogger` instance from the `FireflyRuntime` instance.
 
 ## Reference
 
@@ -24,7 +24,7 @@ A `RuntimeLogger` instance.
 ## Usage
 
 ```ts
-import { useLogger } from "@squide/react-router";
+import { useLogger } from "@squide/firefly";
 
 const logger = useLogger();
 

@@ -9,7 +9,7 @@ order: 50
 Force the application to re-render once all the modules are registered (but not ready).
 
 !!!info
-If your application is using the [AppRouter](../routing/appRouter.md) component, there's no need for this hook.
+If your application is using the [AppRouter](../routing/appRouter.md) component, you shouldn't use this hook.
 !!!
 
 !!!info
@@ -33,14 +33,13 @@ A boolean indicating if the modules are registered.
 
 ## Usage
 
-```tsx !#13-14 host/src/bootstrap.tsx
+```tsx !#12-13 host/src/bootstrap.tsx
 import { createRoot } from "react";
-import { registerLocalModules, Runtime } from "@squide/react-router";
-import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import { registerLocalModules, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { register } from "@sample/local-module";
 import { App } from "./App.tsx";
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const Remotes: RemoteDefinition = [
     { name: "remote1", url: "http://localhost:8081" }
@@ -58,11 +57,10 @@ root.render(
 );
 ```
 
-```tsx !#11,18-30 host/src/App.tsx
+```tsx !#10,17-29 host/src/App.tsx
 import { useMemo, useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { completeModuleRegistrations, useAreModulesRegistered, useAreModulesReady } from "@squide/webpack-module-federation";
-import { useRoutes, useRuntime } from "@squide/react-router";
+import { completeModuleRegistrations, useAreModulesRegistered, useAreModulesReady, useRoutes, useRuntime } from "@squide/firefly";
 import { fetchFeatureFlags, type FeatureFlags } from "@sample/shared";
 
 export function App() {

@@ -20,7 +20,7 @@ completeRemoteModuleRegistrations(runtime, data?)
 
 ### Parameters
 
-- `runtime`: A `Runtime` instance.
+- `runtime`: A `FireflyRuntime` instance.
 - `data`: An optional object with data to forward to the deferred registration functions.
 
 ### Returns
@@ -37,12 +37,11 @@ A `Promise` object with an array of `RemoteModuleRegistrationError` if any error
 
 ### Complete remote module registrations
 
-```tsx !#19,22 host/src/bootstrap.tsx
-import { Runtime } from "@squide/react-router";
-import { completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+```tsx !#18,21 host/src/bootstrap.tsx
+import { FireflyRuntime, completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { fetchFeatureFlags, type AppContext } from "@sample/shared";
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: "Test app"
@@ -63,12 +62,12 @@ await completeRemoteModuleRegistrations(runtime, { featureFlags });
 ```
 
 ```tsx !#19-32 remote-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import type { AppContext, DeferredRegistrationData } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 import { FeatureAPage } from "./FeatureAPage.tsx";
 
-export const register: ModuleRegisterFunction<Runtime, AppContext, DeferredRegistrationData> = async (runtime, context) => {
+export const register: ModuleRegisterFunction<FireflyRuntime, AppContext, DeferredRegistrationData> = async (runtime, context) => {
     runtime.registerRoute({
         path: "/about",
         element: <AboutPage />
@@ -100,12 +99,11 @@ export const register: ModuleRegisterFunction<Runtime, AppContext, DeferredRegis
 
 ### Handle the completion errors
 
-```tsx !#21-23 host/src/bootstrap.tsx
-import { Runtime } from "@squide/react-router";
-import { completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+```tsx !#20-22 host/src/bootstrap.tsx
+import { FireflyRuntime, completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { fetchFeatureFlags, type AppContext } from "@sample/shared";
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: "Test app"

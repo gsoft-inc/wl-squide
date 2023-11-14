@@ -1,4 +1,4 @@
-import { AbstractRuntime, RootMenuId, type RegisterNavigationItemOptions, type RegisterRouteOptions } from "@squide/core";
+import { RootMenuId, Runtime, type RegisterNavigationItemOptions, type RegisterRouteOptions } from "@squide/core";
 import { NavigationItemRegistry, type RootNavigationItem } from "./navigationItemRegistry.ts";
 import { ManagedRoutes, ManagedRoutesOutletName } from "./outlets.ts";
 import { RouteRegistry, type Route } from "./routeRegistry.ts";
@@ -11,7 +11,7 @@ function translateManagedRoutesParentId(parentId?: string) {
     return parentId;
 }
 
-export class Runtime extends AbstractRuntime<Route, RootNavigationItem> {
+export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
     readonly #routeRegistry = new RouteRegistry();
     readonly #navigationItemRegistry = new NavigationItemRegistry();
 

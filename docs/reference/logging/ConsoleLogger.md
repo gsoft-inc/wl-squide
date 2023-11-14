@@ -22,7 +22,7 @@ const logger = new ConsoleLogger(logLevel?)
 ### Log everything
 
 ```ts
-import { ConsoleLogger, type LogLevel } from "@squide/react-router";
+import { ConsoleLogger, type LogLevel } from "@squide/firefly";
 
 const logger = new ConsoleLogger();
 
@@ -38,7 +38,7 @@ logger.critical("Critical log");
 To restrict the logs to `error` or `critical`, change the minimum log level to `error`:
 
 ```ts
-import { ConsoleLogger, type LogLevel } from "@squide/react-router";
+import { ConsoleLogger, type LogLevel } from "@squide/firefly";
 
 const logger = new ConsoleLogger(LogLevel.error);
 

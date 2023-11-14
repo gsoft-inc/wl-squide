@@ -1,11 +1,11 @@
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
 
 export interface RegisterLayoutsOptions {
     host?: string;
 }
 
 export function registerLayouts({ host }: RegisterLayoutsOptions = {}) {
-    const register: ModuleRegisterFunction<Runtime> = runtime => {
+    const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
         runtime.registerRoute({
             path: "/federated-tabs",
             lazy: async () => {

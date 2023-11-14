@@ -6,7 +6,7 @@ toc:
 
 # useRoutes
 
-Retrieve the registered routes from the `Runtime` instance provided by `RuntimeContext`.
+Retrieve the registered routes from the `FireflyRuntime` instance.
 
 ## Reference
 
@@ -25,7 +25,7 @@ An array of `Route`.
 ## Usage
 
 ```ts
-import { useRoutes } from "@squide/react-router";
+import { useRoutes } from "@squide/firefly";
 
 const routes = useRoutes();
 ```

@@ -1,5 +1,6 @@
+import { RuntimeContext, __resetLocalModuleRegistrations, registerLocalModules } from "@squide/core";
 import { __resetMswStatus, setMswAsStarted } from "@squide/msw";
-import { Runtime, RuntimeContext, __resetLocalModuleRegistrations, registerLocalModules } from "@squide/react-router";
+import { ReactRouterRuntime } from "@squide/react-router";
 import { completeModuleRegistrations } from "@squide/webpack-module-federation";
 import { render, screen } from "@testing-library/react";
 import type { ReactElement, ReactNode } from "react";
@@ -20,7 +21,7 @@ function ErrorBoundary() {
     );
 }
 
-function renderWithRuntime(runtime: Runtime, ui: ReactElement) {
+function renderWithRuntime(runtime: ReactRouterRuntime, ui: ReactElement) {
     return render(ui, {
         wrapper: ({ children }: { children?: ReactNode }) => {
             return (
@@ -38,7 +39,7 @@ beforeEach(() => {
 });
 
 test("when no data handlers are provided, msw is disabled, there's no deferred registrations, and modules are not registered yet, render the fallback", async () => {
-    const runtime = new Runtime();
+    const runtime = new ReactRouterRuntime();
 
     // Must add at least a route otherwise useRouteMatchProtected will throw.
     runtime.registerRoute({
@@ -61,7 +62,7 @@ test("when no data handlers are provided, msw is disabled, there's no deferred r
 });
 
 test("when no data handlers are provided, msw is disabled, there's no deferred registrations, and modules are registered, render the router", async () => {
-    const runtime = new Runtime();
+    const runtime = new ReactRouterRuntime();
 
     // Must add at least a route otherwise useRouteMatchProtected will throw.
     runtime.registerRoute({
@@ -90,7 +91,7 @@ test("when no data handlers are provided, msw is disabled, there's no deferred r
 });
 
 test("when no data handlers are provided, msw is disabled, modules are registered but there's uncompleted deferred registrations, render the fallback", async () => {
-    const runtime = new Runtime();
+    const runtime = new ReactRouterRuntime();
 
     // Must add at least a route otherwise useRouteMatchProtected will throw.
     runtime.registerRoute({
@@ -112,7 +113,7 @@ test("when no data handlers are provided, msw is disabled, modules are registere
 });
 
 test("when a onLoadPublicData handler is provided and the public data is not loaded, render the fallback", async () => {
-    const runtime = new Runtime();
+    const runtime = new ReactRouterRuntime();
 
     // Must add at least a route otherwise useRouteMatchProtected will throw.
     runtime.registerRoute({
@@ -137,7 +138,7 @@ test("when a onLoadPublicData handler is provided and the public data is not loa
 });
 
 test("when a onLoadPublicData handler is provided and the public data is loaded, render the router", async () => {
-    const runtime = new Runtime();
+    const runtime = new ReactRouterRuntime();
 
     runtime.registerRoute({
         $visibility: "public",
@@ -160,7 +161,7 @@ test("when a onLoadPublicData handler is provided and the public data is loaded,
 });
 
 test("when a onLoadProtectedData handler is provided and the protected data is not loaded, render the fallback", async () => {
-    const runtime = new Runtime();
+    const runtime = new ReactRouterRuntime();
 
     // Must add at least a route otherwise React Router complains the router has no routes.
     runtime.registerRoute({
@@ -184,7 +185,7 @@ test("when a onLoadProtectedData handler is provided and the protected data is n
 });
 
 test("when a onLoadProtectedData handler is provided and the protected data is loaded, render the router", async () => {
-    const runtime = new Runtime();
+    const runtime = new ReactRouterRuntime();
 
     runtime.registerRoute({
         index: true,
@@ -206,7 +207,7 @@ test("when a onLoadProtectedData handler is provided and the protected data is l
 });
 
 test("when msw is enabled and msw is not started, render the fallback", async () => {
-    const runtime = new Runtime();
+    const runtime = new ReactRouterRuntime();
 
     // Must add at least a route otherwise React Router complains the router has no routes.
     runtime.registerRoute({
@@ -228,7 +229,7 @@ test("when msw is enabled and msw is not started, render the fallback", async ()
 });
 
 test("when msw is enabled and msw is started, render the router", async () => {
-    const runtime = new Runtime();
+    const runtime = new ReactRouterRuntime();
 
     runtime.registerRoute({
         index: true,
@@ -251,7 +252,7 @@ test("when msw is enabled and msw is started, render the router", async () => {
 });
 
 test("when a onCompleteRegistrations handler is provided and there's no deferred registrations, render the router", async () => {
-    const runtime = new Runtime();
+    const runtime = new ReactRouterRuntime();
 
     runtime.registerRoute({
         index: true,
@@ -273,7 +274,7 @@ test("when a onCompleteRegistrations handler is provided and there's no deferred
 });
 
 test("when a onCompleteRegistrations handler is provided and the deferred registrations are not completed, render the fallback", async () => {
-    const runtime = new Runtime();
+    const runtime = new ReactRouterRuntime();
 
     // Must add at least a route otherwise React Router complains the router has no routes.
     runtime.registerRoute({
@@ -297,7 +298,7 @@ test("when a onCompleteRegistrations handler is provided and the deferred regist
 });
 
 test("when a onCompleteRegistrations handler is provided and the deferred registrations are completed, render the router", async () => {
-    const runtime = new Runtime();
+    const runtime = new ReactRouterRuntime();
 
     // Must add at least a route otherwise React Router complains the router has no routes.
     runtime.registerRoute({
@@ -344,7 +345,7 @@ test("when an error occurs while loading the public data, show the error element
     const spy = jest.spyOn(console, "error");
     spy.mockImplementation(() => {});
 
-    const runtime = new Runtime();
+    const runtime = new ReactRouterRuntime();
 
     // Must add at least a route otherwise useRouteMatchProtected will throw.
     runtime.registerRoute({
@@ -374,7 +375,7 @@ test("when an error occurs while loading the protected data, show the error elem
     const spy = jest.spyOn(console, "error");
     spy.mockImplementation(() => {});
 
-    const runtime = new Runtime();
+    const runtime = new ReactRouterRuntime();
 
     // Must add at least a route otherwise useRouteMatchProtected will throw.
     runtime.registerRoute({

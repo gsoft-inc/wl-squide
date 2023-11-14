@@ -5,7 +5,7 @@ toc:
 
 # useEventBusDispatcher
 
-Retrieve an `EventBus` instance from the `Runtime` instance provided by `RuntimeContext` and provide a function to dispatch an event.
+Retrieve an `EventBus` instance from the `FireflyRuntime` instance provided by `RuntimeContext` and provide a function to dispatch an event.
 
 ## Reference
 
@@ -24,7 +24,7 @@ A dispatch function.
 ## Usage
 
 ```ts
-import { useEventBusDispatcher } from "@squide/react-router";
+import { useEventBusDispatcher } from "@squide/firefly";
 
 const dispatch = useEventBusDispatcher();
 

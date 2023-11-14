@@ -6,18 +6,14 @@ order: 60
 
 Now that we've created a host application, loaded a few modules and registered routes and navigation items, let's delve into the APIs provided by this shell.
 
-!!!info
-For a comprehensive list of the Squide API, refer to the [References](/reference#api) section.
-!!!
-
 ## Runtime mode
 
 In an effort to optimize the development experience, Squide can be bootstrapped in `development` or `production` mode:
 
 ```ts host/src/bootstrap.tsx
-import { Runtime, ConsoleLogger, type LogLevel } from "@squide/react-router";
+import { FireflyRuntime, ConsoleLogger, type LogLevel } from "@squide/firefly";
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     mode: "production"
 });
 ```
@@ -26,14 +22,14 @@ By default, the Runtime [mode](../reference/runtime/runtime-class.md#change-the-
 
 ## Logging
 
-Squide includes a built-in logging feature that integrates with the [Runtime](/reference/runtime/runtime-class.md) class and the [useLogger](/reference/runtime/useLogger.md) hook.
+Squide includes a built-in logging feature that integrates with the [FireflyRuntime](/reference/runtime/runtime-class.md) class and the [useLogger](/reference/runtime/useLogger.md) hook.
 
 First, register your own custom logger by implementing the [Logger](/reference/logging/Logger.md) interface or register Squide built-in [ConsoleLogger](/reference/logging/ConsoleLogger):
 
 ```ts host/src/bootstrap.tsx
-import { Runtime, ConsoleLogger, type LogLevel } from "@squide/react-router";
+import { FireflyRuntime, ConsoleLogger, type LogLevel } from "@squide/firefly";
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger(LogLevel.debug)]
 });
 ```
@@ -41,14 +37,14 @@ const runtime = new Runtime({
 Then, log entries from any parts of your federated application with the `useLogger` hook:
 
 ```ts
-import { useLogger } from "@squide/react-router";
+import { useLogger } from "@squide/firefly";
 
 const logger = useLogger();
 
 logger.debug("Hello", { world: "!" });
 ```
 
-The logger is also available from the [Runtime](/reference/runtime/runtime-class.md#use-the-logger) instance.
+The logger is also available from the [FireflyRuntime](/reference/runtime/runtime-class.md#use-the-logger) instance.
 
 ## Messaging
 
@@ -58,7 +54,7 @@ First, listen to an event with the [useEventBusListener](/reference/messaging/us
 
 ```ts
 import { useCallback } from "react";
-import { useEventBusListener } from "@squide/react-router";
+import { useEventBusListener } from "@squide/firefly";
 
 const handleFoo = useCallback((data, context) => {
     // do something...
@@ -70,7 +66,7 @@ useEventBusListener("foo", handleFoo);
 Then, dispatch an event from anywhere with the [useEventBusDispatcher](/reference/messaging/useEventBusDispatcher.md) hook:
 
 ```ts
-import { useEventDispatcher } from "@squide/react-router";
+import { useEventDispatcher } from "@squide/firefly";
 
 const dispatch = useEventBusDispatcher();
 
@@ -79,16 +75,16 @@ dispatch("foo", "bar");
 
 You can use the event bus to enable various communication scenarios, such as notifying components of state changes, broadcasting messages across modules, or triggering actions based on specific events.
 
-The event bus is also available from the [Runtime](/reference/runtime/runtime-class.md#use-the-event-bus) instance.
+The event bus is also available from the [FireflyRuntime](/reference/runtime/runtime-class.md#use-the-event-bus) instance.
 
 ## Session
 
-Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the Squide [Runtime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/LocalStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
+Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the Squide [FireflyRuntime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/LocalStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
 
 First, define a `sessionAccessor` function:
 
 ```ts host/src/session.ts
-import type { SessionAccessorFunction } from "@squide/react-router";
+import type { SessionAccessorFunction } from "@squide/firefly";
 import { LocalStorageSessionManager } from "@squide/fakes";
 
 export const sessionManager = new LocalStorageSessionManager<Session>();
@@ -105,10 +101,10 @@ Our security department reminds you to refrain from using a fake `LocalStorageSe
 Then register the accessor function:
 
 ```ts host/src/boostrap.tsx
-import { Runtime } from "@squide/react-router";
+import { FireflyRuntime } from "@squide/firefly";
 import { sessionAccessor } from "./session.ts";
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     sessionAccessor
 });
 ```
@@ -116,7 +112,7 @@ const runtime = new Runtime({
 Finally, access the session from any parts of the application with the [useSession](/reference/runtime/useSession.md) hook:
 
 ```ts
-import { useSession } from "@squide/react-router";
+import { useSession } from "@squide/firefly";
 
 const session = useSession();
 ```
@@ -124,111 +120,34 @@ const session = useSession();
 Or determine whether or not the user is authenticated with the [useIsAuthenticated](/reference/session/useIsAuthenticated.md) hook:
 
 ```ts
-import { useIsAuthenticated } from "@squide/react-router";
+import { useIsAuthenticated } from "@squide/firefly";
 
 const isAuthenticated = useIsAuthenticated();
 ```
 
-The session is also available from the [Runtime](/reference/runtime/runtime-class.md) instance.
+The session is also available from the [FireflyRuntime](/reference/runtime/runtime-class.md) instance.
 
 ## Plugins
 
 To keep Squide lightweight, not all functionalities should be integrated as a core functionality. However, to accommodate a broad range of technologies, a [plugin system](../reference/plugins/plugin.md) has been implemented to fill the gap.
 
-Plugins can be registered at bootstrapping with the [Runtime](../reference/runtime/runtime-class.md) instance:
+Plugins can be registered at bootstrapping with the [FireflyRuntime](../reference/runtime/runtime-class.md) instance:
 
 ```ts host/src/boostrap.tsx
-import { Runtime } from "@squide/react-router";
+import { FireflyRuntime } from "@squide/firefly";
 import { MyPlugin } from "@sample/my-plugin";
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     plugins: [new MyPlugin()]
 });
 ```
 
-Then, the plugins can be accessed anywhere from the `Runtime` instance:
+Then, the plugins can be accessed anywhere from the `FireflyRuntime` instance:
 
 ```ts
 import { MyPlugin } from "@sample/my-plugin";
 
 const myPlugin = runtime.getPlugin(MyPlugin.name) as MyPlugin;
-```
-
-## Mock Service Worker
-
-We recommend to mock the API endpoints with [Mock Service Worker](https://mswjs.io/) (MSW) to faciliate the development and encourage an [Contract Design First](https://devblogs.microsoft.com/ise/2023/05/08/design-api-first-with-typespec/) approach.
-
-To help with that, a `@squide/msw` package is available.
-
-First, install the `@squide/msw`, then [register the plugin](../reference/msw/MswPlugin.md#register-the-msw-plugin) at bootstrap:
-
-```ts host/src/boostrap.tsx
-import { Runtime } from "@squide/react-router";
-import { MswPlugin } from "@squide/msw";
-
-const runtime = new Runtime({
-    plugins: [new MswPlugin()]
-});
-```
-
-Then, define an MSW request handler in a remote module:
-
-```ts remote-module/mocks/handlers.ts
-import { HttpResponse, http, type HttpHandler } from "msw";
-
-export const requestHandlers: HttpHandler[] = [
-    http.get("/api/character/1", async () => {
-        return HttpResponse.json([{
-            "id": 1,
-            "name": "Rick Sanchez",
-            "status": "Alive"
-        }]);
-    })
-];
-```
-
-Then, using the MSW plugin, [register the module MSW request handlers](../reference/msw/MswPlugin.md#register-request-handlers):
-
-```ts !#10,12 remote-module/src/register.tsx
-import { getMswPlugin } from "@squide/msw";
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router"; 
-
-export const register: ModuleRegisterFunction<Runtime> = async runtime => {
-    if (process.env.USE_MSW) {
-        const mswPlugin = getMswPlugin(runtime);
-
-        // Files that includes an import to the "msw" package are included dynamically to prevent adding
-        // unused MSW stuff to the code bundles.
-        const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
-
-        mswPlugin.registerRequestHandlers(requestHandlers);
-    }
-}
-```
-
-!!!info
-Don't forget to mark the registration function as `async` since there's a dynamic import.
-!!!
-
-Finally, [retrieve the modules MSW request handlers](../reference/msw/MswPlugin.md#retrieve-the-request-handlers) in the host application and start MSW:
-
-```ts !#9,12
-import { registerRemoteModules } from "@squide/webpack-module-federation";
-import { setMswAsStarted } from "@squide/msw";
-
-await registerRemoteModules(Remotes, runtime);
-
-if (process.env.USE_MSW) {
-    // Files including an import to the "msw" package are included dynamically to prevent adding
-    // MSW stuff to the bundled when it's not used.
-    const startMsw = (await import("../mocks/browser.ts")).startMsw;
-
-    // Will start MSW with the request handlers provided by every module.
-    startMsw(mswPlugin.requestHandlers);
-
-    // Indicate to resources that are dependent on MSW that the service has been started.
-    setMswAsStarted();
-}
 ```
 
 ## Fakes
@@ -237,4 +156,13 @@ Take a look at the [fake implementations](../reference/default.md#fakes). These 
 
 ## Guides
 
-Explore the [guides](../guides/default.md) to learn about Squide advanced features.
+Explore the [guides](../guides/default.md) section to learn about Squide advanced features.
+
+Be sure to read, at a minimum, the following guides:
+
+- [Setup MSW](../guides/setup-msw.md)
+- [Add a shared dependency](../guides/add-a-shared-dependency.md)
+
+## Reference
+
+For a comprehensive list of the Squide API, refer to the [reference](../reference/default.md) section.

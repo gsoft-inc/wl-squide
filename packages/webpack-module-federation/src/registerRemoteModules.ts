@@ -1,4 +1,4 @@
-import { isFunction, isNil, registerModule, type AbstractRuntime, type DeferredRegistrationFunction, type Logger, type ModuleRegistrationStatus } from "@squide/core";
+import { isFunction, isNil, registerModule, type DeferredRegistrationFunction, type Logger, type ModuleRegistrationStatus, type Runtime } from "@squide/core";
 import { loadRemote as loadModuleFederationRemote, type LoadRemoteFunction } from "./loadRemote.ts";
 import { RemoteEntryPoint, RemoteModuleName, type RemoteDefinition } from "./remoteDefinition.ts";
 
@@ -47,7 +47,7 @@ export class RemoteModuleRegistry {
         }
     }
 
-    async registerModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown, TData = unknown>(remotes: RemoteDefinition[], runtime: TRuntime, { context }: RegisterRemoteModulesOptions<TContext> = {}) {
+    async registerModules<TRuntime extends Runtime = Runtime, TContext = unknown, TData = unknown>(remotes: RemoteDefinition[], runtime: TRuntime, { context }: RegisterRemoteModulesOptions<TContext> = {}) {
         const errors: RemoteModuleRegistrationError[] = [];
 
         if (this.#registrationStatus !== "none") {
@@ -113,7 +113,7 @@ export class RemoteModuleRegistry {
         return errors;
     }
 
-    async completeModuleRegistrations<TRuntime extends AbstractRuntime = AbstractRuntime, TData = unknown>(runtime: TRuntime, data: TData) {
+    async completeModuleRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
         const errors: RemoteModuleRegistrationError[] = [];
 
         if (this.#registrationStatus === "none" || this.#registrationStatus === "in-progress") {
@@ -172,11 +172,11 @@ export class RemoteModuleRegistry {
 
 const remoteModuleRegistry = new RemoteModuleRegistry(loadModuleFederationRemote);
 
-export function registerRemoteModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown, TData = unknown>(remotes: RemoteDefinition[], runtime: TRuntime, options?: RegisterRemoteModulesOptions<TContext>) {
+export function registerRemoteModules<TRuntime extends Runtime = Runtime, TContext = unknown, TData = unknown>(remotes: RemoteDefinition[], runtime: TRuntime, options?: RegisterRemoteModulesOptions<TContext>) {
     return remoteModuleRegistry.registerModules<TRuntime, TContext, TData>(remotes, runtime, options);
 }
 
-export function completeRemoteModuleRegistrations<TRuntime extends AbstractRuntime = AbstractRuntime, TData = unknown>(runtime: TRuntime, data: TData) {
+export function completeRemoteModuleRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
     return remoteModuleRegistry.completeModuleRegistrations(runtime, data);
 }
 

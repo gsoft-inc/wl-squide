@@ -1,8 +1,7 @@
 import { registerLocalModule } from "@basic/local-module";
 import { isNetlify, registerLayouts, type AppContext } from "@basic/shared";
 import { registerShell } from "@basic/shell";
-import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
-import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App.tsx";
@@ -20,7 +19,7 @@ const Remotes: RemoteDefinition[] = [
     }
 ];
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger()],
     sessionAccessor
 });

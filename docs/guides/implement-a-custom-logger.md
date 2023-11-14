@@ -11,7 +11,7 @@ Many applications must integrate with specific remote logging solutions such as 
 First, let's define a custom logger:
 
 ```ts host/src/customerLogger.ts
-import { LogLevel, type Logger } from "@squide/react-router";
+import { LogLevel, type Logger } from "@squide/firefly";
 
 export class CustomLogger implements Logger {
     readonly #logLevel: LogLevel;
@@ -62,13 +62,13 @@ export class CustomLogger implements Logger {
 }
 ```
 
- Then create a [Runtime](/reference/runtime/runtime-class.md) instance configured with an instance of the new `CustomLogger`:
+ Then create a [FireflyRuntime](/reference/runtime/runtime-class.md) instance configured with an instance of the new `CustomLogger`:
 
 ```ts host/src/bootstrap.tsx
-import { Runtime } from "@squide/react-router";
+import { FireflyRuntime } from "@squide/firefly";
 import { CustomLogger } from "./customLogger.ts";
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     loggers: [
         new CustomLogger()
     ],

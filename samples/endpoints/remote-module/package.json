@@ -18,6 +18,7 @@
         "serve-build-isolated": "pnpm build-isolated && pnpm http-server dist -p 8080 -P http://localhost:8080? -c-1"
     },
     "devDependencies": {
+        "@squide/webpack-configs": "workspace:*",
         "@swc/core": "1.3.96",
         "@swc/helpers": "0.5.3",
         "@tanstack/react-query-devtools": "5.7.4",
@@ -44,9 +45,6 @@
         "@endpoints/shell": "workspace:*",
         "@squide/fakes": "workspace:*",
         "@squide/firefly": "workspace:*",
-        "@squide/msw": "workspace:*",
-        "@squide/react-router": "workspace:*",
-        "@squide/webpack-module-federation": "workspace:*",
         "@tanstack/react-query": "5.7.2",
         "msw": "2.0.3",
         "react": "18.2.0",

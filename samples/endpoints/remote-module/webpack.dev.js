@@ -1,6 +1,6 @@
 // @ts-check
 
-import { defineDevHostConfig, defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevHostConfig, defineDevRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
 import path from "node:path";
 import { swcConfig } from "./swc.dev.js";
 
@@ -8,9 +8,6 @@ let config;
 
 if (!process.env.ISOLATED) {
     config = defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
-        features: {
-            msw: true
-        },
         sharedDependencies: {
             "@endpoints/shared": {
                 singleton: true

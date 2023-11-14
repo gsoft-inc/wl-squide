@@ -6,7 +6,7 @@ order: 90
 
 # registerRemoteModules
 
-Register one or many remote module(s). During the registration process, the module `register` function will be invoked with a `Runtime` instance and an optional `context` object. To **defer the registration** of specific routes or navigation items, a registration function can return an anonymous function.
+Register one or many remote module(s). During the registration process, the module `register` function will be invoked with a `FireflyRuntime` instance and an optional `context` object. To **defer the registration** of specific routes or navigation items, a registration function can return an anonymous function.
 
 > A remote module is a module that is not part of the current build but is **loaded at runtime** from a remote server.
 
@@ -19,7 +19,7 @@ registerRemoteModules(remotes: [], runtime, options?: { context? })
 ### Parameters
 
 - `remotes`: An array of `RemoteDefinition` (view the [Remote definition](#remote-definition) section).
-- `runtime`: A `Runtime` instance.
+- `runtime`: A `FireflyRuntime` instance.
 - `options`: An optional object literal of options:
     - `context`: An optional context object that will be pass to the registration function.
 
@@ -37,12 +37,11 @@ A `Promise` object with an array of `RemoteModuleRegistrationError` if any error
 
 ### Register a remote module
 
-```tsx !#11-13,15 host/src/bootstrap.tsx
-import { Runtime } from "@squide/react-router";
-import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+```tsx !#10-12,14 host/src/bootstrap.tsx
+import { FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import type { AppContext } from "@sample/shared";
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: "Test app"
@@ -56,11 +55,11 @@ await registerRemoteModules(Remotes, runtime, { context });
 ```
 
 ```tsx !#5-15 remote-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import type { AppContext } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 
-export function register: ModuleRegisterFunction<Runtime, AppContext>(runtime, context) {
+export function register: ModuleRegisterFunction<FireflyRuntime, AppContext>(runtime, context) {
     runtime.registerRoute({
         path: "/about",
         element: <AboutPage />
@@ -83,12 +82,11 @@ Sometimes, data must be fetched to determine which routes or navigation items sh
 
 To defer a registration to the second phase, a module registration function can **return an anonymous function**. Once the modules are registered and the [completeRemoteModuleRegistrations](./completeRemoteModuleRegistrations.md) function is called, the deferred registration functions will be executed.
 
-```tsx !#19,22 host/src/bootstrap.tsx
-import { Runtime } from "@squide/react-router";
-import { completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+```tsx !#18,21 host/src/bootstrap.tsx
+import { FireflyRuntime, completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { fetchFeatureFlags, type AppContext } from "@sample/shared";
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: "Test app"
@@ -109,12 +107,12 @@ await completeRemoteModuleRegistrations(runtime, { featureFlags });
 ```
 
 ```tsx !#19-32 remote-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import type { AppContext, DeferredRegistrationData } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 import { FeatureAPage } from "./FeatureAPage.tsx";
 
-export const register: ModuleRegisterFunction<Runtime, AppContext, DeferredRegistrationData> = async (runtime, context) => {
+export const register: ModuleRegisterFunction<FireflyRuntime, AppContext, DeferredRegistrationData> = async (runtime, context) => {
     runtime.registerRoute({
         path: "/about",
         element: <AboutPage />
@@ -148,12 +146,11 @@ export const register: ModuleRegisterFunction<Runtime, AppContext, DeferredRegis
 
 ### Handle the registration errors
 
-```tsx !#15-17 host/src/bootstrap.tsx
-import { Runtime } from "@squide/react-router";
-import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+```tsx !#14-16 host/src/bootstrap.tsx
+import { FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import type { AppContext } from "@sample/shared";
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: "Test app"
@@ -173,7 +170,7 @@ const Remotes: RemoteDefinition = [
 To ease the configuration of remote modules, make sure that you first import the `RemoteDefinition` type and assign it to your remote definitions array declaration.
 
 ```ts !#3 host/src/bootstrap.tsx
-import type { RemoteDefinition } from "@squide/webpack-module-federation";
+import type { RemoteDefinition } from "@squide/firefly";
 
 const Remotes: RemoteDefinition = [
     { name: "REMOTE_NAME", url: "REMOTE_URL" }
@@ -197,7 +194,7 @@ const Remotes: RemoteDefinition = [
 ```js !#6 remote-module/src/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", PORT);
@@ -220,7 +217,7 @@ In development mode, the `publicPath` is built from the provided `host` and `por
 ```js !#6-8 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, REMOTE_NAME, 8081, {
@@ -233,7 +230,7 @@ In build mode, the `publicPath` is the third argument of the `defineBuildRemoteM
 ```js !#6 remote-module/webpack.build.js
 // @ts-check
 
-import { defineBuildRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineBuildRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
 export default defineBuildRemoteModuleConfig(swcConfig, REMOTE_NAME, "http://localhost:8081/");

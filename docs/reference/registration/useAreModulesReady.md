@@ -8,7 +8,7 @@ toc:
 Force the application to re-render once the registration process has been completed for all the modules. Without this hook, the page is rendered with an empty router as it happens before the remote modules registered their routes and navigation items.
 
 !!!info
-If your application is using the [AppRouter](../routing/appRouter.md) component, there's no need for this hook.
+If your application is using the [AppRouter](../routing/appRouter.md) component, you shouldn't use this hook.
 !!!
 
 !!!info
@@ -32,13 +32,12 @@ A boolean indicating if the registration process is completed.
 
 ## Usage
 
-```tsx !#12 host/src/bootstrap.tsx
+```tsx !#11 host/src/bootstrap.tsx
 import { createRoot } from "react";
-import { Runtime } from "@squide/react-router";
-import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import { FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { App } from "./App.tsx";
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const Remotes: RemoteDefinition = [
     { name: "remote1", url: "http://localhost:8081" }
@@ -55,11 +54,10 @@ root.render(
 );
 ```
 
-```tsx !#10,18-20 host/src/App.tsx
+```tsx !#9,17-19 host/src/App.tsx
 import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useAreModulesReady } from "@squide/webpack-module-federation";
-import { useRoutes } from "@squide/react-router";
+import { useAreModulesReady, useRoutes } from "@squide/firefly";
 
 export function App() {
     // Re-render the application once all the modules are registered.

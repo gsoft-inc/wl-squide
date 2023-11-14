@@ -5,7 +5,7 @@ toc:
 
 # useSession
 
-Retrieve the current session from the `Runtime` instance provided by `RuntimeContext`.
+Retrieve the current session from the `FireflyRuntime` instance.
 
 ## Reference
 
@@ -24,7 +24,7 @@ A custom session object.
 ## Usage
 
 ```ts
-import { useSession } from "@squide/react-router";
+import { useSession } from "@squide/firefly";
 import type { AppSession } from "@sample/shared";
  
 const session = useSession() as AppSession;

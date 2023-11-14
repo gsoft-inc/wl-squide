@@ -12,7 +12,7 @@ An abstract base class to define a plugin.
 ### Define a plugin
 
 ```ts !#4 shared/src/mswPlugin.ts
-import { Plugin } from "@squide/react-router";
+import { Plugin } from "@squide/firefly";
 import type { RestHandler } from "msw";
 
 export class MswPlugin extends Plugin {
@@ -29,10 +29,10 @@ export class MswPlugin extends Plugin {
 ### Register a plugin
 
 ```ts !#5
-import { Runtime } from "@squide/react-router";
+import { FireflyRuntime } from "@squide/firefly";
 import { MswPlugin } from "@squide/msw";
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     plugins: [new MswPlugin()]
 });
 ```
@@ -53,10 +53,10 @@ mswPlugin.registerRequestHandlers(requetHandlers);
 We recommend pairing a plugin definition with a custom function to retrieve the plugin from a runtime instance.
 
 ```ts !#14-16 shared/src/mswPlugin.ts
-import { Plugin, type Runtime } from "@squide/react-router";
+import { Plugin, type FireflyRuntime } from "@squide/firefly";
 import type { RestHandler } from "msw";
 
-export class MswPlugin extends Plugin {
+export class MswPlugin extends FireflyRuntime {
     constructor() {
         super(MswPlugin.name);
     }
@@ -66,7 +66,7 @@ export class MswPlugin extends Plugin {
     }
 }
 
-export function getMswPlugin(runtime: Runtime) {
+export function getMswPlugin(runtime: FireflyRuntime) {
     return runtime.getPlugin(MswPlugin.name);
 }
 ```

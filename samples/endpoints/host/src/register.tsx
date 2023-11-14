@@ -1,5 +1,4 @@
-import { getMswPlugin } from "@squide/msw";
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import { getMswPlugin, type FireflyRuntime, type ModuleRegisterFunction } from "@squide/firefly";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 
@@ -22,7 +21,7 @@ function Providers({ children }: { children: ReactNode }) {
     );
 }
 
-function registerRoutes(runtime: Runtime) {
+function registerRoutes(runtime: FireflyRuntime) {
     runtime.registerRoute({
         index: true,
         lazy: async () => {
@@ -41,7 +40,7 @@ function registerRoutes(runtime: Runtime) {
     });
 }
 
-async function registerMsw(runtime: Runtime) {
+async function registerMsw(runtime: FireflyRuntime) {
     if (process.env.USE_MSW) {
         const mswPlugin = getMswPlugin(runtime);
 
@@ -53,7 +52,7 @@ async function registerMsw(runtime: Runtime) {
     }
 }
 
-export const registerHost: ModuleRegisterFunction<Runtime> = async runtime => {
+export const registerHost: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
     await registerMsw(runtime);
 
     return registerRoutes(runtime);

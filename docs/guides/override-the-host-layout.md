@@ -9,13 +9,13 @@ order: 100
 In many applications, multiple pages often share a **common layout** that includes elements such as a navigation bar, a user profile menu, and a main content section. In a [React Router](https://reactrouter.com/en/main) application, this shared layout is commonly referred to as a `RootLayout`:
 
 ```tsx !#10,13,17,19 host/src/register.tsx
-import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
+import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { HomePage } from "./HomePage.tsx";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
-export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
+export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         // Pathless route to declare an authentication boundary.
         element: <AuthenticationBoundary />,
@@ -47,7 +47,7 @@ export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
 ```tsx host/src/RootLayout.tsx
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
-import { useNavigationItems, useRenderedNavigationItems } from "@squide/react-router";
+import { useNavigationItems, useRenderedNavigationItems } from "@squide/firefly";
 import { UserMenu } from "./UserMenu.tsx";
 
 export function RootLayout() {
@@ -94,12 +94,12 @@ Squide has a built-in [hoist](../reference/runtime/runtime-class.md#register-an-
 To hoist module pages, add the [hoist](../reference/runtime/runtime-class.md#register-an-hoisted-route) option to the route registration options and optionally use a different layout:
 
 ```tsx !#9,12,22 local-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { LocalLayout } from "./LocalLayout.tsx";
 import { LocalErrorBoundary } from "./LocalErrorBoundary.tsx";
 import { LoginPage } from "./LoginPage.tsx";
 
-export function register: ModuleRegisterFunction<Runtime>(runtime) {
+export function register: ModuleRegisterFunction<FireflyRuntime>(runtime) {
     runtime.registerRoute({
         path: "/login",
         element: <LocalLayout />,
@@ -132,6 +132,10 @@ By declaring a page as hoisted, the page will be rendered at the root of the rou
 
 Start the application in a development environment using the `dev` script and navigate to the `/login` page. The page should be displayed even if you are not authenticated.
 
-!!!info
-If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/shell).
-!!!
+### Troubleshoot issues
+
+If you are experiencing issues with this guide:
+
+- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
+- Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/blob/main/samples/basic/remote-module/src/register.tsx).
+- Refer to the [troubleshooting](../troubleshooting.md) page.

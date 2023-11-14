@@ -6,7 +6,7 @@ order: 100
 
 # registerLocalModules
 
-Register one or many local module(s). During the registration process, the specified registration function will be invoked with a `Runtime` instance and an optional `context` object. To **defer the registration** of specific routes or navigation items, a registration function can return an anonymous function.
+Register one or many local module(s). During the registration process, the specified registration function will be invoked with a `FireflyRuntime` instance and an optional `context` object. To **defer the registration** of specific routes or navigation items, a registration function can return an anonymous function.
 
 > A local module is a regular module that is part of the **host application build** and is bundled at build time, as opposed to remote module which is loaded at runtime from a remote server. Local modules are particularly valuable when undergoing a **migration** from a monolithic application to a federated application or when **launching a new product** with an evolving business domain.
 
@@ -19,7 +19,7 @@ registerLocalModules(registerFunctions: [], runtime, options?: { context? })
 ### Parameters
 
 - `registerFunctions`: An array of `ModuleRegisterFunction`.
-- `runtime`: A `Runtime` instance.
+- `runtime`: A `FireflyRuntime` instance.
 - `options`: An optional object literal of options:
     - `context`: An optional context object that will be pass to the registration function.
 
@@ -35,11 +35,11 @@ A `Promise` object with an array of `LocalModuleRegistrationError` if any error 
 ### Register a local module
 
 ```tsx !#11 host/src/bootstrap.tsx
-import { registerLocalModules, Runtime } from "@squide/react-router";
+import { registerLocalModules, FireflyRuntime } from "@squide/firefly";
 import { register } from "@sample/local-module";
 import type { AppContext } from "@sample/shared";
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: "Test app"
@@ -49,11 +49,11 @@ await registerLocalModules([register], runtime, { context });
 ```
 
 ```tsx !#5-15 local-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import type { AppContext } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 
-export function register: ModuleRegisterFunction<Runtime, AppContext>(runtime, context) {
+export function register: ModuleRegisterFunction<FireflyRuntime, AppContext>(runtime, context) {
     runtime.registerRoute({
         path: "/about",
         element: <AboutPage />
@@ -77,11 +77,11 @@ Sometimes, data must be fetched to determine which routes or navigation items sh
 To defer a registration to the second phase, a module registration function can **return an anonymous function**. Once the modules are registered and the [completeLocalModuleRegistrations](./completeLocalModuleRegistrations.md) function is called, the deferred registration functions will be executed.
 
 ```tsx !#15,18 host/src/bootstrap.tsx
-import { completeLocalModuleRegistrations, registerLocalModules, Runtime } from "@squide/react-router";
+import { completeLocalModuleRegistrations, registerLocalModules, FireflyRuntime } from "@squide/firefly";
 import { register } from "@sample/local-module";
 import { fetchFeatureFlags, type AppContext } from "@sample/shared";
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: "Test app"
@@ -98,12 +98,12 @@ await completeLocalModuleRegistrations(runtime, { featureFlags });
 ```
 
 ```tsx !#19-32 local-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import type { AppContext, DeferredRegistrationData } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 import { FeatureAPage } from "./FeatureAPage.tsx";
 
-export const register: ModuleRegisterFunction<Runtime, AppContext, DeferredRegistrationData> = async (runtime, context) => {
+export const register: ModuleRegisterFunction<FireflyRuntime, AppContext, DeferredRegistrationData> = async (runtime, context) => {
     runtime.registerRoute({
         path: "/about",
         element: <AboutPage />
@@ -138,11 +138,11 @@ export const register: ModuleRegisterFunction<Runtime, AppContext, DeferredRegis
 ### Handle the registration errors
 
 ```tsx !#11-13 host/src/bootstrap.tsx
-import { registerLocalModules, Runtime } from "@squide/react-router";
+import { registerLocalModules, FireflyRuntime } from "@squide/firefly";
 import { register } from "@sample/local-module";
 import type { AppContext } from "@sample/shared";
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: "Test app"

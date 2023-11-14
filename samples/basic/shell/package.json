@@ -21,8 +21,6 @@
     "peerDependencies": {
         "@basic/shared": "*",
         "@squide/firefly": "*",
-        "@squide/react-router": "*",
-        "@squide/webpack-module-federation": "*",
         "react": "*",
         "react-dom": "*",
         "react-error-boundary": "*",
@@ -32,8 +30,6 @@
         "@basic/shared": "workspace:*",
         "@remix-run/router": "1.11.0",
         "@squide/firefly": "workspace:*",
-        "@squide/react-router": "workspace:*",
-        "@squide/webpack-module-federation": "workspace:*",
         "@types/react": "18.2.36",
         "@types/react-dom": "18.2.14",
         "@workleap/eslint-plugin": "3.0.0",

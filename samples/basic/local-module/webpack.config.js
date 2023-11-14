@@ -1,6 +1,6 @@
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevHostConfig } from "@squide/firefly/defineConfig.js";
 import path from "node:path";
 import { swcConfig } from "./swc.config.js";
 

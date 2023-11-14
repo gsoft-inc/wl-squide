@@ -1,6 +1,5 @@
 import type { DeferredRegistrationData } from "@endpoints/shell";
-import { getMswPlugin } from "@squide/msw";
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { ReactNode } from "react";
@@ -27,7 +26,7 @@ function Providers({ children }: { children: ReactNode }) {
     );
 }
 
-const registerRoutes: ModuleRegisterFunction<Runtime, unknown, DeferredRegistrationData> = runtime => {
+const registerRoutes: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = runtime => {
     runtime.registerRoute({
         $visibility: "public",
         path: "/public",
@@ -92,19 +91,17 @@ const registerRoutes: ModuleRegisterFunction<Runtime, unknown, DeferredRegistrat
     };
 };
 
-async function registerMsw(runtime: Runtime) {
+async function registerMsw(runtime: FireflyRuntime) {
     if (process.env.USE_MSW) {
-        const mswPlugin = getMswPlugin(runtime);
-
         // Files including an import to the "msw" package are included dynamically to prevent adding
         // MSW stuff to the bundled when it's not used.
         const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
 
-        mswPlugin.registerRequestHandlers(requestHandlers);
+        runtime.registerRequestHandlers(requestHandlers);
     }
 }
 
-export const registerLocalModule: ModuleRegisterFunction<Runtime, unknown, DeferredRegistrationData> = async runtime => {
+export const registerLocalModule: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = async runtime => {
     await registerMsw(runtime);
 
     return registerRoutes(runtime);

@@ -1,12 +1,12 @@
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
 
-function registerRoutes(runtime: Runtime) {
+function registerRoutes(runtime: FireflyRuntime) {
     runtime.registerRoute({
         index: true,
         lazy: () => import("./HomePage.tsx")
     });
 }
 
-export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
+export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     return registerRoutes(runtime);
 };

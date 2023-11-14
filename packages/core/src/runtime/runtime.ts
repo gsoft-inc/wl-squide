@@ -28,7 +28,7 @@ export interface RegisterNavigationItemOptions {
 
 export const RootMenuId = "root";
 
-export abstract class AbstractRuntime<TRoute = unknown, TNavigationItem = unknown> {
+export abstract class Runtime<TRoute = unknown, TNavigationItem = unknown> {
     protected _mode: RuntimeMode;
     protected readonly _logger: RuntimeLogger;
     protected readonly _eventBus: EventBus;

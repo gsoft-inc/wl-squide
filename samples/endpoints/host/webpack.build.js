@@ -1,12 +1,9 @@
 // @ts-check
 
-import { defineBuildHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineBuildHostConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
 export default defineBuildHostConfig(swcConfig, "host", {
-    features: {
-        msw: true
-    },
     sharedDependencies: {
         "@endpoints/shared": {
             singleton: true,

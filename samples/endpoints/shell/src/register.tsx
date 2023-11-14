@@ -1,7 +1,5 @@
 import type { SessionManager } from "@endpoints/shared";
-import { getMswPlugin } from "@squide/msw";
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
-import { ManagedRoutes } from "@squide/react-router";
+import { ManagedRoutes, type FireflyRuntime, type ModuleRegisterFunction } from "@squide/firefly";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 
@@ -10,7 +8,7 @@ export interface RegisterShellOptions {
     host?: string;
 }
 
-function registerRoutes(runtime: Runtime, sessionManager: SessionManager, host?: string) {
+function registerRoutes(runtime: FireflyRuntime, sessionManager: SessionManager, host?: string) {
     runtime.registerRoute({
         // Pathless route to declare a root layout and a root error boundary.
         $visibility: "public",
@@ -98,20 +96,18 @@ function registerRoutes(runtime: Runtime, sessionManager: SessionManager, host?:
     });
 }
 
-async function registerMsw(runtime: Runtime) {
+async function registerMsw(runtime: FireflyRuntime) {
     if (process.env.USE_MSW) {
-        const mswPlugin = getMswPlugin(runtime);
-
         // Files including an import to the "msw" package are included dynamically to prevent adding
         // MSW stuff to the bundled when it's not used.
         const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
 
-        mswPlugin.registerRequestHandlers(requestHandlers);
+        runtime.registerRequestHandlers(requestHandlers);
     }
 }
 
 export function registerShell(sessionManager: SessionManager, { host }: RegisterShellOptions = {}) {
-    const register: ModuleRegisterFunction<Runtime> = async runtime => {
+    const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
         await registerMsw(runtime);
 
         return registerRoutes(runtime, sessionManager, host);

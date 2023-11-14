@@ -14,18 +14,18 @@ Create a new application (we'll refer to ours as `remote-module`), then open a t
 
 +++ pnpm
 ```bash
-pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
-pnpm add @squide/core @squide/react-router @squide/webpack-module-federation react react-dom react-router-dom
+pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+pnpm add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ yarn
 ```bash
-yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
-yarn add @squide/core @squide/react-router @squide/webpack-module-federation react react-dom react-router-dom
+yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+yarn add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ npm
 ```bash
-npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
-npm install @squide/core @squide/react-router @squide/webpack-module-federation react react-dom react-router-dom
+npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+npm install @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++
 
@@ -63,11 +63,11 @@ Then, ensure that you are developing your module using [ESM syntax](https://deve
 Next, register the remote module routes and navigation items with the [registerRoute](/reference/runtime/runtime-class.md#register-routes) and [registerNavigationItem](/reference/runtime/runtime-class.md#register-navigation-items) functions:
 
 ```tsx !#6-9,11-14 remote-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import type { AppContext } from "@sample/shared";
 import { Page } from "./Page.tsx";
 
-export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, context) => {
+export const register: ModuleRegisterFunction<FireflyRuntime, AppContext> = (runtime, context) => {
     runtime.registerRoute({
         path: "/remote/page",
         element: <Page />
@@ -115,7 +115,7 @@ Then, open the `webpack.dev.js` file and use the the [defineDevRemoteModuleConfi
 ```js !#6-12 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
@@ -148,7 +148,7 @@ Then, open the `webpack.build.js` file and use the the [defineBuildRemoteModuleC
 ```js !#6-12 remote-module/webpack.build.js
 // @ts-check
 
-import { defineBuildRemoteModuleConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineBuildRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
 export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://localhost:8081/", {
@@ -184,11 +184,11 @@ To build the module, add the following script to the application `package.json` 
 
 Start the `host` and the `remote-module` applications in development mode using the `dev` script. You should notice an additional link in the navigation menu. Click on the link to navigate to the page of your new **remote** module!
 
-!!!info
-To troubleshoot module registration issues, open the DevTools console. You'll find a log entry for each registration that occurs and error messages if something goes wrong.
-!!!
+### Troubleshoot issues
 
-!!!info
-If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/remote-module).
-!!!
+If you are experiencing issues with this guide:
+
+- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
+- Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/remote-module).
+- Refer to the [troubleshooting](../troubleshooting.md) page.
 

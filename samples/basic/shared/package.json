@@ -19,14 +19,15 @@
         "serve-build": "pnpm build"
     },
     "peerDependencies": {
-        "@squide/react-router": "*",
+        "@squide/firefly": "*",
         "react": "*",
         "react-dom": "*",
+        "react-error-boundary": "*",
         "react-router-dom": "*"
     },
     "devDependencies": {
         "@remix-run/router": "1.11.0",
-        "@squide/react-router": "workspace:*",
+        "@squide/firefly": "workspace:*",
         "@types/react": "18.2.36",
         "@types/react-dom": "18.2.14",
         "@workleap/eslint-plugin": "3.0.0",

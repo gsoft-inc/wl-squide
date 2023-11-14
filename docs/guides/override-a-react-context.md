@@ -7,7 +7,7 @@ label: Override a React context
 
 In a federated application using [Module Federation](https://webpack.js.org/concepts/module-federation/), it's typical to configure various global [React contexts](https://legacy.reactjs.org/docs/context.html) at the root of the host application. These contexts are usually consumed down the line by the layouts and pages of the remote modules.
 
-Let's take a simple example using a `BackgroundColorContext`:
+Let's explore a simple example using a `BackgroundColorContext`:
 
 ```tsx !#6,12 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
@@ -27,10 +27,10 @@ export function App() {
 ```
 
 ```tsx !#7 remote-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { ColoredPage } from "./ColoredPage.tsx";
 
-export const register: ModuleRegisterFunction<Runtime> = runtime => {
+export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         path: "/colored-page",
         element: <ColoredPage />
@@ -59,11 +59,11 @@ In the previous code samples, the host application provides a value for the `Bac
 Now, suppose the requirements change, and one remote module's pages need to have a `red` background. The context can be overriden for the remote module by declaring a new provider directly in the routes registration:
 
 ```tsx !#9,11 remote-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { BackgroundColorContext } from "@sample/shared";
 import { ColoredPage } from "./ColoredPage.tsx";
 
-export const register: ModuleRegisterFunction<Runtime> = runtime => {
+export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         path: "/colored-page",
         element: (
@@ -80,7 +80,7 @@ export const register: ModuleRegisterFunction<Runtime> = runtime => {
 Since there are multiple routes to setup with the new provider, an utility component can be extracted:
 
 ```tsx !#6-12,17 remote-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { BackgroundColorContext } from "@sample/shared";
 import { ColoredPage } from "./ColoredPage.tsx";
 import type { ReactNode } from "react";
@@ -93,7 +93,7 @@ function RedBackground({ children }: { children: ReactNode }) {
     );
 }
 
-export const register: ModuleRegisterFunction<Runtime> = runtime => {
+export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         path: "/colored-page",
         element: <RedBackground><ColoredPage /></RedBackground>
@@ -127,7 +127,7 @@ In this scenario, Hopper's components are used throughout the entire federated a
 ```js !#8-10 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevHostConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {
@@ -146,7 +146,7 @@ To update the host application without breaking the remote modules, the recommen
 As `@hopper/components` expose the `ThemeContext`, the context must be re-declared in each remote module until every part of the federated application has been updated to the latest version of Hopper:
 
 ```tsx !#6-12,17 remote-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { ThemeContext } from "@hopper/components";
 import { Page } from "./Page.tsx";
 import type { ReactNode } from "react";
@@ -159,7 +159,7 @@ function Providers({ children }: { children: ReactNode }) {
     )
 }
 
-export const register: ModuleRegisterFunction<Runtime> = runtime => {
+export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         path: "/page",
         element: <Providers><Page /></Providers>

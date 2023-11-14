@@ -8,7 +8,7 @@ toc:
 
 Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a Squide host application in **development** mode.
 
-!!!warning
+!!!info
 This function is a wrapper built on top of [@workleap/web-configs](https://www.npmjs.com/package/@workleap/webpack-configs). Make sure to read the [defineDevConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) documentation first.
 !!!
 
@@ -26,9 +26,6 @@ const webpackConfig = defineDevHostConfig(swcConfig: {}, applicationName, port, 
 - `options`: An optional object literal of options:
     - Accepts most of webpack `definedDevConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/#3-set-predefined-options).
     - `htmlWebpackPluginOptions`: An optional object literal accepting any property of the [HtmlWebpackPlugin](https://github.com/jantimon/html-webpack-plugin#options).
-    - `features`: An optional object literal of feature switches to define additional shared dependencies.
-        - `router`: Currently hardcoded to `"react-router"` as it's the only supported router (`@squide/react-router` and `@react-router-dom` are currently considered as default shared dependencies).
-        - `msw`: Whether or not to add `@squide/msw` as a shared dependency (`@squide/msw` is currently considered as a default shared dependency).
     - `sharedDependencies`: An optional object literal of additional (or updated) module federation shared dependencies.
     - `moduleFederationPluginOptions`: An optional object literal of [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) options.
 
@@ -47,13 +44,7 @@ The `defineDevHostConfig` function will add the following shared dependencies as
 - [@squide/webpack-module-federation](https://www.npmjs.com/package/@squide/webpack-module-federation)
 - [@squide/msw](https://www.npmjs.com/package/@squide/msw)
 
-For the full shared dependencies configuration, have a look at the [defineConfig.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/webpack-module-federation/src/defineConfig.ts) file on Github.
-
-## Optional shared dependencies
-
-The following shared dependencies can be removed through [feature switches](#deactivate-optional-features):
-
-- [@squide/msw](https://www.npmjs.com/package/@squide/msw)
+For the full shared dependencies configuration, have a look at the [defineConfig.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/firefly/src/defineConfig.ts) file on Github.
 
 ## Usage
 
@@ -62,37 +53,18 @@ The following shared dependencies can be removed through [feature switches](#dea
 ```js !#6 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevHostConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080);
 ```
-
-### Deactivate optional features
-
-```js !#7-9 host/webpack.dev.js
-// @ts-check
-
-import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
-import { swcConfig } from "./swc.dev.js";
-
-export default defineDevHostConfig(swcConfig, "host", 8080, {
-    features: {
-        msw: false
-    }
-});
-```
-
-!!!info
-Features must be deactivated on the host application as well as every remote module.
-!!!
 
 ### Specify additional shared dependencies
 
 ```js !#7-11 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevHostConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {
@@ -113,7 +85,7 @@ Additional shared dependencies must be configured on the host application as wel
 ```js !#7-11 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevHostConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {
@@ -142,7 +114,7 @@ In the previous example, the `react` shared dependency will be **augmented** wit
 ```js !#7-11 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevHostConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {
@@ -172,7 +144,7 @@ While you could customize the [ModuleFederationPlugin](https://webpack.js.org/pl
 ```js !#7-9 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig, defineHostModuleFederationPluginOptions } from "@squide/webpack-module-federation/defineConfig.js";
+import { defineDevHostConfig, defineHostModuleFederationPluginOptions } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {

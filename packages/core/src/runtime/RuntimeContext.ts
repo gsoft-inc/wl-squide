@@ -1,8 +1,8 @@
 import { createContext, useContext } from "react";
 import { isNil } from "../shared/assertions.ts";
-import type { AbstractRuntime } from "./abstractRuntime.ts";
+import type { Runtime } from "./runtime.ts";
 
-export const RuntimeContext = createContext<AbstractRuntime | undefined>(undefined);
+export const RuntimeContext = createContext<Runtime | undefined>(undefined);
 
 export function useRuntime() {
     const runtime = useContext(RuntimeContext);

@@ -1,5 +1,5 @@
 import { LocalModuleRegistry } from "../src/federation/registerLocalModules.ts";
-import { AbstractRuntime } from "../src/runtime/abstractRuntime.ts";
+import { Runtime } from "../src/runtime/runtime.ts";
 
 function simulateDelay(delay: number) {
     return new Promise(resolve => {
@@ -9,7 +9,7 @@ function simulateDelay(delay: number) {
     });
 }
 
-class DummyRuntime extends AbstractRuntime<unknown, unknown> {
+class DummyRuntime extends Runtime<unknown, unknown> {
     registerRoute() {
         throw new Error("Method not implemented.");
     }

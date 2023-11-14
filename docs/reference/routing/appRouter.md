@@ -8,8 +8,6 @@ toc:
 
 A component that sets up Squide federated primitives and render a React Router instance.
 
-> The `AppRouter` component is part of the [@squide/firefly](https://www.npmjs.com/package/@squide/firefly) technology stack, which includes [React Router](https://reactrouter.com/en/main), [Webpack Module Federation](https://webpack.js.org/plugins/module-federation-plugin/) and [Mock Service Worker](https://mswjs.io/).
-
 ## Reference
 
 ```tsx
@@ -220,6 +218,27 @@ export function App() {
             waitForMsw={true}
             onLoadPublicData={handleLoadPublicData}
             onCompleteRegistrations={handleCompleteRegistrations}
+        />
+    );
+}
+```
+
+### Specify additional router options
+
+```tsx !#11-13 host/src/App.tsx
+import { AppRouter } from "@squide/firefly";
+import { Loading } from "./Loading.tsx";
+import { ErrorBoundary } from "./ErrorBoundary.tsx";
+
+export function App() {
+    return (
+        <AppRouter
+            fallbackElement={<Loading />}
+            errorElement={<ErrorBoundary />}
+            waitForMsw={true}
+            routerProvidersProps={{
+                future: { v7_startTransition: true }
+            }}
         />
     );
 }

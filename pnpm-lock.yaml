@@ -133,6 +133,9 @@ importers:
 
   packages/firefly:
     dependencies:
+      '@squide/core':
+        specifier: workspace:*
+        version: link:../core
       '@squide/msw':
         specifier: workspace:*
         version: link:../msw
@@ -143,6 +146,9 @@ importers:
         specifier: workspace:*
         version: link:../webpack-module-federation
     devDependencies:
+      '@squide/webpack-configs':
+        specifier: workspace:*
+        version: link:../webpack-configs
       '@swc/core':
         specifier: 1.3.96
         version: 1.3.96(@swc/helpers@0.5.3)
@@ -179,6 +185,9 @@ importers:
       '@workleap/typescript-configs':
         specifier: 3.0.2
         version: 3.0.2(typescript@5.2.2)
+      '@workleap/webpack-configs':
+        specifier: 1.2.1
+        version: 1.2.1(@swc/core@1.3.96)(@swc/helpers@0.5.3)(browserslist@4.22.1)(esbuild@0.18.20)(postcss@8.4.31)(react-refresh@0.14.0)(typescript@5.2.2)(webpack@5.89.0)
       jest:
         specifier: 29.7.0
         version: 29.7.0(@types/node@20.8.10)(ts-node@10.9.1)
@@ -209,6 +218,9 @@ importers:
       typescript:
         specifier: 5.2.2
         version: 5.2.2
+      webpack:
+        specifier: 5.89.0
+        version: 5.89.0(@swc/core@1.3.96)(esbuild@0.18.20)(webpack-cli@5.1.4)
 
   packages/msw:
     dependencies:
@@ -323,6 +335,70 @@ importers:
         specifier: 5.2.2
         version: 5.2.2
 
+  packages/webpack-configs:
+    dependencies:
+      '@squide/webpack-module-federation':
+        specifier: workspace:*
+        version: link:../webpack-module-federation
+      deepmerge:
+        specifier: 4.3.1
+        version: 4.3.1
+      html-webpack-plugin:
+        specifier: 5.5.3
+        version: 5.5.3(webpack@5.89.0)
+    devDependencies:
+      '@swc/core':
+        specifier: 1.3.96
+        version: 1.3.96(@swc/helpers@0.5.3)
+      '@swc/helpers':
+        specifier: 0.5.3
+        version: 0.5.3
+      '@swc/jest':
+        specifier: 0.2.29
+        version: 0.2.29(@swc/core@1.3.96)
+      '@testing-library/react':
+        specifier: 14.0.0
+        version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@types/jest':
+        specifier: 29.5.7
+        version: 29.5.7
+      '@types/node':
+        specifier: 20.8.10
+        version: 20.8.10
+      '@workleap/eslint-plugin':
+        specifier: 3.0.0
+        version: 3.0.0(@typescript-eslint/parser@6.10.0)(eslint@8.53.0)(jest@29.7.0)(typescript@5.2.2)
+      '@workleap/swc-configs':
+        specifier: 2.1.2
+        version: 2.1.2(@swc/core@1.3.96)(@swc/helpers@0.5.3)(@swc/jest@0.2.29)(browserslist@4.22.1)
+      '@workleap/tsup-configs':
+        specifier: 3.0.1
+        version: 3.0.1(tsup@7.2.0)(typescript@5.2.2)
+      '@workleap/typescript-configs':
+        specifier: 3.0.2
+        version: 3.0.2(typescript@5.2.2)
+      '@workleap/webpack-configs':
+        specifier: 1.2.1
+        version: 1.2.1(@swc/core@1.3.96)(@swc/helpers@0.5.3)(browserslist@4.22.1)(esbuild@0.18.20)(postcss@8.4.31)(react-refresh@0.14.0)(typescript@5.2.2)(webpack@5.89.0)
+      jest:
+        specifier: 29.7.0
+        version: 29.7.0(@types/node@20.8.10)(ts-node@10.9.1)
+      jest-environment-jsdom:
+        specifier: 29.7.0
+        version: 29.7.0
+      ts-jest:
+        specifier: 29.1.1
+        version: 29.1.1(@babel/core@7.23.3)(esbuild@0.18.20)(jest@29.7.0)(typescript@5.2.2)
+      tsup:
+        specifier: 7.2.0
+        version: 7.2.0(@swc/core@1.3.96)(postcss@8.4.31)(ts-node@10.9.1)(typescript@5.2.2)
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
+      webpack:
+        specifier: 5.89.0
+        version: 5.89.0(@swc/core@1.3.96)(esbuild@0.18.20)(webpack-cli@5.1.4)
+
   packages/webpack-module-federation:
     dependencies:
       '@squide/core':
@@ -413,12 +489,6 @@ importers:
       '@squide/firefly':
         specifier: workspace:*
         version: link:../../../packages/firefly
-      '@squide/react-router':
-        specifier: workspace:*
-        version: link:../../../packages/react-router
-      '@squide/webpack-module-federation':
-        specifier: workspace:*
-        version: link:../../../packages/webpack-module-federation
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -432,6 +502,9 @@ importers:
         specifier: 6.18.0
         version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
+      '@squide/webpack-configs':
+        specifier: workspace:*
+        version: link:../../../packages/webpack-configs
       '@swc/core':
         specifier: 1.3.96
         version: 1.3.96(@swc/helpers@0.5.3)
@@ -498,15 +571,12 @@ importers:
       '@basic/shell':
         specifier: workspace:*
         version: link:../shell
+      '@squide/fakes':
+        specifier: workspace:*
+        version: link:../../../packages/fakes
       '@squide/firefly':
         specifier: workspace:*
         version: link:../../../packages/firefly
-      '@squide/react-router':
-        specifier: workspace:*
-        version: link:../../../packages/react-router
-      '@squide/webpack-module-federation':
-        specifier: workspace:*
-        version: link:../../../packages/webpack-module-federation
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -520,9 +590,9 @@ importers:
         specifier: 6.18.0
         version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
-      '@squide/fakes':
+      '@squide/webpack-configs':
         specifier: workspace:*
-        version: link:../../../packages/fakes
+        version: link:../../../packages/webpack-configs
       '@swc/core':
         specifier: 1.3.96
         version: 1.3.96(@swc/helpers@0.5.3)
@@ -592,9 +662,6 @@ importers:
       '@squide/firefly':
         specifier: workspace:*
         version: link:../../../packages/firefly
-      '@squide/react-router':
-        specifier: workspace:*
-        version: link:../../../packages/react-router
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -608,9 +675,9 @@ importers:
         specifier: 6.18.0
         version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
-      '@squide/webpack-module-federation':
+      '@squide/webpack-configs':
         specifier: workspace:*
-        version: link:../../../packages/webpack-module-federation
+        version: link:../../../packages/webpack-configs
       '@swc/core':
         specifier: 1.3.96
         version: 1.3.96(@swc/helpers@0.5.3)
@@ -683,12 +750,6 @@ importers:
       '@squide/firefly':
         specifier: workspace:*
         version: link:../../../packages/firefly
-      '@squide/react-router':
-        specifier: workspace:*
-        version: link:../../../packages/react-router
-      '@squide/webpack-module-federation':
-        specifier: workspace:*
-        version: link:../../../packages/webpack-module-federation
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -702,6 +763,9 @@ importers:
         specifier: 6.18.0
         version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
+      '@squide/webpack-configs':
+        specifier: workspace:*
+        version: link:../../../packages/webpack-configs
       '@swc/core':
         specifier: 1.3.96
         version: 1.3.96(@swc/helpers@0.5.3)
@@ -758,13 +822,17 @@ importers:
         version: 4.15.1(webpack-cli@5.1.4)(webpack@5.89.0)
 
   samples/basic/shared:
+    dependencies:
+      react-error-boundary:
+        specifier: '*'
+        version: 4.0.11(react@18.2.0)
     devDependencies:
       '@remix-run/router':
         specifier: 1.11.0
         version: 1.11.0
-      '@squide/react-router':
+      '@squide/firefly':
         specifier: workspace:*
-        version: link:../../../packages/react-router
+        version: link:../../../packages/firefly
       '@types/react':
         specifier: 18.2.36
         version: 18.2.36
@@ -810,12 +878,6 @@ importers:
       '@squide/firefly':
         specifier: workspace:*
         version: link:../../../packages/firefly
-      '@squide/react-router':
-        specifier: workspace:*
-        version: link:../../../packages/react-router
-      '@squide/webpack-module-federation':
-        specifier: workspace:*
-        version: link:../../../packages/webpack-module-federation
       '@types/react':
         specifier: 18.2.36
         version: 18.2.36
@@ -867,15 +929,6 @@ importers:
       '@squide/firefly':
         specifier: workspace:*
         version: link:../../../packages/firefly
-      '@squide/msw':
-        specifier: workspace:*
-        version: link:../../../packages/msw
-      '@squide/react-router':
-        specifier: workspace:*
-        version: link:../../../packages/react-router
-      '@squide/webpack-module-federation':
-        specifier: workspace:*
-        version: link:../../../packages/webpack-module-federation
       msw:
         specifier: 2.0.3
         version: 2.0.3(typescript@5.2.2)
@@ -895,6 +948,9 @@ importers:
       '@squide/fakes':
         specifier: workspace:*
         version: link:../../../packages/fakes
+      '@squide/webpack-configs':
+        specifier: workspace:*
+        version: link:../../../packages/webpack-configs
       '@swc/core':
         specifier: 1.3.96
         version: 1.3.96(@swc/helpers@0.5.3)
@@ -970,12 +1026,6 @@ importers:
       '@squide/firefly':
         specifier: workspace:*
         version: link:../../../packages/firefly
-      '@squide/msw':
-        specifier: workspace:*
-        version: link:../../../packages/msw
-      '@squide/react-router':
-        specifier: workspace:*
-        version: link:../../../packages/react-router
       '@tanstack/react-query':
         specifier: 5.7.2
         version: 5.7.2(react-dom@18.2.0)(react@18.2.0)
@@ -995,9 +1045,9 @@ importers:
         specifier: 6.18.0
         version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
-      '@squide/webpack-module-federation':
+      '@squide/webpack-configs':
         specifier: workspace:*
-        version: link:../../../packages/webpack-module-federation
+        version: link:../../../packages/webpack-configs
       '@swc/core':
         specifier: 1.3.96
         version: 1.3.96(@swc/helpers@0.5.3)
@@ -1076,15 +1126,6 @@ importers:
       '@squide/firefly':
         specifier: workspace:*
         version: link:../../../packages/firefly
-      '@squide/msw':
-        specifier: workspace:*
-        version: link:../../../packages/msw
-      '@squide/react-router':
-        specifier: workspace:*
-        version: link:../../../packages/react-router
-      '@squide/webpack-module-federation':
-        specifier: workspace:*
-        version: link:../../../packages/webpack-module-federation
       '@tanstack/react-query':
         specifier: 5.7.2
         version: 5.7.2(react-dom@18.2.0)(react@18.2.0)
@@ -1104,6 +1145,9 @@ importers:
         specifier: 6.18.0
         version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
+      '@squide/webpack-configs':
+        specifier: workspace:*
+        version: link:../../../packages/webpack-configs
       '@swc/core':
         specifier: 1.3.96
         version: 1.3.96(@swc/helpers@0.5.3)
@@ -1170,9 +1214,9 @@ importers:
       '@remix-run/router':
         specifier: 1.11.0
         version: 1.11.0
-      '@squide/react-router':
+      '@squide/firefly':
         specifier: workspace:*
-        version: link:../../../packages/react-router
+        version: link:../../../packages/firefly
       '@tanstack/react-query':
         specifier: 5.7.2
         version: 5.7.2(react-dom@18.2.0)(react@18.2.0)
@@ -1227,15 +1271,6 @@ importers:
       '@squide/firefly':
         specifier: workspace:*
         version: link:../../../packages/firefly
-      '@squide/msw':
-        specifier: workspace:*
-        version: link:../../../packages/msw
-      '@squide/react-router':
-        specifier: workspace:*
-        version: link:../../../packages/react-router
-      '@squide/webpack-module-federation':
-        specifier: workspace:*
-        version: link:../../../packages/webpack-module-federation
       '@types/node':
         specifier: 20.8.10
         version: 20.8.10
@@ -4394,7 +4429,7 @@ packages:
       archiver: 6.0.1
       common-path-prefix: 3.0.0
       cp-file: 10.0.0
-      es-module-lexer: 1.3.1
+      es-module-lexer: 1.4.0
       esbuild: 0.19.5
       execa: 6.1.0
       filter-obj: 5.1.0
@@ -4436,7 +4471,7 @@ packages:
       archiver: 6.0.1
       common-path-prefix: 3.0.0
       cp-file: 10.0.0
-      es-module-lexer: 1.3.1
+      es-module-lexer: 1.4.0
       esbuild: 0.19.5
       execa: 6.1.0
       filter-obj: 5.1.0
@@ -4478,7 +4513,7 @@ packages:
       archiver: 6.0.1
       common-path-prefix: 3.0.0
       cp-file: 10.0.0
-      es-module-lexer: 1.3.1
+      es-module-lexer: 1.4.0
       esbuild: 0.19.5
       execa: 6.1.0
       filter-obj: 5.1.0
@@ -7773,7 +7808,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001561
-      electron-to-chromium: 1.4.579
+      electron-to-chromium: 1.4.581
       node-releases: 2.0.13
       update-browserslist-db: 1.0.13(browserslist@4.22.1)
 
@@ -9245,8 +9280,8 @@ packages:
   /ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  /electron-to-chromium@1.4.579:
-    resolution: {integrity: sha512-bJKvA+awBIzYR0xRced7PrQuRIwGQPpo6ZLP62GAShahU9fWpsNN2IP6BSP1BLDDSbxvBVRGAMWlvVVq3npmLA==}
+  /electron-to-chromium@1.4.581:
+    resolution: {integrity: sha512-6uhqWBIapTJUxgPTCHH9sqdbxIMPt7oXl0VcAL1kOtlU6aECdcMncCrX5Z7sHQ/invtrC9jUQUef7+HhO8vVFw==}
 
   /elegant-spinner@1.0.1:
     resolution: {integrity: sha512-B+ZM+RXvRqQaAmkMlO/oSe5nMUOaUnyfGYCEHoR8wrXsZR2mA0XVibsxV1bvTwxdRWah1PkQqso2EzhILGHtEQ==}
@@ -9420,8 +9455,8 @@ packages:
       safe-array-concat: 1.0.1
     dev: true
 
-  /es-module-lexer@1.3.1:
-    resolution: {integrity: sha512-JUFAyicQV9mXc3YRxPnDlrfBKpqt6hUYzz9/boprUJHs4e4KVr3XwOF70doO6gwXUor6EWZJAyWAfKki84t20Q==}
+  /es-module-lexer@1.4.0:
+    resolution: {integrity: sha512-lcCr3v3OLezdfFyx9r5NRYHOUTQNnFEQ9E87Mx8Kc+iqyJNkO7MJoB4GQRTlIMw9kLLTwGw0OAkm4BQQud/d9g==}
 
   /es-set-tostringtag@2.0.2:
     resolution: {integrity: sha512-BuDyupZt65P9D2D2vA/zqcI3G5xRsklm5N3xCwuiy+/vKy8i0ifdsQP1sLgO4tZDSCaQUSnmC48khknGMV3D2Q==}
@@ -10907,7 +10942,7 @@ packages:
       decompress-response: 6.0.0
       form-data-encoder: 2.1.4
       get-stream: 6.0.1
-      http2-wrapper: 2.2.0
+      http2-wrapper: 2.2.1
       lowercase-keys: 3.0.0
       p-cancelable: 3.0.0
       responselike: 3.0.0
@@ -11258,8 +11293,8 @@ packages:
       - supports-color
     dev: true
 
-  /http2-wrapper@2.2.0:
-    resolution: {integrity: sha512-kZB0wxMo0sh1PehyjJUWRFEd99KC5TLjZ2cULC4f9iqJBAmKQQXEICjxl5iPJRwP40dpeHFqqhm7tYCvODpqpQ==}
+  /http2-wrapper@2.2.1:
+    resolution: {integrity: sha512-V5nVw1PAOgfI3Lmeaj2Exmeg7fenjhRUgz1lPSezy1CuhPYbgQtbQj4jZfEAEMlaL+vupsvhjqCyjzob0yxsmQ==}
     engines: {node: '>=10.19.0'}
     dependencies:
       quick-lru: 5.1.1
@@ -13080,9 +13115,11 @@ packages:
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dev: true
 
-  /lru-cache@10.0.1:
-    resolution: {integrity: sha512-IJ4uwUTi2qCccrioU6g9g/5rvvVl13bsdczUUcqbciD9iLr095yj8DQKdObriEvuNSx325N1rV1O0sJFszx75g==}
+  /lru-cache@10.0.2:
+    resolution: {integrity: sha512-Yj9mA8fPiVgOUpByoTZO5pNrcl5Yk37FcSHsUINpAsaBIEZIuqcCclDZJCVxqQShDsmYX8QG63svJiTbOATZwg==}
     engines: {node: 14 || >=16.14}
+    dependencies:
+      semver: 7.5.4
     dev: true
 
   /lru-cache@4.1.5:
@@ -14892,7 +14929,7 @@ packages:
     resolution: {integrity: sha512-MkhCqzzBEpPvxxQ71Md0b1Kk51W01lrYvlMzSUaIzNsODdd7mqhiimSZlr+VegAz5Z6Vzt9Xg2ttE//XBhH3EQ==}
     engines: {node: '>=16 || 14 >=14.17'}
     dependencies:
-      lru-cache: 10.0.1
+      lru-cache: 10.0.2
       minipass: 7.0.4
     dev: true
 
@@ -16524,8 +16561,8 @@ packages:
       mixme: 0.5.9
     dev: true
 
-  /streamx@2.15.2:
-    resolution: {integrity: sha512-b62pAV/aeMjUoRN2C/9F0n+G8AfcJjNC0zw/ZmOHeFsIe4m4GzjVW9m6VHXVjk536NbdU9JRwKMJRfkc+zUFTg==}
+  /streamx@2.15.4:
+    resolution: {integrity: sha512-uSXKl88bibiUCQ1eMpItRljCzDENcDx18rsfDmV79r0e/ThfrAwxG4Y2FarQZ2G4/21xcOKmFFd1Hue+ZIDwHw==}
     dependencies:
       fast-fifo: 1.3.2
       queue-tick: 1.0.1
@@ -16863,7 +16900,7 @@ packages:
     dependencies:
       b4a: 1.6.4
       fast-fifo: 1.3.2
-      streamx: 2.15.2
+      streamx: 2.15.4
     dev: true
 
   /tar@6.2.0:
@@ -18063,7 +18100,7 @@ packages:
       browserslist: 4.22.1
       chrome-trace-event: 1.0.3
       enhanced-resolve: 5.15.0
-      es-module-lexer: 1.3.1
+      es-module-lexer: 1.4.0
       eslint-scope: 5.1.1
       events: 3.3.0
       glob-to-regexp: 0.4.1
@@ -18103,7 +18140,7 @@ packages:
       browserslist: 4.22.1
       chrome-trace-event: 1.0.3
       enhanced-resolve: 5.15.0
-      es-module-lexer: 1.3.1
+      es-module-lexer: 1.4.0
       eslint-scope: 5.1.1
       events: 3.3.0
       glob-to-regexp: 0.4.1

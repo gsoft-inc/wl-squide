@@ -1,9 +1,7 @@
 import { registerLocalModule } from "@endpoints/local-module";
 import { isNetlify, registerLayouts } from "@endpoints/shared";
 import { registerShell } from "@endpoints/shell";
-import { MswPlugin, setMswAsStarted } from "@squide/msw";
-import { ConsoleLogger, Runtime, RuntimeContext, registerLocalModules } from "@squide/react-router";
-import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, registerRemoteModules, setMswAsStarted, type RemoteDefinition } from "@squide/firefly";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App.tsx";
@@ -17,13 +15,8 @@ const Remotes: RemoteDefinition[] = [
     }
 ];
 
-// Add a plugin to support Mock Service Worker for a federated application.
-// The plugin will help collect the request handlers from every module.
-const mswPlugin = new MswPlugin();
-
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger()],
-    plugins: [mswPlugin],
     sessionAccessor
 });
 
@@ -37,7 +30,7 @@ if (process.env.USE_MSW) {
     const startMsw = (await import("../mocks/browser.ts")).startMsw;
 
     // Will start MSW with the request handlers provided by every module.
-    startMsw(mswPlugin.requestHandlers);
+    startMsw(runtime.requestHandlers);
 
     // Indicate to resources that are dependent on MSW that the service has been started.
     setMswAsStarted();

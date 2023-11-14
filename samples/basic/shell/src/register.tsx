@@ -1,6 +1,5 @@
 import type { SessionManager } from "@basic/shared";
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
-import { ManagedRoutes } from "@squide/react-router";
+import { ManagedRoutes, type FireflyRuntime, type ModuleRegisterFunction } from "@squide/firefly";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 
@@ -9,7 +8,7 @@ export interface RegisterShellOptions {
     host?: string;
 }
 
-function registerRoutes(runtime: Runtime, sessionManager: SessionManager, host?: string) {
+function registerRoutes(runtime: FireflyRuntime, sessionManager: SessionManager, host?: string) {
     runtime.registerRoute({
         // Pathless route to declare a root layout.
         $visibility: "public",
@@ -99,7 +98,7 @@ function registerRoutes(runtime: Runtime, sessionManager: SessionManager, host?:
 }
 
 export function registerShell(sessionManager: SessionManager, { host }: RegisterShellOptions = {}) {
-    const register: ModuleRegisterFunction<Runtime> = runtime => {
+    const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
         return registerRoutes(runtime, sessionManager, host);
     };
 

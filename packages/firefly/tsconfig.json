@@ -5,6 +5,7 @@
             "@squide/core": ["../core/src/index.ts"],
             "@squide/react-router": ["../react-router/src/index.ts"],
             "@squide/webpack-module-federation": ["../webpack-module-federation/src/index.ts"],
+            "@squide/webpack-configs": ["../webpack-configs/src/index.ts"],
             "@squide/msw": ["../msw/src/index.ts"]
         }
     },

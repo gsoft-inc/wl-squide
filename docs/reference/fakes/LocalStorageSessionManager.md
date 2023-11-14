@@ -47,10 +47,10 @@ const session = sessionManager.getSession();
 sessionManager.clearSession();
 ```
 
-### Integrate with a `Runtime` instance
+### Integrate with a runtime instance
 
 ```ts !#8 host/src/session.ts
-import type { SessionAccessorFunction } from "@squide/react-router";
+import type { SessionAccessorFunction } from "@squide/firefly";
 import { LocalStorageSessionManager } from "@squide/fakes";
 import type { Session } from "@sample/share";
 
@@ -63,11 +63,11 @@ export const sessionAccessor: SessionAccessorFunction = () => {
 
 ```tsx !#4,6-8 host/src/bootstrap.tsx
 import { createRoot } from "react";
-import { Runtime, RuntimeContext } from "@squide/react-router";
+import { FireflyRuntime, RuntimeContext } from "@squide/firefly";
 import { App } from "./App";
 import { sessionAccessor } from "./session";
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     sessionAccessor
 });
 
@@ -81,7 +81,7 @@ root.render(
 ```
 
 ```tsx !#4 remote-module/src/UserProfile.tsx
-import { useSession } from "@squide/react-router";
+import { useSession } from "@squide/firefly";
 
 export function UserProfile() {
     const session = useSession();

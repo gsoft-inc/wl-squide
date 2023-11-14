@@ -1,7 +1,7 @@
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
 import { DevHomePage } from "./DevHomePage.tsx";
 
-export const registerDev: ModuleRegisterFunction<Runtime> = runtime => {
+export const registerDev: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         index: true,
         element: <DevHomePage />

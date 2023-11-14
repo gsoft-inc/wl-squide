@@ -6,7 +6,7 @@ toc:
 
 # RuntimeContext
 
-[React context](https://react.dev/reference/react/createContext) to share a `Runtime` instance between an host application and the modules.
+[React context](https://react.dev/reference/react/createContext) to share a `FireflyRuntime` instance between an host application and the modules.
 
 ## Reference
 
@@ -18,17 +18,17 @@ toc:
 
 ### Properties
 
-- `value`: A `Runtime` instance.
+- `value`: A `FireflyRuntime` instance.
 
 ## Usage
 
-### Provide a `Runtime` instance
+### Provide a runtime instance
 
 ```tsx !#9-11
 import { createRoot } from "react-dom/client";
-import { Runtime, RuntimeContext } from "@squide/react-router";
+import { FireflyRuntime, RuntimeContext } from "@squide/firefly";
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const root = createRoot(document.getElementById("root"));
 
@@ -39,10 +39,10 @@ root.render(
 );
 ```
 
-### Retrieve a `Runtime` instance
+### Retrieve a runtime instance
 
 ```ts !#3
-import { useRuntime } from "@squide/react-router";
+import { useRuntime } from "@squide/firefly";
 
 const runtime = useRuntime();
 

@@ -1,6 +1,6 @@
 import { LoggerTelemetryService } from "@endpoints/shared";
 import { AppRouter } from "@endpoints/shell";
-import { useLogger } from "@squide/react-router";
+import { useLogger } from "@squide/firefly";
 import { sessionManager } from "./session.ts";
 
 export function App() {

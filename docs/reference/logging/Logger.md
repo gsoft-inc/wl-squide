@@ -7,7 +7,7 @@ An abstract base class to define a logger.
 ### Define a custom logger
 
 ```ts
-import { Logger } from "@squide/react-router";
+import { Logger } from "@squide/firefly";
 
 export class CustomLogger: Logger {
     debug(log) { ... }

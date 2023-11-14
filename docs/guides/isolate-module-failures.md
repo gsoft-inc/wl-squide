@@ -31,7 +31,7 @@ export function App() {
 ```tsx !#16 host/src/RootLayout.tsx
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
-import { useNavigationItems, useRenderedNavigationItems } from "@squide/react-router";
+import { useNavigationItems, useRenderedNavigationItems } from "@squide/firefly";
 
 export function RootLayout() {
     const navigationItems = useNavigationItems();
@@ -52,11 +52,11 @@ export function RootLayout() {
 ```
 
 ```tsx !#8,12 host/src/register.tsx
-import { ManagedRoutes, type ModuleRegisterFunction, type Runtime } from "@squide/react-router";
+import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
-export const registerHost: ModuleRegisterFunction<Runtime> = runtime => {
+export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         // Default layout.
         element: <RootLayout />,
@@ -85,6 +85,10 @@ If your application is [hoisting pages](../reference/runtime/runtime-class.md#re
 
 Start the application in a development environment using the `dev` script. Update any of your application routes that is rendered under the newly created error boundary (e.g. that is not hoisted) and throw an `Error`. The error should be handled by the error boundary instead of breaking the whole application.
 
-!!!info
-If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/shell).
-!!!
+### Troubleshoot issues
+
+If you are experiencing issues with this guide:
+
+- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
+- Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/shell).
+- Refer to the [troubleshooting](../troubleshooting.md) page.

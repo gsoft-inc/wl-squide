@@ -1,7 +1,7 @@
-import { AbstractRuntime } from "@squide/core";
+import { Runtime } from "@squide/core";
 import { RemoteModuleRegistry } from "../src/registerRemoteModules.ts";
 
-class DummyRuntime extends AbstractRuntime<unknown, unknown> {
+class DummyRuntime extends Runtime<unknown, unknown> {
     registerRoute() {
         throw new Error("Method not implemented.");
     }

@@ -25,17 +25,17 @@ Create a new application (we'll refer to ours as `local-module`), then open a te
 +++ pnpm
 ```bash
 pnpm add -D @workleap/tsup-configs tsup typescript
-pnpm add @squide/core @squide/react-router react react-dom react-router-dom
+pnpm add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ yarn
 ```bash
 pnpm add -D @workleap/tsup-configs tsup typescript
-yarn add @squide/core @squide/react-router react react-dom react-router-dom
+yarn add @squide/firefly react @squide/firefly react-dom react-router-dom react-error-boundary
 ```
 +++ npm
 ```bash
 pnpm add -D @workleap/tsup-configs tsup typescript
-npm install @squide/core @squide/react-router react react-dom react-router-dom
+npm install @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++
 
@@ -86,11 +86,11 @@ Finally, configure the package to be shareable by adding the `name`, `version`, 
 Next, register the local module routes and navigation items with [registerRoute](/reference/runtime/runtime-class.md#register-routes) and [registerNavigationItem](/reference/runtime/runtime-class.md#register-navigation-items) functions:
 
 ```tsx !#6-9,11-14 local-module/src/register.tsx
-import type { ModuleRegisterFunction, Runtime } from "@squide/react-router";
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import type { AppContext } from "@sample/shared";
 import { Page } from "./Page.tsx";
 
-export const register: ModuleRegisterFunction<Runtime, AppContext> = (runtime, context) => {
+export const register: ModuleRegisterFunction<FireflyRuntime, AppContext> = (runtime, context) => {
     runtime.registerRoute({
         path: "/local/page",
         element: <Page />
@@ -127,10 +127,9 @@ Go back to the `host` application add a dependency to the `@sample/local-module`
 
 Then, register the local module with the [registerLocalModule](/reference/registration/registerLocalModules.md) function:
 
-```tsx !#5,27 host/src/bootstrap.tsx
+```tsx !#4,26 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, Runtime } from "@squide/react-router";
-import { registerRemoteModules, type RemoteDefinition } from "@squide/webpack-module-federation";
+import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import type { AppContext } from "@sample/shared";
 import { register as registerLocalModule } from "@sample/local-module";
 import { App } from "./App.tsx";
@@ -141,7 +140,7 @@ const Remotes: RemoteDefinition[] = [
 ];
 
 // Create the shell runtime.
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger()]
 });
 
@@ -213,10 +212,10 @@ To build the module, add the following script to the application `package.json` 
 
 Start the `host`, `remote-module` and `local-module` applications in development mode using the `dev` script. You should now notice an additional link in the navigation menu. Click on the link to navigate to the page of your new **local** module!
 
-!!!info
-To troubleshoot module registration issues, open the DevTools console. You'll find a log entry for each registration that occurs and error messages if something goes wrong.
-!!!
+### Troubleshoot issues
 
-!!!info
-If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/local-module).
-!!!
+If you are experiencing issues with this guide:
+
+- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
+- Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/local-module).
+- Refer to the [troubleshooting](../troubleshooting.md) page.

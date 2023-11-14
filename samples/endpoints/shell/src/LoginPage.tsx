@@ -1,5 +1,5 @@
 import { isApiError, postJson } from "@endpoints/shared";
-import { useIsAuthenticated } from "@squide/react-router";
+import { useIsAuthenticated } from "@squide/firefly";
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Navigate } from "react-router-dom";
 

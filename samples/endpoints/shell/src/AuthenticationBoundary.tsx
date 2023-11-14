@@ -1,4 +1,4 @@
-import { useIsAuthenticated, useLogger } from "@squide/react-router";
+import { useIsAuthenticated, useLogger } from "@squide/firefly";
 import { Navigate, Outlet } from "react-router-dom";
 
 export function AuthenticationBoundary() {

@@ -1,5 +1,5 @@
 import { isFunction } from "../index.ts";
-import type { AbstractRuntime } from "../runtime/abstractRuntime.ts";
+import type { Runtime } from "../runtime/runtime.ts";
 import type { ModuleRegistrationStatus } from "./moduleRegistrationStatus.ts";
 import { registerModule, type DeferredRegistrationFunction, type ModuleRegisterFunction } from "./registerModule.ts";
 
@@ -21,7 +21,7 @@ export class LocalModuleRegistry {
     #registrationStatus: ModuleRegistrationStatus = "none";
     #deferredRegistrations: DeferredRegistration[] = [];
 
-    async registerModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown, TData = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext, TData>[], runtime: TRuntime, { context }: RegisterLocalModulesOptions<TContext> = {}) {
+    async registerModules<TRuntime extends Runtime = Runtime, TContext = unknown, TData = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext, TData>[], runtime: TRuntime, { context }: RegisterLocalModulesOptions<TContext> = {}) {
         const errors: LocalModuleRegistrationError[] = [];
 
         if (this.#registrationStatus !== "none") {
@@ -36,7 +36,7 @@ export class LocalModuleRegistry {
             runtime.logger.debug(`[squide] ${index + 1}/${registerFunctions.length} Registering local module.`);
 
             try {
-                const optionalDeferredRegistration = await registerModule(x as ModuleRegisterFunction<AbstractRuntime, TContext, TData>, runtime, context);
+                const optionalDeferredRegistration = await registerModule(x as ModuleRegisterFunction<Runtime, TContext, TData>, runtime, context);
 
                 if (isFunction(optionalDeferredRegistration)) {
                     this.#deferredRegistrations.push({
@@ -63,7 +63,7 @@ export class LocalModuleRegistry {
         return errors;
     }
 
-    async completeModuleRegistrations<TRuntime extends AbstractRuntime = AbstractRuntime, TData = unknown>(runtime: TRuntime, data: TData) {
+    async completeModuleRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
         const errors: LocalModuleRegistrationError[] = [];
 
         if (this.#registrationStatus === "none" || this.#registrationStatus === "in-progress") {
@@ -118,11 +118,11 @@ export class LocalModuleRegistry {
 
 const localModuleRegistry = new LocalModuleRegistry();
 
-export function registerLocalModules<TRuntime extends AbstractRuntime = AbstractRuntime, TContext = unknown, TData = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext, TData>[], runtime: TRuntime, options?: RegisterLocalModulesOptions<TContext>) {
+export function registerLocalModules<TRuntime extends Runtime = Runtime, TContext = unknown, TData = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext, TData>[], runtime: TRuntime, options?: RegisterLocalModulesOptions<TContext>) {
     return localModuleRegistry.registerModules(registerFunctions, runtime, options);
 }
 
-export function completeLocalModuleRegistrations<TRuntime extends AbstractRuntime = AbstractRuntime, TData = unknown>(runtime: TRuntime, data: TData) {
+export function completeLocalModuleRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
     return localModuleRegistry.completeModuleRegistrations(runtime, data);
 }
 

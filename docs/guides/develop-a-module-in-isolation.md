@@ -320,6 +320,14 @@ export default config;
 
 Start the remote module in isolation by running the `dev-isolated` script. The application shell should wrap the pages of the module and the default page should be `DevHome`.
 
+#### Troubleshoot issues
+
+If you are experiencing issues with this guide:
+
+- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
+- Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/remote-module).
+- Refer to the [troubleshooting](../troubleshooting.md) page.
+
 ## Setup a local module
 
 Similarly to remote modules, the same isolated setup can be achieved for local modules. The main difference is that the `webpack.config.js` file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on webpack and [Module Federation](https://webpack.js.org/concepts/module-federation/).
@@ -451,10 +459,10 @@ Next, add a new `dev-isolated` script to the `package.json` file to start the lo
 
 Start the remote module in isolation by running the `dev-isolated` script. The application shell should wrap the pages of the module and the default page should be `DevHome`.
 
-## Troubleshoot issues
+#### Troubleshoot issues
 
 If you are experiencing issues with this guide:
 
 - Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
-- Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic).
+- Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/local-module).
 - Refer to the [troubleshooting](../troubleshooting.md) page.

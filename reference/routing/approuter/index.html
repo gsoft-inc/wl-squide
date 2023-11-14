@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.752887803383">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.753296276336">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.752887803383" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.753296276336" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.752887803383" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.753296276336" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.752887803383" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.752887803383" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.753296276336" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.753296276336" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -314,9 +314,6 @@
     </h1>
 </doc-anchor-target>
 <p>A component that sets up Squide federated primitives and render a React Router instance.</p>
-<blockquote>
-<p>The <code v-pre>AppRouter</code> component is part of the <a href="https://www.npmjs.com/package/@squide/firefly" class="outbound" target="_blank">@squide/firefly</a> technology stack, which includes <a href="https://reactrouter.com/en/main" class="outbound" target="_blank">React Router</a>, <a href="https://webpack.js.org/plugins/module-federation-plugin/" class="outbound" target="_blank">Webpack Module Federation</a> and <a href="https://mswjs.io/" class="outbound" target="_blank">Mock Service Worker</a>.</p>
-</blockquote>
 <doc-anchor-target id="reference">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#reference">#</doc-anchor-trigger>
@@ -556,6 +553,31 @@ export function App() {
             waitForMsw={true}
             onLoadPublicData={handleLoadPublicData}
             onCompleteRegistrations={handleCompleteRegistrations}
+        /&gt;
+    );
+}</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="specify-additional-router-options">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#specify-additional-router-options">#</doc-anchor-trigger>
+        <span>Specify additional router options</span>
+    </h3>
+</doc-anchor-target>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/src/App.tsx</div>
+<pre class="language-tsx" data-line="11-13"><code v-pre class="language-tsx">import { AppRouter } from &quot;@squide/firefly&quot;;
+import { Loading } from &quot;./Loading.tsx&quot;;
+import { ErrorBoundary } from &quot;./ErrorBoundary.tsx&quot;;
+
+export function App() {
+    return (
+        &lt;AppRouter
+            fallbackElement={&lt;Loading /&gt;}
+            errorElement={&lt;ErrorBoundary /&gt;}
+            waitForMsw={true}
+            routerProvidersProps={{
+                future: { v7_startTransition: true }
+            }}
         /&gt;
     );
 }</code></pre>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.752887803383">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.753296276336">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.752887803383" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.753296276336" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.752887803383" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.753296276336" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.752887803383" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.752887803383" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.753296276336" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.753296276336" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -314,7 +314,9 @@
     </h1>
 </doc-anchor-target>
 <p>Execute <a href="https://reactrouter.com/en/main/utils/match-routes" class="outbound" target="_blank">React Router&#x27;s matching algorithm</a> against the registered routes and a given <code v-pre>location</code> to determine if any route match the location and whether or not that matching route is <code v-pre>protected</code>.</p>
+<blockquote>
 <p>To take advantage of this hook, make sure to add a <a href="../../runtime/runtime-class/#register-a-public-route">$visibility hint</a> to your public pages.</p>
+</blockquote>
 <doc-anchor-target id="reference">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#reference">#</doc-anchor-trigger>
@@ -359,7 +361,7 @@
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { useLocation } from &quot;react-router-dom&quot;;
-import { useIsRouteMatchProtected } from &quot;@squide/react-router&quot;;
+import { useIsRouteMatchProtected } from &quot;@squide/firefly&quot;;
 
 const location = useLocation();
 
@@ -373,7 +375,7 @@ const isActiveRouteProtected = useIsRouteMatchProtected(location);</code></pre>
     </h3>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript"><code v-pre class="language-typescript">import { useIsRouteMatchProtected } from &quot;@squide/react-router&quot;;
+<pre class="language-typescript"><code v-pre class="language-typescript">import { useIsRouteMatchProtected } from &quot;@squide/firefly&quot;;
 
 // Returns true if the matching route doesn't have a $visibility: &quot;public&quot; property.
 const isActiveRouteProtected = useIsRouteMatchProtected(window.location);</code></pre>

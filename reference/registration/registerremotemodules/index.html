@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.752887803383">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.753296276336">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.752887803383" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.753296276336" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.752887803383" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.753296276336" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.752887803383" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.752887803383" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.753296276336" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.753296276336" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -313,7 +313,7 @@
         <span>registerRemoteModules</span>
     </h1>
 </doc-anchor-target>
-<p>Register one or many remote module(s). During the registration process, the module <code v-pre>register</code> function will be invoked with a <code v-pre>Runtime</code> instance and an optional <code v-pre>context</code> object. To <strong>defer the registration</strong> of specific routes or navigation items, a registration function can return an anonymous function.</p>
+<p>Register one or many remote module(s). During the registration process, the module <code v-pre>register</code> function will be invoked with a <code v-pre>FireflyRuntime</code> instance and an optional <code v-pre>context</code> object. To <strong>defer the registration</strong> of specific routes or navigation items, a registration function can return an anonymous function.</p>
 <blockquote>
 <p>A remote module is a module that is not part of the current build but is <strong>loaded at runtime</strong> from a remote server.</p>
 </blockquote>
@@ -334,7 +334,7 @@
 </doc-anchor-target>
 <ul>
 <li><code v-pre>remotes</code>: An array of <code v-pre>RemoteDefinition</code> (view the <doc-anchor-trigger to="#remote-definition">Remote definition</doc-anchor-trigger> section).</li>
-<li><code v-pre>runtime</code>: A <code v-pre>Runtime</code> instance.</li>
+<li><code v-pre>runtime</code>: A <code v-pre>FireflyRuntime</code> instance.</li>
 <li><code v-pre>options</code>: An optional object literal of options:
 <ul>
 <li><code v-pre>context</code>: An optional context object that will be pass to the registration function.</li>
@@ -372,11 +372,10 @@
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
-<pre class="language-tsx" data-line="11-13,15"><code v-pre class="language-tsx">import { Runtime } from &quot;@squide/react-router&quot;;
-import { registerRemoteModules, type RemoteDefinition } from &quot;@squide/webpack-module-federation&quot;;
+<pre class="language-tsx" data-line="10-12,14"><code v-pre class="language-tsx">import { FireflyRuntime, registerRemoteModules, type RemoteDefinition } from &quot;@squide/firefly&quot;;
 import type { AppContext } from &quot;@sample/shared&quot;;
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: &quot;Test app&quot;
@@ -390,11 +389,11 @@ await registerRemoteModules(Remotes, runtime, { context });</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="5-15"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="5-15"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import type { AppContext } from &quot;@sample/shared&quot;;
 import { AboutPage } from &quot;./AboutPage.tsx&quot;;
 
-export function register: ModuleRegisterFunction&lt;Runtime, AppContext&gt;(runtime, context) {
+export function register: ModuleRegisterFunction&lt;FireflyRuntime, AppContext&gt;(runtime, context) {
     runtime.registerRoute({
         path: &quot;/about&quot;,
         element: &lt;AboutPage /&gt;
@@ -422,11 +421,10 @@ export function register: ModuleRegisterFunction&lt;Runtime, AppContext&gt;(runt
 <p>To defer a registration to the second phase, a module registration function can <strong>return an anonymous function</strong>. Once the modules are registered and the <a href="../completeremotemoduleregistrations/">completeRemoteModuleRegistrations</a> function is called, the deferred registration functions will be executed.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
-<pre class="language-tsx" data-line="19,22"><code v-pre class="language-tsx">import { Runtime } from &quot;@squide/react-router&quot;;
-import { completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from &quot;@squide/webpack-module-federation&quot;;
+<pre class="language-tsx" data-line="18,21"><code v-pre class="language-tsx">import { FireflyRuntime, completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from &quot;@squide/firefly&quot;;
 import { fetchFeatureFlags, type AppContext } from &quot;@sample/shared&quot;;
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: &quot;Test app&quot;
@@ -447,12 +445,12 @@ await completeRemoteModuleRegistrations(runtime, { featureFlags });</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="19-32"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="19-32"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import type { AppContext, DeferredRegistrationData } from &quot;@sample/shared&quot;;
 import { AboutPage } from &quot;./AboutPage.tsx&quot;;
 import { FeatureAPage } from &quot;./FeatureAPage.tsx&quot;;
 
-export const register: ModuleRegisterFunction&lt;Runtime, AppContext, DeferredRegistrationData&gt; = async (runtime, context) =&gt; {
+export const register: ModuleRegisterFunction&lt;FireflyRuntime, AppContext, DeferredRegistrationData&gt; = async (runtime, context) =&gt; {
     runtime.registerRoute({
         path: &quot;/about&quot;,
         element: &lt;AboutPage /&gt;
@@ -503,11 +501,10 @@ export const register: ModuleRegisterFunction&lt;Runtime, AppContext, DeferredRe
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
-<pre class="language-tsx" data-line="15-17"><code v-pre class="language-tsx">import { Runtime } from &quot;@squide/react-router&quot;;
-import { registerRemoteModules, type RemoteDefinition } from &quot;@squide/webpack-module-federation&quot;;
+<pre class="language-tsx" data-line="14-16"><code v-pre class="language-tsx">import { FireflyRuntime, registerRemoteModules, type RemoteDefinition } from &quot;@squide/firefly&quot;;
 import type { AppContext } from &quot;@sample/shared&quot;;
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: &quot;Test app&quot;
@@ -530,7 +527,7 @@ const Remotes: RemoteDefinition = [
 <p>To ease the configuration of remote modules, make sure that you first import the <code v-pre>RemoteDefinition</code> type and assign it to your remote definitions array declaration.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
-<pre class="language-typescript" data-line="3"><code v-pre class="language-typescript">import type { RemoteDefinition } from &quot;@squide/webpack-module-federation&quot;;
+<pre class="language-typescript" data-line="3"><code v-pre class="language-typescript">import type { RemoteDefinition } from &quot;@squide/firefly&quot;;
 
 const Remotes: RemoteDefinition = [
     { name: &quot;REMOTE_NAME&quot;, url: &quot;REMOTE_URL&quot; }
@@ -555,7 +552,7 @@ const Remotes: RemoteDefinition = [
 <div class="codeblock-title">remote-module/src/webpack.dev.js</div>
 <pre class="language-javascript" data-line="6"><code v-pre class="language-javascript">// @ts-check
 
-import { defineDevRemoteModuleConfig } from &quot;@squide/webpack-module-federation/defineConfig.js&quot;;
+import { defineDevRemoteModuleConfig } from &quot;@squide/firefly/defineConfig.js&quot;;
 import { swcConfig } from &quot;./swc.dev.js&quot;;
 
 export default defineDevRemoteModuleConfig(swcConfig, &quot;remote1&quot;, PORT);</code></pre>
@@ -579,7 +576,7 @@ export default defineDevRemoteModuleConfig(swcConfig, &quot;remote1&quot;, PORT)
 <div class="codeblock-title">remote-module/webpack.dev.js</div>
 <pre class="language-javascript" data-line="6-8"><code v-pre class="language-javascript">// @ts-check
 
-import { defineDevRemoteModuleConfig } from &quot;@squide/webpack-module-federation/defineConfig.js&quot;;
+import { defineDevRemoteModuleConfig } from &quot;@squide/firefly/defineConfig.js&quot;;
 import { swcConfig } from &quot;./swc.dev.js&quot;;
 
 export default defineDevRemoteModuleConfig(swcConfig, REMOTE_NAME, 8081, {
@@ -591,7 +588,7 @@ export default defineDevRemoteModuleConfig(swcConfig, REMOTE_NAME, 8081, {
 <div class="codeblock-title">remote-module/webpack.build.js</div>
 <pre class="language-javascript" data-line="6"><code v-pre class="language-javascript">// @ts-check
 
-import { defineBuildRemoteModuleConfig } from &quot;@squide/webpack-module-federation/defineConfig.js&quot;;
+import { defineBuildRemoteModuleConfig } from &quot;@squide/firefly/defineConfig.js&quot;;
 import { swcConfig } from &quot;./swc.build.js&quot;;
 
 export default defineBuildRemoteModuleConfig(swcConfig, REMOTE_NAME, &quot;http://localhost:8081/&quot;);</code></pre>

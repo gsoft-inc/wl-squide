@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.752887803383">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.753296276336">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.752887803383" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.753296276336" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.752887803383" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.753296276336" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.752887803383" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.752887803383" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.753296276336" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.753296276336" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -313,7 +313,7 @@
         <span>registerLocalModules</span>
     </h1>
 </doc-anchor-target>
-<p>Register one or many local module(s). During the registration process, the specified registration function will be invoked with a <code v-pre>Runtime</code> instance and an optional <code v-pre>context</code> object. To <strong>defer the registration</strong> of specific routes or navigation items, a registration function can return an anonymous function.</p>
+<p>Register one or many local module(s). During the registration process, the specified registration function will be invoked with a <code v-pre>FireflyRuntime</code> instance and an optional <code v-pre>context</code> object. To <strong>defer the registration</strong> of specific routes or navigation items, a registration function can return an anonymous function.</p>
 <blockquote>
 <p>A local module is a regular module that is part of the <strong>host application build</strong> and is bundled at build time, as opposed to remote module which is loaded at runtime from a remote server. Local modules are particularly valuable when undergoing a <strong>migration</strong> from a monolithic application to a federated application or when <strong>launching a new product</strong> with an evolving business domain.</p>
 </blockquote>
@@ -334,7 +334,7 @@
 </doc-anchor-target>
 <ul>
 <li><code v-pre>registerFunctions</code>: An array of <code v-pre>ModuleRegisterFunction</code>.</li>
-<li><code v-pre>runtime</code>: A <code v-pre>Runtime</code> instance.</li>
+<li><code v-pre>runtime</code>: A <code v-pre>FireflyRuntime</code> instance.</li>
 <li><code v-pre>options</code>: An optional object literal of options:
 <ul>
 <li><code v-pre>context</code>: An optional context object that will be pass to the registration function.</li>
@@ -369,11 +369,11 @@
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
-<pre class="language-tsx" data-line="11"><code v-pre class="language-tsx">import { registerLocalModules, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="11"><code v-pre class="language-tsx">import { registerLocalModules, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import { register } from &quot;@sample/local-module&quot;;
 import type { AppContext } from &quot;@sample/shared&quot;;
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: &quot;Test app&quot;
@@ -383,11 +383,11 @@ await registerLocalModules([register], runtime, { context });</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="5-15"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="5-15"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import type { AppContext } from &quot;@sample/shared&quot;;
 import { AboutPage } from &quot;./AboutPage.tsx&quot;;
 
-export function register: ModuleRegisterFunction&lt;Runtime, AppContext&gt;(runtime, context) {
+export function register: ModuleRegisterFunction&lt;FireflyRuntime, AppContext&gt;(runtime, context) {
     runtime.registerRoute({
         path: &quot;/about&quot;,
         element: &lt;AboutPage /&gt;
@@ -415,11 +415,11 @@ export function register: ModuleRegisterFunction&lt;Runtime, AppContext&gt;(runt
 <p>To defer a registration to the second phase, a module registration function can <strong>return an anonymous function</strong>. Once the modules are registered and the <a href="../completelocalmoduleregistrations/">completeLocalModuleRegistrations</a> function is called, the deferred registration functions will be executed.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
-<pre class="language-tsx" data-line="15,18"><code v-pre class="language-tsx">import { completeLocalModuleRegistrations, registerLocalModules, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="15,18"><code v-pre class="language-tsx">import { completeLocalModuleRegistrations, registerLocalModules, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import { register } from &quot;@sample/local-module&quot;;
 import { fetchFeatureFlags, type AppContext } from &quot;@sample/shared&quot;;
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: &quot;Test app&quot;
@@ -436,12 +436,12 @@ await completeLocalModuleRegistrations(runtime, { featureFlags });</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="19-32"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="19-32"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import type { AppContext, DeferredRegistrationData } from &quot;@sample/shared&quot;;
 import { AboutPage } from &quot;./AboutPage.tsx&quot;;
 import { FeatureAPage } from &quot;./FeatureAPage.tsx&quot;;
 
-export const register: ModuleRegisterFunction&lt;Runtime, AppContext, DeferredRegistrationData&gt; = async (runtime, context) =&gt; {
+export const register: ModuleRegisterFunction&lt;FireflyRuntime, AppContext, DeferredRegistrationData&gt; = async (runtime, context) =&gt; {
     runtime.registerRoute({
         path: &quot;/about&quot;,
         element: &lt;AboutPage /&gt;
@@ -492,11 +492,11 @@ export const register: ModuleRegisterFunction&lt;Runtime, AppContext, DeferredRe
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
-<pre class="language-tsx" data-line="11-13"><code v-pre class="language-tsx">import { registerLocalModules, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="11-13"><code v-pre class="language-tsx">import { registerLocalModules, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import { register } from &quot;@sample/local-module&quot;;
 import type { AppContext } from &quot;@sample/shared&quot;;
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: &quot;Test app&quot;

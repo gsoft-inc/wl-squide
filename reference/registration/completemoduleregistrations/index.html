@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.752887803383">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.753296276336">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.752887803383" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.753296276336" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.752887803383" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.753296276336" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.752887803383" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.752887803383" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.753296276336" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.753296276336" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -314,7 +314,23 @@
     </h1>
 </doc-anchor-target>
 <p>Completes the registration process for modules that have been registred using <a href="../registerlocalmodules/">registerLocalModules</a> and <a href="../registerremotemodules/">registerRemoteModules</a> by executing the registered <strong>deferred registration</strong> functions.</p>
-<p>This function serves as a utility for executing both <a href="../completelocalmoduleregistrations/">completeLocalModuleRegistrations</a> and <a href="../completeremotemoduleregistrations/">completeRemoteModuleRegistrations</a> in a single call.</p>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>This function should only be used by applications that support <a href="../registerlocalmodules/#defer-the-registration-of-routes-or-navigation-items">deferred registrations</a>.</p>
+        </div>
+    </div>
+</div>
 <doc-anchor-target id="reference">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#reference">#</doc-anchor-trigger>
@@ -331,7 +347,7 @@
     </h3>
 </doc-anchor-target>
 <ul>
-<li><code v-pre>runtime</code>: A <code v-pre>Runtime</code> instance.</li>
+<li><code v-pre>runtime</code>: A <code v-pre>FireflyRuntime</code> instance.</li>
 <li><code v-pre>data</code>: An optional object with data to forward to the deferred registration functions.</li>
 </ul>
 <doc-anchor-target id="returns">
@@ -362,12 +378,11 @@
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
-<pre class="language-tsx" data-line="16-17,24"><code v-pre class="language-tsx">import { registerLocalModules, Runtime } from &quot;@squide/react-router&quot;;
-import { completeModuleRegistrations, registerRemoteModules, type RemoteDefinition } from &quot;@squide/webpack-module-federation&quot;;
+<pre class="language-tsx" data-line="15-16,23"><code v-pre class="language-tsx">import { registerLocalModules, FireflyRuntime, completeModuleRegistrations, registerRemoteModules, type RemoteDefinition } from &quot;@squide/firefly&quot;;
 import { register } from &quot;@sample/local-module&quot;;
 import { fetchFeatureFlags, type AppContext } from &quot;@sample/shared&quot;;
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: &quot;Test app&quot;
@@ -389,12 +404,12 @@ await completeModuleRegistrations(runtime, { featureFlags });</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="19-32"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="19-32"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import type { AppContext, DeferredRegistrationData } from &quot;@sample/shared&quot;;
 import { AboutPage } from &quot;./AboutPage.tsx&quot;;
 import { FeatureAPage } from &quot;./FeatureAPage.tsx&quot;;
 
-export const register: ModuleRegisterFunction&lt;Runtime, AppContext, DeferredRegistrationData&gt; = async (runtime, context) =&gt; {
+export const register: ModuleRegisterFunction&lt;FireflyRuntime, AppContext, DeferredRegistrationData&gt; = async (runtime, context) =&gt; {
     runtime.registerRoute({
         path: &quot;/about&quot;,
         element: &lt;AboutPage /&gt;
@@ -431,12 +446,11 @@ export const register: ModuleRegisterFunction&lt;Runtime, AppContext, DeferredRe
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
-<pre class="language-tsx" data-line="23-31"><code v-pre class="language-tsx">import { registerLocalModules, Runtime } from &quot;@squide/react-router&quot;;
-import { completeModuleRegistrations, registerRemoteModules, type RemoteDefinition } from &quot;@squide/webpack-module-federation&quot;;
+<pre class="language-tsx" data-line="22-30"><code v-pre class="language-tsx">import { registerLocalModules, FireflyRuntime, completeModuleRegistrations, registerRemoteModules, type RemoteDefinition } from &quot;@squide/firefly&quot;;
 import { register } from &quot;@sample/local-module&quot;;
 import { fetchFeatureFlags, type AppContext } from &quot;@sample/shared&quot;;
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: &quot;Test app&quot;

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.752887803383">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.753296276336">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>useSession</title>
     <meta name="title" content="useSession">
-    <meta name="description" content="Retrieve the current session from the Runtime instance provided by RuntimeContext.">
+    <meta name="description" content="Retrieve the current session from the FireflyRuntime instance.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/reference/runtime/usesession/">
@@ -21,23 +21,23 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/reference/runtime/usesession/">
     <meta property="og:title" content="useSession">
-    <meta property="og:description" content="Retrieve the current session from the Runtime instance provided by RuntimeContext.">
+    <meta property="og:description" content="Retrieve the current session from the FireflyRuntime instance.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/reference/runtime/usesession/">
     <meta property="twitter:title" content="useSession">
-    <meta property="twitter:description" content="Retrieve the current session from the Runtime instance provided by RuntimeContext.">
+    <meta property="twitter:description" content="Retrieve the current session from the FireflyRuntime instance.">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.752887803383" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.753296276336" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.752887803383" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.753296276336" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.752887803383" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.752887803383" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.753296276336" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.753296276336" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -313,7 +313,7 @@
         <span>useSession</span>
     </h1>
 </doc-anchor-target>
-<p>Retrieve the current session from the <code v-pre>Runtime</code> instance provided by <code v-pre>RuntimeContext</code>.</p>
+<p>Retrieve the current session from the <code v-pre>FireflyRuntime</code> instance.</p>
 <doc-anchor-target id="reference">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#reference">#</doc-anchor-trigger>
@@ -344,7 +344,7 @@
     </h2>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript"><code v-pre class="language-typescript">import { useSession } from &quot;@squide/react-router&quot;;
+<pre class="language-typescript"><code v-pre class="language-typescript">import { useSession } from &quot;@squide/firefly&quot;;
 import type { AppSession } from &quot;@sample/shared&quot;;
  
 const session = useSession() as AppSession;

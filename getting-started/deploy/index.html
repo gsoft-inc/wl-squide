@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.752887803383">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.753296276336">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.752887803383" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.753296276336" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.752887803383" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.753296276336" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.752887803383" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.752887803383" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.753296276336" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.753296276336" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -325,7 +325,7 @@
 </doc-anchor-target>
 <p>Configure the remote modules production URL:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript"><code v-pre class="language-typescript">import { RemoteDefinition } from &quot;@squide/webpack-module-federation&quot;;
+<pre class="language-typescript"><code v-pre class="language-typescript">import { RemoteDefinition } from &quot;@squide/firefly&quot;;
 
 const Remotes: RemoteDefinition[] = [
     {
@@ -340,11 +340,11 @@ const Remotes: RemoteDefinition[] = [
         <span>Update the runtime mode</span>
     </h2>
 </doc-anchor-target>
-<p>Don&#x27;t forget to change the <a href="../../reference/runtime/runtime-class/#change-the-runtime-mode">Runtime mode</a> to <code v-pre>production</code>:</p>
+<p>Don&#x27;t forget to change the <a href="../../reference/runtime/runtime-class/#change-the-runtime-mode">FireflyRuntime mode</a> to <code v-pre>production</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript"><code v-pre class="language-typescript">import { Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-typescript"><code v-pre class="language-typescript">import { FireflyRuntime } from &quot;@squide/firefly&quot;;
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     mode: process.env.isNetlify ? &quot;production&quot; : &quot;development&quot;
 });</code></pre>
 </doc-codeblock></div>
@@ -356,9 +356,9 @@ const runtime = new Runtime({
 </doc-anchor-target>
 <p>Remove the <a href="../../reference/logging/consolelogger/">ConsoleLogger</a> from the production build:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript"><code v-pre class="language-typescript">import { ConsoleLogger, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-typescript"><code v-pre class="language-typescript">import { ConsoleLogger, FireflyRuntime } from &quot;@squide/firefly&quot;;
 
-const runtime = new Runtime({
+const runtime = new FireflyRuntime({
     loggers: process.env.isNetlify ? [] : [new ConsoleLogger()]
 });</code></pre>
 </doc-codeblock></div>

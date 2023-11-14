@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.752887803383">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.753296276336">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.752887803383" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.753296276336" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.752887803383" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.753296276336" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.752887803383" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.752887803383" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.753296276336" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.753296276336" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -347,7 +347,7 @@
     </h3>
 </doc-anchor-target>
 <ul>
-<li><code v-pre>runtime</code>: A <code v-pre>Runtime</code> instance.</li>
+<li><code v-pre>runtime</code>: A <code v-pre>FireflyRuntime</code> instance.</li>
 <li><code v-pre>data</code>: An optional object with data to forward to the deferred registration functions.</li>
 </ul>
 <doc-anchor-target id="returns">
@@ -381,11 +381,10 @@
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
-<pre class="language-tsx" data-line="19,22"><code v-pre class="language-tsx">import { Runtime } from &quot;@squide/react-router&quot;;
-import { completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from &quot;@squide/webpack-module-federation&quot;;
+<pre class="language-tsx" data-line="18,21"><code v-pre class="language-tsx">import { FireflyRuntime, completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from &quot;@squide/firefly&quot;;
 import { fetchFeatureFlags, type AppContext } from &quot;@sample/shared&quot;;
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: &quot;Test app&quot;
@@ -406,12 +405,12 @@ await completeRemoteModuleRegistrations(runtime, { featureFlags });</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="19-32"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="19-32"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import type { AppContext, DeferredRegistrationData } from &quot;@sample/shared&quot;;
 import { AboutPage } from &quot;./AboutPage.tsx&quot;;
 import { FeatureAPage } from &quot;./FeatureAPage.tsx&quot;;
 
-export const register: ModuleRegisterFunction&lt;Runtime, AppContext, DeferredRegistrationData&gt; = async (runtime, context) =&gt; {
+export const register: ModuleRegisterFunction&lt;FireflyRuntime, AppContext, DeferredRegistrationData&gt; = async (runtime, context) =&gt; {
     runtime.registerRoute({
         path: &quot;/about&quot;,
         element: &lt;AboutPage /&gt;
@@ -448,11 +447,10 @@ export const register: ModuleRegisterFunction&lt;Runtime, AppContext, DeferredRe
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
-<pre class="language-tsx" data-line="21-23"><code v-pre class="language-tsx">import { Runtime } from &quot;@squide/react-router&quot;;
-import { completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from &quot;@squide/webpack-module-federation&quot;;
+<pre class="language-tsx" data-line="20-22"><code v-pre class="language-tsx">import { FireflyRuntime, completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from &quot;@squide/firefly&quot;;
 import { fetchFeatureFlags, type AppContext } from &quot;@sample/shared&quot;;
 
-const runtime = new Runtime();
+const runtime = new FireflyRuntime();
 
 const context: AppContext = {
     name: &quot;Test app&quot;

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.752887803383">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.753296276336">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -34,12 +34,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.752887803383" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.753296276336" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.752887803383" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.753296276336" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.752887803383" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.752887803383" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.753296276336" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.753296276336" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -354,10 +354,10 @@ export function FederatedTabsLayout() {
 <p>To register the newly created layout as a nested layout, use the <a href="../../reference/runtime/runtime-class/#register-routes">registerRoute</a> function:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module-3/src/register.tsx</div>
-<pre class="language-tsx" data-line="7-8"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="7-8"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import { FederatedTabsLayout } from &quot;./FederatedTabsLayout.tsx&quot;;
 
-export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
+export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&gt; {
     runtime.registerRoute({
         // Register the layout as a nested layout under the &quot;/federated-tabs&quot; URL segment.
         path: &quot;/federated-tabs&quot;,
@@ -381,10 +381,10 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
 <p>Next, let&#x27;s add the actual tab pages to the modules. To do so, we&#x27;ll use the <a href="../../reference/runtime/runtime-class/#register-nested-routes-under-an-existing-route">parentPath</a> option of the <a href="../../reference/runtime/runtime-class/#register-routes">registerRoute</a> function to register the routes under the <code v-pre>FederatedTabsLayout</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module-1/src/register.tsx</div>
-<pre class="language-tsx" data-line="7,10"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="7,10"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import { Tab1 } from &quot;./Tab1.tsx&quot;;
 
-export const register: ModuleRegisterFunction&lt;Runtime&gt; = (runtime: Runtime) =&gt; {
+export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&gt; {
     runtime.registerRoute({
         // Using &quot;index: true&quot; instead of a path because this is the default active tab.
         index: true
@@ -404,10 +404,10 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = (runtime: Runtime
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module-2/src/register.tsx</div>
-<pre class="language-tsx" data-line="7,10"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="7,10"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import { Tab2 } from &quot;./Tab2.tsx&quot;;
 
-export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
+export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&gt; {
     runtime.registerRoute({
         // The first part of the &quot;path&quot; must be the same as the nested layout path (FederatedTabsLayout).
         path: &quot;/federated-tabs/tab-2&quot;
@@ -427,10 +427,10 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="7,10"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="7,10"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import { Tab3 } from &quot;./Tab3.tsx&quot;;
 
-export const register: ModuleRegisterFunction&lt;Runtime&gt; = (runtime: Runtime) =&gt; {
+export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&gt; {
     runtime.registerRoute({
         // The first part of the &quot;path&quot; must be the same as the nested layout path (FederatedTabsLayout).
         path: &quot;/federated-tabs/tab-3&quot;
@@ -460,10 +460,10 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = (runtime: Runtime
 <p>First, let&#x27;s register the navigation items with the <code v-pre>menuId</code> option. For this example the <code v-pre>menuId</code> will be <code v-pre>/federated-tabs</code> (it can be anything):</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module-1/src/register.tsx</div>
-<pre class="language-tsx" data-line="19"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="19"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import { Tab1 } from &quot;./Tab1.tsx&quot;;
 
-export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
+export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&gt; {
     runtime.registerRoute({
         // Using &quot;index: true&quot; instead of a path because this is the default active tab.
         index: true
@@ -484,10 +484,10 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module-2/src/register.tsx</div>
-<pre class="language-tsx" data-line="19"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="19"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import { Tab2 } from &quot;./Tab2.tsx&quot;;
 
-export const register: ModuleRegisterFunction&lt;Runtime&gt; = (runtime: Runtime) =&gt; {
+export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&gt; {
     runtime.registerRoute({
         // The first part of the &quot;path&quot; must be the same as the nested layout path (FederatedTabsLayout).
         path: &quot;/federated-tabs/tab-2&quot;
@@ -508,10 +508,10 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = (runtime: Runtime
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="19"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="19"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import { Tab3 } from &quot;./Tab3.tsx&quot;;
 
-export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
+export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&gt; {
     runtime.registerRoute({
         // The first part of the &quot;path&quot; must be the same as the nested layout path (FederatedTabsLayout).
         path: &quot;/federated-tabs/tab-3&quot;
@@ -590,10 +590,10 @@ export function FederatedTabsLayout() {
 <p>To force <code v-pre>Tab 3</code> to be positioned first, we&#x27;ll give him a priority of <code v-pre>999</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="15"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, Runtime } from &quot;@squide/react-router&quot;;
+<pre class="language-tsx" data-line="15"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import { Tab3 } from &quot;./Tab3.tsx&quot;;
 
-export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
+export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&gt; {
     runtime.registerRoute({
         path: &quot;/federated-tabs/tab-3&quot;
         element: &lt;Tab3 /&gt;
@@ -618,6 +618,18 @@ export const register: ModuleRegisterFunction&lt;Runtime&gt; = runtime =&gt; {
     </h2>
 </doc-anchor-target>
 <p>To ensure everything is still working correctly, start the development servers using the <code v-pre>dev</code> script and navigate to the <code v-pre>/federated-tabs</code> page. You should see all three tabs, and you should be able to switch between them by clicking on the tab headers.</p>
+<doc-anchor-target id="troubleshoot-issues">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#troubleshoot-issues">#</doc-anchor-trigger>
+        <span>Troubleshoot issues</span>
+    </h3>
+</doc-anchor-target>
+<p>If you are experiencing issues with this guide:</p>
+<ul>
+<li>Open the <a href="https://developer.chrome.com/docs/devtools/" class="outbound" target="_blank">DevTools</a> console. You&#x27;ll find a log entry for each registration that occurs and error messages if something went wrong.</li>
+<li>Refer to a working example on <a href="https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic" class="outbound" target="_blank">GitHub</a>.</li>
+<li>Refer to the <a href="../../troubleshooting/">troubleshooting</a> page.</li>
+</ul>
 
                                 
                                 <!-- Required only on API pages -->

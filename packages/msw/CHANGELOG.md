@@ -1,5 +1,12 @@
 # @squide/msw
 
+## 2.0.4
+
+### Patch Changes
+
+- Updated dependencies [[`a9dda1c`](https://github.com/gsoft-inc/wl-squide/commit/a9dda1c3b010f616556fc3313c1934e20a26bc11)]:
+  - @squide/core@3.0.0
+
 ## 2.0.3
 
 ### Patch Changes

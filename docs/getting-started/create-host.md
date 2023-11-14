@@ -284,10 +284,6 @@ root.render(
 );
 ```
 
-### Mock Service Worker (MSW)
-
--> Optional
-
 ## Configure webpack
 
 !!!info
@@ -403,15 +399,15 @@ To build the application, add the following script to the application `package.j
 
 Start the application in a development environment using the `dev` script. You should see the home page. Even if the remote module application is not yet available, the host application will gracefully load.
 
-!!!info
-To troubleshoot module registration issues, open the DevTools console. You'll find a log entry for each registration that occurs and error messages if something goes wrong.
-!!!
+<!-- ## Mock Service Worker
 
-!!!info
-If you are having issues with this guide, have a look at a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/host).
-!!!
+To setup MSW, refer to the [setup Mock Service Worker guide](../guides/setup-msw.md). -->
 
-## Mock Service Worker
+## Troubleshoot issues
 
-To setup MSW, refer to the [setup Mock Service Worker guide](../guides/setup-msw.md).
+If you are experiencing module registration issues, try:
+
+- Opening the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
+- Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/host).
+- Refer to the [troubleshooting](../troubleshooting.md) page.
 

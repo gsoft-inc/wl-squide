@@ -1,5 +1,23 @@
 # @squide/firefly
 
+## 2.0.0
+
+### Minor Changes
+
+- [#112](https://github.com/gsoft-inc/wl-squide/pull/112) [`a9dda1c`](https://github.com/gsoft-inc/wl-squide/commit/a9dda1c3b010f616556fc3313c1934e20a26bc11) Thanks [@patricklafrance](https://github.com/patricklafrance)! - - Added a new `FireflyRuntime` class. This class should be used by all consumer applications rather than the previous `Runtime` class from `@squide/react-router`.
+  - The `FireflyRuntime` class has a `registerRequestHandlers` function and a `requestHandlers` getter. Consumer applications should use these instead of the `MSwPlugin`.
+  - Added a new layer of define functions (`defineDevHostConfig`, `defineBuildHostConfig`, `defineDevRemoteModuleConfig`, `defineBuildRemoteModuleConfig`). These functions should be used by all consumer applications rather than the previous define functions from `@squide/wbepack-module-federation`.
+  - Forward every exports from `@squide/core`, `@squide/react-router`, `@squide/webpack-module-federation`, `@squide/webpack-configs` and `@squide/msw`. Consumer applications should now import everything from `@squide/firefly` except the fakes implementations that should still be imported from `@squide/fakes`.
+
+### Patch Changes
+
+- Updated dependencies [[`a9dda1c`](https://github.com/gsoft-inc/wl-squide/commit/a9dda1c3b010f616556fc3313c1934e20a26bc11), [`a9dda1c`](https://github.com/gsoft-inc/wl-squide/commit/a9dda1c3b010f616556fc3313c1934e20a26bc11), [`a9dda1c`](https://github.com/gsoft-inc/wl-squide/commit/a9dda1c3b010f616556fc3313c1934e20a26bc11), [`a9dda1c`](https://github.com/gsoft-inc/wl-squide/commit/a9dda1c3b010f616556fc3313c1934e20a26bc11)]:
+  - @squide/webpack-configs@1.0.0
+  - @squide/webpack-module-federation@3.0.0
+  - @squide/core@3.0.0
+  - @squide/react-router@3.0.0
+  - @squide/msw@2.0.4
+
 ## 1.0.1
 
 ### Patch Changes

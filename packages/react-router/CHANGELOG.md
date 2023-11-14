@@ -1,5 +1,17 @@
 # @squide/react-router
 
+## 3.0.0
+
+### Major Changes
+
+- [#112](https://github.com/gsoft-inc/wl-squide/pull/112) [`a9dda1c`](https://github.com/gsoft-inc/wl-squide/commit/a9dda1c3b010f616556fc3313c1934e20a26bc11) Thanks [@patricklafrance](https://github.com/patricklafrance)! - - The `Runtime` class has been renamed to `ReactRouterRuntime`.
+  - This package doesn't forward the `@squide/core` package exports anymore.
+
+### Patch Changes
+
+- Updated dependencies [[`a9dda1c`](https://github.com/gsoft-inc/wl-squide/commit/a9dda1c3b010f616556fc3313c1934e20a26bc11)]:
+  - @squide/core@3.0.0
+
 ## 2.0.2
 
 ### Patch Changes

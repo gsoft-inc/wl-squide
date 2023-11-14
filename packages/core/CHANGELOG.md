@@ -1,5 +1,11 @@
 # @squide/core
 
+## 3.0.0
+
+### Major Changes
+
+- [#112](https://github.com/gsoft-inc/wl-squide/pull/112) [`a9dda1c`](https://github.com/gsoft-inc/wl-squide/commit/a9dda1c3b010f616556fc3313c1934e20a26bc11) Thanks [@patricklafrance](https://github.com/patricklafrance)! - - Renamed the `AbstractRuntime` class to `Runtime`.
+
 ## 2.2.0
 
 ### Minor Changes

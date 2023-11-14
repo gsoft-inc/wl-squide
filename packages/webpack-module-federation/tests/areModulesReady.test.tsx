@@ -2,11 +2,11 @@
 // kind of provide the same coverage as the only important logic to test for that hook is the check to validate whether
 // or not the module registrations is considered as ready or not.
 
-import { AbstractRuntime, LocalModuleRegistry } from "@squide/core";
+import { LocalModuleRegistry, Runtime } from "@squide/core";
 import { RemoteModuleRegistry } from "../src/registerRemoteModules.ts";
 import { areModulesReady } from "../src/useAreModulesReady.ts";
 
-class DummyRuntime extends AbstractRuntime<unknown, unknown> {
+class DummyRuntime extends Runtime<unknown, unknown> {
     registerRoute() {
         throw new Error("Method not implemented.");
     }

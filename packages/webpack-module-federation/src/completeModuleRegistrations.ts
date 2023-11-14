@@ -1,7 +1,7 @@
-import { completeLocalModuleRegistrations, getLocalModuleRegistrationStatus, type AbstractRuntime, type LocalModuleRegistrationError } from "@squide/core";
+import { completeLocalModuleRegistrations, getLocalModuleRegistrationStatus, type LocalModuleRegistrationError, type Runtime } from "@squide/core";
 import { completeRemoteModuleRegistrations, getRemoteModuleRegistrationStatus, type RemoteModuleRegistrationError } from "./registerRemoteModules.ts";
 
-export function completeModuleRegistrations<TRuntime extends AbstractRuntime = AbstractRuntime, TData = unknown>(runtime: TRuntime, data: TData) {
+export function completeModuleRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
     const promise: Promise<unknown>[] = [];
 
     if (getLocalModuleRegistrationStatus() !== "none") {

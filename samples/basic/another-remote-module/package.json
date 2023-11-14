@@ -2,7 +2,7 @@
     "name": "@basic/another-remote-module",
     "author": "Workleap",
     "version": "0.0.0",
-    "description": "Another remote module to showcase @squide.",
+    "description": "Another remote module to showcase Squide.",
     "private": true,
     "license": "Apache-2.0",
     "type": "module",

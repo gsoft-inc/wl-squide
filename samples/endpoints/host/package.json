@@ -2,7 +2,7 @@
   "name": "@endpoints/host",
   "author": "Workleap",
   "version": "0.0.0",
-  "description": "Host application to showcase @squide.",
+  "description": "Host application to showcase Squide.",
   "private": true,
   "license": "Apache-2.0",
   "type": "module",

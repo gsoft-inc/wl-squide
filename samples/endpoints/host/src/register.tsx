@@ -1,4 +1,4 @@
-import { getMswPlugin, type FireflyRuntime, type ModuleRegisterFunction } from "@squide/firefly";
+import type { FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 
@@ -42,13 +42,11 @@ function registerRoutes(runtime: FireflyRuntime) {
 
 async function registerMsw(runtime: FireflyRuntime) {
     if (process.env.USE_MSW) {
-        const mswPlugin = getMswPlugin(runtime);
-
         // Files including an import to the  "msw" package are included dynamically to prevent adding
         // MSW stuff to the bundled when it's not used.
         const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
 
-        mswPlugin.registerRequestHandlers(requestHandlers);
+        runtime.registerRequestHandlers(requestHandlers);
     }
 }
 

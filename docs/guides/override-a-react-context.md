@@ -7,7 +7,7 @@ label: Override a React context
 
 In a federated application using [Module Federation](https://webpack.js.org/concepts/module-federation/), it's typical to configure various global [React contexts](https://legacy.reactjs.org/docs/context.html) at the root of the host application. These contexts are usually consumed down the line by the layouts and pages of the remote modules.
 
-Let's take a simple example using a `BackgroundColorContext`:
+Let's explore a simple example using a `BackgroundColorContext`:
 
 ```tsx !#6,12 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";

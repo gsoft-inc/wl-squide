@@ -154,10 +154,15 @@ const myPlugin = runtime.getPlugin(MyPlugin.name) as MyPlugin;
 
 Take a look at the [fake implementations](../reference/default.md#fakes). These implementations are designed to facilitate the set up of a module isolated environment.
 
-## Reference
-
-For a comprehensive list of the Squide API, refer to the [reference](../reference/default.md) section.
-
 ## Guides
 
 Explore the [guides](../guides/default.md) section to learn about Squide advanced features.
+
+Be sure to read, at a minimum, the following guides:
+
+- [Setup MSW](../guides/setup-msw.md)
+- [Add a shared dependency](../guides/add-a-shared-dependency.md)
+
+## Reference
+
+For a comprehensive list of the Squide API, refer to the [reference](../reference/default.md) section.

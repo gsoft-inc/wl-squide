@@ -34,7 +34,8 @@
         "i18next": "*",
         "i18next-browser-languagedetector": "*",
         "react": "*",
-        "react-dom": "*"
+        "react-dom": "*",
+        "react-i18next": "*"
     },
     "devDependencies": {
         "@types/react": "18.2.36",
@@ -46,6 +47,7 @@
         "i18next-browser-languagedetector": "7.2.0",
         "react": "18.2.0",
         "react-dom": "18.2.0",
+        "react-i18next": "13.5.0",
         "tsup": "7.2.0",
         "typescript": "5.2.2"
     },

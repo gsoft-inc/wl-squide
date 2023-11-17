@@ -1,4 +1,4 @@
-import type { LanguageKey } from "./i18n.ts";
+import type { LanguageKey } from "./i18next.ts";
 
 export interface Session {
     user: {
@@ -13,5 +13,3 @@ export interface SessionManager {
     getSession: () => Session | undefined;
     clearSession: () => void;
 }
-
-export const FakeSessionKey = "squide-endpoints-msw-session";

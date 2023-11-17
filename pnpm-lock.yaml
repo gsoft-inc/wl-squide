@@ -255,6 +255,9 @@ importers:
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
+      react-i18next:
+        specifier: 13.5.0
+        version: 13.5.0(i18next@23.7.6)(react-dom@18.2.0)(react@18.2.0)
       tsup:
         specifier: 7.2.0
         version: 7.2.0(@swc/core@1.3.96)(postcss@8.4.31)(ts-node@10.9.1)(typescript@5.2.2)
@@ -951,6 +954,9 @@ importers:
 
   samples/endpoints/host:
     dependencies:
+      '@endpoints/i18next':
+        specifier: workspace:*
+        version: link:../i18next
       '@endpoints/local-module':
         specifier: workspace:*
         version: link:../local-module
@@ -1064,8 +1070,62 @@ importers:
         specifier: 4.15.1
         version: 4.15.1(webpack-cli@5.1.4)(webpack@5.89.0)
 
+  samples/endpoints/i18next:
+    devDependencies:
+      '@endpoints/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@squide/i18next':
+        specifier: workspace:*
+        version: link:../../../packages/i18next
+      '@workleap/eslint-plugin':
+        specifier: 3.0.0
+        version: 3.0.0(@typescript-eslint/parser@6.10.0)(eslint@8.53.0)(jest@29.7.0)(typescript@5.2.2)
+      '@workleap/tsup-configs':
+        specifier: 3.0.1
+        version: 3.0.1(tsup@7.2.0)(typescript@5.2.2)
+      '@workleap/typescript-configs':
+        specifier: 3.0.2
+        version: 3.0.2(typescript@5.2.2)
+      cross-env:
+        specifier: 7.0.3
+        version: 7.0.3
+      i18next:
+        specifier: 23.7.6
+        version: 23.7.6
+      i18next-browser-languagedetector:
+        specifier: 7.2.0
+        version: 7.2.0
+      i18next-chained-backend:
+        specifier: 4.6.2
+        version: 4.6.2
+      i18next-resources-to-backend:
+        specifier: 1.2.0
+        version: 1.2.0
+      nodemon:
+        specifier: 3.0.1
+        version: 3.0.1
+      react:
+        specifier: 18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: 18.2.0
+        version: 18.2.0(react@18.2.0)
+      react-i18next:
+        specifier: 13.5.0
+        version: 13.5.0(i18next@23.7.6)(react-dom@18.2.0)(react@18.2.0)
+      tsup:
+        specifier: 7.2.0
+        version: 7.2.0(@swc/core@1.3.96)(postcss@8.4.31)(ts-node@10.9.1)(typescript@5.2.2)
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
+
   samples/endpoints/local-module:
     dependencies:
+      '@endpoints/i18next':
+        specifier: workspace:*
+        version: link:../i18next
       '@endpoints/shared':
         specifier: workspace:*
         version: link:../shared
@@ -1078,9 +1138,24 @@ importers:
       '@squide/firefly':
         specifier: workspace:*
         version: link:../../../packages/firefly
+      '@squide/i18next':
+        specifier: workspace:*
+        version: link:../../../packages/i18next
       '@tanstack/react-query':
         specifier: 5.7.2
         version: 5.7.2(react-dom@18.2.0)(react@18.2.0)
+      i18next:
+        specifier: 23.7.6
+        version: 23.7.6
+      i18next-browser-languagedetector:
+        specifier: 7.2.0
+        version: 7.2.0
+      i18next-chained-backend:
+        specifier: 4.6.2
+        version: 4.6.2
+      i18next-resources-to-backend:
+        specifier: 1.2.0
+        version: 1.2.0
       msw:
         specifier: 2.0.3
         version: 2.0.3(typescript@5.2.2)
@@ -1093,6 +1168,9 @@ importers:
       react-error-boundary:
         specifier: 4.0.11
         version: 4.0.11(react@18.2.0)
+      react-i18next:
+        specifier: 13.4.1
+        version: 13.4.1(i18next@23.7.6)(react-dom@18.2.0)(react@18.2.0)
       react-router-dom:
         specifier: 6.18.0
         version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
@@ -1166,6 +1244,9 @@ importers:
 
   samples/endpoints/remote-module:
     dependencies:
+      '@endpoints/i18next':
+        specifier: workspace:*
+        version: link:../i18next
       '@endpoints/shared':
         specifier: workspace:*
         version: link:../shared
@@ -1386,6 +1467,9 @@ importers:
       react-error-boundary:
         specifier: 4.0.11
         version: 4.0.11(react@18.2.0)
+      react-i18next:
+        specifier: 13.5.0
+        version: 13.5.0(i18next@23.7.6)(react-dom@18.2.0)(react@18.2.0)
       react-router-dom:
         specifier: 6.18.0
         version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
@@ -11236,7 +11320,6 @@ packages:
     resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
     dependencies:
       void-elements: 3.1.0
-    dev: false
 
   /html-webpack-plugin@5.5.3(webpack@5.89.0):
     resolution: {integrity: sha512-6YrDKTuqaP/TquFH7h4srYWsZx+x6k6+FbsTm0ziCwGHDP78Unr1r9F/H4+sGmMbX08GQcJ+K64x55b+7VM/jg==}
@@ -11424,13 +11507,11 @@ packages:
     resolution: {integrity: sha512-2P092fR+nAPQlGzPUoIIxbwo7PTBqQYgLxwv1XhSTQUAUoelLo5LkX+FqRxxSDg9WEAsrc8+2WL6mJtMGIa6WQ==}
     dependencies:
       '@babel/runtime': 7.23.2
-    dev: false
 
   /i18next-resources-to-backend@1.2.0:
     resolution: {integrity: sha512-8f1l03s+QxDmCfpSXCh9V+AFcxAwIp0UaroWuyOx+hmmv8484GcELHs+lnu54FrNij8cDBEXvEwhzZoXsKcVpg==}
     dependencies:
       '@babel/runtime': 7.23.2
-    dev: false
 
   /i18next@23.7.6:
     resolution: {integrity: sha512-O66BhXBw0fH4bEJMA0/klQKPEbcwAp5wjXEL803pdAynNbg2f4qhLIYlNHJyE7icrL6XmSZKPYaaXwy11kJ6YQ==}
@@ -15575,6 +15656,26 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
+  /react-i18next@13.5.0(i18next@23.7.6)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-CFJ5NDGJ2MUyBohEHxljOq/39NQ972rh1ajnadG9BjTk+UXbHLq4z5DKEbEQBDoIhUmmbuS/fIMJKo6VOax1HA==}
+    peerDependencies:
+      i18next: '>= 23.2.3'
+      react: '>= 16.8.0'
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.23.2
+      html-parse-stringify: 3.0.1
+      i18next: 23.7.6
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: true
+
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
     dev: true
@@ -18035,7 +18136,6 @@ packages:
   /void-elements@3.1.0:
     resolution: {integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==}
     engines: {node: '>=0.10.0'}
-    dev: false
 
   /w3c-xmlserializer@4.0.0:
     resolution: {integrity: sha512-d+BFHzbiCx6zGfz0HyQ6Rg69w9k19nviJspaj4yNscGjrHu94sVP+aRm75yEbCh+r2/yR+7q6hux9LVtbuTGBw==}

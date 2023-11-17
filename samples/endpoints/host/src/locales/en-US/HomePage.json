@@ -1,0 +1,7 @@
+{
+    "title": "Home",
+    "servedBy": "This page is served by <code>@endpoints/host</code>",
+    "idLabel": "Id",
+    "nameLabel": "Name",
+    "speciesLabel": "Species"
+}

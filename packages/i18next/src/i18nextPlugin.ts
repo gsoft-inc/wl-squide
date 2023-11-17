@@ -1,18 +1,21 @@
 import { Plugin, isNil, type Runtime } from "@squide/core";
+import type { i18n } from "i18next";
 import LanguageDetector, { type DetectorOptions } from "i18next-browser-languagedetector";
+import { i18nextInstanceRegistry } from "./i18nextInstanceRegistry.ts";
 
 export interface i18nextPluginOptions {
     detection?: Omit<DetectorOptions, "lookupQuerystring" | "lookupLocalStorage">;
 }
 
-export class i18nextPlugin extends Plugin {
-    // #currentLanguage?: string = undefined;
+export class i18nextPlugin<T extends string = string> extends Plugin {
+    #currentLanguage?: T = undefined;
 
-    readonly #supportedLanguages: string[];
-    readonly #fallbackLanguage: string;
+    readonly #supportedLanguages: T[];
+    readonly #fallbackLanguage: T;
     readonly #languageDetector: LanguageDetector;
+    readonly #registry = new i18nextInstanceRegistry();
 
-    constructor(supportedLanguages: string[], fallbackLanguage: string, queryStringKey: string, { detection }: i18nextPluginOptions = {}) {
+    constructor(supportedLanguages: T[], fallbackLanguage: T, queryStringKey: string, { detection }: i18nextPluginOptions = {}) {
         super(i18nextPlugin.name);
 
         this.#supportedLanguages = supportedLanguages;
@@ -25,8 +28,11 @@ export class i18nextPlugin extends Plugin {
         });
     }
 
-    // Maybe should have a detectLanguage() function
-    getCurrentLanguage() {
+    registerInstance(instance: i18n) {
+        this.#registry.add(instance);
+    }
+
+    detectUserLanguage() {
         let userLanguage = this.#languageDetector.detect();
 
         // The navigator default language can be something like ["en-US", "en-US", "en", "en-US"].
@@ -41,42 +47,35 @@ export class i18nextPlugin extends Plugin {
             userLanguage = this.#fallbackLanguage;
         }
 
-        return userLanguage;
+        this.#currentLanguage = userLanguage as T;
     }
 
-    // detectAndCacheLanguage() {
-    //     let userLanguage = this.#languageDetector.detect();
+    get currentLanguage() {
+        if (isNil(this.#currentLanguage)) {
+            throw new Error("[squide] The currentLanguage getter is called but no user language has been detected yet. Did you forget to call the detectUserLanguage function?");
+        }
 
-    //     // The navigator default language can be something like ["en-US", "en-US", "en", "en-US"].
-    //     if (Array.isArray(userLanguage)) {
-    //         // Ensure the navigator default language is supported.
-    //         userLanguage = userLanguage.find(x => {
-    //             return this.#supportedLanguages.some(y => y === x);
-    //         });
-    //     }
+        return this.#currentLanguage;
+    }
 
-    //     if (isNil(userLanguage)) {
-    //         userLanguage = this.#fallbackLanguage;
-    //     }
+    changeLanguage(language: T) {
+        if (!this.#supportedLanguages.includes(language)) {
+            throw new Error(`[squide] Cannot change language for ${language} because it's not a supported languages. Supported languages are ${this.#supportedLanguages.map(x => `"${x}"`).join(",")}.`);
+        }
 
-    //     this.#currentLanguage = userLanguage;
-    //     this.#languageDetector.cacheUserLanguage(userLanguage);
-    // }
+        this.#registry.instances.forEach(x => {
+            x.changeLanguage(language);
+        });
 
-    // getCurrentLanguage() {
-    //     if (isNil(this.#currentLanguage)) {
-    //         throw new Error("[squide] The getCurrentLanguage function is called but no user language has been detected yet. Did you forget to call the detectLanguage function?");
-    //     }
-
-    //     return this.#currentLanguage;
-    // }
+        this.#currentLanguage = language;
+    }
 }
 
-export function getI18nPlugin(runtime: Runtime) {
+export function getI18nextPlugin(runtime: Runtime) {
     const plugin = runtime.getPlugin(i18nextPlugin.name);
 
     if (isNil(plugin)) {
-        throw new Error("[squide] The getI18nPlugin function is called but no i18nextPlugin instance has been registered with the runtime.");
+        throw new Error("[squide] The getI18nextPlugin function is called but no i18nextPlugin instance has been registered with the runtime.");
     }
 
     return plugin as i18nextPlugin;

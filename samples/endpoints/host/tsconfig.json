@@ -11,6 +11,7 @@
             "@squide/fakes": ["../../../packages/fakes/src/index.ts"],
             "@endpoints/shell": ["../shell/src/index.ts"],
             "@endpoints/shared": ["../shared/src/index.ts"],
+            "@endpoints/i18next": ["../i18next/src/index.ts"],
             "@endpoints/local-module": ["../local-module/src/register.tsx"]
         }
     },

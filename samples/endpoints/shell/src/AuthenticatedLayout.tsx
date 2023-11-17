@@ -3,28 +3,6 @@ import { isNavigationLink, useLogger, useNavigationItems, useRenderedNavigationI
 import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
-// export function LanguageToggle() {
-//     const currentLanguage = useCurrentLanguage() as LanguageKey;
-
-//     const url = useMemo(() => {
-//         const toggleLanguage: LanguageKey = currentLanguage === "en-US" ? "fr-CA" : "en-US";
-
-//         const newUrl = new URL(window.location.href);
-
-//         if (newUrl.searchParams.has(LanguageQueryStringKey)) {
-//             newUrl.searchParams.set(LanguageQueryStringKey, toggleLanguage);
-//         } else {
-//             newUrl.searchParams.append(LanguageQueryStringKey, toggleLanguage);
-//         }
-
-//         return newUrl.href;
-//     }, [currentLanguage]);
-
-//     return (
-//         <a href={url}>{currentLanguage === "en-US" ? "French" : "Anglais"}</a>
-//     );
-// }
-
 type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
 
 type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactNode;
@@ -103,9 +81,6 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
                     {/* eslint-disable-next-line max-len */}
                     (Subscription: <span style={{ fontWeight: "bold" }}>{toSubscriptionStatusLabel(subscription?.status)}</span><span style={{ marginLeft: "10px", marginRight: "10px" }}>-</span>User: <span style={{ fontWeight: "bold" }}>{session?.user?.name}/{session?.user?.preferredLanguage}</span>)
                 </div>
-                {/* <div style={{ marginRight: "20px" }}>
-                    <LanguageToggle />
-                </div> */}
                 <div>
                     <button type="button" onClick={handleDisconnect}>Disconnect</button>
                 </div>

@@ -43,6 +43,7 @@
     "dependencies": {
         "@endpoints/shared": "workspace:*",
         "@endpoints/shell": "workspace:*",
+        "@endpoints/i18next": "workspace:*",
         "@squide/fakes": "workspace:*",
         "@squide/firefly": "workspace:*",
         "@squide/i18next": "workspace:*",

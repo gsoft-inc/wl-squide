@@ -1,7 +1,11 @@
+import type { LanguageKey } from "@endpoints/shared";
 import type { FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
+import { I18nextNavigationLabel, getI18nextPlugin, type i18nextPlugin } from "@squide/i18next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type { i18n } from "i18next";
 import type { ReactNode } from "react";
-import i18n, { initI18n } from "./i18n.ts";
+import { I18nextProvider } from "react-i18next";
+import { createI18nextInstance } from "./i18next.ts";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -14,28 +18,35 @@ const queryClient = new QueryClient({
     }
 });
 
-function Providers({ children }: { children: ReactNode }) {
+interface ProvidersProps {
+    i18nextInstance: i18n;
+    children: ReactNode;
+}
+
+function Providers({ i18nextInstance, children }: ProvidersProps) {
     return (
         <QueryClientProvider client={queryClient}>
-            {children}
+            <I18nextProvider i18n={i18nextInstance}>
+                {children}
+            </I18nextProvider>
         </QueryClientProvider>
     );
 }
 
-function registerRoutes(runtime: FireflyRuntime) {
+function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n) {
     runtime.registerRoute({
         index: true,
         lazy: async () => {
             const { HomePage } = await import("./HomePage.tsx");
 
             return {
-                element: <Providers><HomePage /></Providers>
+                element: <Providers i18nextInstance={i18nextInstance}><HomePage /></Providers>
             };
         }
     });
 
     runtime.registerNavigationItem({
-        $label: i18n.t("navigationItems:homePage"),
+        $label: <I18nextNavigationLabel i18nextInstance={i18nextInstance} resourceKey="navigationItems:homePage" />,
         $priority: 999,
         to: "/"
     });
@@ -52,8 +63,12 @@ async function registerMsw(runtime: FireflyRuntime) {
 }
 
 export const registerHost: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
-    await initI18n(runtime);
+    const plugin = getI18nextPlugin(runtime) as i18nextPlugin<LanguageKey>;
+    const i18nextInstance = await createI18nextInstance(plugin.currentLanguage);
+
+    plugin.registerInstance(i18nextInstance);
+
     await registerMsw(runtime);
 
-    return registerRoutes(runtime);
+    return registerRoutes(runtime, i18nextInstance);
 };

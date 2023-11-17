@@ -1,6 +1,6 @@
 import type { i18n } from "i18next";
 
-export class i18nInstanceRegistry {
+export class i18nextInstanceRegistry {
     readonly #instances: i18n[] = [];
 
     add(instance: i18n) {

@@ -10,7 +10,8 @@
             "@squide/i18next": ["../../../packages/i18next/src/index.ts"],
             "@squide/fakes": ["../../../packages/fakes/src/index.ts"],
             "@endpoints/shell": ["../shell/src/index.ts"],
-            "@endpoints/shared": ["../shared/src/index.ts"]
+            "@endpoints/shared": ["../shared/src/index.ts"],
+            "@endpoints/i18next": ["../i18next/src/index.ts"]
         }
     },
     "exclude": ["dist", "node_modules"]

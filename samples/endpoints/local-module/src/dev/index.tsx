@@ -1,3 +1,4 @@
+import { createI18NextPlugin } from "@endpoints/i18next";
 import { registerLayouts } from "@endpoints/shared";
 import { registerShell } from "@endpoints/shell";
 import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, setMswAsStarted } from "@squide/firefly";
@@ -11,6 +12,7 @@ import { sessionAccessor, sessionManager } from "./session.ts";
 // Create the shell runtime.
 // Services, loggers and sessionAccessor could be reuse through a shared packages or faked when in isolation.
 const runtime = new FireflyRuntime({
+    plugins: [createI18NextPlugin()],
     loggers: [new ConsoleLogger()],
     sessionAccessor
 });

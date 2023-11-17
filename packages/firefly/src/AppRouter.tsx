@@ -49,16 +49,16 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
     // Re-render the app once MSW is started, otherwise, the API calls for module routes will return a 404 status.
     const isMswStarted = useIsMswStarted(waitForMsw);
 
-    useEffect(() => {
-        // Only log these messages if MSW is enabled.
-        if (waitForMsw) {
-            if ((areModulesRegistered || areModulesReady) && !isMswStarted) {
-                logger.debug(`[shell] Modules are ${areModulesReady ? "ready" : "registered"}, waiting for MSW to start...`);
-            } else if (!areModulesRegistered && !areModulesReady && isMswStarted) {
-                logger.debug("[shell] MSW is started, waiting for the modules...");
-            }
-        }
-    }, [logger, areModulesRegistered, areModulesReady, isMswStarted, waitForMsw]);
+    // useEffect(() => {
+    //     // Only log these messages if MSW is enabled.
+    //     if (waitForMsw) {
+    //         if ((areModulesRegistered || areModulesReady) && !isMswStarted) {
+    //             logger.debug(`[shell] Modules are ${areModulesReady ? "ready" : "registered"}, waiting for MSW to start...`);
+    //         } else if (!areModulesRegistered && !areModulesReady && isMswStarted) {
+    //             logger.debug("[shell] MSW is started, waiting for the modules...");
+    //         }
+    //     }
+    // }, [logger, areModulesRegistered, areModulesReady, isMswStarted, waitForMsw]);
 
     useEffect(() => {
         // Don't go further if no handler has been provided to load public data.

@@ -1,3 +1,4 @@
+import { createI18NextPlugin } from "@endpoints/i18next";
 import { registerLocalModule } from "@endpoints/local-module";
 import { isNetlify, registerLayouts } from "@endpoints/shared";
 import { registerShell } from "@endpoints/shell";
@@ -5,7 +6,6 @@ import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, re
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App.tsx";
-import { createI18nPlugin } from "./i18n.ts";
 import { registerHost } from "./register.tsx";
 import { sessionAccessor, sessionManager } from "./session.ts";
 
@@ -16,10 +16,8 @@ const Remotes: RemoteDefinition[] = [
     }
 ];
 
-const i18nPlugin = createI18nPlugin();
-
 const runtime = new FireflyRuntime({
-    plugins: [i18nPlugin],
+    plugins: [createI18NextPlugin()],
     loggers: [new ConsoleLogger()],
     sessionAccessor
 });

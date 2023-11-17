@@ -1,5 +1,6 @@
 import { FeatureFlagsContext, SubscriptionContext, TelemetryServiceContext, fetchJson, isApiError, type FeatureFlags, type Session, type SessionManager, type Subscription, type TelemetryService } from "@endpoints/shared";
 import { AppRouter as FireflyAppRouter, completeModuleRegistrations, useLogger, useRuntime, type Logger } from "@squide/firefly";
+import { useChangeLanguage } from "@squide/i18next";
 import { useCallback, useState } from "react";
 import { AppRouterErrorBoundary } from "./AppRouterErrorBoundary.tsx";
 
@@ -27,7 +28,8 @@ async function fetchSession(setSession: (session: Session) => void, logger: Logg
     const session: Session = {
         user: {
             id: data.userId,
-            name: data.username
+            name: data.username,
+            preferredLanguage: data.preferredLanguage
         }
     };
 
@@ -77,6 +79,7 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
 
     const logger = useLogger();
     const runtime = useRuntime();
+    const changeLanguage = useChangeLanguage();
 
     const handleLoadPublicData = useCallback(() => {
         return fetchPublicData(setFeatureFlags, logger);
@@ -85,10 +88,14 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
     const handleLoadProtectedData = useCallback(() => {
         const setSession = (session: Session) => {
             sessionManager.setSession(session);
+
+            // When the session has been retrieve, update the language to match the user
+            // preferred language.
+            changeLanguage(session.user.preferredLanguage);
         };
 
         return fetchProtectedData(setSession, setSubscription, logger);
-    }, [logger, sessionManager]);
+    }, [logger, sessionManager, changeLanguage]);
 
     const handleCompleteRegistrations = useCallback(() => {
         return completeModuleRegistrations(runtime, {

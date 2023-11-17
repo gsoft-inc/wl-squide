@@ -1,17 +1,10 @@
 import { HttpResponse, http, type HttpHandler } from "msw";
 import { sessionManager } from "./session.ts";
+import { simulateDelay } from "./simulateDelay.ts";
 
 interface LoginCredentials {
     username: string;
     password: string;
-}
-
-function simulateDelay(delay: number) {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve(undefined);
-        }, delay);
-    });
 }
 
 // Must specify the return type, otherwise we get a TS2742: The inferred type cannot be named without a reference to X. This is likely not portable.
@@ -30,7 +23,8 @@ export const authenticationHandlers: HttpHandler[] = [
 
         sessionManager.setSession({
             userId: Math.random(),
-            username
+            username,
+            preferredLanguage: "fr-CA"
         });
 
         return new HttpResponse(null, {
@@ -44,19 +38,5 @@ export const authenticationHandlers: HttpHandler[] = [
         return new HttpResponse(null, {
             status: 200
         });
-    }),
-
-    http.get("/api/session", async () => {
-        const session = sessionManager.getSession();
-
-        if (!session) {
-            return new HttpResponse(null, {
-                status: 401
-            });
-        }
-
-        await simulateDelay(500);
-
-        return HttpResponse.json(session);
     })
 ];

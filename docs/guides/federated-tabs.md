@@ -1,5 +1,5 @@
 ---
-order: 50
+order: 240
 ---
 
 # Federated tabs
@@ -96,13 +96,14 @@ export function Tab1() {
 }
 ```
 
-```tsx !#7,10 remote-module-2/src/register.tsx
+```tsx !#8,11 remote-module-2/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab2 } from "./Tab2.tsx";
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        // The first part of the "path" must be the same as the nested layout path (FederatedTabsLayout).
+        // React Router nested routes requires the first part of the "path" to be the same 
+        // as the nested layout path (FederatedTabsLayout).
         path: "/federated-tabs/tab-2"
         element: <Tab2 />
     }, { 
@@ -119,13 +120,14 @@ export function Tab2() {
 }
 ```
 
-```tsx !#7,10 local-module/src/register.tsx
+```tsx !#8,11 local-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab3 } from "./Tab3.tsx";
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        // The first part of the "path" must be the same as the nested layout path (FederatedTabsLayout).
+        // React Router nested routes requires the first part of the "path" to be the same 
+        // as the nested layout path (FederatedTabsLayout).
         path: "/federated-tabs/tab-3"
         element: <Tab3 />
     }, {
@@ -176,13 +178,14 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 }
 ```
 
-```tsx !#19 remote-module-2/src/register.tsx
+```tsx !#20 remote-module-2/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab2 } from "./Tab2.tsx";
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        // The first part of the "path" must be the same as the nested layout path (FederatedTabsLayout).
+        // React Router nested routes requires the first part of the "path" to be the same 
+        // as the nested layout path (FederatedTabsLayout).
         path: "/federated-tabs/tab-2"
         element: <Tab2 />
     }, { 
@@ -200,13 +203,14 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 }
 ```
 
-```tsx !#19 local-module/src/register.tsx
+```tsx !#20 local-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab3 } from "./Tab3.tsx";
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        // The first part of the "path" must be the same as the nested layout path (FederatedTabsLayout).
+        // React Router nested routes requires the first part of the "path" to be the same 
+        // as the nested layout path (FederatedTabsLayout).
         path: "/federated-tabs/tab-3"
         element: <Tab3 />
     }, { 

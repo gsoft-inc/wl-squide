@@ -1,8 +1,23 @@
 import type { DeferredRegistrationData } from "@endpoints/shell";
 import type { FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
 import { Providers } from "./Providers.tsx";
+import i18n, { initI18n } from "./i18n.ts";
 
 const registerRoutes: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = runtime => {
+    runtime.registerRoute({
+        $visibility: "public",
+        path: "/anonymous",
+        lazy: async () => {
+            const { AnonymousPage } = await import("./AnonymousPage.tsx");
+
+            return {
+                element: <Providers><AnonymousPage /></Providers>
+            };
+        }
+    }, {
+        parentName: "root-error-boundary"
+    });
+
     runtime.registerRoute({
         path: "/federated-tabs/episodes",
         lazy: async () => {
@@ -43,21 +58,21 @@ const registerRoutes: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRe
     });
 
     runtime.registerNavigationItem({
-        $label: "Episodes",
+        $label: i18n.t("navigationItems:episodesTab"),
         to: "/federated-tabs/episodes"
     }, {
         menuId: "/federated-tabs"
     });
 
     runtime.registerNavigationItem({
-        $label: "Locations",
+        $label: i18n.t("navigationItems:locationsTab"),
         to: "/federated-tabs/locations"
     }, {
         menuId: "/federated-tabs"
     });
 
     runtime.registerNavigationItem({
-        $label: "Failing",
+        $label: i18n.t("navigationItems:failingTab"),
         to: "/federated-tabs/failing"
     }, {
         menuId: "/federated-tabs"
@@ -71,7 +86,7 @@ const registerRoutes: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRe
             });
 
             runtime.registerNavigationItem({
-                $label: "Feature B",
+                $label: i18n.t("navigationItems:featureBPage"),
                 to: "/feature-b"
             });
         }
@@ -83,7 +98,7 @@ const registerRoutes: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRe
             });
 
             runtime.registerNavigationItem({
-                $label: "Feature C",
+                $label: i18n.t("navigationItems:featureCPage"),
                 to: "/feature-c"
             });
         }
@@ -101,6 +116,7 @@ async function registerMsw(runtime: FireflyRuntime) {
 }
 
 export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = async runtime => {
+    await initI18n(runtime);
     await registerMsw(runtime);
 
     return registerRoutes(runtime);

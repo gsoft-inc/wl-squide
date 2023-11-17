@@ -7,7 +7,9 @@ const config: Config = {
     transformIgnorePatterns: [
         // Must exclude @workleap/webpack-configs from the transform ignore files
         // because it's an ESM only project which must be processed by SWC.
-        // The pattern is optimized for PNPM, for more info view: https://jestjs.io/docs/configuration#transformignorepatterns-arraystring.
+        // The pattern is optimized for PNPM, for more info view:
+        // - https://jestjs.io/docs/configuration#transformignorepatterns-arraystring
+        // - https://jestjs.io/docs/ecmascript-modules
         `${path.join(
             __dirname,
             "../.."

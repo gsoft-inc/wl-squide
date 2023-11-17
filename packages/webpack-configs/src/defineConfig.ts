@@ -37,6 +37,7 @@ export type Router = "react-router";
 export interface Features {
     router?: Router;
     msw?: boolean;
+    i18next?: boolean;
 }
 
 // Generally, only the host application should have eager dependencies.
@@ -63,10 +64,20 @@ function getMswSharedDependency(isHost: boolean) {
     };
 }
 
-function getFeaturesDependencies({ router, msw }: Features, isHost: boolean) {
+function getI18nextSharedDependency(isHost: boolean) {
+    return {
+        "@squide/i18next": {
+            singleton: true,
+            eager: isHost ? true : undefined
+        }
+    };
+}
+
+function getFeaturesDependencies({ router, msw, i18next }: Features, isHost: boolean) {
     return {
         ...(router === "react-router" ? getReactRouterSharedDependencies(isHost) : {}),
-        ...(msw ? getMswSharedDependency(isHost) : {})
+        ...(msw ? getMswSharedDependency(isHost) : {}),
+        ...(i18next ? getI18nextSharedDependency(isHost) : {})
     };
 }
 

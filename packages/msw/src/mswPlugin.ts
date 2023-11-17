@@ -1,4 +1,4 @@
-import { Plugin, type Runtime } from "@squide/core";
+import { Plugin, isNil, type Runtime } from "@squide/core";
 import type { RequestHandler } from "msw";
 import { RequestHandlerRegistry } from "./requestHandlerRegistry.ts";
 
@@ -19,5 +19,11 @@ export class MswPlugin extends Plugin {
 }
 
 export function getMswPlugin(runtime: Runtime) {
-    return runtime.getPlugin(MswPlugin.name) as MswPlugin;
+    const plugin = runtime.getPlugin(MswPlugin.name);
+
+    if (isNil(plugin)) {
+        throw new Error("[squide] The getMswPlugin function is called but no MswPlugin instance has been registered with the runtime.");
+    }
+
+    return plugin as MswPlugin;
 }

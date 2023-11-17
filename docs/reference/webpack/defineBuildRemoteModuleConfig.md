@@ -24,6 +24,8 @@ const webpackConfig = defineBuildRemoteModuleConfig(swcConfig: {}, applicationNa
 - `applicationName`: The remote module application name.
 - `options`: An optional object literal of options:
     - Accepts most of webpack `definedDevConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/#3-set-predefined-options).
+    - `features`: An optional object literal of feature switches to define additional shared dependencies.
+        - `i18next`: Whether or not to add `@squide/i18next` as a shared dependency.
     - `sharedDependencies`: An optional object literal of additional (or updated) module federation shared dependencies.
     - `moduleFederationPluginOptions`: An optional object literal of [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) options.
 
@@ -79,6 +81,25 @@ import { swcConfig } from "./swc.build.js";
 
 export default defineBuildRemoteModuleConfig(swcConfig, "remote1");
 ```
+
+### Activate additional features
+
+```js !#7-9 remote-module/webpack.build.js
+// @ts-check
+
+import { defineBuildRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
+import { swcConfig } from "./swc.build.js";
+
+export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://localhost:8080/", {
+    features: {
+        i18next: true
+    }
+});
+```
+
+!!!info
+Features must be activated on the host application as well as every remote module.
+!!!
 
 ### Specify additional shared dependencies
 

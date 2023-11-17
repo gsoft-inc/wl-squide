@@ -1,5 +1,5 @@
 ---
-order: 60
+order: 240
 ---
 
 # Develop a module in isolation
@@ -137,7 +137,7 @@ const context: AppContext = {
     name: "Demo application"
 };
 
-// Register the shell module.
+// Register the newly created shell module.
 await registerLocalModules([registerShell, registerHost], runtime, { context });
 
 await registerRemoteModules(Remotes, runtime, { context });
@@ -195,8 +195,8 @@ import { register as registerModule } from "./register.tsx";
 import { registerDev } from "./dev/register.tsx";
 import { registerShell } from "@sample/shell";
 
-// Create the shell runtime.
-// Services, loggers and sessionAccessor could be reuse through a shared packages or faked when in isolation.
+// Services, loggers, sessionAccessor, etc... could be reuse through a
+// shared packages or faked when in isolation.
 const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger()]
 });

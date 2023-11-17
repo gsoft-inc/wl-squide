@@ -1,5 +1,5 @@
 ---
-order: 80
+order: 280
 ---
 
 # Add authentication
@@ -262,8 +262,8 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
         element: <RootLayout />,
         children: [
             {
-                // The root error boundary is a named route to be able to nest
-                // the loging / logout page under it with the "parentName" option.
+                // The root error boundary is a named route, allowing the logging and logout pages 
+                // to be nested under it using a "parentName" option.
                 $name: "root-error-boundary",
                 errorElement: <RootErrorBoundary />,
                 children: [
@@ -292,7 +292,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     // The login page is nested under the root error boundary to be defined before the
-    // authentication boundary to be publicly accessible.
+    // authentication boundary and be publicly accessible.
     runtime.registerRoute({
         path: "/login",
         element: <LoginPage />
@@ -301,7 +301,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     // The logout page is nested under the root error boundary to be defined before the
-    // authentication boundary to be publicly accessible.
+    // authentication boundary and be publicly accessible.
     runtime.registerRoute({
         path: "/logout",
         element: <LogoutPage />

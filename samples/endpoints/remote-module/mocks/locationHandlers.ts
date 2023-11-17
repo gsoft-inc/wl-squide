@@ -1,11 +1,20 @@
 /* eslint-disable max-len */
 
 import { HttpResponse, http, type HttpHandler } from "msw";
+import { readonlyLocalStorage } from "./session.ts";
 
 // Must specify the return type, otherwise we get a TS2742: The inferred type cannot be named without a reference to X. This is likely not portable.
 // A type annotation is necessary.
 export const locationHandlers: HttpHandler[] = [
     http.get("/api/location/1,2,3", async () => {
+        const session = readonlyLocalStorage.getSession();
+
+        if (!session) {
+            return new HttpResponse(null, {
+                status: 401
+            });
+        }
+
         return HttpResponse.json([{
             "id": 1,
             "name": "Earth (C-137)",

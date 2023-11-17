@@ -136,6 +136,39 @@ exports[`defineBuildHostConfig when additional shared dependencies are provided,
 }
 `;
 
+exports[`defineBuildHostConfig when i18next is activated, add i18next shared dependency 1`] = `
+{
+  "index": 3,
+  "plugin": ModuleFederationPlugin {
+    "_options": {
+      "name": "host",
+      "shared": {
+        "@squide/core": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/i18next": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/webpack-module-federation": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+      },
+    },
+  },
+}
+`;
+
 exports[`defineBuildHostConfig when msw is activated, add msw shared dependency 1`] = `
 {
   "index": 3,
@@ -400,6 +433,43 @@ exports[`defineBuildRemoteModuleConfig when additional shared dependencies are p
 }
 `;
 
+exports[`defineBuildRemoteModuleConfig when i18next is activated, add i18next shared dependency 1`] = `
+{
+  "index": 2,
+  "plugin": ModuleFederationPlugin {
+    "_options": {
+      "exposes": {
+        "./register": "./src/register",
+      },
+      "filename": "remoteEntry.js",
+      "name": "remote1",
+      "shared": {
+        "@squide/core": {
+          "eager": undefined,
+          "singleton": true,
+        },
+        "@squide/i18next": {
+          "eager": undefined,
+          "singleton": true,
+        },
+        "@squide/webpack-module-federation": {
+          "eager": undefined,
+          "singleton": true,
+        },
+        "react": {
+          "eager": undefined,
+          "singleton": true,
+        },
+        "react-dom": {
+          "eager": undefined,
+          "singleton": true,
+        },
+      },
+    },
+  },
+}
+`;
+
 exports[`defineBuildRemoteModuleConfig when msw is activated, add msw shared dependency 1`] = `
 {
   "index": 2,
@@ -647,6 +717,39 @@ exports[`defineDevHostConfig when additional shared dependencies are provided, a
 }
 `;
 
+exports[`defineDevHostConfig when i18next is activated, add i18next shared dependency 1`] = `
+{
+  "index": 2,
+  "plugin": ModuleFederationPlugin {
+    "_options": {
+      "name": "host",
+      "shared": {
+        "@squide/core": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/i18next": {
+          "eager": true,
+          "singleton": true,
+        },
+        "@squide/webpack-module-federation": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+      },
+    },
+  },
+}
+`;
+
 exports[`defineDevHostConfig when msw is activated, add msw shared dependency 1`] = `
 {
   "index": 2,
@@ -734,7 +837,7 @@ exports[`defineDevHostConfig when overriding options are provided for a default 
 }
 `;
 
-exports[`defineDevHostConfig when the router, add react-router shared dependencies 1`] = `
+exports[`defineDevHostConfig when the router is react-router, add react-router shared dependencies 1`] = `
 {
   "index": 2,
   "plugin": ModuleFederationPlugin {
@@ -903,6 +1006,43 @@ exports[`defineDevRemoteModuleConfig when additional shared dependencies are pro
         },
         "second": {
           "eager": true,
+          "singleton": true,
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`defineDevRemoteModuleConfig when i18next is activated, add i18next shared dependency 1`] = `
+{
+  "index": 1,
+  "plugin": ModuleFederationPlugin {
+    "_options": {
+      "exposes": {
+        "./register": "./src/register",
+      },
+      "filename": "remoteEntry.js",
+      "name": "remote1",
+      "shared": {
+        "@squide/core": {
+          "eager": undefined,
+          "singleton": true,
+        },
+        "@squide/i18next": {
+          "eager": undefined,
+          "singleton": true,
+        },
+        "@squide/webpack-module-federation": {
+          "eager": undefined,
+          "singleton": true,
+        },
+        "react": {
+          "eager": undefined,
+          "singleton": true,
+        },
+        "react-dom": {
+          "eager": undefined,
           "singleton": true,
         },
       },

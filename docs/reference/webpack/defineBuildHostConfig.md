@@ -25,6 +25,8 @@ const webpackConfig = defineBuildHostConfig(swcConfig: {}, applicationName, opti
 - `options`: An optional object literal of options:
     - Accepts most of webpack `definedBuildConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/#3-set-predefined-options).
     - `htmlWebpackPluginOptions`: An optional object literal accepting any property of the [HtmlWebpackPlugin](https://github.com/jantimon/html-webpack-plugin#options).
+    - `features`: An optional object literal of feature switches to define additional shared dependencies.
+        - `i18next`: Whether or not to add `@squide/i18next` as a shared dependency.
     - `sharedDependencies`: An optional object literal of additional (or updated) module federation shared dependencies.
     - `moduleFederationPluginOptions`: An optional object literal of [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) options.
 
@@ -57,6 +59,26 @@ import { swcConfig } from "./swc.build.js";
 
 export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/");
 ```
+
+### Activate additional features
+
+```js !#7-9 host/webpack.build.js
+// @ts-check
+
+import { defineBuildHostConfig } from "@squide/firefly/defineConfig.js";
+import { swcConfig } from "./swc.build.js";
+
+export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/", {
+    features: {
+        i18next: true
+    }
+});
+```
+
+
+!!!info
+Features must be activated on the host application as well as every remote module.
+!!!
 
 ### Specify additional shared dependencies
 

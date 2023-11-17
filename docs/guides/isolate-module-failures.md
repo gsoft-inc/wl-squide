@@ -1,5 +1,5 @@
 ---
-order: 90
+order: 290
 ---
 
 # Isolate module failures
@@ -51,14 +51,13 @@ export function RootLayout() {
 }
 ```
 
-```tsx !#8,12 host/src/register.tsx
+```tsx !#7,11 host/src/register.tsx
 import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
 export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        // Default layout.
         element: <RootLayout />,
         children: [
             {

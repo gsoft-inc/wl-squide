@@ -1,6 +1,7 @@
 import type { FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
+import i18n, { initI18n } from "./i18n.ts";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -34,7 +35,7 @@ function registerRoutes(runtime: FireflyRuntime) {
     });
 
     runtime.registerNavigationItem({
-        $label: "Home",
+        $label: i18n.t("navigationItems:homePage"),
         $priority: 999,
         to: "/"
     });
@@ -42,7 +43,7 @@ function registerRoutes(runtime: FireflyRuntime) {
 
 async function registerMsw(runtime: FireflyRuntime) {
     if (process.env.USE_MSW) {
-        // Files including an import to the  "msw" package are included dynamically to prevent adding
+        // Files including an import to the "msw" package are included dynamically to prevent adding
         // MSW stuff to the bundled when it's not used.
         const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
 
@@ -51,6 +52,7 @@ async function registerMsw(runtime: FireflyRuntime) {
 }
 
 export const registerHost: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
+    await initI18n(runtime);
     await registerMsw(runtime);
 
     return registerRoutes(runtime);

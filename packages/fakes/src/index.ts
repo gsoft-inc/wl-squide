@@ -1,1 +1,3 @@
-export * from "./localStorageSessionManager.tsx";
+export * from "./localStorageSessionManager.ts";
+export * from "./readonlyLocalStorage.ts";
+

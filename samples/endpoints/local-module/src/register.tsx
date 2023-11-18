@@ -69,11 +69,6 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
     });
 
     runtime.registerNavigationItem({
-        $label: <I18nextNavigationLabel i18nextInstance={i18nextInstance} resourceKey="navigationItems:publicPage" />,
-        to: "/public"
-    });
-
-    runtime.registerNavigationItem({
         $label: <I18nextNavigationLabel i18nextInstance={i18nextInstance} resourceKey="navigationItems:charactersTab" />,
         to: "/federated-tabs"
     }, {

@@ -1,6 +1,7 @@
 import { useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { Suspense, useCallback, type MouseEvent } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { Trans, useTranslation } from "react-i18next";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
 export interface FederatedTabsLayoutProps {
@@ -28,6 +29,8 @@ const renderSection: RenderSectionFunction = elements => {
 };
 
 function TabsError() {
+    const { t } = useTranslation("TabsError");
+
     const navigate = useNavigate();
 
     const handleTryAgain = useCallback((event: MouseEvent<HTMLButtonElement>) => {
@@ -40,25 +43,36 @@ function TabsError() {
     return (
         <div>
             <div style={{ color: "red", marginBottom: "10px" }}>
-                An error occured while rendering the tab.
+                {t("message")}
             </div>
-            <button type="button" onClick={handleTryAgain}>Try again</button>
+            <button type="button" onClick={handleTryAgain}>
+                {t("tryAgainButtonLabel")}
+            </button>
         </div>
     );
 }
 
 export function FederatedTabsLayout({ host }: FederatedTabsLayoutProps) {
+    const { t } = useTranslation("FederatedTabsLayout");
+
     const navigationItems = useNavigationItems("/federated-tabs");
     const renderedTabs = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (
         <>
-            <h1>Tabs</h1>
-            {host && <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>This layout is served by <code>{host}</code></p>}
+            <h1>{t("title")}</h1>
+            {host && <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>
+                <Trans
+                    i18nKey="FederatedTabsLayout:servedBy"
+                    shouldUnescape
+                    values={{ host }}
+                    components={{ code: <code /> }}
+                />
+            </p>}
             {renderedTabs}
             <div style={{ paddingTop: "20px" }}>
                 <ErrorBoundary FallbackComponent={TabsError}>
-                    <Suspense fallback={<div>Loading...</div>}>
+                    <Suspense fallback={<div>{t("loadingMessage")}</div>}>
                         <Outlet />
                     </Suspense>
                 </ErrorBoundary>

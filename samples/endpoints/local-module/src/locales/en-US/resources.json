@@ -1,7 +1,6 @@
 {
     "navigationItems": {
         "subscriptionPage": "Subscription",
-        "publicPage": "Public page",
         "charactersTab": "Characters",
         "featureAPage": "Feature A"
     },

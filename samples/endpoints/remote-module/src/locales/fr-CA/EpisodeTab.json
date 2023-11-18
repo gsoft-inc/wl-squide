@@ -1,7 +1,0 @@
-{
-    "title": "Épisodes",
-    "servedBy": "Ce tab est servi par <code>@endpoints/remote-module</code>",
-    "idLabel": "Id",
-    "nameLabel": "Nom",
-    "episodeLabel": "Épisode"
-}

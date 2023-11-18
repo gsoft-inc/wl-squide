@@ -2,6 +2,7 @@ import { FeatureFlagsContext, SubscriptionContext, TelemetryServiceContext, fetc
 import { AppRouter as FireflyAppRouter, completeModuleRegistrations, useLogger, useRuntime, type Logger } from "@squide/firefly";
 import { useChangeLanguage } from "@squide/i18next";
 import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { AppRouterErrorBoundary } from "./AppRouterErrorBoundary.tsx";
 
 export interface DeferredRegistrationData {
@@ -66,8 +67,10 @@ function fetchProtectedData(
 }
 
 function Loading() {
+    const { t } = useTranslation("AppRouter");
+
     return (
-        <div>Loading...</div>
+        <div>{t("loadingMessage")}</div>
     );
 }
 

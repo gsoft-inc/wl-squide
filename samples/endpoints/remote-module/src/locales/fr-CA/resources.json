@@ -1,0 +1,22 @@
+{
+    "navigationItems": {
+        "episodesTab": "Épisodes",
+        "locationsTab": "Localisations",
+        "failingTab": "Va échouer",
+        "featureBPage": "Fonctionnalité B",
+        "featureCPage": "Fonctionnalité C"
+    }
+    ,
+    "AnonymousPage": {
+        "title": "Page anonyme",
+        "servedBy": "Cette page est servi par <code>@endpoints/remote-module</code>"
+    },
+    "EpisodeTab": {
+        "title": "Épisodes",
+        "servedBy": "Ce tab est servi par <code>@endpoints/remote-module</code>",
+        "idLabel": "Id",
+        "nameLabel": "Nom",
+        "episodeLabel": "Épisode"
+    }
+
+}

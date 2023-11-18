@@ -1,3 +1,4 @@
+import { Trans, useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 export interface NoMatchPageProps {
@@ -6,12 +7,27 @@ export interface NoMatchPageProps {
 }
 
 export function NoMatchPage({ path, host }: NoMatchPageProps) {
+    const { t } = useTranslation("NoMatchPage");
+
     return (
         <>
-            <h1>404</h1>
-            {host && <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>This page is served by <code>{host}</code></p>}
-            <p>We can't find the path "{path}".</p>
-            <Link to="/">Go back home</Link>
+            <h1>{t("title")}</h1>
+            {host && <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>
+                <Trans
+                    i18nKey="NoMatchPage:servedBy"
+                    shouldUnescape
+                    values={{ host }}
+                    components={{ code: <code /> }}
+                />
+            </p>}
+            <p>
+                <Trans
+                    i18nKey="NoMatchPage:message"
+                    shouldUnescape
+                    values={{ path }}
+                />
+            </p>
+            <Link to="/">{t("goBackLinkLabel")}</Link>
         </>
     );
 }

@@ -1,4 +1,5 @@
 import { Trans, useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 export function AnonymousPage() {
     const { t } = useTranslation("AnonymousPage");
@@ -14,6 +15,7 @@ export function AnonymousPage() {
                     }}
                 />
             </p>
+            <Link to="/">Go to the protected home page</Link>
         </>
     );
 }

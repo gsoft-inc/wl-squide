@@ -1,5 +1,5 @@
 import { createI18NextPlugin } from "@endpoints/i18next";
-import { registerLayouts } from "@endpoints/shared";
+import { registerLayouts } from "@endpoints/layouts";
 import { registerShell } from "@endpoints/shell";
 import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, setMswAsStarted } from "@squide/firefly";
 import { StrictMode } from "react";

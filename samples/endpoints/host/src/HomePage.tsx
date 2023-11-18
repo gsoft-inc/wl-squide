@@ -21,9 +21,7 @@ export function HomePage() {
             <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>
                 <Trans
                     i18nKey="HomePage:servedBy"
-                    components={{
-                        code: <code />
-                    }}
+                    components={{ code: <code /> }}
                 />
             </p>
             <div>

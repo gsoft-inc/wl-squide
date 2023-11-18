@@ -51,6 +51,18 @@
         "msw": {
             "optional": true
         },
+        "react": {
+            "optional": true
+        },
+        "react-dom": {
+            "optional": true
+        },
+        "react-error-boundary": {
+            "optional": true
+        },
+        "react-router-dom": {
+            "optional": true
+        },
         "webpack": {
             "optional": true
         }

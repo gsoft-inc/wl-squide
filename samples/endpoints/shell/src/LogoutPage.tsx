@@ -1,3 +1,4 @@
+import { Trans, useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 export interface LogoutPageProps {
@@ -5,12 +6,21 @@ export interface LogoutPageProps {
 }
 
 export function LogoutPage({ host }: LogoutPageProps) {
+    const { t } = useTranslation("LogoutPage");
+
     return (
         <>
-            <h1>Logged out</h1>
-            {host && <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>This page is served by <code>{host}</code></p>}
-            <div>You are logged out from the application!</div>
-            <Link to="/login">Log in again</Link>
+            <h1>{t("title")}</h1>
+            {host && <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>
+                <Trans
+                    i18nKey="LogoutPage:servedBy"
+                    shouldUnescape
+                    values={{ host }}
+                    components={{ code: <code /> }}
+                />
+            </p>}
+            <div>{t("message")}</div>
+            <Link to="/login">{t("loginButtonLabel")}</Link>
         </>
     );
 }

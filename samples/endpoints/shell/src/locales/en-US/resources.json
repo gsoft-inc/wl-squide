@@ -1,0 +1,48 @@
+{
+    "RootErrorBoundary": {
+        "title": "Unmanaged error",
+        "message": "An unmanaged error occurred and the application is broken, try refreshing your browser.",
+        "reloadButtonLabel": "Reload"
+    },
+    "AuthenticatedLayout": {
+        "subscriptionLabel": "Subscription",
+        "userLabel": "User",
+        "disconnectButtonLabel": "Disconnect",
+        "loadingMessage": "Loading..."
+    },
+    "ModuleErrorBoundary": {
+        "title": "Unmanaged error",
+        "message": "An unmanaged error occurred inside a module. Still, other parts of the application are fully functional!",
+        "reloadButtonLabel": "Reload"
+    },
+    "AppRouter": {
+        "loadingMessage": "Loading..."
+    },
+    "AppRouterErrorBoundary": {
+        "title": "Unmanaged error",
+        "message": "An unmanaged error occurred while bootstrapping the application.",
+        "reloadButtonLabel": "Reload"
+    },
+    "LoginPage": {
+        "title": "Login",
+        "servedBy": "This page is served by <code>{{host}}</code>",
+        "usernameLabel": "Username",
+        "passwordLabel": "Password",
+        "loginButtonLabel": "Login",
+        "hint": "Hint: use temp/temp :)",
+        "loadingMessage": "Loading...",
+        "invalidCredentialsMessage": "Invalid credentials, please try again."
+    },
+    "LogoutPage": {
+        "title": "Logged out",
+        "servedBy": "This page is served by <code>{{host}}</code>",
+        "message": "You are logged out from the application!",
+        "loginButtonLabel": "Log in again"
+    },
+    "NoMatchPage": {
+        "title": "404",
+        "servedBy": "This page is served by <code>{{host}}</code>",
+        "message": "We can't find the path \"{{path}}\".",
+        "goBackLinkLabel": "Go back home"
+    }
+}

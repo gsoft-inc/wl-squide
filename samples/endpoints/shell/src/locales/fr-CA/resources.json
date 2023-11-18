@@ -1,0 +1,48 @@
+{
+    "RootErrorBoundary": {
+        "title": "Erreur non gérée",
+        "message": "Une erreur non gérée s'est produite et l'application est en panne, essayez d'actualiser votre navigateur.",
+        "reloadButtonLabel": "Recharger"
+    },
+    "AuthenticatedLayout": {
+        "subscriptionLabel": "Abonnement",
+        "userLabel": "Utilisateur",
+        "disconnectButtonLabel": "Se déconnecter",
+        "loadingMessage": "Chargement..."
+    },
+    "ModuleErrorBoundary": {
+        "title": "Erreur non gérée",
+        "message": "Une erreur non gérée s'est produite dans un module. Pourtant, d'autres parties de l'application sont entièrement fonctionnelles!",
+        "reloadButtonLabel": "Recharger"
+    },
+    "AppRouter": {
+        "loadingMessage": "Chargement..."
+    },
+    "AppRouterErrorBoundary": {
+        "title": "Erreur non gérée",
+        "message": "Une erreur non gérée s'est produite lors du démarrage de l'application.",
+        "reloadButtonLabel": "Recharger"
+    },
+    "LoginPage": {
+        "title": "Se connecter",
+        "servedBy": "Cette page est servi par <code>{{host}}</code>",
+        "usernameLabel": "Nom d'utilisateur",
+        "passwordLabel": "Mot de passe",
+        "loginButtonLabel": "Se connecter",
+        "hint": "Astuce : utilisez temp/temp :)",
+        "loadingMessage": "Chargement...",
+        "invalidCredentialsMessage": "Identifiants invalides, veuillez réessayer."
+    },
+    "LogoutPage": {
+        "title": "Déconnecté",
+        "servedBy": "Cette page est servi par <code>{{host}}</code>",
+        "message": "Vous êtes déconnecté de l'application!",
+        "loginButtonLabel": "Connectez-vous à nouveau"
+    },
+    "NoMatchPage": {
+        "title": "404",
+        "servedBy": "Cette page est servi par <code>{{host}}</code>",
+        "message": "Nous ne pouvons pas trouver le chemin pour \"{{path}}\".",
+        "goBackLinkLabel": "Retour à l'accueil"
+    }
+}

@@ -1,6 +1,7 @@
 import { isApiError, postJson } from "@endpoints/shared";
 import { useIsAuthenticated } from "@squide/firefly";
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { Navigate } from "react-router-dom";
 
 export interface LoginPageProps {
@@ -8,6 +9,8 @@ export interface LoginPageProps {
 }
 
 export function LoginPage({ host }: LoginPageProps) {
+    const { t } = useTranslation("LoginPage");
+
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState<string>();
@@ -35,12 +38,12 @@ export function LoginPage({ host }: LoginPageProps) {
                 setIsBusy(false);
 
                 if (isApiError(error) && error.status === 401) {
-                    setErrorMessage("Invalid credentials, please try again.");
+                    setErrorMessage(t("invalidCredentialsMessage"));
                 } else {
                     throw error;
                 }
             });
-    }, [username, password]);
+    }, [username, password, t]);
 
     const handleUserNameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setUserName(event.target.value);
@@ -58,26 +61,33 @@ export function LoginPage({ host }: LoginPageProps) {
 
     return (
         <>
-            <h1>Login</h1>
-            {host && <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>This page is served by <code>{host}</code></p>}
+            <h1>{t("title")}</h1>
+            {host && <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>
+                <Trans
+                    i18nKey="LoginPage:servedBy"
+                    shouldUnescape
+                    values={{ host }}
+                    components={{ code: <code /> }}
+                />
+            </p>}
             <form>
                 <div>
-                    <label htmlFor="username">Username</label>
+                    <label htmlFor="username">{t("usernameLabel")}</label>
                     <input id="username" type="text" onChange={handleUserNameChange} />
                 </div>
                 <div>
-                    <label htmlFor="password">Password</label>
+                    <label htmlFor="password">{t("passwordLabel")}</label>
                     <input id="password" type="password" onChange={handlePasswordChange} />
                 </div>
                 <div>
                     <button type="submit" onClick={handleClick}>
-                        Login
+                        {t("loginButtonLabel")}
                     </button>
                 </div>
                 <br />
-                <div>Hint: use temp/temp :)</div>
+                <div>{t("hint")}</div>
                 <br />
-                {isBusy && <div style={{ color: "blue" }}>Loading...</div>}
+                {isBusy && <div style={{ color: "blue" }}>{t("loadingMessage")}</div>}
                 {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
             </form>
         </>

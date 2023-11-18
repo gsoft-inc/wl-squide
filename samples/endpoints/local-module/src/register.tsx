@@ -40,20 +40,6 @@ function Providers({ i18nextInstance, children }: ProvidersProps) {
 
 function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): DeferredRegistrationFunction<DeferredRegistrationData> {
     runtime.registerRoute({
-        $visibility: "public",
-        path: "/public",
-        lazy: async () => {
-            const { PublicPage } = await import("./PublicPage.tsx");
-
-            return {
-                element: <Providers i18nextInstance={i18nextInstance}><PublicPage /></Providers>
-            };
-        }
-    }, {
-        hoist: true
-    });
-
-    runtime.registerRoute({
         path: "/subscription",
         lazy: async () => {
             const { SubscriptionPage } = await import("./SubscriptionPage.tsx");

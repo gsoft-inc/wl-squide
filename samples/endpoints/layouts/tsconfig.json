@@ -1,5 +1,5 @@
 {
-    "extends": "@workleap/typescript-configs/web-application.json",
+    "extends": "@workleap/typescript-configs/library.json",
     "compilerOptions": {
         "paths": {
             "@squide/core": ["../../../packages/core/src/index.ts"],
@@ -9,8 +9,7 @@
             "@squide/msw": ["../../../packages/msw/src/index.ts"],
             "@squide/i18next": ["../../../packages/i18next/src/index.ts"],
             "@squide/fakes": ["../../../packages/fakes/src/index.ts"],
-            "@endpoints/layouts": ["../layouts/src/index.ts"],
-            "@endpoints/shell": ["../shell/src/index.ts"],
+            "@squide/firefly": ["../../../packages/firefly/src/index.ts"],
             "@endpoints/shared": ["../shared/src/index.ts"],
             "@endpoints/i18next": ["../i18next/src/index.ts"]
         }

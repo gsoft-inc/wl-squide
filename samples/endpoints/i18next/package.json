@@ -23,8 +23,6 @@
         "@squide/i18next": "*",
         "i18next": "*",
         "i18next-browser-languagedetector": "*",
-        "i18next-chained-backend": "*",
-        "i18next-resources-to-backend": "*",
         "react": "*",
         "react-dom": "*",
         "react-i18next": "*"
@@ -38,8 +36,6 @@
         "cross-env": "7.0.3",
         "i18next": "23.7.6",
         "i18next-browser-languagedetector": "7.2.0",
-        "i18next-chained-backend": "4.6.2",
-        "i18next-resources-to-backend": "1.2.0",
         "nodemon": "3.0.1",
         "tsup": "7.2.0",
         "typescript": "5.2.2",

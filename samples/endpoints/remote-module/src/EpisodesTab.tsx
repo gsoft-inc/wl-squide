@@ -21,9 +21,7 @@ export function EpisodesTab() {
             <p style={{ backgroundColor: "purple", color: "white", width: "fit-content" }}>
                 <Trans
                     i18nKey="EpisodeTab:servedBy"
-                    components={{
-                        code: <code />
-                    }}
+                    components={{ code: <code /> }}
                 />
             </p>
             <div>

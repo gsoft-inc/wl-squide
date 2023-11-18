@@ -1,5 +1,6 @@
 import { useLogger } from "@squide/firefly";
 import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { isRouteErrorResponse, useLocation, useRouteError } from "react-router-dom";
 
 function getErrorMessage(error: unknown) {
@@ -13,6 +14,8 @@ function getErrorMessage(error: unknown) {
 }
 
 export function RootErrorBoundary() {
+    const { t } = useTranslation("RootErrorBoundary");
+
     const error = useRouteError() as Error;
     const location = useLocation();
     const logger = useLogger();
@@ -25,12 +28,12 @@ export function RootErrorBoundary() {
 
     return (
         <div>
-            <h2>Unmanaged error</h2>
-            <p style={{ color: "red" }}>An unmanaged error occurred and the application is broken, try refreshing your browser.</p>
+            <h2>{t("title")}</h2>
+            <p style={{ color: "red" }}>{t("message")}</p>
             <p style={{ color: "red" }}><span role="img" aria-label="pointer">👉</span> {getErrorMessage(error)}</p>
             <p style={{ color: "gray" }}><code>{error.stack}</code></p>
             <br />
-            <button type="button" onClick={handleReloadButtonClick}>Reload</button>
+            <button type="button" onClick={handleReloadButtonClick}>{t("reloadButtonLabel")}</button>
         </div>
     );
 }

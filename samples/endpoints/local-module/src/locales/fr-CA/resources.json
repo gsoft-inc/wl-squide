@@ -1,0 +1,15 @@
+{
+    "navigationItems": {
+        "subscriptionPage": "Inscription",
+        "publicPage": "Page publique",
+        "charactersTab": "Caractères",
+        "featureAPage": "Fonctionnalité A"
+    },
+    "CharactersTab": {
+        "title": "Personnage",
+        "servedBy": "Cette page est servi par <code>@endpoints/local-module</code>",
+        "idLabel": "Id",
+        "nameLabel": "Nom",
+        "speciesLabel": "Espèces"
+    }
+}

@@ -14,8 +14,8 @@ export function HomePage() {
     const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
     const { t } = useTranslation("HomePage", { i18n: i18nextInstance });
 
-    const { data: characters } = useSuspenseQuery({ queryKey: ["/api/character/1,2,3,4,5"], queryFn: () => {
-        return fetchJson("/api/character/1,2,3,4,5");
+    const { data: characters } = useSuspenseQuery({ queryKey: ["/api/character/1,2"], queryFn: () => {
+        return fetchJson("/api/character/1,2");
     } });
 
     return (
@@ -24,7 +24,8 @@ export function HomePage() {
             <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>
                 <Trans
                     i18n={i18nextInstance}
-                    i18nKey="HomePage:servedBy"
+                    i18nKey="servedBy"
+                    t={t}
                     components={{ code: <code /> }}
                 />
             </p>

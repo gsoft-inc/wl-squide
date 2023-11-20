@@ -35,7 +35,7 @@ export class i18nextPlugin<T extends string = string> extends Plugin {
         });
     }
 
-    setRuntime(runtime: Runtime) {
+    _setRuntime(runtime: Runtime) {
         this.#runtime = runtime;
     }
 

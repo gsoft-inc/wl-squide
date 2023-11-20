@@ -69,6 +69,10 @@ With this nested layout in place, thanks to the React Router [Outlet](https://re
 
 As a bonus, each individual tab will have its own dedicated URL! :partying_face:
 
+!!!info
+It is recommended to define the shared layouts in a standalone package as it's done for the [endpoints sample layouts project](https://github.com/gsoft-inc/wl-squide/tree/main/samples/endpoints/layouts).
+!!!
+
 ## Create the tab routes
 
 Next, let's add the actual tab pages to the modules. To do so, we'll use the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) option of the [registerRoute](../reference/runtime/runtime-class.md#register-routes) function to register the routes under the `FederatedTabsLayout`:

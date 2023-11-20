@@ -993,6 +993,9 @@ importers:
       '@endpoints/shell':
         specifier: workspace:*
         version: link:../shell
+      '@squide/fakes':
+        specifier: workspace:*
+        version: link:../../../packages/fakes
       '@squide/firefly':
         specifier: workspace:*
         version: link:../../../packages/firefly
@@ -1024,9 +1027,6 @@ importers:
         specifier: 6.18.0
         version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
-      '@squide/fakes':
-        specifier: workspace:*
-        version: link:../../../packages/fakes
       '@squide/webpack-configs':
         specifier: workspace:*
         version: link:../../../packages/webpack-configs

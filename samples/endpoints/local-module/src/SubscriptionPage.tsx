@@ -1,6 +1,6 @@
 import { toSubscriptionStatusLabel, useSubscription } from "@endpoints/shared";
 import { useI18nextInstance } from "@squide/i18next";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { i18NextInstanceKey } from "./i18next.ts";
 
 export function SubscriptionPage() {
@@ -17,16 +17,23 @@ export function SubscriptionPage() {
 
     return (
         <>
-            <h1>Subscription</h1>
-            <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>This page is served by <code>@endpoints/local-module</code></p>
+            <h1>{t("title")}</h1>
+            <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>
+                <Trans
+                    i18n={i18nextInstance}
+                    i18nKey="servedBy"
+                    t={t}
+                    components={{ code: <code /> }}
+                />
+            </p>
             <div>
-                <span>Company: </span><span>{subscription?.company}</span>
+                <span>{t("companyLabel")}: </span><span>{subscription?.company}</span>
             </div>
             <div>
-                <span>Contact: </span><span>{subscription?.contact}</span>
+                <span>{t("contactLabel")}: </span><span>{subscription?.contact}</span>
             </div>
             <div>
-                <span>Status: </span><span>{statusLabel}</span>
+                <span>{t("statusLabel")}: </span><span>{statusLabel}</span>
             </div>
         </>
     );

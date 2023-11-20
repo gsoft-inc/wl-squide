@@ -1,16 +1,26 @@
 {
     "navigationItems": {
-        "subscriptionPage": "Inscription",
-        "charactersTab": "Caractères",
+        "subscriptionPage": "Abonnement",
+        "charactersTab": "Personnages",
         "featureAPage": "Fonctionnalité A"
     },
     "SubscriptionPage": {
+        "title": "Abonnement",
+        "servedBy": "Cette page est servi par <code>@endpoints/local-module</code>",
+        "companyLabel": "Compagnie",
+        "contactLabel": "Contacte",
+        "statusLabel": "Statut",
         "trialLabel": "En essaie",
         "paidLabel": "Payé",
         "notPaidLabel": "Non payé"
     },
+    "FeatureAPage": {
+        "title": "Fonctionnalité A",
+        "servedBy": "Cette page est servi par <code>@endpoints/local-module</code>",
+        "message": "Cette page est uniquement disponible si la fonctionnalité <code>featureA</code> est activé."
+    },
     "CharactersTab": {
-        "title": "Personnage",
+        "title": "Personnages",
         "servedBy": "Cette page est servi par <code>@endpoints/local-module</code>",
         "idLabel": "Id",
         "nameLabel": "Nom",

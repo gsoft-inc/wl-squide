@@ -31,7 +31,8 @@ export function EpisodesTab() {
             <p style={{ backgroundColor: "purple", color: "white", width: "fit-content" }}>
                 <Trans
                     i18n={i18nextInstance}
-                    i18nKey="EpisodeTab:servedBy"
+                    i18nKey="servedBy"
+                    t={t}
                     components={{ code: <code /> }}
                 />
             </p>

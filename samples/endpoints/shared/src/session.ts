@@ -13,3 +13,5 @@ export interface SessionManager {
     getSession: () => Session | undefined;
     clearSession: () => void;
 }
+
+export const FakeSessionKey = "squide-endpoints-msw-session";

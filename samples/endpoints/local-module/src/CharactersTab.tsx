@@ -24,7 +24,8 @@ export function CharactersTab() {
             <p style={{ backgroundColor: "purple", color: "white", width: "fit-content" }}>
                 <Trans
                     i18n={i18nextInstance}
-                    i18nKey="CharactersTab:servedBy"
+                    i18nKey="servedBy"
+                    t={t}
                     components={{ code: <code /> }}
                 />
             </p>

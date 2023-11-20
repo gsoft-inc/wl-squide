@@ -8,7 +8,18 @@
     },
     "AnonymousPage": {
         "title": "Anonymous page",
-        "servedBy": "This page is served by <code>@endpoints/remote-module</code>"
+        "servedBy": "This page is served by <code>@endpoints/remote-module</code>",
+        "goToHomePageLinkLabel": "Go to the protected home page"
+    },
+    "FeatureBPage": {
+        "title": "Feature B",
+        "servedBy": "This page is served by <code>@endpoints/remote-module</code>",
+        "message": "This page is only available if the <code>featureB</code> flag is active."
+    },
+    "FeatureCPage": {
+        "title": "Feature C",
+        "servedBy": "This page is served by <code>@endpoints/remote-module</code>",
+        "message": "This page is only available if the <code>featureC</code> flag is active."
     },
     "EpisodeTab": {
         "title": "Episodes",
@@ -16,5 +27,16 @@
         "idLabel": "Id",
         "nameLabel": "Name",
         "episodeLabel": "Episode"
+    },
+    "LocationsTab": {
+        "title": "Locations",
+        "servedBy": "This tab is served by <code>@endpoints/remote-module</code>",
+        "idLabel": "Id",
+        "nameLabel": "Name",
+        "typeLabel": "Type"
+    },
+    "FailingTab": {
+        "title": "Expected failure",
+        "message": "Something went wront because the API call should have failed and you shouldn't see this!"
     }
 }

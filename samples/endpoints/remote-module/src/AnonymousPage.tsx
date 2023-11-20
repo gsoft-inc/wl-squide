@@ -20,13 +20,15 @@ export function AnonymousPage() {
             <h1>{t("title")}</h1>
             <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>
                 <Trans
-                    i18nKey="AnonymousPage:servedBy"
+                    i18n={i18nextInstance}
+                    i18nKey="servedBy"
+                    t={t}
                     components={{
                         code: <code />
                     }}
                 />
             </p>
-            <Link to="/">Go to the protected home page</Link>
+            <Link to="/">{t("goToHomePageLinkLabel")}</Link>
         </>
     );
 }

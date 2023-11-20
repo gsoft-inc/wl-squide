@@ -1,7 +1,7 @@
 {
     "navigationItems": {
         "episodesTab": "Épisodes",
-        "locationsTab": "Localisations",
+        "locationsTab": "Emplacements",
         "failingTab": "Va échouer",
         "featureBPage": "Fonctionnalité B",
         "featureCPage": "Fonctionnalité C"
@@ -9,7 +9,18 @@
     ,
     "AnonymousPage": {
         "title": "Page anonyme",
-        "servedBy": "Cette page est servi par <code>@endpoints/remote-module</code>"
+        "servedBy": "Cette page est servi par <code>@endpoints/remote-module</code>",
+        "goToHomePageLinkLabel": "Aller à la page d'accueil protégé"
+    },
+    "FeatureBPage": {
+        "title": "Fonctionnalité B",
+        "servedBy": "Cette page est servi par <code>@endpoints/remote-module</code>",
+        "message": "Cette page est uniquement disponible si la fonctionnalité <code>featureB</code> est activé."
+    },
+    "FeatureCPage": {
+        "title": "Fonctionnalité C",
+        "servedBy": "Cette page est servi par <code>@endpoints/remote-module</code>",
+        "message": "Cette page est uniquement disponible si la fonctionnalité <code>featureC</code> est activé."
     },
     "EpisodeTab": {
         "title": "Épisodes",
@@ -17,6 +28,16 @@
         "idLabel": "Id",
         "nameLabel": "Nom",
         "episodeLabel": "Épisode"
+    },
+    "LocationsTab": {
+        "title": "Emplacements",
+        "servedBy": "Ce tab est servi par <code>@endpoints/remote-module</code>",
+        "idLabel": "Id",
+        "nameLabel": "Nom",
+        "typeLabel": "Type"
+    },
+    "FailingTab": {
+        "title": "Erreur attendu",
+        "message": "Quelque chose s'est mal passé car l'appel API aurait dû échouer et vous ne devriez pas voir cela!"
     }
-
 }

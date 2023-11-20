@@ -17,7 +17,8 @@ export function LogoutPage({ host }: LogoutPageProps) {
             {host && <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>
                 <Trans
                     i18n={i18nextInstance}
-                    i18nKey="LogoutPage:servedBy"
+                    i18nKey="servedBy"
+                    t={t}
                     shouldUnescape
                     values={{ host }}
                     components={{ code: <code /> }}

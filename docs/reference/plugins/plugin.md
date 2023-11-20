@@ -11,17 +11,19 @@ An abstract base class to define a plugin.
 
 ### Define a plugin
 
-```ts !#4 shared/src/mswPlugin.ts
-import { Plugin } from "@squide/firefly";
-import type { RestHandler } from "msw";
+```ts !#3 my-plugin/src/myPlugin.ts
+import { Plugin, type FireflyRuntime } from "@squide/firefly";
 
-export class MswPlugin extends Plugin {
+export class MyPlugin extends Plugin {
+    #runtime: FireflyRuntime;
+
     constructor() {
-        super(MswPlugin.name);
+        super(MyPlugin.name);
     }
 
-    registerRequestHandlers(handlers: RestHandler[]) {
-        ...
+    // An optional method that can be implemented to get a hold on the current runtime instance.
+    _setRuntime(runtime: FireflyRuntime) {
+        this.#runtime = runtime;
     }
 }
 ```
@@ -30,51 +32,43 @@ export class MswPlugin extends Plugin {
 
 ```ts !#5
 import { FireflyRuntime } from "@squide/firefly";
-import { MswPlugin } from "@squide/msw";
+import { MyPlugin } from "@sample/my-plugin";
 
 const runtime = new FireflyRuntime({
-    plugins: [new MswPlugin()]
+    plugins: [new MyPlugin()]
 });
 ```
 
 ### Retrieve a plugin from a runtime instance
 
-```ts !#4
-import { MswPlugin } from "@sample/shared";
-import { requetHandlers } from "../mocks/handlers.ts";
+```ts
+import { MyPlugin } from "@sample/my-plugin";
 
-const mswPlugin = runtime.getPlugin(MswPlugin.name) as MswPlugin;
-
-mswPlugin.registerRequestHandlers(requetHandlers);
+const myPlugin = runtime.getPlugin(MyPlugin.name) as MyPlugin;
 ```
 
 ### Retrieve a plugin with a custom function
 
 We recommend pairing a plugin definition with a custom function to retrieve the plugin from a runtime instance.
 
-```ts !#14-16 shared/src/mswPlugin.ts
+```ts !#9-11 my-plugin/src/myPlugin.ts
 import { Plugin, type FireflyRuntime } from "@squide/firefly";
-import type { RestHandler } from "msw";
 
-export class MswPlugin extends FireflyRuntime {
+export class MyPlugin extends FireflyRuntime {
     constructor() {
-        super(MswPlugin.name);
-    }
-
-    registerRequestHandlers(handlers: RestHandler[]) {
-        ...
+        super(MyPlugin.name);
     }
 }
 
-export function getMswPlugin(runtime: FireflyRuntime) {
-    return runtime.getPlugin(MswPlugin.name);
+export function getMyPlugin(runtime: FireflyRuntime) {
+    return runtime.getPlugin(MyPlugin.name) as MyPlugin;
 }
 ```
 
 ```ts
-import { getMswPlugin } from "@sample/shared";
+import { getMyPlugin } from "@sample/my-plugin";
 
-const mswPlugin = getMswPlugin(runtime);
+const myPlugin = getMyPlugin(runtime);
 ```
 
 Retrieving a plugin with a custom function doesn't require the consumer to remember the plugin name, and has the upside of inferring the typings.

@@ -44,6 +44,7 @@
     "@endpoints/layouts": "workspace:*",
     "@endpoints/shell": "workspace:*",
     "@endpoints/i18next": "workspace:*",
+    "@squide/fakes": "workspace:*",
     "@squide/firefly": "workspace:*",
     "@squide/i18next": "workspace:*",
     "i18next": "23.7.6",

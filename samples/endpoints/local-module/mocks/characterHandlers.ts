@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 
 import { HttpResponse, http, type HttpHandler } from "msw";
+import { readonlyLocalStorage } from "./session.ts";
 
 function simulateDelay(delay: number) {
     return new Promise(resolve => {
@@ -16,19 +17,29 @@ export const characterHandlers: HttpHandler[] = [
     http.get("/api/character/1,2", async () => {
         await simulateDelay(2000);
 
+        const session = readonlyLocalStorage.getSession();
+
+        if (!session) {
+            return new HttpResponse(null, {
+                status: 401
+            });
+        }
+
+        const isEn = session.preferredLanguage === "en-US";
+
         return HttpResponse.json([{
             "id": 1,
             "name": "Rick Sanchez",
-            "status": "Alive",
-            "species": "Human",
+            "status": isEn ? "Alive" : "En vie",
+            "species": isEn ? "Human" : "Humain",
             "type": "",
-            "gender": "Male",
+            "gender": isEn ? "Male" : "Mâle",
             "origin": {
-                "name": "Earth (C-137)",
+                "name": isEn ? "Earth (C-137)" : "La terre (C-137)",
                 "url": "https://rickandmortyapi.com/api/location/1"
             },
             "location": {
-                "name": "Citadel of Ricks",
+                "name": isEn ? "Citadel of Ricks" : "La cité de Ricks",
                 "url": "https://rickandmortyapi.com/api/location/3"
             },
             "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
@@ -38,16 +49,16 @@ export const characterHandlers: HttpHandler[] = [
         }, {
             "id": 2,
             "name": "Morty Smith",
-            "status": "Alive",
-            "species": "Human",
+            "status": isEn ? "Alive" : "En vie",
+            "species": isEn ? "Human" : "Humain",
             "type": "",
-            "gender": "Male",
+            "gender": isEn ? "Male" : "Mâle",
             "origin": {
-                "name": "unknown",
+                "name": isEn ? "unknown" : "inconnue",
                 "url": ""
             },
             "location": {
-                "name": "Citadel of Ricks",
+                "name": isEn ? "Citadel of Ricks" : "La cité de Ricks",
                 "url": "https://rickandmortyapi.com/api/location/3"
             },
             "image": "https://rickandmortyapi.com/api/character/avatar/2.jpeg",

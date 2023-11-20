@@ -68,7 +68,8 @@ export function FederatedTabsLayout({ host }: FederatedTabsLayoutProps) {
             {host && <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>
                 <Trans
                     i18n={i18nextInstance}
-                    i18nKey="FederatedTabsLayout:servedBy"
+                    i18nKey="servedBy"
+                    t={t}
                     shouldUnescape
                     values={{ host }}
                     components={{ code: <code /> }}

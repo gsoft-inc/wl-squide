@@ -4,6 +4,11 @@
         "charactersTab": "Caractères",
         "featureAPage": "Fonctionnalité A"
     },
+    "SubscriptionPage": {
+        "trialLabel": "En essaie",
+        "paidLabel": "Payé",
+        "notPaidLabel": "Non payé"
+    },
     "CharactersTab": {
         "title": "Personnage",
         "servedBy": "Cette page est servi par <code>@endpoints/local-module</code>",

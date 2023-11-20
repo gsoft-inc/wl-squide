@@ -1,7 +1,9 @@
 import { useLogger } from "@squide/firefly";
+import { useI18nextInstance } from "@squide/i18next";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { isRouteErrorResponse, useLocation, useRouteError } from "react-router-dom";
+import { i18NextInstanceKey } from "./i18next.ts";
 
 function getErrorMessage(error: unknown) {
     if (isRouteErrorResponse(error)) {
@@ -14,7 +16,8 @@ function getErrorMessage(error: unknown) {
 }
 
 export function RootErrorBoundary() {
-    const { t } = useTranslation("RootErrorBoundary");
+    const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
+    const { t } = useTranslation("RootErrorBoundary", { i18n: i18nextInstance });
 
     const error = useRouteError() as Error;
     const location = useLocation();

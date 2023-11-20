@@ -1,13 +1,11 @@
-import type { LanguageKey } from "@endpoints/shared";
 import type { DeferredRegistrationData } from "@endpoints/shell";
 import type { DeferredRegistrationFunction, FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
-import { I18nextNavigationLabel, getI18nextPlugin, type i18nextPlugin } from "@squide/i18next";
+import { I18nextNavigationLabel } from "@squide/i18next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { i18n } from "i18next";
 import type { ReactNode } from "react";
-import { I18nextProvider } from "react-i18next";
-import { createI18nextInstance } from "./i18next.ts";
+import { initI18next } from "./i18next.ts";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -21,16 +19,13 @@ const queryClient = new QueryClient({
 });
 
 interface ProvidersProps {
-    i18nextInstance: i18n;
     children: ReactNode;
 }
 
-function Providers({ i18nextInstance, children }: ProvidersProps) {
+function Providers({ children }: ProvidersProps) {
     return (
         <QueryClientProvider client={queryClient}>
-            <I18nextProvider i18n={i18nextInstance}>
-                {children}
-            </I18nextProvider>
+            {children}
             {process.env.ISOLATED && (
                 <ReactQueryDevtools initialIsOpen={false} />
             )}
@@ -45,7 +40,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
             const { SubscriptionPage } = await import("./SubscriptionPage.tsx");
 
             return {
-                element: <Providers i18nextInstance={i18nextInstance}><SubscriptionPage /></Providers>
+                element: <Providers><SubscriptionPage /></Providers>
             };
         }
     });
@@ -56,7 +51,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
             const { CharactersTab } = await import("./CharactersTab.tsx");
 
             return {
-                element: <Providers i18nextInstance={i18nextInstance}><CharactersTab /></Providers>
+                element: <Providers><CharactersTab /></Providers>
             };
         }
     }, {
@@ -64,12 +59,12 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
     });
 
     runtime.registerNavigationItem({
-        $label: <I18nextNavigationLabel i18nextInstance={i18nextInstance} resourceKey="navigationItems:subscriptionPage" />,
+        $label: <I18nextNavigationLabel i18next={i18nextInstance} resourceKey="subscriptionPage" />,
         to: "/subscription"
     });
 
     runtime.registerNavigationItem({
-        $label: <I18nextNavigationLabel i18nextInstance={i18nextInstance} resourceKey="navigationItems:charactersTab" />,
+        $label: <I18nextNavigationLabel i18next={i18nextInstance} resourceKey="charactersTab" />,
         to: "/federated-tabs"
     }, {
         menuId: "/federated-tabs"
@@ -83,7 +78,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
             });
 
             runtime.registerNavigationItem({
-                $label: <I18nextNavigationLabel i18nextInstance={i18nextInstance} resourceKey="navigationItems:featureAPage" />,
+                $label: <I18nextNavigationLabel i18next={i18nextInstance} resourceKey="featureAPage" />,
                 to: "/feature-a"
             });
         }
@@ -101,10 +96,7 @@ async function registerMsw(runtime: FireflyRuntime) {
 }
 
 export const registerLocalModule: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = async runtime => {
-    const plugin = getI18nextPlugin(runtime) as i18nextPlugin<LanguageKey>;
-    const i18nextInstance = await createI18nextInstance(plugin.currentLanguage);
-
-    plugin.registerInstance(i18nextInstance);
+    const i18nextInstance = await initI18next(runtime);
 
     await registerMsw(runtime);
 

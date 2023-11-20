@@ -1,28 +1,25 @@
-import type { LanguageKey, SessionManager } from "@endpoints/shared";
+import type { SessionManager } from "@endpoints/shared";
 import { ManagedRoutes, type FireflyRuntime, type ModuleRegisterFunction } from "@squide/firefly";
-import { getI18nextPlugin, type i18nextPlugin } from "@squide/i18next";
-import type { i18n } from "i18next";
-import { I18nextProvider } from "react-i18next";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
-import { createI18nextInstance } from "./i18next.ts";
+import { initI18next } from "./i18next.ts";
 
 export interface RegisterShellOptions {
     // This is only for demo purposed, do not copy this.
     host?: string;
 }
 
-function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n, sessionManager: SessionManager, host?: string) {
+function registerRoutes(runtime: FireflyRuntime, sessionManager: SessionManager, host?: string) {
     runtime.registerRoute({
         // Pathless route to declare a root layout and a root error boundary.
         $visibility: "public",
-        element: <I18nextProvider i18n={i18nextInstance}><RootLayout /></I18nextProvider>,
+        element: <RootLayout />,
         children: [
             {
                 // Public pages like the login and logout pages will be rendered under this pathless route.
                 $visibility: "public",
                 $name: "root-error-boundary",
-                errorElement: <I18nextProvider i18n={i18nextInstance}><RootErrorBoundary /></I18nextProvider>,
+                errorElement: <RootErrorBoundary />,
                 children: [
                     {
                         // Pathless route to declare an authenticated boundary.
@@ -34,7 +31,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n, sessionM
                                     const { AuthenticatedLayout } = await import("./AuthenticatedLayout.tsx");
 
                                     return {
-                                        element: <I18nextProvider i18n={i18nextInstance}><AuthenticatedLayout sessionManager={sessionManager} /></I18nextProvider>
+                                        element: <AuthenticatedLayout sessionManager={sessionManager} />
                                     };
                                 },
                                 children: [
@@ -45,7 +42,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n, sessionM
                                             const { ModuleErrorBoundary } = await import("./ModuleErrorBoundary.tsx");
 
                                             return {
-                                                errorElement: <I18nextProvider i18n={i18nextInstance}><ModuleErrorBoundary /></I18nextProvider>
+                                                errorElement: <ModuleErrorBoundary />
                                             };
                                         },
                                         children: [
@@ -70,7 +67,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n, sessionM
             const { LoginPage } = await import("./LoginPage.tsx");
 
             return {
-                element: <I18nextProvider i18n={i18nextInstance}><LoginPage host={host} /></I18nextProvider>
+                element: <LoginPage host={host} />
             };
         }
     }, {
@@ -84,7 +81,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n, sessionM
             const { LogoutPage } = await import("./LogoutPage.tsx");
 
             return {
-                element: <I18nextProvider i18n={i18nextInstance}><LogoutPage host={host} /></I18nextProvider>
+                element: <LogoutPage host={host} />
             };
         }
     }, {
@@ -98,7 +95,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n, sessionM
             const { NoMatchPage } = await import("./NoMatchPage.tsx");
 
             return {
-                element: <I18nextProvider i18n={i18nextInstance}><NoMatchPage path={location.pathname} host={host} /></I18nextProvider>
+                element: <NoMatchPage path={location.pathname} host={host} />
             };
         }
     }, {
@@ -118,14 +115,10 @@ async function registerMsw(runtime: FireflyRuntime) {
 
 export function registerShell(sessionManager: SessionManager, { host }: RegisterShellOptions = {}) {
     const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
-        const plugin = getI18nextPlugin(runtime) as i18nextPlugin<LanguageKey>;
-        const i18nextInstance = await createI18nextInstance(plugin.currentLanguage);
-
-        plugin.registerInstance(i18nextInstance);
-
+        await initI18next(runtime);
         await registerMsw(runtime);
 
-        return registerRoutes(runtime, i18nextInstance, sessionManager, host);
+        return registerRoutes(runtime, sessionManager, host);
     };
 
     return register;

@@ -8,7 +8,8 @@ export interface i18nextPluginOptions {
 }
 
 export class i18nextPlugin<T extends string = string> extends Plugin {
-    #currentLanguage?: T = undefined;
+    #runtime?: Runtime;
+    #currentLanguage?: T;
 
     readonly #supportedLanguages: T[];
     readonly #fallbackLanguage: T;
@@ -28,8 +29,14 @@ export class i18nextPlugin<T extends string = string> extends Plugin {
         });
     }
 
-    registerInstance(instance: i18n) {
-        this.#registry.add(instance);
+    setRuntime(runtime: Runtime) {
+        this.#runtime = runtime;
+    }
+
+    registerInstance(key: string, instance: i18n) {
+        this.#registry.add(key, instance);
+
+        this.#runtime?.logger.debug(`[squide] Registered a new i18next instance with key: "${key}"`, instance);
     }
 
     detectUserLanguage() {
@@ -63,11 +70,15 @@ export class i18nextPlugin<T extends string = string> extends Plugin {
             throw new Error(`[squide] Cannot change language for ${language} because it's not a supported languages. Supported languages are ${this.#supportedLanguages.map(x => `"${x}"`).join(",")}.`);
         }
 
-        this.#registry.instances.forEach(x => {
+        this.#registry.getInstances().forEach(x => {
             x.changeLanguage(language);
         });
 
         this.#currentLanguage = language;
+    }
+
+    getInstance(key: string) {
+        return this.#registry.getInstance(key);
     }
 }
 

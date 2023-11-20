@@ -1,8 +1,10 @@
 import { useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
+import { useI18nextInstance } from "@squide/i18next";
 import { Suspense, useCallback, type MouseEvent } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Trans, useTranslation } from "react-i18next";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { i18NextInstanceKey } from "./i18next.ts";
 
 export interface FederatedTabsLayoutProps {
     host?: string;
@@ -29,7 +31,8 @@ const renderSection: RenderSectionFunction = elements => {
 };
 
 function TabsError() {
-    const { t } = useTranslation("TabsError");
+    const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
+    const { t } = useTranslation("TabsError", { i18n: i18nextInstance });
 
     const navigate = useNavigate();
 
@@ -53,7 +56,8 @@ function TabsError() {
 }
 
 export function FederatedTabsLayout({ host }: FederatedTabsLayoutProps) {
-    const { t } = useTranslation("FederatedTabsLayout");
+    const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
+    const { t } = useTranslation("FederatedTabsLayout", { i18n: i18nextInstance });
 
     const navigationItems = useNavigationItems("/federated-tabs");
     const renderedTabs = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
@@ -63,6 +67,7 @@ export function FederatedTabsLayout({ host }: FederatedTabsLayoutProps) {
             <h1>{t("title")}</h1>
             {host && <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>
                 <Trans
+                    i18n={i18nextInstance}
                     i18nKey="FederatedTabsLayout:servedBy"
                     shouldUnescape
                     values={{ host }}

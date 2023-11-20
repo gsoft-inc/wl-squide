@@ -1,10 +1,13 @@
 import { useLogger } from "@squide/firefly";
+import { useI18nextInstance } from "@squide/i18next";
 import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { i18NextInstanceKey } from "./i18next.ts";
 
 export function AppRouterErrorBoundary({ error }: { error?: Error }) {
-    const { t } = useTranslation("AppRouterErrorBoundary");
+    const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
+    const { t } = useTranslation("AppRouterErrorBoundary", { i18n: i18nextInstance });
 
     const logger = useLogger();
     const navigate = useNavigate();

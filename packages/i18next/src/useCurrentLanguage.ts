@@ -1,13 +1,7 @@
-import { useRuntime } from "@squide/core";
-import { useMemo } from "react";
-import { getI18nextPlugin, type i18nextPlugin } from "./i18nextPlugin.ts";
+import { useI18nextPlugin } from "./useI18nextPlugin.ts";
 
 export function useCurrentLanguage() {
-    const runtime = useRuntime();
+    const plugin = useI18nextPlugin();
 
-    return useMemo(() => {
-        const plugin = getI18nextPlugin(runtime) as i18nextPlugin;
-
-        return plugin.currentLanguage;
-    }, [runtime]);
+    return plugin.currentLanguage;
 }

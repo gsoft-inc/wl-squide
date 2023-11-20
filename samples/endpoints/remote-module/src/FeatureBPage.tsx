@@ -1,4 +1,13 @@
+import { useTelemetryService } from "@endpoints/shared";
+import { useEffect } from "react";
+
 export function FeatureBPage() {
+    const telemetryService = useTelemetryService();
+
+    useEffect(() => {
+        telemetryService?.track("Mounting FeatureBPage from remote-1.");
+    }, [telemetryService]);
+
     return (
         <>
             <h1>FeatureB page</h1>

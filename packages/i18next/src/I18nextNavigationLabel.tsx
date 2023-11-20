@@ -1,15 +1,20 @@
 import type { i18n } from "i18next";
-import { I18nextProvider } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 export interface I18nextNavigationLabelProps {
-    i18nextInstance: i18n;
+    i18next: i18n;
+    namespace?: string;
     resourceKey: string;
 }
 
-export function I18nextNavigationLabel({ i18nextInstance, resourceKey }: I18nextNavigationLabelProps) {
-    return (
-        <I18nextProvider i18n={i18nextInstance}>
-            {i18nextInstance.t(resourceKey)}
-        </I18nextProvider>
-    );
+export function I18nextNavigationLabel(props: I18nextNavigationLabelProps) {
+    const {
+        i18next,
+        namespace = "navigationItems",
+        resourceKey
+    } = props;
+
+    const { t } = useTranslation(namespace, { i18n: i18next });
+
+    return t(resourceKey);
 }

@@ -4,6 +4,11 @@
         "charactersTab": "Characters",
         "featureAPage": "Feature A"
     },
+    "SubscriptionPage": {
+        "trialLabel": "Trial",
+        "paidLabel": "Paid",
+        "notPaidLabel": "Not paid"
+    },
     "CharactersTab": {
         "title": "Characters",
         "servedBy": "This tab is served by <code>@endpoints/local-module</code>",

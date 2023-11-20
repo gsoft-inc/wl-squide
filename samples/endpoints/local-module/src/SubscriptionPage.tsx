@@ -1,7 +1,19 @@
 import { toSubscriptionStatusLabel, useSubscription } from "@endpoints/shared";
+import { useI18nextInstance } from "@squide/i18next";
+import { useTranslation } from "react-i18next";
+import { i18NextInstanceKey } from "./i18next.ts";
 
 export function SubscriptionPage() {
+    const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
+    const { t } = useTranslation("SubscriptionPage", { i18n: i18nextInstance });
+
     const subscription = useSubscription();
+
+    const statusLabel = toSubscriptionStatusLabel(subscription!.status, {
+        trialLabel: t("trialLabel"),
+        paidLabel: t("paidLabel"),
+        notPaidLabel: t("notPaidLabel")
+    });
 
     return (
         <>
@@ -14,9 +26,8 @@ export function SubscriptionPage() {
                 <span>Contact: </span><span>{subscription?.contact}</span>
             </div>
             <div>
-                <span>Status: </span><span>{toSubscriptionStatusLabel(subscription?.status)}</span>
+                <span>Status: </span><span>{statusLabel}</span>
             </div>
-
         </>
     );
 }

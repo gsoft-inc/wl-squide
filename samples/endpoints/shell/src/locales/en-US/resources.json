@@ -6,6 +6,9 @@
     },
     "AuthenticatedLayout": {
         "subscriptionLabel": "Subscription",
+        "trialLabel": "Trial",
+        "paidLabel": "Paid",
+        "notPaidLabel": "Not paid",
         "userLabel": "User",
         "disconnectButtonLabel": "Disconnect",
         "loadingMessage": "Loading..."

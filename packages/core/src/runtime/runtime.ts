@@ -43,6 +43,12 @@ export abstract class Runtime<TRoute = unknown, TNavigationItem = unknown> {
         this._eventBus = new EventBus({ logger: this._logger });
         this._services = services;
         this._sessionAccessor = sessionAccessor;
+
+        this._plugins.forEach(x => {
+            if (x.setRuntime) {
+                x.setRuntime(this);
+            }
+        });
     }
 
     abstract registerRoute(route: TRoute, options?: RegisterRouteOptions): void;

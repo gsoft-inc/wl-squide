@@ -1,6 +1,8 @@
 import { fetchJson } from "@endpoints/shared";
+import { useI18nextInstance } from "@squide/i18next";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Trans, useTranslation } from "react-i18next";
+import { i18NextInstanceKey } from "./i18next.ts";
 
 interface Character {
     id: number;
@@ -9,7 +11,8 @@ interface Character {
 }
 
 export function CharactersTab() {
-    const { t } = useTranslation("CharactersTab");
+    const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
+    const { t } = useTranslation("CharactersTab", { i18n: i18nextInstance });
 
     const { data: characters } = useSuspenseQuery({ queryKey: ["/api/character/1,2"], queryFn: () => {
         return fetchJson("/api/character/1,2");
@@ -20,6 +23,7 @@ export function CharactersTab() {
             <h2>{t("title")}</h2>
             <p style={{ backgroundColor: "purple", color: "white", width: "fit-content" }}>
                 <Trans
+                    i18n={i18nextInstance}
                     i18nKey="CharactersTab:servedBy"
                     components={{ code: <code /> }}
                 />

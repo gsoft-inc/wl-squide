@@ -1,5 +1,7 @@
+import { useI18nextInstance } from "@squide/i18next";
 import { Trans, useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { i18NextInstanceKey } from "./i18next.ts";
 
 export interface NoMatchPageProps {
     path: string;
@@ -7,13 +9,15 @@ export interface NoMatchPageProps {
 }
 
 export function NoMatchPage({ path, host }: NoMatchPageProps) {
-    const { t } = useTranslation("NoMatchPage");
+    const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
+    const { t } = useTranslation("NoMatchPage", { i18n: i18nextInstance });
 
     return (
         <>
             <h1>{t("title")}</h1>
             {host && <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>
                 <Trans
+                    i18n={i18nextInstance}
                     i18nKey="NoMatchPage:servedBy"
                     shouldUnescape
                     values={{ host }}
@@ -22,6 +26,7 @@ export function NoMatchPage({ path, host }: NoMatchPageProps) {
             </p>}
             <p>
                 <Trans
+                    i18n={i18nextInstance}
                     i18nKey="NoMatchPage:message"
                     shouldUnescape
                     values={{ path }}

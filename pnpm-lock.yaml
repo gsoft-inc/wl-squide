@@ -1413,9 +1413,15 @@ importers:
 
   samples/endpoints/shared:
     devDependencies:
+      '@endpoints/i18next':
+        specifier: workspace:*
+        version: link:../i18next
       '@squide/firefly':
         specifier: workspace:*
         version: link:../../../packages/firefly
+      '@squide/i18next':
+        specifier: workspace:*
+        version: link:../../../packages/i18next
       '@types/react':
         specifier: 18.2.36
         version: 18.2.36
@@ -1431,6 +1437,12 @@ importers:
       '@workleap/typescript-configs':
         specifier: 3.0.2
         version: 3.0.2(typescript@5.2.2)
+      i18next:
+        specifier: 23.7.6
+        version: 23.7.6
+      i18next-browser-languagedetector:
+        specifier: 7.2.0
+        version: 7.2.0
       nodemon:
         specifier: 3.0.1
         version: 3.0.1
@@ -1440,6 +1452,9 @@ importers:
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
+      react-i18next:
+        specifier: 13.5.0
+        version: 13.5.0(i18next@23.7.6)(react-dom@18.2.0)(react@18.2.0)
       tsup:
         specifier: 7.2.0
         version: 7.2.0(@swc/core@1.3.96)(postcss@8.4.31)(ts-node@10.9.1)(typescript@5.2.2)

@@ -1,5 +1,6 @@
-import { fetchJson } from "@endpoints/shared";
+import { fetchJson, useTelemetryService } from "@endpoints/shared";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 interface Location {
     id: number;
@@ -8,6 +9,12 @@ interface Location {
 }
 
 export function LocationsTab() {
+    const telemetryService = useTelemetryService();
+
+    useEffect(() => {
+        telemetryService?.track("Mounting LocationsTab from remote-1.");
+    }, [telemetryService]);
+
     const { data: locations } = useSuspenseQuery({ queryKey: ["/api/location/1,2,3"], queryFn: () => {
         return fetchJson("/api/location/1,2,3");
     } });

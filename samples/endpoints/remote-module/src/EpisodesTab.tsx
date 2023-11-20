@@ -1,6 +1,9 @@
-import { fetchJson } from "@endpoints/shared";
+import { fetchJson, useTelemetryService } from "@endpoints/shared";
+import { useI18nextInstance } from "@squide/i18next";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { i18NextInstanceKey } from "./i18next.ts";
 
 interface Episode {
     id: number;
@@ -9,7 +12,14 @@ interface Episode {
 }
 
 export function EpisodesTab() {
-    const { t } = useTranslation("EpisodeTab");
+    const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
+    const { t } = useTranslation("EpisodeTab", { i18n: i18nextInstance });
+
+    const telemetryService = useTelemetryService();
+
+    useEffect(() => {
+        telemetryService?.track("Mounting EpisodesTab from remote-1.");
+    }, [telemetryService]);
 
     const { data: episodes } = useSuspenseQuery({ queryKey: ["/api/episode/1,2"], queryFn: () => {
         return fetchJson("/api/episode/1,2");
@@ -20,6 +30,7 @@ export function EpisodesTab() {
             <h2>{t("title")}</h2>
             <p style={{ backgroundColor: "purple", color: "white", width: "fit-content" }}>
                 <Trans
+                    i18n={i18nextInstance}
                     i18nKey="EpisodeTab:servedBy"
                     components={{ code: <code /> }}
                 />

@@ -1,9 +1,10 @@
 import { FeatureFlagsContext, SubscriptionContext, TelemetryServiceContext, fetchJson, isApiError, type FeatureFlags, type Session, type SessionManager, type Subscription, type TelemetryService } from "@endpoints/shared";
 import { AppRouter as FireflyAppRouter, completeModuleRegistrations, useLogger, useRuntime, type Logger } from "@squide/firefly";
-import { useChangeLanguage } from "@squide/i18next";
+import { useChangeLanguage, useI18nextInstance } from "@squide/i18next";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AppRouterErrorBoundary } from "./AppRouterErrorBoundary.tsx";
+import { i18NextInstanceKey } from "./i18next.ts";
 
 export interface DeferredRegistrationData {
     featureFlags?: FeatureFlags;
@@ -67,7 +68,8 @@ function fetchProtectedData(
 }
 
 function Loading() {
-    const { t } = useTranslation("AppRouter");
+    const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
+    const { t } = useTranslation("AppRouter", { i18n: i18nextInstance });
 
     return (
         <div>{t("loadingMessage")}</div>

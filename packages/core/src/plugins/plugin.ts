@@ -1,3 +1,5 @@
+import type { Runtime } from "../index.ts";
+
 export abstract class Plugin {
     protected readonly _name: string;
 
@@ -8,4 +10,6 @@ export abstract class Plugin {
     get name() {
         return this._name;
     }
+
+    setRuntime?(runtime: Runtime): void;
 }

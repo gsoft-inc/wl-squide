@@ -1,15 +1,18 @@
 import { isApiError, postJson } from "@endpoints/shared";
 import { useIsAuthenticated } from "@squide/firefly";
+import { useI18nextInstance } from "@squide/i18next";
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Navigate } from "react-router-dom";
+import { i18NextInstanceKey } from "./i18next.ts";
 
 export interface LoginPageProps {
     host?: string;
 }
 
 export function LoginPage({ host }: LoginPageProps) {
-    const { t } = useTranslation("LoginPage");
+    const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
+    const { t } = useTranslation("LoginPage", { i18n: i18nextInstance });
 
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
@@ -64,6 +67,7 @@ export function LoginPage({ host }: LoginPageProps) {
             <h1>{t("title")}</h1>
             {host && <p style={{ backgroundColor: "blue", color: "white", width: "fit-content" }}>
                 <Trans
+                    i18n={i18nextInstance}
                     i18nKey="LoginPage:servedBy"
                     shouldUnescape
                     values={{ host }}

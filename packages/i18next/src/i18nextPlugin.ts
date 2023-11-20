@@ -4,7 +4,13 @@ import LanguageDetector, { type DetectorOptions } from "i18next-browser-language
 import { i18nextInstanceRegistry } from "./i18nextInstanceRegistry.ts";
 
 export interface i18nextPluginOptions {
-    detection?: Omit<DetectorOptions, "lookupQuerystring" | "lookupLocalStorage">;
+    detection?: Omit<DetectorOptions, "lookupQuerystring">;
+}
+
+export function findSupportedLanguage<T>(userLanguages: string[], supportedLanguages: T[]) {
+    return userLanguages.find(x => {
+        return supportedLanguages.some(y => y === x);
+    });
 }
 
 export class i18nextPlugin<T extends string = string> extends Plugin {
@@ -36,7 +42,7 @@ export class i18nextPlugin<T extends string = string> extends Plugin {
     registerInstance(key: string, instance: i18n) {
         this.#registry.add(key, instance);
 
-        this.#runtime?.logger.debug(`[squide] Registered a new i18next instance with key: "${key}"`, instance);
+        this.#runtime?.logger.debug(`[squide] Registered a new i18next instance with key "${key}":`, instance);
     }
 
     detectUserLanguage() {
@@ -45,9 +51,7 @@ export class i18nextPlugin<T extends string = string> extends Plugin {
         // The navigator default language can be something like ["en-US", "en-US", "en", "en-US"].
         if (Array.isArray(userLanguage)) {
             // Ensure the navigator default language is supported.
-            userLanguage = userLanguage.find(x => {
-                return this.#supportedLanguages.some(y => y === x);
-            });
+            userLanguage = findSupportedLanguage(userLanguage, this.#supportedLanguages);
         }
 
         if (isNil(userLanguage)) {
@@ -67,7 +71,7 @@ export class i18nextPlugin<T extends string = string> extends Plugin {
 
     changeLanguage(language: T) {
         if (!this.#supportedLanguages.includes(language)) {
-            throw new Error(`[squide] Cannot change language for ${language} because it's not a supported languages. Supported languages are ${this.#supportedLanguages.map(x => `"${x}"`).join(",")}.`);
+            throw new Error(`[squide] Cannot change language for ${language} because it's not part of the supported languages array. Supported languages are ${this.#supportedLanguages.map(x => `"${x}"`).join(",")}.`);
         }
 
         this.#registry.getInstances().forEach(x => {

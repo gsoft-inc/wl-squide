@@ -45,13 +45,32 @@ export class i18nextPlugin<T extends string = string> extends Plugin {
         this.#runtime?.logger.debug(`[squide] Registered a new i18next instance with key "${key}":`, instance);
     }
 
+    getInstance(key: string) {
+        const instance = this.#registry.getInstance(key);
+
+        if (isNil(instance)) {
+            throw new Error(`[squide] Cannot find a registered i18next instance for key: ${key}. Did you forget to register the i18next instance with the i18nextPlugin?`);
+        }
+
+        return instance;
+    }
+
     detectUserLanguage() {
         let userLanguage = this.#languageDetector.detect();
 
-        // The navigator default language can be something like ["en-US", "en-US", "en", "en-US"].
-        if (Array.isArray(userLanguage)) {
-            // Ensure the navigator default language is supported.
-            userLanguage = findSupportedLanguage(userLanguage, this.#supportedLanguages);
+        if (userLanguage) {
+            // The navigator default language can be something like ["en-US", "en-US", "en", "en-US"].
+            if (Array.isArray(userLanguage)) {
+                this.#runtime?.logger.debug(`[squide] Detected ${userLanguage.map(x => `"${x}"`).join(",")} as user language${userLanguage.length >= 1 ? "s" : ""}.`);
+
+                // Ensure the navigator default language is supported.
+                userLanguage = findSupportedLanguage(userLanguage, this.#supportedLanguages);
+            } else {
+                this.#runtime?.logger.debug(`[squide] Detected "${userLanguage}" as user language.`);
+
+                // Ensure the navigator default language is supported.
+                userLanguage = findSupportedLanguage([userLanguage], this.#supportedLanguages);
+            }
         }
 
         if (isNil(userLanguage)) {
@@ -59,6 +78,8 @@ export class i18nextPlugin<T extends string = string> extends Plugin {
         }
 
         this.#currentLanguage = userLanguage as T;
+
+        this.#runtime?.logger.debug(`[squide] The language has been set to "${this.#currentLanguage}".`);
     }
 
     get currentLanguage() {
@@ -71,7 +92,7 @@ export class i18nextPlugin<T extends string = string> extends Plugin {
 
     changeLanguage(language: T) {
         if (!this.#supportedLanguages.includes(language)) {
-            throw new Error(`[squide] Cannot change language for ${language} because it's not part of the supported languages array. Supported languages are ${this.#supportedLanguages.map(x => `"${x}"`).join(",")}.`);
+            throw new Error(`[squide] Cannot change language for "${language}" because it's not part of the supported languages array. Supported languages are ${this.#supportedLanguages.map(x => `"${x}"`).join(",")}.`);
         }
 
         this.#registry.getInstances().forEach(x => {
@@ -79,10 +100,8 @@ export class i18nextPlugin<T extends string = string> extends Plugin {
         });
 
         this.#currentLanguage = language;
-    }
 
-    getInstance(key: string) {
-        return this.#registry.getInstance(key);
+        this.#runtime?.logger.debug(`[squide] The language has been changed to "${this.#currentLanguage}".`);
     }
 }
 

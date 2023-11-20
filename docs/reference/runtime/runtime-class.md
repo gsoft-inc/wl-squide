@@ -125,7 +125,7 @@ runtime.registerRoute({
 });
 ```
 
-[!ref text="For a detailed walkthrough, refer to the how to override the host layout guide"](../../guides/override-the-host-layout.md)
+[!ref text="Learn more about overriding the host application layout"](../../guides/override-the-host-layout.md)
 
 ### Register a public route
 
@@ -234,6 +234,8 @@ runtime.registerRoute({
 });
 ```
 
+[!ref text="Learn more about using nested routes for federated tabs"](../../guides/federated-tabs.md)
+
 !!!info
 Likewise any other React Router routes, the `path` property of a page rendered under an existing parent route must be an absolute path. For example, if a parent route `path` is `/layout`, the `path` property of a page rendered under that parent route and responding to the `/page-1` url, should be `/layout/page-1`.
 !!!
@@ -276,7 +278,7 @@ runtime.registerNavigationItem({
 });
 ```
 
-[!ref text="Setup the host application to render navigation items"](/reference/routing/useRenderedNavigationItems.md)
+[!ref text="Setup the host application to render navigation items"](../routing/useRenderedNavigationItems.md)
 
 ### Register nested navigation items
 
@@ -424,6 +426,8 @@ import { requestHandlers } from "../mocks/handlers.ts";
 runtime.registerRequestHandlers(requestHandlers);
 ```
 
+[!ref text="Learn more about setuping Mock Service Worker"](../../guides/setup-msw.md)
+
 ### Retrieve request handlers
 
 ```tsx
@@ -448,11 +452,26 @@ runtime.eventBus.addListener("write-to-host", () => {});
 runtime.eventBus.dispatch("write-to-host", "Hello host!");
 ```
 
+### Register a plugin
+
+```ts !#5
+import { FireflyRuntime } from "@squide/firefly";
+import { MyPlugin } from "@sample/my-plugin";
+
+const runtime = new FireflyRuntime({
+    plugins: [new MyPlugin()]
+});
+```
+
+[!ref Learn more about plugins](../plugins/plugin.md)
+
 ### Retrieve a plugin
 
 ```ts
-// If the plugin isn't registered, an exception will be thrown.
-const plugin = runtime.getPlugin(MswPlugin.name) as MswPlugin;
+import { MyPlugin } from "@sample/my-plugin";
+
+// If the plugin isn't registered, an error is thrown.
+const plugin = runtime.getPlugin(MyPlugin.name) as MyPlugin;
 ```
 
 [!ref Learn more about plugins](../plugins/plugin.md)
@@ -460,6 +479,8 @@ const plugin = runtime.getPlugin(MswPlugin.name) as MswPlugin;
 ### Retrieve the current session
 
 ```ts
-// If no sessionAccessor has been provided, an Error instance will be thrown.
+import type { AppSession } from "@sample/shared";
+
+// If no sessionAccessor has been provided, an error is thrown.
 const session = runtime.getSession() as AppSession;
 ```

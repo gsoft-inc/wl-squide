@@ -200,7 +200,7 @@ export function HomePage() {
 }
 ```
 
-Then, add a local module at the root of the host application to register the homepage:
+Then, add a [local module](../reference/registration/registerLocalModules.md) at the root of the host application to register the homepage:
 
 ```tsx host/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";

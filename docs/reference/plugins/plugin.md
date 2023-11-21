@@ -21,7 +21,7 @@ export class MyPlugin extends Plugin {
         super(MyPlugin.name);
     }
 
-    // An optional method that can be implemented to get a hold on the current runtime instance.
+    // An optional method that can be implemented to get an hold on the current runtime instance.
     _setRuntime(runtime: FireflyRuntime) {
         this.#runtime = runtime;
     }

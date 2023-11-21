@@ -11,11 +11,7 @@ A component that sets up Squide federated primitives and render a React Router i
 ## Reference
 
 ```tsx
-<AppRouter
-    fallbackElement={<div>Loading...</div>}
-    errorElement={<div>An error occured!</div>}
-    waitForMsw={true}
-/>
+<AppRouter fallbackElement={} errorElement={} waitForMsw={} />
 ```
 
 ### Properties

@@ -12,11 +12,7 @@ A placeholder indicating where in the routing tree should the managed routes be 
 ## Reference
 
 ```tsx
-runtime.registerRoute({
-    children: [
-        ManagedRoutes
-    ]
-}, { hoist: true });
+<ManagedRoutes />
 ```
 
 ### Properties

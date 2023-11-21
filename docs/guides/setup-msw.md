@@ -5,9 +5,7 @@ label: Setup Mock Service Worker
 
 # Setup Mock Service Worker
 
-To speed up frontend development and encourage an [API first](https://swagger.io/resources/articles/adopting-an-api-first-approach/) approach, Squide has built-in support for [Mock Service Worker](https://mswjs.io/) (MSW).
-
-MSW is a tool to fake API endpoints that has the advantage of working directly in the browser. This means that unlike alternative solutions, it doesn't require running an additional process to host the fake API endpoints.
+To speed up frontend development and encourage an [API first](https://swagger.io/resources/articles/adopting-an-api-first-approach/) approach, Squide has built-in support for [Mock Service Worker](https://mswjs.io/) (MSW). MSW offers an API to host fake endpoints directly in the browser. This means that unlike alternative solutions, it doesn't require running an additional process to host fake endpoints.
 
 ## Setup the host application
 

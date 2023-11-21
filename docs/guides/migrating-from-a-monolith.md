@@ -1,5 +1,5 @@
 ---
-order: 180
+order: 170
 label: Migrating from a monolith
 ---
 

@@ -10,8 +10,6 @@ export async function createI18nextInstance(language: LanguageKey, options: Init
     instance.init({
         debug: true,
         lng: language,
-        partialBundledLanguages: true,
-        load: "currentOnly",
         ...options
     });
 

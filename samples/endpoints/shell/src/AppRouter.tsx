@@ -84,6 +84,7 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
 
     const logger = useLogger();
     const runtime = useRuntime();
+
     const changeLanguage = useChangeLanguage();
 
     const handleLoadPublicData = useCallback(() => {
@@ -94,7 +95,7 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
         const setSession = (session: Session) => {
             sessionManager.setSession(session);
 
-            // When the session has been retrieve, update the language to match the user
+            // When the session has been retrieved, update the language to match the user
             // preferred language.
             changeLanguage(session.user.preferredLanguage);
         };

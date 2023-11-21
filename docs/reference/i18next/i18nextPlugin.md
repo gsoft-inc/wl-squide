@@ -17,8 +17,8 @@ const plugin = new i18nextPlugin(supportedLanguages: [], fallbackLanguage, query
 ### Parameters
 
 - `supportedLanguages`: An array of languages supported by the application.
-- `fallbackLanguage`: The language to default to if none of the detected user languages match any supported language.
-- `queryStringKey`: The querystring parameter lookup when detecting the user language.
+- `fallbackLanguage`: The language to default to if none of the detected user's languages match any supported language.
+- `queryStringKey`: The querystring parameter lookup when detecting the user's language.
 - `options`: An optional object literal of options:
     - `detection`: An optional object literal accepting any [LanguageDetector](https://github.com/i18next/i18next-browser-languageDetector#detector-options) options.
 
@@ -78,7 +78,7 @@ const instance = plugin.getInstance("an-instance-key");
 
 ### Detect the user language
 
-Whenever a plugin instance is created, the user language should be detected immediatly by calling the `detectUserLanguage` function.
+Whenever a plugin instance is created, the user's language should always be detected immediatly using the `detectUserLanguage` function.
 
 ```ts !#7
 import { i18nextPlugin } from "@squide/i18next";
@@ -118,7 +118,7 @@ plugin.changeLanguage("fr-CA");
 
 ### Change the language detection order
 
-By default, the detection of the user language is done first from the specified URL querystring parameter, then from the [navigator language property](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/language). The detection order can be changed by specifying a new value for the [order](https://github.com/i18next/i18next-browser-languageDetector#detector-options) detection option:
+By default, the detection of the user's language is done first from the specified URL querystring parameter (`?language` in this example), then from the user's [navigator language settings](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/language). The detection order can be changed by specifying a new value for the [order](https://github.com/i18next/i18next-browser-languageDetector#detector-options) detection option:
 
 ```ts !#4
 const plugin = new i18nextPlugin(["en-US", "fr-CA"], "en-US", "language", {

@@ -16,7 +16,7 @@ A React component to localize the label of Squide [navigation items](../runtime/
 
 ### Properties
 
-- `i18next`: A `i18next` instance.
+- `i18next`: An `i18next` instance.
 - `namespace`: An optional namespace for the localized resource. If no namespace is provided, the default namespace is `"navigationItems"`.
 - `resourceKey`: A localized resource key.
 

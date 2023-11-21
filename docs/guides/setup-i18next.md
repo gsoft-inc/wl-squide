@@ -5,7 +5,7 @@ label: Setup i18next
 
 # Setup i18next
 
-Most of the [Workleap](https://workleap.com/) platform applications are, or will be bilingual. To help feature teams with localized resources, Squide offer a native [plugin](../reference/i18next/i18nextPlugin.md) to adapt the [i18next](https://www.i18next.com/) library for federated applications.
+Most of the applications on the [Workleap](https://workleap.com/) platform are either already bilingual or will be in the future. To help feature teams with localized resources, Squide provides a native [plugin](../reference/i18next/i18nextPlugin.md) designed to adapt the [i18next](https://www.i18next.com/) library for federated applications.
 
 ## Setup the host application
 
@@ -50,13 +50,13 @@ const Remotes: RemoteDefinition[] = [
 // - The supported languages are: "en-US" and "fr-CA"
 // - The fallback language is: "en-US"
 // - The URL querystring parameter to detect the current language is: "language"
-const plugin = new i18nextPlugin(["en-US", "fr-CA"], "en-US", "language");
+const i18nextPlugin = new i18nextPlugin(["en-US", "fr-CA"], "en-US", "language");
 
 // Always detect the user language early on.
-plugin.detectUserLanguage();
+i18nextPlugin.detectUserLanguage();
 
 const runtime = new FireflyRuntime({
-    plugins: [plugin]
+    plugins: [i18nextPlugin]
     loggers: [new ConsoleLogger()]
 });
 
@@ -77,13 +77,13 @@ root.render(
 );
 ```
 
-In the previous example, after creating a `i18nextPlugin` instance, the user language is automatically detected by calling the `plugin.detectUserLanguage` function. Applications should always detect the user language at bootstrapping, even if the current language is expected to be overriden by a preferred language setting once the user session has been loaded.
+In the previous example, upon creating an `i18nextPlugin` instance, the user's language is automatically detected using the `plugin.detectUserLanguage` function. Applications should always detect the user's language at bootstrapping, even if the current language is expected to be overriden by a preferred language setting once the user session has been loaded.
 
 ### Register a i18next instance
 
-Next, if the host application register pages, navigation items or any other parts of the federated application that required localized resources, update the [register function](../reference/registration/registerLocalModules.md#register-a-local-module) to initialize and register a `i18next` instance with the `i18nextPlugin` plugin instance.
+Next, if the host application registers pages, navigation items or any other parts of the federated application that require localized resources, update the [register function](../reference/registration/registerLocalModules.md#register-a-local-module) to initialize and register an `i18next` instance with the `i18nextPlugin` plugin instance.
 
-First, create localized resources files:
+First, create the localized resources files:
 
 ```json host/src/locales/en-US.json
 {
@@ -113,7 +113,7 @@ import resourcesEn from "./locales/en-US/resources.json";
 import resourcesFr from "./locales/fr-CA/resources.json";
 
 export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
-    const plugin = getI18nextPlugin(runtime);
+    const i18nextPlugin = getI18nextPlugin(runtime);
 
     const i18nextInstance = i18n
         .createInstance()
@@ -121,7 +121,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
     i18nextInstance.init({
         // Create the instance with the detected user language.
-        lng: plugin.currentLanguage,
+        lng: i18nextPlugin.currentLanguage,
         partialBundledLanguages: true,
         load: "currentOnly",
         resources: {
@@ -140,7 +140,9 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 };
 ```
 
-Then, update the `HomePage` component to use the newly created localized resource:
+In the previous example, notice that the `i18next` instance has been initialized with the current language of the `i18nextPlugin` instance by providing the `lng` option. If the user's language has been detected during bootstrapping, the `i18next` instance will be initialized with the user's language which has been deduced from either a `?language` querystring parameter or the user's navigator language settings.
+
+Finally, update the `HomePage` component to use the newly created localized resource:
 
 ```tsx !#6-7,10 host/src/HomePage.tsx
 import { useI18nextInstance } from "@squide/i18next";

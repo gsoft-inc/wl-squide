@@ -20,7 +20,7 @@ const instance = useI18nextInstance(key)
 
 ### Returns
 
-A `i18next` instance.
+An `i18next` instance.
 
 ## Usage
 

@@ -20,7 +20,7 @@ None
 
 ### Returns
 
-A function to change the current language of a `i18nextPlugin` instance.
+A function to change the current language of an `i18nextPlugin` instance.
 
 ## Usage
 

@@ -320,6 +320,8 @@ To ensure everything is still working correctly, start the development servers u
 
 If you are experiencing issues with this guide:
 
-- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
+- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong:
+    - `[squide] The following route has been registered as a children of the "/federated-tabs" route. Newly registered item: ...`
+    - `[squide] The following navigation item has been registered to the "/federated-tabs" menu for a total of 1 item. Newly registered item: ...`
 - Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic).
 - Refer to the [troubleshooting](../troubleshooting.md) page.

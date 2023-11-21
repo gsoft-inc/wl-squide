@@ -2,6 +2,8 @@
 order: 70
 icon: gear
 expanded: true
+toc:
+    depth: 2-3
 ---
 
 # Reference

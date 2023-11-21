@@ -410,9 +410,14 @@ return (
 
 ## Try it :rocket:
 
--> Si démarre l'app avec dev, devrait tout voir en anglais.
--> Si ajoute ?language=fr-CA à l'url, devrait tout voir en français
+Start the development servers using the `dev` script. The home page and the navigation items should render the english (`en-US`) resources. Then append `?language=fr-CA` to the URL. The home page and the navigation items should now render the french (`fr-CA`) resources.
 
 ### Troubleshoot issues
 
--> Les logs d'enregistrement et set de language dans la console
+If you are experiencing issues with this guide:
+
+- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each `i18next` instance that is being registered and another log everytime the language is changed:
+    - `[squide] Registered a new i18next instance with key "remote-module": ...`
+    - `[squide] The language has been changed to "fr-CA".`
+- Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/endpoints).
+- Refer to the [troubleshooting](../troubleshooting.md) page.

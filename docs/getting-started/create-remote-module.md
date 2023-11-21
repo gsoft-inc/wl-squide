@@ -151,7 +151,7 @@ Then, open the `webpack.build.js` file and use the the [defineBuildRemoteModuleC
 import { defineBuildRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1", "http://localhost:8081/", {
+export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true

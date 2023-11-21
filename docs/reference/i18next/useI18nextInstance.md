@@ -47,12 +47,11 @@ const { t } = useTranslation("a-namespace", {
 
 ### Use with the Trans component
 
-```tsx !#6,10,12
+```tsx !#4,5,9,11
 import { useI18nextInstance } from "@squide/i18next";
 import { Trans, useTranslation } from "react-i18next";
 
 const instance = useI18nextInstance("an-instance-key");
-
 const { t } = useTranslation("a-namespace", { i18n: instance });
 
 return (

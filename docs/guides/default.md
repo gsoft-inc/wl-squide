@@ -9,7 +9,6 @@ expanded: true
 - [Override the host layout](./override-the-host-layout.md)
 - [Isolate module failures](./isolate-module-failures.md)
 - [Add authentication](./add-authentication.md)
-- [Add a public page](./add-a-public-page.md)
 - [Develop a module in isolation](./develop-a-module-in-isolation.md)
 - [Federated tabs](./federated-tabs.md)
 - [Setup Mock Service Worker](./setup-msw.md)

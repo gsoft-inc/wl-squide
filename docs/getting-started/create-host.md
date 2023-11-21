@@ -365,7 +365,7 @@ Then, open the `webpack.build.js` file and use the [defineBuildHostConfig](/refe
 import { defineBuildHostConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/", {
+export default defineBuildHostConfig(swcConfig, "host", {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true,

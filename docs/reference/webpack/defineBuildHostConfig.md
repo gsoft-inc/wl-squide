@@ -57,7 +57,7 @@ For the full shared dependencies configuration, have a look at the [defineConfig
 import { defineBuildHostConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/");
+export default defineBuildHostConfig(swcConfig, "host");
 ```
 
 ### Activate additional features
@@ -68,7 +68,7 @@ export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/"
 import { defineBuildHostConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/", {
+export default defineBuildHostConfig(swcConfig, "host", {
     features: {
         i18next: true
     }

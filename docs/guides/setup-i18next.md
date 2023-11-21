@@ -144,7 +144,7 @@ In the previous code sample, notice that the `i18next` instance has been initial
 
 ### Localize the home page resources
 
-Finally, update the `HomePage` component to use the newly created localized resource:
+Then, update the `HomePage` component to use the newly created localized resource:
 
 ```tsx !#6-7,10 host/src/HomePage.tsx
 import { useI18nextInstance } from "@squide/i18next";
@@ -159,6 +159,48 @@ export function HomePage() {
         <div>{t("bodyText")}</div>
     );
 }
+```
+
+### Update the webpack configurations
+
+Finally, update the webpack development and build configurations to activate the `i18next` feature:
+
+```js !#7-9 host/webpack.dev.js
+// @ts-check
+
+import { defineDevHostConfig } from "@squide/firefly/defineConfig.js";
+import { swcConfig } from "./swc.dev.js";
+
+export default defineDevHostConfig(swcConfig, "host", 8080, {
+    features: {
+        i18next: true
+    },
+    sharedDependencies: {
+        "@sample/shared": {
+            singleton: true,
+            eager: true
+        }
+    }
+});
+```
+
+```js !#7-9 host/webpack.build.js
+// @ts-check
+
+import { defineBuildHostConfig } from "@squide/firefly/defineConfig.js";
+import { swcConfig } from "./swc.build.js";
+
+export default defineBuildHostConfig(swcConfig, "host", {
+    features: {
+        i18next: true
+    },
+    sharedDependencies: {
+        "@sample/shared": {
+            singleton: true,
+            eager: true
+        }
+    }
+});
 ```
 
 ## Setup a remote module
@@ -258,7 +300,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext> = (run
 
 Then, localize the navigation items labels using the [I18nextNavigationLabel](../reference/i18next/I18nextNavigationLabel.md) component. Since the resources are in the `navigationItems` namespace, there's no need to specify a `namespace` property on the components:
 
-```tsx remote-module/src/register.tsx
+```tsx !#38 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { getI18nextPlugin, I18nextNavigationLabel } from "@squide/i18next";
 import type { AppContext } from "@sample/shared";
@@ -304,9 +346,9 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext> = (run
 
 ### Localize the page resources
 
-Finally, update the `HomePage` component to use the newly created localized resource:
+Then, update the `HomePage` component to use the newly created localized resource:
 
-```tsx remote-module/src/Page.tsx
+```tsx !#6,7,10 remote-module/src/Page.tsx
 import { useI18nextInstance } from "@squide/i18next";
 import { useTranslation } from "react-i18next";
 
@@ -319,6 +361,46 @@ export function Page() {
         <div>{t("bodyText")}</div>
     );
 }
+```
+
+### Update the webpack configurations
+
+Finally, update the webpack development and build configurations to activate the `i18next` feature:
+
+```js !#7-9 remote-module/webpack.dev.js
+// @ts-check
+
+import { defineDevRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
+import { swcConfig } from "./swc.dev.js";
+
+export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
+    features: {
+        i18next: true
+    },
+    sharedDependencies: {
+        "@sample/shared": {
+            singleton: true
+        }
+    }
+});
+```
+
+```js !#7-9 remote-module/webpack.build.js
+// @ts-check
+
+import { defineBuildRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
+import { swcConfig } from "./swc.build.js";
+
+export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
+    features: {
+        i18next: true
+    },
+    sharedDependencies: {
+        "@sample/shared": {
+            singleton: true
+        }
+    }
+});
 ```
 
 ## Setup a local module
@@ -375,12 +457,11 @@ export function App() {
 
 The [Trans](https://react.i18next.com/latest/trans-component) component is valuable for scenarios that involve interpolation to render a localized resource. To use the `Trans` component with Squide, pair the component with an `i18next` instance retrieved from [useI18nextInstance](../reference/i18next/useI18nextInstance.md) hook:
 
-```tsx !#6,10,12
+```tsx !#5,9,11
 import { useI18nextInstance } from "@squide/i18next";
 import { Trans, useTranslation } from "react-i18next";
 
 const instance = useI18nextInstance("an-instance-key");
-
 const { t } = useTranslation("a-namespace", { i18n: instance });
 
 return (

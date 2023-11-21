@@ -32,7 +32,9 @@
         "usernameLabel": "Nom d'utilisateur",
         "passwordLabel": "Mot de passe",
         "loginButtonLabel": "Se connecter",
-        "hint": "Astuce : utilisez temp/temp :)",
+        "hintTitle": "Astuce :)",
+        "hintEnProfile": "- utiliser <strong>temp/temp</strong> pour un profile en-US",
+        "hintFrProfile": "- utiliser <strong>fr/fr</strong> pour un profile fr-CA",
         "loadingMessage": "Chargement...",
         "invalidCredentialsMessage": "Identifiants invalides, veuillez réessayer."
     },

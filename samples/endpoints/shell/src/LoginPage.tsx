@@ -90,7 +90,23 @@ export function LoginPage({ host }: LoginPageProps) {
                     </button>
                 </div>
                 <br />
-                <div>{t("hint")}</div>
+                <div>{t("hintTitle")}</div>
+                <div>
+                    <Trans
+                        i18n={i18nextInstance}
+                        i18nKey="hintEnProfile"
+                        t={t}
+                        components={{ strong: <strong /> }}
+                    />
+                </div>
+                <div>
+                    <Trans
+                        i18n={i18nextInstance}
+                        i18nKey="hintFrProfile"
+                        t={t}
+                        components={{ strong: <strong /> }}
+                    />
+                </div>
                 <br />
                 {isBusy && <div style={{ color: "blue" }}>{t("loadingMessage")}</div>}
                 {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}

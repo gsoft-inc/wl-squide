@@ -407,14 +407,14 @@ export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
 
 Follow the same steps as for a [remote module](#setup-a-remote-module).
 
-## Set the user preferred language
+## Integrate a backend language setting
 
-For many applications, the displayed language is expected to be derived from a user's "preferred language" setting, which is stored in an application database on the backend. Therefore, the frontend remains unaware of this setting's value until the user session is loaded.
+For many applications, the displayed language is expected to be derived from an application specific user's "preferred language" setting, which is stored in an database on the backend. Therefore, the frontend remains unaware of this setting's value until the user session is loaded.
 
 Hence, the strategy to select the displayed language should be as follow:
 
-1. Utilize the language detected at bootstrapping for anonymous users.
-2. Upon user authentication and session loading, if a "preferred language" setting is available, update the displayed language to reflect this preference.
+1. Utilize the language detected at bootstrapping for anonymous users (with the `detectUserLanguage` function).
+2. Upon user authentication and session loading, if a "preferred language" setting is available from the session data, update the displayed language to reflect this preference.
 
 To implement this strategy, utilize the [useChangeLanguage](../reference/i18next/useChangeLanguage.md) hook and the [onLoadProtectedData](../reference/routing/appRouter.md#load-protected-data) handler of the [AppRouter](../reference/routing/appRouter.md) component:
 
@@ -437,7 +437,7 @@ export function App() {
             const session = await response.json();
 
             // When the session has been retrieved, change the displayed language to match
-            // the user preferred language.
+            // the preferred language setting.
             changeLanguage(session.preferredLanguage);
         }
     }, [changeLanguage]);

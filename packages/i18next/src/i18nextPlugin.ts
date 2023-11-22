@@ -1,3 +1,4 @@
+import { match } from "@formatjs/intl-localematcher";
 import { Plugin, isNil, type Runtime } from "@squide/core";
 import type { i18n } from "i18next";
 import LanguageDetector, { type DetectorOptions } from "i18next-browser-languagedetector";
@@ -7,10 +8,26 @@ export interface i18nextPluginOptions {
     detection?: Omit<DetectorOptions, "lookupQuerystring">;
 }
 
-export function findSupportedLanguage<T>(userLanguages: string[], supportedLanguages: T[]) {
-    return userLanguages.find(x => {
-        return supportedLanguages.some(y => y === x);
+export function findSupportedPreferredLanguage<T extends string>(userPreferredLanguages: string[], supportedLanguages: T[]) {
+    // We don't want a fallback language here but it's a required parameter, therefore we provide a dummy value
+    // to return "undefined".
+    let result: string | undefined = match(userPreferredLanguages, supportedLanguages, "__dummy_fallback__", {
+        algorithm: "lookup"
     });
+
+    if (result === "__dummy_fallback__") {
+        result = undefined;
+    }
+
+    if (isNil(result)) {
+        // Intl.LocaleMatcher "lookup" algorithm returns null when a prefered language is "fr" and a supported language is "fr-CA".
+        // We would prefer that if it returns "fr". This is what this code is used for.
+        result = supportedLanguages.find(x => {
+            return userPreferredLanguages.some(y => x.startsWith(`${y}-`));
+        });
+    }
+
+    return result;
 }
 
 export class i18nextPlugin<T extends string = string> extends Plugin {
@@ -56,28 +73,29 @@ export class i18nextPlugin<T extends string = string> extends Plugin {
     }
 
     detectUserLanguage() {
-        let userLanguage = this.#languageDetector.detect();
+        // Could either be detected from a querystring parameter or the user navigator language preferences.
+        let detectedLanguage = this.#languageDetector.detect();
 
-        if (userLanguage) {
-            // The navigator default language can be something like ["en-US", "en-US", "en", "en-US"].
-            if (Array.isArray(userLanguage)) {
-                this.#runtime?.logger.debug(`[squide] Detected ${userLanguage.map(x => `"${x}"`).join(",")} as user language${userLanguage.length >= 1 ? "s" : ""}.`);
+        if (detectedLanguage) {
+            // The navigator language preferences could be something like ["en-US", "en", "fr-CA", "fr"].
+            if (Array.isArray(detectedLanguage)) {
+                this.#runtime?.logger.debug(`[squide] Detected ${detectedLanguage.map(x => `"${x}"`).join(",")} as user language${detectedLanguage.length >= 1 ? "s" : ""}.`);
 
-                // Ensure the navigator default language is supported.
-                userLanguage = findSupportedLanguage(userLanguage, this.#supportedLanguages);
+                // Ensure the navigator language preferences includes at least one supported language.
+                detectedLanguage = findSupportedPreferredLanguage(detectedLanguage, this.#supportedLanguages);
             } else {
-                this.#runtime?.logger.debug(`[squide] Detected "${userLanguage}" as user language.`);
+                this.#runtime?.logger.debug(`[squide] Detected "${detectedLanguage}" as user language.`);
 
-                // Ensure the navigator default language is supported.
-                userLanguage = findSupportedLanguage([userLanguage], this.#supportedLanguages);
+                // Ensure the navigator language preferences includes at least one supported language.
+                detectedLanguage = findSupportedPreferredLanguage([detectedLanguage], this.#supportedLanguages);
             }
         }
 
-        if (isNil(userLanguage)) {
-            userLanguage = this.#fallbackLanguage;
+        if (isNil(detectedLanguage)) {
+            detectedLanguage = this.#fallbackLanguage;
         }
 
-        this.#currentLanguage = userLanguage as T;
+        this.#currentLanguage = detectedLanguage as T;
 
         this.#runtime?.logger.debug(`[squide] The language has been set to "${this.#currentLanguage}".`);
     }

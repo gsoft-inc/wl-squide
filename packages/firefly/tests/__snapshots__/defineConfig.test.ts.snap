@@ -25,6 +25,7 @@ exports[`defineBuildHostConfig includes react-router and msw dependencies 1`] = 
         },
         "react": {
           "eager": true,
+          "requiredVersion": undefined,
           "singleton": true,
         },
         "react-dom": {
@@ -70,6 +71,7 @@ exports[`defineBuildRemoteModuleConfig includes react-router and msw dependencie
         },
         "react": {
           "eager": undefined,
+          "requiredVersion": undefined,
           "singleton": true,
         },
         "react-dom": {
@@ -111,6 +113,7 @@ exports[`defineDevHostConfig includes react-router and msw dependencies 1`] = `
         },
         "react": {
           "eager": true,
+          "requiredVersion": undefined,
           "singleton": true,
         },
         "react-dom": {
@@ -156,6 +159,7 @@ exports[`defineDevRemoteModuleConfig includes react-router and msw dependencies 
         },
         "react": {
           "eager": undefined,
+          "requiredVersion": undefined,
           "singleton": true,
         },
         "react-dom": {

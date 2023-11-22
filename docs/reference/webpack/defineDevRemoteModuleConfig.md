@@ -134,7 +134,7 @@ import { swcConfig } from "./swc.dev.js";
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8080, {
     sharedDependencies: {
         "react": {
-            strictVersion: "18.2.0"
+            requiredVersion: "18.2.0"
         }
     }
 });
@@ -147,7 +147,7 @@ In the previous example, the `react` shared dependency will be **augmented** wit
     "react": {
         eager: true,
         singleton: true,
-        strictVersion: "18.2.0"
+        requiredVersion: "18.2.0"
     }
 }
 ```

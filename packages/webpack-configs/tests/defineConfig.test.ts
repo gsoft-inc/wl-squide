@@ -136,7 +136,7 @@ describe("defineDevHostConfig", () => {
         expect(result).toMatchSnapshot();
     });
 
-    test("when i18next is activated, add i18next shared dependency", () => {
+    test("when i18next is activated, add i18next shared dependency and requiredVersion: false to the react shared dependency definition", () => {
         const config = defineDevHostConfig(SwcConfig, "host", 8080, {
             features: {
                 i18next: true
@@ -313,7 +313,7 @@ describe("defineBuildHostConfig", () => {
         expect(result).toMatchSnapshot();
     });
 
-    test("when i18next is activated, add i18next shared dependency", () => {
+    test("when i18next is activated, add i18next shared dependency and requiredVersion: false to the react shared dependency definition", () => {
         const config = defineBuildHostConfig(SwcConfig, "host", {
             features: {
                 i18next: true
@@ -506,7 +506,7 @@ describe("defineDevRemoteModuleConfig", () => {
         expect(result).toMatchSnapshot();
     });
 
-    test("when i18next is activated, add i18next shared dependency", () => {
+    test("when i18next is activated, add i18next shared dependency and requiredVersion: false to the react shared dependency definition", () => {
         const config = defineDevRemoteModuleConfig(SwcConfig, "remote1", 8081, {
             features: {
                 i18next: true
@@ -656,7 +656,7 @@ describe("defineBuildRemoteModuleConfig", () => {
         expect(result).toMatchSnapshot();
     });
 
-    test("when i18next is activated, add i18next shared dependency", () => {
+    test("when i18next is activated, add i18next shared dependency and requiredVersion: false to the react shared dependency definition", () => {
         const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", {
             features: {
                 i18next: true

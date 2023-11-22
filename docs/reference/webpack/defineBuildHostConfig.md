@@ -112,7 +112,7 @@ import { swcConfig } from "./swc.build.js";
 export default defineBuildHostConfig(swcConfig, "host", {
     sharedDependencies: {
         "react": {
-            strictVersion: "18.2.0"
+            requiredVersion: "18.2.0"
         }
     }
 });
@@ -125,7 +125,7 @@ In the previous example, the `react` shared dependency will be **augmented** wit
     "react": {
         eager: true,
         singleton: true,
-        strictVersion: "18.2.0"
+        requiredVersion: "18.2.0"
     }
 }
 ```

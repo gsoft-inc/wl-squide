@@ -60,7 +60,8 @@
         "typescript": "5.2.2"
     },
     "dependencies": {
-        "@squide/core": "workspace:*"
+        "@squide/core": "workspace:*",
+        "@formatjs/intl-localematcher": "0.5.2"
     },
     "sideEffects": false,
     "engines": {

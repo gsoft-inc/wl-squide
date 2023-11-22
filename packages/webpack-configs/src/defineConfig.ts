@@ -11,11 +11,14 @@ export type ModuleFederationPluginOptions = ConstructorParameters<typeof webpack
 
 // Generally, only the host application should have eager dependencies.
 // For more informations about shared dependencies refer to: https://github.com/patricklafrance/wmf-versioning
-function getDefaultSharedDependencies(isHost: boolean) {
+function getDefaultSharedDependencies(features: Features, isHost: boolean) {
     return {
         "react": {
             singleton: true,
-            eager: isHost ? true : undefined
+            eager: isHost ? true : undefined,
+            // Fixed the warning when `react-i18next` is imported in any remote modules.
+            // For more information, refer to: https://github.com/i18next/react-i18next/issues/1697#issuecomment-1821748226.
+            requiredVersion: features.i18next ? false : undefined
         },
         "react-dom": {
             singleton: true,
@@ -83,7 +86,7 @@ function getFeaturesDependencies({ router, msw, i18next }: Features, isHost: boo
 
 function resolveDefaultSharedDependencies(features: Features, isHost: boolean) {
     return {
-        ...getDefaultSharedDependencies(isHost),
+        ...getDefaultSharedDependencies(features, isHost),
         ...getFeaturesDependencies(features, isHost)
     };
 }

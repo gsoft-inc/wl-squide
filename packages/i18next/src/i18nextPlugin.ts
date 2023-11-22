@@ -9,8 +9,8 @@ export interface i18nextPluginOptions {
 }
 
 export function findSupportedPreferredLanguage<T extends string>(userPreferredLanguages: string[], supportedLanguages: T[]) {
-    // We don't want a fallback language here but it's a required parameter, therefore we provide a dummy value
-    // to return "undefined".
+    // We don't want a fallback language here but it's a required parameter, therefore
+    // we provide a dummy value to return "undefined".
     let result: string | undefined = match(userPreferredLanguages, supportedLanguages, "__dummy_fallback__", {
         algorithm: "lookup"
     });
@@ -21,7 +21,7 @@ export function findSupportedPreferredLanguage<T extends string>(userPreferredLa
 
     if (isNil(result)) {
         // Intl.LocaleMatcher "lookup" algorithm returns null when a prefered language is "fr" and a supported language is "fr-CA".
-        // We would prefer that if it returns "fr". This is what this code is used for.
+        // We would prefer if it returns "fr", that's what this code is for.
         result = supportedLanguages.find(x => {
             return userPreferredLanguages.some(y => x.startsWith(`${y}-`));
         });

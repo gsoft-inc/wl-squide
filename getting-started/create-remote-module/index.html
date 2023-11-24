@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.753300660289">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.754170589885">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.753300660289" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.754170589885" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.753300660289" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.754170589885" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.753300660289" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.753300660289" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.754170589885" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.754170589885" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -497,7 +497,7 @@ export const swcConfig = defineBuildConfig(targets);</code></pre>
 import { defineBuildRemoteModuleConfig } from &quot;@squide/firefly/defineConfig.js&quot;;
 import { swcConfig } from &quot;./swc.build.js&quot;;
 
-export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, &quot;http://localhost:8081/&quot;, {
+export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, {
     sharedDependencies: {
         &quot;@sample/shared&quot;: {
             singleton: true
@@ -543,7 +543,12 @@ export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, &qu
 </doc-anchor-target>
 <p>If you are experiencing issues with this guide:</p>
 <ul>
-<li>Open the <a href="https://developer.chrome.com/docs/devtools/" class="outbound" target="_blank">DevTools</a> console. You&#x27;ll find a log entry for each registration that occurs and error messages if something went wrong.</li>
+<li>Open the <a href="https://developer.chrome.com/docs/devtools/" class="outbound" target="_blank">DevTools</a> console. You&#x27;ll find a log entry for each registration that occurs and error messages if something went wrong:
+<ul>
+<li><code v-pre>[squide] The following route has been registered. Newly registered item: ...</code></li>
+<li><code v-pre>[squide] The following navigation item has been registered to the &quot;root&quot; menu for a total of 2 items. Newly registered item: ...</code></li>
+</ul>
+</li>
 <li>Refer to a working example on <a href="https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/remote-module" class="outbound" target="_blank">GitHub</a>.</li>
 <li>Refer to the <a href="../../troubleshooting/">troubleshooting</a> page.</li>
 </ul>

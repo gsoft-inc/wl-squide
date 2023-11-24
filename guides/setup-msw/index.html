@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.753300660289">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.754170589885">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.753300660289" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.754170589885" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.753300660289" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.754170589885" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.753300660289" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.753300660289" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.754170589885" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.754170589885" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -305,8 +305,7 @@
         <span>Setup Mock Service Worker</span>
     </h1>
 </doc-anchor-target>
-<p>To speed up frontend development and encourage an <a href="https://swagger.io/resources/articles/adopting-an-api-first-approach/" class="outbound" target="_blank">API first</a> approach, Squide has built-in support for <a href="https://mswjs.io/" class="outbound" target="_blank">Mock Service Worker</a> (MSW).</p>
-<p>MSW is a tool to fake API endpoints that has the advantage of working directly in the browser. This means that unlike alternative solutions, it doesn&#x27;t require running an additional process to host the fake API endpoints.</p>
+<p>To speed up frontend development and encourage an <a href="https://swagger.io/resources/articles/adopting-an-api-first-approach/" class="outbound" target="_blank">API first</a> approach, Squide has built-in support for <a href="https://mswjs.io/" class="outbound" target="_blank">Mock Service Worker</a> (MSW). MSW offers an API to host fake endpoints directly in the browser. This means that unlike alternative solutions, it doesn&#x27;t require running an additional process to host fake endpoints.</p>
 <doc-anchor-target id="setup-the-host-application">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#setup-the-host-application">#</doc-anchor-trigger>
@@ -577,7 +576,11 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = async runt
 </doc-anchor-target>
 <p>If you are experiencing issues with this guide:</p>
 <ul>
-<li>Open the <a href="https://developer.chrome.com/docs/devtools/" class="outbound" target="_blank">DevTools</a> console. You&#x27;ll find a log entry for each registration that occurs and error messages if something went wrong.</li>
+<li>Open the <a href="https://developer.chrome.com/docs/devtools/" class="outbound" target="_blank">DevTools</a> console. You&#x27;ll find a log entry for each request handlers registration that occurs and error messages if something went wrong:
+<ul>
+<li><code v-pre>[squide] The following MSW request handlers has been registered: ...</code></li>
+</ul>
+</li>
 <li>Refer to a working example on <a href="https://github.com/gsoft-inc/wl-squide/tree/main/samples/endpoints" class="outbound" target="_blank">GitHub</a>.</li>
 <li>Refer to the <a href="../../troubleshooting/">troubleshooting</a> page.</li>
 </ul>
@@ -606,10 +609,10 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = async runt
                                     </div>
                             
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../guides/override-a-react-context/">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../guides/setup-i18next/">
                                             <span>
                                                 <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                                                <span class="block mt-1">Override a React context</span>
+                                                <span class="block mt-1">Setup i​18​next</span>
                                             </span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                         </a>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.753300660289">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.754170589885">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.753300660289" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.754170589885" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.753300660289" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.754170589885" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.753300660289" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.753300660289" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.754170589885" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.754170589885" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -314,7 +314,7 @@
 <p>In many applications, multiple pages often share a <strong>common layout</strong> that includes elements such as a navigation bar, a user profile menu, and a main content section. In a <a href="https://reactrouter.com/en/main" class="outbound" target="_blank">React Router</a> application, this shared layout is commonly referred to as a <code v-pre>RootLayout</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/register.tsx</div>
-<pre class="language-tsx" data-line="10,13,17,19"><code v-pre class="language-tsx">import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from &quot;@squide/firefly&quot;;
+<pre class="language-tsx" data-line="9,11,14,16"><code v-pre class="language-tsx">import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from &quot;@squide/firefly&quot;;
 import { HomePage } from &quot;./HomePage.tsx&quot;;
 import { AuthenticationBoundary } from &quot;./AuthenticationBoundary.tsx&quot;;
 import { RootLayout } from &quot;./RootLayout.tsx&quot;;
@@ -322,14 +322,11 @@ import { RootErrorBoundary } from &quot;./RootErrorBoundary.tsx&quot;;
 
 export const registerHost: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&gt; {
     runtime.registerRoute({
-        // Pathless route to declare an authentication boundary.
         element: &lt;AuthenticationBoundary /&gt;,
         children: [
-            // Pathless route to declare the root layout.
             element: &lt;RootLayout /&gt;,
             children: [
                 {
-                    // Pathless route to declare a root error boundary.
                     errorElement: &lt;RootErrorBoundary /&gt;,
                     children: [
                         ManagedRoutes
@@ -396,7 +393,7 @@ export function RootLayout() {
 <p>To hoist module pages, add the <a href="../../reference/runtime/runtime-class/#register-an-hoisted-route">hoist</a> option to the route registration options and optionally use a different layout:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="9,12,22"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
+<pre class="language-tsx" data-line="9,14,24"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import { LocalLayout } from &quot;./LocalLayout.tsx&quot;;
 import { LocalErrorBoundary } from &quot;./LocalErrorBoundary.tsx&quot;;
 import { LoginPage } from &quot;./LoginPage.tsx&quot;;
@@ -407,6 +404,8 @@ export function register: ModuleRegisterFunction&lt;FireflyRuntime&gt;(runtime) 
         element: &lt;LocalLayout /&gt;,
         children: [
             {
+                // Custom error boundary ensuring errors from the login page doesn't prevent the other
+                // modules of the application from rendering.
                 errorElement: &lt;LocalErrorBoundary /&gt;,
                 children: [
                     {

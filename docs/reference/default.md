@@ -80,7 +80,7 @@ toc:
 - [useChangeLanguage](./i18next/useChangeLanguage.md)
 - [useCurrentLanguage](./i18next/useCurrentLanguage.md)
 - [useI18nextInstance](./i18next/useI18nextInstance.md)
-- [I18nextNavigationLabel](./i18next/I18nextNavigationLabel.md)
+- [I18nextNavigationItemLabel](./i18next/I18nextNavigationItemLabel.md)
 
 ### Fakes
 

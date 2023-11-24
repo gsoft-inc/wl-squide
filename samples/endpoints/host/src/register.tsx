@@ -1,5 +1,5 @@
 import type { FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
-import { I18nextNavigationLabel } from "@squide/i18next";
+import { I18nextNavigationItemLabel } from "@squide/i18next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { i18n } from "i18next";
 import type { ReactNode } from "react";
@@ -41,7 +41,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n) {
     });
 
     runtime.registerNavigationItem({
-        $label: <I18nextNavigationLabel i18next={i18nextInstance} resourceKey="homePage" />,
+        $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="homePage" />,
         $priority: 999,
         to: "/"
     });

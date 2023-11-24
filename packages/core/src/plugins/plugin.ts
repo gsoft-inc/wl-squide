@@ -1,4 +1,4 @@
-import type { Runtime } from "../index.ts";
+import type { Runtime } from "../runtime/runtime.ts";
 
 export abstract class Plugin {
     protected readonly _name: string;

@@ -1,4 +1,4 @@
-export * from "./I18nextNavigationLabel.tsx";
+export * from "./I18nextNavigationItemLabel.tsx";
 export * from "./i18nextInstanceRegistry.ts";
 export * from "./i18nextPlugin.ts";
 export * from "./useChangeLanguage.ts";

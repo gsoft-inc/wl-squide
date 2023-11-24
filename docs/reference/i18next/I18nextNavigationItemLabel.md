@@ -4,14 +4,14 @@ toc:
     depth: 2-3
 ---
 
-# I18nextNavigationLabel
+# I18nextNavigationItemLabel
 
 A React component to localize the label of Squide [navigation items](../runtime/runtime-class.md#register-navigation-items).
 
 ## Reference
 
 ```tsx
-<I18nextNavigationLabel i18next={} namespace="" resourceKey="" />
+<I18nextNavigationItemLabel i18next={} namespace="" resourceKey="" />
 ```
 
 ### Properties
@@ -24,12 +24,12 @@ A React component to localize the label of Squide [navigation items](../runtime/
 
 ```tsx !#7 remote-module/src/register.tsx
 import type { FireflyRuntime } from "@squide/firefly";
-import { I18nextNavigationLabel } from "@squide/i18next";
+import { I18nextNavigationItemLabel } from "@squide/i18next";
 import i18n from "i18next";
 
 function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n) {
     runtime.registerNavigationItem({
-        $label: <I18nextNavigationLabel i18next={i18nextInstance} resourceKey="aboutPage"  />
+        $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="aboutPage"  />
         to: "/about"
     });
 }
@@ -39,12 +39,12 @@ Or with a difference resources namespace:
 
 ```tsx !#7 remote-module/src/register.tsx
 import type { FireflyRuntime } from "@squide/firefly";
-import { I18nextNavigationLabel } from "@squide/i18next";
+import { I18nextNavigationItemLabel } from "@squide/i18next";
 import i18n from "i18next";
 
 function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n) {
     runtime.registerNavigationItem({
-        $label: <I18nextNavigationLabel i18next={i18nextInstance} namespace="another-namespace" resourceKey="aboutPage"  />
+        $label: <I18nextNavigationItemLabel i18next={i18nextInstance} namespace="another-namespace" resourceKey="aboutPage"  />
         to: "/about"
     });
 }

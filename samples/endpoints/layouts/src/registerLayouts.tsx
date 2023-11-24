@@ -1,5 +1,5 @@
 import type { FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
-import { I18nextNavigationLabel } from "@squide/i18next";
+import { I18nextNavigationItemLabel } from "@squide/i18next";
 import type { i18n } from "i18next";
 import { initI18next } from "./i18next.ts";
 
@@ -20,7 +20,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n, host?: s
     });
 
     runtime.registerNavigationItem({
-        $label: <I18nextNavigationLabel i18next={i18nextInstance} resourceKey="tabsPage" />,
+        $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="tabsPage" />,
         to: "/federated-tabs"
     });
 }

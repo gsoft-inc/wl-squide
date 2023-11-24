@@ -1,6 +1,6 @@
 import type { DeferredRegistrationData } from "@endpoints/shell";
 import type { DeferredRegistrationFunction, FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
-import { I18nextNavigationLabel } from "@squide/i18next";
+import { I18nextNavigationItemLabel } from "@squide/i18next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { i18n } from "i18next";
@@ -59,12 +59,12 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
     });
 
     runtime.registerNavigationItem({
-        $label: <I18nextNavigationLabel i18next={i18nextInstance} resourceKey="subscriptionPage" />,
+        $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="subscriptionPage" />,
         to: "/subscription"
     });
 
     runtime.registerNavigationItem({
-        $label: <I18nextNavigationLabel i18next={i18nextInstance} resourceKey="charactersTab" />,
+        $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="charactersTab" />,
         to: "/federated-tabs"
     }, {
         menuId: "/federated-tabs"
@@ -78,7 +78,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
             });
 
             runtime.registerNavigationItem({
-                $label: <I18nextNavigationLabel i18next={i18nextInstance} resourceKey="featureAPage" />,
+                $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="featureAPage" />,
                 to: "/feature-a"
             });
         }

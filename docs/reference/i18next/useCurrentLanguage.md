@@ -29,3 +29,12 @@ import { useCurrentLanguage } from "@squide/i18next";
 
 const language = useCurrentLanguage();
 ```
+
+Or with a typed language:
+
+```tsx
+import { useCurrentLanguage } from "@squide/i18next";
+import { LanguageKey } from "@sample/shared";
+
+const language = useCurrentLanguage() as LanguageKey;
+```

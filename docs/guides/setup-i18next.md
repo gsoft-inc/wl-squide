@@ -298,11 +298,11 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext> = (run
 
 ### Localize the navigation item labels
 
-Then, localize the navigation items labels using the [I18nextNavigationLabel](../reference/i18next/I18nextNavigationLabel.md) component. Since the resources are in the `navigationItems` namespace, there's no need to specify a `namespace` property on the components:
+Then, localize the navigation items labels using the [I18nextNavigationItemLabel](../reference/i18next/I18nextNavigationItemLabel.md) component. Since the resources are in the `navigationItems` namespace, there's no need to specify a `namespace` property on the components:
 
 ```tsx !#38 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
-import { getI18nextPlugin, I18nextNavigationLabel } from "@squide/i18next";
+import { getI18nextPlugin, I18nextNavigationItemLabel } from "@squide/i18next";
 import type { AppContext } from "@sample/shared";
 import { Page } from "./Page.tsx";
 import i18n from "i18next";
@@ -338,7 +338,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext> = (run
     });
 
     runtime.registerNavigationItem({
-        $label: <I18nextNavigationLabel i18next={i18nextInstance} resourceKey="page" />,
+        $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="page" />,
         to: "/remote/page"
     });
 }

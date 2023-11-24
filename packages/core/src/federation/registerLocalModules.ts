@@ -1,5 +1,5 @@
-import { isFunction } from "../index.ts";
 import type { Runtime } from "../runtime/runtime.ts";
+import { isFunction } from "../shared/assertions.ts";
 import type { ModuleRegistrationStatus } from "./moduleRegistrationStatus.ts";
 import { registerModule, type DeferredRegistrationFunction, type ModuleRegisterFunction } from "./registerModule.ts";
 

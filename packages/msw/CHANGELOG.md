@@ -1,5 +1,14 @@
 # @squide/msw
 
+## 2.0.5
+
+### Patch Changes
+
+- [#115](https://github.com/gsoft-inc/wl-squide/pull/115) [`568255a`](https://github.com/gsoft-inc/wl-squide/commit/568255a50a519e7d19c8c2b03909559686cd24c4) Thanks [@patricklafrance](https://github.com/patricklafrance)! - - Request handlers registeration are now printed to the debug logs.
+
+- Updated dependencies [[`568255a`](https://github.com/gsoft-inc/wl-squide/commit/568255a50a519e7d19c8c2b03909559686cd24c4)]:
+  - @squide/core@3.1.0
+
 ## 2.0.4
 
 ### Patch Changes

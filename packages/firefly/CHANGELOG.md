@@ -1,5 +1,20 @@
 # @squide/firefly
 
+## 3.0.0
+
+### Minor Changes
+
+- [#115](https://github.com/gsoft-inc/wl-squide/pull/115) [`568255a`](https://github.com/gsoft-inc/wl-squide/commit/568255a50a519e7d19c8c2b03909559686cd24c4) Thanks [@patricklafrance](https://github.com/patricklafrance)! - - A new `features` option is now available with the `defineConfig` functions to add the `@squide/i18next` package to the shared dependencies.
+
+### Patch Changes
+
+- Updated dependencies [[`568255a`](https://github.com/gsoft-inc/wl-squide/commit/568255a50a519e7d19c8c2b03909559686cd24c4), [`568255a`](https://github.com/gsoft-inc/wl-squide/commit/568255a50a519e7d19c8c2b03909559686cd24c4), [`568255a`](https://github.com/gsoft-inc/wl-squide/commit/568255a50a519e7d19c8c2b03909559686cd24c4)]:
+  - @squide/msw@2.0.5
+  - @squide/core@3.1.0
+  - @squide/webpack-configs@1.1.0
+  - @squide/react-router@3.0.1
+  - @squide/webpack-module-federation@3.0.1
+
 ## 2.0.0
 
 ### Minor Changes

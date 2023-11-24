@@ -1,5 +1,11 @@
 # @squide/core
 
+## 3.1.0
+
+### Minor Changes
+
+- [#115](https://github.com/gsoft-inc/wl-squide/pull/115) [`568255a`](https://github.com/gsoft-inc/wl-squide/commit/568255a50a519e7d19c8c2b03909559686cd24c4) Thanks [@patricklafrance](https://github.com/patricklafrance)! - - A plugin can now optionally implement a "\_setRuntime" method to received the current runtime at bootstrapping.
+
 ## 3.0.0
 
 ### Major Changes

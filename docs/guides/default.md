@@ -12,6 +12,7 @@ expanded: true
 - [Develop a module in isolation](./develop-a-module-in-isolation.md)
 - [Federated tabs](./federated-tabs.md)
 - [Setup Mock Service Worker](./setup-msw.md)
+- [Setup i18next](./setup-i18next.md)
 - [Override a React context](./override-a-react-context.md)
 - [Implement a custom logger](./implement-a-custom-logger.md)
 - [Add a shared dependency](./add-a-shared-dependency.md)

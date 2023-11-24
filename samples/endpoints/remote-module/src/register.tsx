@@ -1,8 +1,53 @@
 import type { DeferredRegistrationData } from "@endpoints/shell";
-import type { FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
-import { Providers } from "./Providers.tsx";
+import type { DeferredRegistrationFunction, FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
+import { I18nextNavigationItemLabel } from "@squide/i18next";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import type { i18n } from "i18next";
+import type { ReactNode } from "react";
+import { initI18next } from "./i18next.ts";
 
-const registerRoutes: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = runtime => {
+export const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            refetchOnWindowFocus: false,
+            retry: failureCount => {
+                return failureCount <= 2;
+            }
+        }
+    }
+});
+
+interface ProvidersProps {
+    children: ReactNode;
+}
+
+function Providers({ children }: ProvidersProps) {
+    return (
+        <QueryClientProvider client={queryClient}>
+            {children}
+            {process.env.ISOLATED && (
+                <ReactQueryDevtools initialIsOpen={false} />
+            )}
+        </QueryClientProvider>
+    );
+}
+
+function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): DeferredRegistrationFunction<DeferredRegistrationData> {
+    runtime.registerRoute({
+        $visibility: "public",
+        path: "/anonymous",
+        lazy: async () => {
+            const { AnonymousPage } = await import("./AnonymousPage.tsx");
+
+            return {
+                element: <Providers><AnonymousPage /></Providers>
+            };
+        }
+    }, {
+        parentName: "root-error-boundary"
+    });
+
     runtime.registerRoute({
         path: "/federated-tabs/episodes",
         lazy: async () => {
@@ -43,21 +88,21 @@ const registerRoutes: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRe
     });
 
     runtime.registerNavigationItem({
-        $label: "Episodes",
+        $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="episodesTab" />,
         to: "/federated-tabs/episodes"
     }, {
         menuId: "/federated-tabs"
     });
 
     runtime.registerNavigationItem({
-        $label: "Locations",
+        $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="locationsTab" />,
         to: "/federated-tabs/locations"
     }, {
         menuId: "/federated-tabs"
     });
 
     runtime.registerNavigationItem({
-        $label: "Failing",
+        $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="failingTab" />,
         to: "/federated-tabs/failing"
     }, {
         menuId: "/federated-tabs"
@@ -71,7 +116,7 @@ const registerRoutes: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRe
             });
 
             runtime.registerNavigationItem({
-                $label: "Feature B",
+                $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="featureBPage" />,
                 to: "/feature-b"
             });
         }
@@ -83,12 +128,12 @@ const registerRoutes: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRe
             });
 
             runtime.registerNavigationItem({
-                $label: "Feature C",
+                $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="featureCPage" />,
                 to: "/feature-c"
             });
         }
     };
-};
+}
 
 async function registerMsw(runtime: FireflyRuntime) {
     if (process.env.USE_MSW) {
@@ -101,7 +146,9 @@ async function registerMsw(runtime: FireflyRuntime) {
 }
 
 export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = async runtime => {
+    const i18nextInstance = await initI18next(runtime);
+
     await registerMsw(runtime);
 
-    return registerRoutes(runtime);
+    return registerRoutes(runtime, i18nextInstance);
 };

@@ -14,7 +14,13 @@ export function useSubscription() {
     return useContext(SubscriptionContext);
 }
 
-export function toSubscriptionStatusLabel(status?: SubscriptionStatus) {
+export interface ToSubscriptionStatusLabelResources {
+    trialLabel: string;
+    paidLabel: string;
+    notPaidLabel: string;
+}
+
+export function toSubscriptionStatusLabel(status: SubscriptionStatus, resources: ToSubscriptionStatusLabelResources) {
     if (!status) {
         return "-";
     }
@@ -23,10 +29,10 @@ export function toSubscriptionStatusLabel(status?: SubscriptionStatus) {
         case "unknown":
             return "-";
         case "trial":
-            return "Trial";
+            return resources.trialLabel;
         case "paid":
-            return "Paid";
+            return resources.paidLabel;
         case "not-paid":
-            return "Not paid";
+            return resources.notPaidLabel;
     }
 }

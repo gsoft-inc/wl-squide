@@ -1,6 +1,9 @@
 import { useLogger } from "@squide/firefly";
+import { useI18nextInstance } from "@squide/i18next";
 import { useCallback, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { isRouteErrorResponse, useLocation, useRouteError } from "react-router-dom";
+import { i18NextInstanceKey } from "./i18next.ts";
 
 function getErrorMessage(error: unknown) {
     if (isRouteErrorResponse(error)) {
@@ -13,6 +16,9 @@ function getErrorMessage(error: unknown) {
 }
 
 export function ModuleErrorBoundary() {
+    const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
+    const { t } = useTranslation("ModuleErrorBoundary", { i18n: i18nextInstance });
+
     const error = useRouteError() as Error;
     const location = useLocation();
     const logger = useLogger();
@@ -27,12 +33,12 @@ export function ModuleErrorBoundary() {
 
     return (
         <div>
-            <h2>Unmanaged error</h2>
-            <p style={{ color: "red" }}>An unmanaged error occurred inside a module. Still, other parts of the application are fully functional!</p>
+            <h2>{t("title")}</h2>
+            <p style={{ color: "red" }}>{t("message")}</p>
             <p style={{ color: "red" }}><span role="img" aria-label="pointer">👉</span> {getErrorMessage(error)}</p>
             <p style={{ color: "gray" }}><code>{error.stack}</code></p>
             <br />
-            <button type="button" onClick={handleReloadButtonClick}>Reload</button>
+            <button type="button" onClick={handleReloadButtonClick}>{t("reloadButtonLabel")}</button>
         </div>
     );
 }

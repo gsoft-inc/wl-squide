@@ -1,7 +1,10 @@
 import { FeatureFlagsContext, SubscriptionContext, TelemetryServiceContext, fetchJson, isApiError, type FeatureFlags, type Session, type SessionManager, type Subscription, type TelemetryService } from "@endpoints/shared";
 import { AppRouter as FireflyAppRouter, completeModuleRegistrations, useLogger, useRuntime, type Logger } from "@squide/firefly";
+import { useChangeLanguage, useI18nextInstance } from "@squide/i18next";
 import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { AppRouterErrorBoundary } from "./AppRouterErrorBoundary.tsx";
+import { i18NextInstanceKey } from "./i18next.ts";
 
 export interface DeferredRegistrationData {
     featureFlags?: FeatureFlags;
@@ -27,7 +30,8 @@ async function fetchSession(setSession: (session: Session) => void, logger: Logg
     const session: Session = {
         user: {
             id: data.userId,
-            name: data.username
+            name: data.username,
+            preferredLanguage: data.preferredLanguage
         }
     };
 
@@ -64,8 +68,11 @@ function fetchProtectedData(
 }
 
 function Loading() {
+    const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
+    const { t } = useTranslation("AppRouter", { i18n: i18nextInstance });
+
     return (
-        <div>Loading...</div>
+        <div>{t("loadingMessage")}</div>
     );
 }
 
@@ -78,6 +85,8 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
     const logger = useLogger();
     const runtime = useRuntime();
 
+    const changeLanguage = useChangeLanguage();
+
     const handleLoadPublicData = useCallback(() => {
         return fetchPublicData(setFeatureFlags, logger);
     }, [logger]);
@@ -85,10 +94,14 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
     const handleLoadProtectedData = useCallback(() => {
         const setSession = (session: Session) => {
             sessionManager.setSession(session);
+
+            // When the session has been retrieved, update the language to match the user
+            // preferred language.
+            changeLanguage(session.user.preferredLanguage);
         };
 
         return fetchProtectedData(setSession, setSubscription, logger);
-    }, [logger, sessionManager]);
+    }, [logger, sessionManager, changeLanguage]);
 
     const handleCompleteRegistrations = useCallback(() => {
         return completeModuleRegistrations(runtime, {

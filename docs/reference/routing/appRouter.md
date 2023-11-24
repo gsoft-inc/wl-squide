@@ -11,11 +11,7 @@ A component that sets up Squide federated primitives and render a React Router i
 ## Reference
 
 ```tsx
-<AppRouter
-    fallbackElement={<div>Loading...</div>}
-    errorElement={<div>An error occured!</div>}
-    waitForMsw={true}
-/>
+<AppRouter fallbackElement={} errorElement={} waitForMsw={} />
 ```
 
 ### Properties
@@ -178,7 +174,7 @@ export function App() {
 
 For more information about deferred registrations, refer to the [registerRemoteModules](../registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) and [completeModuleRegistrations](../registration/completeModuleRegistrations.md) documentation.
 
-```tsx !#28-30,39 host/src/App.tsx
+```tsx !#27-30,39 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { completeModuleRegistrations } from "@squide/webpack-module-federation";

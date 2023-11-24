@@ -2,6 +2,7 @@ import type { SessionManager } from "@endpoints/shared";
 import { ManagedRoutes, type FireflyRuntime, type ModuleRegisterFunction } from "@squide/firefly";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
+import { initI18next } from "./i18next.ts";
 
 export interface RegisterShellOptions {
     // This is only for demo purposed, do not copy this.
@@ -37,7 +38,13 @@ function registerRoutes(runtime: FireflyRuntime, sessionManager: SessionManager,
                                     {
                                         // Pathless route to declare an error boundary inside the layout instead of outside.
                                         // It's quite useful to prevent losing the layout when an unmanaged error occurs.
-                                        lazy: () => import("./ModuleErrorBoundary.tsx"),
+                                        lazy: async () => {
+                                            const { ModuleErrorBoundary } = await import("./ModuleErrorBoundary.tsx");
+
+                                            return {
+                                                errorElement: <ModuleErrorBoundary />
+                                            };
+                                        },
                                         children: [
                                             ManagedRoutes
                                         ]
@@ -108,6 +115,7 @@ async function registerMsw(runtime: FireflyRuntime) {
 
 export function registerShell(sessionManager: SessionManager, { host }: RegisterShellOptions = {}) {
     const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
+        await initI18next(runtime);
         await registerMsw(runtime);
 
         return registerRoutes(runtime, sessionManager, host);

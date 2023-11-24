@@ -25,6 +25,8 @@ const webpackConfig = defineDevRemoteModuleConfig(swcConfig: {}, applicationName
 - `port`: The remote module application port.
 - `options`: An optional object literal of options:
     - Accepts most of webpack `definedDevConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/#3-set-predefined-options).
+    - `features`: An optional object literal of feature switches to define additional shared dependencies.
+        - `i18next`: Whether or not to add `@squide/i18next` as a shared dependency.
     - `sharedDependencies`: An optional object literal of additional (or updated) module federation shared dependencies.
     - `moduleFederationPluginOptions`: An optional object literal of [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) options.
 
@@ -81,6 +83,25 @@ import { swcConfig } from "./swc.dev.js";
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8080);
 ```
 
+### Activate additional features
+
+```js !#7-9 remote-module/webpack.dev.js
+// @ts-check
+
+import { defineDevRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
+import { swcConfig } from "./swc.dev.js";
+
+export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8080, {
+    features: {
+        i18next: true
+    }
+});
+```
+
+!!!info
+Features must be activated on the host application as well as every remote module.
+!!!
+
 ### Specify additional shared dependencies
 
 ```js !#7-11 remote-module/webpack.dev.js
@@ -113,7 +134,7 @@ import { swcConfig } from "./swc.dev.js";
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8080, {
     sharedDependencies: {
         "react": {
-            strictVersion: "18.2.0"
+            requiredVersion: "18.2.0"
         }
     }
 });
@@ -126,7 +147,7 @@ In the previous example, the `react` shared dependency will be **augmented** wit
     "react": {
         eager: true,
         singleton: true,
-        strictVersion: "18.2.0"
+        requiredVersion: "18.2.0"
     }
 }
 ```

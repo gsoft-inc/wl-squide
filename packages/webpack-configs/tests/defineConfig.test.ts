@@ -112,7 +112,7 @@ describe("defineDevHostConfig", () => {
         expect(result).toMatchSnapshot();
     });
 
-    test("when the router, add react-router shared dependencies", () => {
+    test("when the router is react-router, add react-router shared dependencies", () => {
         const config = defineDevHostConfig(SwcConfig, "host", 8080, {
             features: {
                 router: "react-router"
@@ -128,6 +128,18 @@ describe("defineDevHostConfig", () => {
         const config = defineDevHostConfig(SwcConfig, "host", 8080, {
             features: {
                 msw: true
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
+
+        expect(result).toMatchSnapshot();
+    });
+
+    test("when i18next is activated, add i18next shared dependency and requiredVersion: false to the react shared dependency definition", () => {
+        const config = defineDevHostConfig(SwcConfig, "host", 8080, {
+            features: {
+                i18next: true
             }
         });
 
@@ -293,6 +305,18 @@ describe("defineBuildHostConfig", () => {
         const config = defineBuildHostConfig(SwcConfig, "host", {
             features: {
                 msw: true
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
+
+        expect(result).toMatchSnapshot();
+    });
+
+    test("when i18next is activated, add i18next shared dependency and requiredVersion: false to the react shared dependency definition", () => {
+        const config = defineBuildHostConfig(SwcConfig, "host", {
+            features: {
+                i18next: true
             }
         });
 
@@ -482,6 +506,18 @@ describe("defineDevRemoteModuleConfig", () => {
         expect(result).toMatchSnapshot();
     });
 
+    test("when i18next is activated, add i18next shared dependency and requiredVersion: false to the react shared dependency definition", () => {
+        const config = defineDevRemoteModuleConfig(SwcConfig, "remote1", 8081, {
+            features: {
+                i18next: true
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
+
+        expect(result).toMatchSnapshot();
+    });
+
     test("access control headers are added to the dev server configuration", () => {
         const result = defineDevRemoteModuleConfig(SwcConfig, "remote1", 8081);
 
@@ -612,6 +648,18 @@ describe("defineBuildRemoteModuleConfig", () => {
         const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", {
             features: {
                 msw: true
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
+
+        expect(result).toMatchSnapshot();
+    });
+
+    test("when i18next is activated, add i18next shared dependency and requiredVersion: false to the react shared dependency definition", () => {
+        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", {
+            features: {
+                i18next: true
             }
         });
 

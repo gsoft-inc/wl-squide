@@ -1,0 +1,17 @@
+import type { LanguageKey } from "@endpoints/shared";
+import type { InitOptions } from "i18next";
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+
+export async function createI18nextInstance(language: LanguageKey, options: InitOptions = {}) {
+    const instance = i18n.createInstance()
+        .use(initReactI18next);
+
+    instance.init({
+        debug: true,
+        lng: language,
+        ...options
+    });
+
+    return instance;
+}

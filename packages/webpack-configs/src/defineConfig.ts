@@ -11,11 +11,14 @@ export type ModuleFederationPluginOptions = ConstructorParameters<typeof webpack
 
 // Generally, only the host application should have eager dependencies.
 // For more informations about shared dependencies refer to: https://github.com/patricklafrance/wmf-versioning
-function getDefaultSharedDependencies(isHost: boolean) {
+function getDefaultSharedDependencies(features: Features, isHost: boolean) {
     return {
         "react": {
             singleton: true,
-            eager: isHost ? true : undefined
+            eager: isHost ? true : undefined,
+            // Fixed the warning when `react-i18next` is imported in any remote modules.
+            // For more information, refer to: https://github.com/i18next/react-i18next/issues/1697#issuecomment-1821748226.
+            requiredVersion: features.i18next ? false : undefined
         },
         "react-dom": {
             singleton: true,
@@ -37,6 +40,7 @@ export type Router = "react-router";
 export interface Features {
     router?: Router;
     msw?: boolean;
+    i18next?: boolean;
 }
 
 // Generally, only the host application should have eager dependencies.
@@ -63,16 +67,26 @@ function getMswSharedDependency(isHost: boolean) {
     };
 }
 
-function getFeaturesDependencies({ router, msw }: Features, isHost: boolean) {
+function getI18nextSharedDependency(isHost: boolean) {
+    return {
+        "@squide/i18next": {
+            singleton: true,
+            eager: isHost ? true : undefined
+        }
+    };
+}
+
+function getFeaturesDependencies({ router, msw, i18next }: Features, isHost: boolean) {
     return {
         ...(router === "react-router" ? getReactRouterSharedDependencies(isHost) : {}),
-        ...(msw ? getMswSharedDependency(isHost) : {})
+        ...(msw ? getMswSharedDependency(isHost) : {}),
+        ...(i18next ? getI18nextSharedDependency(isHost) : {})
     };
 }
 
 function resolveDefaultSharedDependencies(features: Features, isHost: boolean) {
     return {
-        ...getDefaultSharedDependencies(isHost),
+        ...getDefaultSharedDependencies(features, isHost),
         ...getFeaturesDependencies(features, isHost)
     };
 }

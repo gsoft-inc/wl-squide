@@ -1,5 +1,7 @@
+import { createI18NextPlugin } from "@endpoints/i18next";
+import { registerLayouts } from "@endpoints/layouts";
 import { registerLocalModule } from "@endpoints/local-module";
-import { isNetlify, registerLayouts } from "@endpoints/shared";
+import { isNetlify } from "@endpoints/shared";
 import { registerShell } from "@endpoints/shell";
 import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, registerRemoteModules, setMswAsStarted, type RemoteDefinition } from "@squide/firefly";
 import { StrictMode } from "react";
@@ -16,6 +18,7 @@ const Remotes: RemoteDefinition[] = [
 ];
 
 const runtime = new FireflyRuntime({
+    plugins: [createI18NextPlugin()],
     loggers: [new ConsoleLogger()],
     sessionAccessor
 });

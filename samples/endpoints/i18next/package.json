@@ -1,0 +1,46 @@
+{
+    "name": "@endpoints/i18next",
+    "author": "Workleap",
+    "version": "0.0.0",
+    "description": "i18next package to showcase Squide localization.",
+    "private": true,
+    "license": "Apache-2.0",
+    "type": "module",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        }
+    },
+    "scripts": {
+        "dev": "cross-env USE_MSW=true nodemon",
+        "build": "cross-env USE_MSW=true tsup --config ./tsup.build.ts",
+        "serve-build": "pnpm build"
+    },
+    "peerDependencies": {
+        "@endpoints/shared": "*",
+        "@squide/i18next": "*",
+        "i18next": "*",
+        "i18next-browser-languagedetector": "*",
+        "react": "*",
+        "react-dom": "*",
+        "react-i18next": "*"
+    },
+    "devDependencies": {
+        "@endpoints/shared": "workspace:*",
+        "@squide/i18next": "workspace:*",
+        "@workleap/eslint-plugin": "3.0.0",
+        "@workleap/tsup-configs": "3.0.1",
+        "@workleap/typescript-configs": "3.0.2",
+        "cross-env": "7.0.3",
+        "i18next": "23.7.6",
+        "i18next-browser-languagedetector": "7.2.0",
+        "nodemon": "3.0.1",
+        "tsup": "7.2.0",
+        "typescript": "5.2.2",
+        "react": "18.2.0",
+        "react-dom": "18.2.0",
+        "react-i18next": "13.5.0"
+    }
+}

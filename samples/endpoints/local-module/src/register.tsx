@@ -1,8 +1,11 @@
 import type { DeferredRegistrationData } from "@endpoints/shell";
-import type { FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
+import type { DeferredRegistrationFunction, FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
+import { I18nextNavigationItemLabel } from "@squide/i18next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import type { i18n } from "i18next";
 import type { ReactNode } from "react";
+import { initI18next } from "./i18next.ts";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -15,7 +18,11 @@ const queryClient = new QueryClient({
     }
 });
 
-function Providers({ children }: { children: ReactNode }) {
+interface ProvidersProps {
+    children: ReactNode;
+}
+
+function Providers({ children }: ProvidersProps) {
     return (
         <QueryClientProvider client={queryClient}>
             {children}
@@ -26,15 +33,7 @@ function Providers({ children }: { children: ReactNode }) {
     );
 }
 
-const registerRoutes: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = runtime => {
-    runtime.registerRoute({
-        $visibility: "public",
-        path: "/public",
-        lazy: () => import("./PublicPage.tsx")
-    }, {
-        hoist: true
-    });
-
+function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): DeferredRegistrationFunction<DeferredRegistrationData> {
     runtime.registerRoute({
         path: "/subscription",
         lazy: async () => {
@@ -60,17 +59,12 @@ const registerRoutes: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRe
     });
 
     runtime.registerNavigationItem({
-        $label: "Subscription",
+        $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="subscriptionPage" />,
         to: "/subscription"
     });
 
     runtime.registerNavigationItem({
-        $label: "Public page",
-        to: "/public"
-    });
-
-    runtime.registerNavigationItem({
-        $label: "Characters",
+        $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="charactersTab" />,
         to: "/federated-tabs"
     }, {
         menuId: "/federated-tabs"
@@ -84,12 +78,12 @@ const registerRoutes: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRe
             });
 
             runtime.registerNavigationItem({
-                $label: "Feature A",
+                $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="featureAPage" />,
                 to: "/feature-a"
             });
         }
     };
-};
+}
 
 async function registerMsw(runtime: FireflyRuntime) {
     if (process.env.USE_MSW) {
@@ -102,7 +96,9 @@ async function registerMsw(runtime: FireflyRuntime) {
 }
 
 export const registerLocalModule: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = async runtime => {
+    const i18nextInstance = await initI18next(runtime);
+
     await registerMsw(runtime);
 
-    return registerRoutes(runtime);
+    return registerRoutes(runtime, i18nextInstance);
 };

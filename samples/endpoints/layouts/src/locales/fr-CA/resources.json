@@ -1,0 +1,14 @@
+{
+    "navigationItems": {
+        "tabsPage": "Onglets"
+    },
+    "TabsError": {
+        "message": "Une erreur s'est produite lors du rendu de l'onglet.",
+        "tryAgainButtonLabel": "Essayer à nouveau"
+    },
+    "FederatedTabsLayout": {
+        "title": "Onglets",
+        "servedBy": "Cette page est servi par <code>{{host}}</code>",
+        "loadingMessage": "Chargement..."
+    }
+}

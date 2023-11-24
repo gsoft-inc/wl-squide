@@ -1,5 +1,5 @@
 ---
-order: 100
+order: 300
 ---
 
 # Override the host layout
@@ -8,7 +8,7 @@ order: 100
 
 In many applications, multiple pages often share a **common layout** that includes elements such as a navigation bar, a user profile menu, and a main content section. In a [React Router](https://reactrouter.com/en/main) application, this shared layout is commonly referred to as a `RootLayout`:
 
-```tsx !#10,13,17,19 host/src/register.tsx
+```tsx !#9,11,14,16 host/src/register.tsx
 import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { HomePage } from "./HomePage.tsx";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
@@ -17,14 +17,11 @@ import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
 export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        // Pathless route to declare an authentication boundary.
         element: <AuthenticationBoundary />,
         children: [
-            // Pathless route to declare the root layout.
             element: <RootLayout />,
             children: [
                 {
-                    // Pathless route to declare a root error boundary.
                     errorElement: <RootErrorBoundary />,
                     children: [
                         ManagedRoutes
@@ -93,7 +90,7 @@ Squide has a built-in [hoist](../reference/runtime/runtime-class.md#register-an-
 
 To hoist module pages, add the [hoist](../reference/runtime/runtime-class.md#register-an-hoisted-route) option to the route registration options and optionally use a different layout:
 
-```tsx !#9,12,22 local-module/src/register.tsx
+```tsx !#9,14,24 local-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { LocalLayout } from "./LocalLayout.tsx";
 import { LocalErrorBoundary } from "./LocalErrorBoundary.tsx";
@@ -105,6 +102,8 @@ export function register: ModuleRegisterFunction<FireflyRuntime>(runtime) {
         element: <LocalLayout />,
         children: [
             {
+                // Custom error boundary ensuring errors from the login page doesn't prevent the other
+                // modules of the application from rendering.
                 errorElement: <LocalErrorBoundary />,
                 children: [
                     {

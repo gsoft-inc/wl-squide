@@ -8,6 +8,9 @@ let config;
 
 if (!process.env.ISOLATED) {
     config = defineBuildRemoteModuleConfig(swcConfig, "remote1", {
+        features: {
+            i18next: true
+        },
         sharedDependencies: {
             "@endpoints/shared": {
                 singleton: true

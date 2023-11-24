@@ -1,7 +1,10 @@
 import { postJson, toSubscriptionStatusLabel, useSubscription, type Session, type SessionManager } from "@endpoints/shared";
 import { isNavigationLink, useLogger, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
+import { useI18nextInstance } from "@squide/i18next";
 import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { i18NextInstanceKey } from "./i18next.ts";
 
 type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
 
@@ -45,9 +48,18 @@ export interface AuthenticatedLayoutProps {
 }
 
 export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps) {
+    const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
+    const { t } = useTranslation("AuthenticatedLayout", { i18n: i18nextInstance });
+
     const logger = useLogger();
     const session = useSession() as Session;
     const subscription = useSubscription();
+
+    const subscriptionStatusLabel = toSubscriptionStatusLabel(subscription!.status, {
+        trialLabel: t("trialLabel"),
+        paidLabel: t("paidLabel"),
+        notPaidLabel: t("notPaidLabel")
+    });
 
     const navigate = useNavigate();
 
@@ -78,13 +90,16 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
                 </nav>
                 <div style={{ whiteSpace: "nowrap", marginRight: "20px" }}>
                     {/* Must check for a null session because when the disconnect button is clicked, it will clear the session and rerender this layout. */}
-                    (Subscription: <span style={{ fontWeight: "bold" }}>{toSubscriptionStatusLabel(subscription?.status)}</span><span style={{ marginLeft: "10px", marginRight: "10px" }}>-</span>User: <span style={{ fontWeight: "bold" }}>{session?.user?.name}</span>)
+                    {/* eslint-disable-next-line max-len */}
+                    ({t("subscriptionLabel")}: <span style={{ fontWeight: "bold" }}>{subscriptionStatusLabel}</span><span style={{ marginLeft: "10px", marginRight: "10px" }}>-</span>{t("userLabel")}: <span style={{ fontWeight: "bold" }}>{session?.user?.name}/{session?.user?.preferredLanguage}</span>)
                 </div>
                 <div>
-                    <button type="button" onClick={handleDisconnect}>Disconnect</button>
+                    <button type="button" onClick={handleDisconnect} style={{ whiteSpace: "nowrap" }}>
+                        {t("disconnectButtonLabel")}
+                    </button>
                 </div>
             </div>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<div>{t("loadingMessage")}</div>}>
                 <Outlet />
             </Suspense>
         </>

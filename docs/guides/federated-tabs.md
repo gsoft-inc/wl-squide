@@ -1,5 +1,5 @@
 ---
-order: 50
+order: 240
 ---
 
 # Federated tabs
@@ -69,6 +69,10 @@ With this nested layout in place, thanks to the React Router [Outlet](https://re
 
 As a bonus, each individual tab will have its own dedicated URL! :partying_face:
 
+!!!info
+It is recommended to define the shared layouts in a standalone package as it's done for the [endpoints sample layouts project](https://github.com/gsoft-inc/wl-squide/tree/main/samples/endpoints/layouts).
+!!!
+
 ## Create the tab routes
 
 Next, let's add the actual tab pages to the modules. To do so, we'll use the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) option of the [registerRoute](../reference/runtime/runtime-class.md#register-routes) function to register the routes under the `FederatedTabsLayout`:
@@ -96,13 +100,14 @@ export function Tab1() {
 }
 ```
 
-```tsx !#7,10 remote-module-2/src/register.tsx
+```tsx !#8,11 remote-module-2/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab2 } from "./Tab2.tsx";
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        // The first part of the "path" must be the same as the nested layout path (FederatedTabsLayout).
+        // React Router nested routes requires the first part of the "path" to be the same 
+        // as the nested layout path (FederatedTabsLayout).
         path: "/federated-tabs/tab-2"
         element: <Tab2 />
     }, { 
@@ -119,13 +124,14 @@ export function Tab2() {
 }
 ```
 
-```tsx !#7,10 local-module/src/register.tsx
+```tsx !#8,11 local-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab3 } from "./Tab3.tsx";
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        // The first part of the "path" must be the same as the nested layout path (FederatedTabsLayout).
+        // React Router nested routes requires the first part of the "path" to be the same 
+        // as the nested layout path (FederatedTabsLayout).
         path: "/federated-tabs/tab-3"
         element: <Tab3 />
     }, {
@@ -176,13 +182,14 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 }
 ```
 
-```tsx !#19 remote-module-2/src/register.tsx
+```tsx !#20 remote-module-2/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab2 } from "./Tab2.tsx";
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        // The first part of the "path" must be the same as the nested layout path (FederatedTabsLayout).
+        // React Router nested routes requires the first part of the "path" to be the same 
+        // as the nested layout path (FederatedTabsLayout).
         path: "/federated-tabs/tab-2"
         element: <Tab2 />
     }, { 
@@ -200,13 +207,14 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 }
 ```
 
-```tsx !#19 local-module/src/register.tsx
+```tsx !#20 local-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab3 } from "./Tab3.tsx";
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        // The first part of the "path" must be the same as the nested layout path (FederatedTabsLayout).
+        // React Router nested routes requires the first part of the "path" to be the same 
+        // as the nested layout path (FederatedTabsLayout).
         path: "/federated-tabs/tab-3"
         element: <Tab3 />
     }, { 
@@ -312,6 +320,8 @@ To ensure everything is still working correctly, start the development servers u
 
 If you are experiencing issues with this guide:
 
-- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
+- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong:
+    - `[squide] The following route has been registered as a children of the "/federated-tabs" route. Newly registered item: ...`
+    - `[squide] The following navigation item has been registered to the "/federated-tabs" menu for a total of 1 item. Newly registered item: ...`
 - Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic).
 - Refer to the [troubleshooting](../troubleshooting.md) page.

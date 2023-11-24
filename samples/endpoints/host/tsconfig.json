@@ -7,9 +7,12 @@
             "@squide/webpack-module-federation": ["../../../packages/webpack-module-federation/src/index.ts"],
             "@squide/webpack-configs": ["../../../packages/webpack-configs/src/index.ts"],
             "@squide/msw": ["../../../packages/msw/src/index.ts"],
+            "@squide/i18next": ["../../../packages/i18next/src/index.ts"],
             "@squide/fakes": ["../../../packages/fakes/src/index.ts"],
+            "@endpoints/layouts": ["../layouts/src/index.ts"],
             "@endpoints/shell": ["../shell/src/index.ts"],
             "@endpoints/shared": ["../shared/src/index.ts"],
+            "@endpoints/i18next": ["../i18next/src/index.ts"],
             "@endpoints/local-module": ["../local-module/src/register.tsx"]
         }
     },

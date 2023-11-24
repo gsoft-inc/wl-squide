@@ -1,0 +1,14 @@
+{
+    "navigationItems": {
+        "tabsPage": "Tabs"
+    },
+    "TabsError": {
+        "message": "An error occured while rendering the tab.",
+        "tryAgainButtonLabel": "Try again"
+    },
+    "FederatedTabsLayout": {
+        "title": "Tabs",
+        "servedBy": "This layout is served by <code>{{host}}</code>",
+        "loadingMessage": "Loading..."
+    }
+}

@@ -200,7 +200,7 @@ export function HomePage() {
 }
 ```
 
-Then, add a local module at the root of the host application to register the homepage:
+Then, add a [local module](../reference/registration/registerLocalModules.md) at the root of the host application to register the homepage:
 
 ```tsx host/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -365,7 +365,7 @@ Then, open the `webpack.build.js` file and use the [defineBuildHostConfig](/refe
 import { defineBuildHostConfig } from "@squide/firefly/defineConfig.js";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildHostConfig(swcConfig, "host", "http://localhost:8080/", {
+export default defineBuildHostConfig(swcConfig, "host", {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true,
@@ -403,7 +403,13 @@ Start the application in a development environment using the `dev` script. You s
 
 If you are experiencing issues with this guide:
 
-- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
+- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong:
+    - `[squide] Found 4 local modules to register.`
+    - `[squide] 1/4 Registering local module.`
+    - `[squide] 1/4 Local module registration completed.`
+    - `[squide] Found 1 remote module to register.`
+    - `[squide] 1/1 Loading module "./register" from container "remote1" of remote "http://localhost:8081/remoteEntry.js".`
+    - `[squide] 1/1 Container "remote1" of remote "http://localhost:8081/remoteEntry.js" registration completed.`
 - Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/host).
 - Refer to the [troubleshooting](../troubleshooting.md) page.
 

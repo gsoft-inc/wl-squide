@@ -1,13 +1,11 @@
 ---
-order: 30
+order: 220
 label: Setup Mock Service Worker
 ---
 
 # Setup Mock Service Worker
 
-To speed up frontend development and encourage an [API first](https://swagger.io/resources/articles/adopting-an-api-first-approach/) approach, Squide has built-in support for [Mock Service Worker](https://mswjs.io/) (MSW).
-
-MSW is a tool to fake API endpoints that has the advantage of working directly in the browser. This means that unlike alternative solutions, it doesn't require running an additional process to host the fake API endpoints.
+To speed up frontend development and encourage an [API first](https://swagger.io/resources/articles/adopting-an-api-first-approach/) approach, Squide has built-in support for [Mock Service Worker](https://mswjs.io/) (MSW). MSW offers an API to host fake endpoints directly in the browser. This means that unlike alternative solutions, it doesn't require running an additional process to host fake endpoints.
 
 ## Setup the host application
 
@@ -208,6 +206,7 @@ Update a page component code to fetch the `/api/character/1` fake API endpoint, 
 
 If you are experiencing issues with this guide:
 
-- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
+- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each request handlers registration that occurs and error messages if something went wrong:
+    - `[squide] The following MSW request handlers has been registered: ...`
 - Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/endpoints).
 - Refer to the [troubleshooting](../troubleshooting.md) page.

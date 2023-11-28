@@ -1,5 +1,11 @@
 # @squide/firefly
 
+## 3.0.1
+
+### Patch Changes
+
+- [#118](https://github.com/gsoft-inc/wl-squide/pull/118) [`4864d30`](https://github.com/gsoft-inc/wl-squide/commit/4864d30764021a91d5827abb5b3ae7a4b4302c31) Thanks [@tjosepo](https://github.com/tjosepo)! - Omit "router" from routerProviderProps
+
 ## 3.0.0
 
 ### Minor Changes

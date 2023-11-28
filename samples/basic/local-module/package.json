@@ -45,7 +45,7 @@
         "cross-env": "7.0.3",
         "nodemon": "3.0.1",
         "tsup": "8.0.1",
-        "typescript": "5.3.2",
+        "typescript": "5.2.2",
         "webpack": "5.89.0",
         "webpack-cli": "5.1.4",
         "webpack-dev-server": "4.15.1"

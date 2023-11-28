@@ -5,6 +5,18 @@ icon: question
 
 # Troubleshooting
 
+## Set the runtime mode to development
+
+In an effort to optimize the development experience, Squide can be bootstrapped in `development` or `production` mode. To troubleshoot a persistent issue, make sure that the runtime mode is development:
+
+```ts
+import { FireflyRuntime, ConsoleLogger, type LogLevel } from "@squide/firefly";
+
+const runtime = new FireflyRuntime({
+    mode: "development"
+});
+```
+
 ## React context values are undefined
 
 If you are encountering undefined values when providing a React context from the host application and consuming the context in modules, it is likely due to two possible reasons: either you have two instances of React, or you have multiple instances of that React context.

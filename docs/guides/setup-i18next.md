@@ -7,6 +7,10 @@ label: Setup i18next
 
 Most of the applications that forms the [Workleap](https://workleap.com/) platform are either already bilingual or will be in the future. To help feature teams with localized resources, Squide provides a native [plugin](../reference/i18next/i18nextPlugin.md) designed to adapt the [i18next](https://www.i18next.com/) library for federated applications.
 
+!!!warning
+The examples in this guide load all the resources from single localized resources files. For a real Workleap application, you probably want to load the resources with an i18next [backend plugin](https://www.i18next.com/overview/plugins-and-utils#backends).
+!!!
+
 ## Setup the host application
 
 Let's start by configuring the host application. First, open a terminal at the root of the host application and install the following packages:

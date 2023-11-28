@@ -136,7 +136,7 @@ export interface AppRouterProps {
     onLoadProtectedData?: OnLoadProtectedDataFunction;
     onCompleteRegistrations?: OnCompleteRegistrationsFunction;
     waitForMsw: boolean;
-    routerProvidersProps?: RouterProviderProps;
+    routerProvidersProps?: Omit<RouterProviderProps, "router">;
 }
 
 export function AppRouter(props: AppRouterProps) {

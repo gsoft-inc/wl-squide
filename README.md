@@ -10,6 +10,7 @@ A federated web application shell built on top of [Module Federation](https://we
 | [@squide/core](packages/core/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/core)](https://www.npmjs.com/package/@squide/core) |
 | [@squide/react-router](packages/react-router/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/react-router)](https://www.npmjs.com/package/@squide/react-router) |
 | [@squide/webpack-module-federation](packages/webpack-module-federation/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/webpack-module-federation)](https://www.npmjs.com/package/@squide/webpack-module-federation) |
+| [@squide/webpack-configs](packages/webpack-configs/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/webpack-configs)](https://www.npmjs.com/package/@squide/webpack-configs) |
 | [@squide/msw](packages/msw/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/msw)](https://www.npmjs.com/package/@squide/msw) |
 | [@squide/i18next](packages/i18next/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/i18next)](https://www.npmjs.com/package/@squide/i18next) |
 | [@squide/firefly](packages/firefly/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/firefly)](https://www.npmjs.com/package/@squide/firefly) |

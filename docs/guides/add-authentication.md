@@ -87,7 +87,7 @@ export const requestHandlers: HttpHandler[] = [
 ];
 ```
 
-In the previous example, the endpoint attempts to authenticate the provided credentials against existing users. If there's a match, the user session is stored in the local storage using a [LocalStorageSessionManager](../reference/fakes/localStorageSessionManager.md) instance, and a `200` status code is returned.
+In the previous code sample, the endpoint attempts to authenticate the provided credentials against existing users. If there's a match, the user session is stored in the local storage using a [LocalStorageSessionManager](../reference/fakes/localStorageSessionManager.md) instance, and a `200` status code is returned.
 
 !!!warning
 Our security department reminds you to refrain from using a fake `LocalStorageSessionManager` in a production application :blush:

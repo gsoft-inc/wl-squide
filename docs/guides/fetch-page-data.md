@@ -4,7 +4,9 @@ order: 975
 
 # Fetch page data
 
-There are so many ways to fetch data for pages. At [Workleap](https://workleap.com/), our preference is typically to develop a dedicated endpoint per page, providing a customized denormalized document. On the frontend, to coordinate data fetching and refreshing the data, we use [React Query](https://tanstack.com/query/latest/).
+There are so various approaches to fetching data for pages. At [Workleap](https://workleap.com/), our preference is usually to develop a dedicated endpoint per page, returning a denormalized document specifically tailored for that page. We rely on server state as our singular source of truth and leverage [React Query](https://tanstack.com/query/latest/) to manage data fetching and ensure our data remains up-to-date.
+
+While this approach works well, a few adjustments are necessary when transitioning from a monolithic application to a federated application.
 
 !!!warning
 Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) guide.
@@ -37,9 +39,9 @@ npm install @tanstack/react-query
 While you can use any package manager to develop an application with Squide, it is highly recommended that you use [PNPM](https://pnpm.io/) as the guides has been developed and tested with PNPM.
 !!!
 
-### Query client
+### Use the query client
 
-Then, instanciate a [QueryClient](https://tanstack.com/query/latest/docs/react/reference/QueryClient) in the module registration function and wrap the routes element with a [QueryClientProvider](https://tanstack.com/query/latest/docs/react/reference/QueryClientProvider):
+Then, instanciate a [QueryClient](https://tanstack.com/query/latest/docs/react/reference/QueryClient) instance in the module registration function and wrap the routes element with a [QueryClientProvider](https://tanstack.com/query/latest/docs/react/reference/QueryClientProvider):
 
 ```tsx !#7,12 local-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -97,7 +99,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 }
 ```
 
-### Development tools
+### Setup the development tools
 
 To faciliate development, React Query provides [devtools](https://tanstack.com/query/latest/docs/react/devtools) to help visualize all of the inner workings of React Query.
 
@@ -171,7 +173,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 }
 ```
 
-## Fetch page data
+## Fetch the page data
 
 Now, let's fetch some data. First, add a [Mock Service Worker](https://mswjs.io/) (MSW) request handler to the local module:
 

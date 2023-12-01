@@ -118,7 +118,7 @@ export default defineBuildHostConfig(swcConfig, "host", {
 });
 ```
 
-In the previous example, the `react` shared dependency will be **augmented** with the newly provided `strictVersion` option. The resulting shared dependency will be:
+In the previous code sample, the `react` shared dependency will be **augmented** with the newly provided `strictVersion` option. The resulting shared dependency will be:
 
 ```js !#5
 {
@@ -147,7 +147,7 @@ export default defineBuildHostConfig(swcConfig, "host", {
 });
 ```
 
-In the previous example, the `react` shared dependency `singleton` option will be **overrided** by the newly provided value. The resulting shared dependency will be:
+In the previous code sample, the `react` shared dependency `singleton` option will be **overrided** by the newly provided value. The resulting shared dependency will be:
 
 ```js !#4
 {

@@ -4,7 +4,7 @@ order: 980
 
 # Fetch initial data
 
-Fetching the initial data of an application is a crucial aspect that isn't always straightforward to implement. That's why we encourage feature teams to build their data fetching strategy on top of the Squide [AppRouter](../reference/routing/appRouter.md) component.
+Retrieving the initial data of an application is a crucial aspect that isn't always straightforward to implement. That's why we encourage feature teams to build their initial data fetching strategy on top of the Squide [AppRouter](../reference/routing/appRouter.md) component.
 
 !!!warning
 Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) guide.
@@ -34,7 +34,7 @@ Let's start by fetching initial _public_ data. The following examples uses a rem
 
 ### Add an endpoint
 
-First, within a remote module, create an MSW request handler that returns the number of times it has been fetched:
+First, within a remote module, define an MSW request handler that returns the number of times it has been fetched:
 
 ```ts remote-module/mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
@@ -70,7 +70,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
 
 ### Fetch the data
 
-Next, in a shared project, create a `FetchCountContext`:
+Next, in a shared project, create a React context named `FetchCountContext`:
 
 ```ts shared/src/fetchCountContext.ts
 import { createContext, useContext } from "react";
@@ -124,7 +124,7 @@ export function App() {
 The `onLoadPublicData` handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object. When the [async](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) keyword is included in a function signature, the function will automatically return a `Promise` object.
 !!!
 
-### Use the data
+### Use the endpoint data
 
 Now, create a `InitialDataLayout` component that utilizes the count retrieved from `FetchCountContext` and render pages with a green background color if the value is odd:
 
@@ -209,7 +209,7 @@ Again, the following examples uses a remote module, but the same could be done i
 
 ### Add an endpoint
 
-First, in a remote module, create an MSW request handler that returns a user tenant subscription data:
+First, in a remote module, define a MSW request handler that returns a user tenant subscription data:
 
 ```ts !#14-21 remote-module/mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
@@ -239,7 +239,7 @@ export const requestHandlers: HttpHandler[] = [
 If you've registered the [public data request handler](#add-an-endpoint), the newly created request handler should be automatically registered.
 
 !!!warning
-In the previous example, for the sake of simplicity, we haven't secured the request handler or implemented session management. However, please be aware that you should do it for a real Workleap application.
+In the previous code sample, for the sake of simplicity, we haven't secured the request handler or implemented session management. However, please be aware that you should do it for a real Workleap application.
 !!!
 
 ### Fetch the data
@@ -317,7 +317,7 @@ export function App() {
 }
 ```
 
-### Use the data
+### Use the endpoint data
 
 Now, update the `InitialDataLayout` component that was previously created for the [public data example](#use-the-data) to render the user tenant subscription status:
 

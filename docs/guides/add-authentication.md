@@ -75,7 +75,7 @@ export const requestHandlers: HttpHandler[] = [
             });
         }
 
-        // Login the user by saving the session in a local storage.
+        // Login the user by storing the session to the local storage.
         sessionManager.setSession({
             username: user.username
         });
@@ -87,7 +87,7 @@ export const requestHandlers: HttpHandler[] = [
 ];
 ```
 
-In the previous example, the endpoint attempts to authenticate the provided credentials against existing users. If there's a match, the user session is persisted in the local storage using a [LocalStorageSessionManager](../reference/fakes/localStorageSessionManager.md) instance, and a `200` status code is returned.
+In the previous example, the endpoint attempts to authenticate the provided credentials against existing users. If there's a match, the user session is stored in the local storage using a [LocalStorageSessionManager](../reference/fakes/localStorageSessionManager.md) instance, and a `200` status code is returned.
 
 !!!warning
 Our security department reminds you to refrain from using a fake `LocalStorageSessionManager` in a production application :blush:
@@ -179,7 +179,7 @@ export function Login() {
 }
 ```
 
-In the previous example, after the user logs in, the application is reloaded. This is a requirement of the [AppRouter](../reference/routing/appRouter.md) component's [onLoadPublicData](../reference/routing/appRouter.md#load-public-data) and [onLoadProtectedData](../reference/routing/appRouter.md#load-protected-data) handlers. Nevertheless, it's not a significant concern because [Workleap](https://workleap.com/) applications utilize a third-party service for authentication which requires a full refresh of the application.
+After the user logs in, the application is reloaded. This is a requirement of the [AppRouter](../reference/routing/appRouter.md) component's [onLoadPublicData](../reference/routing/appRouter.md#load-public-data) and [onLoadProtectedData](../reference/routing/appRouter.md#load-protected-data) handlers. Nevertheless, it's not a significant concern because [Workleap](https://workleap.com/) applications utilize a third-party service for authentication which requires a full refresh of the application.
 
 ## Create a session accessor function
 
@@ -243,7 +243,7 @@ const runtime = new FireflyRuntime({
 
 Now, let's create an MSW request handler that returns a session object if a user is authenticated:
 
-```ts !#49-59 host/mocks/handlers.ts
+```ts !#49-60 host/mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
 import { LocalStorageSessionManager } from "@squide/fakes";
 
@@ -282,7 +282,7 @@ export const requestHandlers: HttpHandler[] = [
             });
         }
 
-        // Login the user by saving the session in a local storage.
+        // Login the user by storing the session to the local storage.
         sessionManager.setSession({
             username: user.username
         });
@@ -293,6 +293,7 @@ export const requestHandlers: HttpHandler[] = [
     }),
 
     http.post("/api/session", async ({ request }) => {
+        // Retrieve the session stored by the /api/login endpoint.
         const session = sessionManager.getSession();
 
         if (!session) {
@@ -305,8 +306,6 @@ export const requestHandlers: HttpHandler[] = [
     })
 ];
 ```
-
-In the previous example, if the session has been previously stored to the local storage by the `/api/login` endpoint, a `200` status code will be returned with a session object as the payload.
 
 Then, update the host application `App` component to load the session when a user navigate to a protected page for the first time:
 
@@ -361,7 +360,7 @@ Now that authentication is in place, thanks to the `AuthenticationBoundary`, we 
 
 First, add a MSW request handler to log out a user:
 
-```ts !#49-55 host/mocks/handlers.ts
+```ts !#49-56 host/mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
 import { LocalStorageSessionManager } from "@squide/fakes";
 
@@ -400,7 +399,7 @@ export const requestHandlers: HttpHandler[] = [
             });
         }
 
-        // Login the user by saving the session in a local storage.
+        // Login the user by storing the session to the local storage.
         sessionManager.setSession({
             username: user.username
         });
@@ -411,6 +410,7 @@ export const requestHandlers: HttpHandler[] = [
     }),
 
     http.post("/api/logout", async () => {
+        // Remove the session from the local storage.
         sessionManager.clearSession();
 
         return new HttpResponse(null, {
@@ -419,6 +419,7 @@ export const requestHandlers: HttpHandler[] = [
     }),
 
     http.post("/api/session", async ({ request }) => {
+        // Retrieve the session stored by the /api/login endpoint.
         const session = sessionManager.getSession();
 
         if (!session) {
@@ -432,9 +433,9 @@ export const requestHandlers: HttpHandler[] = [
 ];
 ```
 
-Then, introduce a new `AuthenticatedLayout` with a button to log out the user:
+Then, introduce a new `AuthenticatedLayout` displaying the name of the logged-in user along with a logout button:
 
-```tsx !#39,41-58,73 host/src/AuthenticatedLayout.tsx
+```tsx !#39,41-58,70,73 host/src/AuthenticatedLayout.tsx
 import { useCallback, type ReactNode, type MouseEvent, type HTMLButtonElement } from "react";
 import { Link, Outlet, navigate } from "react-router-dom";
 import { 
@@ -516,7 +517,7 @@ export function AuthenticatedLayout() {
 }
 ```
 
-Much of the layout code has been transferred from the `RootLayout` to the `AuthenticatedLayout`, leaving the root layout responsible only for styling the outer wrapper of the application for now:
+By creating a new `AuthenticatedLayout`, much of the layout code has been transferred from the `RootLayout` to the `AuthenticatedLayout`, leaving the root layout responsible only for styling the outer wrapper of the application for now:
 
 ```tsx host/src/RootLayout.tsx
 import { Outlet } from "react-router-dom";

@@ -30,11 +30,7 @@ To help manage those concerns, Squide offer an `AppRouter` component that takes 
 
 ## Fetch public data
 
-Let's start by showing how to fetch initial _public_ data.
-
-!!!info
-The following example uses a remote module, but the same could be developed in a host application or a local module.
-!!!
+Let's start by fetching initial _public_ data. The following examples uses a remote module, but the same could be done in a host application or a local module.
 
 ### Add an endpoint
 
@@ -58,7 +54,7 @@ export const requestHandlers: HttpHandler[] = [
 
 Then, register the request handler using the module registration function:
 
-```ts !#7 remote-module/src/register.tsx
+```tsx !#7 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly"; 
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
@@ -90,7 +86,7 @@ export function useFetchCount() {
 Ensure that the shared project is configured as a [shared dependency](./add-a-shared-dependency.md).
 !!!
 
-Then, open the host application code and update the `App` component code to utilize the `AppRouter` component's [onLoadPublicData](../reference/routing/appRouter.md#load-public-data) handler. This handler will fetch the count and forward the retrieved value through `FetchCountContext`:
+Then, open the host application code and update the `App` component to utilize the `AppRouter` component's [onLoadPublicData](../reference/routing/appRouter.md#load-public-data) handler. This handler will fetch the count and forward the retrieved value through `FetchCountContext`:
 
 ```tsx !#13,15-17,20,22 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
@@ -209,9 +205,7 @@ If you are experiencing issues with this section of the guide:
 
 Now, let's retrieve _protected_ data. The process is similar to fetching public data, but this time, we'll use the [onLoadProtectedData](../reference/routing/appRouter.md#load-protected-data) handler of the `AppRouter` component instead.
 
-!!!info
-The following example uses a remote module, but the same could be developed in a host application or a local module.
-!!!
+Again, the following examples uses a remote module, but the same could be done in a host application or a local module.
 
 ### Add an endpoint
 
@@ -270,7 +264,7 @@ export function useSubscription() {
 Ensure that the shared project is configured as a [shared dependency](./add-a-shared-dependency.md).
 !!!
 
-Then, open the host application code and update the `App` component code to utilize the `AppRouter` component's `onLoadProtectedData` handler. This handler will fetch the user subscription and forward the retrieved value through `SubscriptionContext`:
+Then, open the host application code and update the `App` component to utilize the `AppRouter` component's `onLoadProtectedData` handler. This handler will fetch the user subscription and forward the retrieved value through `SubscriptionContext`:
 
 ```tsx !#25,31-33,37,40 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";

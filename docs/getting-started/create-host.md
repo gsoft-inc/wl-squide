@@ -135,7 +135,7 @@ export function App() {
 Next, create a layout component to [render the navigation items](/reference/routing/useRenderedNavigationItems.md):
 
 ```tsx !#38,41 host/src/RootLayout.tsx
-import { Suspense, type ReactNode } from "react";
+import { Suspense } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { 
     useNavigationItems,

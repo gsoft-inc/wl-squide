@@ -209,7 +209,7 @@ Again, the following examples uses a remote module, but the same could be done i
 
 ### Add an endpoint
 
-First, in a remote module, create an MSW request handler that returns a user subscription data:
+First, in a remote module, create an MSW request handler that returns a user tenant subscription data:
 
 ```ts !#14-21 remote-module/mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
@@ -264,7 +264,7 @@ export function useSubscription() {
 Ensure that the shared project is configured as a [shared dependency](./add-a-shared-dependency.md).
 !!!
 
-Then, open the host application code and update the `App` component to utilize the `AppRouter` component's `onLoadProtectedData` handler. This handler will fetch the user subscription and forward the retrieved value through `SubscriptionContext`:
+Then, open the host application code and update the `App` component to utilize the `AppRouter` component's `onLoadProtectedData` handler. This handler will fetch the user tenant subscription and forward the retrieved value through `SubscriptionContext`:
 
 ```tsx !#25,31-33,37,40 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
@@ -319,7 +319,7 @@ export function App() {
 
 ### Use the data
 
-Now, update the `InitialDataLayout` component that was previously created for the [public data example](#use-the-data) to render the user subscription status:
+Now, update the `InitialDataLayout` component that was previously created for the [public data example](#use-the-data) to render the user tenant subscription status:
 
 ```tsx !#6,11 remote-module/src/InitialDataLayout.tsx
 import { useFetchCount, useSubscription } from "@sample/shared";

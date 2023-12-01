@@ -5,7 +5,7 @@ toc:
 
 # LocalStorageSessionManager
 
-A local storage session manager strictly for development purpose.
+A local storage session manager (strictly for development purpose).
 
 ## Reference
 
@@ -23,7 +23,7 @@ const sessionManager = new LocalStorageSessionManager(options?: { key? })
 ### Create a manager instance
 
 ```ts
-import { SessionMaLocalStorageSessionManagernager } from "@squide/fakes";
+import { LocalStorageSessionManager } from "@squide/fakes";
 import type { Session } from "@sample/share";
 
 const sessionManager = new LocalStorageSessionManager<Session>();

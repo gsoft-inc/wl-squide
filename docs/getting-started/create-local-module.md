@@ -103,7 +103,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext> = (run
 }
 ```
 
-Then, create the `<Page>` component:
+Then, create the `Page` component:
 
 ```tsx local-module/src/Page.tsx
 export function Page() {
@@ -210,7 +210,7 @@ To build the module, add the following script to the application `package.json` 
 
 ## Try it :rocket:
 
-Start the `host`, `remote-module` and `local-module` applications in development mode using the `dev` script. You should now notice an additional link in the navigation menu. Click on the link to navigate to the page of your new **local** module!
+Start the `host`, `remote-module` and `local-module` applications in development mode using the `dev` script. You should notice an additional link labelled `Local/Page` in the navigation menu. Click on the link to navigate to the page of your new **local** module!
 
 ### Troubleshoot issues
 

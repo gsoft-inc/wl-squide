@@ -1,6 +1,5 @@
 ---
-order: 190
-label: Add a shared dependency
+order: 760
 ---
 
 # Add a shared dependency

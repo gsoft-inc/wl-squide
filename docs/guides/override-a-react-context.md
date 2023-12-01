@@ -1,6 +1,5 @@
 ---
-order: 200
-label: Override a React context
+order: 780
 ---
 
 # Override a React context

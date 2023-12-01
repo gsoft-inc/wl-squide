@@ -1,78 +1,120 @@
 ---
-order: 280
+order: 920
 ---
 
 # Add authentication
 
-Most of our applications (if not all) will eventually requires the user to authenticate. To facilitate this process, the Squide [FireflyRuntime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/LocalStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the application registration flow is completed, the function will be made accessible to every module of the application.
+Most of our applications (if not all) will eventually requires the user to authenticate. To facilitate this process, the Squide [FireflyRuntime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/localStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the application registration flow is completed, the function will be made accessible to every module of the application.
 
 When combined with a [React Router](https://reactrouter.com/en/main) authentication boundary and a login page, the shared `sessionAccessor` function is of great help to manage authentication concerns.
 
-## Create a session accessor function
+!!!warning
+Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) and [Fetch initial data](./fetch-initial-data.md) guides.
+!!!
 
-First, create a shared type for the session:
+## Add a login page
 
-```ts shared/src/session.ts
-export interface Session {
-    user: {
-        name: string;
-    };
-}
+First, open a terminal at the root of the host application and install the [@squide/fakes](https://www.npmjs.com/package/@squide/fakes) package:
+
++++ pnpm
+```bash
+pnpm add @squide/fakes
 ```
++++ yarn
+```bash
+yarn add @squide/fakes
+```
++++ npm
+```bash
+npm install @squide/fakes
+```
++++
 
-Then, define a `sessionAccessor` function wrapping a `LocalStorageSessionManager` instance:
+!!!warning
+While you can use any package manager to develop an application with Squide, it is highly recommended that you use [PNPM](https://pnpm.io/) as the guides has been developed and tested with PNPM.
+!!!
 
-```ts host/src/session.ts
-import type { SessionAccessorFunction } from "@squide/firefly";
+Then, add a [Mock Service Worker](https://mswjs.io/) (MSW) request handler to authenticate a user:
+
+```ts !#28-30,40-42 host/mocks/handlers.ts
+import { HttpResponse, http, type HttpHandler } from "msw";
 import { LocalStorageSessionManager } from "@squide/fakes";
-import type { Session } from "@sample/shared";
 
+interface LoginCredentials {
+    username: string;
+    password: string;
+}
+
+const Users = [
+    {
+        username: "temp",
+        password: "temp"
+    }
+];
+
+export interface Session {
+    username: string;
+}
+
+// For simplicity, we are using a local storage session manager for this guide.
 export const sessionManager = new LocalStorageSessionManager<Session>();
 
-export const sessionAccessor: SessionAccessorFunction = () => {
-    return sessionManager.getSession();
-};
+export const requestHandlers: HttpHandler[] = [
+    http.post("/api/login", async ({ request }) => {
+        const { username, password } = await request.json() as LoginCredentials;
+
+        // Try to match the credentials against existing users.
+        const user = Users.find(x => {
+            return x.username === username && x.password === password;
+        });
+
+        // If the user doesn't exist, return a 401.
+        if (!user) {
+            return new HttpResponse(null, {
+                status: 401
+            });
+        }
+
+        // Login the user by saving the session in a local storage.
+        sessionManager.setSession({
+            username: user.username
+        });
+
+        return new HttpResponse(null, {
+            status: 200
+        });
+    })
+];
 ```
 
-Finally, create the [FireflyRuntime](/reference/runtime/runtime-class.md) instance with the new `sessionAccessor` function:
-
-```ts #5 host/src/boostrap.tsx
-import { FireflyRuntime } from "@squide/firefly";
-import { sessionAccessor } from "./session.ts";
-
-const runtime = new FireflyRuntime({
-    sessionAccessor
-});
-```
+In the previous example, the endpoint attempts to authenticate the provided credentials against existing users. If there's a match, the user session is persisted in the local storage using a [LocalStorageSessionManager](../reference/fakes/localStorageSessionManager.md) instance, and a `200` status code is returned.
 
 !!!warning
 Our security department reminds you to refrain from using a fake `LocalStorageSessionManager` in a production application :blush:
 !!!
 
-## Add an authentication boundary
+Next, register the request handler using the host application registration function:
 
-Create a new React Router authentication boundary component using the [useIsAuthenticated]() hook:
+```tsx host/src/register.tsx
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 
-> Internally, the `useIsAuthenticated` hook utilize the `sessionAccessor` function that we created previously to determine whether or not the user is authenticated.
+export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
+    if (process.env.USE_MSW) {
+        // Files that includes an import to the "msw" package are included dynamically to prevent adding
+        // unused MSW stuff to the application bundles.
+        const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
 
-```tsx !#5 host/src/AuthenticationBoundary.tsx
-import { Navigate, Outlet } from "react-router-dom";
-import { useIsAuthenticated } from "@squide/firefly";
-
-export function AuthenticationBoundary() {
-    return useIsAuthenticated() ? <Outlet /> : <Navigate to="/login" />;
-}
+        runtime.registerRequestHandlers(requestHandlers);
+    }
+};
 ```
 
-## Add a login page
+Then, create a login page:
 
-Add a login page to the application:
-
-```tsx !#17-21 host/src/Login.tsx
+```tsx !#14-23,27 host/src/Login.tsx
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useIsAuthenticated } from "@squide/firefly";
-import { sessionManager } from "./session.ts";
 
 export function Login() {
     const [username, setUserName] = useState("");
@@ -83,15 +125,20 @@ export function Login() {
     const handleClick = useCallback((event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
-        // Replace this with a backend authentication system.
-        if (username === "temp" && password === "temp") {
-            sessionManager.setSession({
-                user: {
-                    name: username
-                }
-            });
+        const response = await fetch("/api/login", {
+            body: JSON.stringify({ 
+                username, 
+                password
+            }),
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
 
-            navigate("/");
+        if (response.ok) {
+            // Reload the application after a login.
+            window.location.href = "/";
         }
     }, [username, password, navigate]);
 
@@ -132,40 +179,264 @@ export function Login() {
 }
 ```
 
-## Add a logout page
+In the previous example, after the user logs in, the application is reloaded. This is a requirement of the [AppRouter](../reference/routing/appRouter.md) component's [onLoadPublicData](../reference/routing/appRouter.md#load-public-data) and [onLoadProtectedData](../reference/routing/appRouter.md#load-protected-data) handlers. Nevertheless, it's not a significant concern because [Workleap](https://workleap.com/) applications utilize a third-party service for authentication which requires a full refresh of the application.
 
-Add a logout page to the application:
+## Create a session accessor function
 
-```tsx host/src/Logout.tsx
-import { Link } from "react-router-dom";
+Next, create a shared type for the session and the session manager:
+
+```ts shared/src/session.ts
+export interface Session {
+    user: {
+        name: string;
+    };
+}
+
+export interface SessionManager {
+    setSession: (session: Session) => void;
+    getSession: () => Session | undefined;
+    clearSession: () => void;
+}
+```
+
+Then, define a `sessionAccessor` function wrapping an `InMemorySessionManager` instance:
+
+```tsx host/src/session.ts
+import type { SessionAccessorFunction } from "@squide/firefly";
+import type { Session, SessionManager } from "@sample/shared";
+
+export class InMemorySessionManager implements SessionManager {
+    #session?: Session;
+
+    setSession(session: Session) {
+        this.#session = session;
+    }
+
+    getSession() {
+        return this.#session;
+    }
+
+    clearSession() {
+        this.#session = undefined;
+    }
+}
+
+export const sessionManager = new InMemorySessionManager();
+
+export const sessionAccessor: SessionAccessorFunction = () => {
+    return sessionManager.getSession();
+};
+```
+
+Finally, create the [FireflyRuntime](/reference/runtime/runtime-class.md) instance with the new `sessionAccessor` function:
+
+```ts #5 host/src/bootstrap.tsx
+import { FireflyRuntime } from "@squide/firefly";
+import { sessionAccessor } from "./session.ts";
+
+const runtime = new FireflyRuntime({
+    sessionAccessor
+});
+```
+
+## Fetch the session
+
+Now, let's create an MSW request handler that returns a session object if a user is authenticated:
+
+```ts !#49-59 host/mocks/handlers.ts
+import { HttpResponse, http, type HttpHandler } from "msw";
+import { LocalStorageSessionManager } from "@squide/fakes";
+
+interface LoginCredentials {
+    username: string;
+    password: string;
+}
+
+const Users = [
+    {
+        username: "temp",
+        password: "temp"
+    }
+];
+
+export interface Session {
+    username: string;
+}
+
+// For simplicity, we are using a local storage session manager for this guide.
+export const sessionManager = new LocalStorageSessionManager<Session>();
+
+export const requestHandlers: HttpHandler[] = [
+    http.post("/api/login", async ({ request }) => {
+        const { username, password } = await request.json() as LoginCredentials;
+
+        // Try to match the credentials against existing users.
+        const user = Users.find(x => {
+            return x.username === username && x.password === password;
+        });
+
+        // If the user doesn't exist, return a 401.
+        if (!user) {
+            return new HttpResponse(null, {
+                status: 401
+            });
+        }
+
+        // Login the user by saving the session in a local storage.
+        sessionManager.setSession({
+            username: user.username
+        });
+
+        return new HttpResponse(null, {
+            status: 200
+        });
+    }),
+
+    http.post("/api/session", async ({ request }) => {
+        const session = sessionManager.getSession();
+
+        if (!session) {
+            return new HttpResponse(null, {
+                status: 401
+            });
+        }
+
+        return HttpResponse.json(session);
+    })
+];
+```
+
+In the previous example, if the session has been previously stored to the local storage by the `/api/login` endpoint, a `200` status code will be returned with a session object as the payload.
+
+Then, update the host application `App` component to load the session when a user navigate to a protected page for the first time:
+
+```tsx !#15,21 host/src/App.tsx
+import { AppRouter } from "@squide/firefly";
+import type { Session } from "@sample/shared";
 import { sessionManager } from "./session.ts";
 
-export function Logout() {
-    sessionManager.clearSession();
+async function handleLoadProtectedData() {
+    const response = await fetch("/api/session");
+    const data = await response.json();
 
+    const session: Session = {
+        user: {
+            name: data.username
+        }
+    };
+
+    sessionManager.setSession(session);
+}
+
+export function App() {
     return (
-        <main>
-            <h1>Logged out</h1>
-            <div>You are logged out from the application!</div>
-            <Link to="/login">Log in again</Link>
-        </main>
+        <AppRouter
+            onLoadProtectedData={handleLoadProtectedData}
+            fallbackElement={<div>Loading...</div>}
+            errorElement={<div>An error occured!</div>}
+            waitForMsw={false}
+        />
     );
 }
 ```
 
-The logout page also takes care of **clearing** the current **session**, allowing you to simply redirect to the page to clear the current user session:
+## Add an authentication boundary
 
-```tsx
-<Link to="/logout">Disconnect</Link>
+Next, create a new React Router authentication boundary component using the [useIsAuthenticated](../reference/session/useIsAuthenticated.md) hook:
+
+> Internally, the `useIsAuthenticated` hook utilize the `sessionAccessor` function that we created previously to determine whether or not the user is authenticated.
+
+```tsx !#5 host/src/AuthenticationBoundary.tsx
+import { Navigate, Outlet } from "react-router-dom";
+import { useIsAuthenticated } from "@squide/firefly";
+
+export function AuthenticationBoundary() {
+    return useIsAuthenticated() ? <Outlet /> : <Navigate to="/login" />;
+}
 ```
 
 ## Define an authenticated layout
 
-With authentication in place, we now expect to render the navigation items only to authenticated users and to offer a way to logout from the application. To do so, let's introduce a new `AuthenticatedLayout`:
+Now that authentication is in place, thanks to the `AuthenticationBoundary`, we can expect to render the navigation items exclusively for authenticated users.
 
-```tsx !#39,49-59 host/src/AuthenticatedLayout.tsx
-import type { ReactNode } from "react";
-import { Link, Outlet } from "react-router-dom";
+First, add a MSW request handler to log out a user:
+
+```ts !#49-55 host/mocks/handlers.ts
+import { HttpResponse, http, type HttpHandler } from "msw";
+import { LocalStorageSessionManager } from "@squide/fakes";
+
+interface LoginCredentials {
+    username: string;
+    password: string;
+}
+
+const Users = [
+    {
+        username: "temp",
+        password: "temp"
+    }
+];
+
+export interface Session {
+    username: string;
+}
+
+// For simplicity, we are using a local storage session manager for this guide.
+export const sessionManager = new LocalStorageSessionManager<Session>();
+
+export const requestHandlers: HttpHandler[] = [
+    http.post("/api/login", async ({ request }) => {
+        const { username, password } = await request.json() as LoginCredentials;
+
+        // Try to match the credentials against existing users.
+        const user = Users.find(x => {
+            return x.username === username && x.password === password;
+        });
+
+        // If the user doesn't exist, return a 401.
+        if (!user) {
+            return new HttpResponse(null, {
+                status: 401
+            });
+        }
+
+        // Login the user by saving the session in a local storage.
+        sessionManager.setSession({
+            username: user.username
+        });
+
+        return new HttpResponse(null, {
+            status: 200
+        });
+    }),
+
+    http.post("/api/logout", async () => {
+        sessionManager.clearSession();
+
+        return new HttpResponse(null, {
+            status: 200
+        });
+    }),
+
+    http.post("/api/session", async ({ request }) => {
+        const session = sessionManager.getSession();
+
+        if (!session) {
+            return new HttpResponse(null, {
+                status: 401
+            });
+        }
+
+        return HttpResponse.json(session);
+    })
+];
+```
+
+Then, introduce a new `AuthenticatedLayout` with a button to log out the user:
+
+```tsx !#39,41-58,73 host/src/AuthenticatedLayout.tsx
+import { useCallback, type ReactNode, type MouseEvent, type HTMLButtonElement } from "react";
+import { Link, Outlet, navigate } from "react-router-dom";
 import { 
     useNavigationItems,
     useRenderedNavigationItems,
@@ -173,7 +444,7 @@ import {
     type RenderItemFunction,
     type RenderSectionFunction
 } from "@squide/react-router";
-import type { Session } from "../session.ts";
+import type { Session } from "@sample/shared";
 
 const renderItem: RenderItemFunction = (item, index, level) => {
     // To keep things simple, this sample doesn't support nested navigation items.
@@ -204,10 +475,26 @@ export function AuthenticatedLayout() {
     // Retrieve the current user session.
     const session = useSession() as Session;
 
-    // Retrieve the navigation items registered by the remote modules.
-    const navigationItems = useNavigationItems();
+    const handleLogout = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
 
-    // Transform the navigation items into React elements.
+        const response = await fetch("/api/logout", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.ok) {
+            // Clear the in-memory session to ensure the authentication boundary can do his job.
+            sessionManager.clearSession();
+
+            // Redirect the user to the login page.
+            navigate("/login");
+        }
+    }, [navigate, sessionManager]);
+
+    const navigationItems = useNavigationItems();
     const navigationElements = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (
@@ -220,7 +507,7 @@ export function AuthenticatedLayout() {
                     (User: <span style={{ fontWeight: "bold" }}>{session.user.name}</span>)
                 </div>
                 <div>
-                    <Link to="/logout">Disconnect</Link>
+                    <button type="button" onClick={handleLogout}>Log out</button>
                 </div>
             </div>
             <Outlet />
@@ -229,7 +516,7 @@ export function AuthenticatedLayout() {
 }
 ```
 
-Most of the layout code has been moved from the `RootLayout` to the `AuthenticatedLayout`, leaving the root layout only taking care for now of styling the outer wrapper of the application:
+Much of the layout code has been transferred from the `RootLayout` to the `AuthenticatedLayout`, leaving the root layout responsible only for styling the outer wrapper of the application for now:
 
 ```tsx host/src/RootLayout.tsx
 import { Outlet } from "react-router-dom";
@@ -245,16 +532,15 @@ export function RootLayout() {
 
 ## Setup the routes
 
-Assemble everything with React Router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) and a [register](../reference/registration/registerLocalModules.md) function:
+Finally, assemble everything:
 
-```tsx !#17,22,25,46-51,55-60 host/src/register.tsx
+```tsx !#16,21,24,45-51 host/src/register.tsx
 import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { RootLayout } from "./Rootlayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { ModuleErrorBoundary } from "./ModuleErrorBoundary.tsx";
 import { LoginPage } from "./LoginPage.tsx";
-import { LogoutPage } from "./LogoutPage.tsx";
 import { HomePage } from "./Homepage.tsx";
 
 export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
@@ -294,17 +580,9 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     // The login page is nested under the root error boundary to be defined before the
     // authentication boundary and be publicly accessible.
     runtime.registerRoute({
+        $visibility: "public",
         path: "/login",
         element: <LoginPage />
-    }, {
-        parentName: "root-error-boundary"
-    });
-
-    // The logout page is nested under the root error boundary to be defined before the
-    // authentication boundary and be publicly accessible.
-    runtime.registerRoute({
-        path: "/logout",
-        element: <LogoutPage />
     }, {
         parentName: "root-error-boundary"
     });
@@ -313,6 +591,14 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
         index: true,
         element: <HomePage />
     });
+
+    if (process.env.USE_MSW) {
+        // Files that includes an import to the "msw" package are included dynamically to prevent adding
+        // unused MSW stuff to the application bundles.
+        const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
+
+        runtime.registerRequestHandlers(requestHandlers);
+    }
 });
 ```
 

@@ -80,7 +80,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext> = (run
 }
 ```
 
-Then, create the `<Page>` component:
+Then, create the `Page` component:
 
 ```tsx remote-module/src/Page.tsx
 export function Page() {
@@ -182,7 +182,7 @@ To build the module, add the following script to the application `package.json` 
 
 ## Try it :rocket:
 
-Start the `host` and the `remote-module` applications in development mode using the `dev` script. You should notice an additional link in the navigation menu. Click on the link to navigate to the page of your new **remote** module!
+Start the `host` and the `remote-module` applications in development mode using the `dev` script. You should notice an additional link labelled `Remote/Page` in the navigation menu. Click on the link to navigate to the page of your new **remote** module!
 
 ### Troubleshoot issues
 

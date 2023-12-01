@@ -1,9 +1,9 @@
 ---
-order: 170
-label: Migrating from a monolith
+order: 720
+label: Migrate from a monolith
 ---
 
-# Migrating from a monolithic application
+# Migrate from a monolithic application
 
 Transforming an existing [monolithic application](https://en.wikipedia.org/wiki/Monolithic_application) into a distributed architecture is often more challenging than building a new federated application from scratch.
 

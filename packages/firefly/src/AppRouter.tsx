@@ -1,4 +1,4 @@
-import { useLogger } from "@squide/core";
+import { isNil, useLogger } from "@squide/core";
 import { useIsMswStarted } from "@squide/msw";
 import { useIsRouteMatchProtected, useRoutes } from "@squide/react-router";
 import { useAreModulesReady, useAreModulesRegistered } from "@squide/webpack-module-federation";
@@ -20,6 +20,10 @@ interface BootstrappingRouteProps {
     waitForMsw: boolean;
     areModulesRegistered: boolean;
     areModulesReady: boolean;
+}
+
+function isPromise(value: any) {
+    return !isNil(value) && !isNil(value.then) && !isNil(value.catch);
 }
 
 // Most of the bootstrapping logic has been moved to this component because AppRouter
@@ -67,7 +71,13 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
                 if (!isPublicDataLoaded) {
                     logger.debug("[shell] Loading public data.");
 
-                    onLoadPublicData()
+                    const result = onLoadPublicData();
+
+                    if (!isPromise(result)) {
+                        throw Error("[squide] An AppRouter onLoadPublicData handler must return a promise object.");
+                    }
+
+                    result
                         .then(() => {
                             setIsPublicDataLoaded(true);
 
@@ -92,8 +102,13 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
                     if (!isProtectedDataLoaded) {
                         logger.debug(`[shell] Loading protected data as "${location.pathname}" is a protected route.`);
 
-                        onLoadProtectedData()
-                            .then(() => {
+                        const result = onLoadProtectedData();
+
+                        if (!isPromise(result)) {
+                            throw Error("[squide] An AppRouter onLoadProtectedData handler must return a promise object.");
+                        }
+
+                        result.then(() => {
                                 setIsProtectedDataLoaded(true);
 
                                 logger.debug("[shell] Protected data has been loaded.");

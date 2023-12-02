@@ -8,7 +8,7 @@ To speed up frontend development and encourage an [API first](https://swagger.io
 
 ## Setup the host application
 
-Let's start by configuring the host application. First, open a terminal at the root of the host application and install the [msw](https://www.npmjs.com/package/msw) package:
+First, open a terminal at the root of the host application and install the [msw](https://www.npmjs.com/package/msw) package:
 
 +++ pnpm
 ```bash

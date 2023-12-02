@@ -4,13 +4,13 @@ order: 920
 
 # Add authentication
 
+!!!warning
+Before going forward with this guide, make sure that you completed the [setup Mock Service Worker](./setup-msw.md) and [fetch initial data](./fetch-initial-data.md) guides.
+!!!
+
 Most of our applications (if not all) will eventually requires the user to authenticate. To facilitate this process, the Squide [FireflyRuntime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/localStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the application registration flow is completed, the function will be made accessible to every module of the application.
 
 When combined with a [React Router](https://reactrouter.com/en/main) authentication boundary and a login page, the shared `sessionAccessor` function is of great help to manage authentication concerns.
-
-!!!warning
-Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) and [Fetch initial data](./fetch-initial-data.md) guides.
-!!!
 
 ## Add a login page
 
@@ -292,7 +292,7 @@ export const requestHandlers: HttpHandler[] = [
         });
     }),
 
-    http.post("/api/session", async ({ request }) => {
+    http.post("/api/session", ({ request }) => {
         // Retrieve the session stored by the /api/login endpoint.
         const session = sessionManager.getSession();
 
@@ -333,7 +333,7 @@ export function App() {
             onLoadProtectedData={handleLoadProtectedData}
             fallbackElement={<div>Loading...</div>}
             errorElement={<div>An error occured!</div>}
-            waitForMsw={false}
+            waitForMsw={true}
         />
     );
 }
@@ -409,7 +409,7 @@ export const requestHandlers: HttpHandler[] = [
         });
     }),
 
-    http.post("/api/logout", async () => {
+    http.post("/api/logout", () => {
         // Remove the session from the local storage.
         sessionManager.clearSession();
 
@@ -418,7 +418,7 @@ export const requestHandlers: HttpHandler[] = [
         });
     }),
 
-    http.post("/api/session", async ({ request }) => {
+    http.post("/api/session", ({ request }) => {
         // Retrieve the session stored by the /api/login endpoint.
         const session = sessionManager.getSession();
 
@@ -605,7 +605,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 ## Try it :rocket:
 
-Start the application and attempt navigating to the root page (`/`). You will be redirected to the `/login` page. Login with `"temp"` / `"temp"`, you will be redirected to the root page.
+Start the application using the `dev` script and attempt navigating to the root page (`/`). You will be redirected to the `/login` page. Login with `"temp"` / `"temp"`, you will be redirected to the root page.
 
 ### Troubleshoot issues
 

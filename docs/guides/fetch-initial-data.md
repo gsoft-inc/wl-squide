@@ -4,11 +4,11 @@ order: 980
 
 # Fetch initial data
 
-Retrieving the initial data of an application is a crucial aspect that isn't always straightforward to implement. That's why we encourage feature teams to build their initial data fetching strategy on top of the Squide [AppRouter](../reference/routing/appRouter.md) component.
-
 !!!warning
-Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) guide.
+Before going forward with this guide, make sure that you completed the [setup Mock Service Worker](./setup-msw.md) guide.
 !!!
+
+Retrieving the initial data of an application is a crucial aspect that isn't always straightforward to implement. That's why we encourage feature teams to build their initial data fetching strategy on top of the Squide [AppRouter](../reference/routing/appRouter.md) component.
 
 ## Challenges with initial data
 
@@ -30,19 +30,17 @@ To help manage those concerns, Squide offer an `AppRouter` component that takes 
 
 ## Fetch public data
 
-Let's start by fetching initial _public_ data. The following examples uses a remote module, but the same could be done in a host application or a local module.
-
 ### Add an endpoint
 
-First, within a remote module, define an MSW request handler that returns the number of times it has been fetched:
+First, define an MSW request handler that returns the number of times it has been fetched:
 
-```ts remote-module/mocks/handlers.ts
+```ts mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
 
 let fetchCount = 0;
 
 export const requestHandlers: HttpHandler[] = [
-    http.get("/api/count", async () => {
+    http.get("/api/count", () => {
         fetchCount += 1;
 
         return HttpResponse.json([{
@@ -54,7 +52,7 @@ export const requestHandlers: HttpHandler[] = [
 
 Then, register the request handler using the module registration function:
 
-```tsx !#7 remote-module/src/register.tsx
+```tsx !#7 src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly"; 
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
@@ -68,9 +66,9 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
 }
 ```
 
-### Fetch the data
+### Create a shared context
 
-Next, in a shared project, create a React context named `FetchCountContext`:
+Then, in a shared project, create a React context named `FetchCountContext`:
 
 ```ts shared/src/fetchCountContext.ts
 import { createContext, useContext } from "react";
@@ -86,12 +84,14 @@ export function useFetchCount() {
 Ensure that the shared project is configured as a [shared dependency](./add-a-shared-dependency.md).
 !!!
 
-Then, open the host application code and update the `App` component to utilize the `AppRouter` component's [onLoadPublicData](../reference/routing/appRouter.md#load-public-data) handler. This handler will fetch the count and forward the retrieved value through `FetchCountContext`:
+### Fetch the data
+
+Finally, open the host application code and update the `App` component to utilize the `AppRouter` component's [onLoadPublicData](../reference/routing/appRouter.md#load-public-data) handler. This handler will fetch the count and forward the retrieved value through `FetchCountContext`:
 
 ```tsx !#13,15-17,20,22 host/src/App.tsx
+import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { FetchCountContext } from "@sample/shared";
-import { useState, useCallback } from "react";
 
 async function fetchPublicData(setFetchCount: (fetchCount: number) => void) {
     const response = await fetch("/api/count");
@@ -113,7 +113,7 @@ export function App() {
                 onLoadPublicData={handleLoadPublicData}
                 fallbackElement={<div>Loading...</div>}
                 errorElement={<div>An error occured!</div>}
-                waitForMsw={false}
+                waitForMsw={true}
             />
         </FetchCountContext.Provider>
     );
@@ -128,7 +128,7 @@ The `onLoadPublicData` handler must return a [Promise](https://developer.mozilla
 
 Now, create a `InitialDataLayout` component that utilizes the count retrieved from `FetchCountContext` and render pages with a green background color if the value is odd:
 
-```tsx !#5,10 remote-module/src/InitialDataLayout.tsx
+```tsx !#5,10 src/InitialDataLayout.tsx
 import { useFetchCount } from "@sample/shared";
 import { Outlet } from "react-router-dom";
 
@@ -147,7 +147,7 @@ export function InitialDataLayout() {
 
 Then, create a `Page` component:
 
-```tsx remote-module/src/Page.tsx
+```tsx src/Page.tsx
 export function Page() {
     return (
         <div>When the fetch count is odd, my background should be green.</div>
@@ -157,7 +157,7 @@ export function Page() {
 
 Finally, register both components:
 
-```tsx !#8,12 remote-module/src/register.tsx
+```tsx !#8,12 src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { InitialDataLayout } from "./InitialDataLayout.tsx";
 import { Page } from "./Page.tsx";
@@ -203,21 +203,19 @@ If you are experiencing issues with this section of the guide:
 
 ## Fetch protected data
 
-Now, let's retrieve _protected_ data. The process is similar to fetching public data, but this time, we'll use the [onLoadProtectedData](../reference/routing/appRouter.md#load-protected-data) handler of the `AppRouter` component instead.
-
-Again, the following examples uses a remote module, but the same could be done in a host application or a local module.
+Now, let's load _protected_ data. The process is similar to fetching public data, but this time, we'll use the [onLoadProtectedData](../reference/routing/appRouter.md#load-protected-data) handler of the `AppRouter` component instead.
 
 ### Add an endpoint
 
-First, in a remote module, define a MSW request handler that returns a user tenant subscription data:
+First, define a MSW request handler that returns a user tenant subscription data:
 
-```ts !#14-21 remote-module/mocks/handlers.ts
+```ts !#14-21 mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
 
 let fetchCount = 0;
 
 export const requestHandlers: HttpHandler[] = [
-    http.get("/api/count", async () => {
+    http.get("/api/count", () => {
         fetchCount += 1;
 
         return HttpResponse.json([{
@@ -225,7 +223,7 @@ export const requestHandlers: HttpHandler[] = [
         }]);
     }),
 
-    http.get("/api/subscription", async () => {
+    http.get("/api/subscription", () => {
         // NOTE:
         // The user id should be retrieved from the current session and the subscription should be retrieved from a database with this id.
         // For the sake of simplicity, we haven't done it for this guide, instead we return hardcoded data.
@@ -242,9 +240,9 @@ If you've registered the [public data request handler](#add-an-endpoint), the ne
 In the previous code sample, for the sake of simplicity, we haven't secured the request handler or implemented session management. However, please be aware that you should do it for a real Workleap application.
 !!!
 
-### Fetch the data
+### Create a shared context
 
-Next, in a shared project, create a `SubscriptionContext`:
+Then, in a shared project, create a `SubscriptionContext`:
 
 ```ts shared/src/subscriptionContext.ts
 import { createContext, useContext } from "react";
@@ -264,12 +262,14 @@ export function useSubscription() {
 Ensure that the shared project is configured as a [shared dependency](./add-a-shared-dependency.md).
 !!!
 
-Then, open the host application code and update the `App` component to utilize the `AppRouter` component's `onLoadProtectedData` handler. This handler will fetch the user tenant subscription and forward the retrieved value through `SubscriptionContext`:
+### Fetch the data
+
+Finally, open the host application code and update the `App` component to utilize the `AppRouter` component's `onLoadProtectedData` handler. This handler will fetch the user tenant subscription and forward the retrieved value through `SubscriptionContext`:
 
 ```tsx !#25,31-33,37,40 host/src/App.tsx
+import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { FetchCountContext, SubscriptionContext, type Subscription } from "@sample/shared";
-import { useState, useCallback } from "react";
 
 async function fetchPublicData(setFetchCount: (fetchCount: number) => void) {
     const response = await fetch("/api/count");
@@ -309,7 +309,7 @@ export function App() {
                     onLoadProtectedData={handleLoadProtectedData}
                     fallbackElement={<div>Loading...</div>}
                     errorElement={<div>An error occured!</div>}
-                    waitForMsw={false}
+                    waitForMsw={true}
                 />
             <SubscriptionContext.Provider />
         </FetchCountContext.Provider>
@@ -319,9 +319,9 @@ export function App() {
 
 ### Use the endpoint data
 
-Now, update the `InitialDataLayout` component that was previously created for the [public data example](#use-the-data) to render the user tenant subscription status:
+Now, update the `InitialDataLayout` component that was previously created for the [public data example](#use-the-endpoint-data) to render the user tenant subscription status:
 
-```tsx !#6,11 remote-module/src/InitialDataLayout.tsx
+```tsx !#6,11 src/InitialDataLayout.tsx
 import { useFetchCount, useSubscription } from "@sample/shared";
 import { Outlet } from "react-router-dom";
 

@@ -4,19 +4,17 @@ order: 975
 
 # Fetch page data
 
-There are so various approaches to fetching data for pages. At [Workleap](https://workleap.com/), our preference is usually to develop a dedicated endpoint per page, returning a denormalized document specifically tailored for that page. We rely on server state as our singular source of truth and leverage [React Query](https://tanstack.com/query/latest/) to manage data fetching and ensure our data remains up-to-date.
-
-While this approach works well, a few adjustments are necessary when transitioning from a monolithic application to a federated application.
-
 !!!warning
-Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) guide.
+Before going forward with this guide, make sure that you completed the [setup Mock Service Worker](./setup-msw.md) guide.
 !!!
 
-## Setup React Query
+There are various approaches to fetching data for pages. At [Workleap](https://workleap.com/), our preference is usually to develop a dedicated endpoint per page, returning a denormalized document specifically tailored for that page. We rely on server state as our singular source of truth and leverage [React Query](https://tanstack.com/query/latest/) to manage data fetching and ensure our data remains up-to-date.
 
-Let's start by adding React Query to a project. The following examples uses a local module, but the same could be done in a host application or a remote module.
+Although this approach works well, a few adjustments are necessary when transitioning from a monolithic application to a federated application.
 
-First, open a terminal at the root of the local module and install the following packages:
+## Install React Query
+
+First, open a terminal at the root of the module and install the following packages:
 
 +++ pnpm
 ```bash
@@ -39,11 +37,11 @@ npm install @tanstack/react-query
 While you can use any package manager to develop an application with Squide, it is highly recommended that you use [PNPM](https://pnpm.io/) as the guides has been developed and tested with PNPM.
 !!!
 
-### Use the query client
+## Setup the query client
 
 Then, instanciate a [QueryClient](https://tanstack.com/query/latest/docs/react/reference/QueryClient) instance in the module registration function and wrap the routes element with a [QueryClientProvider](https://tanstack.com/query/latest/docs/react/reference/QueryClientProvider):
 
-```tsx !#7,12 local-module/src/register.tsx
+```tsx !#7,12 src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Page } from "./Page.tsx";
@@ -54,22 +52,24 @@ const queryClient = new QueryClient();
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        path: "/local/page",
+        path: "/page",
         element: <QueryClientProvider client={queryClient}><Page /></QueryClientProvider>
     });
 
     runtime.registerNavigationItem({
-        $label: "Local/Page",
-        to: "/local/page"
+        $label: "Page",
+        to: "/page"
     });
 }
 ```
 
 To minimize unexpected situations and faciliate maintenance, the React Query cache shouldn't be shared between the host application and the modules. As the React Query cache is located in the `QueryClient`, both the host application and the modules should instantiate their own `QueryClient` instance.
 
-If the module register multiple routes, to prevent duplicating registration code, we recommend creating a `Providers` component:
+## Create a component for providers
 
-```tsx !#9-15,20 local-module/src/register.tsx
+If the module register multiple routes, to prevent duplicating registration code, you can create a `Providers` component:
+
+```tsx !#9-15,20 src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Page } from "./Page.tsx";
@@ -88,24 +88,24 @@ function Providers({ children }: { children: ReactNode }) {
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        path: "/local/page",
+        path: "/page",
         element: <Providers><Page /></Providers>
     });
 
     runtime.registerNavigationItem({
-        $label: "Local/Page",
-        to: "/local/page"
+        $label: "Page",
+        to: "/page"
     });
 }
 ```
 
-### Setup the development tools
+## Setup the development tools
 
 To faciliate development, React Query provides [devtools](https://tanstack.com/query/latest/docs/react/devtools) to help visualize all of the inner workings of React Query.
 
 However, the React Query devtools are not been developed to handle a federated application with multiple `QueryClient` instances. To use the devtools, you have to define a `ReactQueryDevtools` component for each `QueryClient` instance:
 
-```tsx !#14 local-module/src/register.tsx
+```tsx !#14 src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -126,20 +126,20 @@ function Providers({ children }: { children: ReactNode }) {
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        path: "/local/page",
+        path: "/page",
         element: <Providers><Page /></Providers>
     });
 
     runtime.registerNavigationItem({
-        $label: "Local/Page",
-        to: "/local/page"
+        $label: "Page",
+        to: "/page"
     });
 }
 ```
 
 Then, depending on which page of the application has been rendered, a distinct devtools instance will be accessible. For a better experience, we recommend activating the React Query devtools exclusively when developing a module [in isolation](./develop-a-module-in-isolation.md):
 
-```tsx !#14-16 local-module/src/register.tsx
+```tsx !#14-16 src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -162,13 +162,13 @@ function Providers({ children }: { children: ReactNode }) {
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        path: "/local/page",
+        path: "/page",
         element: <Providers><Page /></Providers>
     });
 
     runtime.registerNavigationItem({
-        $label: "Local/Page",
-        to: "/local/page"
+        $label: "Page",
+        to: "/page"
     });
 }
 ```
@@ -177,11 +177,11 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 Now, let's fetch some data. First, add a [Mock Service Worker](https://mswjs.io/) (MSW) request handler to the local module:
 
-```ts local-module/mocks/handlers.ts
+```ts mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
 
 export const requestHandlers: HttpHandler[] = [
-    http.get("/api/characters", async () => {
+    http.get("/api/characters", () => {
         return HttpResponse.json([{
             "id": 1,
             "name": "Rick Sanchez",
@@ -197,7 +197,7 @@ export const requestHandlers: HttpHandler[] = [
 
 Then, register the request handler using the module registration function:
 
-```tsx !#7 local-module/src/register.tsx
+```tsx !#7 src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly"; 
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
@@ -213,7 +213,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
 
 Then, update the `Page` component to fetch and render the data:
 
-```tsx !#10-15 local-module/src/Page.tsx
+```tsx !#10-15 src/Page.tsx
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 interface Character {
@@ -248,6 +248,8 @@ export function Page() {
 }
 ```
 
+## Define a fallback element
+
 The previous code sample uses [useSuspenseQuery](https://tanstack.com/query/latest/docs/react/reference/useSuspenseQuery) instead of [useQuery](https://tanstack.com/query/latest/docs/react/reference/useQuery). This enables an application to leverage a React [Suspense](https://react.dev/reference/react/Suspense) boundary to render a fallback element in a layout component while the data is being fetched:
 
 
@@ -268,7 +270,7 @@ export function RootLayout() {
 
 ## Try it :rocket:
 
-Start the local module in a development environment using the `dev-isolated` script. If you haven't completed the [Develop a module in isolation](./develop-a-module-in-isolation.md) guide, use the `dev` script instead and skip the part about React Query devtools. Then, navigate to the `/local/page` page. 
+Start the local module in a development environment using the `dev-isolated` script. If you haven't completed the [develop a module in isolation](./develop-a-module-in-isolation.md) guide, use the `dev` script instead and skip the part about React Query devtools. Then, navigate to the `/page` page. 
 
 You should notice that the character's data is being fetch from the MSW request handler and rendered on the page. Additionally, you should notice that the React Query devtools are available (a ribbon at the bottom right corner).
 

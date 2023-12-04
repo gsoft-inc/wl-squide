@@ -4,71 +4,7 @@ order: 880
 
 # Override the host layout
 
-## Define a root layout
-
-In many applications, multiple pages often share a **common layout** that includes elements such as a navigation bar, a user profile menu, and a main content section. In a [React Router](https://reactrouter.com/en/main) application, this shared layout is commonly referred to as a `RootLayout`:
-
-```tsx !#9,11,14,16 host/src/register.tsx
-import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
-import { HomePage } from "./HomePage.tsx";
-import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
-import { RootLayout } from "./RootLayout.tsx";
-import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
-
-export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
-    runtime.registerRoute({
-        element: <AuthenticationBoundary />,
-        children: [
-            element: <RootLayout />,
-            children: [
-                {
-                    errorElement: <RootErrorBoundary />,
-                    children: [
-                        ManagedRoutes
-                    ]
-                }
-            ]
-        ]
-    }, {
-        // We will talk about this in the next section of this guide.
-        hoist: true
-    });
-
-    runtime.registerRoute({
-        index: true,
-        element: <HomePage />
-    });
-};
-```
-
-```tsx host/src/RootLayout.tsx
-import { Suspense } from "react";
-import { Outlet } from "react-router-dom";
-import { useNavigationItems, useRenderedNavigationItems } from "@squide/firefly";
-import { UserMenu } from "./UserMenu.tsx";
-
-export function RootLayout() {
-    const navigationItems = useNavigationItems();
-
-    // To keep things simple, we are omitting the definition of "renderItem" and "renderSection".
-    // For a full example, view: https://gsoft-inc.github.io/wl-squide/reference/routing/userenderednavigationitems/.
-    const navigationElements = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
-
-    return (
-        <>
-            <div>
-                <nav>{navigationElements}</nav>
-                <UserMenu />
-            </div>
-            <Suspense fallback={<div>Loading...</div>}>
-                <Outlet />
-            </Suspense>
-        </>
-    );
-}
-```
-
-In the previous code sample, the `RootLayout` serves as the default layout for the homepage as well as for every page (route) registered by a module that are not nested under a parent route with either the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) or the [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option.
+The `RootLayout` component that as been defined in the [create an host application](../getting-started/create-host.md#navigation-items) starting guide serves as the default layout for the homepage as well as for every page (route) registered by a module that are not nested under a parent route with either the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) or the [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option.
 
 For most pages, this is the behavior expected by the author. However, for pages such as a login, the default `RootLayout` isn't suitable because the page is not bound to a user session (the user is not even authenticated yet).
 

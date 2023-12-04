@@ -1,5 +1,11 @@
 # @squide/fakes
 
+## 1.0.10
+
+### Patch Changes
+
+- [#122](https://github.com/gsoft-inc/wl-squide/pull/122) [`cda7873`](https://github.com/gsoft-inc/wl-squide/commit/cda7873dcffbf424a625cf40c56a12eacbb2632e) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Internal minor changes
+
 ## 1.0.9
 
 ### Patch Changes

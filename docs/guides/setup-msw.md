@@ -1,6 +1,5 @@
 ---
-order: 220
-label: Setup Mock Service Worker
+order: 1000
 ---
 
 # Setup Mock Service Worker
@@ -9,7 +8,7 @@ To speed up frontend development and encourage an [API first](https://swagger.io
 
 ## Setup the host application
 
-Let's start by configuring the host application. First, open a terminal at the root of the host application and install the [msw](https://www.npmjs.com/package/msw) package:
+First, open a terminal at the root of the host application and install the [msw](https://www.npmjs.com/package/msw) package:
 
 +++ pnpm
 ```bash
@@ -175,7 +174,7 @@ export const requestHandlers: HttpHandler[] = [
 Finally, register the request handler with the [FireflyRuntime](../reference/runtime/runtime-class.md) instance:
 
 ```ts !#4,7,9 remote-module/src/register.tsx
-import { type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly"; 
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly"; 
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
     if (process.env.USE_MSW) {

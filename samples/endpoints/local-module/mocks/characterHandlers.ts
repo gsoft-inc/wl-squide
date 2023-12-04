@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 
 import { HttpResponse, http, type HttpHandler } from "msw";
-import { readonlyLocalStorage } from "./session.ts";
+import { readonlySessionLocalStorage } from "./session.ts";
 
 function simulateDelay(delay: number) {
     return new Promise(resolve => {
@@ -17,7 +17,7 @@ export const characterHandlers: HttpHandler[] = [
     http.get("/api/character/1,2", async () => {
         await simulateDelay(2000);
 
-        const session = readonlyLocalStorage.getSession();
+        const session = readonlySessionLocalStorage.getSession();
 
         if (!session) {
             return new HttpResponse(null, {

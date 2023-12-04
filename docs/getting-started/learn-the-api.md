@@ -79,7 +79,7 @@ The event bus is also available from the [FireflyRuntime](/reference/runtime/run
 
 ## Session
 
-Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the Squide [FireflyRuntime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/LocalStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
+Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the Squide [FireflyRuntime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/localStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
 
 First, define a `sessionAccessor` function:
 
@@ -160,7 +160,12 @@ Explore the [guides](../guides/default.md) section to learn about Squide advance
 
 Be sure to read, at a minimum, the following guides:
 
-- [Setup MSW](../guides/setup-msw.md)
+- [Setup Mock Service Worker](../guides/setup-msw.md)
+- [Fetch initial data](../guides/fetch-initial-data.md)
+- [Fetch page data](../guides/fetch-page-data.md)
+- [Manage shared state](../guides/manage-shared-state.md)
+- [Isolate module failures](../guides/isolate-module-failures.md)
+- [Add authentication](../guides/add-authentication.md)
 - [Add a shared dependency](../guides/add-a-shared-dependency.md)
 
 ## Reference

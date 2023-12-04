@@ -1,5 +1,5 @@
 ---
-order: 240
+order: 800
 ---
 
 # Develop a module in isolation
@@ -322,7 +322,7 @@ Start the remote module in isolation by running the `dev-isolated` script. The a
 
 #### Troubleshoot issues
 
-If you are experiencing issues with this guide:
+If you are experiencing issues with this section of the guide:
 
 - Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
 - Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/remote-module).
@@ -461,7 +461,7 @@ Start the remote module in isolation by running the `dev-isolated` script. The a
 
 #### Troubleshoot issues
 
-If you are experiencing issues with this guide:
+If you are experiencing issues with this section of the guide:
 
 - Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
 - Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/local-module).

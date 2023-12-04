@@ -79,7 +79,7 @@ export {};
 
 ### Module registration
 
-Next, to register the modules, instanciate the shell [FireflyRuntime](/reference/runtime/runtime-class.md) and register the remote module with the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function (the configuration of the remote module will be covered in the [next section](create-remote-module.md)):
+Next, to register the modules, instanciate a shell [FireflyRuntime](/reference/runtime/runtime-class.md) instance and register the remote module with the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function (the configuration of the remote module will be covered in the [next section](create-remote-module.md)):
 
 ```tsx !#12-14,17-19,22 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
@@ -135,7 +135,7 @@ export function App() {
 Next, create a layout component to [render the navigation items](/reference/routing/useRenderedNavigationItems.md):
 
 ```tsx !#38,41 host/src/RootLayout.tsx
-import { Suspense, type ReactNode } from "react";
+import { Suspense } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { 
     useNavigationItems,

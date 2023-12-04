@@ -86,4 +86,5 @@ toc:
 
 Squide offers a collection of fake implementations designed to facilitate the set up of a module isolated environment.
 
-- [LocalStorageSessionManager](./fakes/LocalStorageSessionManager.md)
+- [LocalStorageSessionManager](./fakes/localStorageSessionManager.md)
+- [ReadonlySessionLocalStorage](./fakes/readonlySessionLocalStorage.md)

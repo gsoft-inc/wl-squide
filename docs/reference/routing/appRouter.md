@@ -6,7 +6,7 @@ toc:
 
 # AppRouter
 
-A component that sets up Squide federated primitives and render a React Router instance.
+A component that sets up and orchestrate Squide federated primitives and render a React Router instance.
 
 ## Reference
 

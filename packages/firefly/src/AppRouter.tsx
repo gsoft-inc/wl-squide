@@ -1,4 +1,4 @@
-import { useLogger } from "@squide/core";
+import { isNil, useLogger } from "@squide/core";
 import { useIsMswStarted } from "@squide/msw";
 import { useIsRouteMatchProtected, useRoutes } from "@squide/react-router";
 import { useAreModulesReady, useAreModulesRegistered } from "@squide/webpack-module-federation";
@@ -20,6 +20,11 @@ interface BootstrappingRouteProps {
     waitForMsw: boolean;
     areModulesRegistered: boolean;
     areModulesReady: boolean;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isPromise<T = unknown>(value: any): value is Promise<T> {
+    return !isNil(value) && !isNil(value.then) && !isNil(value.catch);
 }
 
 // Most of the bootstrapping logic has been moved to this component because AppRouter
@@ -67,7 +72,13 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
                 if (!isPublicDataLoaded) {
                     logger.debug("[shell] Loading public data.");
 
-                    onLoadPublicData()
+                    const result = onLoadPublicData();
+
+                    if (!isPromise(result)) {
+                        throw Error("[squide] An AppRouter onLoadPublicData handler must return a promise object.");
+                    }
+
+                    result
                         .then(() => {
                             setIsPublicDataLoaded(true);
 
@@ -79,7 +90,7 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
                 }
             }
         }
-    }, [logger, areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded, onLoadPublicData]);
+    }, [logger, areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded, showBoundary, onLoadPublicData]);
 
     // Only throw when there's no match if the modules has been registered, otherwise it's expected that there are no registered routes.
     const isActiveRouteProtected = useIsRouteMatchProtected(location, { throwWhenThereIsNoMatch: areModulesReady });
@@ -92,12 +103,17 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
                     if (!isProtectedDataLoaded) {
                         logger.debug(`[shell] Loading protected data as "${location.pathname}" is a protected route.`);
 
-                        onLoadProtectedData()
-                            .then(() => {
-                                setIsProtectedDataLoaded(true);
+                        const result = onLoadProtectedData();
 
-                                logger.debug("[shell] Protected data has been loaded.");
-                            })
+                        if (!isPromise(result)) {
+                            throw Error("[squide] An AppRouter onLoadProtectedData handler must return a promise object.");
+                        }
+
+                        result.then(() => {
+                            setIsProtectedDataLoaded(true);
+
+                            logger.debug("[shell] Protected data has been loaded.");
+                        })
                             .catch(error => {
                                 showBoundary(error);
                             });
@@ -107,7 +123,7 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
                 }
             }
         }
-    }, [logger, location, areModulesRegistered, areModulesReady, isMswStarted, isActiveRouteProtected, isProtectedDataLoaded, onLoadProtectedData]);
+    }, [logger, location, areModulesRegistered, areModulesReady, isMswStarted, isActiveRouteProtected, isProtectedDataLoaded, showBoundary, onLoadProtectedData]);
 
     useEffect(() => {
         // Don't go further if no handler has been provided to complete the registration.
@@ -183,7 +199,7 @@ export function AppRouter(props: AppRouterProps) {
                 children: routes
             }
         ]);
-    }, [areModulesRegistered, areModulesReady, routes, onLoadPublicData, onLoadProtectedData, onCompleteRegistrations, waitForMsw]);
+    }, [areModulesRegistered, areModulesReady, routes, onLoadPublicData, onLoadProtectedData, onCompleteRegistrations, waitForMsw, errorRenderer, fallbackElement]);
 
     return (
         <RouterProvider {...routerProvidersProps} router={router} />

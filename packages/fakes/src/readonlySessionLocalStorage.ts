@@ -1,14 +1,15 @@
 import { isNil, isNilOrEmpty } from "@squide/core";
+import { SessionLocalStorageKey } from "./sessionKey.ts";
 
-export interface ReadonlyLocalStorageOptions {
+export interface ReadonlySessionLocalStorageOptions {
     key?: string;
 }
 
-export class ReadonlyLocalStorage<T = unknown> {
+export class ReadonlySessionLocalStorage<T = unknown> {
     readonly #key: string;
     #cache?: T = undefined;
 
-    constructor({ key = "app-session" }: ReadonlyLocalStorageOptions = {}) {
+    constructor({ key = SessionLocalStorageKey }: ReadonlySessionLocalStorageOptions = {}) {
         this.#key = key;
     }
 

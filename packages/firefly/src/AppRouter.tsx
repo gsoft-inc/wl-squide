@@ -22,7 +22,7 @@ interface BootstrappingRouteProps {
     areModulesReady: boolean;
 }
 
-function isPromise(value: any) {
+function isPromise<T = unknown>(value: any): value is Promise<T> {
     return !isNil(value) && !isNil(value.then) && !isNil(value.catch);
 }
 

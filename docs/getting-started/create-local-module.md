@@ -29,12 +29,12 @@ pnpm add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ yarn
 ```bash
-pnpm add -D @workleap/tsup-configs tsup typescript
+yarn add -D @workleap/tsup-configs tsup typescript
 yarn add @squide/firefly react @squide/firefly react-dom react-router-dom react-error-boundary
 ```
 +++ npm
 ```bash
-pnpm add -D @workleap/tsup-configs tsup typescript
+npm add -D @workleap/tsup-configs tsup typescript
 npm install @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++

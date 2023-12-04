@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.754501920277">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.755026798012">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.754501920277" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.755026798012" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.754501920277" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.755026798012" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.754501920277" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.754501920277" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.755026798012" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.755026798012" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -332,14 +332,14 @@ pnpm add @squide/firefly react react-dom react-router-dom react-error-boundary</
 <doc-tab v-cloak id="yarn">
 <template #title>yarn</template>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">pnpm add -D @workleap/tsup-configs tsup typescript
+<pre class="language-bash"><code v-pre class="language-bash">yarn add -D @workleap/tsup-configs tsup typescript
 yarn add @squide/firefly react @squide/firefly react-dom react-router-dom react-error-boundary</code></pre>
 </doc-codeblock></div>
 </doc-tab>
 <doc-tab v-cloak id="npm">
 <template #title>npm</template>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">pnpm add -D @workleap/tsup-configs tsup typescript
+<pre class="language-bash"><code v-pre class="language-bash">npm add -D @workleap/tsup-configs tsup typescript
 npm install @squide/firefly react react-dom react-router-dom react-error-boundary</code></pre>
 </doc-codeblock></div>
 </doc-tab>
@@ -423,7 +423,7 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime, AppContext&gt; 
     });
 }</code></pre>
 </doc-codeblock></div>
-<p>Then, create the <code v-pre>&lt;Page&gt;</code> component:</p>
+<p>Then, create the <code v-pre>Page</code> component:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/src/Page.tsx</div>
 <pre class="language-tsx"><code v-pre class="language-tsx">export function Page() {
@@ -560,7 +560,7 @@ export default defineBuildConfig();</code></pre>
         <span>Try it <span class="docs-emoji">&#x1F680;</span></span>
     </h2>
 </doc-anchor-target>
-<p>Start the <code v-pre>host</code>, <code v-pre>remote-module</code> and <code v-pre>local-module</code> applications in development mode using the <code v-pre>dev</code> script. You should now notice an additional link in the navigation menu. Click on the link to navigate to the page of your new <strong>local</strong> module!</p>
+<p>Start the <code v-pre>host</code>, <code v-pre>remote-module</code> and <code v-pre>local-module</code> applications in development mode using the <code v-pre>dev</code> script. You should notice an additional link labelled <code v-pre>Local/Page</code> in the navigation menu. Click on the link to navigate to the page of your new <strong>local</strong> module!</p>
 <doc-anchor-target id="troubleshoot-issues">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#troubleshoot-issues">#</doc-anchor-trigger>

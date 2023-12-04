@@ -1,5 +1,11 @@
 # @squide/msw
 
+## 2.0.6
+
+### Patch Changes
+
+- [#122](https://github.com/gsoft-inc/wl-squide/pull/122) [`cda7873`](https://github.com/gsoft-inc/wl-squide/commit/cda7873dcffbf424a625cf40c56a12eacbb2632e) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Internal minor changes
+
 ## 2.0.5
 
 ### Patch Changes

@@ -14,6 +14,6 @@ However, at certain points in the lifecycle of a federated application, the host
 
 - To forward other types of initial data, such as a user tenant subscription, as shown in the [fetch initial data](./fetch-initial-data.md#fetch-the-data-1) guide, the data can be forwarded to modules through a React context.
 
-## React Query cache
+## React Query
 
 Lastly, as detailed in the [fetch page data](./fetch-page-data.md#setup-the-query-client) guide, the React Query cache should not be shared between the host and its modules. To do so, both the host application and every module should instantiate their own `QueryClient` instance.

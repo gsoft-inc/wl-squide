@@ -132,7 +132,7 @@ export function App() {
 
 ### Navigation items
 
-Next, create a layout component to [render the navigation items](/reference/routing/useRenderedNavigationItems.md):
+Next, create a layout component to [render the navigation items](/reference/routing/useRenderedNavigationItems.md). In many applications, multiple pages often share a **common layout** that includes elements such as a navigation bar, a user profile menu, and a main content section. In a [React Router](https://reactrouter.com/en/main) application, this shared layout is commonly referred to as a `RootLayout`:
 
 ```tsx !#38,41 host/src/RootLayout.tsx
 import { Suspense } from "react";
@@ -187,6 +187,8 @@ export function RootLayout() {
     );
 }
 ```
+
+In the previous code sample, the `RootLayout` will serves as the default layout for the homepage as well as for every page (route) registered by a module that are not nested under a parent route with either the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) or the [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option.
 
 ### Homepage
 

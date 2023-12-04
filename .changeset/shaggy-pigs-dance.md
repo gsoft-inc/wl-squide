@@ -1,6 +1,7 @@
 ---
 "@squide/firefly": patch
 "@squide/fakes": patch
+"@squide/msw": patch
 ---
 
-Minor updates to both packages
+Internal minor changes

@@ -11,13 +11,13 @@ import { AppRouter } from "../src/AppRouter.tsx";
 
 function Loading() {
     return (
-        <div role="loading">Loading...</div>
+        <div data-testid="loading">Loading...</div>
     );
 }
 
 function ErrorBoundary() {
     return (
-        <div role="error">An error occured!</div>
+        <div data-testid="error">An error occured!</div>
     );
 }
 
@@ -58,7 +58,7 @@ test("when no data handlers are provided, msw is disabled, there's no deferred r
         waitForMsw={false}
     />);
 
-    expect(await screen.findByRole("loading")).toBeInTheDocument();
+    expect(await screen.findByTestId("loading")).toBeInTheDocument();
 });
 
 test("when no data handlers are provided, msw is disabled, there's no deferred registrations, and modules are registered, render the router", async () => {
@@ -75,7 +75,7 @@ test("when no data handlers are provided, msw is disabled, there's no deferred r
     await registerLocalModules([() => {
         runtime.registerRoute({
             index: true,
-            element: <div role="module-route">A route</div>
+            element: <div data-testid="module-route">A route</div>
         }, {
             hoist: true
         });
@@ -87,7 +87,7 @@ test("when no data handlers are provided, msw is disabled, there's no deferred r
         waitForMsw={false}
     />);
 
-    expect(await screen.findByRole("module-route")).toBeInTheDocument();
+    expect(await screen.findByTestId("module-route")).toBeInTheDocument();
 });
 
 test("when no data handlers are provided, msw is disabled, modules are registered but there's uncompleted deferred registrations, render the fallback", async () => {
@@ -109,7 +109,7 @@ test("when no data handlers are provided, msw is disabled, modules are registere
         waitForMsw={false}
     />);
 
-    expect(await screen.findByRole("loading")).toBeInTheDocument();
+    expect(await screen.findByTestId("loading")).toBeInTheDocument();
 });
 
 test("when a onLoadPublicData handler is provided and the public data is not loaded, render the fallback", async () => {
@@ -134,7 +134,7 @@ test("when a onLoadPublicData handler is provided and the public data is not loa
         waitForMsw={false}
     />);
 
-    expect(await screen.findByRole("loading")).toBeInTheDocument();
+    expect(await screen.findByTestId("loading")).toBeInTheDocument();
 });
 
 test("when a onLoadPublicData handler is provided and the public data is loaded, render the router", async () => {
@@ -143,7 +143,7 @@ test("when a onLoadPublicData handler is provided and the public data is loaded,
     runtime.registerRoute({
         $visibility: "public",
         index: true,
-        element: <div role="route">A route</div>
+        element: <div data-testid="route">A route</div>
     }, {
         hoist: true
     });
@@ -157,7 +157,7 @@ test("when a onLoadPublicData handler is provided and the public data is loaded,
         waitForMsw={false}
     />);
 
-    expect(await screen.findByRole("route")).toBeInTheDocument();
+    expect(await screen.findByTestId("route")).toBeInTheDocument();
 });
 
 test("when a onLoadProtectedData handler is provided and the protected data is not loaded, render the fallback", async () => {
@@ -181,7 +181,7 @@ test("when a onLoadProtectedData handler is provided and the protected data is n
         waitForMsw={false}
     />);
 
-    expect(await screen.findByRole("loading")).toBeInTheDocument();
+    expect(await screen.findByTestId("loading")).toBeInTheDocument();
 });
 
 test("when a onLoadProtectedData handler is provided and the protected data is loaded, render the router", async () => {
@@ -189,7 +189,7 @@ test("when a onLoadProtectedData handler is provided and the protected data is l
 
     runtime.registerRoute({
         index: true,
-        element: <div role="route">A route</div>
+        element: <div data-testid="route">A route</div>
     }, {
         hoist: true
     });
@@ -203,7 +203,7 @@ test("when a onLoadProtectedData handler is provided and the protected data is l
         waitForMsw={false}
     />);
 
-    expect(await screen.findByRole("route")).toBeInTheDocument();
+    expect(await screen.findByTestId("route")).toBeInTheDocument();
 });
 
 test("when msw is enabled and msw is not started, render the fallback", async () => {
@@ -222,10 +222,10 @@ test("when msw is enabled and msw is not started, render the fallback", async ()
     renderWithRuntime(runtime, <AppRouter
         fallbackElement={<Loading />}
         errorElement={<ErrorBoundary />}
-        waitForMsw={true}
+        waitForMsw
     />);
 
-    expect(await screen.findByRole("loading")).toBeInTheDocument();
+    expect(await screen.findByTestId("loading")).toBeInTheDocument();
 });
 
 test("when msw is enabled and msw is started, render the router", async () => {
@@ -233,7 +233,7 @@ test("when msw is enabled and msw is started, render the router", async () => {
 
     runtime.registerRoute({
         index: true,
-        element: <div role="route">A route</div>
+        element: <div data-testid="route">A route</div>
     }, {
         hoist: true
     });
@@ -245,10 +245,10 @@ test("when msw is enabled and msw is started, render the router", async () => {
     renderWithRuntime(runtime, <AppRouter
         fallbackElement={<Loading />}
         errorElement={<ErrorBoundary />}
-        waitForMsw={true}
+        waitForMsw
     />);
 
-    expect(await screen.findByRole("route")).toBeInTheDocument();
+    expect(await screen.findByTestId("route")).toBeInTheDocument();
 });
 
 test("when a onCompleteRegistrations handler is provided and there's no deferred registrations, render the router", async () => {
@@ -256,7 +256,7 @@ test("when a onCompleteRegistrations handler is provided and there's no deferred
 
     runtime.registerRoute({
         index: true,
-        element: <div role="route">A route</div>
+        element: <div data-testid="route">A route</div>
     }, {
         hoist: true
     });
@@ -270,7 +270,7 @@ test("when a onCompleteRegistrations handler is provided and there's no deferred
         waitForMsw={false}
     />);
 
-    expect(await screen.findByRole("route")).toBeInTheDocument();
+    expect(await screen.findByTestId("route")).toBeInTheDocument();
 });
 
 test("when a onCompleteRegistrations handler is provided and the deferred registrations are not completed, render the fallback", async () => {
@@ -294,7 +294,7 @@ test("when a onCompleteRegistrations handler is provided and the deferred regist
         waitForMsw={false}
     />);
 
-    expect(await screen.findByRole("loading")).toBeInTheDocument();
+    expect(await screen.findByTestId("loading")).toBeInTheDocument();
 });
 
 test("when a onCompleteRegistrations handler is provided and the deferred registrations are completed, render the router", async () => {
@@ -312,7 +312,7 @@ test("when a onCompleteRegistrations handler is provided and the deferred regist
         return () => {
             runtime.registerRoute({
                 index: true,
-                element: <div role="deferred-route">A deferred route</div>
+                element: <div data-testid="deferred-route">A deferred route</div>
             }, {
                 hoist: true
             });
@@ -337,7 +337,7 @@ test("when a onCompleteRegistrations handler is provided and the deferred regist
         waitForMsw={false}
     />);
 
-    expect(await screen.findByRole("deferred-route")).toBeInTheDocument();
+    expect(await screen.findByTestId("deferred-route")).toBeInTheDocument();
 });
 
 test("when an error occurs while loading the public data, show the error element", async () => {
@@ -365,7 +365,7 @@ test("when an error occurs while loading the public data, show the error element
         waitForMsw={false}
     />);
 
-    expect(await screen.findByRole("error")).toBeInTheDocument();
+    expect(await screen.findByTestId("error")).toBeInTheDocument();
 
     spy.mockRestore();
 });
@@ -394,7 +394,7 @@ test("when an error occurs while loading the protected data, show the error elem
         waitForMsw={false}
     />);
 
-    expect(await screen.findByRole("error")).toBeInTheDocument();
+    expect(await screen.findByTestId("error")).toBeInTheDocument();
 
     spy.mockRestore();
 });

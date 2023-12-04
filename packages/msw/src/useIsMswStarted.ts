@@ -31,7 +31,7 @@ export function useIsMswStarted(enabled: boolean, { interval = 10 }: UseIsMswSta
                 }
             };
         }
-    }, [enabled]);
+    }, [enabled, interval, logger]);
 
     return value;
 }

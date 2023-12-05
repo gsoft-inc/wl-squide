@@ -1,4 +1,3 @@
-import { ToastContext } from "@basic/shared";
 import type { AriaToastProps, AriaToastRegionProps } from "@react-aria/toast";
 import { useToast, useToastRegion } from "@react-aria/toast";
 import { useToastState, type ToastState, type ToastStateProps } from "@react-stately/toast";
@@ -50,26 +49,36 @@ export function ToastRegion<T extends ReactNode>({ state, ...props }: ToastRegio
     );
 }
 
-export interface ToastProviderProps extends ToastStateProps {
-    children: ReactNode;
-}
+export type UseToastContainerProps = ToastStateProps;
 
-export function ToastProvider({ children, ...props }: ToastProviderProps) {
+export function useToastContainer(props: UseToastContainerProps = {}) {
     const state = useToastState<ReactNode>({
         maxVisibleToasts: 5,
         ...props
     });
 
-    const showToast = useCallback((text: string) => {
-        state.add(text, { timeout: 5000 });
+    const addToast = useCallback((message: string) => {
+        state.add(message, { timeout: 5000 });
     }, [state]);
 
+    return {
+        toastState: state,
+        addToast
+    };
+}
+
+export interface ToastContainerProps extends AriaToastRegionProps {
+    children: ReactNode;
+    state: ToastState<ReactNode>;
+}
+
+export function ToastContainer({ children, state, ...props }: ToastContainerProps) {
     return (
-        <ToastContext.Provider value={{ showToast }}>
+        <>
             {children}
             {state.visibleToasts.length > 0 && (
-                <ToastRegion {...props} state={state} />
+                <ToastRegion state={state} {...props} />
             )}
-        </ToastContext.Provider>
+        </>
     );
 }

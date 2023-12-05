@@ -62,7 +62,6 @@ export function ToastProvider({ children, ...props }: ToastProviderProps) {
 
     const showToast = useCallback((text: string) => {
         state.add(text, { timeout: 5000 });
-        state.add(text);
     }, [state]);
 
     return (

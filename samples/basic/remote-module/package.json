@@ -36,6 +36,8 @@
     "dependencies": {
         "@basic/shared": "workspace:*",
         "@basic/shell": "workspace:*",
+        "@react-aria/toast": "3.0.0-beta.7",
+        "@react-stately/toast": "3.0.0-beta.1",
         "@squide/fakes": "workspace:*",
         "@squide/firefly": "workspace:*",
         "react": "18.2.0",

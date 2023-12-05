@@ -1,4 +1,4 @@
-import { useApplicationEventBusDispatcher } from "@basic/shared";
+import { useApplicationEventBusDispatcher, useShowToast } from "@basic/shared";
 import { useCallback, useState, type ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 
@@ -10,11 +10,13 @@ export function MessagePage() {
     }, []);
 
     const dispatch = useApplicationEventBusDispatcher();
+    const showToast = useShowToast();
 
     const handleSendMessage = useCallback(() => {
         dispatch("write-to-host", message);
+        showToast(message);
         setMessage("");
-    }, [dispatch, setMessage, message]);
+    }, [dispatch, showToast, setMessage, message]);
 
     return (
         <>
@@ -33,7 +35,7 @@ export function MessagePage() {
             <textarea value={message} onChange={handleTextChange} />
             <br />
             <button type="button" onClick={handleSendMessage}>Send</button>
-            <p>Hint: have a look at your console log once the message has been sent :)</p>
+            <p>Hint: have a look at your console log and at bottom right corner of your screen once the message has been sent :)</p>
             <Link to="/">Go back to home</Link>
         </>
     );

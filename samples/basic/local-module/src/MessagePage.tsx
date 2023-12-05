@@ -1,4 +1,4 @@
-import { useApplicationEventBusDispatcher, useShowToast } from "@basic/shared";
+import { useApplicationEventBusDispatcher, useToast } from "@basic/shared";
 import { useCallback, useState, type ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 
@@ -10,7 +10,7 @@ export function MessagePage() {
     }, []);
 
     const dispatch = useApplicationEventBusDispatcher();
-    const showToast = useShowToast();
+    const showToast = useToast();
 
     const handleSendMessage = useCallback(() => {
         dispatch("write-to-host", message);

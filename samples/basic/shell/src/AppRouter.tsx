@@ -1,4 +1,4 @@
-import { useApplicationEventBusListener } from "@basic/shared";
+import { useToastListener } from "@basic/shared";
 import { AppRouter as FireflyAppRouter } from "@squide/firefly";
 import { useCallback } from "react";
 import { AppRouterErrorBoundary } from "./AppRouterErrorBoundary.tsx";
@@ -13,11 +13,11 @@ function Loading() {
 export function AppRouter() {
     const { toastState, addToast } = useToastContainer();
 
-    const handleShowToast = useCallback((message: unknown) => {
-        addToast(message as string);
+    const handleShowToast = useCallback((message: string) => {
+        addToast(message);
     }, [addToast]);
 
-    useApplicationEventBusListener("show-toast", handleShowToast);
+    useToastListener(handleShowToast);
 
     return (
         <ToastContainer state={toastState}>

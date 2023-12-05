@@ -22,6 +22,8 @@
     "peerDependencies": {
         "@basic/shared": "*",
         "@basic/shell": "*",
+        "@react-aria/toast": "*",
+        "@react-stately/toast": "*",
         "@squide/firefly": "*",
         "react": "*",
         "react-dom": "*",
@@ -32,6 +34,8 @@
         "@squide/webpack-configs": "workspace:*",
         "@swc/core": "1.3.99",
         "@swc/helpers": "0.5.3",
+        "@react-aria/toast": "3.0.0-beta.7",
+        "@react-stately/toast": "3.0.0-beta.1",
         "@types/react": "18.2.39",
         "@types/react-dom": "18.2.17",
         "@types/webpack": "5.28.5",

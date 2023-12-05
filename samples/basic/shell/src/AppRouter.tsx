@@ -1,5 +1,6 @@
 import { AppRouter as FireflyAppRouter } from "@squide/firefly";
 import { AppRouterErrorBoundary } from "./AppRouterErrorBoundary.tsx";
+import { ToastProvider } from "./toast.tsx";
 
 function Loading() {
     return (
@@ -9,10 +10,12 @@ function Loading() {
 
 export function AppRouter() {
     return (
-        <FireflyAppRouter
-            fallbackElement={<Loading />}
-            errorElement={<AppRouterErrorBoundary />}
-            waitForMsw={false}
-        />
+        <ToastProvider>
+            <FireflyAppRouter
+                fallbackElement={<Loading />}
+                errorElement={<AppRouterErrorBoundary />}
+                waitForMsw={false}
+            />
+        </ToastProvider>
     );
 }

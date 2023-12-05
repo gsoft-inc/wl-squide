@@ -20,6 +20,8 @@
     },
     "peerDependencies": {
         "@basic/shared": "*",
+        "@react-aria/toast": "*",
+        "@react-stately/toast": "*",
         "@squide/firefly": "*",
         "react": "*",
         "react-dom": "*",
@@ -28,6 +30,8 @@
     },
     "devDependencies": {
         "@basic/shared": "workspace:*",
+        "@react-aria/toast": "3.0.0-beta.7",
+        "@react-stately/toast": "3.0.0-beta.1",
         "@remix-run/router": "1.13.0",
         "@squide/firefly": "workspace:*",
         "@types/react": "18.2.39",

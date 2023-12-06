@@ -13,6 +13,8 @@ export interface RegisterRemoteModulesOptions<TContext> {
     context?: TContext;
 }
 
+export type RemoteModuleRegistrationStatusChangedListener = () => void;
+
 export interface RemoteModuleRegistrationError {
     // The remote base URL.
     url: string;
@@ -29,6 +31,7 @@ export class RemoteModuleRegistry {
 
     readonly #deferredRegistrations: DeferredRegistration[] = [];
     readonly #loadRemote: LoadRemoteFunction;
+    readonly #statusChangedListeners = new Set<RemoteModuleRegistrationStatusChangedListener>();
 
     constructor(loadRemote: LoadRemoteFunction) {
         this.#loadRemote = loadRemote;
@@ -56,7 +59,7 @@ export class RemoteModuleRegistry {
 
         runtime.logger.debug(`[squide] Found ${remotes.length} remote module${remotes.length !== 1 ? "s" : ""} to register.`);
 
-        this.#registrationStatus = "in-progress";
+        this.#setRegistrationStatus("in-progress");
 
         await Promise.allSettled(remotes.map(async (x, index) => {
             let remoteUrl;
@@ -104,8 +107,12 @@ export class RemoteModuleRegistry {
             }
         }));
 
-        this.#registrationStatus = this.#deferredRegistrations.length > 0 ? "registered" : "ready";
+        this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "registered" : "ready");
 
+        // After introducting the "setRegistrationStatus" method, TypeScript seems to think that the only possible
+        // values for registrationStatus is "none" and now complains about the lack of overlapping between "none" and "ready".
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         if (this.#registrationStatus === "ready") {
             this.#logSharedScope(runtime.logger);
         }
@@ -129,7 +136,7 @@ export class RemoteModuleRegistry {
             return Promise.resolve(errors);
         }
 
-        this.#registrationStatus = "in-completion";
+        this.#setRegistrationStatus("in-completion");
 
         await Promise.allSettled(this.#deferredRegistrations.map(async ({ url, containerName, index, fct: deferredRegister }) => {
             runtime.logger.debug(`[squide] ${index} Completing registration for module "${RemoteModuleName}" from container "${containerName}" of remote "${url}".`);
@@ -153,11 +160,27 @@ export class RemoteModuleRegistry {
             runtime.logger.debug(`[squide] ${index} Completed registration for module "${RemoteModuleName}" from container "${containerName}" of remote "${url}".`);
         }));
 
-        this.#registrationStatus = "ready";
+        this.#setRegistrationStatus("ready");
 
         this.#logSharedScope(runtime.logger);
 
         return errors;
+    }
+
+    registerStatusChangedListener(callback: RemoteModuleRegistrationStatusChangedListener) {
+        this.#statusChangedListeners.add(callback);
+    }
+
+    removeStatusChangedListener(callback: RemoteModuleRegistrationStatusChangedListener) {
+        this.#statusChangedListeners.delete(callback);
+    }
+
+    #setRegistrationStatus(status: ModuleRegistrationStatus) {
+        this.#registrationStatus = status;
+
+        this.#statusChangedListeners.forEach(x => {
+            x();
+        });
     }
 
     get registrationStatus() {
@@ -182,4 +205,12 @@ export function completeRemoteModuleRegistrations<TRuntime extends Runtime = Run
 
 export function getRemoteModuleRegistrationStatus() {
     return remoteModuleRegistry.registrationStatus;
+}
+
+export function addRemoteModuleRegistrationStatusChangedListener(callback: RemoteModuleRegistrationStatusChangedListener) {
+    remoteModuleRegistry.registerStatusChangedListener(callback);
+}
+
+export function removeRemoteModuleRegistrationStatusChangedListener(callback: RemoteModuleRegistrationStatusChangedListener) {
+    remoteModuleRegistry.removeStatusChangedListener(callback);
 }

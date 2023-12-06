@@ -1,12 +1,7 @@
-import { useEffect, useState } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 
-import { getLocalModuleRegistrationStatus, type ModuleRegistrationStatus } from "@squide/core";
-import { getRemoteModuleRegistrationStatus } from "./registerRemoteModules.ts";
-
-export interface UseAreModulesRegisteredOptions {
-    // The interval is in milliseconds.
-    interval?: number;
-}
+import { addLocalModuleRegistrationStatusChangedListener, getLocalModuleRegistrationStatus, removeLocalModuleRegistrationStatusChangedListener, type ModuleRegistrationStatus } from "@squide/core";
+import { addRemoteModuleRegistrationStatusChangedListener, getRemoteModuleRegistrationStatus, removeRemoteModuleRegistrationStatusChangedListener } from "./registerRemoteModules.ts";
 
 export function areModulesRegistered(localModuleRegistrationStatus: ModuleRegistrationStatus, remoteModuleRegistrationStatus: ModuleRegistrationStatus) {
     if (localModuleRegistrationStatus === "none" && remoteModuleRegistrationStatus === "none") {
@@ -19,28 +14,23 @@ export function areModulesRegistered(localModuleRegistrationStatus: ModuleRegist
            (remoteModuleRegistrationStatus === "none" || remoteModuleRegistrationStatus === "registered" || remoteModuleRegistrationStatus === "ready");
 }
 
-export function useAreModulesRegistered({ interval = 10 }: UseAreModulesRegisteredOptions = {}) {
-    // Using a state hook to force a rerender once registered.
-    const [value, setAreModulesRegistered] = useState(areModulesRegistered(getLocalModuleRegistrationStatus(), getRemoteModuleRegistrationStatus()));
+function subscribeToLocalModuleRegistrationStatusChanged(callback: () => void) {
+    addLocalModuleRegistrationStatusChangedListener(callback);
 
-    // Perform a reload once the modules are registered.
-    useEffect(() => {
-        if (!value) {
-            const intervalId = setInterval(() => {
-                if (areModulesRegistered(getLocalModuleRegistrationStatus(), getRemoteModuleRegistrationStatus())) {
-                    clearInterval(intervalId);
+    return () => removeLocalModuleRegistrationStatusChangedListener(callback);
+}
 
-                    setAreModulesRegistered(true);
-                }
-            }, interval);
+function subscribeToRemoteModuleRegistrationStatusChanged(callback: () => void) {
+    addRemoteModuleRegistrationStatusChangedListener(callback);
 
-            return () => {
-                if (intervalId) {
-                    clearInterval(intervalId);
-                }
-            };
-        }
-    }, []);
+    return () => removeRemoteModuleRegistrationStatusChangedListener(callback);
+}
 
-    return value;
+export function useAreModulesRegistered() {
+    const localModuleStatus = useSyncExternalStore(subscribeToLocalModuleRegistrationStatusChanged, getLocalModuleRegistrationStatus);
+    const remoteModuleStatus = useSyncExternalStore(subscribeToRemoteModuleRegistrationStatusChanged, getRemoteModuleRegistrationStatus);
+
+    return useMemo(() => {
+        return areModulesRegistered(localModuleStatus, remoteModuleStatus);
+    }, [localModuleStatus, remoteModuleStatus]);
 }

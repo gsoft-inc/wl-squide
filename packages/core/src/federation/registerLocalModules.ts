@@ -12,6 +12,8 @@ export interface RegisterLocalModulesOptions<TContext> {
     context?: TContext;
 }
 
+export type LocalModuleRegistrationStatusChangedListener = () => void;
+
 export interface LocalModuleRegistrationError {
     // The registration error.
     error: unknown;
@@ -20,6 +22,8 @@ export interface LocalModuleRegistrationError {
 export class LocalModuleRegistry {
     #registrationStatus: ModuleRegistrationStatus = "none";
     #deferredRegistrations: DeferredRegistration[] = [];
+
+    readonly #statusChangedListeners = new Set<LocalModuleRegistrationStatusChangedListener>();
 
     async registerModules<TRuntime extends Runtime = Runtime, TContext = unknown, TData = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext, TData>[], runtime: TRuntime, { context }: RegisterLocalModulesOptions<TContext> = {}) {
         const errors: LocalModuleRegistrationError[] = [];
@@ -30,7 +34,7 @@ export class LocalModuleRegistry {
 
         runtime.logger.debug(`[squide] Found ${registerFunctions.length} local module${registerFunctions.length !== 1 ? "s" : ""} to register.`);
 
-        this.#registrationStatus = "in-progress";
+        this.#setRegistrationStatus("in-progress");
 
         await Promise.allSettled(registerFunctions.map(async (x, index) => {
             runtime.logger.debug(`[squide] ${index + 1}/${registerFunctions.length} Registering local module.`);
@@ -58,7 +62,7 @@ export class LocalModuleRegistry {
             runtime.logger.debug(`[squide] ${index + 1}/${registerFunctions.length} Local module registration completed.`);
         }));
 
-        this.#registrationStatus = this.#deferredRegistrations.length > 0 ? "registered" : "ready";
+        this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "registered" : "ready");
 
         return errors;
     }
@@ -79,7 +83,7 @@ export class LocalModuleRegistry {
             return Promise.resolve(errors);
         }
 
-        this.#registrationStatus = "in-completion";
+        this.#setRegistrationStatus("in-completion");
 
         await Promise.allSettled(this.#deferredRegistrations.map(async ({ index, fct: deferredRegister }) => {
             runtime.logger.debug(`[squide] ${index} Completing local module deferred registration.`, "Data:", data);
@@ -100,9 +104,25 @@ export class LocalModuleRegistry {
             runtime.logger.debug(`[squide] ${index} Completed local module deferred registration.`);
         }));
 
-        this.#registrationStatus = "ready";
+        this.#setRegistrationStatus("ready");
 
         return errors;
+    }
+
+    registerStatusChangedListener(callback: LocalModuleRegistrationStatusChangedListener) {
+        this.#statusChangedListeners.add(callback);
+    }
+
+    removeStatusChangedListener(callback: LocalModuleRegistrationStatusChangedListener) {
+        this.#statusChangedListeners.delete(callback);
+    }
+
+    #setRegistrationStatus(status: ModuleRegistrationStatus) {
+        this.#registrationStatus = status;
+
+        this.#statusChangedListeners.forEach(x => {
+            x();
+        });
     }
 
     get registrationStatus() {
@@ -111,8 +131,10 @@ export class LocalModuleRegistry {
 
     // Strictly for Jest tests, this is NOT ideal.
     __reset() {
+        // Bypass the "setRegistrationStatus" function to prevent calling the listeners.
         this.#registrationStatus = "none";
         this.#deferredRegistrations = [];
+        this.#statusChangedListeners.clear();
     }
 }
 
@@ -128,6 +150,14 @@ export function completeLocalModuleRegistrations<TRuntime extends Runtime = Runt
 
 export function getLocalModuleRegistrationStatus() {
     return localModuleRegistry.registrationStatus;
+}
+
+export function addLocalModuleRegistrationStatusChangedListener(callback: LocalModuleRegistrationStatusChangedListener) {
+    localModuleRegistry.registerStatusChangedListener(callback);
+}
+
+export function removeLocalModuleRegistrationStatusChangedListener(callback: LocalModuleRegistrationStatusChangedListener) {
+    localModuleRegistry.removeStatusChangedListener(callback);
 }
 
 // Strictly for Jest tests, this is NOT ideal.

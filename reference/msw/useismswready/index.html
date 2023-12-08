@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.755326766079">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.755365627439">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.755326766079" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.755365627439" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.755326766079" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.755365627439" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.755326766079" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.755326766079" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.755365627439" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.755365627439" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -338,7 +338,7 @@
     </h2>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript"><code v-pre class="language-typescript">const isMswReady = useIsMswReady(enabled, { interval })</code></pre>
+<pre class="language-typescript"><code v-pre class="language-typescript">const isMswReady = useIsMswReady(enabled)</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="parameters">
     <h3>
@@ -348,11 +348,6 @@
 </doc-anchor-target>
 <ul>
 <li><code v-pre>enabled</code>: Whether or not MSW is currently enabled for the application. This is especially useful to ensure the application is not waiting for MSW when in production.</li>
-<li><code v-pre>options</code>: An optional object literal of options:
-<ul>
-<li><code v-pre>interval</code>: The interval in milliseconds at which the hook is validating if MSW is started.</li>
-</ul>
-</li>
 </ul>
 <doc-anchor-target id="returns">
     <h3>

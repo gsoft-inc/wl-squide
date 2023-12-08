@@ -1,3 +1,6 @@
+// Not all permutations are tested because there are simply too many. The code path that we deem the most important to test
+// has been handled and additional tests will be added once bugs are discovered.
+
 import { RuntimeContext, __resetLocalModuleRegistrations, registerLocalModules } from "@squide/core";
 import { __resetMswStatus, setMswAsStarted } from "@squide/msw";
 import { ReactRouterRuntime } from "@squide/react-router";
@@ -5,9 +8,6 @@ import { completeModuleRegistrations } from "@squide/webpack-module-federation";
 import { render, screen } from "@testing-library/react";
 import type { ReactElement, ReactNode } from "react";
 import { AppRouter } from "../src/AppRouter.tsx";
-
-// Not all permutations are testedbecause there are simply too many. The code path that we deem the most important to test
-// has been handled and additional tests will be added once bugs are discovered.
 
 function Loading() {
     return (

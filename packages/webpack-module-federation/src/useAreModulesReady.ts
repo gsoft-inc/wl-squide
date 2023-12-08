@@ -1,12 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useSyncExternalStore } from "react";
 
-import { getLocalModuleRegistrationStatus, useRuntime, type ModuleRegistrationStatus } from "@squide/core";
-import { getRemoteModuleRegistrationStatus } from "./registerRemoteModules.ts";
-
-export interface UseAreModulesReadyOptions {
-    // The interval is in milliseconds.
-    interval?: number;
-}
+import { addLocalModuleRegistrationStatusChangedListener, getLocalModuleRegistrationStatus, removeLocalModuleRegistrationStatusChangedListener, useRuntime, type ModuleRegistrationStatus } from "@squide/core";
+import { addRemoteModuleRegistrationStatusChangedListener, getRemoteModuleRegistrationStatus, removeRemoteModuleRegistrationStatusChangedListener } from "./registerRemoteModules.ts";
 
 export function areModulesReady(localModuleRegistrationStatus: ModuleRegistrationStatus, remoteModuleRegistrationStatus: ModuleRegistrationStatus) {
     if (localModuleRegistrationStatus === "none" && remoteModuleRegistrationStatus === "none") {
@@ -18,33 +13,31 @@ export function areModulesReady(localModuleRegistrationStatus: ModuleRegistratio
            (remoteModuleRegistrationStatus === "none" || remoteModuleRegistrationStatus === "ready");
 }
 
-export function useAreModulesReady({ interval = 10 }: UseAreModulesReadyOptions = {}) {
+function subscribeToLocalModuleRegistrationStatusChanged(callback: () => void) {
+    addLocalModuleRegistrationStatusChangedListener(callback);
+
+    return () => removeLocalModuleRegistrationStatusChangedListener(callback);
+}
+
+function subscribeToRemoteModuleRegistrationStatusChanged(callback: () => void) {
+    addRemoteModuleRegistrationStatusChangedListener(callback);
+
+    return () => removeRemoteModuleRegistrationStatusChangedListener(callback);
+}
+
+export function useAreModulesReady() {
+    const localModuleStatus = useSyncExternalStore(subscribeToLocalModuleRegistrationStatusChanged, getLocalModuleRegistrationStatus);
+    const remoteModuleStatus = useSyncExternalStore(subscribeToRemoteModuleRegistrationStatusChanged, getRemoteModuleRegistrationStatus);
+
     const runtime = useRuntime();
 
-    // Using a state hook to force a rerender once ready.
-    const [value, setAreModulesReady] = useState(areModulesReady(getLocalModuleRegistrationStatus(), getRemoteModuleRegistrationStatus()));
-
-    // Perform a reload once the modules are registered.
     useEffect(() => {
-        if (!value) {
-            const intervalId = setInterval(() => {
-                if (areModulesReady(getLocalModuleRegistrationStatus(), getRemoteModuleRegistrationStatus())) {
-                    // Must clear interval before calling "_completeRegistration" in case there's an error.
-                    clearInterval(intervalId);
-
-                    runtime._completeRegistration();
-
-                    setAreModulesReady(true);
-                }
-            }, interval);
-
-            return () => {
-                if (intervalId) {
-                    clearInterval(intervalId);
-                }
-            };
+        if (areModulesReady(localModuleStatus, remoteModuleStatus)) {
+            runtime._completeRegistration();
         }
     }, []);
 
-    return value;
+    return useMemo(() => {
+        return areModulesReady(localModuleStatus, remoteModuleStatus);
+    }, [localModuleStatus, remoteModuleStatus]);
 }

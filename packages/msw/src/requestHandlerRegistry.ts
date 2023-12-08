@@ -1,5 +1,5 @@
 import type { RequestHandler } from "msw";
-import { isMswStarted } from "./setMswAsStarted.ts";
+import { isMswStarted } from "./mswState.ts";
 
 export class RequestHandlerRegistry {
     readonly #handlers: RequestHandler[] = [];

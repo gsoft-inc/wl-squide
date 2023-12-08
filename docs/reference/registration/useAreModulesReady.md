@@ -18,13 +18,8 @@ If your application supports [deferred registrations](./registerRemoteModules.md
 ## Reference
 
 ```ts
-const areModulesReady = useAreModulesReady(options?: { interval? })
+const areModulesReady = useAreModulesReady()
 ```
-
-### Parameters
-
-- `options`: An optional object literal of options:
-    - `interval`: The interval in milliseconds at which the hook is validating if the registration process is completed.
 
 ### Returns
 

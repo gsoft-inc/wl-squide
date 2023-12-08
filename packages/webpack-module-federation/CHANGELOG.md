@@ -1,5 +1,14 @@
 # @squide/webpack-module-federation
 
+## 3.0.2
+
+### Patch Changes
+
+- [#128](https://github.com/gsoft-inc/wl-squide/pull/128) [`4c3b6f1`](https://github.com/gsoft-inc/wl-squide/commit/4c3b6f1929364844dda6c1190fc45c3b037e8df9) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Internally changed the usage of `setInterval` for `useSyncExternalStore`.
+
+- Updated dependencies [[`4c3b6f1`](https://github.com/gsoft-inc/wl-squide/commit/4c3b6f1929364844dda6c1190fc45c3b037e8df9)]:
+  - @squide/core@3.1.1
+
 ## 3.0.1
 
 ### Patch Changes

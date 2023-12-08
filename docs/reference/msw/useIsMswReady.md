@@ -9,14 +9,12 @@ If your application is using the [AppRouter](../routing/appRouter.md) component,
 ## Reference
 
 ```ts
-const isMswReady = useIsMswReady(enabled, { interval })
+const isMswReady = useIsMswReady(enabled)
 ```
 
 ### Parameters
 
 - `enabled`: Whether or not MSW is currently enabled for the application. This is especially useful to ensure the application is not waiting for MSW when in production.
-- `options`: An optional object literal of options:
-    - `interval`: The interval in milliseconds at which the hook is validating if MSW is started.
 
 ### Returns
 

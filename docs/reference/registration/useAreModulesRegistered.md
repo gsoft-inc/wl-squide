@@ -19,13 +19,8 @@ This hook should only be used by applications that support [deferred registratio
 ## Reference
 
 ```ts
-const areModulesRegistered = useAreModulesRegistered(options?: { interval? })
+const areModulesRegistered = useAreModulesRegistered()
 ```
-
-### Parameters
-
-- `options`: An optional object literal of options:
-    - `interval`: The interval in milliseconds at which the hook is validating if the registration process is completed.
 
 ### Returns
 

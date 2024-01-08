@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.755366638104">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758041665711">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Federated tabs</title>
     <meta name="title" content="Federated tabs">
-    <meta name="description" content="While it's typically recommended for a Squide application to maintain the boundary of a page within a single domain (e.g.">
+    <meta name="description" content="While it's typically recommended for a Squide application to maintain the boundary of a page within a single domain, there are situations where ">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/guides/federated-tabs/">
@@ -21,25 +21,25 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/guides/federated-tabs/">
     <meta property="og:title" content="Federated tabs">
-    <meta property="og:description" content="While it's typically recommended for a Squide application to maintain the boundary of a page within a single domain (e.g.">
+    <meta property="og:description" content="While it's typically recommended for a Squide application to maintain the boundary of a page within a single domain, there are situations where ">
     <meta property="og:image" content="https://gsoft-inc.github.io/wl-squide/static/federated-tabs-anatomy.svg">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/guides/federated-tabs/">
     <meta property="twitter:title" content="Federated tabs">
-    <meta property="twitter:description" content="While it's typically recommended for a Squide application to maintain the boundary of a page within a single domain (e.g.">
+    <meta property="twitter:description" content="While it's typically recommended for a Squide application to maintain the boundary of a page within a single domain, there are situations where ">
     <meta property="twitter:image" content="https://gsoft-inc.github.io/wl-squide/static/federated-tabs-anatomy.svg">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.755366638104" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.758041665711" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.755366638104" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.755366638104" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.755366638104" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.758041665711" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -307,7 +307,7 @@
         <span>Federated tabs</span>
     </h1>
 </doc-anchor-target>
-<p>While it&#x27;s typically recommended for a Squide application to maintain the boundary of a page within a single domain (e.g. module), there are situations where <strong>enhancing</strong> the <strong>user experience</strong> necessitates rendering a page with parts from <strong>multiple domains</strong>, or at the very least, simulating it <span class="docs-emoji">&#x1F60A;</span>.</p>
+<p>While it&#x27;s typically recommended for a Squide application to maintain the boundary of a page within a single domain, there are situations where <strong>enhancing</strong> the <strong>user experience</strong> necessitates rendering a page with parts from <strong>multiple domains</strong>, or at the very least, simulating it <span class="docs-emoji">&#x1F60A;</span>.</p>
 <p>For this guide, we&#x27;ll take as an example a page for which the parts that are owned by different domains are organized by tabs (federated tabs):</p>
 <ul>
 <li><code v-pre>Tab 1</code>: Registered by <code v-pre>Remote Module 1</code></li>
@@ -326,7 +326,7 @@
         <span>Define a nested layout</span>
     </h2>
 </doc-anchor-target>
-<p>To construct this page while adhering to Squide constraint of exclusively permitting route exports from modules to maintain a high degree of decoupling in the application, let&#x27;s begin by defining a React Router <a href="https://reactrouter.com/en/main/start/tutorial#nested-routes" class="outbound" target="_blank">nested layout</a>. This nested layout will be responsible for rendering all the tab headers and the content of the active tab:</p>
+<p>To construct this page while adhering to Squide constraint of exclusively permitting route and navigation items exports from modules, let&#x27;s begin by defining a React Router <a href="https://reactrouter.com/en/main/start/tutorial#nested-routes" class="outbound" target="_blank">nested layout</a>. This nested layout will be responsible for rendering all the tab headers and the content of the active tab:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module-3/src/federated-tabs-layout.tsx</div>
 <pre class="language-tsx" data-line="9-11,15"><code v-pre class="language-tsx">import { Suspense } from &quot;react&quot;;
@@ -467,14 +467,14 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&
     );
 }</code></pre>
 </doc-codeblock></div>
-<p>Now that the tabs have been registered, ensure that all four modules (including <code v-pre>remote-module-3</code>) are registered in the host application. Start the development servers using the <code v-pre>dev</code> script. Navigate to the <code v-pre>/federated-tabs</code> page, and you should see the tab headers. Click on each tab header to confirm that the content renders correctly.</p>
+<p>Now that the tabs has been registered, ensure that all four modules (including <code v-pre>remote-module-3</code>) are registered in the host application. Start the development servers using the <code v-pre>dev</code> script. Navigate to the <code v-pre>/federated-tabs</code> page, you should see the tab headers. Click on each tab header to confirm that the content renders correctly.</p>
 <doc-anchor-target id="decouple-the-navigation-items">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#decouple-the-navigation-items">#</doc-anchor-trigger>
         <span>Decouple the navigation items</span>
     </h2>
 </doc-anchor-target>
-<p>Althought it&#x27;s functional, there are still a few configurations needed since the modules are currently coupled by hardcoded URLs within the <code v-pre>FederatedTabsLayout</code>.</p>
+<p>Althought it&#x27;s functional, the modules are currently coupled by hardcoded URLs within the <code v-pre>FederatedTabsLayout</code>.</p>
 <p>To decouple the navigation items, similar to what is done for regular federated pages, we&#x27;ll utilize the <a href="../../reference/runtime/runtime-class/#register-navigation-items">registerNavigationItem</a> function. In this case, we&#x27;ll also use the <a href="../../reference/runtime/runtime-class/#register-navigation-items-for-a-specific-menu">menuId</a> option. Defining the <code v-pre>menuId</code> option will enable the <code v-pre>FederatedTabsLayout</code> to retrieve navigation items exclusively for the federated tab component.</p>
 <p>First, let&#x27;s register the navigation items with the <code v-pre>menuId</code> option. For this example the <code v-pre>menuId</code> will be <code v-pre>/federated-tabs</code> (it can be anything):</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -585,7 +585,7 @@ const renderSection: RenderSectionFunction = elements =&gt; {
 };
 
 export function FederatedTabsLayout() {
-    const navigationItems = useNavigationItems(&quot;/federated-tabs&quot;);
+    const navigationItems = useNavigationItems({ menuId: &quot;/federated-tabs&quot; });
     const renderedTabs = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (
@@ -719,7 +719,7 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2023 - Workleap</p></div>
+                                <div class="docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2024 - Workleap</p></div>
                             </footer>
                         </div>
                     </div>

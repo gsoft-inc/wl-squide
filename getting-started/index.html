@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.755366638104">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758041665711">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,11 +32,11 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../static/favicon.png" rel="icon">
-    <link href="../resources/css/retype.css?v=3.5.0.755366638104" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=3.5.0.758041665711" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=3.5.0.755366638104" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.5.0.755366638104" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -323,8 +323,8 @@ npm create @workleap/project@latest <output-directory>
 <li>How can we prevent loading the same large dependencies twice when switching between <em>modules</em>?</li>
 <li>How can we offer a cohesive experience that doesn&#x27;t feel <em>modular</em>?</li>
 </ul>
-<p>To address the first challenge, we believe that Module Federation provides a solution by offering a mecanism capable of <strong>deduping common dependencies</strong> shared <strong>between</strong> the <strong>host</strong> application and the <strong>remote</strong> modules at runtime.</p>
-<p>With this mecanism in place, all federated parts of an application can now be loaded in the same <a href="https://developer.mozilla.org/en-US/docs/Glossary/Browsing_context" class="outbound" target="_blank">browsing context</a> instead of nested browsing contexts such as <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe" class="outbound" target="_blank">iframes</a>.</p>
+<p>To address the first challenge, we believe that Module Federation provides a solution by offering a mechanism capable of <strong>deduping common dependencies</strong> shared <strong>between</strong> the <strong>host</strong> application and the <strong>remote</strong> modules at runtime.</p>
+<p>With this mechanism in place, all federated parts of an application can now be loaded in the same <a href="https://developer.mozilla.org/en-US/docs/Glossary/Browsing_context" class="outbound" target="_blank">browsing context</a> instead of nested browsing contexts such as <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe" class="outbound" target="_blank">iframes</a>.</p>
 <p>By sharing the same browsing context (e.g. the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document" class="outbound" target="_blank">Document object</a>, the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window" class="outbound" target="_blank">Window object</a>, and the same DOM), federated parts now <strong>form a unified and cohesive single application</strong>, addressing the second challenge.</p>
 <p>With Module Federation, we hope to develop federated applications that provide the same user experience as monolithic applications <span class="docs-emoji">&#x1F680;</span>.</p>
 <doc-anchor-target id="react-router">
@@ -344,7 +344,7 @@ npm create @workleap/project@latest <output-directory>
 <ol>
 <li><p>During bootstrap, the host application attempts to <a href="../reference/registration/registerremotemodules/">load predefined modules</a> and calls a registration function with a specific name and signature for each successfully loaded module.</p>
 </li>
-<li><p>During registration, a module receives <a href="../reference/runtime/runtime-class/">the shared services</a> of the federation application and use them to dynamically register its <a href="../reference/runtime/runtime-class/#register-routes">routes</a> and <a href="../reference/runtime/runtime-class/#register-navigation-items">navigation items</a>.</p>
+<li><p>During registration, a module receives <a href="../reference/runtime/runtime-class/">the shared services</a> of the federated application and use them to dynamically register its <a href="../reference/runtime/runtime-class/#register-routes">routes</a> and <a href="../reference/runtime/runtime-class/#register-navigation-items">navigation items</a>.</p>
 </li>
 <li><p>Once <a href="../reference/registration/usearemodulesready/">all the modules are registered</a>, the host application will create a React Router <a href="https://reactrouter.com/en/main/routers/create-browser-router" class="outbound" target="_blank">instance</a> with the registered routes and <a href="../reference/routing/userenderednavigationitems/">renders a navigation menu</a> with the registered navigation items.</p>
 </li>
@@ -358,7 +358,7 @@ npm create @workleap/project@latest <output-directory>
 </doc-anchor-target>
 <p>While developing the <a href="../reference/">API</a> of Squide, we kept a few guiding principles in mind. Those principles are not settled stones, you might want to diverge from them from time to time, but adhering to those will make your experience more enjoyable:</p>
 <ul>
-<li><p>A module should always correspond to a subdomain of the application&#x27;s business domain and should only export pages.</p>
+<li><p>A module should always correspond to a subdomain of the application&#x27;s business domain.</p>
 </li>
 <li><p>A module should be fully autonomous. It shouldn&#x27;t have to coordinate with other parts of the application for things as trivial as navigation links.</p>
 </li>
@@ -446,7 +446,7 @@ npm create @workleap/project@latest <output-directory>
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2023 - Workleap</p></div>
+                                <div class="docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2024 - Workleap</p></div>
                             </footer>
                         </div>
                     </div>

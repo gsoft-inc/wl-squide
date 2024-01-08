@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.755366638104">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758041665711">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.755366638104" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.758041665711" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.755366638104" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.755366638104" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.755366638104" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.758041665711" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -432,7 +432,7 @@ const session = useSession();</code></pre>
 
 const isAuthenticated = useIsAuthenticated();</code></pre>
 </doc-codeblock></div>
-<p>The session is also available from the <a href="../../reference/runtime/runtime-class/">FireflyRuntime</a> instance.</p>
+<p>The session is also available from the <a href="../../reference/runtime/runtime-class/#retrieve-the-current-session">FireflyRuntime</a> instance.</p>
 <doc-anchor-target id="plugins">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#plugins">#</doc-anchor-trigger>
@@ -450,12 +450,14 @@ const runtime = new FireflyRuntime({
     plugins: [new MyPlugin()]
 });</code></pre>
 </doc-codeblock></div>
-<p>Then, the plugins can be accessed anywhere from the <code v-pre>FireflyRuntime</code> instance:</p>
+<p>And can be accessed from any parts of the application with the <code v-pre>usePlugin</code> hook:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript"><code v-pre class="language-typescript">import { MyPlugin } from &quot;@sample/my-plugin&quot;;
+<pre class="language-typescript"><code v-pre class="language-typescript">import { usePlugin } from &quot;@squide/firefly&quot;;
+import { MyPlugin } from &quot;@sample/my-plugin&quot;;
 
-const myPlugin = runtime.getPlugin(MyPlugin.name) as MyPlugin;</code></pre>
+const myPlugin = usePlugin(MyPlugin.name) as MyPlugin;</code></pre>
 </doc-codeblock></div>
+<p>A plugin can also be retrieved from the <a href="../../reference/runtime/runtime-class/#retrieve-a-plugin">FireflyRuntime</a> instance.</p>
 <doc-anchor-target id="fakes">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#fakes">#</doc-anchor-trigger>
@@ -487,6 +489,13 @@ const myPlugin = runtime.getPlugin(MyPlugin.name) as MyPlugin;</code></pre>
     </h2>
 </doc-anchor-target>
 <p>For a comprehensive list of the Squide API, refer to the <a href="../../reference/">reference</a> section.</p>
+<doc-anchor-target id="samples">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#samples">#</doc-anchor-trigger>
+        <span>Samples</span>
+    </h2>
+</doc-anchor-target>
+<p>Finally, have a look at the <a href="../../samples/">sample applications</a> to see the Squide API in action.</p>
 
                                 
                                 <!-- Required only on API pages -->
@@ -550,7 +559,7 @@ const myPlugin = runtime.getPlugin(MyPlugin.name) as MyPlugin;</code></pre>
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2023 - Workleap</p></div>
+                                <div class="docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2024 - Workleap</p></div>
                             </footer>
                         </div>
                     </div>

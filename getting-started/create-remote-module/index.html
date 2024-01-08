@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.755366638104">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758041665711">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.755366638104" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.758041665711" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.755366638104" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.755366638104" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.755366638104" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.758041665711" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -453,7 +453,7 @@ const targets = browserslistToSwc();
 
 export const swcConfig = defineDevConfig(targets);</code></pre>
 </doc-codeblock></div>
-<p>Then, open the <code v-pre>webpack.dev.js</code> file and use the the <a href="../../reference/webpack/definedevremotemoduleconfig/">defineDevRemoteModuleConfig</a> function to configure webpack:</p>
+<p>Then, open the <code v-pre>webpack.dev.js</code> file and use the <a href="../../reference/webpack/definedevremotemoduleconfig/">defineDevRemoteModuleConfig</a> function to configure webpack:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/webpack.dev.js</div>
 <pre class="language-javascript" data-line="6-12"><code v-pre class="language-javascript">// @ts-check
@@ -470,7 +470,7 @@ export default defineDevRemoteModuleConfig(swcConfig, &quot;remote1&quot;, 8081,
 });</code></pre>
 </doc-codeblock></div>
 <blockquote>
-<p>If you are having issues with the wepack configuration that are not related to module federation, refer to the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/" class="outbound" target="_blank">@workleap/webpack-configs documentation</a>.</p>
+<p>If you are having issues with the wepack configuration that are not related to module federation, refer to the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/" class="outbound" target="_blank">@workleap/webpack-configs</a> documentation.</p>
 </blockquote>
 <doc-anchor-target id="build-configuration">
     <h3>
@@ -489,7 +489,7 @@ const targets = browserslistToSwc();
 
 export const swcConfig = defineBuildConfig(targets);</code></pre>
 </doc-codeblock></div>
-<p>Then, open the <code v-pre>webpack.build.js</code> file and use the the <a href="../../reference/webpack/definebuildremotemoduleconfig/">defineBuildRemoteModuleConfig</a> function to configure webpack:</p>
+<p>Then, open the <code v-pre>webpack.build.js</code> file and use the <a href="../../reference/webpack/definebuildremotemoduleconfig/">defineBuildRemoteModuleConfig</a> function to configure webpack:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/webpack.build.js</div>
 <pre class="language-javascript" data-line="6-12"><code v-pre class="language-javascript">// @ts-check
@@ -506,7 +506,7 @@ export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, {
 });</code></pre>
 </doc-codeblock></div>
 <blockquote>
-<p>If you are having issues with the wepack configuration that are not related to module federation, refer to the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/" class="outbound" target="_blank">@workleap/webpack-configs documentation</a>.</p>
+<p>If you are having issues with the wepack configuration that are not related to module federation, refer to the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/" class="outbound" target="_blank">@workleap/webpack-configs</a> documentation.</p>
 </blockquote>
 <doc-anchor-target id="add-cli-scripts">
     <h2>
@@ -615,7 +615,7 @@ export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, {
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2023 - Workleap</p></div>
+                                <div class="docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2024 - Workleap</p></div>
                             </footer>
                         </div>
                     </div>

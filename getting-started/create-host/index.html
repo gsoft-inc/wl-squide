@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.755366638104">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758041665711">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.755366638104" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.758041665711" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.755366638104" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.755366638104" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.755366638104" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.758041665711" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -514,14 +514,14 @@ export function RootLayout() {
     );
 }</code></pre>
 </doc-codeblock></div>
-<p>In the previous code sample, the <code v-pre>RootLayout</code> will serves as the default layout for the homepage as well as for every page (route) registered by a module that are not nested under a parent route with either the <a href="../../reference/runtime/runtime-class/#register-nested-routes-under-an-existing-route">parentPath</a> or the <a href="../../reference/runtime/runtime-class/#register-a-named-route">parentName</a> option.</p>
+<p>The <code v-pre>RootLayout</code> component created in the previous sample will serves as the default layout for the homepage as well as for every page (route) registered by a module that are not nested under a parent route with either the <a href="../../reference/runtime/runtime-class/#register-nested-routes-under-an-existing-route">parentPath</a> or the <a href="../../reference/runtime/runtime-class/#register-a-named-route">parentName</a> option.</p>
 <doc-anchor-target id="homepage">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#homepage">#</doc-anchor-trigger>
         <span>Homepage</span>
     </h3>
 </doc-anchor-target>
-<p>Next, create the <code v-pre>HomePage</code> component that will serve as the homepage for this application:</p>
+<p>Next, create the <code v-pre>HomePage</code> component that will serve as the homepage:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/HomePage.tsx</div>
 <pre class="language-tsx"><code v-pre class="language-tsx">export function HomePage() {
@@ -582,7 +582,7 @@ export const registerHost: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtim
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>The <a href="../../reference/routing/managedroutes/">ManagedRoutes</a> placeholder indicates where routes that are neither hoisted or nested with a <a href="../../reference/runtime/runtime-class/#register-nested-navigation-items">parentPath</a> or <a href="../../reference/runtime/runtime-class/#register-a-named-route">parentName</a> option will be rendered. In this example, the homepage route is considered a managed route and will be rendered under the <code v-pre>ManagedRoutes</code> placeholder.</p>
+<p>The <a href="../../reference/routing/managedroutes/">ManagedRoutes</a> placeholder indicates where routes that are neither hoisted or nested with a <a href="../../reference/runtime/runtime-class/#register-nested-navigation-items">parentPath</a> or <a href="../../reference/runtime/runtime-class/#register-a-named-route">parentName</a> option will be rendered. In this example, the homepage route is considered as a managed route and will be rendered under the <code v-pre>ManagedRoutes</code> placeholder.</p>
         </div>
     </div>
 </div>
@@ -699,7 +699,7 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
 });</code></pre>
 </doc-codeblock></div>
 <blockquote>
-<p>If you are having issues with the wepack configuration that are not related to module federation, refer to the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/" class="outbound" target="_blank">@workleap/webpack-configs documentation</a>.</p>
+<p>If you are having issues with the wepack configuration that are not related to module federation, refer to the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/" class="outbound" target="_blank">@workleap/webpack-configs</a> documentation.</p>
 </blockquote>
 <doc-anchor-target id="build-configuration">
     <h3>
@@ -736,7 +736,7 @@ export default defineBuildHostConfig(swcConfig, &quot;host&quot;, {
 });</code></pre>
 </doc-codeblock></div>
 <blockquote>
-<p>If you are having issues with the wepack configuration that are not related to module federation, refer to the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/" class="outbound" target="_blank">@workleap/webpack-configs documentation</a>.</p>
+<p>If you are having issues with the wepack configuration that are not related to module federation, refer to the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/" class="outbound" target="_blank">@workleap/webpack-configs</a> documentation.</p>
 </blockquote>
 <doc-anchor-target id="add-cli-scripts">
     <h2>
@@ -764,7 +764,7 @@ export default defineBuildHostConfig(swcConfig, &quot;host&quot;, {
         <span>Try it <span class="docs-emoji">&#x1F680;</span></span>
     </h2>
 </doc-anchor-target>
-<p>Start the application in a development environment using the <code v-pre>dev</code> script. You should see the home page. Even if the remote module application is not yet available, the host application will gracefully load.</p>
+<p>Start the application in a development environment using the <code v-pre>dev</code> script. You should see the homepage. Even if the remote module application is not yet available, the host application will gracefully (and ignore the remote module).</p>
 <doc-anchor-target id="troubleshoot-issues">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#troubleshoot-issues">#</doc-anchor-trigger>
@@ -849,7 +849,7 @@ export default defineBuildHostConfig(swcConfig, &quot;host&quot;, {
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2023 - Workleap</p></div>
+                                <div class="docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2024 - Workleap</p></div>
                             </footer>
                         </div>
                     </div>

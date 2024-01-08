@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.755366638104">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758041665711">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Override a React context</title>
     <meta name="title" content="Override a React context">
-    <meta name="description" content="In a federated application using Module Federation, it's typical to configure various global React contexts">
+    <meta name="description" content="In a federated application using Module Federation, it's typical to configure various global React context">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/guides/override-a-react-context/">
@@ -21,23 +21,23 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/guides/override-a-react-context/">
     <meta property="og:title" content="Override a React context">
-    <meta property="og:description" content="In a federated application using Module Federation, it's typical to configure various global React contexts">
+    <meta property="og:description" content="In a federated application using Module Federation, it's typical to configure various global React context">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/guides/override-a-react-context/">
     <meta property="twitter:title" content="Override a React context">
-    <meta property="twitter:description" content="In a federated application using Module Federation, it's typical to configure various global React contexts">
+    <meta property="twitter:description" content="In a federated application using Module Federation, it's typical to configure various global React context">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.755366638104" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.758041665711" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.755366638104" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.755366638104" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.755366638104" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.758041665711" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -305,7 +305,7 @@
         <span>Override a React context</span>
     </h1>
 </doc-anchor-target>
-<p>In a federated application using <a href="https://webpack.js.org/concepts/module-federation/" class="outbound" target="_blank">Module Federation</a>, it&#x27;s typical to configure various global <a href="https://legacy.reactjs.org/docs/context.html" class="outbound" target="_blank">React contexts</a> at the root of the host application. These contexts are usually consumed down the line by the layouts and pages of the remote modules.</p>
+<p>In a federated application using <a href="https://webpack.js.org/concepts/module-federation/" class="outbound" target="_blank">Module Federation</a>, it&#x27;s typical to configure various global <a href="https://legacy.reactjs.org/docs/context.html" class="outbound" target="_blank">React context</a> at the root of the host application. These contexts are usually consumed down the line by the layouts and pages of the remote modules.</p>
 <p>Let&#x27;s explore a simple example using a <code v-pre>BackgroundColorContext</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
@@ -357,7 +357,7 @@ export function ColoredPage() {
         <span>Override the context for the remote module</span>
     </h2>
 </doc-anchor-target>
-<p>Now, suppose the requirements change, and one remote module&#x27;s pages need to have a <code v-pre>red</code> background. The context can be overriden for the remote module by declaring a new provider directly in the routes registration:</p>
+<p>Now, suppose the requirements change, and one remote module pages need to have a <code v-pre>red</code> background. The context can be overriden for the remote module by declaring a new provider directly in the routes registration:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
 <pre class="language-tsx" data-line="9,11"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
@@ -533,7 +533,7 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2023 - Workleap</p></div>
+                                <div class="docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2024 - Workleap</p></div>
                             </footer>
                         </div>
                     </div>

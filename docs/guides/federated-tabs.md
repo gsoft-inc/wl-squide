@@ -4,7 +4,7 @@ order: 860
 
 # Federated tabs
 
-While it's typically recommended for a Squide application to maintain the boundary of a page within a single domain (e.g. module), there are situations where **enhancing** the **user experience** necessitates rendering a page with parts from **multiple domains**, or at the very least, simulating it 😊.
+While it's typically recommended for a Squide application to maintain the boundary of a page within a single domain, there are situations where **enhancing** the **user experience** necessitates rendering a page with parts from **multiple domains**, or at the very least, simulating it 😊.
 
 For this guide, we'll take as an example a page for which the parts that are owned by different domains are organized by tabs (federated tabs):
 
@@ -18,7 +18,7 @@ For this guide, we'll take as an example a page for which the parts that are own
 
 ## Define a nested layout
 
-To construct this page while adhering to Squide constraint of exclusively permitting route exports from modules to maintain a high degree of decoupling in the application, let's begin by defining a React Router [nested layout](https://reactrouter.com/en/main/start/tutorial#nested-routes). This nested layout will be responsible for rendering all the tab headers and the content of the active tab:
+To construct this page while adhering to Squide constraint of exclusively permitting route and navigation items exports from modules, let's begin by defining a React Router [nested layout](https://reactrouter.com/en/main/start/tutorial#nested-routes). This nested layout will be responsible for rendering all the tab headers and the content of the active tab:
 
 ```tsx !#9-11,15 remote-module-3/src/federated-tabs-layout.tsx
 import { Suspense } from "react";
@@ -148,11 +148,11 @@ export function Tab3() {
 }
 ```
 
-Now that the tabs have been registered, ensure that all four modules (including `remote-module-3`) are registered in the host application. Start the development servers using the `dev` script. Navigate to the `/federated-tabs` page, and you should see the tab headers. Click on each tab header to confirm that the content renders correctly.
+Now that the tabs has been registered, ensure that all four modules (including `remote-module-3`) are registered in the host application. Start the development servers using the `dev` script. Navigate to the `/federated-tabs` page, you should see the tab headers. Click on each tab header to confirm that the content renders correctly.
 
 ## Decouple the navigation items
 
-Althought it's functional, there are still a few configurations needed since the modules are currently coupled by hardcoded URLs within the `FederatedTabsLayout`.
+Althought it's functional, the modules are currently coupled by hardcoded URLs within the `FederatedTabsLayout`.
 
 To decouple the navigation items, similar to what is done for regular federated pages, we'll utilize the [registerNavigationItem](../reference/runtime/runtime-class.md#register-navigation-items) function. In this case, we'll also use the [menuId](../reference/runtime/runtime-class.md#register-navigation-items-for-a-specific-menu) option. Defining the `menuId` option will enable the `FederatedTabsLayout` to retrieve navigation items exclusively for the federated tab component.
 
@@ -266,7 +266,7 @@ const renderSection: RenderSectionFunction = elements => {
 };
 
 export function FederatedTabsLayout() {
-    const navigationItems = useNavigationItems("/federated-tabs");
+    const navigationItems = useNavigationItems({ menuId: "/federated-tabs" });
     const renderedTabs = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (

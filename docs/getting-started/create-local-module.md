@@ -6,7 +6,7 @@ order: 80
 
 Local modules are regular modules that are part of the **host application build**. They are independent modules that expose a `registration` function to the host application's bootstrapping code. A local module can be a standalone package, a sibling project (in a monorepo setup), or even a local folder within the host application.
 
-Local modules are useful when **migrating** from a **monolithic application** to a distributed application or when **launching** a **new product** with an unrefined business domain.
+Local modules have many uses but are especially useful when **migrating** from a **monolithic application** to a distributed application or when **launching** a **new product** with an unrefined business domain.
 
 Let's add a local module to demonstrate how it's done!
 
@@ -115,7 +115,7 @@ export function Page() {
 
 ## Register the local module
 
-Go back to the `host` application add a dependency to the `@sample/local-module` package in the host application `package.json` file:
+Go back to the `host` application and add a dependency to the `@sample/local-module` package in the host application `package.json` file:
 
 ```json host/package.json
 {
@@ -131,7 +131,7 @@ Then, register the local module with the [registerLocalModule](/reference/regist
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import type { AppContext } from "@sample/shared";
-import { register as registerLocalModule } from "@sample/local-module";
+import { register as registerMyLocalModule } from "@sample/local-module";
 import { App } from "./App.tsx";
 
 // Define the remote modules.
@@ -153,7 +153,7 @@ const context: AppContext = {
 await registerRemoteModules(Remotes, runtime, context);
 
 // Register the local module.
-registerLocalModule([registerLocalModule], runtime, context);
+registerLocalModule([registerMyLocalModule], runtime, context);
 
 const root = createRoot(document.getElementById("root"));
 
@@ -167,7 +167,7 @@ root.render(
 ## Configure tsup
 
 !!!info
-If you are having issues with the tsup configuration, refer to the [@workleap/tsup-configs documentation](https://gsoft-inc.github.io/wl-web-configs/tsup).
+If you are having issues with the tsup configuration, refer to the [@workleap/tsup-configs](https://gsoft-inc.github.io/wl-web-configs/tsup) documentation.
 !!!
 
 ### Development configuration

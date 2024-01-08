@@ -4,11 +4,11 @@ order: 880
 
 # Override the host layout
 
-The `RootLayout` component that as been defined in the [create an host application](../getting-started/create-host.md#navigation-items) starting guide serves as the default layout for the homepage as well as for every page (route) registered by a module that are not nested under a parent route with either the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) or the [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option.
+The `RootLayout` component that as been defined in the [create an host application](../getting-started/create-host.md#navigation-items) starting guide serves as the default layout for the homepage as well as for every page registered by a module that are not nested under a parent route with either the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) or the [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option.
 
 For most pages, this is the behavior expected by the author. However, for pages such as a login, the default `RootLayout` isn't suitable because the page is not bound to a user session (the user is not even authenticated yet).
 
-To accomodate pages that require a different layout, a mechanism is needed to move their route declaration at the root of the React Router [router instance](https://reactrouter.com/en/main/routers/create-browser-router), before the `RootLayout` is declared.
+To accomodate pages that require a different layout, a mechanism is needed to move their route declaration at the root of the React Router [instance](https://reactrouter.com/en/main/routers/create-browser-router) before the `RootLayout` is declared.
 
 ``` !#2
 root

@@ -110,7 +110,7 @@ const targets = browserslistToSwc();
 export const swcConfig = defineDevConfig(targets);
 ```
 
-Then, open the `webpack.dev.js` file and use the the [defineDevRemoteModuleConfig](/reference/webpack/defineDevRemoteModuleConfig.md) function to configure webpack:
+Then, open the `webpack.dev.js` file and use the [defineDevRemoteModuleConfig](/reference/webpack/defineDevRemoteModuleConfig.md) function to configure webpack:
 
 ```js !#6-12 remote-module/webpack.dev.js
 // @ts-check
@@ -127,7 +127,7 @@ export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
 });
 ```
 
-> If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/).
+> If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) documentation.
 
 ### Build configuration
 
@@ -143,7 +143,7 @@ const targets = browserslistToSwc();
 export const swcConfig = defineBuildConfig(targets);
 ```
 
-Then, open the `webpack.build.js` file and use the the [defineBuildRemoteModuleConfig](/reference/webpack/defineBuildRemoteModuleConfig.md) function to configure webpack:
+Then, open the `webpack.build.js` file and use the [defineBuildRemoteModuleConfig](/reference/webpack/defineBuildRemoteModuleConfig.md) function to configure webpack:
 
 ```js !#6-12 remote-module/webpack.build.js
 // @ts-check
@@ -160,7 +160,7 @@ export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
 });
 ```
 
-> If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/).
+> If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/) documentation.
 
 ## Add CLI scripts
 

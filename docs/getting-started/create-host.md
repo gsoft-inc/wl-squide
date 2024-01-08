@@ -188,11 +188,11 @@ export function RootLayout() {
 }
 ```
 
-In the previous code sample, the `RootLayout` will serves as the default layout for the homepage as well as for every page (route) registered by a module that are not nested under a parent route with either the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) or the [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option.
+The `RootLayout` component created in the previous sample will serves as the default layout for the homepage as well as for every page (route) registered by a module that are not nested under a parent route with either the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) or the [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option.
 
 ### Homepage
 
-Next, create the `HomePage` component that will serve as the homepage for this application:
+Next, create the `HomePage` component that will serve as the homepage:
 
 ```tsx host/src/HomePage.tsx
 export function HomePage() {
@@ -244,7 +244,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 ```
 
 !!!info
-The [ManagedRoutes](../reference/routing/ManagedRoutes.md) placeholder indicates where routes that are neither hoisted or nested with a [parentPath](../reference/runtime/runtime-class.md#register-nested-navigation-items) or [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option will be rendered. In this example, the homepage route is considered a managed route and will be rendered under the `ManagedRoutes` placeholder.
+The [ManagedRoutes](../reference/routing/ManagedRoutes.md) placeholder indicates where routes that are neither hoisted or nested with a [parentPath](../reference/runtime/runtime-class.md#register-nested-navigation-items) or [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option will be rendered. In this example, the homepage route is considered as a managed route and will be rendered under the `ManagedRoutes` placeholder.
 !!!
 
 Finally, update the bootstrapping code to [register](../reference/registration/registerLocalModules.md) the newly created local module:
@@ -343,7 +343,7 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
 });
 ```
 
-> If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/).
+> If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) documentation.
 
 ### Build configuration
 
@@ -377,7 +377,7 @@ export default defineBuildHostConfig(swcConfig, "host", {
 });
 ```
 
-> If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/).
+> If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/) documentation.
 
 ## Add CLI scripts
 
@@ -399,7 +399,7 @@ To build the application, add the following script to the application `package.j
 
 ## Try it :rocket:
 
-Start the application in a development environment using the `dev` script. You should see the home page. Even if the remote module application is not yet available, the host application will gracefully load.
+Start the application in a development environment using the `dev` script. You should see the homepage. Even if the remote module application is not yet available, the host application will gracefully (and ignore the remote module).
 
 ### Troubleshoot issues
 

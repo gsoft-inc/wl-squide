@@ -16,7 +16,8 @@ const navigationItems = useNavigationItems()
 
 ### Parameters
 
-- `menuId`: An optional id to retrieve the navigation menu for a specific menu.
+- `options`: An optional object literal of options:
+    - `menuId`: An optional id to retrieve the navigation menu for a specific menu.
 
 ### Returns
 
@@ -37,5 +38,5 @@ const items = useNavigationItems();
 ```ts
 import { useNavigationItems } from "@squide/firefly";
 
-const items = useNavigationItems("my-custom-menu");
+const items = useNavigationItems({ menuId: "my-custom-menu" });
 ```

@@ -5,7 +5,7 @@ import { ReactRouterRuntime } from "../src/reactRouterRuntime.ts";
 import { useNavigationItems } from "../src/useNavigationItems.ts";
 
 function renderWithRuntime(runtime: ReactRouterRuntime, menuId?: string) {
-    return renderHook(() => useNavigationItems(menuId), {
+    return renderHook(() => useNavigationItems({ menuId }), {
         wrapper: ({ children }: { children?: ReactNode }) => (
             <RuntimeContext.Provider value={runtime}>
                 {children}

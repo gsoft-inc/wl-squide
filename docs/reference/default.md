@@ -22,6 +22,7 @@ toc:
 - [useRoutes](./runtime/useRoutes.md)
 - [useNavigationItems](./runtime/useNavigationItems.md)
 - [useLogger](./runtime/useLogger.md)
+- [usePlugin](./runtime/usePlugin.md)
 - [useSession](./runtime/useSession.md)
 
 ### Registration

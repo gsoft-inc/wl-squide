@@ -57,7 +57,7 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
 > For more information about the `environmentVariables` predefined option, refer to the [webpack configuration documentation](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/#define-environment-variables).
 
 !!!warning
-Don't forget to define the `USE_MSW` environment variable for the build script and webpack configuration as well.
+Don't forget to define the `USE_MSW` environment variable for the build script and build webpack configuration as well.
 !!!
 
 ### Start the service

@@ -2,7 +2,7 @@
 order: 820
 ---
 
-# Setup localization
+# Setup i18next
 
 Most of the applications that forms the [Workleap](https://workleap.com/) platform are either already bilingual or will be in the future. To help feature teams with localized resources, Squide provides a native [plugin](../reference/i18next/i18nextPlugin.md) designed to adapt the [i18next](https://www.i18next.com/) library for federated applications.
 
@@ -80,7 +80,7 @@ root.render(
 );
 ```
 
-In the previous code sample, upon creating an `i18nextPlugin` instance, the user's language is automatically detected using the `plugin.detectUserLanguage` function. Applications **should always** detect the user's language at bootstrapping, even if the current language is expected to be overriden by a preferred language setting once the user session has been loaded.
+In the previous code sample, upon creating an `i18nextPlugin` instance, the user language is automatically detected using the `plugin.detectUserLanguage` function. Applications **should always** detect the user language at bootstrapping, even if the current language is expected to be overriden by a preferred language setting once the user session has been loaded.
 
 ### Define the localized resources
 
@@ -143,7 +143,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 };
 ```
 
-In the previous code sample, notice that the `i18next` instance has been initialized with the current language of the `i18nextPlugin` instance by providing the `lng` option. If the user's language has been detected during bootstrapping, the `i18next` instance will be initialized with the user's language which has been deduced from either a `?language` querystring parameter or the user's navigator language settings. Otherwise, the application the instance will be initialized with the fallback language.
+In the previous code sample, notice that the `i18next` instance has been initialized with the current language of the `i18nextPlugin` instance by providing the `lng` option. If the user language has been detected during bootstrapping, the `i18next` instance will be initialized with the user language which has been deduced from either a `?language` querystring parameter or the user navigator language settings. Otherwise, the application instance will be initialized with the fallback language.
 
 ### Localize the home page resources
 
@@ -156,7 +156,7 @@ import { useTranslation } from "react-i18next";
 export function HomePage() {
     // Must be the same instance key that has been used to register the i18next instance previously in the "register" function.
     const i18nextInstance = useI18nextInstance("host");
-    const { t } = useTranslation("HomePage", { i18n: useI18nextInstance });
+    const { t } = useTranslation("HomePage", { i18n: i18nextInstance });
 
     return (
         <div>{t("bodyText")}</div>
@@ -301,7 +301,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext> = (run
 
 ### Localize the navigation item labels
 
-Then, localize the navigation items labels using the [I18nextNavigationItemLabel](../reference/i18next/I18nextNavigationItemLabel.md) component. Since the resources are in the `navigationItems` namespace, there's no need to specify a `namespace` property on the components:
+Then, localize the navigation items labels using the [I18nextNavigationItemLabel](../reference/i18next/I18nextNavigationItemLabel.md) component. Since for this example, the resources are in the `navigationItems` namespace, there's no need to specify a `namespace` property on the components as it will be inferred:
 
 ```tsx !#38 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -412,14 +412,15 @@ Follow the same steps as for a [remote module](#setup-a-remote-module).
 
 ## Integrate a backend language setting
 
-For many applications, the displayed language is expected to be derived from an application specific user's "preferred language" setting, which is stored in an database on the backend. Therefore, the frontend remains unaware of this setting's value until the user session is loaded.
+For many applications, the displayed language is expected to be derived from an application specific user "preferred language" setting stored in a database on the backend. Therefore, the frontend remains unaware of this setting value until the user session is loaded.
 
 Hence, the strategy to select the displayed language should be as follow:
 
 1. Utilize the language detected at bootstrapping for anonymous users (with the `detectUserLanguage` function).
+
 2. Upon user authentication and session loading, if a "preferred language" setting is available from the session data, update the displayed language to reflect this preference.
 
-To implement this strategy, utilize the [useChangeLanguage](../reference/i18next/useChangeLanguage.md) hook and the [onLoadProtectedData](../reference/routing/appRouter.md#load-protected-data) handler of the [AppRouter](../reference/routing/appRouter.md) component:
+To implement this strategy, use the [useChangeLanguage](../reference/i18next/useChangeLanguage.md) hook and the [onLoadProtectedData](../reference/routing/appRouter.md#load-protected-data) handler of the [AppRouter](../reference/routing/appRouter.md) component:
 
 ```tsx !#10,20 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
@@ -494,7 +495,7 @@ return (
 
 ## Try it :rocket:
 
-Start the development servers using the `dev` script. The home page and the navigation items should render the english (`en-US`) resources. Then append `?language=fr-CA` to the URL. The home page and the navigation items should now render the french (`fr-CA`) resources.
+Start the development servers using the `dev` script. The homepage and the navigation items should render the english (`en-US`) resources. Then append `?language=fr-CA` to the URL. The homepage and the navigation items should now render the french (`fr-CA`) resources.
 
 ### Troubleshoot issues
 

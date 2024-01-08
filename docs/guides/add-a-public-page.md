@@ -20,3 +20,5 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 }
 ```
+
+By doing so, only the `onLoadPublicData` handler will be executed when the public route is requested (assuming it is the initial request).

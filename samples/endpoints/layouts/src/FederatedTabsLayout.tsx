@@ -59,7 +59,7 @@ export function FederatedTabsLayout({ host }: FederatedTabsLayoutProps) {
     const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
     const { t } = useTranslation("FederatedTabsLayout", { i18n: i18nextInstance });
 
-    const navigationItems = useNavigationItems("/federated-tabs");
+    const navigationItems = useNavigationItems({ menuId: "/federated-tabs" });
     const renderedTabs = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (

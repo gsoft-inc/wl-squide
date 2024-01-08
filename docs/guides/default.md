@@ -16,7 +16,7 @@ expanded: true
 - [Override the host layout](./override-the-host-layout.md)
 - [Federated tabs](./federated-tabs.md)
 - [Use feature flags](./use-feature-flags.md)
-- [Setup localization](./setup-localization.md)
+- [Setup i18next](./setup-i18next.md)
 - [Develop a module in isolation](./develop-a-module-in-isolation.md)
 - [Override a React context](./override-a-react-context.md)
 - [Add a shared dependency](./add-a-shared-dependency.md)

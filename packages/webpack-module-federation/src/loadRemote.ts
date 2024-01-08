@@ -68,7 +68,7 @@ export type LoadRemoteOptions = LoadRemoteScriptOptions;
 export type LoadRemoteFunction = (url: string, containerName: string, moduleName: string, options?: LoadRemoteOptions) => Promise<any>;
 
 // Implementation of https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers.
-// It's done this way rather than using the managed mecanism provided with ModuleFederationPlugin config because it's doesn't throw an error if a module is not available.
+// It's done this way rather than using the managed mechanism provided with ModuleFederationPlugin config because it's doesn't throw an error if a module is not available.
 export const loadRemote: LoadRemoteFunction = async (url: string, containerName: string, moduleName: string, options: LoadRemoteOptions = {}) => {
     await loadRemoteScript(url, options);
 

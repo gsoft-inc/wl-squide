@@ -27,7 +27,7 @@ const renderSection: RenderSectionFunction = elements => {
 };
 
 export function FederatedTabsLayout({ host }: FederatedTabsLayoutProps) {
-    const navigationItems = useNavigationItems("/federated-tabs");
+    const navigationItems = useNavigationItems({ menuId: "/federated-tabs" });
     const renderedTabs = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (

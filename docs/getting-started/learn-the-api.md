@@ -125,7 +125,7 @@ import { useIsAuthenticated } from "@squide/firefly";
 const isAuthenticated = useIsAuthenticated();
 ```
 
-The session is also available from the [FireflyRuntime](/reference/runtime/runtime-class.md) instance.
+The session is also available from the [FireflyRuntime](/reference/runtime/runtime-class.md#retrieve-the-current-session) instance.
 
 ## Plugins
 
@@ -142,13 +142,16 @@ const runtime = new FireflyRuntime({
 });
 ```
 
-Then, the plugins can be accessed anywhere from the `FireflyRuntime` instance:
+And can be accessed from any parts of the application with the `usePlugin` hook:
 
 ```ts
+import { usePlugin } from "@squide/firefly";
 import { MyPlugin } from "@sample/my-plugin";
 
-const myPlugin = runtime.getPlugin(MyPlugin.name) as MyPlugin;
+const myPlugin = usePlugin(MyPlugin.name) as MyPlugin;
 ```
+
+A plugin can also be retrieved from the [FireflyRuntime](/reference/runtime/runtime-class.md#retrieve-a-plugin) instance.
 
 ## Fakes
 
@@ -171,3 +174,7 @@ Be sure to read, at a minimum, the following guides:
 ## Reference
 
 For a comprehensive list of the Squide API, refer to the [reference](../reference/default.md) section.
+
+## Samples
+
+Finally, have a look at the [sample applications](../samples.md) to see the Squide API in action.

@@ -38,9 +38,9 @@ We have identified **2 major challenges** with frontend federated applications:
 - How can we prevent loading the same large dependencies twice when switching between *modules*?
 - How can we offer a cohesive experience that doesn't feel *modular*?
 
-To address the first challenge, we believe that Module Federation provides a solution by offering a mecanism capable of **deduping common dependencies** shared **between** the **host** application and the **remote** modules at runtime.
+To address the first challenge, we believe that Module Federation provides a solution by offering a mechanism capable of **deduping common dependencies** shared **between** the **host** application and the **remote** modules at runtime.
 
-With this mecanism in place, all federated parts of an application can now be loaded in the same [browsing context](https://developer.mozilla.org/en-US/docs/Glossary/Browsing_context) instead of nested browsing contexts such as [iframes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe). 
+With this mechanism in place, all federated parts of an application can now be loaded in the same [browsing context](https://developer.mozilla.org/en-US/docs/Glossary/Browsing_context) instead of nested browsing contexts such as [iframes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe). 
 
 By sharing the same browsing context (e.g. the same [Document object](https://developer.mozilla.org/en-US/docs/Web/API/Document), the same [Window object](https://developer.mozilla.org/en-US/docs/Web/API/Window), and the same DOM), federated parts now **form a unified and cohesive single application**, addressing the second challenge. 
 
@@ -56,7 +56,7 @@ The most distinctive aspect of this shell is the conventions it enforces for loa
 
 1. During bootstrap, the host application attempts to [load predefined modules](/reference/registration/registerRemoteModules.md) and calls a registration function with a specific name and signature for each successfully loaded module.
 
-2. During registration, a module receives [the shared services](/reference/runtime/runtime-class.md) of the federation application and use them to dynamically register its [routes](/reference/runtime/runtime-class.md#register-routes) and [navigation items](/reference/runtime/runtime-class.md#register-navigation-items).
+2. During registration, a module receives [the shared services](/reference/runtime/runtime-class.md) of the federated application and use them to dynamically register its [routes](/reference/runtime/runtime-class.md#register-routes) and [navigation items](/reference/runtime/runtime-class.md#register-navigation-items).
 
 3. Once [all the modules are registered](/reference/registration/useAreModulesReady.md), the host application will create a React Router [instance](https://reactrouter.com/en/main/routers/create-browser-router) with the registered routes and [renders a navigation menu](/reference/routing/useRenderedNavigationItems.md) with the registered navigation items.
 
@@ -66,7 +66,7 @@ That's a nutshell overview. Of course, there is more to it, but these are the ma
 
 While developing the [API](/reference) of Squide, we kept a few guiding principles in mind. Those principles are not settled stones, you might want to diverge from them from time to time, but adhering to those will make your experience more enjoyable:
 
-- A module should always correspond to a subdomain of the application's business domain and should only export pages.
+- A module should always correspond to a subdomain of the application's business domain.
 
 - A module should be fully autonomous. It shouldn't have to coordinate with other parts of the application for things as trivial as navigation links.
 

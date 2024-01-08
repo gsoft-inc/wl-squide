@@ -4,7 +4,7 @@ order: 780
 
 # Override a React context
 
-In a federated application using [Module Federation](https://webpack.js.org/concepts/module-federation/), it's typical to configure various global [React contexts](https://legacy.reactjs.org/docs/context.html) at the root of the host application. These contexts are usually consumed down the line by the layouts and pages of the remote modules.
+In a federated application using [Module Federation](https://webpack.js.org/concepts/module-federation/), it's typical to configure various global [React context](https://legacy.reactjs.org/docs/context.html) at the root of the host application. These contexts are usually consumed down the line by the layouts and pages of the remote modules.
 
 Let's explore a simple example using a `BackgroundColorContext`:
 
@@ -55,7 +55,7 @@ In the previous code samples, the host application provides a value for the `Bac
 
 ## Override the context for the remote module
 
-Now, suppose the requirements change, and one remote module's pages need to have a `red` background. The context can be overriden for the remote module by declaring a new provider directly in the routes registration:
+Now, suppose the requirements change, and one remote module pages need to have a `red` background. The context can be overriden for the remote module by declaring a new provider directly in the routes registration:
 
 ```tsx !#9,11 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";

@@ -5,6 +5,7 @@ export * from "./runtime/RuntimeLogger.ts";
 export * from "./runtime/runtime.ts";
 export * from "./runtime/useEventBus.ts";
 export * from "./runtime/useLogger.ts";
+export * from "./runtime/usePlugin.ts";
 export * from "./runtime/useService.ts";
 export * from "./runtime/useServices.ts";
 export * from "./runtime/useSession.ts";

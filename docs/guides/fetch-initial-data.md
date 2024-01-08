@@ -12,7 +12,7 @@ Retrieving the initial data of an application is a crucial aspect that isn't alw
 
 ## Challenges with initial data
 
-At first glance, one might wonder what could be so complicated about fetching the initial data of an application. It's just fetches, right...? Well, there are several concerns to take into account for a Squide application:
+At first glance, one might wonder what could be so complicated about fetching the initial data of an application. It's only fetches ...right? Well, there are several concerns to take into account for a Squide application:
 
 - When in development, the initial data cannot be fetched until the Mock Service Worker (MSW) **request handlers** are **registered** and **MSW is started**.
 

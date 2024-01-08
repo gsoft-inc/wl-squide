@@ -8,7 +8,7 @@ order: 840
 Before going forward with this guide, make sure that you completed the [setup Mock Service Worker](./setup-msw.md) and [fetch initial data](./fetch-initial-data.md) guides.
 !!!
 
-To continuously deliver value to our customers, [Workleap](https://workleap.com/) has adopted a feature flags system that allows to activate or deactivate functionalities without requiring code deployment. While "in-page" feature flags are straightforward to implement, feature flags that conditionally register routes require an advanced [deferred registration](../reference/registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) mecanism.
+To continuously deliver value to our customers, [Workleap](https://workleap.com/) has adopted a feature flags system that allows to activate or deactivate functionalities without requiring code deployment. While "in-page" feature flags are straightforward to implement for a Squide application, feature flags that conditionally register pages or navigation items requires a more advanced [deferred registration](../reference/registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) mechanism.
 
 ## Add an endpoint
 
@@ -29,7 +29,7 @@ export const requestHandlers: HttpHandler[] = [
 
 Then, register the request handler using the module registration function:
 
-```tsx !#20 src/register.tsx
+```tsx !#18,20 src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Page } from "./Page.tsx";
 
@@ -137,17 +137,17 @@ export function Page() {
 }
 ```
 
-In the previous cpde sample, the section of the `Page` component will only be rendered if `featureA` is activated.
+In the previous code sample, the section of the `Page` component will only be rendered if `featureA` is activated.
 
-## Conditionally register a route
+## Conditionally register a page
 
-Since the application hasn't been bootstrapped yet during the route registration phase, the feature flags cannot be retrieved from `FeatureFlagsContext` to conditionally register a route.
+Now, conditionally registering a page and it's navigation items based on a feature flag is more complex since the default registration mechanism is executed before the application has bootstrapped, meaning that the feature flags has not been fetched yet from the server.
 
-To address this, Squide offers a [deferred registration](../reference/registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) mechanism in two-phases:
+To address this, Squide offers an alternate [deferred registration](../reference/registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) mechanism in two-phases:
 
-1. The first phase allows modules to register their routes and navigation items that are not dependent on initial data.
+1. The first phase allows modules to register their pages and navigation items that are not dependent on initial data.
 
-2. The second phase enables modules to register routes and navigation items that are dependent on initial data. We refer to this second phase as **deferred registrations**.
+2. The second phase enables modules to register pages and navigation items that are dependent on initial data. We refer to this second phase as **deferred registrations**.
 
 To defer a registration to the second phase, a module registration function can **return an anonymous function**. Once the modules are registered and the [completeLocalModuleRegistrations](../reference/registration/completeRemoteModuleRegistrations.md) function is called, the deferred registration functions will be executed.
 

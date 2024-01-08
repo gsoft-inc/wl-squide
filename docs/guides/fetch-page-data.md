@@ -63,7 +63,9 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 }
 ```
 
+!!!info
 To minimize unexpected situations and faciliate maintenance, the React Query cache shouldn't be shared between the host application and the modules. As the React Query cache is located in the `QueryClient`, both the host application and the modules should instantiate their own `QueryClient` instance.
+!!!
 
 ## Create a component for providers
 
@@ -103,7 +105,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 To faciliate development, React Query provides [devtools](https://tanstack.com/query/latest/docs/react/devtools) to help visualize all of the inner workings of React Query.
 
-However, the React Query devtools are not been developed to handle a federated application with multiple `QueryClient` instances. To use the devtools, you have to define a `ReactQueryDevtools` component for each `QueryClient` instance:
+However, the React Query devtools has not been developed to handle a federated application with multiple `QueryClient` instances. To use the devtools, you must define a `ReactQueryDevtools` component for each `QueryClient` instance:
 
 ```tsx !#14 src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -211,7 +213,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
 }
 ```
 
-Then, update the `Page` component to fetch and render the data:
+Then, update the `Page` component to fetch and render the data with `useSuspenseQuery`:
 
 ```tsx !#10-15 src/Page.tsx
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -250,7 +252,7 @@ export function Page() {
 
 ## Define a fallback element
 
-The previous code sample uses [useSuspenseQuery](https://tanstack.com/query/latest/docs/react/reference/useSuspenseQuery) instead of [useQuery](https://tanstack.com/query/latest/docs/react/reference/useQuery). This enables an application to leverage a React [Suspense](https://react.dev/reference/react/Suspense) boundary to render a fallback element in a layout component while the data is being fetched:
+The previous code sample uses [useSuspenseQuery](https://tanstack.com/query/latest/docs/react/reference/useSuspenseQuery) instead of [useQuery](https://tanstack.com/query/latest/docs/react/reference/useQuery) to fetch data. This enables an application to leverage a React [Suspense](https://react.dev/reference/react/Suspense) boundary to render a fallback element in a layout component while the data is being fetched:
 
 
 ```tsx !#7-9 host/src/RootLayout.tsx

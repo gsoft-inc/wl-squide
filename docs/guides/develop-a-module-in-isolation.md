@@ -185,7 +185,7 @@ remote-module
 
 ### index.tsx
 
-The `index.tsx` file is similar to the `bootstrap.tsx` file of an host application but, tailored for an isolated module. The key distinctions are that, since the project is set up for isolated development, the module is registered with the [registerLocalModules](/reference/registration/registerLocalModules.md) function instead of the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function, and a new `registerDev` function is introduced to register the development homepage (which will be covered in an upcoming section):
+The `index.tsx` file is similar to the `bootstrap.tsx` file of an host application but, tailored for an isolated module. The key distinctions are that the module is registered with the [registerLocalModules](/reference/registration/registerLocalModules.md) function instead of the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function, and a new `registerDev` function is introduced to register the development homepage (which will be covered in an upcoming section):
 
 ```tsx !#10-12,16 remote-module/src/index.tsx
 import { createRoot } from "react-dom/client";

@@ -3,6 +3,7 @@ import { AppRouter as FireflyAppRouter, completeModuleRegistrations, useLogger, 
 import { useChangeLanguage, useI18nextInstance } from "@squide/i18next";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { AppRouterErrorBoundary } from "./AppRouterErrorBoundary.tsx";
 import { i18NextInstanceKey } from "./i18next.ts";
 
@@ -120,7 +121,11 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
                         onLoadPublicData={handleLoadPublicData}
                         onLoadProtectedData={handleLoadProtectedData}
                         onCompleteRegistrations={handleCompleteRegistrations}
-                    />
+                    >
+                        {(routes, routerProviderProps) => (
+                            <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+                        )}
+                    </FireflyAppRouter>
                 </TelemetryServiceContext.Provider>
             </SubscriptionContext.Provider>
         </FeatureFlagsContext.Provider>

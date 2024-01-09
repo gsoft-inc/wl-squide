@@ -422,11 +422,12 @@ Hence, the strategy to select the displayed language should be as follow:
 
 To implement this strategy, use the [useChangeLanguage](../reference/i18next/useChangeLanguage.md) hook and the [onLoadProtectedData](../reference/routing/appRouter.md#load-protected-data) handler of the [AppRouter](../reference/routing/appRouter.md) component:
 
-```tsx !#10,20 host/src/App.tsx
+```tsx !#11,21 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
 import { useChangeLanguage, useI18nextInstance } from "@squide/i18next";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 export function App() {
     const i18nextInstance = useI18nextInstance("host");
@@ -452,7 +453,11 @@ export function App() {
             errorElement={<div>{t("errorMessage")}</div>}
             waitForMsw={false}
             onLoadProtectedData={handleLoadProtectedData}
-        />
+        >
+            {(routes, routerProviderProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+            )}
+        </AppRouter>
     );
 }
 ```

@@ -88,10 +88,11 @@ Ensure that the shared project is configured as a [shared dependency](./add-a-sh
 
 Finally, open the host application code and update the `App` component to utilize the `AppRouter` component's [onLoadPublicData](../reference/routing/appRouter.md#load-public-data) handler. This handler will fetch the count and forward the retrieved value through `FetchCountContext`:
 
-```tsx !#13,15-17,20,22 host/src/App.tsx
+```tsx !#14,16-18,21,23 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { FetchCountContext } from "@sample/shared";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 async function fetchPublicData(setFetchCount: (fetchCount: number) => void) {
     const response = await fetch("/api/count");
@@ -114,7 +115,11 @@ export function App() {
                 fallbackElement={<div>Loading...</div>}
                 errorElement={<div>An error occured!</div>}
                 waitForMsw={true}
-            />
+            >
+                {(routes, routerProviderProps) => (
+                    <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+                )}
+            </AppRouter>
         </FetchCountContext.Provider>
     );
 }
@@ -266,10 +271,11 @@ Ensure that the shared project is configured as a [shared dependency](./add-a-sh
 
 Finally, open the host application code and update the `App` component to utilize the `AppRouter` component's `onLoadProtectedData` handler. This handler will fetch the user tenant subscription and forward the retrieved value through `SubscriptionContext`:
 
-```tsx !#25,31-33,37,40 host/src/App.tsx
+```tsx !#26,32-34,38,41 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { FetchCountContext, SubscriptionContext, type Subscription } from "@sample/shared";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 async function fetchPublicData(setFetchCount: (fetchCount: number) => void) {
     const response = await fetch("/api/count");
@@ -310,7 +316,11 @@ export function App() {
                     fallbackElement={<div>Loading...</div>}
                     errorElement={<div>An error occured!</div>}
                     waitForMsw={true}
-                />
+                >
+                    {(routes, routerProviderProps) => (
+                        <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+                    )}
+                </AppRouter>
             <SubscriptionContext.Provider />
         </FetchCountContext.Provider>
     );

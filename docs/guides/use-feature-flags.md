@@ -81,10 +81,11 @@ Ensure that the shared project is configured as a [shared dependency](./add-a-sh
 
 Finally, open the host application code and update the `App` component to utilize the `AppRouter` component's `onLoadPublicData` handler to fetch the feature flags data:
 
-```tsx !#20-22,25,27 host/src/App.tsx
+```tsx !#21-23,26,28 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { FeatureFlagsContext, type FeatureFlags } from "@sample/shared";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void) {
     const response = await fetch("/api/feature-flags");
@@ -112,7 +113,11 @@ export function App() {
                 fallbackElement={<div>Loading...</div>}
                 errorElement={<div>An error occured!</div>}
                 waitForMsw={true}
-            />
+            >
+                {(routes, routerProviderProps) => (
+                    <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+                )}
+            </AppRouter>
         <FeatureFlagsContext.Provider />
     );
 }
@@ -195,10 +200,11 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
 
 Finally, open the host application code again and update the `App` component to utilize the `AppRouter` component's `onCompleteRegistrations` handler to [complete the module registrations](../reference/registration/completeRemoteModuleRegistrations.md) with the feature flags:
 
-```tsx !#26-31,37 host/src/App.tsx
+```tsx !#27-32,38 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter, useRuntime, completeModuleRegistrations } from "@squide/firefly";
 import { FeatureFlagsContext, type FeatureFlags } from "@sample/shared";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void) {
     const response = await fetch("/api/feature-flags");
@@ -236,7 +242,11 @@ export function App() {
                 fallbackElement={<div>Loading...</div>}
                 errorElement={<div>An error occured!</div>}
                 waitForMsw={true}
-            />
+            >
+                {(routes, routerProviderProps) => (
+                    <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+                )}
+            </AppRouter>
         <FeatureFlagsContext.Provider />
     );
 }

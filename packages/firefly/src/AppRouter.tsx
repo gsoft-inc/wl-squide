@@ -1,10 +1,11 @@
 import { isNil, useLogger } from "@squide/core";
 import { useIsMswStarted } from "@squide/msw";
-import { useIsRouteMatchProtected, useRoutes } from "@squide/react-router";
+import { useIsRouteMatchProtected, useRoutes, type Route } from "@squide/react-router";
 import { useAreModulesReady, useAreModulesRegistered } from "@squide/webpack-module-federation";
 import { cloneElement, useCallback, useEffect, useMemo, useState, type ReactElement } from "react";
 import { ErrorBoundary, useErrorBoundary } from "react-error-boundary";
-import { Outlet, RouterProvider, createBrowserRouter, useLocation, type RouterProviderProps } from "react-router-dom";
+import { Outlet, useLocation, type RouterProviderProps } from "react-router-dom";
+
 
 export type OnLoadPublicDataFunction = () => Promise<unknown>;
 
@@ -145,6 +146,8 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
     );
 }
 
+export type RenderRouterProviderFunction = (routes: Route[], routerProviderProps: Omit<RouterProviderProps, "router">) => ReactElement;
+
 export interface AppRouterProps {
     fallbackElement: ReactElement;
     errorElement: ReactElement;
@@ -152,7 +155,7 @@ export interface AppRouterProps {
     onLoadProtectedData?: OnLoadProtectedDataFunction;
     onCompleteRegistrations?: OnCompleteRegistrationsFunction;
     waitForMsw: boolean;
-    routerProvidersProps?: Omit<RouterProviderProps, "router">;
+    children: RenderRouterProviderFunction;
 }
 
 export function AppRouter(props: AppRouterProps) {
@@ -163,7 +166,7 @@ export function AppRouter(props: AppRouterProps) {
         onLoadProtectedData,
         onCompleteRegistrations,
         waitForMsw,
-        routerProvidersProps = {}
+        children: renderRouterProvider
     } = props;
 
     // Re-render the app once all the remote modules are registered, otherwise the remote modules routes won't be added to the router.
@@ -180,8 +183,8 @@ export function AppRouter(props: AppRouterProps) {
         });
     }, [errorElement]);
 
-    const router = useMemo(() => {
-        return createBrowserRouter([
+    return useMemo(() => {
+        return renderRouterProvider([
             {
                 element: (
                     <ErrorBoundary fallbackRender={errorRenderer}>
@@ -198,10 +201,6 @@ export function AppRouter(props: AppRouterProps) {
                 ),
                 children: routes
             }
-        ]);
-    }, [areModulesRegistered, areModulesReady, routes, onLoadPublicData, onLoadProtectedData, onCompleteRegistrations, waitForMsw, errorRenderer, fallbackElement]);
-
-    return (
-        <RouterProvider {...routerProvidersProps} router={router} />
-    );
+        ], {});
+    }, [areModulesRegistered, areModulesReady, routes, onLoadPublicData, onLoadProtectedData, onCompleteRegistrations, waitForMsw, errorRenderer, fallbackElement, renderRouterProvider]);
 }

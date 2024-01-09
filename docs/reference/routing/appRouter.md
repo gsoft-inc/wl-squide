@@ -6,12 +6,14 @@ toc:
 
 # AppRouter
 
-A component that sets up and orchestrate Squide federated primitives and render a React Router instance.
+A component that sets up and orchestrate Squide federated primitives with a React Router instance.
 
 ## Reference
 
 ```tsx
-<AppRouter fallbackElement={} errorElement={} waitForMsw={} />
+<AppRouter fallbackElement={} errorElement={} waitForMsw={}>
+    {(routes: [], routerProviderOptoons: {}) => ( ... )}
+</AppRouter>
 ```
 
 ### Properties
@@ -22,9 +24,30 @@ A component that sets up and orchestrate Squide federated primitives and render 
 - `onLoadPublicData`: An optional handler to load the initial public data after the **modules are registered** and **MSW is started** (if enabled). This handler is called the first time a user navigate to a [public route](../runtime/runtime-class.md#register-a-public-route). Such public data could include feature flags.
 - `onLoadProtectedData`: An optional handler to load the initial protected data after the **modules are registered** and **MSW is started** (if enabled). This handler is called the first time a user navigate to a protected route (any route that has no `$visibility: public` hint). Such protected data could include a user session.
 - `onCompleteRegistrations`: An optional handler to complete the [deferred registrations](../registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items).
-- `routerProvidersProps`: An optional object of [createBrowserRouter](https://reactrouter.com/en/main/routers/create-browser-router) options.
+- `children`: A render function to define a React Router [RouterProvider](https://reactrouter.com/en/main/routers/router-provider) component.
 
 ## Usage
+
+### Define a router provider
+
+```tsx !#11-13 host/src/App.tsx
+import { AppRouter } from "@squide/firefly";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
+export function App() {
+    return (
+        <AppRouter
+            fallbackElement={<div>Loading...</div>}
+            errorElement={<div>An error occured!</div>}
+            waitForMsw={true}
+        >
+            {(routes, routerProviderProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+            )}
+        </AppRouter>
+    );
+}
+```
 
 ### Define a loading component
 
@@ -36,9 +59,10 @@ export function Loading() {
 }
 ```
 
-```tsx !#7 host/src/App.tsx
+```tsx !#8 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
 import { Loading } from "./Loading.tsx";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 export function App() {
     return (
@@ -46,7 +70,11 @@ export function App() {
             fallbackElement={<Loading />}
             errorElement={<div>An error occured!</div>}
             waitForMsw={true}
-        />
+        >
+            {(routes, routerProviderProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+            )}
+        </AppRouter>
     );
 }
 ```
@@ -68,10 +96,11 @@ export function ErrorBoundary({ error }: { error?: Error }) {
 }
 ```
 
-```tsx !#9 host/src/App.tsx
+```tsx !#10 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
 import { Loading } from "./Loading.tsx";
 import { ErrorBoundary } from "./ErrorBoundary.tsx";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 export function App() {
     return (
@@ -79,7 +108,11 @@ export function App() {
             fallbackElement={<Loading />}
             errorElement={<ErrorBoundary />}
             waitForMsw={true}
-        />
+        >
+            {(routes, routerProviderProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+            )}
+        </AppRouter>
     );
 }
 ```
@@ -88,12 +121,13 @@ export function App() {
 
 The handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), and the consumer application must handle the loaded public data, as the `AppRouter` component will ignore any data resolved by the returned Promise object.
 
-```tsx !#19,30 host/src/App.tsx
+```tsx !#20,31 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { Loading } from "./Loading.tsx";
 import { ErrorBoundary } from "./ErrorBoundary.tsx";
 import type { FeatureFlags } from "@sample/shared";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void) {
     const response = await fetch("/api/feature-flags");
@@ -119,7 +153,11 @@ export function App() {
             errorElement={<ErrorBoundary />}
             waitForMsw={true}
             onLoadPublicData={handleLoadPublicData}
-        />
+        >
+            {(routes, routerProviderProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+            )}
+        </AppRouter>
     );
 }
 ```
@@ -128,12 +166,13 @@ export function App() {
 
 The handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), and the consumer application must handle the loaded protected data, as the `AppRouter` component will ignore any data resolved by the returned Promise object.
 
-```tsx !#25,36 host/src/App.tsx
+```tsx !#26,37 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { Loading } from "./Loading.tsx";
 import { ErrorBoundary } from "./ErrorBoundary.tsx";
 import type { Session } from "@sample/shared";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 async function fetchProtectedData(setSession: (session: Session) => void) {
     const response = await fetch("/api/session");
@@ -165,7 +204,11 @@ export function App() {
             errorElement={<ErrorBoundary />}
             waitForMsw={true}
             onLoadProtectedData={handleLoadProtectedData}
-        />
+        >
+            {(routes, routerProviderProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+            )}
+        </AppRouter>
     );
 }
 ```
@@ -174,13 +217,14 @@ export function App() {
 
 For more information about deferred registrations, refer to the [registerRemoteModules](../registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) and [completeModuleRegistrations](../registration/completeModuleRegistrations.md) documentation.
 
-```tsx !#27-30,39 host/src/App.tsx
+```tsx !#29-31,40 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { completeModuleRegistrations } from "@squide/webpack-module-federation";
 import { Loading } from "./Loading.tsx";
 import { ErrorBoundary } from "./ErrorBoundary.tsx";
 import type { FeatureFlags } from "@sample/shared";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void) {
     const response = await fetch("/api/feature-flags");
@@ -214,17 +258,22 @@ export function App() {
             waitForMsw={true}
             onLoadPublicData={handleLoadPublicData}
             onCompleteRegistrations={handleCompleteRegistrations}
-        />
+        >
+            {(routes, routerProviderProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+            )}
+        </AppRouter>
     );
 }
 ```
 
-### Specify additional router options
+<!-- ### Specify additional router options
 
-```tsx !#11-13 host/src/App.tsx
+```tsx !#17-19 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
 import { Loading } from "./Loading.tsx";
 import { ErrorBoundary } from "./ErrorBoundary.tsx";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 export function App() {
     return (
@@ -232,10 +281,17 @@ export function App() {
             fallbackElement={<Loading />}
             errorElement={<ErrorBoundary />}
             waitForMsw={true}
-            routerProvidersProps={{
-                future: { v7_startTransition: true }
-            }}
-        />
+        >
+            {(routes, routerProviderProps) => (
+                <RouterProvider
+                    {...routerProviderProps}
+                    router={createBrowserRouter(routes)}
+                    future={{ 
+                        v7_startTransition: true
+                    }}
+                />
+            )}
+        </AppRouter>
     );
 }
-```
+``` -->

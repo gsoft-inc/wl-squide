@@ -7,7 +7,8 @@ import { ReactRouterRuntime } from "@squide/react-router";
 import { completeModuleRegistrations } from "@squide/webpack-module-federation";
 import { render, screen } from "@testing-library/react";
 import type { ReactElement, ReactNode } from "react";
-import { AppRouter } from "../src/AppRouter.tsx";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { AppRouter, type AppRouterProps } from "../src/AppRouter.tsx";
 
 function Loading() {
     return (
@@ -18,6 +19,20 @@ function Loading() {
 function ErrorBoundary() {
     return (
         <div data-testid="error">An error occured!</div>
+    );
+}
+
+function createAppRouter(props: Omit<AppRouterProps, "fallbackElement" | "errorElement" | "children">) {
+    return (
+        <AppRouter
+            fallbackElement={<Loading />}
+            errorElement={<ErrorBoundary />}
+            {...props}
+        >
+            {(routes, routerProviderProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+            )}
+        </AppRouter>
     );
 }
 
@@ -52,11 +67,9 @@ test("when no data handlers are provided, msw is disabled, there's no deferred r
     // Never resolving Promise object.
     registerLocalModules([() => new Promise<void>(() => {})], runtime);
 
-    renderWithRuntime(runtime, <AppRouter
-        fallbackElement={<Loading />}
-        errorElement={<ErrorBoundary />}
-        waitForMsw={false}
-    />);
+    renderWithRuntime(runtime, createAppRouter({
+        waitForMsw: false
+    }));
 
     expect(await screen.findByTestId("loading")).toBeInTheDocument();
 });
@@ -81,11 +94,9 @@ test("when no data handlers are provided, msw is disabled, there's no deferred r
         });
     }], runtime);
 
-    renderWithRuntime(runtime, <AppRouter
-        fallbackElement={<Loading />}
-        errorElement={<ErrorBoundary />}
-        waitForMsw={false}
-    />);
+    renderWithRuntime(runtime, createAppRouter({
+        waitForMsw: false
+    }));
 
     expect(await screen.findByTestId("module-route")).toBeInTheDocument();
 });
@@ -103,11 +114,9 @@ test("when no data handlers are provided, msw is disabled, modules are registere
 
     await registerLocalModules([() => () => Promise.resolve()], runtime);
 
-    renderWithRuntime(runtime, <AppRouter
-        fallbackElement={<Loading />}
-        errorElement={<ErrorBoundary />}
-        waitForMsw={false}
-    />);
+    renderWithRuntime(runtime, createAppRouter({
+        waitForMsw: false
+    }));
 
     expect(await screen.findByTestId("loading")).toBeInTheDocument();
 });
@@ -126,13 +135,11 @@ test("when a onLoadPublicData handler is provided and the public data is not loa
 
     await registerLocalModules([() => {}], runtime);
 
-    renderWithRuntime(runtime, <AppRouter
-        fallbackElement={<Loading />}
-        errorElement={<ErrorBoundary />}
+    renderWithRuntime(runtime, createAppRouter({
         // Never resolving Promise object.
-        onLoadPublicData={() => new Promise(() => {})}
-        waitForMsw={false}
-    />);
+        onLoadPublicData: () => new Promise(() => {}),
+        waitForMsw: false
+    }));
 
     expect(await screen.findByTestId("loading")).toBeInTheDocument();
 });
@@ -150,12 +157,10 @@ test("when a onLoadPublicData handler is provided and the public data is loaded,
 
     await registerLocalModules([() => {}], runtime);
 
-    renderWithRuntime(runtime, <AppRouter
-        fallbackElement={<Loading />}
-        errorElement={<ErrorBoundary />}
-        onLoadPublicData={() => Promise.resolve()}
-        waitForMsw={false}
-    />);
+    renderWithRuntime(runtime, createAppRouter({
+        onLoadPublicData: () => Promise.resolve(),
+        waitForMsw: false
+    }));
 
     expect(await screen.findByTestId("route")).toBeInTheDocument();
 });
@@ -173,13 +178,11 @@ test("when a onLoadProtectedData handler is provided and the protected data is n
 
     await registerLocalModules([() => {}], runtime);
 
-    renderWithRuntime(runtime, <AppRouter
-        fallbackElement={<Loading />}
-        errorElement={<ErrorBoundary />}
+    renderWithRuntime(runtime, createAppRouter({
         // Never resolving Promise object.
-        onLoadProtectedData={() => new Promise(() => {})}
-        waitForMsw={false}
-    />);
+        onLoadProtectedData: () => new Promise(() => {}),
+        waitForMsw: false
+    }));
 
     expect(await screen.findByTestId("loading")).toBeInTheDocument();
 });
@@ -196,12 +199,10 @@ test("when a onLoadProtectedData handler is provided and the protected data is l
 
     await registerLocalModules([() => {}], runtime);
 
-    renderWithRuntime(runtime, <AppRouter
-        fallbackElement={<Loading />}
-        errorElement={<ErrorBoundary />}
-        onLoadProtectedData={() => Promise.resolve()}
-        waitForMsw={false}
-    />);
+    renderWithRuntime(runtime, createAppRouter({
+        onLoadProtectedData: () => Promise.resolve(),
+        waitForMsw: false
+    }));
 
     expect(await screen.findByTestId("route")).toBeInTheDocument();
 });
@@ -219,11 +220,9 @@ test("when msw is enabled and msw is not started, render the fallback", async ()
 
     await registerLocalModules([() => {}], runtime);
 
-    renderWithRuntime(runtime, <AppRouter
-        fallbackElement={<Loading />}
-        errorElement={<ErrorBoundary />}
-        waitForMsw
-    />);
+    renderWithRuntime(runtime, createAppRouter({
+        waitForMsw: true
+    }));
 
     expect(await screen.findByTestId("loading")).toBeInTheDocument();
 });
@@ -242,11 +241,9 @@ test("when msw is enabled and msw is started, render the router", async () => {
 
     setMswAsStarted();
 
-    renderWithRuntime(runtime, <AppRouter
-        fallbackElement={<Loading />}
-        errorElement={<ErrorBoundary />}
-        waitForMsw
-    />);
+    renderWithRuntime(runtime, createAppRouter({
+        waitForMsw: true
+    }));
 
     expect(await screen.findByTestId("route")).toBeInTheDocument();
 });
@@ -263,12 +260,10 @@ test("when a onCompleteRegistrations handler is provided and there's no deferred
 
     await registerLocalModules([() => {}], runtime);
 
-    renderWithRuntime(runtime, <AppRouter
-        fallbackElement={<Loading />}
-        errorElement={<ErrorBoundary />}
-        onCompleteRegistrations={() => Promise.resolve()}
-        waitForMsw={false}
-    />);
+    renderWithRuntime(runtime, createAppRouter({
+        onCompleteRegistrations: () => Promise.resolve(),
+        waitForMsw: false
+    }));
 
     expect(await screen.findByTestId("route")).toBeInTheDocument();
 });
@@ -287,12 +282,10 @@ test("when a onCompleteRegistrations handler is provided and the deferred regist
     // Never resolving Promise object.
     await registerLocalModules([() => () => new Promise(() => {})], runtime);
 
-    renderWithRuntime(runtime, <AppRouter
-        fallbackElement={<Loading />}
-        errorElement={<ErrorBoundary />}
-        onCompleteRegistrations={() => completeModuleRegistrations(runtime, {})}
-        waitForMsw={false}
-    />);
+    renderWithRuntime(runtime, createAppRouter({
+        onCompleteRegistrations: () => completeModuleRegistrations(runtime, {}),
+        waitForMsw: false
+    }));
 
     expect(await screen.findByTestId("loading")).toBeInTheDocument();
 });
@@ -323,19 +316,15 @@ test("when a onCompleteRegistrations handler is provided and the deferred regist
         return completeModuleRegistrations(runtime, {});
     }
 
-    const { rerender } = renderWithRuntime(runtime, <AppRouter
-        fallbackElement={<Loading />}
-        errorElement={<ErrorBoundary />}
-        onCompleteRegistrations={handleCompleteRegistration}
-        waitForMsw={false}
-    />);
+    const { rerender } = renderWithRuntime(runtime, createAppRouter({
+        onCompleteRegistrations: handleCompleteRegistration,
+        waitForMsw: false
+    }));
 
-    rerender(<AppRouter
-        fallbackElement={<Loading />}
-        errorElement={<ErrorBoundary />}
-        onCompleteRegistrations={handleCompleteRegistration}
-        waitForMsw={false}
-    />);
+    rerender(createAppRouter({
+        onCompleteRegistrations: handleCompleteRegistration,
+        waitForMsw: false
+    }));
 
     expect(await screen.findByTestId("deferred-route")).toBeInTheDocument();
 });
@@ -358,12 +347,10 @@ test("when an error occurs while loading the public data, show the error element
 
     await registerLocalModules([() => {}], runtime);
 
-    renderWithRuntime(runtime, <AppRouter
-        fallbackElement={<Loading />}
-        errorElement={<ErrorBoundary />}
-        onLoadPublicData={() => Promise.reject("Dummy error")}
-        waitForMsw={false}
-    />);
+    renderWithRuntime(runtime, createAppRouter({
+        onLoadPublicData: () => Promise.reject("Dummy error"),
+        waitForMsw: false
+    }));
 
     expect(await screen.findByTestId("error")).toBeInTheDocument();
 
@@ -387,12 +374,10 @@ test("when an error occurs while loading the protected data, show the error elem
 
     await registerLocalModules([() => {}], runtime);
 
-    renderWithRuntime(runtime, <AppRouter
-        fallbackElement={<Loading />}
-        errorElement={<ErrorBoundary />}
-        onLoadProtectedData={() => Promise.reject("Dummy error")}
-        waitForMsw={false}
-    />);
+    renderWithRuntime(runtime, createAppRouter({
+        onLoadProtectedData: () => Promise.reject("Dummy error"),
+        waitForMsw: false
+    }));
 
     expect(await screen.findByTestId("error")).toBeInTheDocument();
 

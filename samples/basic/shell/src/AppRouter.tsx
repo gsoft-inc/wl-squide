@@ -1,6 +1,7 @@
 import { useToastListener } from "@basic/shared";
 import { AppRouter as FireflyAppRouter } from "@squide/firefly";
 import { useCallback } from "react";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { AppRouterErrorBoundary } from "./AppRouterErrorBoundary.tsx";
 import { ToastContainer, useToastContainer } from "./toast.tsx";
 
@@ -25,7 +26,11 @@ export function AppRouter() {
                 fallbackElement={<Loading />}
                 errorElement={<AppRouterErrorBoundary />}
                 waitForMsw={false}
-            />
+            >
+                {(routes, routerProviderProps) => (
+                    <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+                )}
+            </FireflyAppRouter>
         </ToastContainer>
     );
 }

@@ -309,10 +309,11 @@ export const requestHandlers: HttpHandler[] = [
 
 Then, update the host application `App` component to load the session when a user navigate to a protected page for the first time:
 
-```tsx !#15,21 host/src/App.tsx
+```tsx !#16,22 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
 import type { Session } from "@sample/shared";
 import { sessionManager } from "./session.ts";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 async function handleLoadProtectedData() {
     const response = await fetch("/api/session");
@@ -334,7 +335,11 @@ export function App() {
             fallbackElement={<div>Loading...</div>}
             errorElement={<div>An error occured!</div>}
             waitForMsw={true}
-        />
+        >
+            {(routes, routerProviderProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+            )}
+        </AppRouter>
     );
 }
 ```

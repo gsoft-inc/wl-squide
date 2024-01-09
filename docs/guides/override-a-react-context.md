@@ -8,9 +8,10 @@ In a federated application using [Module Federation](https://webpack.js.org/conc
 
 Let's explore a simple example using a `BackgroundColorContext`:
 
-```tsx !#6,12 host/src/App.tsx
+```tsx !#7 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
 import { BackgroundColorContext } from "@sample/shared";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 export function App() {
     return (
@@ -19,7 +20,11 @@ export function App() {
                 fallbackElement={<div>Loading...</div>}
                 errorElement={<div>An error occured!</div>}
                 waitForMsw={false}
-            />
+            >
+                {(routes, routerProviderProps) => (
+                    <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+                )}
+            </AppRouter>
         </BackgroundColorContext.Provider>
     );
 }
@@ -104,9 +109,10 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 Let's consider a more specific use case where the host application declares a `ThemeContext` from Workleap's new design system, [Hopper](https://hopper.workleap.design/):
 
-```tsx !#6,12 host/src/App.tsx
+```tsx !#7 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
 import { ThemeContext } from "@hopper/components";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 export function App() {
     return (
@@ -115,7 +121,11 @@ export function App() {
                 fallbackElement={<div>Loading...</div>}
                 errorElement={<div>An error occured!</div>}
                 waitForMsw={false}
-            />
+            >
+                {(routes, routerProviderProps) => (
+                    <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+                )}
+            </AppRouter>
         </ThemeContext.Provider>
     );
 }

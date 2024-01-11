@@ -336,8 +336,8 @@ export function App() {
             errorElement={<div>An error occured!</div>}
             waitForMsw={true}
         >
-            {(routes, routerProviderProps) => (
-                <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+            {(routes, providerProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
             )}
         </AppRouter>
     );
@@ -459,6 +459,8 @@ const renderItem: RenderItemFunction = (item, index, level) => {
     if (!isNavigationLink(item)) {
         return null;
     }
+
+    const { label, linkProps, additionalProps } = item;
 
     return (
         <li key={`${level}-${index}`}>

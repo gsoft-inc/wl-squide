@@ -29,8 +29,8 @@ function createAppRouter(props: Omit<AppRouterProps, "fallbackElement" | "errorE
             errorElement={<ErrorBoundary />}
             {...props}
         >
-            {(routes, routerProviderProps) => (
-                <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+            {(routes, providerProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
             )}
         </AppRouter>
     );

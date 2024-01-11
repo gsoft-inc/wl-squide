@@ -21,8 +21,8 @@ export function App() {
                 errorElement={<div>An error occured!</div>}
                 waitForMsw={false}
             >
-                {(routes, routerProviderProps) => (
-                    <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+                {(routes, providerProps) => (
+                    <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
                 )}
             </AppRouter>
         </BackgroundColorContext.Provider>
@@ -122,8 +122,8 @@ export function App() {
                 errorElement={<div>An error occured!</div>}
                 waitForMsw={false}
             >
-                {(routes, routerProviderProps) => (
-                    <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+                {(routes, providerProps) => (
+                    <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
                 )}
             </AppRouter>
         </ThemeContext.Provider>

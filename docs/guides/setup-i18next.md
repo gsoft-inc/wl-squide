@@ -454,8 +454,8 @@ export function App() {
             waitForMsw={false}
             onLoadProtectedData={handleLoadProtectedData}
         >
-            {(routes, routerProviderProps) => (
-                <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+            {(routes, providerProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
             )}
         </AppRouter>
     );

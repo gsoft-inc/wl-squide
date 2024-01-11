@@ -122,8 +122,8 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
                         onLoadProtectedData={handleLoadProtectedData}
                         onCompleteRegistrations={handleCompleteRegistrations}
                     >
-                        {(routes, routerProviderProps) => (
-                            <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+                        {(routes, providerProps) => (
+                            <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
                         )}
                     </FireflyAppRouter>
                 </TelemetryServiceContext.Provider>

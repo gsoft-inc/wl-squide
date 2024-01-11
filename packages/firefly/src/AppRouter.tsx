@@ -6,7 +6,6 @@ import { cloneElement, useCallback, useEffect, useMemo, useState, type ReactElem
 import { ErrorBoundary, useErrorBoundary } from "react-error-boundary";
 import { Outlet, useLocation, type RouterProviderProps } from "react-router-dom";
 
-
 export type OnLoadPublicDataFunction = () => Promise<unknown>;
 
 export type OnLoadProtectedDataFunction = () => Promise<unknown>;
@@ -146,7 +145,7 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
     );
 }
 
-export type RenderRouterProviderFunction = (routes: Route[], routerProviderProps: Omit<RouterProviderProps, "router">) => ReactElement;
+export type RenderRouterProviderFunction = (routes: Route[], providerProps: Omit<RouterProviderProps, "router">) => ReactElement;
 
 export interface AppRouterProps {
     fallbackElement: ReactElement;

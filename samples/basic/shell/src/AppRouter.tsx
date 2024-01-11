@@ -27,8 +27,8 @@ export function AppRouter() {
                 errorElement={<AppRouterErrorBoundary />}
                 waitForMsw={false}
             >
-                {(routes, routerProviderProps) => (
-                    <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+                {(routes, providerProps) => (
+                    <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
                 )}
             </FireflyAppRouter>
         </ToastContainer>

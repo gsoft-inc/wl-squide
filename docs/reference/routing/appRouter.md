@@ -24,7 +24,7 @@ A component that sets up and orchestrate Squide federated primitives with a Reac
 - `onLoadPublicData`: An optional handler to load the initial public data after the **modules are registered** and **MSW is started** (if enabled). This handler is called the first time a user navigate to a [public route](../runtime/runtime-class.md#register-a-public-route). Such public data could include feature flags.
 - `onLoadProtectedData`: An optional handler to load the initial protected data after the **modules are registered** and **MSW is started** (if enabled). This handler is called the first time a user navigate to a protected route (any route that has no `$visibility: public` hint). Such protected data could include a user session.
 - `onCompleteRegistrations`: An optional handler to complete the [deferred registrations](../registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items).
-- `children`: A render function to define a React Router [RouterProvider](https://reactrouter.com/en/main/routers/router-provider) component.
+- `children`: A render function to define a React Router [RouterProvider](https://reactrouter.com/en/main/routers/router-provider) component with the registered routes.
 
 ## Usage
 
@@ -41,8 +41,8 @@ export function App() {
             errorElement={<div>An error occured!</div>}
             waitForMsw={true}
         >
-            {(routes, routerProviderProps) => (
-                <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+            {(routes, providerProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
             )}
         </AppRouter>
     );
@@ -71,8 +71,8 @@ export function App() {
             errorElement={<div>An error occured!</div>}
             waitForMsw={true}
         >
-            {(routes, routerProviderProps) => (
-                <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+            {(routes, providerProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
             )}
         </AppRouter>
     );
@@ -109,8 +109,8 @@ export function App() {
             errorElement={<ErrorBoundary />}
             waitForMsw={true}
         >
-            {(routes, routerProviderProps) => (
-                <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+            {(routes, providerProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
             )}
         </AppRouter>
     );
@@ -154,8 +154,8 @@ export function App() {
             waitForMsw={true}
             onLoadPublicData={handleLoadPublicData}
         >
-            {(routes, routerProviderProps) => (
-                <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+            {(routes, providerProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
             )}
         </AppRouter>
     );
@@ -205,8 +205,8 @@ export function App() {
             waitForMsw={true}
             onLoadProtectedData={handleLoadProtectedData}
         >
-            {(routes, routerProviderProps) => (
-                <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+            {(routes, providerProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
             )}
         </AppRouter>
     );
@@ -259,8 +259,8 @@ export function App() {
             onLoadPublicData={handleLoadPublicData}
             onCompleteRegistrations={handleCompleteRegistrations}
         >
-            {(routes, routerProviderProps) => (
-                <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+            {(routes, providerProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
             )}
         </AppRouter>
     );
@@ -282,9 +282,9 @@ export function App() {
             errorElement={<ErrorBoundary />}
             waitForMsw={true}
         >
-            {(routes, routerProviderProps) => (
+            {(routes, providerProps) => (
                 <RouterProvider
-                    {...routerProviderProps}
+                    {...providerProps}
                     router={createBrowserRouter(routes)}
                     future={{ 
                         v7_startTransition: true

@@ -127,8 +127,8 @@ export function App() {
             errorElement={<div>An error occured!</div>}
             waitForMsw={false}
         >
-            {(routes, routerProviderProps) => (
-                <RouterProvider router={createBrowserRouter(routes)} {...routerProviderProps} />
+            {(routes, providerProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
             )}
         </AppRouter>
     );
@@ -148,7 +148,7 @@ import {
     isNavigationLink,
     type RenderItemFunction,
     type RenderSectionFunction
-} from "@squide/react-router";
+} from "@squide/firefly";
 
 const renderItem: RenderItemFunction = (item, index, level) => {
     // To keep thing simple, this sample doesn't support nested navigation items.
@@ -157,6 +157,8 @@ const renderItem: RenderItemFunction = (item, index, level) => {
     if (!isNavigationLink(item)) {
         return null;
     }
+
+    const { label, linkProps, additionalProps } = item;
 
     return (
         <li key={`${level}-${index}`}>

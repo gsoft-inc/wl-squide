@@ -1,4 +1,4 @@
-import { isNil, useLogger } from "@squide/core";
+import { isNil, useLogger, useRefState } from "@squide/core";
 import { useIsMswStarted } from "@squide/msw";
 import { useIsRouteMatchProtected, useRoutes, type Route } from "@squide/react-router";
 import { useAreModulesReady, useAreModulesRegistered } from "@squide/webpack-module-federation";
@@ -11,6 +11,98 @@ export type OnLoadPublicDataFunction = () => Promise<unknown>;
 export type OnLoadProtectedDataFunction = () => Promise<unknown>;
 
 export type OnCompleteRegistrationsFunction = () => Promise<unknown>;
+
+function useLoadPublicData(areModulesRegistered: boolean, areModulesReady: boolean, isMswStarted: boolean, onLoadData?: OnLoadPublicDataFunction) {
+    // Initialize as loaded if no handler is provided to load the public data.
+    const [isLoaded, setIsLoaded] = useState(!onLoadData);
+    const [isLoadingRef, setIsLoading] = useRefState(false);
+
+    const logger = useLogger();
+
+    const { showBoundary } = useErrorBoundary<Error>();
+
+    useEffect(() => {
+        // Don't go further if no handler has been provided to load public data.
+        if (onLoadData) {
+            if ((areModulesRegistered || areModulesReady) && isMswStarted) {
+                if (!isLoaded && !isLoadingRef.current) {
+                    // Make sure a re-render doesn't cause the data to be loaded twice if the promise hasn't resolved yet.
+                    setIsLoading(true);
+
+                    logger.debug("[shell] Loading public data.");
+
+                    const result = onLoadData();
+
+                    if (!isPromise(result)) {
+                        throw Error("[squide] An AppRouter onLoadPublicData handler must return a promise object.");
+                    }
+
+                    result
+                        .then(() => {
+                            setIsLoaded(true);
+                            setIsLoading(false);
+
+                            logger.debug("[shell] Public data has been loaded.");
+                        })
+                        .catch(error => {
+                            setIsLoading(false);
+                            showBoundary(error);
+                        });
+                }
+            }
+        }
+    }, [areModulesRegistered, areModulesReady, isMswStarted, showBoundary, onLoadData, isLoaded, isLoadingRef, setIsLoading, logger]);
+
+    return isLoaded;
+}
+
+function useLoadProtectedData(areModulesRegistered: boolean, areModulesReady: boolean, isMswStarted: boolean, isActiveRouteProtected: boolean, onLoadData?: OnLoadProtectedDataFunction) {
+    // Initialize as loaded if no handler is provided to load the protected data.
+    const [isLoaded, setIsLoaded] = useState(!onLoadData);
+    const [isLoadingRef, setIsLoading] = useRefState(false);
+
+    const logger = useLogger();
+
+    const { showBoundary } = useErrorBoundary<Error>();
+
+    useEffect(() => {
+        // Don't go further if no handler has been provided to load protected data.
+        if (onLoadData) {
+            if ((areModulesRegistered || areModulesReady) && isMswStarted) {
+                if (isActiveRouteProtected) {
+                    if (!isLoaded && !isLoadingRef.current) {
+                        // Make sure a re-render doesn't cause the data to be loaded twice if the promise hasn't resolved yet.
+                        setIsLoading(true);
+
+                        logger.debug(`[shell] Loading protected data as "${location.pathname}" is a protected route.`);
+
+                        const result = onLoadData();
+
+                        if (!isPromise(result)) {
+                            throw Error("[squide] An AppRouter onLoadProtectedData handler must return a promise object.");
+                        }
+
+                        result
+                            .then(() => {
+                                setIsLoaded(true);
+                                setIsLoading(false);
+
+                                logger.debug("[shell] Protected data has been loaded.");
+                            })
+                            .catch(error => {
+                                setIsLoading(true);
+                                showBoundary(error);
+                            });
+                    }
+                } else {
+                    logger.debug(`[shell] Not loading protected data as "${location.pathname}" is a public route.`);
+                }
+            }
+        }
+    }, [areModulesRegistered, areModulesReady, isMswStarted, isActiveRouteProtected, showBoundary, onLoadData, isLoaded, isLoadingRef, setIsLoading, logger]);
+
+    return isLoaded;
+}
 
 interface BootstrappingRouteProps {
     fallbackElement: ReactElement;
@@ -40,14 +132,6 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
         areModulesReady
     } = props;
 
-    // Initialize as loaded if no handler is provided to load the public data.
-    const [isPublicDataLoaded, setIsPublicDataLoaded] = useState(!onLoadPublicData);
-
-    // Initialize as loaded if no handler is provided to load the protected data.
-    const [isProtectedDataLoaded, setIsProtectedDataLoaded] = useState(!onLoadProtectedData);
-
-    const { showBoundary } = useErrorBoundary();
-
     const logger = useLogger();
     const location = useLocation();
 
@@ -65,76 +149,25 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
         }
     }, [logger, areModulesRegistered, areModulesReady, isMswStarted, waitForMsw]);
 
-    useEffect(() => {
-        // Don't go further if no handler has been provided to load public data.
-        if (onLoadPublicData) {
-            if ((areModulesRegistered || areModulesReady) && isMswStarted) {
-                if (!isPublicDataLoaded) {
-                    logger.debug("[shell] Loading public data.");
-
-                    const result = onLoadPublicData();
-
-                    if (!isPromise(result)) {
-                        throw Error("[squide] An AppRouter onLoadPublicData handler must return a promise object.");
-                    }
-
-                    result
-                        .then(() => {
-                            setIsPublicDataLoaded(true);
-
-                            logger.debug("[shell] Public data has been loaded.");
-                        })
-                        .catch(error => {
-                            showBoundary(error);
-                        });
-                }
-            }
-        }
-    }, [logger, areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded, showBoundary, onLoadPublicData]);
+    // Try to load the public data if an handler is defined.
+    const isPublicDataLoaded = useLoadPublicData(areModulesRegistered, areModulesReady, isMswStarted, onLoadPublicData);
 
     // Only throw when there's no match if the modules has been registered, otherwise it's expected that there are no registered routes.
     const isActiveRouteProtected = useIsRouteMatchProtected(location, { throwWhenThereIsNoMatch: areModulesReady });
 
-    useEffect(() => {
-        // Don't go further if no handler has been provided to load protected data.
-        if (onLoadProtectedData) {
-            if ((areModulesRegistered || areModulesReady) && isMswStarted) {
-                if (isActiveRouteProtected) {
-                    if (!isProtectedDataLoaded) {
-                        logger.debug(`[shell] Loading protected data as "${location.pathname}" is a protected route.`);
-
-                        const result = onLoadProtectedData();
-
-                        if (!isPromise(result)) {
-                            throw Error("[squide] An AppRouter onLoadProtectedData handler must return a promise object.");
-                        }
-
-                        result.then(() => {
-                            setIsProtectedDataLoaded(true);
-
-                            logger.debug("[shell] Protected data has been loaded.");
-                        })
-                            .catch(error => {
-                                showBoundary(error);
-                            });
-                    }
-                } else {
-                    logger.debug(`[shell] Not loading protected data as "${location.pathname}" is a public route.`);
-                }
-            }
-        }
-    }, [logger, location, areModulesRegistered, areModulesReady, isMswStarted, isActiveRouteProtected, isProtectedDataLoaded, showBoundary, onLoadProtectedData]);
+    // Try to load the protected data if an handler is defined.
+    const isProtectedDataLoaded = useLoadProtectedData(areModulesRegistered, areModulesReady, isMswStarted, isActiveRouteProtected, onLoadProtectedData);
 
     useEffect(() => {
         // Don't go further if no handler has been provided to complete the registration.
         if (onCompleteRegistrations) {
-            if (areModulesRegistered && isMswStarted && isPublicDataLoaded) {
+            if (areModulesRegistered && isMswStarted && isPublicDataLoaded && (!isActiveRouteProtected || isProtectedDataLoaded)) {
                 if (!areModulesReady) {
                     onCompleteRegistrations();
                 }
             }
         }
-    }, [areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded, onCompleteRegistrations]);
+    }, [areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded, isActiveRouteProtected, isProtectedDataLoaded, onCompleteRegistrations]);
 
     if (!areModulesReady || !isMswStarted || !isPublicDataLoaded || (isActiveRouteProtected && !isProtectedDataLoaded)) {
         return fallbackElement;

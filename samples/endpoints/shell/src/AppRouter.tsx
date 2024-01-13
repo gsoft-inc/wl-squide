@@ -9,6 +9,7 @@ import { i18NextInstanceKey } from "./i18next.ts";
 
 export interface DeferredRegistrationData {
     featureFlags?: FeatureFlags;
+    session?: Session;
 }
 
 export interface AppRouterProps {
@@ -106,9 +107,10 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
 
     const handleCompleteRegistrations = useCallback(() => {
         return completeModuleRegistrations(runtime, {
-            featureFlags
+            featureFlags,
+            session: sessionManager.getSession()
         });
-    }, [runtime, featureFlags]);
+    }, [runtime, featureFlags, sessionManager]);
 
     return (
         <FeatureFlagsContext.Provider value={featureFlags}>

@@ -18,16 +18,26 @@ export interface AppRouterProps {
     telemetryService: TelemetryService;
 }
 
-async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void, logger: Logger) {
-    const data = await fetchJson("/api/feature-flags");
+async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void, signal: AbortSignal, logger: Logger) {
+    try {
+        const data = await fetchJson("/api/feature-flags", {
+            signal
+        });
 
-    logger.debug("[shell] %cFeature flags are ready%c:", "color: white; background-color: green;", "", data);
+        logger.debug("[shell] %cFeature flags are ready%c:", "color: white; background-color: green;", "", data);
 
-    setFeatureFlags(data);
+        setFeatureFlags(data);
+    } catch (error: unknown) {
+        if (!signal.aborted) {
+            throw error;
+        }
+    }
 }
 
-async function fetchSession(setSession: (session: Session) => void, logger: Logger) {
-    const data = await fetchJson("/api/session");
+async function fetchSession(signal: AbortSignal) {
+    const data = await fetchJson("/api/session", {
+        signal
+    });
 
     const session: Session = {
         user: {
@@ -37,35 +47,45 @@ async function fetchSession(setSession: (session: Session) => void, logger: Logg
         }
     };
 
-    logger.debug("[shell] %cSession is ready%c:", "color: white; background-color: green;", "", session);
-
-    setSession(session);
+    return session;
 }
 
-async function fetchSubscription(setSubscription: (subscription: Subscription) => void, logger: Logger) {
-    const data = await fetchJson("/api/subscription");
+async function fetchSubscription(signal: AbortSignal) {
+    const data = await fetchJson("/api/subscription", {
+        signal
+    });
 
-    logger.debug("[shell] %cSubscription is ready%c:", "color: white; background-color: green;", "", data);
-
-    setSubscription(data);
+    return data as Subscription;
 }
 
 function fetchProtectedData(
     setSession: (session: Session) => void,
     setSubscription: (subscription: Subscription) => void,
+    signal: AbortSignal,
     logger: Logger
 ) {
-    const sessionPromise = fetchSession(setSession, logger);
-    const subscriptionPromise = fetchSubscription(setSubscription, logger);
+    const sessionPromise = fetchSession(signal);
+    const subscriptionPromise = fetchSubscription(signal);
 
     return Promise.all([sessionPromise, subscriptionPromise])
-        .catch((error: unknown) => {
-            if (isApiError(error) && error.status === 401) {
-                // The authentication boundary will redirect to the login page.
-                return;
-            }
+        .then(([session, subscription]) => {
+            logger.debug("[shell] %cSession is ready%c:", "color: white; background-color: green;", "", session);
 
-            throw error;
+            setSession(session);
+
+            logger.debug("[shell] %cSubscription is ready%c:", "color: white; background-color: green;", "", subscription);
+
+            setSubscription(subscription);
+        })
+        .catch((error: unknown) => {
+            if (!signal.aborted) {
+                if (isApiError(error) && error.status === 401) {
+                    // The authentication boundary will redirect to the login page.
+                    return;
+                }
+
+                throw error;
+            }
         });
 }
 
@@ -79,8 +99,6 @@ function Loading() {
 }
 
 export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppRouterProps) {
-    // Could be done with a ref (https://react.dev/reference/react/useRef) to save a re-render but for this sample
-    // it seemed unnecessary. If your application loads a lot of data at bootstrapping, it should be considered.
     const [featureFlags, setFeatureFlags] = useState<FeatureFlags>();
     const [subscription, setSubscription] = useState<Subscription>();
 
@@ -89,11 +107,11 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
 
     const changeLanguage = useChangeLanguage();
 
-    const handleLoadPublicData = useCallback(() => {
-        return fetchPublicData(setFeatureFlags, logger);
+    const handleLoadPublicData = useCallback((signal: AbortSignal) => {
+        return fetchPublicData(setFeatureFlags, signal, logger);
     }, [logger]);
 
-    const handleLoadProtectedData = useCallback(() => {
+    const handleLoadProtectedData = useCallback((signal: AbortSignal) => {
         const setSession = (session: Session) => {
             sessionManager.setSession(session);
 
@@ -102,7 +120,7 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
             changeLanguage(session.user.preferredLanguage);
         };
 
-        return fetchProtectedData(setSession, setSubscription, logger);
+        return fetchProtectedData(setSession, setSubscription, signal, logger);
     }, [logger, sessionManager, changeLanguage]);
 
     const handleCompleteRegistrations = useCallback(() => {

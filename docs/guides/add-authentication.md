@@ -309,23 +309,32 @@ export const requestHandlers: HttpHandler[] = [
 
 Then, update the host application `App` component to load the session when a user navigate to a protected page for the first time:
 
-```tsx !#16,22 host/src/App.tsx
+```tsx !#20,31 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
 import type { Session } from "@sample/shared";
 import { sessionManager } from "./session.ts";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-async function handleLoadProtectedData() {
-    const response = await fetch("/api/session");
-    const data = await response.json();
+async function handleLoadProtectedData(signal: AbortSignal) {
+    try {
+        const response = await fetch("/api/session", {
+            signal
+        });
 
-    const session: Session = {
-        user: {
-            name: data.username
+        const data = await response.json();
+
+        const session: Session = {
+            user: {
+                name: data.username
+            }
+        };
+
+        sessionManager.setSession(session);
+    } catch (error: unknown) {
+        if (!signal.aborted) {
+            throw error;
         }
-    };
-
-    sessionManager.setSession(session);
+    }
 }
 
 export function App() {
@@ -440,7 +449,7 @@ export const requestHandlers: HttpHandler[] = [
 
 Then, introduce a new `AuthenticatedLayout` displaying the name of the logged-in user along with a logout button:
 
-```tsx !#39,41-58,70,73 host/src/AuthenticatedLayout.tsx
+```tsx !#41,43-60,72,75 host/src/AuthenticatedLayout.tsx
 import { useCallback, type ReactNode, type MouseEvent, type HTMLButtonElement } from "react";
 import { Link, Outlet, navigate } from "react-router-dom";
 import { 

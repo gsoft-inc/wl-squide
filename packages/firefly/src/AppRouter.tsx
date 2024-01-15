@@ -1,23 +1,23 @@
-import { isNil, useLogger, useRefState } from "@squide/core";
+import { isNil, useLogOnceLogger, useLogger, useRefState } from "@squide/core";
 import { useIsMswStarted } from "@squide/msw";
 import { useIsRouteMatchProtected, useRoutes, type Route } from "@squide/react-router";
 import { useAreModulesReady, useAreModulesRegistered } from "@squide/webpack-module-federation";
-import { cloneElement, useCallback, useEffect, useMemo, useState, type ReactElement } from "react";
+import { cloneElement, useCallback, useEffect, useMemo, type ReactElement } from "react";
 import { ErrorBoundary, useErrorBoundary } from "react-error-boundary";
 import { Outlet, useLocation, type RouterProviderProps } from "react-router-dom";
 
-export type OnLoadPublicDataFunction = () => Promise<unknown>;
+export type OnLoadPublicDataFunction = (signal: AbortSignal) => Promise<unknown>;
 
-export type OnLoadProtectedDataFunction = () => Promise<unknown>;
+export type OnLoadProtectedDataFunction = (signal: AbortSignal) => Promise<unknown>;
 
 export type OnCompleteRegistrationsFunction = () => Promise<unknown>;
 
 function useLoadPublicData(areModulesRegistered: boolean, areModulesReady: boolean, isMswStarted: boolean, onLoadData?: OnLoadPublicDataFunction) {
-    // Initialize as loaded if no handler is provided to load the public data.
-    const [isLoaded, setIsLoaded] = useState(!onLoadData);
-    const [isLoadingRef, setIsLoading] = useRefState(false);
+    // Using a ref to prevent re-rendering twice when the data is loaded as the consumer will store the data in the state which will already trigger a re-render.
+    // Initialize as loaded if no handler is provided to load the protected data.
+    const [isLoadedRef, setIsLoaded] = useRefState(!onLoadData);
 
-    const logger = useLogger();
+    const logger = useLogOnceLogger();
 
     const { showBoundary } = useErrorBoundary<Error>();
 
@@ -25,13 +25,13 @@ function useLoadPublicData(areModulesRegistered: boolean, areModulesReady: boole
         // Don't go further if no handler has been provided to load public data.
         if (onLoadData) {
             if ((areModulesRegistered || areModulesReady) && isMswStarted) {
-                if (!isLoaded && !isLoadingRef.current) {
-                    // Make sure a re-render doesn't cause the data to be loaded twice if the promise hasn't resolved yet.
-                    setIsLoading(true);
+                if (!isLoadedRef.current) {
+                    // Prevent logging twice because of React strict mode.
+                    logger.debugOnce("loading-public-data", "[shell] Loading public data.");
 
-                    logger.debug("[shell] Loading public data.");
+                    const abortController = new AbortController();
 
-                    const result = onLoadData();
+                    const result = onLoadData(abortController.signal);
 
                     if (!isPromise(result)) {
                         throw Error("[squide] An AppRouter onLoadPublicData handler must return a promise object.");
@@ -40,28 +40,34 @@ function useLoadPublicData(areModulesRegistered: boolean, areModulesReady: boole
                     result
                         .then(() => {
                             setIsLoaded(true);
-                            setIsLoading(false);
 
-                            logger.debug("[shell] Public data has been loaded.");
+                            // Prevent logging twice because of React strict mode.
+                            logger.debugOnce("public-data-loaded", "[shell] Public data has been loaded.");
                         })
                         .catch(error => {
-                            setIsLoading(false);
                             showBoundary(error);
                         });
+
+                    return () => {
+                        // eslint-disable-next-line react-hooks/exhaustive-deps
+                        if (!isLoadedRef.current) {
+                            abortController.abort();
+                        }
+                    };
                 }
             }
         }
-    }, [areModulesRegistered, areModulesReady, isMswStarted, showBoundary, onLoadData, isLoaded, isLoadingRef, setIsLoading, logger]);
+    }, [areModulesRegistered, areModulesReady, isMswStarted, showBoundary, onLoadData, isLoadedRef, setIsLoaded, logger]);
 
-    return isLoaded;
+    return isLoadedRef.current;
 }
 
 function useLoadProtectedData(areModulesRegistered: boolean, areModulesReady: boolean, isMswStarted: boolean, isActiveRouteProtected: boolean, onLoadData?: OnLoadProtectedDataFunction) {
+    // Using a ref to prevent re-rendering twice when the data is loaded as the consumer will store the data in the state which will already trigger a re-render.
     // Initialize as loaded if no handler is provided to load the protected data.
-    const [isLoaded, setIsLoaded] = useState(!onLoadData);
-    const [isLoadingRef, setIsLoading] = useRefState(false);
+    const [isLoadedRef, setIsLoaded] = useRefState(!onLoadData);
 
-    const logger = useLogger();
+    const logger = useLogOnceLogger();
 
     const { showBoundary } = useErrorBoundary<Error>();
 
@@ -70,13 +76,13 @@ function useLoadProtectedData(areModulesRegistered: boolean, areModulesReady: bo
         if (onLoadData) {
             if ((areModulesRegistered || areModulesReady) && isMswStarted) {
                 if (isActiveRouteProtected) {
-                    if (!isLoaded && !isLoadingRef.current) {
-                        // Make sure a re-render doesn't cause the data to be loaded twice if the promise hasn't resolved yet.
-                        setIsLoading(true);
+                    if (!isLoadedRef.current) {
+                        // Prevent logging twice because of React strict mode.
+                        logger.debugOnce("loading-protected-data", `[shell] Loading protected data as "${location.pathname}" is a protected route.`);
 
-                        logger.debug(`[shell] Loading protected data as "${location.pathname}" is a protected route.`);
+                        const abortController = new AbortController();
 
-                        const result = onLoadData();
+                        const result = onLoadData(abortController.signal);
 
                         if (!isPromise(result)) {
                             throw Error("[squide] An AppRouter onLoadProtectedData handler must return a promise object.");
@@ -85,23 +91,30 @@ function useLoadProtectedData(areModulesRegistered: boolean, areModulesReady: bo
                         result
                             .then(() => {
                                 setIsLoaded(true);
-                                setIsLoading(false);
 
-                                logger.debug("[shell] Protected data has been loaded.");
+                                // Prevent logging twice because of React strict mode.
+                                logger.debugOnce("protected-data-loaded", "[shell] Protected data has been loaded.");
                             })
                             .catch(error => {
-                                setIsLoading(true);
                                 showBoundary(error);
                             });
+
+                        return () => {
+                            // eslint-disable-next-line react-hooks/exhaustive-deps
+                            if (!isLoadedRef.current) {
+                                abortController.abort();
+                            }
+                        };
                     }
                 } else {
-                    logger.debug(`[shell] Not loading protected data as "${location.pathname}" is a public route.`);
+                    // Prevent logging twice because of React strict mode.
+                    logger.debugOnce("is-a-public-route", `[shell] Not loading protected data as "${location.pathname}" is a public route.`);
                 }
             }
         }
-    }, [areModulesRegistered, areModulesReady, isMswStarted, isActiveRouteProtected, showBoundary, onLoadData, isLoaded, isLoadingRef, setIsLoading, logger]);
+    }, [areModulesRegistered, areModulesReady, isMswStarted, isActiveRouteProtected, showBoundary, onLoadData, isLoadedRef, setIsLoaded, logger]);
 
-    return isLoaded;
+    return isLoadedRef.current;
 }
 
 interface BootstrappingRouteProps {

@@ -22,7 +22,9 @@ A component that sets up and orchestrate Squide federated primitives with a Reac
 - `errorElement`: A React element to render when there's an unmanaged error during the bootstrapping of the application.
 - `waitForMsw`: Whether or not the application bootstrapping sequence should wait for MSW to be started before loading the data and rendering the active route.
 - `onLoadPublicData`: An optional handler to load the initial public data after the **modules are registered** and **MSW is started** (if enabled). This handler is called the first time a user navigate to a [public route](../runtime/runtime-class.md#register-a-public-route). Such public data could include feature flags.
+    - `signal`: An [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal) to cancel the previous HTTP request when the `onLoadPublicData` handler is called twice due to the `AppRouter` being re-rendered.
 - `onLoadProtectedData`: An optional handler to load the initial protected data after the **modules are registered** and **MSW is started** (if enabled). This handler is called the first time a user navigate to a protected route (any route that has no `$visibility: public` hint). Such protected data could include a user session.
+    - `signal`: An [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal) to cancel the previous HTTP request when the `onLoadPublicData` handler is called twice due to the `AppRouter` being re-rendered.
 - `onCompleteRegistrations`: An optional handler to complete the [deferred registrations](../registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items).
 - `children`: A render function to define a React Router [RouterProvider](https://reactrouter.com/en/main/routers/router-provider) component with the registered routes.
 
@@ -121,7 +123,7 @@ export function App() {
 
 The handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), and the consumer application must handle the loaded public data, as the `AppRouter` component will ignore any data resolved by the returned Promise object.
 
-```tsx !#20,31 host/src/App.tsx
+```tsx !#11,20-22,29,40 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { Loading } from "./Loading.tsx";
@@ -129,12 +131,21 @@ import { ErrorBoundary } from "./ErrorBoundary.tsx";
 import type { FeatureFlags } from "@sample/shared";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void) {
-    const response = await fetch("/api/feature-flags");
-    
-    if (response.ok) {
-        const data = await response.json();
-        setFeatureFlags(data);
+async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void, signal: AbortSignal) {
+    try {
+        const response = await fetch("/api/feature-flags", {
+            signal
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+
+            setFeatureFlags(data);
+        }
+    } catch (error: unknown) {
+        if (!signal.aborted) {
+            throw error;
+        }
     }
 }
 
@@ -143,8 +154,8 @@ export function App() {
     // will be used at a later time.
     const [featureFlags, setFeatureFlags] = useState<FeatureFlags>();
 
-    const handleLoadPublicData = useCallback(() => {
-        return fetchPublicData(setFeatureFlags);
+    const handleLoadPublicData = useCallback((signal: AbortSignal) => {
+        return fetchPublicData(setFeatureFlags, signal);
     }, []);
 
     return (
@@ -162,11 +173,15 @@ export function App() {
 }
 ```
 
+!!!warning
+Don't forget to forward the [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal) to the HTTP client initiating the public data GET request.
+!!!
+
 ### Load protected data
 
 The handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), and the consumer application must handle the loaded protected data, as the `AppRouter` component will ignore any data resolved by the returned Promise object.
 
-```tsx !#26,37 host/src/App.tsx
+```tsx !#11,25-27,34,45 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { Loading } from "./Loading.tsx";
@@ -174,18 +189,26 @@ import { ErrorBoundary } from "./ErrorBoundary.tsx";
 import type { Session } from "@sample/shared";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-async function fetchProtectedData(setSession: (session: Session) => void) {
-    const response = await fetch("/api/session");
-    
-    if (response.ok) {
-        const data = await response.json();
-
-        setSession({
-            user: {
-                id: data.userId,
-                name: data.username
-            }
+async function fetchProtectedData(setSession: (session: Session) => void, signal: AbortSignal) {
+    try {
+        const response = await fetch("/api/session"), {
+            signal
         });
+        
+        if (response.ok) {
+            const data = await response.json();
+
+            setSession({
+                user: {
+                    id: data.userId,
+                    name: data.username
+                }
+            });
+        }
+    } catch (error: unknown) {
+        if (!signal.aborted) {
+            throw error;
+        }
     }
 }
 
@@ -194,8 +217,8 @@ export function App() {
     // will be used at a later time.
     const [session, setSession] = useState<Session>();
 
-    const handleLoadProtectedData = useCallback(() => {
-        return fetchProtectedData(setSession);
+    const handleLoadProtectedData = useCallback((signal: AbortSignal) => {
+        return fetchProtectedData(setSession, signal);
     }, []);
 
     return (
@@ -213,11 +236,15 @@ export function App() {
 }
 ```
 
+!!!warning
+Don't forget to forward the [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal) to the HTTP client initiating the public data GET request.
+!!!
+
 ### Complete deferred registrations
 
 For more information about deferred registrations, refer to the [registerRemoteModules](../registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) and [completeModuleRegistrations](../registration/completeModuleRegistrations.md) documentation.
 
-```tsx !#29-31,40 host/src/App.tsx
+```tsx !#38-40,49 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { completeModuleRegistrations } from "@squide/webpack-module-federation";
@@ -226,12 +253,21 @@ import { ErrorBoundary } from "./ErrorBoundary.tsx";
 import type { FeatureFlags } from "@sample/shared";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void) {
-    const response = await fetch("/api/feature-flags");
-    
-    if (response.ok) {
-        const data = await response.json();
-        setFeatureFlags(data);
+async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void, signal: AbortSignal) {
+    try {
+        const response = await fetch("/api/feature-flags", {
+            signal
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            
+            setFeatureFlags(data);
+        }
+    } catch (error: unknown) {
+        if (!signal.aborted) {
+            throw error;
+        }
     }
 }
 
@@ -240,8 +276,8 @@ export function App() {
     // will be used to complete the deferred registrations.
     const [featureFlags, setFeatureFlags] = useState<FeatureFlags>();
 
-    const handleLoadPublicData = useCallback(() => {
-        return fetchPublicData(setFeatureFlags);
+    const handleLoadPublicData = useCallback((signal: AbortSignal) => {
+        return fetchPublicData(setFeatureFlags, signal);
     }, []);
 
     const handleCompleteRegistrations = useCallback(() => {
@@ -266,32 +302,3 @@ export function App() {
     );
 }
 ```
-
-<!-- ### Specify additional router options
-
-```tsx !#17-19 host/src/App.tsx
-import { AppRouter } from "@squide/firefly";
-import { Loading } from "./Loading.tsx";
-import { ErrorBoundary } from "./ErrorBoundary.tsx";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-
-export function App() {
-    return (
-        <AppRouter
-            fallbackElement={<Loading />}
-            errorElement={<ErrorBoundary />}
-            waitForMsw={true}
-        >
-            {(routes, providerProps) => (
-                <RouterProvider
-                    {...providerProps}
-                    router={createBrowserRouter(routes)}
-                    future={{ 
-                        v7_startTransition: true
-                    }}
-                />
-            )}
-        </AppRouter>
-    );
-}
-``` -->

@@ -81,29 +81,38 @@ Ensure that the shared project is configured as a [shared dependency](./add-a-sh
 
 Finally, open the host application code and update the `App` component to utilize the `AppRouter` component's `onLoadPublicData` handler to fetch the feature flags data:
 
-```tsx !#21-23,26,28 host/src/App.tsx
+```tsx !#30-32,35,37 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { FeatureFlagsContext, type FeatureFlags } from "@sample/shared";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void) {
-    const response = await fetch("/api/feature-flags");
-    const data = await response.json();
+async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void, signal: AbortSignal) {
+    try {
+        const response = await fetch("/api/feature-flags", {
+            signal
+        });
 
-    const featureFlags: FeatureFlags = {
-        featureA: data.featureA,
-        featureB: data.featureB
-    };
+        const data = await response.json();
 
-    setFeatureFlags(featureFlags);
+        const featureFlags: FeatureFlags = {
+            featureA: data.featureA,
+            featureB: data.featureB
+        };
+
+        setFeatureFlags(featureFlags);
+    } catch (error: unknown) {
+        if (!signal.aborted) {
+            throw error;
+        }
+    }
 }
 
 export function App() {
     const [featureFlags, setFeatureFlags] = useState<FeatureFlags>();
 
-    const handleLoadPublicData = useCallback(() => {
-        return fetchPublicData(setFeatureFlags);
+    const handleLoadPublicData = useCallback((signal: AbortSignal) => {
+        return fetchPublicData(setFeatureFlags, signal);
     }, []);
 
     return (
@@ -200,22 +209,28 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
 
 Finally, open the host application code again and update the `App` component to utilize the `AppRouter` component's `onCompleteRegistrations` handler to [complete the module registrations](../reference/registration/completeRemoteModuleRegistrations.md) with the feature flags:
 
-```tsx !#27-32,38 host/src/App.tsx
+```tsx !#33-38,44 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter, useRuntime, completeModuleRegistrations } from "@squide/firefly";
 import { FeatureFlagsContext, type FeatureFlags } from "@sample/shared";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void) {
-    const response = await fetch("/api/feature-flags");
-    const data = await response.json();
+async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void, signal: AbortSignal) {
+    try {
+        const response = await fetch("/api/feature-flags");
+        const data = await response.json();
 
-    const featureFlags: FeatureFlags = {
-        featureA: data.featureA,
-        featureB: data.featureB
-    };
+        const featureFlags: FeatureFlags = {
+            featureA: data.featureA,
+            featureB: data.featureB
+        };
 
-    setFeatureFlags(featureFlags);
+        setFeatureFlags(featureFlags);
+    } catch (error: unknown) {
+        if (!signal.aborted) {
+            throw error;
+        }
+    }
 }
 
 export function App() {
@@ -223,8 +238,8 @@ export function App() {
 
     const runtime = useRuntime();
 
-    const handleLoadPublicData = useCallback(() => {
-        return fetchPublicData(setFeatureFlags);
+    const handleLoadPublicData = useCallback((signal: AbortSignal) => {
+        return fetchPublicData(setFeatureFlags, signal);
     }, []);
 
     const handleCompleteRegistrations = useCallback(() => {

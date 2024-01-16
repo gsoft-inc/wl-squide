@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758041665711">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758735139206">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.758041665711" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.758735139206" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.758735139206" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.758041665711" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.758735139206" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.758735139206" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -799,19 +799,17 @@ export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, {
 <p>To implement this strategy, use the <a href="../../reference/i18next/usechangelanguage/">useChangeLanguage</a> hook and the <a href="../../reference/routing/approuter/#load-protected-data">onLoadProtectedData</a> handler of the <a href="../../reference/routing/approuter/">AppRouter</a> component:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="10,20"><code v-pre class="language-tsx">import { AppRouter } from &quot;@squide/firefly&quot;;
+<pre class="language-tsx" data-line="18,35,37-39,46-47"><code v-pre class="language-tsx">import { AppRouter } from &quot;@squide/firefly&quot;;
 import { useChangeLanguage, useI18nextInstance } from &quot;@squide/i18next&quot;;
 import { useCallback } from &quot;react&quot;;
 import { useTranslation } from &quot;react-i18next&quot;;
+import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
 
-export function App() {
-    const i18nextInstance = useI18nextInstance(&quot;host&quot;);
-    const { t } = useTranslation(&quot;App&quot;, { i18n: useI18nextInstance });
-
-    const changeLanguage = useChangeLanguage();
-
-    const handleLoadProtectedData = useCallback(async () =&gt; {
-        const response = await fetch(&quot;/api/session&quot;);
+async function fetchProtectedData(changeLanguage: (language: string) =&gt; void, setIsSessionLoaded: (isLoaded: boolean) =&gt; void, signal: AbortSignal) {
+    try {
+        const response = await fetch(&quot;/api/session&quot;, {
+            signal
+        });
         
         if (response.ok) {
             const session = await response.json();
@@ -819,7 +817,26 @@ export function App() {
             // When the session has been retrieved, change the displayed language to match
             // the preferred language setting.
             changeLanguage(session.preferredLanguage);
+
+            setIsSessionLoaded(true);
         }
+    } catch (error: unknown) {
+        if (!signal.aborted) {
+            throw error;
+        }
+    }
+}
+
+export function App() {
+    const [isSessionLoaded, setIsSessionLoaded] = useState(false);
+
+    const i18nextInstance = useI18nextInstance(&quot;host&quot;);
+    const { t } = useTranslation(&quot;App&quot;, { i18n: useI18nextInstance });
+
+    const changeLanguage = useChangeLanguage();
+
+    const handleLoadProtectedData = useCallback((signal: AbortSignal) =&gt; {
+        return fetchProtectedData(changeLanguage, setIsSessionLoaded, signal);
     }, [changeLanguage]);
 
     return (
@@ -828,7 +845,12 @@ export function App() {
             errorElement={&lt;div&gt;{t(&quot;errorMessage&quot;)}&lt;/div&gt;}
             waitForMsw={false}
             onLoadProtectedData={handleLoadProtectedData}
-        /&gt;
+            isProtectedDataLoaded={isSessionLoaded}
+        &gt;
+            {(routes, providerProps) =&gt; (
+                &lt;RouterProvider router={createBrowserRouter(routes)} {...providerProps} /&gt;
+            )}
+        &lt;/AppRouter&gt;
     );
 }</code></pre>
 </doc-codeblock></div>

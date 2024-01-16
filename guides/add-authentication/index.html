@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758041665711">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758735139206">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.758041665711" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.758735139206" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.758735139206" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.758041665711" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.758735139206" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.758735139206" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -653,34 +653,74 @@ export const requestHandlers: HttpHandler[] = [
 <p>Then, update the host application <code v-pre>App</code> component to load the session when a user navigate to a protected page for the first time:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="15,21"><code v-pre class="language-tsx">import { AppRouter } from &quot;@squide/firefly&quot;;
+<pre class="language-tsx" data-line="20,22,31,33-35,39-40"><code v-pre class="language-tsx">import { AppRouter } from &quot;@squide/firefly&quot;;
 import type { Session } from &quot;@sample/shared&quot;;
 import { sessionManager } from &quot;./session.ts&quot;;
+import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
 
-async function handleLoadProtectedData() {
-    const response = await fetch(&quot;/api/session&quot;);
-    const data = await response.json();
+async function fetchProtectedData(setIsSessionLoaded: (isLoaded: boolean) =&gt; void,signal: AbortSignal) {
+    try {
+        const response = await fetch(&quot;/api/session&quot;, {
+            signal
+        });
 
-    const session: Session = {
-        user: {
-            name: data.username
+        const data = await response.json();
+
+        const session: Session = {
+            user: {
+                name: data.username
+            }
+        };
+
+        sessionManager.setSession(session);
+
+        setIsSessionLoaded(true);
+    } catch (error: unknown) {
+        if (!signal.aborted) {
+            throw error;
         }
-    };
-
-    sessionManager.setSession(session);
+    }
 }
 
 export function App() {
+    const [isSessionLoaded, setIsSessionLoaded] = useState(false);
+
+    const handleLoadProtectedData = useCallback((signal: AbortSignal) =&gt; {
+        return fetchProtectedData(setIsSessionLoaded, signal);
+    }, []);
+
     return (
         &lt;AppRouter
             onLoadProtectedData={handleLoadProtectedData}
+            isProtectedDataLoaded={isSessionLoaded}
             fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
             errorElement={&lt;div&gt;An error occured!&lt;/div&gt;}
             waitForMsw={true}
-        /&gt;
+        &gt;
+            {(routes, providerProps) =&gt; (
+                &lt;RouterProvider router={createBrowserRouter(routes)} {...providerProps} /&gt;
+            )}
+        &lt;/AppRouter&gt;
     );
 }</code></pre>
 </doc-codeblock></div>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>Since the <code v-pre>sessionManager</code> doesn&#x27;t trigger a re-render, a <code v-pre>isSessionLoaded</code> state value is added to trigger a re-render when the session has been loadded.</p>
+        </div>
+    </div>
+</div>
 <doc-anchor-target id="add-an-authentication-boundary">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#add-an-authentication-boundary">#</doc-anchor-trigger>
@@ -784,7 +824,7 @@ export const requestHandlers: HttpHandler[] = [
 <p>Then, introduce a new <code v-pre>AuthenticatedLayout</code> displaying the name of the logged-in user along with a logout button:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/AuthenticatedLayout.tsx</div>
-<pre class="language-tsx" data-line="39,41-58,70,73"><code v-pre class="language-tsx">import { useCallback, type ReactNode, type MouseEvent, type HTMLButtonElement } from &quot;react&quot;;
+<pre class="language-tsx" data-line="41,43-60,72,75"><code v-pre class="language-tsx">import { useCallback, type ReactNode, type MouseEvent, type HTMLButtonElement } from &quot;react&quot;;
 import { Link, Outlet, navigate } from &quot;react-router-dom&quot;;
 import { 
     useNavigationItems,
@@ -802,6 +842,8 @@ const renderItem: RenderItemFunction = (item, index, level) =&gt; {
     if (!isNavigationLink(item)) {
         return null;
     }
+
+    const { label, linkProps, additionalProps } = item;
 
     return (
         &lt;li key={`${level}-${index}`}&gt;

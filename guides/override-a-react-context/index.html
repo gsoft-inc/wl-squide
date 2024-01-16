@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758041665711">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758735139206">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.758041665711" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.758735139206" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.758735139206" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.758041665711" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.758735139206" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.758735139206" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -309,8 +309,9 @@
 <p>Let&#x27;s explore a simple example using a <code v-pre>BackgroundColorContext</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="6,12"><code v-pre class="language-tsx">import { AppRouter } from &quot;@squide/firefly&quot;;
+<pre class="language-tsx" data-line="7"><code v-pre class="language-tsx">import { AppRouter } from &quot;@squide/firefly&quot;;
 import { BackgroundColorContext } from &quot;@sample/shared&quot;;
+import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
 
 export function App() {
     return (
@@ -319,7 +320,11 @@ export function App() {
                 fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
                 errorElement={&lt;div&gt;An error occured!&lt;/div&gt;}
                 waitForMsw={false}
-            /&gt;
+            &gt;
+                {(routes, providerProps) =&gt; (
+                    &lt;RouterProvider router={createBrowserRouter(routes)} {...providerProps} /&gt;
+                )}
+            &lt;/AppRouter&gt;
         &lt;/BackgroundColorContext.Provider&gt;
     );
 }</code></pre>
@@ -413,8 +418,9 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&
 <p>Let&#x27;s consider a more specific use case where the host application declares a <code v-pre>ThemeContext</code> from Workleap&#x27;s new design system, <a href="https://hopper.workleap.design/" class="outbound" target="_blank">Hopper</a>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="6,12"><code v-pre class="language-tsx">import { AppRouter } from &quot;@squide/firefly&quot;;
+<pre class="language-tsx" data-line="7"><code v-pre class="language-tsx">import { AppRouter } from &quot;@squide/firefly&quot;;
 import { ThemeContext } from &quot;@hopper/components&quot;;
+import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
 
 export function App() {
     return (
@@ -423,7 +429,11 @@ export function App() {
                 fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
                 errorElement={&lt;div&gt;An error occured!&lt;/div&gt;}
                 waitForMsw={false}
-            /&gt;
+            &gt;
+                {(routes, providerProps) =&gt; (
+                    &lt;RouterProvider router={createBrowserRouter(routes)} {...providerProps} /&gt;
+                )}
+            &lt;/AppRouter&gt;
         &lt;/ThemeContext.Provider&gt;
     );
 }</code></pre>

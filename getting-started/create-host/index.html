@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758041665711">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758735139206">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.758041665711" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.758735139206" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.758735139206" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.758041665711" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.758735139206" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.758735139206" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -438,10 +438,11 @@ root.render(
     &lt;/RuntimeContext.Provider&gt;
 );</code></pre>
 </doc-codeblock></div>
-<p>Then, render the <a href="../../reference/routing/approuter/">AppRouter</a> component. The <code v-pre>AppRouter</code> component will render a React Router <a href="https://reactrouter.com/en/main/routers/create-browser-router" class="outbound" target="_blank">browser instance</a> configured with the registered routes:</p>
+<p>Then, render the <a href="../../reference/routing/approuter/">AppRouter</a> component to define a React Router <a href="https://reactrouter.com/en/main/routers/create-browser-router" class="outbound" target="_blank">browser instance</a> configured with the registered routes:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
 <pre class="language-tsx"><code v-pre class="language-tsx">import { AppRouter } from &quot;@squide/firefly&quot;;
+import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
 
 export function App() {
     return (
@@ -449,7 +450,11 @@ export function App() {
             fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
             errorElement={&lt;div&gt;An error occured!&lt;/div&gt;}
             waitForMsw={false}
-        /&gt;
+        &gt;
+            {(routes, providerProps) =&gt; (
+                &lt;RouterProvider router={createBrowserRouter(routes)} {...providerProps} /&gt;
+            )}
+        &lt;/AppRouter&gt;
     );
 }</code></pre>
 </doc-codeblock></div>
@@ -470,7 +475,7 @@ import {
     isNavigationLink,
     type RenderItemFunction,
     type RenderSectionFunction
-} from &quot;@squide/react-router&quot;;
+} from &quot;@squide/firefly&quot;;
 
 const renderItem: RenderItemFunction = (item, index, level) =&gt; {
     // To keep thing simple, this sample doesn't support nested navigation items.
@@ -479,6 +484,8 @@ const renderItem: RenderItemFunction = (item, index, level) =&gt; {
     if (!isNavigationLink(item)) {
         return null;
     }
+
+    const { label, linkProps, additionalProps } = item;
 
     return (
         &lt;li key={`${level}-${index}`}&gt;

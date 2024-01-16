@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758041665711">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758735139206">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.758041665711" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.758735139206" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.758735139206" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.758041665711" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.758041665711" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.758735139206" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.758735139206" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -431,32 +431,47 @@ export function useFetchCount() {
 <p>Finally, open the host application code and update the <code v-pre>App</code> component to utilize the <code v-pre>AppRouter</code> component&#x27;s <a href="../../reference/routing/approuter/#load-public-data">onLoadPublicData</a> handler. This handler will fetch the count and forward the retrieved value through <code v-pre>FetchCountContext</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="13,15-17,20,22"><code v-pre class="language-tsx">import { useState, useCallback } from &quot;react&quot;;
+<pre class="language-tsx" data-line="9,16-18,23,25-27,30,32,33"><code v-pre class="language-tsx">import { useState, useCallback } from &quot;react&quot;;
 import { AppRouter } from &quot;@squide/firefly&quot;;
 import { FetchCountContext } from &quot;@sample/shared&quot;;
+import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
 
-async function fetchPublicData(setFetchCount: (fetchCount: number) =&gt; void) {
-    const response = await fetch(&quot;/api/count&quot;);
-    const data = await response.json();
+async function fetchPublicData(setFetchCount: (fetchCount: number) =&gt; void, signal: AbortSignal) {
+    try {
+        const response = await fetch(&quot;/api/count&quot;, {
+            signal
+        });
 
-    setFetchCount(data.count);
+        const data = await response.json();
+
+        setFetchCount(data.count);
+    } catch (error: unknown) {
+        if (!signal.aborted) {
+            throw error;
+        }
+    }
 }
 
 export function App() {
     const [fetchCount, setFetchCount] = useState(0);
 
-    const handleLoadPublicData = useCallback(() =&gt; {
-        return fetchPublicData(setFetchCount);
+    const handleLoadPublicData = useCallback((signal: AbortSignal) =&gt; {
+        return fetchPublicData(setFetchCount, signal);
     }, []);
 
     return (
         &lt;FetchCountContext.Provider value={fetchCount}&gt;
             &lt;AppRouter
                 onLoadPublicData={handleLoadPublicData}
+                isPublicDataLoaded={!!fetchCount}
                 fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
                 errorElement={&lt;div&gt;An error occured!&lt;/div&gt;}
                 waitForMsw={true}
-            /&gt;
+            &gt;
+                {(routes, providerProps) =&gt; (
+                    &lt;RouterProvider router={createBrowserRouter(routes)} {...providerProps} /&gt;
+                )}
+            &lt;/AppRouter&gt;
         &lt;/FetchCountContext.Provider&gt;
     );
 }</code></pre>
@@ -474,7 +489,41 @@ export function App() {
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
+<p>The <code v-pre>onLoadPublicData</code> handler receives as first argument an <a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal" class="outbound" target="_blank">AbortSignal</a> that should be forwarded to the HTTP client initiating the public data GET request. The signal will cancel the previous HTTP request when the <code v-pre>onLoadPublicData</code> handler is called twice due to the <code v-pre>AppRouter</code> being re-rendered.</p>
+        </div>
+    </div>
+</div>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
 <p>The <code v-pre>onLoadPublicData</code> handler must return a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="outbound" target="_blank">Promise</a> object. When the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" class="outbound" target="_blank">async</a> keyword is included in a function signature, the function will automatically return a <code v-pre>Promise</code> object.</p>
+        </div>
+    </div>
+</div>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>The <code v-pre>isPublicDataLoaded</code> must be provided to indicate whether or not the public data loading is completed.</p>
         </div>
     </div>
 </div>
@@ -666,38 +715,57 @@ export function useSubscription() {
 <p>Finally, open the host application code and update the <code v-pre>App</code> component to utilize the <code v-pre>AppRouter</code> component&#x27;s <code v-pre>onLoadProtectedData</code> handler. This handler will fetch the user tenant subscription and forward the retrieved value through <code v-pre>SubscriptionContext</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="25,31-33,37,40"><code v-pre class="language-tsx">import { useState, useCallback } from &quot;react&quot;;
+<pre class="language-tsx" data-line="25,36-38,44,50-52,56,59,61"><code v-pre class="language-tsx">import { useState, useCallback } from &quot;react&quot;;
 import { AppRouter } from &quot;@squide/firefly&quot;;
 import { FetchCountContext, SubscriptionContext, type Subscription } from &quot;@sample/shared&quot;;
+import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
 
-async function fetchPublicData(setFetchCount: (fetchCount: number) =&gt; void) {
-    const response = await fetch(&quot;/api/count&quot;);
-    const data = await response.json();
+async function fetchPublicData(setFetchCount: (fetchCount: number) =&gt; void, signal: AbortSignal) {
+    try {
+        const response = await fetch(&quot;/api/count&quot;, {
+            signal
+        });
 
-    setFetchCount(data.count);
+        const data = await response.json();
+
+        setFetchCount(data.count);
+    } catch (error: unknown) {
+        if (!signal.aborted) {
+            throw error;
+        }
+    }
 }
 
-async function fetchProtectedData(setSubscription: (subscription: Subscription) =&gt; void) {
-    const response = await fetch(&quot;/api/subscription&quot;);
-    const data = await response.json();
+async function fetchProtectedData(setSubscription: (subscription: Subscription) =&gt; void, signal: AbortSignal) {
+    try {
+        const response = await fetch(&quot;/api/subscription&quot;, {
+            signal
+        });
 
-    const subscription: Subscription = {
-        status: data.status
-    };
+        const data = await response.json();
 
-    setSubscription(subscription);
+        const subscription: Subscription = {
+            status: data.status
+        };
+
+        setSubscription(subscription);
+    } catch (error: unknown) {
+        if (!signal.aborted) {
+            throw error;
+        }
+    }
 }
 
 export function App() {
     const [fetchCount, setFetchCount] = useState(0);
     const [subscription, setSubscription] = useState&lt;Subscription&gt;();
 
-    const handleLoadPublicData = useCallback(() =&gt; {
-        return fetchPublicData(setFetchCount);
+    const handleLoadPublicData = useCallback((signal: AbortController) =&gt; {
+        return fetchPublicData(setFetchCount, signal);
     }, []);
 
-    const handleLoadProtectedData = useCallback(() =&gt; {
-        return fetchProtectedData(setSubscription);
+    const handleLoadProtectedData = useCallback((signal: AbortController) =&gt; {
+        return fetchProtectedData(setSubscription, signal);
     }, []);
 
     return (
@@ -706,15 +774,72 @@ export function App() {
                 &lt;AppRouter
                     onLoadPublicData={handleLoadPublicData}
                     onLoadProtectedData={handleLoadProtectedData}
+                    isPublicDataLoaded={!!fetchCount}
+                    isProtectedDataLoaded={!!subscription}
                     fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
                     errorElement={&lt;div&gt;An error occured!&lt;/div&gt;}
                     waitForMsw={true}
-                /&gt;
+                &gt;
+                    {(routes, providerProps) =&gt; (
+                        &lt;RouterProvider router={createBrowserRouter(routes)} {...providerProps} /&gt;
+                    )}
+                &lt;/AppRouter&gt;
             &lt;SubscriptionContext.Provider /&gt;
         &lt;/FetchCountContext.Provider&gt;
     );
 }</code></pre>
 </doc-codeblock></div>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>The <code v-pre>onLoadProtectedData</code> handler receives as first argument an <a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal" class="outbound" target="_blank">AbortSignal</a> that should be forwarded to the HTTP client initiating the public data GET request. The signal will cancel the previous HTTP request when the <code v-pre>onLoadProtectedData</code> handler is called twice due to the <code v-pre>AppRouter</code> being re-rendered.</p>
+        </div>
+    </div>
+</div>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>The <code v-pre>onLoadProtectedData</code> handler must return a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="outbound" target="_blank">Promise</a> object. When the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" class="outbound" target="_blank">async</a> keyword is included in a function signature, the function will automatically return a <code v-pre>Promise</code> object.</p>
+        </div>
+    </div>
+</div>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>The <code v-pre>isProtectedDataLoaded</code> must be provided to indicate whether or not the protected data loading is completed.</p>
+        </div>
+    </div>
+</div>
 <doc-anchor-target id="use-the-endpoint-data-1">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#use-the-endpoint-data-1">#</doc-anchor-trigger>

@@ -1,5 +1,4 @@
 export * from "./shared/assertions.ts";
-export * from "./shared/useRefState.ts";
 
 export * from "./runtime/RuntimeContext.ts";
 export * from "./runtime/RuntimeLogger.ts";

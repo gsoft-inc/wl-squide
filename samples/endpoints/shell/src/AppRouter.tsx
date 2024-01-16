@@ -140,6 +140,8 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
                         waitForMsw={waitForMsw}
                         onLoadPublicData={handleLoadPublicData}
                         onLoadProtectedData={handleLoadProtectedData}
+                        isPublicDataLoaded={!!featureFlags}
+                        isProtectedDataLoaded={!!sessionManager.getSession() && !!subscription}
                         onCompleteRegistrations={handleCompleteRegistrations}
                     >
                         {(routes, providerProps) => (

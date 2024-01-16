@@ -3,12 +3,12 @@
 
 import { RuntimeContext, __resetLocalModuleRegistrations, registerLocalModules } from "@squide/core";
 import { __resetMswStatus, setMswAsStarted } from "@squide/msw";
-import { ReactRouterRuntime } from "@squide/react-router";
 import { completeModuleRegistrations } from "@squide/webpack-module-federation";
 import { render, screen } from "@testing-library/react";
 import type { ReactElement, ReactNode } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { AppRouter, type AppRouterProps } from "../src/AppRouter.tsx";
+import { FireflyRuntime } from "../src/fireflyRuntime.tsx";
 
 function Loading() {
     return (
@@ -36,7 +36,7 @@ function createAppRouter(props: Omit<AppRouterProps, "fallbackElement" | "errorE
     );
 }
 
-function renderWithRuntime(runtime: ReactRouterRuntime, ui: ReactElement) {
+function renderWithRuntime(runtime: FireflyRuntime, ui: ReactElement) {
     return render(ui, {
         wrapper: ({ children }: { children?: ReactNode }) => {
             return (
@@ -54,7 +54,7 @@ beforeEach(() => {
 });
 
 test("when no data handlers are provided, msw is disabled, there's no deferred registrations, and modules are not registered yet, render the fallback", async () => {
-    const runtime = new ReactRouterRuntime();
+    const runtime = new FireflyRuntime();
 
     // Must add at least a route otherwise useRouteMatchProtected will throw.
     runtime.registerRoute({
@@ -75,7 +75,7 @@ test("when no data handlers are provided, msw is disabled, there's no deferred r
 });
 
 test("when no data handlers are provided, msw is disabled, there's no deferred registrations, and modules are registered, render the router", async () => {
-    const runtime = new ReactRouterRuntime();
+    const runtime = new FireflyRuntime();
 
     // Must add at least a route otherwise useRouteMatchProtected will throw.
     runtime.registerRoute({
@@ -102,7 +102,7 @@ test("when no data handlers are provided, msw is disabled, there's no deferred r
 });
 
 test("when no data handlers are provided, msw is disabled, modules are registered but there's uncompleted deferred registrations, render the fallback", async () => {
-    const runtime = new ReactRouterRuntime();
+    const runtime = new FireflyRuntime();
 
     // Must add at least a route otherwise useRouteMatchProtected will throw.
     runtime.registerRoute({
@@ -122,7 +122,7 @@ test("when no data handlers are provided, msw is disabled, modules are registere
 });
 
 test("when a onLoadPublicData handler is provided and the public data is not loaded, render the fallback", async () => {
-    const runtime = new ReactRouterRuntime();
+    const runtime = new FireflyRuntime();
 
     // Must add at least a route otherwise useRouteMatchProtected will throw.
     runtime.registerRoute({
@@ -138,6 +138,7 @@ test("when a onLoadPublicData handler is provided and the public data is not loa
     renderWithRuntime(runtime, createAppRouter({
         // Never resolving Promise object.
         onLoadPublicData: () => new Promise(() => {}),
+        isPublicDataLoaded: false,
         waitForMsw: false
     }));
 
@@ -145,7 +146,7 @@ test("when a onLoadPublicData handler is provided and the public data is not loa
 });
 
 test("when a onLoadPublicData handler is provided and the public data is loaded, render the router", async () => {
-    const runtime = new ReactRouterRuntime();
+    const runtime = new FireflyRuntime();
 
     runtime.registerRoute({
         $visibility: "public",
@@ -157,8 +158,17 @@ test("when a onLoadPublicData handler is provided and the public data is loaded,
 
     await registerLocalModules([() => {}], runtime);
 
-    renderWithRuntime(runtime, createAppRouter({
-        onLoadPublicData: () => Promise.resolve(),
+    const handleLoadPublicData = () => Promise.resolve();
+
+    const { rerender } = renderWithRuntime(runtime, createAppRouter({
+        onLoadPublicData: handleLoadPublicData,
+        isPublicDataLoaded: false,
+        waitForMsw: false
+    }));
+
+    rerender(createAppRouter({
+        onLoadPublicData: handleLoadPublicData,
+        isPublicDataLoaded: true,
         waitForMsw: false
     }));
 
@@ -166,7 +176,7 @@ test("when a onLoadPublicData handler is provided and the public data is loaded,
 });
 
 test("when a onLoadProtectedData handler is provided and the protected data is not loaded, render the fallback", async () => {
-    const runtime = new ReactRouterRuntime();
+    const runtime = new FireflyRuntime();
 
     // Must add at least a route otherwise React Router complains the router has no routes.
     runtime.registerRoute({
@@ -181,6 +191,7 @@ test("when a onLoadProtectedData handler is provided and the protected data is n
     renderWithRuntime(runtime, createAppRouter({
         // Never resolving Promise object.
         onLoadProtectedData: () => new Promise(() => {}),
+        isProtectedDataLoaded: false,
         waitForMsw: false
     }));
 
@@ -188,7 +199,7 @@ test("when a onLoadProtectedData handler is provided and the protected data is n
 });
 
 test("when a onLoadProtectedData handler is provided and the protected data is loaded, render the router", async () => {
-    const runtime = new ReactRouterRuntime();
+    const runtime = new FireflyRuntime();
 
     runtime.registerRoute({
         index: true,
@@ -199,8 +210,17 @@ test("when a onLoadProtectedData handler is provided and the protected data is l
 
     await registerLocalModules([() => {}], runtime);
 
-    renderWithRuntime(runtime, createAppRouter({
-        onLoadProtectedData: () => Promise.resolve(),
+    const handleLoadProtectedData = () => Promise.resolve();
+
+    const { rerender } = renderWithRuntime(runtime, createAppRouter({
+        onLoadProtectedData: handleLoadProtectedData,
+        isProtectedDataLoaded: false,
+        waitForMsw: false
+    }));
+
+    rerender(createAppRouter({
+        onLoadProtectedData: handleLoadProtectedData,
+        isProtectedDataLoaded: true,
         waitForMsw: false
     }));
 
@@ -208,7 +228,7 @@ test("when a onLoadProtectedData handler is provided and the protected data is l
 });
 
 test("when msw is enabled and msw is not started, render the fallback", async () => {
-    const runtime = new ReactRouterRuntime();
+    const runtime = new FireflyRuntime();
 
     // Must add at least a route otherwise React Router complains the router has no routes.
     runtime.registerRoute({
@@ -228,7 +248,7 @@ test("when msw is enabled and msw is not started, render the fallback", async ()
 });
 
 test("when msw is enabled and msw is started, render the router", async () => {
-    const runtime = new ReactRouterRuntime();
+    const runtime = new FireflyRuntime();
 
     runtime.registerRoute({
         index: true,
@@ -249,7 +269,7 @@ test("when msw is enabled and msw is started, render the router", async () => {
 });
 
 test("when a onCompleteRegistrations handler is provided and there's no deferred registrations, render the router", async () => {
-    const runtime = new ReactRouterRuntime();
+    const runtime = new FireflyRuntime();
 
     runtime.registerRoute({
         index: true,
@@ -269,7 +289,7 @@ test("when a onCompleteRegistrations handler is provided and there's no deferred
 });
 
 test("when a onCompleteRegistrations handler is provided and the deferred registrations are not completed, render the fallback", async () => {
-    const runtime = new ReactRouterRuntime();
+    const runtime = new FireflyRuntime();
 
     // Must add at least a route otherwise React Router complains the router has no routes.
     runtime.registerRoute({
@@ -291,7 +311,7 @@ test("when a onCompleteRegistrations handler is provided and the deferred regist
 });
 
 test("when a onCompleteRegistrations handler is provided and the deferred registrations are completed, render the router", async () => {
-    const runtime = new ReactRouterRuntime();
+    const runtime = new FireflyRuntime();
 
     // Must add at least a route otherwise React Router complains the router has no routes.
     runtime.registerRoute({
@@ -329,12 +349,196 @@ test("when a onCompleteRegistrations handler is provided and the deferred regist
     expect(await screen.findByTestId("deferred-route")).toBeInTheDocument();
 });
 
+test("when a onCompleteRegistrations handler is provided and a onLoadPublicData handler is provided, do not complete the deferred registrations and render the route before the public date is loaded", async () => {
+    const runtime = new FireflyRuntime();
+
+    // Must add at least a route otherwise React Router complains the router has no routes.
+    runtime.registerRoute({
+        path: "*",
+        element: <div>A wildcard route</div>
+    }, {
+        hoist: true
+    });
+
+    await registerLocalModules([() => {
+        return () => {
+            runtime.registerRoute({
+                index: true,
+                element: <div data-testid="deferred-route">A deferred route</div>
+            }, {
+                hoist: true
+            });
+        };
+    }], runtime);
+
+    const handleLoadPublicData = () => Promise.resolve();
+
+    const handleCompleteRegistrations = jest.fn(() => {
+        return completeModuleRegistrations(runtime, {});
+    });
+
+    const { rerender } = renderWithRuntime(runtime, createAppRouter({
+        onLoadPublicData: handleLoadPublicData,
+        isPublicDataLoaded: false,
+        onCompleteRegistrations: handleCompleteRegistrations,
+        waitForMsw: false
+    }));
+
+    expect(handleCompleteRegistrations).not.toHaveBeenCalled();
+    expect(await screen.findByTestId("loading")).toBeInTheDocument();
+
+    rerender(createAppRouter({
+        onLoadPublicData: handleLoadPublicData,
+        isPublicDataLoaded: false,
+        onCompleteRegistrations: handleCompleteRegistrations,
+        waitForMsw: false
+    }));
+
+    expect(handleCompleteRegistrations).not.toHaveBeenCalled();
+    expect(await screen.findByTestId("loading")).toBeInTheDocument();
+
+    rerender(createAppRouter({
+        onLoadPublicData: handleLoadPublicData,
+        isPublicDataLoaded: true,
+        onCompleteRegistrations: handleCompleteRegistrations,
+        waitForMsw: false
+    }));
+
+    expect(handleCompleteRegistrations).toHaveBeenCalled();
+    expect(await screen.findByTestId("deferred-route")).toBeInTheDocument();
+});
+
+test("when a onCompleteRegistrations handler is provided and a onLoadProtectedData handler is provided, do not complete the deferred registrations and render the route before the protected date is loaded", async () => {
+    const runtime = new FireflyRuntime();
+
+    // Must add at least a route otherwise React Router complains the router has no routes.
+    runtime.registerRoute({
+        path: "*",
+        element: <div>A wildcard route</div>
+    }, {
+        hoist: true
+    });
+
+    await registerLocalModules([() => {
+        return () => {
+            runtime.registerRoute({
+                index: true,
+                element: <div data-testid="deferred-route">A deferred route</div>
+            }, {
+                hoist: true
+            });
+        };
+    }], runtime);
+
+    const handleLoadProtectedData = () => Promise.resolve();
+
+    const handleCompleteRegistrations = jest.fn(() => {
+        return completeModuleRegistrations(runtime, {});
+    });
+
+    const { rerender } = renderWithRuntime(runtime, createAppRouter({
+        onLoadProtectedData: handleLoadProtectedData,
+        isProtectedDataLoaded: false,
+        onCompleteRegistrations: handleCompleteRegistrations,
+        waitForMsw: false
+    }));
+
+    expect(handleCompleteRegistrations).not.toHaveBeenCalled();
+    expect(await screen.findByTestId("loading")).toBeInTheDocument();
+
+    rerender(createAppRouter({
+        onLoadProtectedData: handleLoadProtectedData,
+        isProtectedDataLoaded: false,
+        onCompleteRegistrations: handleCompleteRegistrations,
+        waitForMsw: false
+    }));
+
+    expect(handleCompleteRegistrations).not.toHaveBeenCalled();
+    expect(await screen.findByTestId("loading")).toBeInTheDocument();
+
+    rerender(createAppRouter({
+        onLoadProtectedData: handleLoadProtectedData,
+        isProtectedDataLoaded: true,
+        onCompleteRegistrations: handleCompleteRegistrations,
+        waitForMsw: false
+    }));
+
+    expect(handleCompleteRegistrations).toHaveBeenCalled();
+    expect(await screen.findByTestId("deferred-route")).toBeInTheDocument();
+});
+
+test("when a onCompleteRegistrations handler is provided and a onLoadPublicData handler is provided, and a onLoadProtectedData handler is provided, do not complete the deferred registrations and render the route before the public and protected date are loaded", async () => {
+    const runtime = new FireflyRuntime();
+
+    // Must add at least a route otherwise React Router complains the router has no routes.
+    runtime.registerRoute({
+        path: "*",
+        element: <div>A wildcard route</div>
+    }, {
+        hoist: true
+    });
+
+    await registerLocalModules([() => {
+        return () => {
+            runtime.registerRoute({
+                index: true,
+                element: <div data-testid="deferred-route">A deferred route</div>
+            }, {
+                hoist: true
+            });
+        };
+    }], runtime);
+
+    const handleLoadPublicData = () => Promise.resolve();
+    const handleLoadProtectedData = () => Promise.resolve();
+
+    const handleCompleteRegistrations = jest.fn(() => {
+        return completeModuleRegistrations(runtime, {});
+    });
+
+    const { rerender } = renderWithRuntime(runtime, createAppRouter({
+        onLoadPublicData: handleLoadPublicData,
+        onLoadProtectedData: handleLoadProtectedData,
+        isPublicDataLoaded: false,
+        isProtectedDataLoaded: false,
+        onCompleteRegistrations: handleCompleteRegistrations,
+        waitForMsw: false
+    }));
+
+    expect(handleCompleteRegistrations).not.toHaveBeenCalled();
+    expect(await screen.findByTestId("loading")).toBeInTheDocument();
+
+    rerender(createAppRouter({
+        onLoadPublicData: handleLoadPublicData,
+        onLoadProtectedData: handleLoadProtectedData,
+        isPublicDataLoaded: true,
+        isProtectedDataLoaded: false,
+        onCompleteRegistrations: handleCompleteRegistrations,
+        waitForMsw: false
+    }));
+
+    expect(handleCompleteRegistrations).not.toHaveBeenCalled();
+    expect(await screen.findByTestId("loading")).toBeInTheDocument();
+
+    rerender(createAppRouter({
+        onLoadPublicData: handleLoadPublicData,
+        onLoadProtectedData: handleLoadProtectedData,
+        isPublicDataLoaded: true,
+        isProtectedDataLoaded: true,
+        onCompleteRegistrations: handleCompleteRegistrations,
+        waitForMsw: false
+    }));
+
+    expect(handleCompleteRegistrations).toHaveBeenCalled();
+    expect(await screen.findByTestId("deferred-route")).toBeInTheDocument();
+});
+
 test("when an error occurs while loading the public data, show the error element", async () => {
     // An error log is expected because it will hit the ErrorBoundary, see: https://github.com/facebook/react/issues/11098.
     const spy = jest.spyOn(console, "error");
     spy.mockImplementation(() => {});
 
-    const runtime = new ReactRouterRuntime();
+    const runtime = new FireflyRuntime();
 
     // Must add at least a route otherwise useRouteMatchProtected will throw.
     runtime.registerRoute({
@@ -349,6 +553,7 @@ test("when an error occurs while loading the public data, show the error element
 
     renderWithRuntime(runtime, createAppRouter({
         onLoadPublicData: () => Promise.reject("Dummy error"),
+        isPublicDataLoaded: false,
         waitForMsw: false
     }));
 
@@ -362,7 +567,7 @@ test("when an error occurs while loading the protected data, show the error elem
     const spy = jest.spyOn(console, "error");
     spy.mockImplementation(() => {});
 
-    const runtime = new ReactRouterRuntime();
+    const runtime = new FireflyRuntime();
 
     // Must add at least a route otherwise useRouteMatchProtected will throw.
     runtime.registerRoute({
@@ -376,6 +581,7 @@ test("when an error occurs while loading the protected data, show the error elem
 
     renderWithRuntime(runtime, createAppRouter({
         onLoadProtectedData: () => Promise.reject("Dummy error"),
+        isProtectedDataLoaded: false,
         waitForMsw: false
     }));
 

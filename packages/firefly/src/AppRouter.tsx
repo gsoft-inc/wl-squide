@@ -2,7 +2,7 @@ import { isNil, useLogOnceLogger } from "@squide/core";
 import { useIsMswStarted } from "@squide/msw";
 import { useIsRouteMatchProtected, useRoutes, type Route } from "@squide/react-router";
 import { useAreModulesReady, useAreModulesRegistered } from "@squide/webpack-module-federation";
-import { cloneElement, useCallback, useEffect, useMemo, type ReactElement, type ReactNode } from "react";
+import { cloneElement, useCallback, useEffect, useMemo, type ReactElement } from "react";
 import { ErrorBoundary, useErrorBoundary } from "react-error-boundary";
 import { Outlet, useLocation, type RouterProviderProps } from "react-router-dom";
 
@@ -172,7 +172,7 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
     );
 }
 
-export type RenderRouterProviderFunction = (routes: Route[], providerProps: Omit<RouterProviderProps, "router">) => ReactNode;
+export type RenderRouterProviderFunction = (routes: Route[], providerProps: Omit<RouterProviderProps, "router">) => ReactElement;
 
 export interface AppRouterProps {
     fallbackElement: ReactElement;

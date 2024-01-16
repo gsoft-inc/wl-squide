@@ -81,38 +81,53 @@ Ensure that the shared project is configured as a [shared dependency](./add-a-sh
 
 Finally, open the host application code and update the `App` component to utilize the `AppRouter` component's `onLoadPublicData` handler to fetch the feature flags data:
 
-```tsx !#20-22,25,27 host/src/App.tsx
+```tsx !#30-32,35,37-38 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { FeatureFlagsContext, type FeatureFlags } from "@sample/shared";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void) {
-    const response = await fetch("/api/feature-flags");
-    const data = await response.json();
+async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void, signal: AbortSignal) {
+    try {
+        const response = await fetch("/api/feature-flags", {
+            signal
+        });
 
-    const featureFlags: FeatureFlags = {
-        featureA: data.featureA,
-        featureB: data.featureB
-    };
+        const data = await response.json();
 
-    setFeatureFlags(featureFlags);
+        const featureFlags: FeatureFlags = {
+            featureA: data.featureA,
+            featureB: data.featureB
+        };
+
+        setFeatureFlags(featureFlags);
+    } catch (error: unknown) {
+        if (!signal.aborted) {
+            throw error;
+        }
+    }
 }
 
 export function App() {
     const [featureFlags, setFeatureFlags] = useState<FeatureFlags>();
 
-    const handleLoadPublicData = useCallback(() => {
-        return fetchPublicData(setFeatureFlags);
+    const handleLoadPublicData = useCallback((signal: AbortSignal) => {
+        return fetchPublicData(setFeatureFlags, signal);
     }, []);
 
     return (
         <FeatureFlagsContext.Provider value={featureFlags}>
             <AppRouter
                 onLoadPublicData={handleLoadPublicData}
+                isPublicDataLoaded={!!featureFlags}
                 fallbackElement={<div>Loading...</div>}
                 errorElement={<div>An error occured!</div>}
                 waitForMsw={true}
-            />
+            >
+                {(routes, providerProps) => (
+                    <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
+                )}
+            </AppRouter>
         <FeatureFlagsContext.Provider />
     );
 }
@@ -139,15 +154,15 @@ export function Page() {
 
 In the previous code sample, the section of the `Page` component will only be rendered if `featureA` is activated.
 
-## Conditionally register a page
+## Conditionally register a route
 
-Now, conditionally registering a page and it's navigation items based on a feature flag is more complex since the default registration mechanism is executed before the application has bootstrapped, meaning that the feature flags has not been fetched yet from the server.
+Now, conditionally registering a route and it's navigation items based on a feature flag is more complex since the default registration mechanism is executed before the application has bootstrapped, meaning that the feature flags has not been fetched yet from the server.
 
 To address this, Squide offers an alternate [deferred registration](../reference/registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) mechanism in two-phases:
 
-1. The first phase allows modules to register their pages and navigation items that are not dependent on initial data.
+1. The first phase allows modules to register their routes and navigation items that are not dependent on initial data.
 
-2. The second phase enables modules to register pages and navigation items that are dependent on initial data. We refer to this second phase as **deferred registrations**.
+2. The second phase enables modules to register routes and navigation items that are dependent on initial data. We refer to this second phase as **deferred registrations**.
 
 To defer a registration to the second phase, a module registration function can **return an anonymous function**. Once the modules are registered and the [completeLocalModuleRegistrations](../reference/registration/completeRemoteModuleRegistrations.md) function is called, the deferred registration functions will be executed.
 
@@ -195,21 +210,28 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
 
 Finally, open the host application code again and update the `App` component to utilize the `AppRouter` component's `onCompleteRegistrations` handler to [complete the module registrations](../reference/registration/completeRemoteModuleRegistrations.md) with the feature flags:
 
-```tsx !#26-31,37 host/src/App.tsx
+```tsx !#33-38,45 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter, useRuntime, completeModuleRegistrations } from "@squide/firefly";
 import { FeatureFlagsContext, type FeatureFlags } from "@sample/shared";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void) {
-    const response = await fetch("/api/feature-flags");
-    const data = await response.json();
+async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void, signal: AbortSignal) {
+    try {
+        const response = await fetch("/api/feature-flags");
+        const data = await response.json();
 
-    const featureFlags: FeatureFlags = {
-        featureA: data.featureA,
-        featureB: data.featureB
-    };
+        const featureFlags: FeatureFlags = {
+            featureA: data.featureA,
+            featureB: data.featureB
+        };
 
-    setFeatureFlags(featureFlags);
+        setFeatureFlags(featureFlags);
+    } catch (error: unknown) {
+        if (!signal.aborted) {
+            throw error;
+        }
+    }
 }
 
 export function App() {
@@ -217,8 +239,8 @@ export function App() {
 
     const runtime = useRuntime();
 
-    const handleLoadPublicData = useCallback(() => {
-        return fetchPublicData(setFeatureFlags);
+    const handleLoadPublicData = useCallback((signal: AbortSignal) => {
+        return fetchPublicData(setFeatureFlags, signal);
     }, []);
 
     const handleCompleteRegistrations = useCallback(() => {
@@ -232,11 +254,16 @@ export function App() {
         <FeatureFlagsContext.Provider value={featureFlags}>
             <AppRouter
                 onLoadPublicData={handleLoadPublicData}
+                isPublicDataLoaded={!!featureFlags}
                 onCompleteRegistrations={handleCompleteRegistrations}
                 fallbackElement={<div>Loading...</div>}
                 errorElement={<div>An error occured!</div>}
                 waitForMsw={true}
-            />
+            >
+                {(routes, providerProps) => (
+                    <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
+                )}
+            </AppRouter>
         <FeatureFlagsContext.Provider />
     );
 }

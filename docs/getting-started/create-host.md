@@ -114,10 +114,11 @@ root.render(
 );
 ```
 
-Then, render the [AppRouter](../reference/routing/appRouter.md) component. The `AppRouter` component will render a React Router [browser instance](https://reactrouter.com/en/main/routers/create-browser-router) configured with the registered routes:
+Then, render the [AppRouter](../reference/routing/appRouter.md) component to define a React Router [browser instance](https://reactrouter.com/en/main/routers/create-browser-router) configured with the registered routes:
 
 ```tsx host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 export function App() {
     return (
@@ -125,7 +126,11 @@ export function App() {
             fallbackElement={<div>Loading...</div>}
             errorElement={<div>An error occured!</div>}
             waitForMsw={false}
-        />
+        >
+            {(routes, providerProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
+            )}
+        </AppRouter>
     );
 }
 ```
@@ -143,7 +148,7 @@ import {
     isNavigationLink,
     type RenderItemFunction,
     type RenderSectionFunction
-} from "@squide/react-router";
+} from "@squide/firefly";
 
 const renderItem: RenderItemFunction = (item, index, level) => {
     // To keep thing simple, this sample doesn't support nested navigation items.
@@ -152,6 +157,8 @@ const renderItem: RenderItemFunction = (item, index, level) => {
     if (!isNavigationLink(item)) {
         return null;
     }
+
+    const { label, linkProps, additionalProps } = item;
 
     return (
         <li key={`${level}-${index}`}>

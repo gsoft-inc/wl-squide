@@ -309,35 +309,62 @@ export const requestHandlers: HttpHandler[] = [
 
 Then, update the host application `App` component to load the session when a user navigate to a protected page for the first time:
 
-```tsx !#15,21 host/src/App.tsx
+```tsx !#20,22,31,33-35,39-40 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
 import type { Session } from "@sample/shared";
 import { sessionManager } from "./session.ts";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-async function handleLoadProtectedData() {
-    const response = await fetch("/api/session");
-    const data = await response.json();
+async function fetchProtectedData(setIsSessionLoaded: (isLoaded: boolean) => void,signal: AbortSignal) {
+    try {
+        const response = await fetch("/api/session", {
+            signal
+        });
 
-    const session: Session = {
-        user: {
-            name: data.username
+        const data = await response.json();
+
+        const session: Session = {
+            user: {
+                name: data.username
+            }
+        };
+
+        sessionManager.setSession(session);
+
+        setIsSessionLoaded(true);
+    } catch (error: unknown) {
+        if (!signal.aborted) {
+            throw error;
         }
-    };
-
-    sessionManager.setSession(session);
+    }
 }
 
 export function App() {
+    const [isSessionLoaded, setIsSessionLoaded] = useState(false);
+
+    const handleLoadProtectedData = useCallback((signal: AbortSignal) => {
+        return fetchProtectedData(setIsSessionLoaded, signal);
+    }, []);
+
     return (
         <AppRouter
             onLoadProtectedData={handleLoadProtectedData}
+            isProtectedDataLoaded={isSessionLoaded}
             fallbackElement={<div>Loading...</div>}
             errorElement={<div>An error occured!</div>}
             waitForMsw={true}
-        />
+        >
+            {(routes, providerProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
+            )}
+        </AppRouter>
     );
 }
 ```
+
+!!!info
+Since the `sessionManager` doesn't trigger a re-render, a `isSessionLoaded` state value is added to trigger a re-render when the session has been loadded.
+!!!
 
 ## Add an authentication boundary
 
@@ -435,7 +462,7 @@ export const requestHandlers: HttpHandler[] = [
 
 Then, introduce a new `AuthenticatedLayout` displaying the name of the logged-in user along with a logout button:
 
-```tsx !#39,41-58,70,73 host/src/AuthenticatedLayout.tsx
+```tsx !#41,43-60,72,75 host/src/AuthenticatedLayout.tsx
 import { useCallback, type ReactNode, type MouseEvent, type HTMLButtonElement } from "react";
 import { Link, Outlet, navigate } from "react-router-dom";
 import { 
@@ -454,6 +481,8 @@ const renderItem: RenderItemFunction = (item, index, level) => {
     if (!isNavigationLink(item)) {
         return null;
     }
+
+    const { label, linkProps, additionalProps } = item;
 
     return (
         <li key={`${level}-${index}`}>

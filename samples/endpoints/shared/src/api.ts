@@ -28,8 +28,14 @@ export function isApiError(error?: unknown): error is ApiError {
     return error !== undefined && error !== null && error instanceof ApiError;
 }
 
-export async function fetchJson(url: string) {
-    const response = await fetch(url);
+export interface FetchJsonOptions {
+    signal?: AbortSignal;
+}
+
+export async function fetchJson(url: string, { signal }: FetchJsonOptions = {}) {
+    const response = await fetch(url, {
+        signal
+    });
 
     if (!response.ok) {
         throw new ApiError(response.status, response.statusText);

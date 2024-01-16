@@ -79,7 +79,7 @@ export function startMsw(moduleRequestHandlers: RequestHandler[]) {
 
 Then, update the bootstrapping code to [start the service](https://mswjs.io/docs/integrations/browser#setup) and [mark MSW as started](../reference/msw/setMswAsStarted.md) if MSW is enabled:
 
-```tsx !#18-29 host/src/bootstrap.tsx
+```tsx !#19-29 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { App } from "./App.tsx";
@@ -123,8 +123,9 @@ root.render(
 
 Finally, update the host application code to delay the rendering of the routes until MSW is started. This is done by setting the `waitForMsw` property of the [AppRouter](../reference/routing/appRouter.md) component to `true`:
 
-```tsx !#8 host/src/App.tsx
+```tsx !#9 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 export function App() {
     return (
@@ -132,7 +133,11 @@ export function App() {
             fallbackElement={<div>Loading...</div>}
             errorElement={<div>An error occured!</div>}
             waitForMsw={process.env.USE_MSW}
-        />
+        >
+            {(routes, providerProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
+            )}
+        </AppRouter>
     );
 }
 ```

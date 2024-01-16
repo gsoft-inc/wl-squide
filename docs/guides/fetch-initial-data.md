@@ -88,40 +88,63 @@ Ensure that the shared project is configured as a [shared dependency](./add-a-sh
 
 Finally, open the host application code and update the `App` component to utilize the `AppRouter` component's [onLoadPublicData](../reference/routing/appRouter.md#load-public-data) handler. This handler will fetch the count and forward the retrieved value through `FetchCountContext`:
 
-```tsx !#13,15-17,20,22 host/src/App.tsx
+```tsx !#9,16-18,23,25-27,30,32,33 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { FetchCountContext } from "@sample/shared";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-async function fetchPublicData(setFetchCount: (fetchCount: number) => void) {
-    const response = await fetch("/api/count");
-    const data = await response.json();
+async function fetchPublicData(setFetchCount: (fetchCount: number) => void, signal: AbortSignal) {
+    try {
+        const response = await fetch("/api/count", {
+            signal
+        });
 
-    setFetchCount(data.count);
+        const data = await response.json();
+
+        setFetchCount(data.count);
+    } catch (error: unknown) {
+        if (!signal.aborted) {
+            throw error;
+        }
+    }
 }
 
 export function App() {
     const [fetchCount, setFetchCount] = useState(0);
 
-    const handleLoadPublicData = useCallback(() => {
-        return fetchPublicData(setFetchCount);
+    const handleLoadPublicData = useCallback((signal: AbortSignal) => {
+        return fetchPublicData(setFetchCount, signal);
     }, []);
 
     return (
         <FetchCountContext.Provider value={fetchCount}>
             <AppRouter
                 onLoadPublicData={handleLoadPublicData}
+                isPublicDataLoaded={!!fetchCount}
                 fallbackElement={<div>Loading...</div>}
                 errorElement={<div>An error occured!</div>}
                 waitForMsw={true}
-            />
+            >
+                {(routes, providerProps) => (
+                    <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
+                )}
+            </AppRouter>
         </FetchCountContext.Provider>
     );
 }
 ```
 
 !!!info
+The `onLoadPublicData` handler receives as first argument an [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal) that should be forwarded to the HTTP client initiating the public data GET request. The signal will cancel the previous HTTP request when the `onLoadPublicData` handler is called twice due to the `AppRouter` being re-rendered.
+!!!
+
+!!!info
 The `onLoadPublicData` handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object. When the [async](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) keyword is included in a function signature, the function will automatically return a `Promise` object.
+!!!
+
+!!!info
+The `isPublicDataLoaded` must be provided to indicate whether or not the public data loading is completed.
 !!!
 
 ### Use the endpoint data
@@ -266,39 +289,58 @@ Ensure that the shared project is configured as a [shared dependency](./add-a-sh
 
 Finally, open the host application code and update the `App` component to utilize the `AppRouter` component's `onLoadProtectedData` handler. This handler will fetch the user tenant subscription and forward the retrieved value through `SubscriptionContext`:
 
-```tsx !#25,31-33,37,40 host/src/App.tsx
+```tsx !#25,36-38,44,50-52,56,59,61 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { FetchCountContext, SubscriptionContext, type Subscription } from "@sample/shared";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-async function fetchPublicData(setFetchCount: (fetchCount: number) => void) {
-    const response = await fetch("/api/count");
-    const data = await response.json();
+async function fetchPublicData(setFetchCount: (fetchCount: number) => void, signal: AbortSignal) {
+    try {
+        const response = await fetch("/api/count", {
+            signal
+        });
 
-    setFetchCount(data.count);
+        const data = await response.json();
+
+        setFetchCount(data.count);
+    } catch (error: unknown) {
+        if (!signal.aborted) {
+            throw error;
+        }
+    }
 }
 
-async function fetchProtectedData(setSubscription: (subscription: Subscription) => void) {
-    const response = await fetch("/api/subscription");
-    const data = await response.json();
+async function fetchProtectedData(setSubscription: (subscription: Subscription) => void, signal: AbortSignal) {
+    try {
+        const response = await fetch("/api/subscription", {
+            signal
+        });
 
-    const subscription: Subscription = {
-        status: data.status
-    };
+        const data = await response.json();
 
-    setSubscription(subscription);
+        const subscription: Subscription = {
+            status: data.status
+        };
+
+        setSubscription(subscription);
+    } catch (error: unknown) {
+        if (!signal.aborted) {
+            throw error;
+        }
+    }
 }
 
 export function App() {
     const [fetchCount, setFetchCount] = useState(0);
     const [subscription, setSubscription] = useState<Subscription>();
 
-    const handleLoadPublicData = useCallback(() => {
-        return fetchPublicData(setFetchCount);
+    const handleLoadPublicData = useCallback((signal: AbortController) => {
+        return fetchPublicData(setFetchCount, signal);
     }, []);
 
-    const handleLoadProtectedData = useCallback(() => {
-        return fetchProtectedData(setSubscription);
+    const handleLoadProtectedData = useCallback((signal: AbortController) => {
+        return fetchProtectedData(setSubscription, signal);
     }, []);
 
     return (
@@ -307,15 +349,33 @@ export function App() {
                 <AppRouter
                     onLoadPublicData={handleLoadPublicData}
                     onLoadProtectedData={handleLoadProtectedData}
+                    isPublicDataLoaded={!!fetchCount}
+                    isProtectedDataLoaded={!!subscription}
                     fallbackElement={<div>Loading...</div>}
                     errorElement={<div>An error occured!</div>}
                     waitForMsw={true}
-                />
+                >
+                    {(routes, providerProps) => (
+                        <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
+                    )}
+                </AppRouter>
             <SubscriptionContext.Provider />
         </FetchCountContext.Provider>
     );
 }
 ```
+
+!!!info
+The `onLoadProtectedData` handler receives as first argument an [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal) that should be forwarded to the HTTP client initiating the public data GET request. The signal will cancel the previous HTTP request when the `onLoadProtectedData` handler is called twice due to the `AppRouter` being re-rendered.
+!!!
+
+!!!info
+The `onLoadProtectedData` handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object. When the [async](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) keyword is included in a function signature, the function will automatically return a `Promise` object.
+!!!
+
+!!!info
+The `isProtectedDataLoaded` must be provided to indicate whether or not the protected data loading is completed.
+!!!
 
 ### Use the endpoint data
 

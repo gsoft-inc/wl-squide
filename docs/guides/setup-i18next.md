@@ -422,20 +422,18 @@ Hence, the strategy to select the displayed language should be as follow:
 
 To implement this strategy, use the [useChangeLanguage](../reference/i18next/useChangeLanguage.md) hook and the [onLoadProtectedData](../reference/routing/appRouter.md#load-protected-data) handler of the [AppRouter](../reference/routing/appRouter.md) component:
 
-```tsx !#10,20 host/src/App.tsx
+```tsx !#18,35,37-39,46-47 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
 import { useChangeLanguage, useI18nextInstance } from "@squide/i18next";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-export function App() {
-    const i18nextInstance = useI18nextInstance("host");
-    const { t } = useTranslation("App", { i18n: useI18nextInstance });
-
-    const changeLanguage = useChangeLanguage();
-
-    const handleLoadProtectedData = useCallback(async () => {
-        const response = await fetch("/api/session");
+async function fetchProtectedData(changeLanguage: (language: string) => void, setIsSessionLoaded: (isLoaded: boolean) => void, signal: AbortSignal) {
+    try {
+        const response = await fetch("/api/session", {
+            signal
+        });
         
         if (response.ok) {
             const session = await response.json();
@@ -443,7 +441,26 @@ export function App() {
             // When the session has been retrieved, change the displayed language to match
             // the preferred language setting.
             changeLanguage(session.preferredLanguage);
+
+            setIsSessionLoaded(true);
         }
+    } catch (error: unknown) {
+        if (!signal.aborted) {
+            throw error;
+        }
+    }
+}
+
+export function App() {
+    const [isSessionLoaded, setIsSessionLoaded] = useState(false);
+
+    const i18nextInstance = useI18nextInstance("host");
+    const { t } = useTranslation("App", { i18n: useI18nextInstance });
+
+    const changeLanguage = useChangeLanguage();
+
+    const handleLoadProtectedData = useCallback((signal: AbortSignal) => {
+        return fetchProtectedData(changeLanguage, setIsSessionLoaded, signal);
     }, [changeLanguage]);
 
     return (
@@ -452,7 +469,12 @@ export function App() {
             errorElement={<div>{t("errorMessage")}</div>}
             waitForMsw={false}
             onLoadProtectedData={handleLoadProtectedData}
-        />
+            isProtectedDataLoaded={isSessionLoaded}
+        >
+            {(routes, providerProps) => (
+                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
+            )}
+        </AppRouter>
     );
 }
 ```

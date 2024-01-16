@@ -8,7 +8,6 @@ export async function createI18nextInstance(language: LanguageKey, options: Init
         .use(initReactI18next);
 
     instance.init({
-        debug: true,
         lng: language,
         ...options
     });

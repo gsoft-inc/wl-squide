@@ -25,6 +25,8 @@ A component that sets up and orchestrate Squide federated primitives with a Reac
     - `signal`: An [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal) to cancel the previous HTTP request when the `onLoadPublicData` handler is called twice due to the `AppRouter` being re-rendered.
 - `onLoadProtectedData`: An optional handler to load the initial protected data after the **modules are registered** and **MSW is started** (if enabled). This handler is called the first time a user navigate to a protected route (any route that has no `$visibility: public` hint). Such protected data could include a user session.
     - `signal`: An [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal) to cancel the previous HTTP request when the `onLoadPublicData` handler is called twice due to the `AppRouter` being re-rendered.
+- `isPublicDataLoaded`: Whether or not the initial public data has been loaded.
+- `isProtectedDataLoaded`: Whether or not the initial protected data has been loaded.
 - `onCompleteRegistrations`: An optional handler to complete the [deferred registrations](../registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items).
 - `children`: A render function to define a React Router [RouterProvider](https://reactrouter.com/en/main/routers/router-provider) component with the registered routes.
 
@@ -121,9 +123,11 @@ export function App() {
 
 ### Load public data
 
-The handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), and the consumer application must handle the loaded public data, as the `AppRouter` component will ignore any data resolved by the returned Promise object.
+The handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), and the consumer application must handle the loaded public data, as the `AppRouter` component will ignore any data resolved by the returned `Promise` object.
 
-```tsx !#11,20-22,29,40 host/src/App.tsx
+The `isPublicDataLoaded` property should also be provided to indicate whether or not the initial public data loading is completed.
+
+```tsx !#11,20-22,29,40,41 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { Loading } from "./Loading.tsx";
@@ -164,6 +168,7 @@ export function App() {
             errorElement={<ErrorBoundary />}
             waitForMsw={true}
             onLoadPublicData={handleLoadPublicData}
+            isPublicDataLoaded={!!featureFlags}
         >
             {(routes, providerProps) => (
                 <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
@@ -179,9 +184,11 @@ Don't forget to forward the [AbortSignal](https://developer.mozilla.org/en-US/do
 
 ### Load protected data
 
-The handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), and the consumer application must handle the loaded protected data, as the `AppRouter` component will ignore any data resolved by the returned Promise object.
+The handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), and the consumer application must handle the loaded protected data, as the `AppRouter` component will ignore any data resolved by the returned `Promise` object.
 
-```tsx !#11,25-27,34,45 host/src/App.tsx
+The `isProtectedDataLoaded` property should also be provided to indicate whether or not the initial protected data loading is completed.
+
+```tsx !#11,25-27,34,45,46 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { Loading } from "./Loading.tsx";
@@ -227,6 +234,7 @@ export function App() {
             errorElement={<ErrorBoundary />}
             waitForMsw={true}
             onLoadProtectedData={handleLoadProtectedData}
+            isProtectedDataLoaded={!!session}
         >
             {(routes, providerProps) => (
                 <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
@@ -244,7 +252,7 @@ Don't forget to forward the [AbortSignal](https://developer.mozilla.org/en-US/do
 
 For more information about deferred registrations, refer to the [registerRemoteModules](../registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) and [completeModuleRegistrations](../registration/completeModuleRegistrations.md) documentation.
 
-```tsx !#38-40,49 host/src/App.tsx
+```tsx !#38-40,50 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { completeModuleRegistrations } from "@squide/webpack-module-federation";
@@ -293,6 +301,7 @@ export function App() {
             errorElement={<ErrorBoundary />}
             waitForMsw={true}
             onLoadPublicData={handleLoadPublicData}
+            isPublicDataLoaded={!!featureFlags}
             onCompleteRegistrations={handleCompleteRegistrations}
         >
             {(routes, providerProps) => (

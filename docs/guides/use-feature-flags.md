@@ -119,6 +119,7 @@ export function App() {
         <FeatureFlagsContext.Provider value={featureFlags}>
             <AppRouter
                 onLoadPublicData={handleLoadPublicData}
+                isPublicDataLoaded={!!featureFlags}
                 fallbackElement={<div>Loading...</div>}
                 errorElement={<div>An error occured!</div>}
                 waitForMsw={true}
@@ -209,7 +210,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
 
 Finally, open the host application code again and update the `App` component to utilize the `AppRouter` component's `onCompleteRegistrations` handler to [complete the module registrations](../reference/registration/completeRemoteModuleRegistrations.md) with the feature flags:
 
-```tsx !#33-38,44 host/src/App.tsx
+```tsx !#33-38,45 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter, useRuntime, completeModuleRegistrations } from "@squide/firefly";
 import { FeatureFlagsContext, type FeatureFlags } from "@sample/shared";
@@ -253,6 +254,7 @@ export function App() {
         <FeatureFlagsContext.Provider value={featureFlags}>
             <AppRouter
                 onLoadPublicData={handleLoadPublicData}
+                isPublicDataLoaded={!!featureFlags}
                 onCompleteRegistrations={handleCompleteRegistrations}
                 fallbackElement={<div>Loading...</div>}
                 errorElement={<div>An error occured!</div>}

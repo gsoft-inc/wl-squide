@@ -309,13 +309,13 @@ export const requestHandlers: HttpHandler[] = [
 
 Then, update the host application `App` component to load the session when a user navigate to a protected page for the first time:
 
-```tsx !#20,31 host/src/App.tsx
+```tsx !#20,22,31,33-35,39-40 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
 import type { Session } from "@sample/shared";
 import { sessionManager } from "./session.ts";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-async function handleLoadProtectedData(signal: AbortSignal) {
+async function fetchProtectedData(setIsSessionLoaded: (isLoaded: boolean) => void,signal: AbortSignal) {
     try {
         const response = await fetch("/api/session", {
             signal
@@ -330,6 +330,8 @@ async function handleLoadProtectedData(signal: AbortSignal) {
         };
 
         sessionManager.setSession(session);
+
+        setIsSessionLoaded(true);
     } catch (error: unknown) {
         if (!signal.aborted) {
             throw error;
@@ -338,9 +340,16 @@ async function handleLoadProtectedData(signal: AbortSignal) {
 }
 
 export function App() {
+    const [isSessionLoaded, setIsSessionLoaded] = useState(false);
+
+    const handleLoadProtectedData = useCallback((signal: AbortSignal) => {
+        return fetchProtectedData(setIsSessionLoaded, signal);
+    }, []);
+
     return (
         <AppRouter
             onLoadProtectedData={handleLoadProtectedData}
+            isProtectedDataLoaded={isSessionLoaded}
             fallbackElement={<div>Loading...</div>}
             errorElement={<div>An error occured!</div>}
             waitForMsw={true}
@@ -352,6 +361,10 @@ export function App() {
     );
 }
 ```
+
+!!!info
+Since the `sessionManager` doesn't trigger a re-render, a `isSessionLoaded` state value is added to trigger a re-render when the session has been loadded.
+!!!
 
 ## Add an authentication boundary
 

@@ -88,7 +88,7 @@ Ensure that the shared project is configured as a [shared dependency](./add-a-sh
 
 Finally, open the host application code and update the `App` component to utilize the `AppRouter` component's [onLoadPublicData](../reference/routing/appRouter.md#load-public-data) handler. This handler will fetch the count and forward the retrieved value through `FetchCountContext`:
 
-```tsx !#9,16-18,23,25-27,30,32 host/src/App.tsx
+```tsx !#9,16-18,23,25-27,30,32,33 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { FetchCountContext } from "@sample/shared";
@@ -121,6 +121,7 @@ export function App() {
         <FetchCountContext.Provider value={fetchCount}>
             <AppRouter
                 onLoadPublicData={handleLoadPublicData}
+                isPublicDataLoaded={!!fetchCount}
                 fallbackElement={<div>Loading...</div>}
                 errorElement={<div>An error occured!</div>}
                 waitForMsw={true}
@@ -140,6 +141,10 @@ The `onLoadPublicData` handler receives as first argument an [AbortSignal](https
 
 !!!info
 The `onLoadPublicData` handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object. When the [async](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) keyword is included in a function signature, the function will automatically return a `Promise` object.
+!!!
+
+!!!info
+The `isPublicDataLoaded` must be provided to indicate whether or not the public data loading is completed.
 !!!
 
 ### Use the endpoint data
@@ -284,7 +289,7 @@ Ensure that the shared project is configured as a [shared dependency](./add-a-sh
 
 Finally, open the host application code and update the `App` component to utilize the `AppRouter` component's `onLoadProtectedData` handler. This handler will fetch the user tenant subscription and forward the retrieved value through `SubscriptionContext`:
 
-```tsx !#25,36-38,44,50-52,56,59 host/src/App.tsx
+```tsx !#25,36-38,44,50-52,56,59,61 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { FetchCountContext, SubscriptionContext, type Subscription } from "@sample/shared";
@@ -344,6 +349,8 @@ export function App() {
                 <AppRouter
                     onLoadPublicData={handleLoadPublicData}
                     onLoadProtectedData={handleLoadProtectedData}
+                    isPublicDataLoaded={!!fetchCount}
+                    isProtectedDataLoaded={!!subscription}
                     fallbackElement={<div>Loading...</div>}
                     errorElement={<div>An error occured!</div>}
                     waitForMsw={true}
@@ -364,6 +371,10 @@ The `onLoadProtectedData` handler receives as first argument an [AbortSignal](ht
 
 !!!info
 The `onLoadProtectedData` handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object. When the [async](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) keyword is included in a function signature, the function will automatically return a `Promise` object.
+!!!
+
+!!!info
+The `isPrptectedDataLoaded` must be provided to indicate whether or not the protected data loading is completed.
 !!!
 
 ### Use the endpoint data

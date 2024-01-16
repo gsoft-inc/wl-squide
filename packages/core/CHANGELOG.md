@@ -1,5 +1,11 @@
 # @squide/core
 
+## 3.2.0
+
+### Minor Changes
+
+- [#131](https://github.com/gsoft-inc/wl-squide/pull/131) [`7caa44b`](https://github.com/gsoft-inc/wl-squide/commit/7caa44ba81a97d0705caf2f56e6536ae285c920d) Thanks [@patricklafrance](https://github.com/patricklafrance)! - - Added a `usePlugin` hook.
+
 ## 3.1.1
 
 ### Patch Changes

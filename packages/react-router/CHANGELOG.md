@@ -1,5 +1,28 @@
 # @squide/react-router
 
+## 4.0.0
+
+### Major Changes
+
+- [#131](https://github.com/gsoft-inc/wl-squide/pull/131) [`7caa44b`](https://github.com/gsoft-inc/wl-squide/commit/7caa44ba81a97d0705caf2f56e6536ae285c920d) Thanks [@patricklafrance](https://github.com/patricklafrance)! - - To be consistent with the other API of Squide, the `useNavigationItems` hook now accept an object literal of options rather than an optional `menuId` argument.
+
+  Before:
+
+  ```tsx
+  const items = useNavigationItems("my-custom-menu");
+  ```
+
+  Now:
+
+  ```tsx
+  const items = useNavigationItems({ menuId: "my-custom-menu" });
+  ```
+
+### Patch Changes
+
+- Updated dependencies [[`7caa44b`](https://github.com/gsoft-inc/wl-squide/commit/7caa44ba81a97d0705caf2f56e6536ae285c920d)]:
+  - @squide/core@3.2.0
+
 ## 3.0.2
 
 ### Patch Changes

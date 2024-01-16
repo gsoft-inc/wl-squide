@@ -1,5 +1,12 @@
 # @squide/webpack-configs
 
+## 1.1.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @squide/webpack-module-federation@3.0.3
+
 ## 1.1.1
 
 ### Patch Changes

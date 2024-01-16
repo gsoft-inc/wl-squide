@@ -374,7 +374,7 @@ The `onLoadProtectedData` handler must return a [Promise](https://developer.mozi
 !!!
 
 !!!info
-The `isPrptectedDataLoaded` must be provided to indicate whether or not the protected data loading is completed.
+The `isProtectedDataLoaded` must be provided to indicate whether or not the protected data loading is completed.
 !!!
 
 ### Use the endpoint data

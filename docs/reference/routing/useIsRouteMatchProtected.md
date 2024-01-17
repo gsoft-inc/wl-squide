@@ -25,6 +25,8 @@ const isProtected = useIsRouteMatchProtected(locationArg)
 
 A `boolean` value indicating whether or not the matching route is `protected`. If `throwWhenThereIsNoMatch` is enabled and no route match the given location, an `Error` is thrown.
 
+If `throwWhenThereIsNoMatch` is disabled and there's no route matching `locationArg`, `true` is returned.
+
 ## Usage
 
 ### Using `useLocation`

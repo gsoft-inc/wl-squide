@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758736636894">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758837434179">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.758736636894" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.758837434179" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.758736636894" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.758837434179" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.758736636894" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.758736636894" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.758837434179" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.758837434179" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -466,7 +466,7 @@ export function App() {
 <p>The <code v-pre>isPublicDataLoaded</code> property should also be provided to indicate whether or not the initial public data loading is completed.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="11,20-22,29,40,41"><code v-pre class="language-tsx">import { useState, useCallback } from &quot;react&quot;;
+<pre class="language-tsx" data-line="10,23,25-27,34-35"><code v-pre class="language-tsx">import { useState, useCallback } from &quot;react&quot;;
 import { AppRouter } from &quot;@squide/firefly&quot;;
 import { Loading } from &quot;./Loading.tsx&quot;;
 import { ErrorBoundary } from &quot;./ErrorBoundary.tsx&quot;;
@@ -474,20 +474,14 @@ import type { FeatureFlags } from &quot;@sample/shared&quot;;
 import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
 
 async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) =&gt; void, signal: AbortSignal) {
-    try {
-        const response = await fetch(&quot;/api/feature-flags&quot;, {
-            signal
-        });
-        
-        if (response.ok) {
-            const data = await response.json();
+    const response = await fetch(&quot;/api/feature-flags&quot;, {
+        signal
+    });
+    
+    if (response.ok) {
+        const data = await response.json();
 
-            setFeatureFlags(data);
-        }
-    } catch (error: unknown) {
-        if (!signal.aborted) {
-            throw error;
-        }
+        setFeatureFlags(data);
     }
 }
 
@@ -541,7 +535,7 @@ export function App() {
 <p>The <code v-pre>isProtectedDataLoaded</code> property should also be provided to indicate whether or not the initial protected data loading is completed.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="11,25-27,34,45,46"><code v-pre class="language-tsx">import { useState, useCallback } from &quot;react&quot;;
+<pre class="language-tsx" data-line="10,28,30-32,39-40"><code v-pre class="language-tsx">import { useState, useCallback } from &quot;react&quot;;
 import { AppRouter } from &quot;@squide/firefly&quot;;
 import { Loading } from &quot;./Loading.tsx&quot;;
 import { ErrorBoundary } from &quot;./ErrorBoundary.tsx&quot;;
@@ -549,25 +543,19 @@ import type { Session } from &quot;@sample/shared&quot;;
 import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
 
 async function fetchProtectedData(setSession: (session: Session) =&gt; void, signal: AbortSignal) {
-    try {
-        const response = await fetch(&quot;/api/session&quot;), {
-            signal
-        });
-        
-        if (response.ok) {
-            const data = await response.json();
+    const response = await fetch(&quot;/api/session&quot;), {
+        signal
+    });
+    
+    if (response.ok) {
+        const data = await response.json();
 
-            setSession({
-                user: {
-                    id: data.userId,
-                    name: data.username
-                }
-            });
-        }
-    } catch (error: unknown) {
-        if (!signal.aborted) {
-            throw error;
-        }
+        setSession({
+            user: {
+                id: data.userId,
+                name: data.username
+            }
+        });
     }
 }
 
@@ -620,7 +608,7 @@ export function App() {
 <p>For more information about deferred registrations, refer to the <a href="../../registration/registerremotemodules/#defer-the-registration-of-routes-or-navigation-items">registerRemoteModules</a> and <a href="../../registration/completemoduleregistrations/">completeModuleRegistrations</a> documentation.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="38-40,50"><code v-pre class="language-tsx">import { useState, useCallback } from &quot;react&quot;;
+<pre class="language-tsx" data-line="32-34,44"><code v-pre class="language-tsx">import { useState, useCallback } from &quot;react&quot;;
 import { AppRouter } from &quot;@squide/firefly&quot;;
 import { completeModuleRegistrations } from &quot;@squide/webpack-module-federation&quot;;
 import { Loading } from &quot;./Loading.tsx&quot;;
@@ -629,20 +617,14 @@ import type { FeatureFlags } from &quot;@sample/shared&quot;;
 import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
 
 async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) =&gt; void, signal: AbortSignal) {
-    try {
-        const response = await fetch(&quot;/api/feature-flags&quot;, {
-            signal
-        });
+    const response = await fetch(&quot;/api/feature-flags&quot;, {
+        signal
+    });
+    
+    if (response.ok) {
+        const data = await response.json();
         
-        if (response.ok) {
-            const data = await response.json();
-            
-            setFeatureFlags(data);
-        }
-    } catch (error: unknown) {
-        if (!signal.aborted) {
-            throw error;
-        }
+        setFeatureFlags(data);
     }
 }
 

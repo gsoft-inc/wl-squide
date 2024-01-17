@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758736636894">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.758837434179">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.758736636894" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.758837434179" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.758736636894" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.758837434179" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.758736636894" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.758736636894" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.758837434179" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.758837434179" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -416,30 +416,24 @@ export function useFeatureFlags() {
 <p>Finally, open the host application code and update the <code v-pre>App</code> component to utilize the <code v-pre>AppRouter</code> component&#x27;s <code v-pre>onLoadPublicData</code> handler to fetch the feature flags data:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="30-32,35,37-38"><code v-pre class="language-tsx">import { useState, useCallback } from &quot;react&quot;;
+<pre class="language-tsx" data-line="24-26,29,31-32"><code v-pre class="language-tsx">import { useState, useCallback } from &quot;react&quot;;
 import { AppRouter } from &quot;@squide/firefly&quot;;
 import { FeatureFlagsContext, type FeatureFlags } from &quot;@sample/shared&quot;;
 import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
 
 async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) =&gt; void, signal: AbortSignal) {
-    try {
-        const response = await fetch(&quot;/api/feature-flags&quot;, {
-            signal
-        });
+    const response = await fetch(&quot;/api/feature-flags&quot;, {
+        signal
+    });
 
-        const data = await response.json();
+    const data = await response.json();
 
-        const featureFlags: FeatureFlags = {
-            featureA: data.featureA,
-            featureB: data.featureB
-        };
+    const featureFlags: FeatureFlags = {
+        featureA: data.featureA,
+        featureB: data.featureB
+    };
 
-        setFeatureFlags(featureFlags);
-    } catch (error: unknown) {
-        if (!signal.aborted) {
-            throw error;
-        }
-    }
+    setFeatureFlags(featureFlags);
 }
 
 export function App() {
@@ -548,27 +542,21 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime, unknown, Deferr
 <p>Finally, open the host application code again and update the <code v-pre>App</code> component to utilize the <code v-pre>AppRouter</code> component&#x27;s <code v-pre>onCompleteRegistrations</code> handler to <a href="../../reference/registration/completeremotemoduleregistrations/">complete the module registrations</a> with the feature flags:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="33-38,45"><code v-pre class="language-tsx">import { useState, useCallback } from &quot;react&quot;;
+<pre class="language-tsx" data-line="27-32,39"><code v-pre class="language-tsx">import { useState, useCallback } from &quot;react&quot;;
 import { AppRouter, useRuntime, completeModuleRegistrations } from &quot;@squide/firefly&quot;;
 import { FeatureFlagsContext, type FeatureFlags } from &quot;@sample/shared&quot;;
 import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
 
 async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) =&gt; void, signal: AbortSignal) {
-    try {
-        const response = await fetch(&quot;/api/feature-flags&quot;);
-        const data = await response.json();
+    const response = await fetch(&quot;/api/feature-flags&quot;);
+    const data = await response.json();
 
-        const featureFlags: FeatureFlags = {
-            featureA: data.featureA,
-            featureB: data.featureB
-        };
+    const featureFlags: FeatureFlags = {
+        featureA: data.featureA,
+        featureB: data.featureB
+    };
 
-        setFeatureFlags(featureFlags);
-    } catch (error: unknown) {
-        if (!signal.aborted) {
-            throw error;
-        }
-    }
+    setFeatureFlags(featureFlags);
 }
 
 export function App() {

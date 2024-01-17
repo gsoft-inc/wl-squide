@@ -1,5 +1,14 @@
 # @squide/react-router
 
+## 4.0.1
+
+### Patch Changes
+
+- [#133](https://github.com/gsoft-inc/wl-squide/pull/133) [`1cda1be`](https://github.com/gsoft-inc/wl-squide/commit/1cda1be30779d1a1d5d2e21eac043baff20c0f7e) Thanks [@patricklafrance](https://github.com/patricklafrance)! - The `useIsRouteMatchProtected` hook now returns `true` when the location match an unregistered route.
+
+- Updated dependencies [[`1cda1be`](https://github.com/gsoft-inc/wl-squide/commit/1cda1be30779d1a1d5d2e21eac043baff20c0f7e)]:
+  - @squide/core@3.2.1
+
 ## 4.0.0
 
 ### Major Changes

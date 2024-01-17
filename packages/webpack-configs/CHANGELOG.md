@@ -1,5 +1,12 @@
 # @squide/webpack-configs
 
+## 1.1.3
+
+### Patch Changes
+
+- Updated dependencies [[`1cda1be`](https://github.com/gsoft-inc/wl-squide/commit/1cda1be30779d1a1d5d2e21eac043baff20c0f7e)]:
+  - @squide/webpack-module-federation@3.0.4
+
 ## 1.1.2
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @squide/webpack-module-federation
 
+## 3.0.4
+
+### Patch Changes
+
+- [#133](https://github.com/gsoft-inc/wl-squide/pull/133) [`1cda1be`](https://github.com/gsoft-inc/wl-squide/commit/1cda1be30779d1a1d5d2e21eac043baff20c0f7e) Thanks [@patricklafrance](https://github.com/patricklafrance)! - The completeDeferredRegistrations function data was required instead of optionnal. It has been fixed.
+
+- Updated dependencies [[`1cda1be`](https://github.com/gsoft-inc/wl-squide/commit/1cda1be30779d1a1d5d2e21eac043baff20c0f7e)]:
+  - @squide/core@3.2.1
+
 ## 3.0.3
 
 ### Patch Changes

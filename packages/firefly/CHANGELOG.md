@@ -1,5 +1,20 @@
 # @squide/firefly
 
+## 4.0.1
+
+### Patch Changes
+
+- [#133](https://github.com/gsoft-inc/wl-squide/pull/133) [`1cda1be`](https://github.com/gsoft-inc/wl-squide/commit/1cda1be30779d1a1d5d2e21eac043baff20c0f7e) Thanks [@patricklafrance](https://github.com/patricklafrance)! - - To prevent the consumer from always handling the AbortSignal error, a default catch has been added to the `AppRouter` component. The consumer can still handler the AbortSignal error if he needs to.
+
+  - When a user makes a direct hit to a deferred route that depends on protected data, the protected data was undefined. The reason was that by default, an unregistered route was considered as a public route. The code has been updated to consider an uregistered route as a protected route. The upside is that deferred routes can now depends on protected data. The downside is that a public deferred route will trigger the loading of the protected data. As we don't expect to have public deferred route at the moment it doesn't seems like an issue.
+
+- Updated dependencies [[`1cda1be`](https://github.com/gsoft-inc/wl-squide/commit/1cda1be30779d1a1d5d2e21eac043baff20c0f7e), [`1cda1be`](https://github.com/gsoft-inc/wl-squide/commit/1cda1be30779d1a1d5d2e21eac043baff20c0f7e), [`1cda1be`](https://github.com/gsoft-inc/wl-squide/commit/1cda1be30779d1a1d5d2e21eac043baff20c0f7e)]:
+  - @squide/webpack-module-federation@3.0.4
+  - @squide/react-router@4.0.1
+  - @squide/core@3.2.1
+  - @squide/webpack-configs@1.1.3
+  - @squide/msw@2.0.9
+
 ## 4.0.0
 
 ### Major Changes

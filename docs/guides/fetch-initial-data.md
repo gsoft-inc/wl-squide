@@ -88,26 +88,20 @@ Ensure that the shared project is configured as a [shared dependency](./add-a-sh
 
 Finally, open the host application code and update the `App` component to utilize the `AppRouter` component's [onLoadPublicData](../reference/routing/appRouter.md#load-public-data) handler. This handler will fetch the count and forward the retrieved value through `FetchCountContext`:
 
-```tsx !#9,16-18,23,25-27,30,32,33 host/src/App.tsx
+```tsx !#8,17,19-21,24,26-27 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { FetchCountContext } from "@sample/shared";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 async function fetchPublicData(setFetchCount: (fetchCount: number) => void, signal: AbortSignal) {
-    try {
-        const response = await fetch("/api/count", {
-            signal
-        });
+    const response = await fetch("/api/count", {
+        signal
+    });
 
-        const data = await response.json();
+    const data = await response.json();
 
-        setFetchCount(data.count);
-    } catch (error: unknown) {
-        if (!signal.aborted) {
-            throw error;
-        }
-    }
+    setFetchCount(data.count);
 }
 
 export function App() {
@@ -289,46 +283,34 @@ Ensure that the shared project is configured as a [shared dependency](./add-a-sh
 
 Finally, open the host application code and update the `App` component to utilize the `AppRouter` component's `onLoadProtectedData` handler. This handler will fetch the user tenant subscription and forward the retrieved value through `SubscriptionContext`:
 
-```tsx !#25,36-38,44,50-52,56,59,61 host/src/App.tsx
+```tsx !#18,32,38-40,44,47,49 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { FetchCountContext, SubscriptionContext, type Subscription } from "@sample/shared";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 async function fetchPublicData(setFetchCount: (fetchCount: number) => void, signal: AbortSignal) {
-    try {
-        const response = await fetch("/api/count", {
-            signal
-        });
+    const response = await fetch("/api/count", {
+        signal
+    });
 
-        const data = await response.json();
+    const data = await response.json();
 
-        setFetchCount(data.count);
-    } catch (error: unknown) {
-        if (!signal.aborted) {
-            throw error;
-        }
-    }
+    setFetchCount(data.count);
 }
 
 async function fetchProtectedData(setSubscription: (subscription: Subscription) => void, signal: AbortSignal) {
-    try {
-        const response = await fetch("/api/subscription", {
-            signal
-        });
+    const response = await fetch("/api/subscription", {
+        signal
+    });
 
-        const data = await response.json();
+    const data = await response.json();
 
-        const subscription: Subscription = {
-            status: data.status
-        };
+    const subscription: Subscription = {
+        status: data.status
+    };
 
-        setSubscription(subscription);
-    } catch (error: unknown) {
-        if (!signal.aborted) {
-            throw error;
-        }
-    }
+    setSubscription(subscription);
 }
 
 export function App() {

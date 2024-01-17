@@ -120,7 +120,7 @@ export class RemoteModuleRegistry {
         return errors;
     }
 
-    async completeModuleRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
+    async completeModuleRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data?: TData) {
         const errors: RemoteModuleRegistrationError[] = [];
 
         if (this.#registrationStatus === "none" || this.#registrationStatus === "in-progress") {
@@ -199,7 +199,7 @@ export function registerRemoteModules<TRuntime extends Runtime = Runtime, TConte
     return remoteModuleRegistry.registerModules<TRuntime, TContext, TData>(remotes, runtime, options);
 }
 
-export function completeRemoteModuleRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
+export function completeRemoteModuleRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data?: TData) {
     return remoteModuleRegistry.completeModuleRegistrations(runtime, data);
 }
 

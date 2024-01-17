@@ -121,7 +121,7 @@ test("when no data handlers are provided, msw is disabled, modules are registere
     expect(await screen.findByTestId("loading")).toBeInTheDocument();
 });
 
-test("when a onLoadPublicData handler is provided and the public data is not loaded, render the fallback", async () => {
+test("when a onLoadPublicData handler is provided and the public data is not loaded, render the fallback element", async () => {
     const runtime = new FireflyRuntime();
 
     // Must add at least a route otherwise useRouteMatchProtected will throw.
@@ -175,7 +175,7 @@ test("when a onLoadPublicData handler is provided and the public data is loaded,
     expect(await screen.findByTestId("route")).toBeInTheDocument();
 });
 
-test("when a onLoadProtectedData handler is provided and the protected data is not loaded, render the fallback", async () => {
+test("when a onLoadProtectedData handler is provided and the protected data is not loaded, render the fallback element", async () => {
     const runtime = new FireflyRuntime();
 
     // Must add at least a route otherwise React Router complains the router has no routes.
@@ -227,7 +227,7 @@ test("when a onLoadProtectedData handler is provided and the protected data is l
     expect(await screen.findByTestId("route")).toBeInTheDocument();
 });
 
-test("when msw is enabled and msw is not started, render the fallback", async () => {
+test("when msw is enabled and msw is not started, render the fallback element", async () => {
     const runtime = new FireflyRuntime();
 
     // Must add at least a route otherwise React Router complains the router has no routes.
@@ -288,7 +288,7 @@ test("when a onCompleteRegistrations handler is provided and there's no deferred
     expect(await screen.findByTestId("route")).toBeInTheDocument();
 });
 
-test("when a onCompleteRegistrations handler is provided and the deferred registrations are not completed, render the fallback", async () => {
+test("when a onCompleteRegistrations handler is provided and the deferred registrations are not completed, render the fallback element", async () => {
     const runtime = new FireflyRuntime();
 
     // Must add at least a route otherwise React Router complains the router has no routes.
@@ -349,7 +349,7 @@ test("when a onCompleteRegistrations handler is provided and the deferred regist
     expect(await screen.findByTestId("deferred-route")).toBeInTheDocument();
 });
 
-test("when a onCompleteRegistrations handler is provided and a onLoadPublicData handler is provided, do not complete the deferred registrations and render the route before the public date is loaded", async () => {
+test("when a onCompleteRegistrations handler is provided and a onLoadPublicData handler is provided, do not complete the deferred registrations and render the route until the public date is loaded", async () => {
     const runtime = new FireflyRuntime();
 
     // Must add at least a route otherwise React Router complains the router has no routes.
@@ -408,7 +408,7 @@ test("when a onCompleteRegistrations handler is provided and a onLoadPublicData 
     expect(await screen.findByTestId("deferred-route")).toBeInTheDocument();
 });
 
-test("when a onCompleteRegistrations handler is provided and a onLoadProtectedData handler is provided, do not complete the deferred registrations and render the route before the protected date is loaded", async () => {
+test("when a onCompleteRegistrations handler is provided and a onLoadProtectedData handler is provided, do not complete the deferred registrations and render the route until the protected date is loaded", async () => {
     const runtime = new FireflyRuntime();
 
     // Must add at least a route otherwise React Router complains the router has no routes.
@@ -467,7 +467,7 @@ test("when a onCompleteRegistrations handler is provided and a onLoadProtectedDa
     expect(await screen.findByTestId("deferred-route")).toBeInTheDocument();
 });
 
-test("when a onCompleteRegistrations handler is provided and a onLoadPublicData handler is provided, and a onLoadProtectedData handler is provided, do not complete the deferred registrations and render the route before the public and protected date are loaded", async () => {
+test("when a onCompleteRegistrations handler is provided, a onLoadPublicData handler and a onLoadProtectedData handler are provided, do not complete the deferred registrations and render the route until the public and protected date are loaded", async () => {
     const runtime = new FireflyRuntime();
 
     // Must add at least a route otherwise React Router complains the router has no routes.
@@ -533,7 +533,7 @@ test("when a onCompleteRegistrations handler is provided and a onLoadPublicData 
     expect(await screen.findByTestId("deferred-route")).toBeInTheDocument();
 });
 
-test("when an error occurs while loading the public data, show the error element", async () => {
+test("when an error occurs while loading the public data, render the error element", async () => {
     // An error log is expected because it will hit the ErrorBoundary, see: https://github.com/facebook/react/issues/11098.
     const spy = jest.spyOn(console, "error");
     spy.mockImplementation(() => {});
@@ -562,7 +562,7 @@ test("when an error occurs while loading the public data, show the error element
     spy.mockRestore();
 });
 
-test("when an error occurs while loading the protected data, show the error element", async () => {
+test("when an error occurs while loading the protected data, render the error element", async () => {
     // An error log is expected because it will hit the ErrorBoundary, see: https://github.com/facebook/react/issues/11098.
     const spy = jest.spyOn(console, "error");
     spy.mockImplementation(() => {});

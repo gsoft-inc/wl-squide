@@ -62,7 +62,7 @@ In the previous code samples, the host application provides a value for the `Bac
 
 Now, suppose the requirements change, and one remote module pages need to have a `red` background. The context can be overriden for the remote module by declaring a new provider directly in the routes registration:
 
-```tsx !#9,11 remote-module/src/register.tsx
+```tsx !#9 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { BackgroundColorContext } from "@sample/shared";
 import { ColoredPage } from "./ColoredPage.tsx";

@@ -19,19 +19,13 @@ export interface AppRouterProps {
 }
 
 async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void, signal: AbortSignal, logger: Logger) {
-    try {
-        const data = await fetchJson("/api/feature-flags", {
-            signal
-        });
+    const data = await fetchJson("/api/feature-flags", {
+        signal
+    });
 
-        logger.debug("[shell] %cFeature flags are ready%c:", "color: white; background-color: green;", "", data);
+    logger.debug("[shell] %cFeature flags are ready%c:", "color: white; background-color: green;", "", data);
 
-        setFeatureFlags(data);
-    } catch (error: unknown) {
-        if (!signal.aborted) {
-            throw error;
-        }
-    }
+    setFeatureFlags(data);
 }
 
 async function fetchSession(signal: AbortSignal) {
@@ -78,14 +72,12 @@ function fetchProtectedData(
             setSubscription(subscription);
         })
         .catch((error: unknown) => {
-            if (!signal.aborted) {
-                if (isApiError(error) && error.status === 401) {
-                    // The authentication boundary will redirect to the login page.
-                    return;
-                }
-
-                throw error;
+            if (isApiError(error) && error.status === 401) {
+                // The authentication boundary will redirect to the login page.
+                return;
             }
+
+            throw error;
         });
 }
 

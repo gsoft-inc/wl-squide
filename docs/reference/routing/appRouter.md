@@ -127,7 +127,7 @@ The handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web
 
 The `isPublicDataLoaded` property should also be provided to indicate whether or not the initial public data loading is completed.
 
-```tsx !#11,20-22,29,40,41 host/src/App.tsx
+```tsx !#10,23,25-27,34-35 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { Loading } from "./Loading.tsx";
@@ -136,20 +136,14 @@ import type { FeatureFlags } from "@sample/shared";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void, signal: AbortSignal) {
-    try {
-        const response = await fetch("/api/feature-flags", {
-            signal
-        });
-        
-        if (response.ok) {
-            const data = await response.json();
+    const response = await fetch("/api/feature-flags", {
+        signal
+    });
+    
+    if (response.ok) {
+        const data = await response.json();
 
-            setFeatureFlags(data);
-        }
-    } catch (error: unknown) {
-        if (!signal.aborted) {
-            throw error;
-        }
+        setFeatureFlags(data);
     }
 }
 
@@ -188,7 +182,7 @@ The handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web
 
 The `isProtectedDataLoaded` property should also be provided to indicate whether or not the initial protected data loading is completed.
 
-```tsx !#11,25-27,34,45,46 host/src/App.tsx
+```tsx !#10,28,30-32,39-40 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { Loading } from "./Loading.tsx";
@@ -197,25 +191,19 @@ import type { Session } from "@sample/shared";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 async function fetchProtectedData(setSession: (session: Session) => void, signal: AbortSignal) {
-    try {
-        const response = await fetch("/api/session"), {
-            signal
-        });
-        
-        if (response.ok) {
-            const data = await response.json();
+    const response = await fetch("/api/session"), {
+        signal
+    });
+    
+    if (response.ok) {
+        const data = await response.json();
 
-            setSession({
-                user: {
-                    id: data.userId,
-                    name: data.username
-                }
-            });
-        }
-    } catch (error: unknown) {
-        if (!signal.aborted) {
-            throw error;
-        }
+        setSession({
+            user: {
+                id: data.userId,
+                name: data.username
+            }
+        });
     }
 }
 
@@ -252,7 +240,7 @@ Don't forget to forward the [AbortSignal](https://developer.mozilla.org/en-US/do
 
 For more information about deferred registrations, refer to the [registerRemoteModules](../registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) and [completeModuleRegistrations](../registration/completeModuleRegistrations.md) documentation.
 
-```tsx !#38-40,50 host/src/App.tsx
+```tsx !#32-34,44 host/src/App.tsx
 import { useState, useCallback } from "react";
 import { AppRouter } from "@squide/firefly";
 import { completeModuleRegistrations } from "@squide/webpack-module-federation";
@@ -262,20 +250,14 @@ import type { FeatureFlags } from "@sample/shared";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void, signal: AbortSignal) {
-    try {
-        const response = await fetch("/api/feature-flags", {
-            signal
-        });
+    const response = await fetch("/api/feature-flags", {
+        signal
+    });
+    
+    if (response.ok) {
+        const data = await response.json();
         
-        if (response.ok) {
-            const data = await response.json();
-            
-            setFeatureFlags(data);
-        }
-    } catch (error: unknown) {
-        if (!signal.aborted) {
-            throw error;
-        }
+        setFeatureFlags(data);
     }
 }
 

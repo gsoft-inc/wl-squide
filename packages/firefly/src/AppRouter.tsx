@@ -25,8 +25,9 @@ function useLoadPublicData(areModulesRegistered: boolean, areModulesReady: boole
                 logger.debugOnce("loading-public-data", "[shell] Loading public data.");
 
                 const abortController = new AbortController();
+                const signal = abortController.signal;
 
-                const result = onLoadData(abortController.signal);
+                const result = onLoadData(signal);
 
                 if (!isPromise(result)) {
                     throw Error("[squide] An AppRouter onLoadPublicData handler must return a promise object.");
@@ -38,7 +39,10 @@ function useLoadPublicData(areModulesRegistered: boolean, areModulesReady: boole
                         logger.debugOnce("public-data-loaded", "[shell] Public data has been loaded.");
                     })
                     .catch(error => {
-                        showBoundary(error);
+                        // Do not handle aborted requests.
+                        if (!signal.aborted) {
+                            showBoundary(error);
+                        }
                     });
 
                 return () => {
@@ -63,8 +67,9 @@ function useLoadProtectedData(areModulesRegistered: boolean, areModulesReady: bo
                     logger.debugOnce("loading-protected-data", `[shell] Loading protected data as "${location.pathname}" is a protected route.`);
 
                     const abortController = new AbortController();
+                    const signal = abortController.signal;
 
-                    const result = onLoadData(abortController.signal);
+                    const result = onLoadData(signal);
 
                     if (!isPromise(result)) {
                         throw Error("[squide] An AppRouter onLoadProtectedData handler must return a promise object.");
@@ -76,13 +81,15 @@ function useLoadProtectedData(areModulesRegistered: boolean, areModulesReady: bo
                             logger.debugOnce("protected-data-loaded", "[shell] Protected data has been loaded.");
                         })
                         .catch(error => {
-                            showBoundary(error);
+                            // Do not handle aborted requests.
+                            if (!signal.aborted) {
+                                showBoundary(error);
+                            }
                         });
 
                     return () => {
                         abortController.abort();
                     };
-                    // }
                 } else {
                     // Prevent logging twice because of React strict mode.
                     logger.debugOnce("is-a-public-route", `[shell] Not loading protected data as "${location.pathname}" is a public route.`);

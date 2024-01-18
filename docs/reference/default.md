@@ -41,7 +41,7 @@ toc:
 - [ManagedRoutes](./routing/ManagedRoutes.md)
 - [useRenderedNavigationItems](./routing/useRenderedNavigationItems.md)
 - [useRouteMatch](./routing/useRouteMatch.md)
-- [useIsRouteMatchProtected](./routing/useIsRouteMatchProtected.md)
+- [useIsRouteProtected](./routing/useIsRouteProtected.md)
 
 ### Logging
 

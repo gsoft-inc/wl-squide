@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { AppRouterErrorBoundary } from "./AppRouterErrorBoundary.tsx";
 import { i18NextInstanceKey } from "./i18next.ts";
+import { useRefState } from "./useRefState.tsx";
 
 export interface DeferredRegistrationData {
     featureFlags?: FeatureFlags;
@@ -55,6 +56,7 @@ async function fetchSubscription(signal: AbortSignal) {
 function fetchProtectedData(
     setSession: (session: Session) => void,
     setSubscription: (subscription: Subscription) => void,
+    setIsProtectedDataLoaded: (isProtectedDataLoaded: boolean) => void,
     signal: AbortSignal,
     logger: Logger
 ) {
@@ -70,6 +72,7 @@ function fetchProtectedData(
             logger.debug("[shell] %cSubscription is ready%c:", "color: white; background-color: green;", "", subscription);
 
             setSubscription(subscription);
+            setIsProtectedDataLoaded(true);
         })
         .catch((error: unknown) => {
             if (isApiError(error) && error.status === 401) {
@@ -92,7 +95,9 @@ function Loading() {
 
 export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppRouterProps) {
     const [featureFlags, setFeatureFlags] = useState<FeatureFlags>();
-    const [subscription, setSubscription] = useState<Subscription>();
+
+    const [subscriptionRef, setSubscription] = useRefState<Subscription>();
+    const [isProtectedDataLoaded, setIsProtectedDataLoaded] = useState(false);
 
     const logger = useLogger();
     const runtime = useRuntime();
@@ -112,7 +117,7 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
             changeLanguage(session.user.preferredLanguage);
         };
 
-        return fetchProtectedData(setSession, setSubscription, signal, logger);
+        return fetchProtectedData(setSession, setSubscription, setIsProtectedDataLoaded, signal, logger);
     }, [logger, sessionManager, changeLanguage]);
 
     const handleCompleteRegistrations = useCallback(() => {
@@ -124,7 +129,7 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
 
     return (
         <FeatureFlagsContext.Provider value={featureFlags}>
-            <SubscriptionContext.Provider value={subscription}>
+            <SubscriptionContext.Provider value={subscriptionRef.current!}>
                 <TelemetryServiceContext.Provider value={telemetryService}>
                     <FireflyAppRouter
                         fallbackElement={<Loading />}
@@ -133,7 +138,7 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
                         onLoadPublicData={handleLoadPublicData}
                         onLoadProtectedData={handleLoadProtectedData}
                         isPublicDataLoaded={!!featureFlags}
-                        isProtectedDataLoaded={!!sessionManager.getSession() && !!subscription}
+                        isProtectedDataLoaded={isProtectedDataLoaded}
                         onCompleteRegistrations={handleCompleteRegistrations}
                     >
                         {(routes, providerProps) => (

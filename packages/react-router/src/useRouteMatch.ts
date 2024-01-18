@@ -1,7 +1,11 @@
 import { matchRoutes } from "react-router-dom";
 import { useRoutes } from "./useRoutes.ts";
 
-export function useRouteMatch(locationArg: Partial<Location>) {
+export interface UseIsRouteMatchOptions {
+    throwWhenThereIsNoMatch?: boolean;
+}
+
+export function useRouteMatch(locationArg: Partial<Location>, { throwWhenThereIsNoMatch = true }: UseIsRouteMatchOptions = {}) {
     const routes = useRoutes();
 
     const matchingRoutes = matchRoutes(routes, locationArg) ?? [];
@@ -10,6 +14,10 @@ export function useRouteMatch(locationArg: Partial<Location>) {
         // When a route is nested, it also returns all the parts that constituate the whole route (for example the layouts and the boundaries).
         // We only want to know the visiblity of the actual route that has been requested, which is always the last entry.
         return matchingRoutes[matchingRoutes.length - 1]!.route;
+    } else {
+        if (throwWhenThereIsNoMatch) {
+            throw new Error(`[squide] There's no matching route for the location: "${locationArg.pathname}". Did you add routes to React Router without using the runtime.registerRoute() function?`);
+        }
     }
 
     return undefined;

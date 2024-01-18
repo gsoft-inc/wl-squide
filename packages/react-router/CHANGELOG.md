@@ -1,5 +1,11 @@
 # @squide/react-router
 
+## 4.0.2
+
+### Patch Changes
+
+- [#135](https://github.com/gsoft-inc/wl-squide/pull/135) [`8e73083`](https://github.com/gsoft-inc/wl-squide/commit/8e73083bb90a6f23495ac6a8dca0245862ee2c9a) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Internal changes to `useRouteMatch` and `useIsRouteProtected`.
+
 ## 4.0.1
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 import { isNil, useLogOnceLogger } from "@squide/core";
 import { useIsMswStarted } from "@squide/msw";
-import { useIsRouteMatchProtected, useRoutes, type Route } from "@squide/react-router";
+import { useIsRouteProtected, useRouteMatch, useRoutes, type Route } from "@squide/react-router";
 import { useAreModulesReady, useAreModulesRegistered } from "@squide/webpack-module-federation";
 import { cloneElement, useCallback, useEffect, useMemo, type ReactElement } from "react";
 import { ErrorBoundary, useErrorBoundary } from "react-error-boundary";
@@ -154,7 +154,8 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
     useLoadPublicData(areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded, onLoadPublicData);
 
     // Only throw when there's no match if the modules has been registered, otherwise it's expected that there are no registered routes.
-    const isActiveRouteProtected = useIsRouteMatchProtected(location, { throwWhenThereIsNoMatch: areModulesReady });
+    const activeRoute = useRouteMatch(location, { throwWhenThereIsNoMatch: areModulesReady });
+    const isActiveRouteProtected = useIsRouteProtected(activeRoute);
 
     // Try to load the protected data if an handler is defined.
     useLoadProtectedData(areModulesRegistered, areModulesReady, isMswStarted, isActiveRouteProtected, isProtectedDataLoaded, onLoadProtectedData);
@@ -170,7 +171,7 @@ export function BootstrappingRoute(props: BootstrappingRouteProps) {
         }
     }, [areModulesRegistered, areModulesReady, isMswStarted, isPublicDataLoaded, isProtectedDataLoaded, isActiveRouteProtected, onCompleteRegistrations]);
 
-    if (!areModulesReady || !isMswStarted || !isPublicDataLoaded || (isActiveRouteProtected && !isProtectedDataLoaded)) {
+    if (!areModulesReady || !isMswStarted || !activeRoute || !isPublicDataLoaded || (isActiveRouteProtected && !isProtectedDataLoaded)) {
         return fallbackElement;
     }
 
@@ -221,6 +222,19 @@ export function AppRouter(props: AppRouterProps) {
     }, [errorElement]);
 
     return useMemo(() => {
+        // HACK:
+        // When there's a direct hit on a deferred route, since the route has not been registered yet (because it's a deferred registration),
+        // the React Router router instance doesn't know about that route and will therefore fallback to the no match route.
+        // If there's no custom no match route defined with path="*", React Router will not even bother trying to render a route and will defer to
+        // it's default no match route, which breaks the AppRouter logic.
+        // To circumvent this issue, if the application doesn't register a no match route, Squide add one by default.
+        if (!routes.some(x => x.path === "*")) {
+            routes.push({
+                path: "*",
+                lazy: () => import("./NoMatchRouteFallback.tsx")
+            });
+        }
+
         return renderRouterProvider([
             {
                 element: (

@@ -71,6 +71,10 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
     });
 
     return ({ featureFlags } = {}) => {
+        if (!runtime.getSession()) {
+            throw new Error("The deferred registratons are broken again as they are executed before the protected data has been loaded.");
+        }
+
         if (featureFlags?.featureA) {
             runtime.registerRoute({
                 path: "/feature-a",

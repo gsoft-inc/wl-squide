@@ -4,5 +4,7 @@ export * from "@squide/react-router";
 export * from "@squide/webpack-module-federation";
 
 export * from "./AppRouter.tsx";
+export * from "./NoMatchRouteFallback.tsx";
+
 export * from "./fireflyRuntime.tsx";
 

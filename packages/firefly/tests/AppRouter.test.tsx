@@ -56,10 +56,9 @@ beforeEach(() => {
 test("when no data handlers are provided, msw is disabled, there's no deferred registrations, and modules are not registered yet, render the fallback", async () => {
     const runtime = new FireflyRuntime();
 
-    // Must add at least a route otherwise useRouteMatchProtected will throw.
     runtime.registerRoute({
         path: "*",
-        element: <div>A wildcard route</div>
+        element: <div>A custom no match route</div>
     }, {
         hoist: true
     });
@@ -77,10 +76,9 @@ test("when no data handlers are provided, msw is disabled, there's no deferred r
 test("when no data handlers are provided, msw is disabled, there's no deferred registrations, and modules are registered, render the router", async () => {
     const runtime = new FireflyRuntime();
 
-    // Must add at least a route otherwise useRouteMatchProtected will throw.
     runtime.registerRoute({
         path: "*",
-        element: <div>A wildcard route</div>
+        element: <div>A custom no match route</div>
     }, {
         hoist: true
     });
@@ -104,10 +102,9 @@ test("when no data handlers are provided, msw is disabled, there's no deferred r
 test("when no data handlers are provided, msw is disabled, modules are registered but there's uncompleted deferred registrations, render the fallback", async () => {
     const runtime = new FireflyRuntime();
 
-    // Must add at least a route otherwise useRouteMatchProtected will throw.
     runtime.registerRoute({
         path: "*",
-        element: <div>A wildcard route</div>
+        element: <div>A custom no match route</div>
     }, {
         hoist: true
     });
@@ -124,11 +121,9 @@ test("when no data handlers are provided, msw is disabled, modules are registere
 test("when a onLoadPublicData handler is provided and the public data is not loaded, render the fallback element", async () => {
     const runtime = new FireflyRuntime();
 
-    // Must add at least a route otherwise useRouteMatchProtected will throw.
     runtime.registerRoute({
-        $visibility: "public",
         path: "*",
-        element: <div>A wildcard route</div>
+        element: <div>A custom no match route</div>
     }, {
         hoist: true
     });
@@ -147,6 +142,13 @@ test("when a onLoadPublicData handler is provided and the public data is not loa
 
 test("when a onLoadPublicData handler is provided and the public data is loaded, render the router", async () => {
     const runtime = new FireflyRuntime();
+
+    runtime.registerRoute({
+        path: "*",
+        element: <div>A custom no match route</div>
+    }, {
+        hoist: true
+    });
 
     runtime.registerRoute({
         $visibility: "public",
@@ -178,10 +180,9 @@ test("when a onLoadPublicData handler is provided and the public data is loaded,
 test("when a onLoadProtectedData handler is provided and the protected data is not loaded, render the fallback element", async () => {
     const runtime = new FireflyRuntime();
 
-    // Must add at least a route otherwise React Router complains the router has no routes.
     runtime.registerRoute({
         path: "*",
-        element: <div>A wildcard route</div>
+        element: <div>A custom no match route</div>
     }, {
         hoist: true
     });
@@ -200,6 +201,13 @@ test("when a onLoadProtectedData handler is provided and the protected data is n
 
 test("when a onLoadProtectedData handler is provided and the protected data is loaded, render the router", async () => {
     const runtime = new FireflyRuntime();
+
+    runtime.registerRoute({
+        path: "*",
+        element: <div>A custom no match route</div>
+    }, {
+        hoist: true
+    });
 
     runtime.registerRoute({
         index: true,
@@ -230,10 +238,9 @@ test("when a onLoadProtectedData handler is provided and the protected data is l
 test("when msw is enabled and msw is not started, render the fallback element", async () => {
     const runtime = new FireflyRuntime();
 
-    // Must add at least a route otherwise React Router complains the router has no routes.
     runtime.registerRoute({
         path: "*",
-        element: <div>A wildcard route</div>
+        element: <div>A custom no match route</div>
     }, {
         hoist: true
     });
@@ -249,6 +256,13 @@ test("when msw is enabled and msw is not started, render the fallback element", 
 
 test("when msw is enabled and msw is started, render the router", async () => {
     const runtime = new FireflyRuntime();
+
+    runtime.registerRoute({
+        path: "*",
+        element: <div>A custom no match route</div>
+    }, {
+        hoist: true
+    });
 
     runtime.registerRoute({
         index: true,
@@ -272,6 +286,13 @@ test("when a onCompleteRegistrations handler is provided and there's no deferred
     const runtime = new FireflyRuntime();
 
     runtime.registerRoute({
+        path: "*",
+        element: <div>A custom no match route</div>
+    }, {
+        hoist: true
+    });
+
+    runtime.registerRoute({
         index: true,
         element: <div data-testid="route">A route</div>
     }, {
@@ -291,10 +312,9 @@ test("when a onCompleteRegistrations handler is provided and there's no deferred
 test("when a onCompleteRegistrations handler is provided and the deferred registrations are not completed, render the fallback element", async () => {
     const runtime = new FireflyRuntime();
 
-    // Must add at least a route otherwise React Router complains the router has no routes.
     runtime.registerRoute({
         path: "*",
-        element: <div>A wildcard route</div>
+        element: <div>A custom no match route</div>
     }, {
         hoist: true
     });
@@ -313,10 +333,9 @@ test("when a onCompleteRegistrations handler is provided and the deferred regist
 test("when a onCompleteRegistrations handler is provided and the deferred registrations are completed, render the router", async () => {
     const runtime = new FireflyRuntime();
 
-    // Must add at least a route otherwise React Router complains the router has no routes.
     runtime.registerRoute({
         path: "*",
-        element: <div>A wildcard route</div>
+        element: <div>A custom no match route</div>
     }, {
         hoist: true
     });
@@ -352,10 +371,9 @@ test("when a onCompleteRegistrations handler is provided and the deferred regist
 test("when a onCompleteRegistrations handler is provided and a onLoadPublicData handler is provided, do not complete the deferred registrations and render the route until the public date is loaded", async () => {
     const runtime = new FireflyRuntime();
 
-    // Must add at least a route otherwise React Router complains the router has no routes.
     runtime.registerRoute({
         path: "*",
-        element: <div>A wildcard route</div>
+        element: <div>A custom no match route</div>
     }, {
         hoist: true
     });
@@ -411,10 +429,9 @@ test("when a onCompleteRegistrations handler is provided and a onLoadPublicData 
 test("when a onCompleteRegistrations handler is provided and a onLoadProtectedData handler is provided, do not complete the deferred registrations and render the route until the protected date is loaded", async () => {
     const runtime = new FireflyRuntime();
 
-    // Must add at least a route otherwise React Router complains the router has no routes.
     runtime.registerRoute({
         path: "*",
-        element: <div>A wildcard route</div>
+        element: <div>A custom no match route</div>
     }, {
         hoist: true
     });
@@ -470,10 +487,9 @@ test("when a onCompleteRegistrations handler is provided and a onLoadProtectedDa
 test("when a onCompleteRegistrations handler is provided, a onLoadPublicData handler and a onLoadProtectedData handler are provided, do not complete the deferred registrations and render the route until the public and protected date are loaded", async () => {
     const runtime = new FireflyRuntime();
 
-    // Must add at least a route otherwise React Router complains the router has no routes.
     runtime.registerRoute({
         path: "*",
-        element: <div>A wildcard route</div>
+        element: <div>A custom no match route</div>
     }, {
         hoist: true
     });
@@ -540,11 +556,9 @@ test("when an error occurs while loading the public data, render the error eleme
 
     const runtime = new FireflyRuntime();
 
-    // Must add at least a route otherwise useRouteMatchProtected will throw.
     runtime.registerRoute({
-        $visibility: "public",
         path: "*",
-        element: <div>A wildcard route</div>
+        element: <div>A custom no match route</div>
     }, {
         hoist: true
     });
@@ -569,10 +583,9 @@ test("when an error occurs while loading the protected data, render the error el
 
     const runtime = new FireflyRuntime();
 
-    // Must add at least a route otherwise useRouteMatchProtected will throw.
     runtime.registerRoute({
         path: "*",
-        element: <div>A wildcard route</div>
+        element: <div>A custom no match route</div>
     }, {
         hoist: true
     });
@@ -588,4 +601,14 @@ test("when an error occurs while loading the protected data, render the error el
     expect(await screen.findByTestId("error")).toBeInTheDocument();
 
     spy.mockRestore();
+});
+
+test("throw an error if no custom no match route are registered", async () => {
+    const runtime = new FireflyRuntime();
+
+    await registerLocalModules([() => {}], runtime);
+
+    expect(() => renderWithRuntime(runtime, createAppRouter({
+        waitForMsw: false
+    }))).toThrow(/For the AppRouter component to work properly, the application must be a define a custom no match router/);
 });

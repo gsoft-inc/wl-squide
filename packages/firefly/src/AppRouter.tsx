@@ -1,6 +1,6 @@
 import { isNil, useLogOnceLogger } from "@squide/core";
 import { useIsMswStarted } from "@squide/msw";
-import { useIsRouteProtected, useRouteMatch, useRoutes, type Route } from "@squide/react-router";
+import { findRouteByPath, useIsRouteProtected, useRouteMatch, useRoutes, type Route } from "@squide/react-router";
 import { useAreModulesReady, useAreModulesRegistered } from "@squide/webpack-module-federation";
 import { cloneElement, useCallback, useEffect, useMemo, type ReactElement } from "react";
 import { ErrorBoundary, useErrorBoundary } from "react-error-boundary";
@@ -225,14 +225,11 @@ export function AppRouter(props: AppRouterProps) {
         // HACK:
         // When there's a direct hit on a deferred route, since the route has not been registered yet (because it's a deferred registration),
         // the React Router router instance doesn't know about that route and will therefore fallback to the no match route.
-        // If there's no custom no match route defined with path="*", React Router will not even bother trying to render a route and will defer to
-        // it's default no match route, which breaks the AppRouter logic.
-        // To circumvent this issue, if the application doesn't register a no match route, Squide add one by default.
-        if (!routes.some(x => x.path === "*")) {
-            routes.push({
-                path: "*",
-                lazy: () => import("./NoMatchRouteFallback.tsx")
-            });
+        // If there's isn't a custom no match route defined with path="*", React Router will fallback it's default no match router instead
+        // of rendering a route which will break the AppRouter component.
+        // To circumvent this issue, if the application doesn't register a custom no match route, an Error is thrown.
+        if (areModulesRegistered && !findRouteByPath(routes, "*")) {
+            throw new Error("For the AppRouter component to work properly, the application must be a define a custom no match router. For additional information, refer to: https://reactrouter.com/en/main/start/tutorial#handling-not-found-errors.");
         }
 
         return renderRouterProvider([

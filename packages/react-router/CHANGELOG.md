@@ -1,5 +1,11 @@
 # @squide/react-router
 
+## 4.0.3
+
+### Patch Changes
+
+- [#137](https://github.com/gsoft-inc/wl-squide/pull/137) [`2f5946f9`](https://github.com/gsoft-inc/wl-squide/commit/2f5946f9c51740dc0d207d53085b143d9f1e407c) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Improved the no custom 404 route handling.
+
 ## 4.0.2
 
 ### Patch Changes

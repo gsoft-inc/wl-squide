@@ -1,3 +1,4 @@
+export * from "./findRouteByPath.ts";
 export * from "./navigationItemRegistry.ts";
 export * from "./outlets.ts";
 export * from "./reactRouterRuntime.ts";

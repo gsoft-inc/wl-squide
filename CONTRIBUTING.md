@@ -45,7 +45,7 @@ Under [samples/](samples/) are applications to test the Squide functionalities w
 You'll find two samples:
 
 - `basic`: A sample application showcasing the basic features or Squide.
-- `endpoints`: A more complexe sample application showcasing the different usecases related to data fetching and management.
+- `endpoints`: A more complexe sample application showcasing the different usecases related to data fetching and localization.
 
 ## Installation
 

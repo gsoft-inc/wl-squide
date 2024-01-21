@@ -109,17 +109,19 @@ export class i18nextPlugin<T extends string = string> extends Plugin {
     }
 
     changeLanguage(language: T) {
-        if (!this.#supportedLanguages.includes(language)) {
-            throw new Error(`[squide] Cannot change language for "${language}" because it's not part of the supported languages array. Supported languages are ${this.#supportedLanguages.map(x => `"${x}"`).join(",")}.`);
+        if (language !== this.#currentLanguage) {
+            if (!this.#supportedLanguages.includes(language)) {
+                throw new Error(`[squide] Cannot change language for "${language}" because it's not part of the supported languages array. Supported languages are ${this.#supportedLanguages.map(x => `"${x}"`).join(",")}.`);
+            }
+
+            this.#registry.getInstances().forEach(x => {
+                x.changeLanguage(language);
+            });
+
+            this.#currentLanguage = language;
+
+            this.#runtime?.logger.debug(`[squide] The language has been changed to "${this.#currentLanguage}".`);
         }
-
-        this.#registry.getInstances().forEach(x => {
-            x.changeLanguage(language);
-        });
-
-        this.#currentLanguage = language;
-
-        this.#runtime?.logger.debug(`[squide] The language has been changed to "${this.#currentLanguage}".`);
     }
 }
 

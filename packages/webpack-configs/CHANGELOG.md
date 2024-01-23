@@ -1,5 +1,11 @@
 # @squide/webpack-configs
 
+## 1.1.4
+
+### Patch Changes
+
+- [`2f077119`](https://github.com/gsoft-inc/wl-squide/commit/2f0771194fd2034602955b8d3f72e1cc43e20e64) Thanks [@patricklafrance](https://github.com/patricklafrance)! - The `defineDevHostConfig` function now enables `fastRefresh`.
+
 ## 1.1.3
 
 ### Patch Changes

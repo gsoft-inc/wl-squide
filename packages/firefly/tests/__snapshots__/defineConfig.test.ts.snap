@@ -90,7 +90,7 @@ exports[`defineBuildRemoteModuleConfig includes react-router and msw dependencie
 
 exports[`defineDevHostConfig includes react-router and msw dependencies 1`] = `
 {
-  "index": 2,
+  "index": 3,
   "plugin": ModuleFederationPlugin {
     "_options": {
       "name": "host",

@@ -51,13 +51,6 @@ describe("defineDevHostConfig", () => {
         expect(config.output?.publicPath).toBe("http://localhost:8080/");
     });
 
-    test("fast refresh is disabled", () => {
-        const config = defineDevHostConfig(SwcConfig, "host", 8080);
-        const result = findPlugin(config, matchConstructorName("ReactRefreshWebpackPlugin"));
-
-        expect(result).toBeUndefined();
-    });
-
     test("the module federation plugin configuration includes the default shared dependencies", () => {
         const config = defineDevHostConfig(SwcConfig, "host", 8080);
         const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));

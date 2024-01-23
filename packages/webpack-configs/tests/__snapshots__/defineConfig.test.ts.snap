@@ -597,7 +597,7 @@ exports[`defineBuildRemoteModuleConfig when the router is react-router, add reac
 
 exports[`defineDevHostConfig the application name is set as the federation plugin application name 1`] = `
 {
-  "index": 2,
+  "index": 3,
   "plugin": ModuleFederationPlugin {
     "_options": {
       "name": "host",
@@ -627,7 +627,7 @@ exports[`defineDevHostConfig the application name is set as the federation plugi
 
 exports[`defineDevHostConfig the module federation plugin configuration includes the default shared dependencies 1`] = `
 {
-  "index": 2,
+  "index": 3,
   "plugin": ModuleFederationPlugin {
     "_options": {
       "name": "host",
@@ -669,7 +669,7 @@ exports[`defineDevHostConfig when a public path option is provided for the html 
 
 exports[`defineDevHostConfig when additional options are provided for an existing default shared dependency, add the consumer options to the default options 1`] = `
 {
-  "index": 2,
+  "index": 3,
   "plugin": ModuleFederationPlugin {
     "_options": {
       "name": "host",
@@ -699,7 +699,7 @@ exports[`defineDevHostConfig when additional options are provided for an existin
 
 exports[`defineDevHostConfig when additional shared dependencies are provided, add the dependencies to the module federation plugin configuration 1`] = `
 {
-  "index": 2,
+  "index": 3,
   "plugin": ModuleFederationPlugin {
     "_options": {
       "name": "host",
@@ -736,7 +736,7 @@ exports[`defineDevHostConfig when additional shared dependencies are provided, a
 
 exports[`defineDevHostConfig when i18next is activated, add i18next shared dependency and requiredVersion: false to the react shared dependency definition 1`] = `
 {
-  "index": 2,
+  "index": 3,
   "plugin": ModuleFederationPlugin {
     "_options": {
       "name": "host",
@@ -770,7 +770,7 @@ exports[`defineDevHostConfig when i18next is activated, add i18next shared depen
 
 exports[`defineDevHostConfig when msw is activated, add msw shared dependency 1`] = `
 {
-  "index": 2,
+  "index": 3,
   "plugin": ModuleFederationPlugin {
     "_options": {
       "name": "host",
@@ -829,7 +829,7 @@ exports[`defineDevHostConfig when options others than the public path option are
 
 exports[`defineDevHostConfig when overriding options are provided for a default shared dependency, use the consumer option 1`] = `
 {
-  "index": 2,
+  "index": 3,
   "plugin": ModuleFederationPlugin {
     "_options": {
       "name": "host",
@@ -859,7 +859,7 @@ exports[`defineDevHostConfig when overriding options are provided for a default 
 
 exports[`defineDevHostConfig when the router is react-router, add react-router shared dependencies 1`] = `
 {
-  "index": 2,
+  "index": 3,
   "plugin": ModuleFederationPlugin {
     "_options": {
       "name": "host",

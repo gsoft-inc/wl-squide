@@ -168,7 +168,6 @@ export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: strin
         port,
         publicPath,
         cache,
-        fastRefresh: false,
         htmlWebpackPlugin: trySetHtmlWebpackPluginPublicPath(htmlWebpackPluginOptions ?? defineBuildHtmlWebpackPluginConfig()),
         plugins: [
             ...plugins,

@@ -3,19 +3,14 @@
 import { defineDevHostConfig, defineDevRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
 import path from "node:path";
 import { swcConfig } from "./swc.dev.js";
+import { features, getSharedDependencies } from "./webpack.common.js";
 
 let config;
 
 if (!process.env.ISOLATED) {
     config = defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
-        features: {
-            i18next: true
-        },
-        sharedDependencies: {
-            "@endpoints/shared": {
-                singleton: true
-            }
-        },
+        features,
+        sharedDependencies: getSharedDependencies(false),
         environmentVariables: {
             "NETLIFY": process.env.NETLIFY === "true",
             "ISOLATED": process.env.ISOLATED === "true",
@@ -26,6 +21,8 @@ if (!process.env.ISOLATED) {
     config = defineDevHostConfig(swcConfig, "remote1", 8080, {
         overlay: false,
         entry: path.resolve("./src/dev/index.tsx"),
+        features,
+        sharedDependencies: getSharedDependencies(true),
         environmentVariables: {
             "ISOLATED": process.env.ISOLATED === "true",
             "USE_MSW": process.env.USE_MSW === "true"

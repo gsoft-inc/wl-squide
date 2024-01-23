@@ -1,5 +1,11 @@
 # @squide/i18next
 
+## 1.0.4
+
+### Patch Changes
+
+- [`2f077119`](https://github.com/gsoft-inc/wl-squide/commit/2f0771194fd2034602955b8d3f72e1cc43e20e64) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Added a check to the `changeLanguage` function to prevent updating the language when the language argument value is the current language.
+
 ## 1.0.3
 
 ### Patch Changes

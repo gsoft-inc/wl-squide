@@ -27,7 +27,7 @@ export interface FireflyDefineDevHostConfigOptions extends DefineDevHostConfigOp
     features?: FireflyFeatures;
 }
 
-// The function return type is mandatory, otherwise we got an error TS4058.
+// The function return type is mandatory, otherwise we get an error TS4058.
 export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: string, port: number, { features, ...otherOptions }: FireflyDefineDevHostConfigOptions = {}): webpack.Configuration {
     return baseDefineDevHostConfig(swcConfig, applicationName, port, {
         ...otherOptions,
@@ -43,7 +43,7 @@ export interface FireflyDefineBuildHostConfigOptions extends DefineBuildHostConf
     features?: FireflyFeatures;
 }
 
-// The function return type is mandatory, otherwise we got an error TS4058.
+// The function return type is mandatory, otherwise we get an error TS4058.
 export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: string, { features, ...otherOptions }: FireflyDefineBuildHostConfigOptions = {}): webpack.Configuration {
     return baseDefineBuildHostConfig(swcConfig, applicationName, {
         ...otherOptions,
@@ -59,7 +59,7 @@ export interface FireflyDefineDevRemoteModuleConfigOptions extends DefineDevRemo
     features?: FireflyFeatures;
 }
 
-// The function return type is mandatory, otherwise we got an error TS4058.
+// The function return type is mandatory, otherwise we get an error TS4058.
 export function defineDevRemoteModuleConfig(swcConfig: SwcConfig, applicationName: string, port: number, { features, ...otherOptions }: FireflyDefineDevRemoteModuleConfigOptions = {}): webpack.Configuration {
     return baseDefineDevRemoteModuleConfig(swcConfig, applicationName, port, {
         ...otherOptions,
@@ -75,7 +75,7 @@ export interface FireflyDefineBuildRemoteModuleConfigOptions extends DefineBuild
     features?: FireflyFeatures;
 }
 
-// The function return type is mandatory, otherwise we got an error TS4058.
+// The function return type is mandatory, otherwise we get an error TS4058.
 export function defineBuildRemoteModuleConfig(swcConfig: SwcConfig, applicationName: string, { features, ...otherOptions }: FireflyDefineBuildRemoteModuleConfigOptions = {}): webpack.Configuration {
     return baseDefineBuildRemoteModuleConfig(swcConfig, applicationName, {
         ...otherOptions,

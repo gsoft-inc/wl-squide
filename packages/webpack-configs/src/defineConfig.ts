@@ -8,10 +8,11 @@ import webpack from "webpack";
 
 // Webpack doesn't export ModuleFederationPlugin typings.
 export type ModuleFederationPluginOptions = ConstructorParameters<typeof webpack.container.ModuleFederationPlugin>[0];
+export type ModuleFederationSharedOption = ModuleFederationPluginOptions["shared"];
 
 // Generally, only the host application should have eager dependencies.
 // For more informations about shared dependencies refer to: https://github.com/patricklafrance/wmf-versioning
-function getDefaultSharedDependencies(features: Features, isHost: boolean) {
+function getDefaultSharedDependencies(features: Features, isHost: boolean): ModuleFederationSharedOption {
     return {
         "react": {
             singleton: true,
@@ -45,7 +46,7 @@ export interface Features {
 
 // Generally, only the host application should have eager dependencies.
 // For more informations about shared dependencies refer to: https://github.com/patricklafrance/wmf-versioning
-function getReactRouterSharedDependencies(isHost: boolean) {
+function getReactRouterSharedDependencies(isHost: boolean): ModuleFederationSharedOption {
     return {
         "react-router-dom": {
             singleton: true,
@@ -58,7 +59,7 @@ function getReactRouterSharedDependencies(isHost: boolean) {
     };
 }
 
-function getMswSharedDependency(isHost: boolean) {
+function getMswSharedDependency(isHost: boolean): ModuleFederationSharedOption {
     return {
         "@squide/msw": {
             singleton: true,
@@ -67,8 +68,20 @@ function getMswSharedDependency(isHost: boolean) {
     };
 }
 
-function getI18nextSharedDependency(isHost: boolean) {
+function getI18nextSharedDependency(isHost: boolean): ModuleFederationSharedOption {
     return {
+        "i18next": {
+            singleton: true,
+            eager: isHost ? true : undefined
+        },
+        "react-i18next": {
+            singleton: true,
+            eager: isHost ? true : undefined
+        },
+        "i18next-browser-languagedetector": {
+            singleton: true,
+            eager: isHost ? true : undefined
+        },
         "@squide/i18next": {
             singleton: true,
             eager: isHost ? true : undefined

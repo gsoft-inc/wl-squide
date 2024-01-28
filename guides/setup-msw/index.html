@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.759300797645">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.759785388337">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.759300797645" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.759785388337" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.759300797645" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.759785388337" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.759300797645" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.759300797645" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.759785388337" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.759785388337" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -412,7 +412,7 @@ import { setupWorker } from &quot;msw/browser&quot;;
 export function startMsw(moduleRequestHandlers: RequestHandler[]) {
     const worker = setupWorker(...moduleRequestHandlers);
 
-    worker.start();
+    return worker.start();
 }</code></pre>
 </doc-codeblock></div>
 <p>Then, update the bootstrapping code to <a href="https://mswjs.io/docs/integrations/browser#setup" class="outbound" target="_blank">start the service</a> and <a href="../../reference/msw/setmswasstarted/">mark MSW as started</a> if MSW is enabled:</p>
@@ -442,10 +442,10 @@ if (process.env.USE_MSW) {
     const startMsw = (await import(&quot;../mocks/browser.ts&quot;)).startMsw;
 
     // Will start MSW with the modules request handlers.
-    startMsw(runtime.requestHandlers);
-
-    // Indicate that MSW has been started and the routes can now be safely rendered.
-    setMswAsStarted();
+    startMsw(runtime.requestHandlers).then(() =&gt; {
+        // Indicate that MSW has been started and the routes can now be safely rendered.
+        setMswAsStarted();
+    });
 }
 
 const root = createRoot(document.getElementById(&quot;root&quot;)!);
@@ -473,7 +473,7 @@ export function App() {
         &lt;AppRouter
             fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
             errorElement={&lt;div&gt;An error occured!&lt;/div&gt;}
-            waitForMsw={process.env.USE_MSW}
+            waitForMsw={Boolean(process.env.USE_MSW)}
         &gt;
             {(routes, providerProps) =&gt; (
                 &lt;RouterProvider router={createBrowserRouter(routes)} {...providerProps} /&gt;

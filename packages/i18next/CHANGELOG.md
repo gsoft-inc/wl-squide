@@ -1,5 +1,11 @@
 # @squide/i18next
 
+## 1.1.0
+
+### Minor Changes
+
+- [#140](https://github.com/gsoft-inc/wl-squide/pull/140) [`6eaf4ac3`](https://github.com/gsoft-inc/wl-squide/commit/6eaf4ac3f6ac88b62045ce280562a5887589026b) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Now throwing an Error when an instance is registered with an existing key
+
 ## 1.0.4
 
 ### Patch Changes

@@ -33,10 +33,10 @@ if (process.env.USE_MSW) {
     const startMsw = (await import("../mocks/browser.ts")).startMsw;
 
     // Will start MSW with the request handlers provided by every module.
-    startMsw(runtime.requestHandlers);
-
-    // Indicate to resources that are dependent on MSW that the service has been started.
-    setMswAsStarted();
+    startMsw(runtime.requestHandlers).then(() => {
+        // Indicate to resources that are dependent on MSW that the service has been started.
+        setMswAsStarted();
+    });
 }
 
 const root = createRoot(document.getElementById("root")!);

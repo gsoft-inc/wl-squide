@@ -28,8 +28,9 @@ if (process.env.USE_MSW) {
     // MSW stuff to the bundled when it's not used.
     const startMsw = (await import("../../mocks/browser.ts")).startMsw;
 
-    startMsw(runtime.requestHandlers);
-    setMswAsStarted();
+    startMsw(runtime.requestHandlers).then(() => {
+        setMswAsStarted();
+    });
 }
 
 const root = createRoot(document.getElementById("root")!);

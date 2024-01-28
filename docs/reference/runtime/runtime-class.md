@@ -168,7 +168,7 @@ runtime.registerRoute({
 If the route is nested under an authentication boundary, don't forget to either mark the route as [hoisted](#register-an-hoisted-route) or to [nest the route](#register-nested-routes-under-an-existing-route) under a public parent.
 
 !!!info
-A `$visibility` hint only takes effect if your application is using the [useIsRouteMatchProtected](../routing/useIsRouteMatchProtected.md) hook. When no `$visibility` hint is provided, a route is considered `protected`.
+A `$visibility` hint only takes effect if your application is using the [useIsRouteProtected](../routing/useIsRouteProtected.md) hook. When no `$visibility` hint is provided, a route is considered `protected`.
 !!!
 
 ### Register a named route

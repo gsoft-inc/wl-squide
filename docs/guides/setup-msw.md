@@ -73,7 +73,7 @@ import { setupWorker } from "msw/browser";
 export function startMsw(moduleRequestHandlers: RequestHandler[]) {
     const worker = setupWorker(...moduleRequestHandlers);
 
-    worker.start();
+    return worker.start();
 }
 ```
 
@@ -104,10 +104,10 @@ if (process.env.USE_MSW) {
     const startMsw = (await import("../mocks/browser.ts")).startMsw;
 
     // Will start MSW with the modules request handlers.
-    startMsw(runtime.requestHandlers);
-
-    // Indicate that MSW has been started and the routes can now be safely rendered.
-    setMswAsStarted();
+    startMsw(runtime.requestHandlers).then(() => {
+        // Indicate that MSW has been started and the routes can now be safely rendered.
+        setMswAsStarted();
+    });
 }
 
 const root = createRoot(document.getElementById("root")!);
@@ -132,7 +132,7 @@ export function App() {
         <AppRouter
             fallbackElement={<div>Loading...</div>}
             errorElement={<div>An error occured!</div>}
-            waitForMsw={process.env.USE_MSW}
+            waitForMsw={Boolean(process.env.USE_MSW)}
         >
             {(routes, providerProps) => (
                 <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />

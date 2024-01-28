@@ -10,7 +10,7 @@ export function App() {
 
     return (
         <AppRouter
-            waitForMsw={process.env.USE_MSW as unknown as boolean}
+            waitForMsw={Boolean(process.env.USE_MSW)}
             sessionManager={sessionManager}
             telemetryService={telemetryService}
         />

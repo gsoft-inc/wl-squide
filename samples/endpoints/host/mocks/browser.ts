@@ -4,5 +4,5 @@ import { setupWorker } from "msw/browser";
 export function startMsw(moduleRequestHandlers: RequestHandler[]) {
     const worker = setupWorker(...moduleRequestHandlers);
 
-    worker.start();
+    return worker.start();
 }

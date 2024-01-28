@@ -118,7 +118,7 @@ export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppR
         };
 
         return fetchProtectedData(setSession, setSubscription, setIsProtectedDataLoaded, signal, logger);
-    }, [logger, sessionManager, changeLanguage]);
+    }, [logger, sessionManager, changeLanguage, setSubscription]);
 
     const handleCompleteRegistrations = useCallback(() => {
         return completeModuleRegistrations(runtime, {

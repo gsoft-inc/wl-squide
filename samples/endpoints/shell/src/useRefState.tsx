@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useRef } from "react";
+import { useCallback, useRef, type RefObject } from "react";
 
 export function useRefState<T>(initialValue?: T): [RefObject<T | undefined>, (newValue: T) => void] {
     const valueRef = useRef<T | undefined>(initialValue);

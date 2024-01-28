@@ -158,12 +158,24 @@ exports[`defineBuildHostConfig when i18next is activated, add i18next shared dep
           "eager": true,
           "singleton": true,
         },
+        "i18next": {
+          "eager": true,
+          "singleton": true,
+        },
+        "i18next-browser-languagedetector": {
+          "eager": true,
+          "singleton": true,
+        },
         "react": {
           "eager": true,
           "requiredVersion": false,
           "singleton": true,
         },
         "react-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-i18next": {
           "eager": true,
           "singleton": true,
         },
@@ -466,12 +478,24 @@ exports[`defineBuildRemoteModuleConfig when i18next is activated, add i18next sh
           "eager": undefined,
           "singleton": true,
         },
+        "i18next": {
+          "eager": undefined,
+          "singleton": true,
+        },
+        "i18next-browser-languagedetector": {
+          "eager": undefined,
+          "singleton": true,
+        },
         "react": {
           "eager": undefined,
           "requiredVersion": false,
           "singleton": true,
         },
         "react-dom": {
+          "eager": undefined,
+          "singleton": true,
+        },
+        "react-i18next": {
           "eager": undefined,
           "singleton": true,
         },
@@ -753,12 +777,24 @@ exports[`defineDevHostConfig when i18next is activated, add i18next shared depen
           "eager": true,
           "singleton": true,
         },
+        "i18next": {
+          "eager": true,
+          "singleton": true,
+        },
+        "i18next-browser-languagedetector": {
+          "eager": true,
+          "singleton": true,
+        },
         "react": {
           "eager": true,
           "requiredVersion": false,
           "singleton": true,
         },
         "react-dom": {
+          "eager": true,
+          "singleton": true,
+        },
+        "react-i18next": {
           "eager": true,
           "singleton": true,
         },
@@ -1061,12 +1097,24 @@ exports[`defineDevRemoteModuleConfig when i18next is activated, add i18next shar
           "eager": undefined,
           "singleton": true,
         },
+        "i18next": {
+          "eager": undefined,
+          "singleton": true,
+        },
+        "i18next-browser-languagedetector": {
+          "eager": undefined,
+          "singleton": true,
+        },
         "react": {
           "eager": undefined,
           "requiredVersion": false,
           "singleton": true,
         },
         "react-dom": {
+          "eager": undefined,
+          "singleton": true,
+        },
+        "react-i18next": {
           "eager": undefined,
           "singleton": true,
         },

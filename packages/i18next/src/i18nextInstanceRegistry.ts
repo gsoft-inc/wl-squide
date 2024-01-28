@@ -4,6 +4,10 @@ export class i18nextInstanceRegistry {
     readonly #instances: Map<string, i18n> = new Map();
 
     add(key: string, instance: i18n) {
+        if (this.#instances.has("key")) {
+            throw new Error(`An i18next instance has already been registered with the "${key}" key.`);
+        }
+
         this.#instances.set(key, instance);
     }
 

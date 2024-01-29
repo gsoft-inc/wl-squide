@@ -74,11 +74,13 @@ function getI18nextSharedDependency(isHost: boolean): ModuleFederationSharedOpti
             singleton: true,
             eager: isHost ? true : undefined
         },
+        // Not adding as a shared dependency for the moment because it causes the following error:
+        // Uncaught (in promise) TypeError: i18next_browser_languagedetector__WEBPACK_IMPORTED_MODULE_3__ is not a constructor
+        // "i18next-browser-languagedetector": {
+        //     singleton: true,
+        //     eager: isHost ? true : undefined
+        // },
         "react-i18next": {
-            singleton: true,
-            eager: isHost ? true : undefined
-        },
-        "i18next-browser-languagedetector": {
             singleton: true,
             eager: isHost ? true : undefined
         },

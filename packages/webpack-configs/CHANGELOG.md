@@ -1,5 +1,11 @@
 # @squide/webpack-configs
 
+## 1.2.1
+
+### Patch Changes
+
+- [#142](https://github.com/gsoft-inc/wl-squide/pull/142) [`524be12b`](https://github.com/gsoft-inc/wl-squide/commit/524be12b26fdde5fe2b5d95ab20e1167a2b812f1) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Removing `i18next-browser-languagedetector` from the shared dependencies as it causing an Error at runtime.
+
 ## 1.2.0
 
 ### Minor Changes

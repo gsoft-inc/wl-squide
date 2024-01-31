@@ -302,7 +302,7 @@ To configure webpack, open the `webpack.dev.js` file and update the configuratio
 ```js !#8,11 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig, defineDevHostConfig } from "@squide/firefly/defineConfig.js";
+import { defineDevRemoteModuleConfig, defineDevHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
 let config;
@@ -332,19 +332,19 @@ If you are experiencing issues with this section of the guide:
 
 Similarly to remote modules, the same isolated setup can be achieved for local modules. The main difference is that the `webpack.config.js` file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on webpack and [Module Federation](https://webpack.js.org/concepts/module-federation/).
 
-First, open a terminal at the root of the local module application and install the `@squide/webpack-configs` package and its dependencies:
+First, open a terminal at the root of the local module application and install the `@squide/firefly-configs` package and its dependencies:
 
 +++ pnpm
 ```bash
-pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
 ```
 +++ yarn
 ```bash
-yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
 ```
 +++ npm
 ```bash
-npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
 ```
 +++
 
@@ -439,7 +439,7 @@ Finally, open the `webpack.config.js` file and use the the [defineDevHostConfig]
 ```js local-module/webpack.config.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/firefly/defineConfig.js";
+import { defineDevHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.config.js";
 
 export default defineDevHostConfig(swcConfig, "local1", 8080);

@@ -3,18 +3,20 @@ import { MswPlugin } from "@squide/msw";
 import { ReactRouterRuntime } from "@squide/react-router";
 import type { RequestHandler } from "msw";
 
+export type FireflyRuntimeOptions = RuntimeOptions;
+
 export class FireflyRuntime extends ReactRouterRuntime {
     readonly #mswPlugin: MswPlugin;
 
-    constructor(options: RuntimeOptions = {}) {
+    constructor({ plugins, ...options }: FireflyRuntimeOptions = {}) {
         const mswPlugin = new MswPlugin();
 
         super({
-            ...options,
             plugins: [
-                ...(options.plugins ?? []),
+                ...(plugins ?? []),
                 mswPlugin
-            ]
+            ],
+            ...options
         });
 
         this.#mswPlugin = mswPlugin;

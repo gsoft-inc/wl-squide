@@ -54,7 +54,7 @@ For the full shared dependencies configuration, have a look at the [defineConfig
 ```js !#6 host/webpack.build.js
 // @ts-check
 
-import { defineBuildHostConfig } from "@squide/firefly/defineConfig.js";
+import { defineBuildHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.build.js";
 
 export default defineBuildHostConfig(swcConfig, "host");
@@ -65,7 +65,7 @@ export default defineBuildHostConfig(swcConfig, "host");
 ```js !#7-9 host/webpack.build.js
 // @ts-check
 
-import { defineBuildHostConfig } from "@squide/firefly/defineConfig.js";
+import { defineBuildHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.build.js";
 
 export default defineBuildHostConfig(swcConfig, "host", {
@@ -85,7 +85,7 @@ Features must be activated on the host application as well as every remote modul
 ```js !#7-11 host/webpack.build.js
 // @ts-check
 
-import { defineBuildHostConfig } from "@squide/firefly/defineConfig.js";
+import { defineBuildHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.build.js";
 
 export default defineBuildHostConfig(swcConfig, "host", {
@@ -106,7 +106,7 @@ Additional shared dependencies must be configured on the host application as wel
 ```js !#7-11 host/webpack.build.js
 // @ts-check
 
-import { defineBuildHostConfig } from "@squide/firefly/defineConfig.js";
+import { defineBuildHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.build.js";
 
 export default defineBuildHostConfig(swcConfig, "host", {
@@ -135,7 +135,7 @@ In the previous code sample, the `react` shared dependency will be **augmented**
 ```js !#7-11 host/webpack.build.js
 // @ts-check
 
-import { defineBuildHostConfig } from "@squide/firefly/defineConfig.js";
+import { defineBuildHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.build.js";
 
 export default defineBuildHostConfig(swcConfig, "host", {
@@ -165,7 +165,7 @@ While you could customize the [ModuleFederationPlugin](https://webpack.js.org/pl
 ```js !#7-9 host/webpack.build.js
 // @ts-check
 
-import { defineBuildHostConfig, defineHostModuleFederationPluginOptions } from "@squide/firefly/defineConfig.js";
+import { defineBuildHostConfig, defineHostModuleFederationPluginOptions } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.build.js";
 
 export default defineBuildHostConfig(swcConfig, "host", {

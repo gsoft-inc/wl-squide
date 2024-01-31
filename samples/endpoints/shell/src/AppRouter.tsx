@@ -8,11 +8,6 @@ import { AppRouterErrorBoundary } from "./AppRouterErrorBoundary.tsx";
 import { i18NextInstanceKey } from "./i18next.ts";
 import { useRefState } from "./useRefState.tsx";
 
-export interface DeferredRegistrationData {
-    featureFlags?: FeatureFlags;
-    session?: Session;
-}
-
 export interface AppRouterProps {
     waitForMsw: boolean;
     sessionManager: SessionManager;

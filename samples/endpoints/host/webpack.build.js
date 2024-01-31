@@ -1,6 +1,6 @@
 // @ts-check
 
-import { defineBuildHostConfig } from "@squide/firefly/defineConfig.js";
+import { defineBuildHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.build.js";
 
 export default defineBuildHostConfig(swcConfig, "host", {

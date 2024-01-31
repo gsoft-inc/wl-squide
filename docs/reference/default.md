@@ -19,6 +19,7 @@ toc:
 - [FireflyRuntime class](./runtime/runtime-class.md)
 - [RuntimeContext](./runtime/runtime-context.md)
 - [useRuntime](./runtime/useRuntime.md)
+- [useRuntimeMode](./runtime/useRuntimeMode.md)
 - [useRoutes](./runtime/useRoutes.md)
 - [useNavigationItems](./runtime/useNavigationItems.md)
 - [useLogger](./runtime/useLogger.md)

@@ -77,7 +77,7 @@ For the full shared dependencies configuration, have a look at the [defineConfig
 ```js !#6 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
+import { defineDevRemoteModuleConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8080);
@@ -88,7 +88,7 @@ export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8080);
 ```js !#7-9 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
+import { defineDevRemoteModuleConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8080, {
@@ -107,7 +107,7 @@ Features must be activated on the host application as well as every remote modul
 ```js !#7-11 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
+import { defineDevRemoteModuleConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8080, {
@@ -128,7 +128,7 @@ Additional shared dependencies must be configured on the host application as wel
 ```js !#7-11 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
+import { defineDevRemoteModuleConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8080, {
@@ -157,7 +157,7 @@ In the previous code sample, the `react` shared dependency will be **augmented**
 ```js !#7-11 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
+import { defineDevRemoteModuleConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8080, {
@@ -187,7 +187,7 @@ While you could customize the [ModuleFederationPlugin](https://webpack.js.org/pl
 ```js !#7-9 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig, defineRemoteModuleFederationPluginOptions } from "@squide/firefly/defineConfig.js";
+import { defineDevRemoteModuleConfig, defineRemoteModuleFederationPluginOptions } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8080, {
@@ -205,7 +205,7 @@ export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8080, {
 ```js !#7-11 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig, defineRemoteModuleFederationPluginOptions } from "@squide/firefly/defineConfig.js";
+import { defineDevRemoteModuleConfig, defineRemoteModuleFederationPluginOptions } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8080, {

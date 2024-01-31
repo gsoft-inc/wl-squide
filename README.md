@@ -14,6 +14,7 @@ A federated web application shell built on top of [Module Federation](https://we
 | [@squide/msw](packages/msw/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/msw)](https://www.npmjs.com/package/@squide/msw) |
 | [@squide/i18next](packages/i18next/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/i18next)](https://www.npmjs.com/package/@squide/i18next) |
 | [@squide/firefly](packages/firefly/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/firefly)](https://www.npmjs.com/package/@squide/firefly) |
+| [@squide/firefly-configs](packages/firefly-configs/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/firefly-configs)](https://www.npmjs.com/package/@squide/firefly-configs) |
 | [@squide/fakes](packages/fakes/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/fakes)](https://www.npmjs.com/package/@squide/fakes) |
 
 ## Have a question or found an issue?

@@ -1,5 +1,12 @@
 # @squide/fakes
 
+## 1.0.14
+
+### Patch Changes
+
+- Updated dependencies [[`39d0bbe4`](https://github.com/gsoft-inc/wl-squide/commit/39d0bbe45902d54832e9aa8deb2c1949a2cf3c5f)]:
+  - @squide/core@3.3.0
+
 ## 1.0.13
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @squide/core
 
+## 3.3.0
+
+### Minor Changes
+
+- [#144](https://github.com/gsoft-inc/wl-squide/pull/144) [`39d0bbe4`](https://github.com/gsoft-inc/wl-squide/commit/39d0bbe45902d54832e9aa8deb2c1949a2cf3c5f) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Internal cleanup.
+
 ## 3.2.1
 
 ### Patch Changes

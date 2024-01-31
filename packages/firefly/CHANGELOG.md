@@ -1,5 +1,19 @@
 # @squide/firefly
 
+## 6.0.0
+
+### Major Changes
+
+- [#144](https://github.com/gsoft-inc/wl-squide/pull/144) [`39d0bbe4`](https://github.com/gsoft-inc/wl-squide/commit/39d0bbe45902d54832e9aa8deb2c1949a2cf3c5f) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Moved the webpack define functions to the new `@squide/firefly-configs` package.
+
+### Patch Changes
+
+- Updated dependencies [[`39d0bbe4`](https://github.com/gsoft-inc/wl-squide/commit/39d0bbe45902d54832e9aa8deb2c1949a2cf3c5f), [`39d0bbe4`](https://github.com/gsoft-inc/wl-squide/commit/39d0bbe45902d54832e9aa8deb2c1949a2cf3c5f)]:
+  - @squide/core@3.3.0
+  - @squide/react-router@4.0.4
+  - @squide/msw@2.0.10
+  - @squide/webpack-module-federation@3.0.5
+
 ## 5.0.0
 
 ### Patch Changes

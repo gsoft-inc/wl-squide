@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.759871550848">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.760027428396">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.759871550848" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.760027428396" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.759871550848" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.760027428396" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.759871550848" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.759871550848" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.760027428396" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.760027428396" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -644,7 +644,7 @@ export const registerDev: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime
 <div class="codeblock-title">remote-module/webpack.dev.js</div>
 <pre class="language-javascript" data-line="8,11"><code v-pre class="language-javascript">// @ts-check
 
-import { defineDevRemoteModuleConfig, defineDevHostConfig } from &quot;@squide/firefly/defineConfig.js&quot;;
+import { defineDevRemoteModuleConfig, defineDevHostConfig } from &quot;@squide/firefly-configs&quot;;
 import { swcConfig } from &quot;./swc.dev.js&quot;;
 
 let config;
@@ -683,24 +683,24 @@ export default config;</code></pre>
     </h2>
 </doc-anchor-target>
 <p>Similarly to remote modules, the same isolated setup can be achieved for local modules. The main difference is that the <code v-pre>webpack.config.js</code> file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on webpack and <a href="https://webpack.js.org/concepts/module-federation/" class="outbound" target="_blank">Module Federation</a>.</p>
-<p>First, open a terminal at the root of the local module application and install the <code v-pre>@squide/webpack-configs</code> package and its dependencies:</p>
+<p>First, open a terminal at the root of the local module application and install the <code v-pre>@squide/firefly-configs</code> package and its dependencies:</p>
 <doc-tabs>
 <doc-tab v-cloak id="pnpm">
 <template #title>pnpm</template>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss</code></pre>
+<pre class="language-bash"><code v-pre class="language-bash">pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss</code></pre>
 </doc-codeblock></div>
 </doc-tab>
 <doc-tab v-cloak id="yarn">
 <template #title>yarn</template>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss</code></pre>
+<pre class="language-bash"><code v-pre class="language-bash">yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss</code></pre>
 </doc-codeblock></div>
 </doc-tab>
 <doc-tab v-cloak id="npm">
 <template #title>npm</template>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss</code></pre>
+<pre class="language-bash"><code v-pre class="language-bash">npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss</code></pre>
 </doc-codeblock></div>
 </doc-tab>
 </doc-tabs>
@@ -827,7 +827,7 @@ export const swcConfig = defineDevConfig(targets);</code></pre>
 <div class="codeblock-title">local-module/webpack.config.js</div>
 <pre class="language-javascript"><code v-pre class="language-javascript">// @ts-check
 
-import { defineDevHostConfig } from &quot;@squide/firefly/defineConfig.js&quot;;
+import { defineDevHostConfig } from &quot;@squide/firefly-configs&quot;;
 import { swcConfig } from &quot;./swc.config.js&quot;;
 
 export default defineDevHostConfig(swcConfig, &quot;local1&quot;, 8080);</code></pre>

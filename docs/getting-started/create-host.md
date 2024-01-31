@@ -13,17 +13,17 @@ Create a new application (we'll refer to ours as `host`), then open a terminal a
 
 +++ pnpm
 ```bash
-pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript
+pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript
 pnpm add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ yarn
 ```bash
-yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript
+yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript
 yarn add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ npm
 ```bash
-npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript
+npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript
 npm install @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++
@@ -337,7 +337,7 @@ Then, open the `webpack.dev.js` file and use the [defineDevHostConfig](/referenc
 ```js !#6-13 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/firefly/defineConfig.js";
+import { defineDevHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {
@@ -371,7 +371,7 @@ Then, open the `webpack.build.js` file and use the [defineBuildHostConfig](/refe
 ```js !#6-13 host/webpack.build.js
 // @ts-check
 
-import { defineBuildHostConfig } from "@squide/firefly/defineConfig.js";
+import { defineBuildHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.build.js";
 
 export default defineBuildHostConfig(swcConfig, "host", {

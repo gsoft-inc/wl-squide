@@ -7,8 +7,7 @@ export * from "./runtime/useEventBus.ts";
 export * from "./runtime/useLogOnceLogger.ts";
 export * from "./runtime/useLogger.ts";
 export * from "./runtime/usePlugin.ts";
-export * from "./runtime/useService.ts";
-export * from "./runtime/useServices.ts";
+export * from "./runtime/useRuntimeMode.ts";
 export * from "./runtime/useSession.ts";
 
 export * from "./logging/consoleLogger.ts";
@@ -25,6 +24,4 @@ export * from "./federation/registerLocalModules.ts";
 export * from "./federation/registerModule.ts";
 
 export * from "./plugins/plugin.ts";
-
-export * from "./services/service.ts";
 

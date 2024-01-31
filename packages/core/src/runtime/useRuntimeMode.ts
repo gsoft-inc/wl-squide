@@ -1,7 +1,7 @@
 import { useRuntime } from "./RuntimeContext.ts";
 
-export function useServices() {
+export function useRuntimeMode() {
     const runtime = useRuntime();
 
-    return runtime.services;
+    return runtime.mode;
 }

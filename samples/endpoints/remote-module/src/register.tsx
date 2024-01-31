@@ -1,4 +1,4 @@
-import type { DeferredRegistrationData } from "@endpoints/shell";
+import type { DeferredRegistrationData } from "@endpoints/shared";
 import type { DeferredRegistrationFunction, FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
 import { I18nextNavigationItemLabel } from "@squide/i18next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

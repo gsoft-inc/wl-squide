@@ -171,7 +171,7 @@ Finally, update the webpack development and build configurations to activate the
 ```js !#7-9 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/firefly/defineConfig.js";
+import { defineDevHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {
@@ -190,7 +190,7 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
 ```js !#7-9 host/webpack.build.js
 // @ts-check
 
-import { defineBuildHostConfig } from "@squide/firefly/defineConfig.js";
+import { defineBuildHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.build.js";
 
 export default defineBuildHostConfig(swcConfig, "host", {
@@ -373,7 +373,7 @@ Finally, update the webpack development and build configurations to activate the
 ```js !#7-9 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
+import { defineDevRemoteModuleConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
@@ -391,7 +391,7 @@ export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
 ```js !#7-9 remote-module/webpack.build.js
 // @ts-check
 
-import { defineBuildRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
+import { defineBuildRemoteModuleConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.build.js";
 
 export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {

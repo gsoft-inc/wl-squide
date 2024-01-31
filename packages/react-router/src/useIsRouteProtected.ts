@@ -1,4 +1,4 @@
-import { Route } from "./routeRegistry.ts";
+import type { Route } from "./routeRegistry.ts";
 
 export function useIsRouteProtected(route?: Route) {
     if (!route) {

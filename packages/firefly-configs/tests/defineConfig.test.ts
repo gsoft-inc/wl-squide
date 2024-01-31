@@ -1,12 +1,7 @@
-// const config = defineDevHostConfig(SwcConfig, "host", 8080);
-// const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
-
-// expect(result).toMatchSnapshot();
-
 import { defineBuildConfig as defineSwcBuildConfig, defineDevConfig as defineSwcDevConfig } from "@workleap/swc-configs";
 import { findPlugin, matchConstructorName } from "@workleap/webpack-configs";
 import webpack from "webpack";
-import { defineBuildHostConfig, defineBuildRemoteModuleConfig, defineDevHostConfig, defineDevRemoteModuleConfig } from "../src/defineConfig.ts";
+import { defineBuildHostConfig, defineBuildRemoteModuleConfig, defineDevHostConfig, defineDevRemoteModuleConfig } from "../src/index.ts";
 
 describe("defineDevHostConfig", () => {
     const SwcConfig = defineSwcDevConfig({

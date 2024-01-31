@@ -14,17 +14,17 @@ Create a new application (we'll refer to ours as `remote-module`), then open a t
 
 +++ pnpm
 ```bash
-pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
 pnpm add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ yarn
 ```bash
-yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
 yarn add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ npm
 ```bash
-npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
 npm install @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++
@@ -115,7 +115,7 @@ Then, open the `webpack.dev.js` file and use the [defineDevRemoteModuleConfig](/
 ```js !#6-12 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
+import { defineDevRemoteModuleConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
@@ -148,7 +148,7 @@ Then, open the `webpack.build.js` file and use the [defineBuildRemoteModuleConfi
 ```js !#6-12 remote-module/webpack.build.js
 // @ts-check
 
-import { defineBuildRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
+import { defineBuildRemoteModuleConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.build.js";
 
 export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {

@@ -1,11 +1,11 @@
 import { matchRoutes } from "react-router-dom";
 import { useRoutes } from "./useRoutes.ts";
 
-export interface UseIsRouteMatchOptions {
+export interface UseRouteMatchOptions {
     throwWhenThereIsNoMatch?: boolean;
 }
 
-export function useRouteMatch(locationArg: Partial<Location>, { throwWhenThereIsNoMatch = true }: UseIsRouteMatchOptions = {}) {
+export function useRouteMatch(locationArg: Partial<Location>, { throwWhenThereIsNoMatch = true }: UseRouteMatchOptions = {}) {
     const routes = useRoutes();
 
     const matchingRoutes = matchRoutes(routes, locationArg) ?? [];

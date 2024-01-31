@@ -194,7 +194,7 @@ const Remotes: RemoteDefinition = [
 ```js !#6 remote-module/src/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
+import { defineDevRemoteModuleConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", PORT);
@@ -217,7 +217,7 @@ In development mode, the `publicPath` is built from the provided `host` and `por
 ```js !#6-8 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
+import { defineDevRemoteModuleConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, REMOTE_NAME, 8081, {
@@ -230,7 +230,7 @@ In build mode, the `publicPath` is the third argument of the `defineBuildRemoteM
 ```js !#6 remote-module/webpack.build.js
 // @ts-check
 
-import { defineBuildRemoteModuleConfig } from "@squide/firefly/defineConfig.js";
+import { defineBuildRemoteModuleConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.build.js";
 
 export default defineBuildRemoteModuleConfig(swcConfig, REMOTE_NAME, "http://localhost:8081/");

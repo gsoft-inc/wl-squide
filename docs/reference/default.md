@@ -43,6 +43,8 @@ toc:
 - [useRenderedNavigationItems](./routing/useRenderedNavigationItems.md)
 - [useRouteMatch](./routing/useRouteMatch.md)
 - [useIsRouteProtected](./routing/useIsRouteProtected.md)
+- [resolveRouteSegments](./routing/resolveRouteSegments.md)
+- [isNavigationLink](./routing/isNavigationLink.md)
 
 ### Logging
 

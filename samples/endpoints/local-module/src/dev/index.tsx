@@ -9,11 +9,13 @@ import { App } from "./App.tsx";
 import { registerDev } from "./register.tsx";
 import { sessionAccessor, sessionManager } from "./session.ts";
 
+const consoleLogger = new ConsoleLogger();
+
 // Create the shell runtime.
 // Services, loggers and sessionAccessor could be reuse through a shared packages or faked when in isolation.
 const runtime = new FireflyRuntime({
     plugins: [createI18NextPlugin()],
-    loggers: [new ConsoleLogger()],
+    loggers: [consoleLogger],
     sessionAccessor
 });
 
@@ -26,9 +28,14 @@ if (process.env.USE_MSW) {
     // MSW stuff to the bundled when it's not used.
     const startMsw = (await import("../../mocks/browser.ts")).startMsw;
 
-    startMsw(runtime.requestHandlers).then(() => {
-        setMswAsStarted();
-    });
+    startMsw(runtime.requestHandlers)
+        .then(() => {
+            // Indicate to resources that are dependent on MSW that the service has been started.
+            setMswAsStarted();
+        })
+        .catch((error: unknown) => {
+            consoleLogger.debug("[host-app] An error occured while starting MSW.", error);
+        });
 }
 
 const root = createRoot(document.getElementById("root")!);

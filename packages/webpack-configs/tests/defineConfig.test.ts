@@ -172,6 +172,10 @@ describe("defineDevHostConfig", () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         delete (result.plugin.userOptions as HtmlWebpackPlugin.Options)["template"];
+        // This is an option that is relative to the environment running the test and breaks on CI.
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        delete (result.plugin.options as HtmlWebpackPlugin.Options)["template"];
 
         expect(result).toMatchSnapshot();
     });
@@ -349,6 +353,10 @@ describe("defineBuildHostConfig", () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         delete (result.plugin.userOptions as HtmlWebpackPlugin.Options)["template"];
+        // This is an option that is relative to the environment running the test and breaks on CI.
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        delete (result.plugin.options as HtmlWebpackPlugin.Options)["template"];
 
         expect(result).toMatchSnapshot();
     });

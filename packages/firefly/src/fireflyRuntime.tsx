@@ -1,4 +1,4 @@
-import type { RuntimeOptions } from "@squide/firefly";
+import type { RuntimeOptions } from "@squide/core";
 import { MswPlugin } from "@squide/msw";
 import { ReactRouterRuntime } from "@squide/react-router";
 import type { RequestHandler } from "msw";

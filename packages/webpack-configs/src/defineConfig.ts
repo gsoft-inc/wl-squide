@@ -1,4 +1,3 @@
-import { RemoteEntryPoint, RemoteModuleName } from "@squide/webpack-module-federation";
 import type { SwcConfig } from "@workleap/swc-configs";
 import { defineBuildConfig, defineBuildHtmlWebpackPluginConfig, defineDevConfig, defineDevHtmlWebpackPluginConfig, type DefineBuildConfigOptions, type DefineDevConfigOptions, type WebpackConfig, type WebpackConfigTransformer } from "@workleap/webpack-configs";
 import merge from "deepmerge";
@@ -183,6 +182,8 @@ export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: strin
         port,
         publicPath,
         cache,
+        // This is not breaking and will fixed by itself when @workleap/webpack-configs release a new version with updated dependencies.
+        // @ts-ignore
         htmlWebpackPlugin: trySetHtmlWebpackPluginPublicPath(htmlWebpackPluginOptions ?? defineBuildHtmlWebpackPluginConfig()),
         plugins: [
             ...plugins,
@@ -218,6 +219,8 @@ export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: str
         entry,
         publicPath,
         cache,
+        // This is not breaking and will fixed by itself when @workleap/webpack-configs release a new version with updated dependencies.
+        // @ts-ignore
         htmlWebpackPlugin: trySetHtmlWebpackPluginPublicPath(htmlWebpackPluginOptions ?? defineDevHtmlWebpackPluginConfig()),
         plugins: [
             ...plugins,
@@ -250,9 +253,9 @@ export function defineRemoteModuleFederationPluginOptions(applicationName: strin
 
     return {
         name: applicationName,
-        filename: RemoteEntryPoint,
+        filename: "remoteEntry.js",
         exposes: {
-            [RemoteModuleName]: "./src/register",
+            ["./register"]: "./src/register",
             ...exposes
         },
         // Deep merging the default shared dependencies with the provided shared dependencies

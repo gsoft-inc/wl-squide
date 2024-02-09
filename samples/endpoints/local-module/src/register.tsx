@@ -60,12 +60,12 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
 
     runtime.registerNavigationItem({
         $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="subscriptionPage" />,
-        to: "/subscription"
+        $to: "/subscription"
     });
 
     runtime.registerNavigationItem({
         $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="charactersTab" />,
-        to: "/federated-tabs"
+        $to: "/federated-tabs"
     }, {
         menuId: "/federated-tabs"
     });
@@ -83,7 +83,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
 
             runtime.registerNavigationItem({
                 $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="featureAPage" />,
-                to: "/feature-a"
+                $to: "/feature-a"
             });
         }
     };

@@ -89,21 +89,21 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
 
     runtime.registerNavigationItem({
         $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="episodesTab" />,
-        to: "/federated-tabs/episodes"
+        $to: "/federated-tabs/episodes"
     }, {
         menuId: "/federated-tabs"
     });
 
     runtime.registerNavigationItem({
         $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="locationsTab" />,
-        to: "/federated-tabs/locations"
+        $to: "/federated-tabs/locations"
     }, {
         menuId: "/federated-tabs"
     });
 
     runtime.registerNavigationItem({
         $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="failingTab" />,
-        to: "/federated-tabs/failing"
+        $to: "/federated-tabs/failing"
     }, {
         menuId: "/federated-tabs"
     });
@@ -121,7 +121,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
 
             runtime.registerNavigationItem({
                 $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="featureBPage" />,
-                to: "/feature-b"
+                $to: () => "/feature-b"
             });
         }
 
@@ -133,7 +133,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
 
             runtime.registerNavigationItem({
                 $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="featureCPage" />,
-                to: "/feature-c"
+                $to: "/feature-c"
             });
         }
     };

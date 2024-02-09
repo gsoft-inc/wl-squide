@@ -1,3 +1,4 @@
+import type { ToFunction } from "../src/navigationItemRegistry.ts";
 import { ManagedRoutes, isManagedRoutesOutletRoute } from "../src/outlets.ts";
 import { ReactRouterRuntime } from "../src/reactRouterRuntime.ts";
 import type { Route } from "../src/routeRegistry.ts";
@@ -461,7 +462,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].$visibility).toBe("protected");
         });
 
-        test("when a root route has no visibility property, it is considered as an \"protected\" route", () => {
+        test("when a root route has no visibility property, it is considered as a \"protected\" route", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -517,7 +518,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].children![0].$visibility).toBe("protected");
         });
 
-        test("when a nested route has no visibility property, it is considered as an \"protected\" route", () => {
+        test("when a nested route has no visibility property, it is considered as a \"protected\" route", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -1003,10 +1004,10 @@ describe("registerNavigationItem", () => {
 
         runtime.registerNavigationItem({
             $label: "Root",
-            to: "/root"
+            $to: "/root"
         });
 
-        expect(runtime.getNavigationItems()[0].to).toBe("/root");
+        expect(runtime.getNavigationItems()[0].$to).toBe("/root");
     });
 
     test("can register a root navigation section", () => {
@@ -1017,7 +1018,7 @@ describe("registerNavigationItem", () => {
             children: [
                 {
                     $label: "Child",
-                    to: "/child"
+                    $to: "/child"
                 }
             ]
         });
@@ -1030,12 +1031,12 @@ describe("registerNavigationItem", () => {
 
         runtime.registerNavigationItem({
             $label: "Link",
-            to: "/link"
+            $to: "/link"
         }, {
             menuId: "link-menu"
         });
 
-        expect(runtime.getNavigationItems("link-menu")[0].to).toBe("/link");
+        expect(runtime.getNavigationItems("link-menu")[0].$to).toBe("/link");
     });
 
     test("can register a navigation section for a specific menu id", () => {
@@ -1046,7 +1047,7 @@ describe("registerNavigationItem", () => {
             children: [
                 {
                     $label: "Child",
-                    to: "/child"
+                    $to: "/child"
                 }
             ]
         }, {
@@ -1054,6 +1055,20 @@ describe("registerNavigationItem", () => {
         });
 
         expect(runtime.getNavigationItems("section-menu")[0].$label).toBe("Section");
+    });
+
+    test("can register a navigation item with a dynamic to value", () => {
+        const runtime = new ReactRouterRuntime();
+
+        runtime.registerNavigationItem({
+            $label: "Link",
+            $to: () => "/link"
+        }, {
+            menuId: "link-menu"
+        });
+
+        expect(typeof runtime.getNavigationItems("link-menu")[0].$to).toBe("function");
+        expect((runtime.getNavigationItems("link-menu")[0].$to as ToFunction)()).toBe("/link");
     });
 });
 
@@ -1063,36 +1078,36 @@ describe("getNavigationItems", () => {
 
         runtime.registerNavigationItem({
             $label: "Item 1",
-            to: "/item-1"
+            $to: "/item-1"
         });
 
         runtime.registerNavigationItem({
             $label: "Item 2",
-            to: "/item-2"
+            $to: "/item-2"
         });
 
         runtime.registerNavigationItem({
             $label: "Item 3",
-            to: "/item-3"
+            $to: "/item-3"
         });
 
         runtime.registerNavigationItem({
             $label: "Item 4",
-            to: "/item-4"
+            $to: "/item-4"
         }, {
             menuId: "menu-1"
         });
 
         runtime.registerNavigationItem({
             $label: "Item 5",
-            to: "/item-5"
+            $to: "/item-5"
         }, {
             menuId: "menu-2"
         });
 
-        expect(runtime.getNavigationItems()[0].to).toBe("/item-1");
-        expect(runtime.getNavigationItems()[1].to).toBe("/item-2");
-        expect(runtime.getNavigationItems()[2].to).toBe("/item-3");
+        expect(runtime.getNavigationItems()[0].$to).toBe("/item-1");
+        expect(runtime.getNavigationItems()[1].$to).toBe("/item-2");
+        expect(runtime.getNavigationItems()[2].$to).toBe("/item-3");
     });
 
     test("when no menu id is specified, returns all the registered navigation items for that specific menu", () => {
@@ -1100,34 +1115,34 @@ describe("getNavigationItems", () => {
 
         runtime.registerNavigationItem({
             $label: "Item 1",
-            to: "/item-1"
+            $to: "/item-1"
         });
 
         runtime.registerNavigationItem({
             $label: "Item 2",
-            to: "/item-2"
+            $to: "/item-2"
         });
 
         runtime.registerNavigationItem({
             $label: "Item 3",
-            to: "/item-3"
+            $to: "/item-3"
         });
 
         runtime.registerNavigationItem({
             $label: "Item 4",
-            to: "/item-4"
+            $to: "/item-4"
         }, {
             menuId: "menu-1"
         });
 
         runtime.registerNavigationItem({
             $label: "Item 5",
-            to: "/item-5"
+            $to: "/item-5"
         }, {
             menuId: "menu-2"
         });
 
-        expect(runtime.getNavigationItems("menu-1")[0].to).toBe("/item-4");
+        expect(runtime.getNavigationItems("menu-1")[0].$to).toBe("/item-4");
     });
 });
 

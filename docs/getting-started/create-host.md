@@ -139,12 +139,13 @@ export function App() {
 
 Next, create a layout component to [render the navigation items](/reference/routing/useRenderedNavigationItems.md). In many applications, multiple pages often share a **common layout** that includes elements such as a navigation bar, a user profile menu, and a main content section. In a [React Router](https://reactrouter.com/en/main) application, this shared layout is commonly referred to as a `RootLayout`:
 
-```tsx !#40,43 host/src/RootLayout.tsx
+```tsx !#41,44 host/src/RootLayout.tsx
 import { Suspense } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { 
     useNavigationItems,
     useRenderedNavigationItems,
+    isDynamicTo,
     isNavigationLink,
     type RenderItemFunction,
     type RenderSectionFunction
@@ -158,11 +159,11 @@ const renderItem: RenderItemFunction = (item, index, level) => {
         return null;
     }
 
-    const { label, linkProps, additionalProps } = item;
+    const { label, to, linkProps, additionalProps } = item;
 
     return (
         <li key={`${level}-${index}`}>
-            <Link {...linkProps} {...additionalProps}>
+            <Link to={isDynamicTo(to) ? to() : to} {...linkProps} {...additionalProps}>
                 {label}
             </Link>
         </li>

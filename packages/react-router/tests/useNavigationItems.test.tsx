@@ -19,29 +19,29 @@ test("when no menu id is specified, returns all the registered navigation items 
 
     runtime.registerNavigationItem({
         $label: "Item 1",
-        to: "/item-1"
+        $to: "/item-1"
     });
 
     runtime.registerNavigationItem({
         $label: "Item 2",
-        to: "/item-2"
+        $to: "/item-2"
     });
 
     runtime.registerNavigationItem({
         $label: "Item 3",
-        to: "/item-3"
+        $to: "/item-3"
     });
 
     runtime.registerNavigationItem({
         $label: "Item 4",
-        to: "/item-4"
+        $to: "/item-4"
     }, {
         menuId: "menu-1"
     });
 
     runtime.registerNavigationItem({
         $label: "Item 5",
-        to: "/item-5"
+        $to: "/item-5"
     }, {
         menuId: "menu-2"
     });
@@ -56,29 +56,29 @@ test("when a menu id is specified, returns all the registered navigation items f
 
     runtime.registerNavigationItem({
         $label: "Item 1",
-        to: "/item-1"
+        $to: "/item-1"
     });
 
     runtime.registerNavigationItem({
         $label: "Item 2",
-        to: "/item-2"
+        $to: "/item-2"
     });
 
     runtime.registerNavigationItem({
         $label: "Item 3",
-        to: "/item-3"
+        $to: "/item-3"
     });
 
     runtime.registerNavigationItem({
         $label: "Item 4",
-        to: "/item-4"
+        $to: "/item-4"
     }, {
         menuId: "menu-1"
     });
 
     runtime.registerNavigationItem({
         $label: "Item 5",
-        to: "/item-5"
+        $to: "/item-5"
     }, {
         menuId: "menu-2"
     });
@@ -93,7 +93,7 @@ test("returned array is immutable", () => {
 
     runtime.registerNavigationItem({
         $label: "Foo",
-        to: "/foo"
+        $to: "/foo"
     });
 
     const { result, rerender } = renderWithRuntime(runtime);
@@ -107,7 +107,7 @@ test("returned array is immutable", () => {
 
     runtime.registerNavigationItem({
         $label: "Bar",
-        to: "/bar"
+        $to: "/bar"
     });
 
     // Added a new navigation item, the returned array should be a new instance.

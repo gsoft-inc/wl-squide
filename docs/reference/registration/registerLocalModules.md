@@ -61,7 +61,7 @@ export function register: ModuleRegisterFunction<FireflyRuntime, AppContext>(run
 
     runtime.registerNavigationItem({
         $label: "About",
-        to: "/about"
+        $to: "/about"
     });
 }
 ```
@@ -111,7 +111,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext, Deferr
 
     runtime.registerNavigationItem({
         $label: "About",
-        to: "/about"
+        $to: "/about"
     });
 
     // Once the feature flags has been loaded by the host application, by completing the module registrations process,
@@ -126,7 +126,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext, Deferr
 
             runtime.registerNavigationItem({
                 $label: "Feature A",
-                to: "/feature-a"
+                $to: "/feature-a"
             });
         }
     };

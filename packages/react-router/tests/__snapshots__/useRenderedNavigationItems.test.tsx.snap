@@ -81,6 +81,30 @@ exports[`highest priority goes first 1`] = `
 </ul>
 `;
 
+exports[`navigation items with a dynamic value are rendered 1`] = `
+<ul>
+  <li>
+    Foo
+    <ul>
+      <li>
+        <div
+          to="/bar"
+        >
+          Bar
+        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <div
+      to="/toto"
+    >
+      Toto
+    </div>
+  </li>
+</ul>
+`;
+
 exports[`negative priority goes last 1`] = `
 <ul>
   <li>

@@ -1,5 +1,5 @@
 import { useApplicationEventBusListener, type Session, type SessionManager } from "@basic/shared";
-import { isNavigationLink, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
+import { isDynamicTo, isNavigationLink, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
@@ -7,10 +7,10 @@ type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, l
 
 type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactNode;
 
-const renderLinkItem: RenderLinkItemFunction = ({ label, linkProps, additionalProps: { highlight, ...additionalProps } }, index, level) => {
+const renderLinkItem: RenderLinkItemFunction = ({ label, to, linkProps, additionalProps: { highlight, ...additionalProps } }, index, level) => {
     return (
         <li key={`${level}-${index}`} style={{ fontWeight: highlight ? "bold" : "normal" }}>
-            <Link {...linkProps} {...additionalProps}>
+            <Link to={isDynamicTo(to) ? to() : to} {...linkProps} {...additionalProps}>
                 {label}
             </Link>
         </li>

@@ -1,4 +1,4 @@
-import { useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
+import { isDynamicTo, useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { useI18nextInstance } from "@squide/i18next";
 import { Suspense, useCallback, type MouseEvent } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -11,11 +11,11 @@ export interface FederatedTabsLayoutProps {
 }
 
 const renderItem: RenderItemFunction = (item, index, level) => {
-    const { label, linkProps } = item as NavigationLinkRenderProps;
+    const { label, to, linkProps } = item as NavigationLinkRenderProps;
 
     return (
         <li key={`${level}-${index}`}>
-            <Link {...linkProps}>
+            <Link to={isDynamicTo(to) ? to() : to} {...linkProps}>
                 {label}
             </Link>
         </li>

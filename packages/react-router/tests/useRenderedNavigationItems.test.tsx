@@ -2,7 +2,7 @@ import { renderHook } from "@testing-library/react";
 import { useCallback, type ReactNode } from "react";
 import renderer from "react-test-renderer";
 import type { NavigationItem, RootNavigationItem } from "../src/navigationItemRegistry.ts";
-import { isNavigationLink, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "../src/useRenderedNavigationItems.tsx";
+import { isDynamicTo, isNavigationLink, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "../src/useRenderedNavigationItems.tsx";
 
 type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
 
@@ -21,10 +21,10 @@ function Link(props: Record<string, unknown>) {
 }
 
 function TestComponent({ navigationItems }: TestComponentProps) {
-    const renderLinkItem: RenderLinkItemFunction = useCallback(({ label, linkProps, additionalProps }, index, level) => {
+    const renderLinkItem: RenderLinkItemFunction = useCallback(({ label, to, linkProps, additionalProps }, index, level) => {
         return (
             <li key={`${level}-${index}`} {...additionalProps}>
-                <Link {...linkProps}>
+                <Link to={isDynamicTo(to) ? to() : to} {...linkProps}>
                     {label}
                 </Link>
             </li>
@@ -64,21 +64,21 @@ test("highest priority goes first", () => {
     const navigationItems: RootNavigationItem[] = [
         {
             $label: "Foo",
-            to: "/foo"
+            $to: "/foo"
         },
         {
             $label: "Bar",
             $priority: 5,
-            to: "/bar"
+            $to: "/bar"
         },
         {
             $label: "Toto",
             $priority: 99,
-            to: "/toto"
+            $to: "/toto"
         },
         {
             $label: "Tutu",
-            to: "/tutu"
+            $to: "/tutu"
         }
     ];
 
@@ -93,20 +93,20 @@ test("negative priority goes last", () => {
     const navigationItems: RootNavigationItem[] = [
         {
             $label: "Foo",
-            to: "/foo"
+            $to: "/foo"
         },
         {
             $label: "Bar",
-            to: "/bar"
+            $to: "/bar"
         },
         {
             $label: "Toto",
             $priority: -1,
-            to: "/toto"
+            $to: "/toto"
         },
         {
             $label: "Tutu",
-            to: "/tutu"
+            $to: "/tutu"
         }
     ];
 
@@ -121,18 +121,18 @@ test("support 2 section levels", () => {
     const navigationItems: RootNavigationItem[] = [
         {
             $label: "Foo",
-            to: "/foo"
+            $to: "/foo"
         },
         {
             $label: "Bar",
             children: [
                 {
                     $label: "Toto",
-                    to: "/toto"
+                    $to: "/toto"
                 },
                 {
                     $label: "Tutu",
-                    to: "/tutu"
+                    $to: "/tutu"
                 }
             ]
         }
@@ -149,21 +149,21 @@ test("support 3 section levels", () => {
     const navigationItems: RootNavigationItem[] = [
         {
             $label: "Foo",
-            to: "/foo"
+            $to: "/foo"
         },
         {
             $label: "Bar",
             children: [
                 {
                     $label: "Toto",
-                    to: "/toto"
+                    $to: "/toto"
                 },
                 {
                     $label: "Tutu",
                     children: [
                         {
                             $label: "Titi",
-                            to: "/titi"
+                            $to: "/titi"
                         }
                     ]
                 }
@@ -185,11 +185,11 @@ test("Link item additionalProps are rendered", () => {
             $additionalProps: {
                 style: { color: "red" }
             },
-            to: "/foo"
+            $to: "/foo"
         },
         {
             $label: "Bar",
-            to: "/bar"
+            $to: "/bar"
         }
     ];
 
@@ -207,7 +207,7 @@ test("Section item additionalProps are rendered", () => {
             children: [
                 {
                     $label: "Bar",
-                    to: "/bar"
+                    $to: "/bar"
                 }
             ],
             $additionalProps: {
@@ -227,7 +227,7 @@ test("doesn't rerender when the navigation items haven't changed", () => {
     const initialItems: NavigationItem[] = [
         {
             $label: "Foo",
-            to: "/foo"
+            $to: "/foo"
         }
     ];
 
@@ -252,7 +252,7 @@ test("rerender when the navigation items change", () => {
     const initialItems: NavigationItem[] = [
         {
             $label: "Foo",
-            to: "/foo"
+            $to: "/foo"
         }
     ];
 
@@ -269,11 +269,35 @@ test("rerender when the navigation items change", () => {
         navigationItems: [
             {
                 $label: "Bar",
-                to: "/bar"
+                $to: "/bar"
             }
         ]
     });
 
     expect(renderItem).toHaveBeenCalledTimes(2);
     expect(renderSection).toHaveBeenCalledTimes(2);
+});
+
+test("navigation items with a dynamic value are rendered", () => {
+    const navigationItems: RootNavigationItem[] = [
+        {
+            $label: "Foo",
+            children: [
+                {
+                    $label: "Bar",
+                    $to: () => "/bar"
+                }
+            ]
+        },
+        {
+            $label: "Toto",
+            $to: () => "/toto"
+        }
+    ];
+
+    const tree = renderer
+        .create(<TestComponent navigationItems={navigationItems} />)
+        .toJSON();
+
+    expect(tree).toMatchSnapshot();
 });

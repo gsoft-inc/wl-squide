@@ -41,7 +41,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
 
     runtime.registerNavigationItem({
         $label: "Page",
-        to: "/page"
+        $to: "/page"
     });
 
     if (process.env.USE_MSW) {
@@ -195,7 +195,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
 
             runtime.registerNavigationItem({
                 $label: "Page",
-                to: "/page"
+                $to: "/page"
             });
         }
     };

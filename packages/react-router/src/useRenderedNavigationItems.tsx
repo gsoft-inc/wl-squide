@@ -1,11 +1,12 @@
-import { isNil } from "@squide/core";
+import { isFunction, isNil } from "@squide/core";
 import { useMemo, type ReactNode } from "react";
-import type { LinkProps } from "react-router-dom";
-import { isLinkItem, type NavigationItem, type NavigationLink, type NavigationSection, type RootNavigationItem } from "./navigationItemRegistry.ts";
+import type { LinkProps, To } from "react-router-dom";
+import { isLinkItem, type NavigationItem, type NavigationLink, type NavigationSection, type RootNavigationItem, type ToFunction } from "./navigationItemRegistry.ts";
 
 export interface NavigationLinkRenderProps {
     label: ReactNode;
-    linkProps: Omit<LinkProps, "children">;
+    to: To | ToFunction;
+    linkProps: Omit<LinkProps, "to" | "children">;
     additionalProps: Record<string, unknown>;
 }
 
@@ -21,13 +22,18 @@ export function isNavigationLink(item: NavigationItemRenderProps): item is Navig
     return !isNil((item as NavigationLinkRenderProps).linkProps);
 }
 
+export function isDynamicTo(to: To | ToFunction): to is ToFunction {
+    return isFunction(to);
+}
+
 export type RenderItemFunction = (item: NavigationItemRenderProps, index: number, level: number) => ReactNode;
 
 export type RenderSectionFunction = (elements: ReactNode[], index: number, level: number) => ReactNode;
 
-function toLinkProps({ $label, $additionalProps, ...linkProps }: NavigationLink): NavigationLinkRenderProps {
+function toLinkProps({ $label, $to, $additionalProps, ...linkProps }: NavigationLink): NavigationLinkRenderProps {
     return {
         label: $label,
+        to: $to,
         linkProps,
         additionalProps: $additionalProps ?? {}
     };

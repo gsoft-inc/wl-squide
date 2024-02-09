@@ -15,7 +15,7 @@ function registerRoutes(runtime: FireflyRuntime) {
         $additionalProps: {
             highlight: true
         },
-        to: "/message"
+        $to: "/message"
     });
 
     // Register federated tabs.
@@ -29,7 +29,7 @@ function registerRoutes(runtime: FireflyRuntime) {
 
     runtime.registerNavigationItem({
         $label: "Workleap",
-        to: "/federated-tabs"
+        $to: "/federated-tabs"
     }, {
         menuId: "/federated-tabs"
     });

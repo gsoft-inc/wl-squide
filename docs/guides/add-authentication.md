@@ -456,12 +456,13 @@ export const requestHandlers: HttpHandler[] = [
 
 Then, introduce a new `AuthenticatedLayout` displaying the name of the logged-in user along with a logout button:
 
-```tsx !#41,43-60,72,75 host/src/AuthenticatedLayout.tsx
+```tsx !#42,44-61,73,76 host/src/AuthenticatedLayout.tsx
 import { useCallback, type ReactNode, type MouseEvent, type HTMLButtonElement } from "react";
 import { Link, Outlet, navigate } from "react-router-dom";
 import { 
     useNavigationItems,
     useRenderedNavigationItems,
+    isDynamicTo,
     isNavigationLink,
     type RenderItemFunction,
     type RenderSectionFunction
@@ -476,11 +477,11 @@ const renderItem: RenderItemFunction = (item, index, level) => {
         return null;
     }
 
-    const { label, linkProps, additionalProps } = item;
+    const { label, to, linkProps, additionalProps } = item;
 
     return (
         <li key={`${level}-${index}`}>
-            <Link {...linkProps} {...additionalProps}>
+            <Link to={isDynamicTo(to) ? to() : to} {...linkProps} {...additionalProps}>
                 {label}
             </Link>
         </li>

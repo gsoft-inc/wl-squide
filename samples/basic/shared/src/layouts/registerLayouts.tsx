@@ -19,7 +19,7 @@ export function registerLayouts({ host }: RegisterLayoutsOptions = {}) {
 
         runtime.registerNavigationItem({
             $label: "Tabs",
-            to: "/federated-tabs"
+            $to: "/federated-tabs"
         });
     };
 

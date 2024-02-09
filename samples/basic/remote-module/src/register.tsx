@@ -37,7 +37,7 @@ function registerRoutes(runtime: FireflyRuntime) {
 
     runtime.registerNavigationItem({
         $label: <span style={{ backgroundColor: "green", color: "white" }}>Hoisted</span>,
-        to: "/hoisted"
+        $to: "/hoisted"
     });
 
     runtime.registerNavigationItem({
@@ -45,11 +45,11 @@ function registerRoutes(runtime: FireflyRuntime) {
         $priority: -30,
         children: [
             {
-                to: "#",
+                $to: "#",
                 $label: "Child 1"
             },
             {
-                to: "#",
+                $to: "#",
                 $label: "Child 2"
             }
         ]
@@ -58,13 +58,13 @@ function registerRoutes(runtime: FireflyRuntime) {
     runtime.registerNavigationItem({
         $label: "No context override",
         $priority: -20,
-        to: "/no-context-override"
+        $to: "/no-context-override"
     });
 
     runtime.registerNavigationItem({
         $label: "Context override",
         $priority: -10,
-        to: "/context-override"
+        $to: "/context-override"
     });
 
     // Register federated tab.
@@ -79,7 +79,7 @@ function registerRoutes(runtime: FireflyRuntime) {
     runtime.registerNavigationItem({
         $label: "Skills",
         $priority: 999,
-        to: "/federated-tabs/skills"
+        $to: "/federated-tabs/skills"
     }, {
         menuId: "/federated-tabs"
     });

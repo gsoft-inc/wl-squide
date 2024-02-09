@@ -263,10 +263,11 @@ A Squide navigation item can either be a `NavigationLink` or a `NavigationSectio
 - `NavigationSection` accept the following properties:
     - `$label`: The section text.
     - `$priority`: An order priority affecting the position of the item in the menu (higher first)
-    - `$addiltionalProps`: Additional properties to be forwarded to the section renderer.
+    - `$additionalProps`: Additional properties to be forwarded to the section renderer.
     - `children`: The section content.
 - `NavigationLink` accept any properties of a React Router [Link](https://reactrouter.com/en/main/components/link) component with the addition of:
     - `$label`: The link text.
+    - `$to`: A route path or a function returning a route path.
     - `$priority`: An order priority affecting the position of the item in the menu (higher first)
     - `$additionalProps`: Additional properties to be forwarded to the link renderer.
 
@@ -274,7 +275,13 @@ A Squide navigation item can either be a `NavigationLink` or a `NavigationSectio
 // Register a new navigation item from a local or remote module.
 runtime.registerNavigationItem({
     $label: "Page 1",
-    to: "/page-1"
+    $to: "/page-1"
+});
+
+// Register a new navigation item with a dynamic route path from a local or remote module.
+runtime.registerNavigationItem({
+    $label: "Page 2",
+    $to: (id: string) => `/page-2/${id}`
 });
 ```
 
@@ -298,19 +305,19 @@ runtime.registerNavigationItem({
             children: [
                 {
                     $label: "Nested Nested Link",
-                    to: "#"
+                    $to: "#"
                 }
             ]
         },
         {
             $label: "Nested Link",
-            to: "#"
+            $to: "#"
         }
     ]
 },
 {
     $label: "Link",
-    to: "#"
+    $to: "#"
 });
 ```
 
@@ -323,19 +330,19 @@ A `$priority` property can be added to a navigation item to affect it's position
 - If an item have a priority `> 0`, the item will be positioned before any other items with a lower priority (or without an explicit priority value).
 - If an item have a priority `< 0`, the item will be positioned after any other items with a higher priority (or without an explicit priority value).
 
-```ts !#3,11
+```ts !#4,12
 runtime.registerNavigationItem({
     $label: "About",
-    $priority: 10,
-    to: "/about"
+    $to: "/about",
+    $priority: 10
 });
 
 runtime.registerNavigationItem({
     $label: "Home",
+    $to: "/home",
     // Because the "Home" navigation item has an higher priority, it will be rendered
     // before the "About" navigation item.
-    $priority: 100,
-    to: "/home"
+    $priority: 100
 });
 ```
 
@@ -349,42 +356,42 @@ runtime.registerNavigationItem({
         <QuestionMarkIcon />
         <span>About</span>
     ),
-    to: "/about"
+    $to: "/about"
 });
 ```
 
 ### Style a navigation item
 
-```ts !#3-5
+```ts !#4-6
 runtime.registerNavigationItem({
     $label: "About",
+    $to: "/about",
     style: {
         backgroundColor: "#000"
-    },
-    to: "/about"
+    }
 });
 ```
 
 ### Open a navigation link in a new tab
 
-```ts !#3
+```ts !#4
 runtime.registerNavigationItem({
     $label: "About",
-    target: "_blank",
-    to: "/about"
+    $to: "/about",
+    target: "_blank"
 });
 ```
 
 ### Render additional props on a navigation item
 
-```ts !#3-5
+```ts !#4-6
 runtime.registerNavigationItem({
-        $label: "About",
-        $additionalProps: {
-            highlight: true
-        },
-        to: "/about"
-    });
+    $label: "About",
+    $to: "/about",
+    $additionalProps: {
+        highlight: true
+    }
+});
 ```
 
 ### Register navigation items for a specific menu
@@ -394,7 +401,7 @@ By default, every navigation item registered with the `registerNavigationItem` f
 ```tsx !#5
 runtime.registerNavigationItem({
     $label: "Page 1",
-    to: "/layout/page-1"
+    $to: "/layout/page-1"
 }, { 
     menuId: "my-custom-layout" 
 });

@@ -193,7 +193,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
 
     runtime.registerNavigationItem({
         $label: "Initial data Page",
-        to: "/initial-data"
+        $to: "/initial-data"
     });
 
     if (process.env.USE_MSW) {

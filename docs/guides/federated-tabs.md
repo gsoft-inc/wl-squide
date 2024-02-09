@@ -60,7 +60,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
     runtime.registerNavigationItem({
         $label: "Federated tabs",
-        to: "/federated-tabs"
+        $to: "/federated-tabs"
     });
 }
 ```
@@ -173,7 +173,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
     runtime.registerNavigationItem({
         $label: "Tab 1",
-        to: "/federated-tabs"
+        $to: "/federated-tabs"
     }, { 
         // The menu id could be anything, in this example we are using the same path as the nested layout
         // path for convenience.
@@ -198,7 +198,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
     runtime.registerNavigationItem({
         $label: "Tab 2",
-        to: "/federated-tabs/tab-2"
+        $to: "/federated-tabs/tab-2"
     }, { 
         // The menu id could be anything, in this example we are using the same path as the nested layout
         // path for convenience.
@@ -223,7 +223,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
     runtime.registerNavigationItem({
         $label: "Tab 3",
-        to: "/federated-tabs/tab-3"
+        $to: "/federated-tabs/tab-3"
     }, {
         // The menu id could be anything, in this example we are using the same path as the nested layout
         // path for convenience. 
@@ -234,10 +234,11 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 Then, update the `FederatedTabsLayout` to render the registered navigation items instead of the hardcoded URLs:
 
-```tsx !#32 remote-module-3/src/federated-tabs-layout.tsx
-import { 
+```tsx !#33 remote-module-3/src/federated-tabs-layout.tsx
+import {
     useNavigationItems,
     useRenderedNavigationItems,
+    isDynamicTo,
     type NavigationLinkRenderProps,
     type RenderItemFunction,
     type RenderSectionFunction
@@ -246,11 +247,11 @@ import { Suspense } from "react";
 import { Link, Outlet } from "react-router-dom";
 
 const renderItem: RenderItemFunction = (item, index, level) => {
-    const { label, linkProps } = item as NavigationLinkRenderProps;
+    const { label, to, linkProps } = item as NavigationLinkRenderProps;
 
     return (
         <li key={`${level}-${index}`}>
-            <Link {...linkProps}>
+            <Link to={isDynamicTo(to) ? to() : to} {...linkProps}>
                 {label}
             </Link>
         </li>
@@ -289,7 +290,7 @@ Similarly to how the display order of regular navigation items can be configured
 
 To force `Tab 3` to be positioned first, we'll give him a priority of `999`: 
 
-```tsx !#15 local-module/src/register.tsx
+```tsx !#16 local-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab3 } from "./Tab3.tsx";
 
@@ -303,9 +304,9 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
     runtime.registerNavigationItem({
         $label: "Tab 3",
+        $to: "/federated-tabs/tab-3",
         // Highest priority goes first.
-        $priority: 999,
-        to: "/federated-tabs/tab-3"
+        $priority: 999
     }, { 
         menuId: "/federated-tabs" 
     });

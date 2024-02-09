@@ -75,7 +75,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext> = (run
 
     runtime.registerNavigationItem({
         $label: "Remote/Page",
-        to: "/remote/page"
+        $to: "/remote/page"
     });
 }
 ```

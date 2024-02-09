@@ -10,7 +10,7 @@ function registerRoutes(runtime: FireflyRuntime) {
 
     runtime.registerNavigationItem({
         $label: "Officevibe",
-        to: "/federated-tabs/officevibe"
+        $to: "/federated-tabs/officevibe"
     }, {
         menuId: "/federated-tabs"
     });

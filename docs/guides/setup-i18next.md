@@ -294,7 +294,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext> = (run
 
     runtime.registerNavigationItem({
         $label: "Remote/Page",
-        to: "/remote/page"
+        $to: "/remote/page"
     });
 }
 ```
@@ -342,7 +342,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext> = (run
 
     runtime.registerNavigationItem({
         $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="page" />,
-        to: "/remote/page"
+        $to: "/remote/page"
     });
 }
 ```

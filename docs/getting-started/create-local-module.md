@@ -98,7 +98,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext> = (run
 
     runtime.registerNavigationItem({
         $label: "Local/Page",
-        to: "/local/page"
+        $to: "/local/page"
     });
 }
 ```

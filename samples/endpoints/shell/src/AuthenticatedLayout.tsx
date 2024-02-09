@@ -1,5 +1,5 @@
 import { postJson, toSubscriptionStatusLabel, useSubscription, type Session, type SessionManager } from "@endpoints/shared";
-import { isNavigationLink, useLogger, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
+import { isDynamicTo, isNavigationLink, useLogger, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { useI18nextInstance } from "@squide/i18next";
 import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
@@ -10,10 +10,10 @@ type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, l
 
 type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactNode;
 
-const renderLinkItem: RenderLinkItemFunction = ({ label, linkProps, additionalProps: { highlight, ...additionalProps } }, index, level) => {
+const renderLinkItem: RenderLinkItemFunction = ({ label, to, linkProps, additionalProps: { highlight, ...additionalProps } }, index, level) => {
     return (
         <li key={`${level}-${index}`} style={{ fontWeight: highlight ? "bold" : "normal" }}>
-            <Link {...linkProps} {...additionalProps}>
+            <Link to={isDynamicTo(to) ? to() : to} {...linkProps} {...additionalProps}>
                 {label}
             </Link>
         </li>

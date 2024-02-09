@@ -30,7 +30,7 @@ import i18n from "i18next";
 function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n) {
     runtime.registerNavigationItem({
         $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="aboutPage"  />
-        to: "/about"
+        $to: "/about"
     });
 }
 ```
@@ -45,7 +45,7 @@ import i18n from "i18next";
 function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n) {
     runtime.registerNavigationItem({
         $label: <I18nextNavigationItemLabel i18next={i18nextInstance} namespace="another-namespace" resourceKey="aboutPage"  />
-        to: "/about"
+        $to: "/about"
     });
 }
 ```

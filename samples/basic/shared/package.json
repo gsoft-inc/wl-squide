@@ -26,18 +26,18 @@
         "react-router-dom": "*"
     },
     "devDependencies": {
-        "@remix-run/router": "1.13.0",
+        "@remix-run/router": "1.15.0",
         "@squide/firefly": "workspace:*",
-        "@types/react": "18.2.39",
-        "@types/react-dom": "18.2.17",
-        "@workleap/eslint-plugin": "3.0.0",
-        "@workleap/tsup-configs": "3.0.1",
+        "@types/react": "18.2.55",
+        "@types/react-dom": "18.2.19",
+        "@workleap/eslint-plugin": "3.0.1",
+        "@workleap/tsup-configs": "3.0.2",
         "@workleap/typescript-configs": "3.0.2",
-        "nodemon": "3.0.1",
+        "nodemon": "3.0.3",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "react-router-dom": "6.20.0",
+        "react-router-dom": "6.22.0",
         "tsup": "8.0.1",
-        "typescript": "5.2.2"
+        "typescript": "5.3.3"
     }
 }

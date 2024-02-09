@@ -1,4 +1,3 @@
-import { RemoteEntryPoint, RemoteModuleName } from "@squide/webpack-module-federation";
 import type { SwcConfig } from "@workleap/swc-configs";
 import { defineBuildConfig, defineBuildHtmlWebpackPluginConfig, defineDevConfig, defineDevHtmlWebpackPluginConfig, type DefineBuildConfigOptions, type DefineDevConfigOptions, type WebpackConfig, type WebpackConfigTransformer } from "@workleap/webpack-configs";
 import merge from "deepmerge";
@@ -250,9 +249,9 @@ export function defineRemoteModuleFederationPluginOptions(applicationName: strin
 
     return {
         name: applicationName,
-        filename: RemoteEntryPoint,
+        filename: "remoteEntry.js",
         exposes: {
-            [RemoteModuleName]: "./src/register",
+            "./register": "./src/register",
             ...exposes
         },
         // Deep merging the default shared dependencies with the provided shared dependencies

@@ -16,6 +16,21 @@ To enable support for direct page hits, add the following redirect rule to your 
 /* /index.html 200
 ```
 
+For Netlify, it can either be with a `netlify.toml` file at the root of project:
+
+```netlify.toml
+[[redirects]]
+    from = "/*"
+    to = "/index.html"
+    status = 200
+```
+
+Or by adding a `_redirects` file into the Netlify publish directory:
+
+```_redirects
+/* /index.html 200
+```
+
 ## Set the remote URL
 
 Configure the remote modules production URL:

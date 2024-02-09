@@ -18,7 +18,11 @@ import type { SwcConfig } from "@workleap/swc-configs";
 import type webpack from "webpack";
 
 export {
-    DefineHostModuleFederationPluginOptions, DefineRemoteModuleFederationPluginOptions, ModuleFederationPluginOptions, Router, defineRemoteModuleFederationPluginOptions
+    DefineHostModuleFederationPluginOptions,
+    DefineRemoteModuleFederationPluginOptions,
+    ModuleFederationPluginOptions,
+    Router,
+    defineRemoteModuleFederationPluginOptions
 };
 
 export type FireflyFeatures = Omit<Features, "router" | "msw">;
@@ -28,13 +32,13 @@ export interface FireflyDefineDevHostConfigOptions extends DefineDevHostConfigOp
 }
 
 // The function return type is mandatory, otherwise we get an error TS4058.
-export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: string, port: number, { features, ...options }: FireflyDefineDevHostConfigOptions = {}): webpack.Configuration {
+export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: string, port: number, { features = {}, ...options }: FireflyDefineDevHostConfigOptions = {}): webpack.Configuration {
     return baseDefineDevHostConfig(swcConfig, applicationName, port, {
         ...options,
         features: {
             router: "react-router",
             msw: true,
-            ...(features ?? {})
+            ...features
         }
     });
 }
@@ -44,13 +48,13 @@ export interface FireflyDefineBuildHostConfigOptions extends DefineBuildHostConf
 }
 
 // The function return type is mandatory, otherwise we get an error TS4058.
-export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: string, { features, ...options }: FireflyDefineBuildHostConfigOptions = {}): webpack.Configuration {
+export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: string, { features = {}, ...options }: FireflyDefineBuildHostConfigOptions = {}): webpack.Configuration {
     return baseDefineBuildHostConfig(swcConfig, applicationName, {
         ...options,
         features: {
             router: "react-router",
             msw: true,
-            ...(features ?? {})
+            ...features
         }
     });
 }
@@ -60,13 +64,13 @@ export interface FireflyDefineDevRemoteModuleConfigOptions extends DefineDevRemo
 }
 
 // The function return type is mandatory, otherwise we get an error TS4058.
-export function defineDevRemoteModuleConfig(swcConfig: SwcConfig, applicationName: string, port: number, { features, ...options }: FireflyDefineDevRemoteModuleConfigOptions = {}): webpack.Configuration {
+export function defineDevRemoteModuleConfig(swcConfig: SwcConfig, applicationName: string, port: number, { features = {}, ...options }: FireflyDefineDevRemoteModuleConfigOptions = {}): webpack.Configuration {
     return baseDefineDevRemoteModuleConfig(swcConfig, applicationName, port, {
         ...options,
         features: {
             router: "react-router",
             msw: true,
-            ...(features ?? {})
+            ...features
         }
     });
 }
@@ -76,13 +80,13 @@ export interface FireflyDefineBuildRemoteModuleConfigOptions extends DefineBuild
 }
 
 // The function return type is mandatory, otherwise we get an error TS4058.
-export function defineBuildRemoteModuleConfig(swcConfig: SwcConfig, applicationName: string, { features, ...options }: FireflyDefineBuildRemoteModuleConfigOptions = {}): webpack.Configuration {
+export function defineBuildRemoteModuleConfig(swcConfig: SwcConfig, applicationName: string, { features = {}, ...options }: FireflyDefineBuildRemoteModuleConfigOptions = {}): webpack.Configuration {
     return baseDefineBuildRemoteModuleConfig(swcConfig, applicationName, {
         ...options,
         features: {
             router: "react-router",
             msw: true,
-            ...(features ?? {})
+            ...features
         }
     });
 }

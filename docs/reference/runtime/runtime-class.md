@@ -263,7 +263,7 @@ A Squide navigation item can either be a `NavigationLink` or a `NavigationSectio
 - `NavigationSection` accept the following properties:
     - `$label`: The section text.
     - `$priority`: An order priority affecting the position of the item in the menu (higher first)
-    - `$addiltionalProps`: Additional properties to be forwarded to the section renderer.
+    - `$additionalProps`: Additional properties to be forwarded to the section renderer.
     - `children`: The section content.
 - `NavigationLink` accept any properties of a React Router [Link](https://reactrouter.com/en/main/components/link) component with the addition of:
     - `$label`: The link text.
@@ -338,6 +338,17 @@ runtime.registerNavigationItem({
     to: "/home"
 });
 ```
+
+### Use dynamic segments
+
+```ts !#3
+runtime.registerNavigationItem({
+    $label: "User profile",
+    to: "/user-profile/:userId"
+});
+```
+
+[!ref text="Learn more about rendering navigation items with dynamic segments"](../routing/useRenderedNavigationItems.md#render-dynamic-segments)
 
 ### Use a React element as navigation item label
 

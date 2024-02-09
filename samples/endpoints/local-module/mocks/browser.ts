@@ -4,5 +4,7 @@ import { setupWorker } from "msw/browser";
 export function startMsw(requestHandlers: RequestHandler[]) {
     const worker = setupWorker(...requestHandlers);
 
-    return worker.start();
+    return worker.start({
+        onUnhandledRequest: "bypass"
+    });
 }

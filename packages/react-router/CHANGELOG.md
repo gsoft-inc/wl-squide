@@ -1,5 +1,11 @@
 # @squide/react-router
 
+## 4.1.0
+
+### Minor Changes
+
+- [#148](https://github.com/gsoft-inc/wl-squide/pull/148) [`a448347`](https://github.com/gsoft-inc/wl-squide/commit/a4483478bb8b7ef1f24513244e8c2410bdb86bc1) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Added a `resolveRouteSegments` function.
+
 ## 4.0.4
 
 ### Patch Changes

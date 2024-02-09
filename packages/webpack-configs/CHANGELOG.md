@@ -1,5 +1,11 @@
 # @squide/webpack-configs
 
+## 1.2.3
+
+### Patch Changes
+
+- [#148](https://github.com/gsoft-inc/wl-squide/pull/148) [`a448347`](https://github.com/gsoft-inc/wl-squide/commit/a4483478bb8b7ef1f24513244e8c2410bdb86bc1) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Removed `@squide/webpack-module-federation` dependency.
+
 ## 1.2.2
 
 ### Patch Changes

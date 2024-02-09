@@ -183,6 +183,7 @@ export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: strin
         publicPath,
         cache,
         // This is not breaking and will fixed by itself when @workleap/webpack-configs release a new version with updated dependencies.
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         htmlWebpackPlugin: trySetHtmlWebpackPluginPublicPath(htmlWebpackPluginOptions ?? defineBuildHtmlWebpackPluginConfig()),
         plugins: [
@@ -220,6 +221,7 @@ export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: str
         publicPath,
         cache,
         // This is not breaking and will fixed by itself when @workleap/webpack-configs release a new version with updated dependencies.
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         htmlWebpackPlugin: trySetHtmlWebpackPluginPublicPath(htmlWebpackPluginOptions ?? defineDevHtmlWebpackPluginConfig()),
         plugins: [
@@ -255,7 +257,7 @@ export function defineRemoteModuleFederationPluginOptions(applicationName: strin
         name: applicationName,
         filename: "remoteEntry.js",
         exposes: {
-            ["./register"]: "./src/register",
+            "./register": "./src/register",
             ...exposes
         },
         // Deep merging the default shared dependencies with the provided shared dependencies

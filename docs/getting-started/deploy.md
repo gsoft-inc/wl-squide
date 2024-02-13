@@ -16,7 +16,7 @@ To enable support for direct page hits, add the following redirect rule to your 
 /* /index.html 200
 ```
 
-For Netlify, it can either be with a `netlify.toml` file at the root of project:
+For [Netlify](https://www.netlify.com/), it can either be with a `netlify.toml` file at the root of project:
 
 ```netlify.toml
 [[redirects]]

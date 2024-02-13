@@ -1,5 +1,12 @@
 # @squide/webpack-module-federation
 
+## 3.0.6
+
+### Patch Changes
+
+- Updated dependencies [[`d091846`](https://github.com/gsoft-inc/wl-squide/commit/d091846502bed6b783b69ab8eff7ae36d8e25449)]:
+  - @squide/core@3.3.1
+
 ## 3.0.5
 
 ### Patch Changes

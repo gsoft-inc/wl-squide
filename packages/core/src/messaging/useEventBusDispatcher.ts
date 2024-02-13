@@ -2,10 +2,10 @@ import { useCallback } from "react";
 import { useEventBus } from "../runtime/useEventBus.ts";
 import type { EventName } from "./eventBus.ts";
 
-export function useEventBusDispatcher<TEventNames extends EventName>() {
-    const eventBus = useEventBus<TEventNames>();
+export function useEventBusDispatcher<TEventNames extends EventName, TPayload = unknown>() {
+    const eventBus = useEventBus<TEventNames, TPayload>();
 
-    return useCallback((eventName: TEventNames, data?: unknown) => {
-        eventBus.dispatch(eventName, data);
+    return useCallback((eventName: TEventNames, payload?: TPayload) => {
+        eventBus.dispatch(eventName, payload);
     }, [eventBus]);
 }

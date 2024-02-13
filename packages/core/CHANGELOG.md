@@ -1,5 +1,11 @@
 # @squide/core
 
+## 3.3.1
+
+### Patch Changes
+
+- [#150](https://github.com/gsoft-inc/wl-squide/pull/150) [`d091846`](https://github.com/gsoft-inc/wl-squide/commit/d091846502bed6b783b69ab8eff7ae36d8e25449) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Adding a generic type for the event bus payload.
+
 ## 3.3.0
 
 ### Minor Changes

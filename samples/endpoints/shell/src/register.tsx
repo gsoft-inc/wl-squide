@@ -1,5 +1,6 @@
+import { registerLayouts } from "@endpoints/layouts";
 import type { SessionManager } from "@endpoints/shared";
-import { ManagedRoutes, type FireflyRuntime, type ModuleRegisterFunction } from "@squide/firefly";
+import { ManagedRoutes, mergeDeferredRegistrations, type FireflyRuntime, type ModuleRegisterFunction } from "@squide/firefly";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 import { initI18next } from "./i18next.ts";
@@ -118,7 +119,10 @@ export function registerShell(sessionManager: SessionManager, { host }: Register
         await initI18next(runtime);
         await registerMsw(runtime);
 
-        return registerRoutes(runtime, sessionManager, host);
+        return mergeDeferredRegistrations([
+            await registerLayouts(runtime, { host }),
+            registerRoutes(runtime, sessionManager, host)
+        ]);
     };
 
     return register;

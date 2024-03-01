@@ -6,6 +6,10 @@
  */
 export function getSharedDependencies(isHost) {
     return {
+        "@endpoints/layouts": {
+            singleton: true,
+            eager: isHost ? true : undefined
+        },
         "@endpoints/shared": {
             singleton: true,
             eager: isHost ? true : undefined

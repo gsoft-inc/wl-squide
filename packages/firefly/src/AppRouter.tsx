@@ -229,7 +229,7 @@ export function AppRouter(props: AppRouterProps) {
         // of rendering a route which will break the AppRouter component.
         // To circumvent this issue, if the application doesn't register a custom no match route, an Error is thrown.
         if (areModulesRegistered && !findRouteByPath(routes, "*")) {
-            throw new Error("For the AppRouter component to work properly, the application must be a define a custom no match router. For additional information, refer to: https://reactrouter.com/en/main/start/tutorial#handling-not-found-errors.");
+            throw new Error("[squide] For the AppRouter component to work properly, the application must be a define a custom no match router. For additional information, refer to: https://reactrouter.com/en/main/start/tutorial#handling-not-found-errors.");
         }
 
         return renderRouterProvider([

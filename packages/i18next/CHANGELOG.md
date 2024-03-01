@@ -1,5 +1,14 @@
 # @squide/i18next
 
+## 1.1.4
+
+### Patch Changes
+
+- [#154](https://github.com/gsoft-inc/wl-squide/pull/154) [`e440515`](https://github.com/gsoft-inc/wl-squide/commit/e4405150a3c364fd4029c345399891614a434176) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Two i18next instances cannot be registered anymore with the same key.
+
+- Updated dependencies [[`e440515`](https://github.com/gsoft-inc/wl-squide/commit/e4405150a3c364fd4029c345399891614a434176)]:
+  - @squide/core@3.4.0
+
 ## 1.1.3
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @squide/core
 
+## 3.4.0
+
+### Minor Changes
+
+- [#154](https://github.com/gsoft-inc/wl-squide/pull/154) [`e440515`](https://github.com/gsoft-inc/wl-squide/commit/e4405150a3c364fd4029c345399891614a434176) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Added a mergeDeferredRegistrations utility functions.
+
 ## 3.3.2
 
 ### Patch Changes

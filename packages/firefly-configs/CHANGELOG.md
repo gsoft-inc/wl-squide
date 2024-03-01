@@ -1,5 +1,14 @@
 # @squide/firefly-configs
 
+## 1.0.3
+
+### Patch Changes
+
+- [#154](https://github.com/gsoft-inc/wl-squide/pull/154) [`e440515`](https://github.com/gsoft-inc/wl-squide/commit/e4405150a3c364fd4029c345399891614a434176) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Updated packages.
+
+- Updated dependencies [[`e440515`](https://github.com/gsoft-inc/wl-squide/commit/e4405150a3c364fd4029c345399891614a434176)]:
+  - @squide/webpack-configs@1.2.5
+
 ## 1.0.2
 
 ### Patch Changes

@@ -5,7 +5,7 @@ export class i18nextInstanceRegistry {
 
     add(key: string, instance: i18n) {
         if (this.#instances.has(key)) {
-            throw new Error(`An i18next instance has already been registered with the "${key}" key.`);
+            throw new Error(`[squide] An i18next instance has already been registered with the "${key}" key.`);
         }
 
         this.#instances.set(key, instance);

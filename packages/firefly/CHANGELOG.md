@@ -1,5 +1,17 @@
 # @squide/firefly
 
+## 6.0.4
+
+### Patch Changes
+
+- [#154](https://github.com/gsoft-inc/wl-squide/pull/154) [`e440515`](https://github.com/gsoft-inc/wl-squide/commit/e4405150a3c364fd4029c345399891614a434176) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Updated packages.
+
+- Updated dependencies [[`e440515`](https://github.com/gsoft-inc/wl-squide/commit/e4405150a3c364fd4029c345399891614a434176), [`e440515`](https://github.com/gsoft-inc/wl-squide/commit/e4405150a3c364fd4029c345399891614a434176)]:
+  - @squide/webpack-module-federation@3.0.8
+  - @squide/react-router@4.1.3
+  - @squide/msw@2.0.13
+  - @squide/core@3.4.0
+
 ## 6.0.3
 
 ### Patch Changes

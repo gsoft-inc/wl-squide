@@ -1,4 +1,4 @@
-import type { FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
+import type { FireflyRuntime } from "@squide/firefly";
 import { I18nextNavigationItemLabel } from "@squide/i18next";
 import type { i18n } from "i18next";
 import { initI18next } from "./i18next.ts";
@@ -25,12 +25,8 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n, host?: s
     });
 }
 
-export function registerLayouts({ host }: RegisterLayoutsOptions = {}) {
-    const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
-        const i18nextInstance = await initI18next(runtime);
+export async function registerLayouts(runtime: FireflyRuntime, { host }: RegisterLayoutsOptions = {}) {
+    const i18nextInstance = await initI18next(runtime);
 
-        return registerRoutes(runtime, i18nextInstance, host);
-    };
-
-    return register;
+    return registerRoutes(runtime, i18nextInstance, host);
 }

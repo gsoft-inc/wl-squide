@@ -1,5 +1,4 @@
 import { createI18NextPlugin } from "@endpoints/i18next";
-import { registerLayouts } from "@endpoints/layouts";
 import { registerShell } from "@endpoints/shell";
 import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, setMswAsStarted } from "@squide/firefly";
 import { StrictMode } from "react";
@@ -19,7 +18,7 @@ const runtime = new FireflyRuntime({
     sessionAccessor
 });
 
-await registerLocalModules([registerShell(sessionManager), registerLayouts(), registerDev, registerLocalModule], runtime);
+await registerLocalModules([registerShell(sessionManager), registerDev, registerLocalModule], runtime);
 
 // Register MSW after the local modules has been registered since the request handlers
 // will be registered by the modules.

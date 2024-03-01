@@ -1,5 +1,4 @@
 import { createI18NextPlugin } from "@endpoints/i18next";
-import { registerLayouts } from "@endpoints/layouts";
 import { registerLocalModule } from "@endpoints/local-module";
 import { isNetlify } from "@endpoints/shared";
 import { registerShell } from "@endpoints/shell";
@@ -25,7 +24,7 @@ const runtime = new FireflyRuntime({
     sessionAccessor
 });
 
-await registerLocalModules([registerShell(sessionManager, { host: "@endpoints/host" }), registerLayouts({ host: "@endpoints/host" }), registerHost, registerLocalModule], runtime);
+await registerLocalModules([registerShell(sessionManager, { host: "@endpoints/host" }), registerHost, registerLocalModule], runtime);
 
 await registerRemoteModules(Remotes, runtime);
 

@@ -1,8 +1,8 @@
-import type { Route } from "./routeRegistry.ts";
+import type { NonIndexRoute, Route } from "./routeRegistry.ts";
 
 export const ManagedRoutesOutletName = "__squide-managed-routes-outlet__";
 
-export const ManagedRoutes: Route = {
+export const ManagedRoutes: NonIndexRoute = {
     $name: ManagedRoutesOutletName
 };
 

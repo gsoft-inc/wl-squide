@@ -29,4 +29,5 @@ export function FeatureAPage() {
     );
 }
 
+/** @alias */
 export const Component = FeatureAPage;

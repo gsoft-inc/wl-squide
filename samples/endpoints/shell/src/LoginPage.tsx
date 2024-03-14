@@ -115,4 +115,5 @@ export function LoginPage({ host }: LoginPageProps) {
     );
 }
 
+/** @alias */
 export const Component = LoginPage;

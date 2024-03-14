@@ -39,4 +39,5 @@ export function NoMatchPage({ path, host }: NoMatchPageProps) {
     );
 }
 
+/** @alias */
 export const Component = NoMatchPage;

@@ -18,4 +18,5 @@ export function HoistedPage() {
     );
 }
 
+/** @alias */
 export const Component = HoistedPage;

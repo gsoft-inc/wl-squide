@@ -41,4 +41,5 @@ export function MessagePage() {
     );
 }
 
+/** @alias */
 export const Component = MessagePage;

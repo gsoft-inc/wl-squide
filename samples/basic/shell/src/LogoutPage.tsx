@@ -15,4 +15,5 @@ export function LogoutPage({ host }: LogoutPageProps) {
     );
 }
 
+/** @alias */
 export const Component = LogoutPage;

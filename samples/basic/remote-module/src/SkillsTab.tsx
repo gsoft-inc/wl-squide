@@ -13,4 +13,5 @@ export function SkillsTab() {
     );
 }
 
+/** @alias */
 export const Component = SkillsTab;

@@ -39,4 +39,5 @@ export function SubscriptionPage() {
     );
 }
 
+/** @alias */
 export const Component = SubscriptionPage;

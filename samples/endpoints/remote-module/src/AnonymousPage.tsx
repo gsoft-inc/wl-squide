@@ -33,4 +33,5 @@ export function AnonymousPage() {
     );
 }
 
+/** @alias */
 export const Component = AnonymousPage;

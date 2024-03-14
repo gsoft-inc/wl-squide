@@ -7,4 +7,5 @@ export function OfficevibeTab() {
     );
 }
 
+/** @alias */
 export const Component = OfficevibeTab;

@@ -30,8 +30,6 @@
     },
     "devDependencies": {
         "@basic/shared": "workspace:*",
-        "@react-aria/toast": "3.0.0-beta.10",
-        "@react-stately/toast": "3.0.0-beta.2",
         "@squide/firefly": "workspace:*",
         "@types/react": "18.2.65",
         "@types/react-dom": "18.2.22",
@@ -39,10 +37,6 @@
         "@workleap/tsup-configs": "3.0.4",
         "@workleap/typescript-configs": "3.0.2",
         "nodemon": "3.1.0",
-        "react": "18.2.0",
-        "react-dom": "18.2.0",
-        "react-error-boundary": "4.0.13",
-        "react-router-dom": "6.22.3",
         "tsup": "8.0.2",
         "typescript": "5.4.2"
     }

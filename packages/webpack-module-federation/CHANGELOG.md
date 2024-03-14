@@ -1,5 +1,11 @@
 # @squide/webpack-module-federation
 
+## 4.0.0
+
+### Major Changes
+
+- [#158](https://github.com/gsoft-inc/wl-squide/pull/158) [`b8d5ea4`](https://github.com/gsoft-inc/wl-squide/commit/b8d5ea42c23c3291e428c9ff907a7cff2f3211eb) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Cleaned up dependencies.
+
 ## 3.0.8
 
 ### Patch Changes

@@ -37,23 +37,6 @@
         "react-error-boundary": "*",
         "react-router-dom": "*"
     },
-    "peerDependenciesMeta": {
-        "msw": {
-            "optional": true
-        },
-        "react": {
-            "optional": true
-        },
-        "react-dom": {
-            "optional": true
-        },
-        "react-error-boundary": {
-            "optional": true
-        },
-        "react-router-dom": {
-            "optional": true
-        }
-    },
     "devDependencies": {
         "@swc/core": "1.4.7",
         "@swc/jest": "0.2.36",

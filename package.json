@@ -3,6 +3,7 @@
     "author": "Workleap",
     "description": "A federated web application shell.",
     "private": true,
+    "type": "module",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",

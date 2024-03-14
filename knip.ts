@@ -21,22 +21,20 @@ function defineWorkspace({ ignore, ...config }: KnipWorkspaceConfig, transformer
     return transformedConfig;
 }
 
-const ignoreWebpackConfigsLoaders: KnipTransformer = ({ ignoreDependencies, ...config }) => {
-    return {
+function ignoreWebpackConfigsLoaders({ ignoreMiniCssExtractPlugin = false }: { ignoreMiniCssExtractPlugin?: boolean } = {}): KnipTransformer {
+    return ({ ignoreDependencies, ...config }) => ({
         ...config,
         ignoreDependencies: [
             ...(ignoreDependencies as string[] ?? []),
-            "css-loader",
-            "postcss-loader",
             "swc-loader",
             "css-loader",
             "postcss-loader",
             "style-loader",
-            "mini-css-extract-plugin",
+            !ignoreMiniCssExtractPlugin && "mini-css-extract-plugin",
             "@svgr/webpack"
-        ]
-    };
-};
+        ].filter(x => x) as string[]
+    });
+}
 
 const ignoreBrowserslist: KnipTransformer = ({ ignoreDependencies, ...config }) => {
     return {
@@ -65,7 +63,6 @@ const configureMsw: KnipTransformer = ({ entry, ignore, ...config }) => {
     };
 };
 
-// Unti Knip support workspace inheritance: https://github.com/webpro/knip/issues/516.
 const configurePackage: KnipTransformer = config => {
     return {
         ...config,
@@ -76,7 +73,6 @@ const configurePackage: KnipTransformer = config => {
     };
 };
 
-// Unti Knip support workspace inheritance: https://github.com/webpro/knip/issues/516.
 const configureSampleHost: KnipTransformer = ({ entry, ignoreDependencies, ...config }) => {
     return {
         ...config,
@@ -98,7 +94,6 @@ const configureSampleHost: KnipTransformer = ({ entry, ignoreDependencies, ...co
     };
 };
 
-// Unti Knip support workspace inheritance: https://github.com/webpro/knip/issues/516.
 const configureSampleLocalModule: KnipTransformer = ({ entry, ignoreDependencies, ...config }) => {
     return {
         ...config,
@@ -123,7 +118,6 @@ const configureSampleLocalModule: KnipTransformer = ({ entry, ignoreDependencies
     };
 };
 
-// Unti Knip support workspace inheritance: https://github.com/webpro/knip/issues/516.
 const configureSampleRemoteModule: KnipTransformer = ({ entry, ignoreDependencies, ...config }) => {
     return {
         ...config,
@@ -145,7 +139,6 @@ const configureSampleRemoteModule: KnipTransformer = ({ entry, ignoreDependencie
     };
 };
 
-// Unti Knip support workspace inheritance: https://github.com/webpro/knip/issues/516.
 const configureSampleLibrary: KnipTransformer = ({ entry, ...config }) => {
     return {
         ...config,
@@ -160,85 +153,94 @@ const configureSampleLibrary: KnipTransformer = ({ entry, ...config }) => {
     };
 };
 
-export function defineConfig() {
-    const rootConfig: KnipWorkspaceConfig = defineWorkspace({
-        ignoreBinaries: [
-            // This binaries is called "build-endpoints-isolated" for the samples.
-            "build-isolated"
-        ],
-        ignoreDependencies: [
-            // Azure Devops pipeline aren't supported by plugins.
-            "netlify-cli",
-            // Installed once for all the workspace's projects
-            "ts-node"
-        ]
-    });
+const rootConfig: KnipWorkspaceConfig = defineWorkspace({
+    ignoreBinaries: [
+        // This binaries is called "build-endpoints-isolated" for the samples.
+        "build-isolated"
+    ],
+    ignoreDependencies: [
+        // Azure Devops pipeline aren't supported by plugins.
+        "netlify-cli",
+        // Installed once for all the workspace's projects
+        "ts-node"
+    ]
+});
 
-    const packagesConfig: KnipWorkspaceConfig = defineWorkspace({}, [
-        configurePackage
-    ]);
+const packagesConfig: KnipWorkspaceConfig = defineWorkspace({}, [
+    configurePackage
+]);
 
-    const mswConfig: KnipWorkspaceConfig = defineWorkspace({
-        ignoreDependencies: [
-            "msw"
-        ]
-    }, [
-        configurePackage
-    ]);
+const mswConfig: KnipWorkspaceConfig = defineWorkspace({
+    ignoreDependencies: [
+        "msw"
+    ]
+}, [
+    configurePackage
+]);
 
-    const sampleModuleHost: KnipWorkspaceConfig = defineWorkspace({}, [
-        configureSampleHost,
-        ignoreWebpackConfigsLoaders,
-        ignoreBrowserslist,
-        configureMsw
-    ]);
+const sampleModuleHost: KnipWorkspaceConfig = defineWorkspace({}, [
+    configureSampleHost,
+    ignoreWebpackConfigsLoaders(),
+    ignoreBrowserslist,
+    configureMsw
+]);
 
-    const sampleLocalModuleConfig: KnipWorkspaceConfig = defineWorkspace({}, [
-        configureSampleLocalModule,
-        ignoreWebpackConfigsLoaders,
-        ignoreBrowserslist,
-        configureMsw
-    ]);
+const sampleLocalModuleConfig: KnipWorkspaceConfig = defineWorkspace({}, [
+    configureSampleLocalModule,
+    ignoreWebpackConfigsLoaders(),
+    ignoreBrowserslist,
+    configureMsw
+]);
 
-    const sampleRemoteModuleConfig: KnipWorkspaceConfig = defineWorkspace({}, [
-        configureSampleRemoteModule,
-        ignoreWebpackConfigsLoaders,
-        ignoreBrowserslist,
-        configureMsw
-    ]);
+const sampleBasicLocalModuleConfig: KnipWorkspaceConfig = defineWorkspace({
+    ignoreDependencies: [
+        // It seems like because it's used with a non-standard nodemon filename, knip can't detect the usage
+        // of the webpack CLI.
+        "webpack-cli"
+    ]
+}, [
+    configureSampleLocalModule,
+    ignoreWebpackConfigsLoaders({ ignoreMiniCssExtractPlugin: true }),
+    ignoreBrowserslist,
+    configureMsw
+]);
 
-    const sampleLibraryConfig: KnipWorkspaceConfig = defineWorkspace({}, [
-        configureSampleLibrary,
-        configureMsw
-    ]);
+const sampleRemoteModuleConfig: KnipWorkspaceConfig = defineWorkspace({}, [
+    configureSampleRemoteModule,
+    ignoreWebpackConfigsLoaders(),
+    ignoreBrowserslist,
+    configureMsw
+]);
 
-    const config: KnipConfig = {
-        workspaces: {
-            ".": rootConfig,
-            "packages/*": packagesConfig,
-            "packages/msw": mswConfig,
-            "samples/basic/host": sampleModuleHost,
-            "samples/basic/local-module": sampleLocalModuleConfig,
-            "samples/basic/another-remote-module": sampleRemoteModuleConfig,
-            "samples/basic/remote-module": sampleRemoteModuleConfig,
-            "samples/basic/shared": sampleLibraryConfig,
-            "samples/basic/shell": sampleLibraryConfig,
-            "samples/endpoints/host": sampleModuleHost,
-            "samples/endpoints/local-module": sampleLocalModuleConfig,
-            "samples/endpoints/remote-module": sampleRemoteModuleConfig,
-            "samples/endpoints/shared": sampleLibraryConfig,
-            "samples/endpoints/shell": sampleLibraryConfig,
-            "samples/endpoints/i18next": sampleLibraryConfig,
-            "samples/endpoints/layouts": sampleLibraryConfig
-        },
-        exclude: [
-            // It cause issues with config like Jest "projects".
-            "unresolved"
-        ],
-        ignoreExportsUsedInFile: true
-    };
+const sampleLibraryConfig: KnipWorkspaceConfig = defineWorkspace({}, [
+    configureSampleLibrary,
+    configureMsw
+]);
 
-    return config;
-}
+const config: KnipConfig = {
+    workspaces: {
+        ".": rootConfig,
+        "packages/*": packagesConfig,
+        "packages/msw": mswConfig,
+        "samples/basic/host": sampleModuleHost,
+        "samples/basic/local-module": sampleBasicLocalModuleConfig,
+        "samples/basic/another-remote-module": sampleRemoteModuleConfig,
+        "samples/basic/remote-module": sampleRemoteModuleConfig,
+        "samples/basic/shared": sampleLibraryConfig,
+        "samples/basic/shell": sampleLibraryConfig,
+        "samples/endpoints/host": sampleModuleHost,
+        "samples/endpoints/local-module": sampleLocalModuleConfig,
+        "samples/endpoints/remote-module": sampleRemoteModuleConfig,
+        "samples/endpoints/shared": sampleLibraryConfig,
+        "samples/endpoints/shell": sampleLibraryConfig,
+        "samples/endpoints/i18next": sampleLibraryConfig,
+        "samples/endpoints/layouts": sampleLibraryConfig
+    },
+    exclude: [
+        // It cause issues with config like Jest "projects".
+        "unresolved"
+    ],
+    ignoreExportsUsedInFile: true
+};
 
-export default defineConfig();
+export default config;

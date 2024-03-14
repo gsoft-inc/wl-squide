@@ -26,7 +26,6 @@
         "react-router-dom": "*"
     },
     "devDependencies": {
-        "@remix-run/router": "1.15.3",
         "@squide/firefly": "workspace:*",
         "@types/react": "18.2.65",
         "@types/react-dom": "18.2.22",

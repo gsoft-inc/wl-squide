@@ -892,9 +892,6 @@ importers:
         specifier: '*'
         version: 4.0.13(react@18.2.0)
     devDependencies:
-      '@remix-run/router':
-        specifier: 1.15.3
-        version: 1.15.3
       '@squide/firefly':
         specifier: workspace:*
         version: link:../../../packages/firefly
@@ -943,9 +940,6 @@ importers:
       '@react-stately/toast':
         specifier: 3.0.0-beta.2
         version: 3.0.0-beta.2(react@18.2.0)
-      '@remix-run/router':
-        specifier: 1.15.3
-        version: 1.15.3
       '@squide/firefly':
         specifier: workspace:*
         version: link:../../../packages/firefly
@@ -1148,9 +1142,6 @@ importers:
       '@endpoints/shared':
         specifier: workspace:*
         version: link:../shared
-      '@remix-run/router':
-        specifier: 1.15.3
-        version: 1.15.3
       '@squide/firefly':
         specifier: workspace:*
         version: link:../../../packages/firefly
@@ -1480,9 +1471,6 @@ importers:
       '@endpoints/shared':
         specifier: workspace:*
         version: link:../shared
-      '@remix-run/router':
-        specifier: 1.15.3
-        version: 1.15.3
       '@squide/fakes':
         specifier: workspace:*
         version: link:../../../packages/fakes

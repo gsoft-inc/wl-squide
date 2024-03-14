@@ -38,7 +38,6 @@
         "@endpoints/i18next": "workspace:*",
         "@endpoints/layouts": "workspace:*",
         "@endpoints/shared": "workspace:*",
-        "@remix-run/router": "1.15.3",
         "@squide/fakes": "workspace:*",
         "@squide/firefly": "workspace:*",
         "@squide/i18next": "workspace:*",

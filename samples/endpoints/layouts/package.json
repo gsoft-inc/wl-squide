@@ -34,7 +34,6 @@
     "devDependencies": {
         "@endpoints/i18next": "workspace:*",
         "@endpoints/shared": "workspace:*",
-        "@remix-run/router": "1.15.3",
         "@squide/firefly": "workspace:*",
         "@squide/i18next": "workspace:*",
         "@types/react": "18.2.65",

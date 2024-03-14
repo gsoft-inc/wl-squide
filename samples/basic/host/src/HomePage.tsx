@@ -8,4 +8,5 @@ export function HomePage() {
     );
 }
 
+/** @alias */
 export const Component = HomePage;

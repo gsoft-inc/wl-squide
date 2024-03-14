@@ -24,4 +24,5 @@ export function ColoredPage() {
     );
 }
 
+/** @alias */
 export const Component = ColoredPage;

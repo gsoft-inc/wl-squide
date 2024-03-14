@@ -14,4 +14,5 @@ export function AuthenticationBoundary() {
     return <Navigate to="/login" />;
 }
 
+/** @alias */
 export const Component = AuthenticationBoundary;

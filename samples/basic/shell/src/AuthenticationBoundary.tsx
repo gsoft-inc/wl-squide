@@ -5,4 +5,5 @@ export function AuthenticationBoundary() {
     return useIsAuthenticated() ? <Outlet /> : <Navigate to="/login" />;
 }
 
+/** @alias */
 export const Component = AuthenticationBoundary;

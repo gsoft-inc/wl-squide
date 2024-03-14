@@ -33,12 +33,7 @@
         "@workleap/eslint-plugin": "3.1.0",
         "@workleap/tsup-configs": "3.0.4",
         "@workleap/typescript-configs": "3.0.2",
-        "i18next": "23.10.1",
-        "i18next-browser-languagedetector": "7.2.0",
         "nodemon": "3.1.0",
-        "react": "18.2.0",
-        "react-dom": "18.2.0",
-        "react-i18next": "14.1.0",
         "tsup": "8.0.2",
         "typescript": "5.4.2"
     }

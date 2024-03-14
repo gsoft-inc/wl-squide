@@ -10,4 +10,5 @@ export function CustomLayout() {
     );
 }
 
+/** @alias */
 export const Component = CustomLayout;

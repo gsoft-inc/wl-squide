@@ -37,4 +37,5 @@ export function FeatureCPage() {
     );
 }
 
+/** @alias */
 export const Component = FeatureCPage;

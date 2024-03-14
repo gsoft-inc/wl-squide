@@ -40,7 +40,6 @@
         "@tanstack/react-query-devtools": "5.28.0",
         "@types/react": "18.2.65",
         "@types/react-dom": "18.2.22",
-        "@types/webpack": "5.28.5",
         "@workleap/browserslist-config": "2.0.1",
         "@workleap/eslint-plugin": "3.1.0",
         "@workleap/swc-configs": "2.2.3",

@@ -13,4 +13,5 @@ export function WorkleapTab() {
     );
 }
 
+/** @alias */
 export const Component = WorkleapTab;

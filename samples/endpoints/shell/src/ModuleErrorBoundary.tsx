@@ -43,4 +43,5 @@ export function ModuleErrorBoundary() {
     );
 }
 
+/** @alias */
 export const ErrorBoundary = ModuleErrorBoundary;

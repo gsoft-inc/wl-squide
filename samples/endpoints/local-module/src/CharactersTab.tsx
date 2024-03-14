@@ -46,4 +46,5 @@ export function CharactersTab() {
     );
 }
 
+/** @alias */
 export const Component = CharactersTab;

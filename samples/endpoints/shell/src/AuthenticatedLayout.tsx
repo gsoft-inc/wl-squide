@@ -106,4 +106,5 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
     );
 }
 
+/** @alias */
 export const Component = AuthenticatedLayout;

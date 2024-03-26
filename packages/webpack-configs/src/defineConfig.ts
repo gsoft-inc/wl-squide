@@ -290,7 +290,7 @@ export function defineDevRemoteModuleConfig(swcConfig: SwcConfig, applicationNam
     const {
         entry = path.resolve("./src/register.tsx"),
         publicPath = "auto",
-        cache = true,
+        cache,
         plugins = [],
         htmlWebpackPlugin = false,
         transformers = [],

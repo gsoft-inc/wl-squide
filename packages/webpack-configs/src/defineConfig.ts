@@ -168,7 +168,7 @@ export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: strin
     const {
         entry = path.resolve("./src/index.ts"),
         publicPath = "auto",
-        cache = true,
+        cache,
         plugins = [],
         htmlWebpackPluginOptions,
         features,

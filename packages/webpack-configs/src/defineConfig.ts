@@ -168,7 +168,7 @@ export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: strin
     const {
         entry = path.resolve("./src/index.ts"),
         publicPath = "auto",
-        cache = false,
+        cache = true,
         plugins = [],
         htmlWebpackPluginOptions,
         features,
@@ -203,7 +203,6 @@ export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: str
     const {
         entry = path.resolve("./src/index.ts"),
         publicPath = "auto",
-        cache = false,
         plugins = [],
         htmlWebpackPluginOptions,
         transformers = [],
@@ -216,7 +215,6 @@ export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: str
     return defineBuildConfig(swcConfig, {
         entry,
         publicPath,
-        cache,
         htmlWebpackPlugin: trySetHtmlWebpackPluginPublicPath(htmlWebpackPluginOptions ?? defineDevHtmlWebpackPluginConfig()),
         plugins: [
             ...plugins,
@@ -292,7 +290,7 @@ export function defineDevRemoteModuleConfig(swcConfig: SwcConfig, applicationNam
     const {
         entry = path.resolve("./src/register.tsx"),
         publicPath = "auto",
-        cache = false,
+        cache = true,
         plugins = [],
         htmlWebpackPlugin = false,
         transformers = [],
@@ -335,7 +333,6 @@ export function defineBuildRemoteModuleConfig(swcConfig: SwcConfig, applicationN
     const {
         entry = path.resolve("./src/register.tsx"),
         publicPath = "auto",
-        cache = false,
         plugins = [],
         htmlWebpackPlugin = false,
         transformers = [],
@@ -348,7 +345,6 @@ export function defineBuildRemoteModuleConfig(swcConfig: SwcConfig, applicationN
     return defineBuildConfig(swcConfig, {
         entry,
         publicPath,
-        cache,
         htmlWebpackPlugin,
         plugins: [
             ...plugins,

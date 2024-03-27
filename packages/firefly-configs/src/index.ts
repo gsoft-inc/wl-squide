@@ -17,6 +17,8 @@ import {
 import type { SwcConfig } from "@workleap/swc-configs";
 import type webpack from "webpack";
 
+export * from "@workleap/webpack-configs";
+
 export {
     DefineHostModuleFederationPluginOptions,
     DefineRemoteModuleFederationPluginOptions,

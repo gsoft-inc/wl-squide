@@ -22,7 +22,6 @@
         "@workleap/eslint-plugin": "3.1.0",
         "@workleap/swc-configs": "2.2.3",
         "@workleap/typescript-configs": "3.0.2",
-        "@workleap/webpack-configs": "1.5.0",
         "browserslist": "4.23.0",
         "cross-env": "7.0.3",
         "http-server": "14.1.1",

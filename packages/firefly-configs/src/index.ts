@@ -1,24 +1,9 @@
 import {
-    addAfterModuleRule,
-    addAfterPlugin,
-    addBeforeModuleRule,
-    addBeforePlugin,
     defineBuildHostConfig as baseDefineBuildHostConfig,
     defineBuildRemoteModuleConfig as baseDefineBuildRemoteModuleConfig,
     defineDevHostConfig as baseDefineDevHostConfig,
     defineDevRemoteModuleConfig as baseDefineDevRemoteModuleConfig,
     defineRemoteModuleFederationPluginOptions,
-    findModuleRule,
-    findModuleRules,
-    findPlugin,
-    matchAssetModuleType,
-    matchConstructorName,
-    matchLoaderName,
-    matchTest,
-    removeModuleRules,
-    removePlugin,
-    replaceModuleRule,
-    replacePlugin,
     type DefineBuildHostConfigOptions,
     type DefineBuildRemoteModuleConfigOptions,
     type DefineDevHostConfigOptions,
@@ -27,48 +12,19 @@ import {
     type DefineRemoteModuleFederationPluginOptions,
     type Features,
     type ModuleFederationPluginOptions,
-    type ModuleRuleMatch,
-    type ModuleRuleMatcher,
-    type PluginMatch,
-    type PluginMatcher,
-    type Router,
-    type WebpackConfigTransformer,
-    type WebpackConfigTransformerContext,
-    type WithModuleRuleMatcherInfo,
-    type WithPluginMatcherInfo
+    type Router
 } from "@squide/webpack-configs";
 import type { SwcConfig } from "@workleap/swc-configs";
 import type webpack from "webpack";
 
+export * from "@workleap/webpack-configs";
+
 export {
-    addAfterModuleRule,
-    addAfterPlugin,
-    addBeforeModuleRule,
-    addBeforePlugin,
-    defineRemoteModuleFederationPluginOptions,
-    findModuleRule,
-    findModuleRules,
-    findPlugin,
-    matchAssetModuleType,
-    matchConstructorName,
-    matchLoaderName,
-    matchTest,
-    removeModuleRules,
-    removePlugin,
-    replaceModuleRule,
-    replacePlugin,
-    type DefineHostModuleFederationPluginOptions,
-    type DefineRemoteModuleFederationPluginOptions,
-    type ModuleFederationPluginOptions,
-    type ModuleRuleMatch,
-    type ModuleRuleMatcher,
-    type PluginMatch,
-    type PluginMatcher,
-    type Router,
-    type WebpackConfigTransformer,
-    type WebpackConfigTransformerContext,
-    type WithModuleRuleMatcherInfo,
-    type WithPluginMatcherInfo
+    DefineHostModuleFederationPluginOptions,
+    DefineRemoteModuleFederationPluginOptions,
+    ModuleFederationPluginOptions,
+    Router,
+    defineRemoteModuleFederationPluginOptions
 };
 
 export type FireflyFeatures = Omit<Features, "router" | "msw">;

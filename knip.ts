@@ -26,13 +26,13 @@ function ignoreWebpackConfigsLoaders({ ignoreMiniCssExtractPlugin = false }: { i
         ...config,
         ignoreDependencies: [
             ...(ignoreDependencies as string[] ?? []),
+            "@svgr/webpack",
             "swc-loader",
             "css-loader",
             "postcss-loader",
             "style-loader",
-            !ignoreMiniCssExtractPlugin && "mini-css-extract-plugin",
-            "@svgr/webpack"
-        ].filter(x => x) as string[]
+            !ignoreMiniCssExtractPlugin && "mini-css-extract-plugin"
+        ].filter(Boolean) as string[]
     });
 }
 

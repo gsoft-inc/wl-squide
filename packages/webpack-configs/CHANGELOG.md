@@ -1,5 +1,11 @@
 # @squide/webpack-configs
 
+## 1.2.7
+
+### Patch Changes
+
+- [#162](https://github.com/gsoft-inc/wl-squide/pull/162) [`2c0840c`](https://github.com/gsoft-inc/wl-squide/commit/2c0840cb1c2c22e830e4f25f438c240c2d75d27a) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Moved @workleap/webpack-configs as a dependency.
+
 ## 1.2.6
 
 ### Patch Changes

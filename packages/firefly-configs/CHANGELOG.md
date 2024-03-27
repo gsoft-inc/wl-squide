@@ -1,5 +1,14 @@
 # @squide/firefly-configs
 
+## 1.0.4
+
+### Patch Changes
+
+- [#160](https://github.com/gsoft-inc/wl-squide/pull/160) [`535b62c`](https://github.com/gsoft-inc/wl-squide/commit/535b62c9ce72bf32b69f018d9467a18186d123a8) Thanks [@bsokol-wl](https://github.com/bsokol-wl)! - Add webpack memory caching by default
+
+- Updated dependencies [[`535b62c`](https://github.com/gsoft-inc/wl-squide/commit/535b62c9ce72bf32b69f018d9467a18186d123a8)]:
+  - @squide/webpack-configs@1.2.6
+
 ## 1.0.3
 
 ### Patch Changes

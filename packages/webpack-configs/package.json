@@ -1,7 +1,7 @@
 {
     "name": "@squide/webpack-configs",
     "author": "Workleap",
-    "version": "1.2.5",
+    "version": "1.2.6",
     "description": "Utilities to configure webpack with a @squide federated application shell.",
     "license": "Apache-2.0",
     "repository": {
@@ -46,6 +46,10 @@
         "@workleap/eslint-plugin": "3.1.0",
         "@workleap/tsup-configs": "3.0.4",
         "@workleap/typescript-configs": "3.0.2",
+<<<<<<< HEAD
+=======
+        "@workleap/webpack-configs": "1.5.0",
+>>>>>>> main
         "jest": "29.7.0",
         "jest-environment-jsdom": "29.7.0",
         "tsup": "8.0.2",

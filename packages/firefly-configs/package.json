@@ -56,7 +56,7 @@
     },
     "dependencies": {
         "@squide/webpack-configs": "workspace:*",
-        "@workleap/webpack-configs": "1.5.0"
+        "@workleap/webpack-configs": "1.5.1"
     },
     "engines": {
         "node": ">=20.0.0"

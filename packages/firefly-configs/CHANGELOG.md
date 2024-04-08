@@ -1,5 +1,14 @@
 # @squide/firefly-configs
 
+## 1.0.6
+
+### Patch Changes
+
+- [#165](https://github.com/gsoft-inc/wl-squide/pull/165) [`c9358e5`](https://github.com/gsoft-inc/wl-squide/commit/c9358e5a276e38d877d16a6831251c1932b8497e) Thanks [@bsokol-wl](https://github.com/bsokol-wl)! - update webpack config dependency to remove hashes from chunk filenames
+
+- Updated dependencies [[`c9358e5`](https://github.com/gsoft-inc/wl-squide/commit/c9358e5a276e38d877d16a6831251c1932b8497e)]:
+  - @squide/webpack-configs@1.2.8
+
 ## 1.0.5
 
 ### Patch Changes

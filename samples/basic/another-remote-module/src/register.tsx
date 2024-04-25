@@ -1,5 +1,11 @@
 import type { FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { version } from "useless-lib";
+
+console.log("[basic-sample] another-remote-module:", version);
+
 function registerRoutes(runtime: FireflyRuntime) {
     runtime.registerRoute({
         path: "/federated-tabs/officevibe",

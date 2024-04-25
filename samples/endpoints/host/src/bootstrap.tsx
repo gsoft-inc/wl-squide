@@ -1,20 +1,13 @@
 import { createI18NextPlugin } from "@endpoints/i18next";
 import { registerLocalModule } from "@endpoints/local-module";
-import { isNetlify } from "@endpoints/shared";
 import { registerShell } from "@endpoints/shell";
-import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, registerRemoteModules, setMswAsStarted, type RemoteDefinition } from "@squide/firefly";
+import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, registerRemoteModules, setMswAsStarted } from "@squide/firefly";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { Remotes } from "../remotes.js";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
 import { sessionAccessor, sessionManager } from "./session.ts";
-
-const Remotes: RemoteDefinition[] = [
-    {
-        name: "remote1",
-        url: isNetlify ? "https://squide-endpoints-remote-module.netlify.app" : "http://localhost:8081"
-    }
-];
 
 const consoleLogger = new ConsoleLogger();
 

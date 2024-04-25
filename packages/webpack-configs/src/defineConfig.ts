@@ -1,12 +1,22 @@
+import ModuleFederation from "@module-federation/enhanced/webpack";
 import type { SwcConfig } from "@workleap/swc-configs";
 import { defineBuildConfig, defineBuildHtmlWebpackPluginConfig, defineDevConfig, defineDevHtmlWebpackPluginConfig, type DefineBuildConfigOptions, type DefineDevConfigOptions, type WebpackConfig, type WebpackConfigTransformer } from "@workleap/webpack-configs";
 import merge from "deepmerge";
 import type HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "node:path";
-import webpack from "webpack";
+import url from "node:url";
+import type webpack from "webpack";
+
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+
+// Must be similar to the module name defined in @workleap/webpack-module-federation.
+const RemoteRegisterModuleName = "./register";
+const RemoteEntryPoint = "remoteEntry.js";
 
 // Webpack doesn't export ModuleFederationPlugin typings.
-export type ModuleFederationPluginOptions = ConstructorParameters<typeof webpack.container.ModuleFederationPlugin>[0];
+export type ModuleFederationPluginOptions = ConstructorParameters<typeof ModuleFederation.ModuleFederationPlugin>[0];
+export type ModuleFederationRuntimePlugins = ModuleFederationPluginOptions["runtimePlugins"];
+export type ModuleFederationRemotesOption = ModuleFederationPluginOptions["remotes"];
 export type ModuleFederationSharedOption = ModuleFederationPluginOptions["shared"];
 
 // Generally, only the host application should have eager dependencies.
@@ -117,17 +127,40 @@ const forceNamedChunkIdsTransformer: WebpackConfigTransformer = (config: Webpack
     return config;
 };
 
+function createSetUniqueNameTransformer(uniqueName: string) {
+    const transformer: WebpackConfigTransformer = (config: WebpackConfig) => {
+        config.output = {
+            ...(config.output ?? {}),
+            // Every host and remotes must have a "uniqueName" for React Refresh to work
+            // with Module Federation.
+            uniqueName
+        };
+
+        return config;
+    };
+
+    return transformer;
+}
+
 ////////////////////////////  Host  /////////////////////////////
+
+export interface RemoteDefinition {
+    // The name of the remote module.
+    name: string;
+    // The URL of the remote, ex: http://localhost:8081.
+    url: string;
+}
 
 export interface DefineHostModuleFederationPluginOptions extends ModuleFederationPluginOptions {
     features?: Features;
 }
 
 // The function return type is mandatory, otherwise we got an error TS4058.
-export function defineHostModuleFederationPluginOptions(applicationName: string, options: DefineHostModuleFederationPluginOptions): ModuleFederationPluginOptions {
+export function defineHostModuleFederationPluginOptions(applicationName: string, remotes: RemoteDefinition[], options: DefineHostModuleFederationPluginOptions): ModuleFederationPluginOptions {
     const {
         features = {},
         shared = {},
+        runtimePlugins = [],
         ...rest
     } = options;
 
@@ -135,13 +168,25 @@ export function defineHostModuleFederationPluginOptions(applicationName: string,
 
     return {
         name: applicationName,
+        remotes: remotes.reduce((acc, x) => {
+            // Object reduce are always a mess for typings.
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            acc[x.name] = `${x.name}@${x.url}/${RemoteEntryPoint}`;
+
+            return acc;
+        }, {}) as ModuleFederationRemotesOption,
         // Deep merging the default shared dependencies with the provided shared dependencies
         // to allow the consumer to easily override a default option of a shared dependency
         // without extending the whole default shared dependencies object.
         shared: merge.all([
             defaultSharedDependencies,
             shared
-        ]) as ModuleFederationPluginOptions["shared"],
+        ]) as ModuleFederationSharedOption,
+        runtimePlugins: [
+            path.resolve(__dirname, "./sharedDependenciesResolutionPlugin.js"),
+            ...runtimePlugins
+        ],
         ...rest
     };
 }
@@ -156,24 +201,27 @@ function trySetHtmlWebpackPluginPublicPath(options: HtmlWebpackPlugin.Options) {
     return options;
 }
 
-export interface DefineDevHostConfigOptions extends Omit<DefineDevConfigOptions, "htmlWebpackPlugin" | "fastRefresh" | "port"> {
+export interface DefineDevHostConfigOptions extends Omit<DefineDevConfigOptions, "htmlWebpackPlugin" | "port"> {
     htmlWebpackPluginOptions?: HtmlWebpackPlugin.Options;
     features?: Features;
-    sharedDependencies?: ModuleFederationPluginOptions["shared"];
+    sharedDependencies?: ModuleFederationSharedOption;
+    runtimePlugins?: ModuleFederationRuntimePlugins;
     moduleFederationPluginOptions?: ModuleFederationPluginOptions;
 }
 
 // The function return type is mandatory, otherwise we got an error TS4058.
-export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: string, port: number, options: DefineDevHostConfigOptions = {}): webpack.Configuration {
+export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: string, port: number, remotes: RemoteDefinition[], options: DefineDevHostConfigOptions = {}): webpack.Configuration {
     const {
         entry = path.resolve("./src/index.ts"),
         publicPath = "auto",
         cache,
         plugins = [],
         htmlWebpackPluginOptions,
+        transformers = [],
         features,
         sharedDependencies,
-        moduleFederationPluginOptions = defineHostModuleFederationPluginOptions(applicationName, { features, shared: sharedDependencies }),
+        runtimePlugins,
+        moduleFederationPluginOptions = defineHostModuleFederationPluginOptions(applicationName, remotes, { features, shared: sharedDependencies, runtimePlugins }),
         ...webpackOptions
     } = options;
 
@@ -185,21 +233,26 @@ export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: strin
         htmlWebpackPlugin: trySetHtmlWebpackPluginPublicPath(htmlWebpackPluginOptions ?? defineBuildHtmlWebpackPluginConfig()),
         plugins: [
             ...plugins,
-            new webpack.container.ModuleFederationPlugin(moduleFederationPluginOptions)
+            new ModuleFederation.ModuleFederationPlugin(moduleFederationPluginOptions)
         ],
-        ...webpackOptions
+        ...webpackOptions,
+        transformers: [
+            createSetUniqueNameTransformer(applicationName),
+            ...transformers
+        ]
     });
 }
 
 export interface DefineBuildHostConfigOptions extends Omit<DefineBuildConfigOptions, "htmlWebpackPlugin"> {
     htmlWebpackPluginOptions?: HtmlWebpackPlugin.Options;
     features?: Features;
-    sharedDependencies?: ModuleFederationPluginOptions["shared"];
+    sharedDependencies?: ModuleFederationSharedOption;
+    runtimePlugins?: ModuleFederationRuntimePlugins;
     moduleFederationPluginOptions?: ModuleFederationPluginOptions;
 }
 
 // The function return type is mandatory, otherwise we got an error TS4058.
-export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: string, options: DefineBuildHostConfigOptions = {}): webpack.Configuration {
+export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: string, remotes: RemoteDefinition[], options: DefineBuildHostConfigOptions = {}): webpack.Configuration {
     const {
         entry = path.resolve("./src/index.ts"),
         publicPath = "auto",
@@ -208,7 +261,8 @@ export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: str
         transformers = [],
         features,
         sharedDependencies,
-        moduleFederationPluginOptions = defineHostModuleFederationPluginOptions(applicationName, { features, shared: sharedDependencies }),
+        runtimePlugins,
+        moduleFederationPluginOptions = defineHostModuleFederationPluginOptions(applicationName, remotes, { features, shared: sharedDependencies, runtimePlugins }),
         ...webpackOptions
     } = options;
 
@@ -218,10 +272,11 @@ export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: str
         htmlWebpackPlugin: trySetHtmlWebpackPluginPublicPath(htmlWebpackPluginOptions ?? defineDevHtmlWebpackPluginConfig()),
         plugins: [
             ...plugins,
-            new webpack.container.ModuleFederationPlugin(moduleFederationPluginOptions)
+            new ModuleFederation.ModuleFederationPlugin(moduleFederationPluginOptions)
         ],
         transformers: [
             forceNamedChunkIdsTransformer,
+            createSetUniqueNameTransformer(applicationName),
             ...transformers
         ],
         ...webpackOptions
@@ -240,6 +295,7 @@ export function defineRemoteModuleFederationPluginOptions(applicationName: strin
         features = {},
         exposes = {},
         shared = {},
+        runtimePlugins = [],
         ...rest
     } = options;
 
@@ -247,9 +303,9 @@ export function defineRemoteModuleFederationPluginOptions(applicationName: strin
 
     return {
         name: applicationName,
-        filename: "remoteEntry.js",
+        filename: RemoteEntryPoint,
         exposes: {
-            "./register": "./src/register",
+            [RemoteRegisterModuleName]: "./src/register",
             ...exposes
         },
         // Deep merging the default shared dependencies with the provided shared dependencies
@@ -258,7 +314,11 @@ export function defineRemoteModuleFederationPluginOptions(applicationName: strin
         shared: merge.all([
             defaultSharedDependencies,
             shared
-        ]) as ModuleFederationPluginOptions["shared"],
+        ]) as ModuleFederationSharedOption,
+        runtimePlugins: [
+            path.resolve(__dirname, "./sharedDependenciesResolutionPlugin.js"),
+            ...runtimePlugins
+        ],
         ...rest
     };
 }
@@ -279,9 +339,10 @@ const devRemoteModuleTransformer: WebpackConfigTransformer = (config: WebpackCon
     return config;
 };
 
-export interface DefineDevRemoteModuleConfigOptions extends Omit<DefineDevConfigOptions, "fastRefresh" | "port" | "overlay"> {
+export interface DefineDevRemoteModuleConfigOptions extends Omit<DefineDevConfigOptions, "port" | "overlay"> {
     features?: Features;
-    sharedDependencies?: ModuleFederationPluginOptions["shared"];
+    sharedDependencies?: ModuleFederationSharedOption;
+    runtimePlugins?: ModuleFederationRuntimePlugins;
     moduleFederationPluginOptions?: ModuleFederationPluginOptions;
 }
 
@@ -296,7 +357,8 @@ export function defineDevRemoteModuleConfig(swcConfig: SwcConfig, applicationNam
         transformers = [],
         features,
         sharedDependencies,
-        moduleFederationPluginOptions = defineRemoteModuleFederationPluginOptions(applicationName, { features, shared: sharedDependencies }),
+        runtimePlugins,
+        moduleFederationPluginOptions = defineRemoteModuleFederationPluginOptions(applicationName, { features, shared: sharedDependencies, runtimePlugins }),
         ...webpackOptions
     } = options;
 
@@ -305,17 +367,17 @@ export function defineDevRemoteModuleConfig(swcConfig: SwcConfig, applicationNam
         port,
         publicPath,
         cache,
-        fastRefresh: false,
         htmlWebpackPlugin,
         // Disable the error overlay by default for remotes as otherwise every remote module's error overlay will be
         // stack on top of the host application's error overlay.
         overlay: false,
         plugins: [
             ...plugins,
-            new webpack.container.ModuleFederationPlugin(moduleFederationPluginOptions)
+            new ModuleFederation.ModuleFederationPlugin(moduleFederationPluginOptions)
         ],
         transformers: [
             devRemoteModuleTransformer,
+            createSetUniqueNameTransformer(applicationName),
             ...transformers
         ],
         ...webpackOptions
@@ -324,7 +386,8 @@ export function defineDevRemoteModuleConfig(swcConfig: SwcConfig, applicationNam
 
 export interface DefineBuildRemoteModuleConfigOptions extends DefineBuildConfigOptions {
     features?: Features;
-    sharedDependencies?: ModuleFederationPluginOptions["shared"];
+    sharedDependencies?: ModuleFederationSharedOption;
+    runtimePlugins?: ModuleFederationRuntimePlugins;
     moduleFederationPluginOptions?: ModuleFederationPluginOptions;
 }
 
@@ -338,7 +401,8 @@ export function defineBuildRemoteModuleConfig(swcConfig: SwcConfig, applicationN
         transformers = [],
         features,
         sharedDependencies,
-        moduleFederationPluginOptions = defineRemoteModuleFederationPluginOptions(applicationName, { features, shared: sharedDependencies }),
+        runtimePlugins,
+        moduleFederationPluginOptions = defineRemoteModuleFederationPluginOptions(applicationName, { features, shared: sharedDependencies, runtimePlugins }),
         ...webpackOptions
     } = options;
 
@@ -348,10 +412,11 @@ export function defineBuildRemoteModuleConfig(swcConfig: SwcConfig, applicationN
         htmlWebpackPlugin,
         plugins: [
             ...plugins,
-            new webpack.container.ModuleFederationPlugin(moduleFederationPluginOptions)
+            new ModuleFederation.ModuleFederationPlugin(moduleFederationPluginOptions)
         ],
         transformers: [
             forceNamedChunkIdsTransformer,
+            createSetUniqueNameTransformer(applicationName),
             ...transformers
         ],
         ...webpackOptions

@@ -61,6 +61,7 @@
         "typescript": "5.4.5"
     },
     "dependencies": {
+        "@module-federation/enhanced": "0.1.9",
         "@squide/core": "workspace:*"
     },
     "sideEffects": false,

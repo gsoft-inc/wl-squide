@@ -2,17 +2,13 @@
 
 export function getSharedDependencies() {
     return {
-        "@endpoints/layouts": {
+        "@basic/shared": {
             singleton: true,
             eager: true
         },
-        "@endpoints/shared": {
+        "useless-lib": {
             singleton: true,
             eager: true
         }
     };
 }
-
-export const features = {
-    i18next: true
-};

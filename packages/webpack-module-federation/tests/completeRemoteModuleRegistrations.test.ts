@@ -43,8 +43,8 @@ test("when called twice, throw an error", async () => {
     const registry = new RemoteModuleRegistry(loadRemote);
 
     await registry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" }
     ], runtime);
 
     await registry.completeModuleRegistrations(runtime, {});
@@ -61,8 +61,8 @@ test("when called for the first time but the registration status is already \"re
     const registry = new RemoteModuleRegistry(loadRemote);
 
     await registry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" }
     ], runtime);
 
     expect(registry.registrationStatus).toBe("ready");
@@ -93,9 +93,9 @@ test("can complete all the deferred registrations", async () => {
     const registry = new RemoteModuleRegistry(loadRemote);
 
     await registry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" },
-        { name: "Dummy-3", url: "http://anything3.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
     ], runtime);
 
     await registry.completeModuleRegistrations(runtime, {});
@@ -113,9 +113,9 @@ test("when all the deferred registrations are completed, set the status to \"rea
     const registry = new RemoteModuleRegistry(loadRemote);
 
     await registry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" },
-        { name: "Dummy-3", url: "http://anything3.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
     ], runtime);
 
     expect(registry.registrationStatus).toBe("registered");
@@ -148,9 +148,9 @@ test("when a deferred registration is asynchronous, the function can be awaited"
     let hasBeenCompleted = false;
 
     await registry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" },
-        { name: "Dummy-3", url: "http://anything3.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
     ], runtime);
 
     await registry.completeModuleRegistrations(runtime, {});
@@ -178,9 +178,9 @@ test("when a deferred registration fail, complete the remaining deferred registr
     const registry = new RemoteModuleRegistry(loadRemote);
 
     await registry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" },
-        { name: "Dummy-3", url: "http://anything3.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
     ], runtime);
 
     await registry.completeModuleRegistrations(runtime, {});
@@ -206,9 +206,9 @@ test("when a deferred registration fail, return the error", async () => {
     const registry = new RemoteModuleRegistry(loadRemote);
 
     await registry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" },
-        { name: "Dummy-3", url: "http://anything3.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
     ], runtime);
 
     const errors = await registry.completeModuleRegistrations(runtime, {});
@@ -238,9 +238,9 @@ test("when data is provided, all the deferred registrations receive the data obj
     const registry = new RemoteModuleRegistry(loadRemote);
 
     await registry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" },
-        { name: "Dummy-3", url: "http://anything3.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
     ], runtime);
 
     const data = {

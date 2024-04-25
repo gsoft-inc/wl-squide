@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useSyncExternalStore } from "react";
-
 import { addLocalModuleRegistrationStatusChangedListener, getLocalModuleRegistrationStatus, removeLocalModuleRegistrationStatusChangedListener, useRuntime, type ModuleRegistrationStatus } from "@squide/core";
+import { useEffect, useMemo, useSyncExternalStore } from "react";
 import { addRemoteModuleRegistrationStatusChangedListener, getRemoteModuleRegistrationStatus, removeRemoteModuleRegistrationStatusChangedListener } from "./registerRemoteModules.ts";
 
 export function areModulesReady(localModuleRegistrationStatus: ModuleRegistrationStatus, remoteModuleRegistrationStatus: ModuleRegistrationStatus) {

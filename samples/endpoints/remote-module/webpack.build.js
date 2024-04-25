@@ -17,7 +17,7 @@ if (!process.env.ISOLATED) {
         }
     });
 } else {
-    config = defineBuildHostConfig(swcConfig, "remote1", {
+    config = defineBuildHostConfig(swcConfig, "remote1", [], {
         entry: path.resolve("./src/dev/index.tsx"),
         features,
         sharedDependencies: getSharedDependencies(true),

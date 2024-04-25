@@ -1,5 +1,6 @@
 // @ts-check
 
+import { isNetlify } from "@basic/shared";
 import { defineDevHostConfig, defineDevRemoteModuleConfig } from "@squide/firefly-configs";
 import path from "node:path";
 import { swcConfig } from "./swc.dev.js";
@@ -11,16 +12,16 @@ if (!process.env.ISOLATED) {
     config = defineDevRemoteModuleConfig(swcConfig, "remote2", 8082, {
         sharedDependencies: getSharedDependencies(false),
         environmentVariables: {
-            "NETLIFY": process.env.NETLIFY === "true"
+            "NETLIFY": isNetlify
         }
     });
 } else {
-    config = defineDevHostConfig(swcConfig, "remote2", 8080, {
+    config = defineDevHostConfig(swcConfig, "remote2", 8080, [], {
         entry: path.resolve("./src/dev/index.tsx"),
         overlay: false,
         sharedDependencies: getSharedDependencies(true),
         environmentVariables: {
-            "NETLIFY": process.env.NETLIFY === "true"
+            "NETLIFY": isNetlify
         }
     });
 }

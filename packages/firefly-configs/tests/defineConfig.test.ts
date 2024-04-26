@@ -1,7 +1,16 @@
+import { ModuleFederationPlugin } from "@module-federation/enhanced/webpack";
+import type { ModuleFederationPluginOptions } from "@squide/webpack-configs";
 import { defineBuildConfig as defineSwcBuildConfig, defineDevConfig as defineSwcDevConfig } from "@workleap/swc-configs";
 import { findPlugin, matchConstructorName } from "@workleap/webpack-configs";
-import webpack from "webpack";
+import type { WebpackPluginInstance } from "webpack";
 import { defineBuildHostConfig, defineBuildRemoteModuleConfig, defineDevHostConfig, defineDevRemoteModuleConfig } from "../src/index.ts";
+
+// The following options are relative to the environment running the test and breaks on CI.
+function prepareModuleFederationPluginForSnapshot(plugin: WebpackPluginInstance) {
+    delete (plugin._options as ModuleFederationPluginOptions)["runtimePlugins"];
+
+    return plugin;
+}
 
 describe("defineDevHostConfig", () => {
     const SwcConfig = defineSwcDevConfig({
@@ -10,9 +19,9 @@ describe("defineDevHostConfig", () => {
 
     test("includes react-router and msw dependencies", () => {
         const config = defineDevHostConfig(SwcConfig, "host", 8080, []);
-        const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
+        const result = findPlugin(config, matchConstructorName(ModuleFederationPlugin.name));
 
-        expect(result).toMatchSnapshot();
+        expect(prepareModuleFederationPluginForSnapshot(result.plugin as WebpackPluginInstance)).toMatchSnapshot();
     });
 });
 
@@ -23,9 +32,9 @@ describe("defineBuildHostConfig", () => {
 
     test("includes react-router and msw dependencies", () => {
         const config = defineBuildHostConfig(SwcConfig, "host", []);
-        const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
+        const result = findPlugin(config, matchConstructorName(ModuleFederationPlugin.name));
 
-        expect(result).toMatchSnapshot();
+        expect(prepareModuleFederationPluginForSnapshot(result.plugin as WebpackPluginInstance)).toMatchSnapshot();
     });
 });
 
@@ -36,9 +45,9 @@ describe("defineDevRemoteModuleConfig", () => {
 
     test("includes react-router and msw dependencies", () => {
         const config = defineDevRemoteModuleConfig(SwcConfig, "remote1", 8081);
-        const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
+        const result = findPlugin(config, matchConstructorName(ModuleFederationPlugin.name));
 
-        expect(result).toMatchSnapshot();
+        expect(prepareModuleFederationPluginForSnapshot(result.plugin as WebpackPluginInstance)).toMatchSnapshot();
     });
 });
 
@@ -49,9 +58,9 @@ describe("defineBuildRemoteModuleConfig", () => {
 
     test("includes react-router and msw dependencies", () => {
         const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1");
-        const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
+        const result = findPlugin(config, matchConstructorName(ModuleFederationPlugin.name));
 
-        expect(result).toMatchSnapshot();
+        expect(prepareModuleFederationPluginForSnapshot(result.plugin as WebpackPluginInstance)).toMatchSnapshot();
     });
 });
 

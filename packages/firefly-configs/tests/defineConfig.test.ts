@@ -9,7 +9,7 @@ describe("defineDevHostConfig", () => {
     });
 
     test("includes react-router and msw dependencies", () => {
-        const config = defineDevHostConfig(SwcConfig, "host", 8080);
+        const config = defineDevHostConfig(SwcConfig, "host", 8080, []);
         const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
 
         expect(result).toMatchSnapshot();
@@ -22,7 +22,7 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("includes react-router and msw dependencies", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host");
+        const config = defineBuildHostConfig(SwcConfig, "host", []);
         const result = findPlugin(config, matchConstructorName(webpack.container.ModuleFederationPlugin.name));
 
         expect(result).toMatchSnapshot();

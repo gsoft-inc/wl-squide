@@ -95,9 +95,9 @@ Since Squide has dependencies on React and React Router, the [define*](../refere
 - [react-router-dom](https://www.npmjs.com/package/react-router-dom)
 - [@squide/core](https://www.npmjs.com/package/@squide/core)
 - [@squide/react-router](https://www.npmjs.com/package/@squide/react-router)
-- [@squide/webpack-module-federation](https://www.npmjs.com/package/@squide/webpack-module-federation)
+- [@squide/module-federation](https://www.npmjs.com/package/@squide/module-federation)
 
-For the full shared dependencies configuration, have a look at the [defineConfig.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/webpack-module-federation/src/defineConfig.ts) file on Github.
+For the full shared dependencies configuration, have a look at the [defineConfig.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/webpack-configs/src/defineConfig.ts) file on Github.
 
 > You can [extend](../reference/webpack/defineDevHostConfig.md#extend-a-default-shared-dependency) or [override](../reference/webpack/defineDevHostConfig.md#override-a-default-shared-dependency) the default shared dependencies configuration.
 

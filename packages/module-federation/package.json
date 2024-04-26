@@ -1,13 +1,13 @@
 {
-    "name": "@squide/webpack-module-federation",
+    "name": "@squide/module-federation",
     "author": "Workleap",
-    "version": "4.0.0",
+    "version": "0.0.1",
     "description": "Add support for Module Federation to @squide federated application shell.",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/gsoft-inc/wl-squide.git",
-        "directory": "packages/webpack-module-federation"
+        "directory": "packages/module-federation"
     },
     "publishConfig": {
         "access": "public",

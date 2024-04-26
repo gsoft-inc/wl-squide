@@ -65,7 +65,7 @@
         "@squide/core": "workspace:*",
         "@squide/msw": "workspace:*",
         "@squide/react-router": "workspace:*",
-        "@squide/webpack-module-federation": "workspace:*"
+        "@squide/module-federation": "workspace:*"
     },
     "sideEffects": false,
     "engines": {

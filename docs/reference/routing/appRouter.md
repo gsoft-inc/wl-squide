@@ -240,10 +240,9 @@ Don't forget to forward the [AbortSignal](https://developer.mozilla.org/en-US/do
 
 For more information about deferred registrations, refer to the [registerRemoteModules](../registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) and [completeModuleRegistrations](../registration/completeModuleRegistrations.md) documentation.
 
-```tsx !#32-34,44 host/src/App.tsx
+```tsx !#31-33,43 host/src/App.tsx
 import { useState, useCallback } from "react";
-import { AppRouter } from "@squide/firefly";
-import { completeModuleRegistrations } from "@squide/webpack-module-federation";
+import { AppRouter, completeModuleRegistrations } from "@squide/firefly";
 import { Loading } from "./Loading.tsx";
 import { ErrorBoundary } from "./ErrorBoundary.tsx";
 import type { FeatureFlags } from "@sample/shared";

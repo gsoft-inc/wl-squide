@@ -68,7 +68,7 @@ const plugin: () => FederationRuntimePlugin = () => {
             }
 
             args.resolver = () => {
-                log(`%c[webpack-configs] there's more than one requested version for ${pkgName}:`, "color: black; background-color: yellow;", entries.length, shareScopeMap[scope][pkgName]);
+                log(`[webpack-configs] there's %cmore than one requested version%c for ${pkgName}:`, "color: black; background-color: pink;", "", entries.length, shareScopeMap[scope][pkgName]);
 
                 const cleanedEntries = entries.map(x => ({
                     ...x,
@@ -87,7 +87,7 @@ const plugin: () => FederationRuntimePlugin = () => {
 
                 // The host is always right!
                 if (highestVersionEntry.from === "host") {
-                    log("%c[webpack-configs] this is the host version, great, resolving to:", "color: black; background-color: yellow;", highestVersionEntry.version, highestVersionEntry);
+                    log("[webpack-configs] %cthis is the host version%c, great, resolving to:", "color: black; background-color: pink;", "", highestVersionEntry.version, highestVersionEntry);
 
                     return highestVersionEntry;
                 }
@@ -98,7 +98,7 @@ const plugin: () => FederationRuntimePlugin = () => {
 
                 // Found nothing, that's odd but let's not break the app for this.
                 if (!hostEntry) {
-                    log(`%c[webpack-configs] the host is not requesting any version of ${pkgName}, aborting.`, "color: black; background-color: yellow;");
+                    log(`[webpack-configs] the host is not requesting any version of ${pkgName}, %caborting%c.`, "color: black; background-color: pink;", "");
 
                     return highestVersionEntry;
                 }
@@ -117,8 +117,10 @@ const plugin: () => FederationRuntimePlugin = () => {
                     // by the host, but match the host entry major version number.
                     const fallbackEntry = findHighestVersionForMajor(sortedEntries.splice(1), parsedHostVersion.major);
 
-                    log(`%c[webpack-configs] the highest requested version for ${pkgName} that is in-range with the requested host major version number is:`, "color: black; background-color: yellow;", fallbackEntry.version, fallbackEntry);
-                    log("%c[webpack-configs] reverting to:", "color: black; background-color: yellow;", fallbackEntry.version);
+                    log(`[webpack-configs] the %chighest requested version%c for ${pkgName} that is in-range with the requested host major version number is:`, "color: black; background-color: pink;", "", fallbackEntry.version, fallbackEntry);
+
+                    // Always print this log whether or not we are in debug mode.
+                    console.log(`[webpack-configs] ${pkgName} version for has been forced to %c${fallbackEntry.version}%c.`, "color: black; background-color: pink;", "");
 
                     return fallbackEntry;
                 }

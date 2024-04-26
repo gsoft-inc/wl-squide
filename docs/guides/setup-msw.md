@@ -45,7 +45,7 @@ Then, update the development [webpack](https://webpack.js.org/) configuration fi
 ```js !#7 webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/webpack-module-federation";
+import { defineDevHostConfig } from "@squide/firefly-configs";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {
     environmentVariables: {

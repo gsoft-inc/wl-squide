@@ -43,7 +43,7 @@ The `defineDevHostConfig` function will add the following shared dependencies as
 - [react-router-dom](https://www.npmjs.com/package/react-router-dom)
 - [@squide/core](https://www.npmjs.com/package/@squide/core)
 - [@squide/react-router](https://www.npmjs.com/package/@squide/react-router)
-- [@squide/webpack-module-federation](https://www.npmjs.com/package/@squide/webpack-module-federation)
+- [@squide/module-federation](https://www.npmjs.com/package/@squide/module-federation)
 - [@squide/msw](https://www.npmjs.com/package/@squide/msw)
 
 For the full shared dependencies configuration, have a look at the [defineConfig.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/firefly/src/defineConfig.ts) file on Github.

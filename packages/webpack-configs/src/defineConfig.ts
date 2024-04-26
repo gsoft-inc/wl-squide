@@ -1,4 +1,5 @@
-import ModuleFederation from "@module-federation/enhanced/webpack";
+// import ModuleFederation from "@module-federation/enhanced/webpack";
+import { ModuleFederationPlugin } from "@module-federation/enhanced/webpack";
 import type { SwcConfig } from "@workleap/swc-configs";
 import { defineBuildConfig, defineBuildHtmlWebpackPluginConfig, defineDevConfig, defineDevHtmlWebpackPluginConfig, type DefineBuildConfigOptions, type DefineDevConfigOptions, type WebpackConfig, type WebpackConfigTransformer } from "@workleap/webpack-configs";
 import merge from "deepmerge";
@@ -7,14 +8,15 @@ import path from "node:path";
 import url from "node:url";
 import type webpack from "webpack";
 
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+const directoryName = url.fileURLToPath(new URL(".", import.meta.url));
 
-// Must be similar to the module name defined in @workleap/webpack-module-federation.
+// Must be similar to the module name defined in @workleap/module-federation.
 const RemoteRegisterModuleName = "./register";
 const RemoteEntryPoint = "remoteEntry.js";
 
 // Webpack doesn't export ModuleFederationPlugin typings.
-export type ModuleFederationPluginOptions = ConstructorParameters<typeof ModuleFederation.ModuleFederationPlugin>[0];
+// export type ModuleFederationPluginOptions = ConstructorParameters<typeof ModuleFederation.ModuleFederationPlugin>[0];
+export type ModuleFederationPluginOptions = ConstructorParameters<typeof ModuleFederationPlugin>[0];
 export type ModuleFederationRuntimePlugins = ModuleFederationPluginOptions["runtimePlugins"];
 export type ModuleFederationRemotesOption = ModuleFederationPluginOptions["remotes"];
 export type ModuleFederationSharedOption = ModuleFederationPluginOptions["shared"];
@@ -38,7 +40,7 @@ function getDefaultSharedDependencies(features: Features, isHost: boolean): Modu
             singleton: true,
             eager: isHost ? true : undefined
         },
-        "@squide/webpack-module-federation": {
+        "@squide/module-federation": {
             singleton: true,
             eager: isHost ? true : undefined
         }
@@ -184,7 +186,7 @@ export function defineHostModuleFederationPluginOptions(applicationName: string,
             shared
         ]) as ModuleFederationSharedOption,
         runtimePlugins: [
-            path.resolve(__dirname, "./sharedDependenciesResolutionPlugin.js"),
+            path.resolve(directoryName, "./sharedDependenciesResolutionPlugin.js"),
             ...runtimePlugins
         ],
         ...rest
@@ -233,7 +235,8 @@ export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: strin
         htmlWebpackPlugin: trySetHtmlWebpackPluginPublicPath(htmlWebpackPluginOptions ?? defineBuildHtmlWebpackPluginConfig()),
         plugins: [
             ...plugins,
-            new ModuleFederation.ModuleFederationPlugin(moduleFederationPluginOptions)
+            // new ModuleFederation.ModuleFederationPlugin(moduleFederationPluginOptions)
+            new ModuleFederationPlugin(moduleFederationPluginOptions)
         ],
         ...webpackOptions,
         transformers: [
@@ -272,7 +275,8 @@ export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: str
         htmlWebpackPlugin: trySetHtmlWebpackPluginPublicPath(htmlWebpackPluginOptions ?? defineDevHtmlWebpackPluginConfig()),
         plugins: [
             ...plugins,
-            new ModuleFederation.ModuleFederationPlugin(moduleFederationPluginOptions)
+            // new ModuleFederation.ModuleFederationPlugin(moduleFederationPluginOptions)
+            new ModuleFederationPlugin(moduleFederationPluginOptions)
         ],
         transformers: [
             forceNamedChunkIdsTransformer,
@@ -316,7 +320,7 @@ export function defineRemoteModuleFederationPluginOptions(applicationName: strin
             shared
         ]) as ModuleFederationSharedOption,
         runtimePlugins: [
-            path.resolve(__dirname, "./sharedDependenciesResolutionPlugin.js"),
+            path.resolve(directoryName, "./sharedDependenciesResolutionPlugin.js"),
             ...runtimePlugins
         ],
         ...rest
@@ -373,7 +377,8 @@ export function defineDevRemoteModuleConfig(swcConfig: SwcConfig, applicationNam
         overlay: false,
         plugins: [
             ...plugins,
-            new ModuleFederation.ModuleFederationPlugin(moduleFederationPluginOptions)
+            // new ModuleFederation.ModuleFederationPlugin(moduleFederationPluginOptions)
+            new ModuleFederationPlugin(moduleFederationPluginOptions)
         ],
         transformers: [
             devRemoteModuleTransformer,
@@ -412,7 +417,8 @@ export function defineBuildRemoteModuleConfig(swcConfig: SwcConfig, applicationN
         htmlWebpackPlugin,
         plugins: [
             ...plugins,
-            new ModuleFederation.ModuleFederationPlugin(moduleFederationPluginOptions)
+            // new ModuleFederation.ModuleFederationPlugin(moduleFederationPluginOptions)
+            new ModuleFederationPlugin(moduleFederationPluginOptions)
         ],
         transformers: [
             forceNamedChunkIdsTransformer,

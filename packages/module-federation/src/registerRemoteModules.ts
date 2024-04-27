@@ -1,5 +1,5 @@
 import { loadRemote as loadModuleFederationRemote } from "@module-federation/enhanced/runtime";
-import { isFunction, isNil, registerModule, type DeferredRegistrationFunction, type ModuleRegistrationStatus, type Runtime } from "@squide/core";
+import { isFunction, isNil, registerModule, type DeferredRegistrationFunction, type Logger, type ModuleRegistrationStatus, type Runtime } from "@squide/core";
 import type { RemoteDefinition } from "./remoteDefinition.ts";
 
 const RemoteRegisterModuleName = "register";
@@ -39,19 +39,18 @@ export class RemoteModuleRegistry {
         this.#loadRemote = loadRemote;
     }
 
-    // TODO: use a hook or something
-    // #logSharedScope(logger: Logger) {
-    //     // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //     // // @ts-ignore
-    //     // if (__webpack_share_scopes__) {
-    //     //     logger.debug(
-    //     //         "[squide] Module Federation shared scope is available:",
-    //     //         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //     //         // @ts-ignore
-    //     //         __webpack_share_scopes__.default
-    //     //     );
-    //     // }
-    // }
+    #logSharedScope(logger: Logger) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (__webpack_share_scopes__) {
+            logger.debug(
+                "[squide] Module Federation shared scope is available:",
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                __webpack_share_scopes__.default
+            );
+        }
+    }
 
     async registerModules<TRuntime extends Runtime = Runtime, TContext = unknown, TData = unknown>(remotes: RemoteDefinition[], runtime: TRuntime, { context }: RegisterRemoteModulesOptions<TContext> = {}) {
         const errors: RemoteModuleRegistrationError[] = [];
@@ -88,7 +87,7 @@ export class RemoteModuleRegistry {
                     });
                 }
 
-                runtime.logger.debug(`[squide] ${index + 1}/${remotes.length} The registration of remote "${remoteName}" is completed.`);
+                runtime.logger.debug(`[squide] ${index + 1}/${remotes.length} The registration of the remote "${remoteName}" is completed.`);
             } catch (error: unknown) {
                 runtime.logger.error(
                     `[squide] ${index + 1}/${remotes.length} An error occured while registering module "${RemoteRegisterModuleName}" of remote "${remoteName}".`,
@@ -105,13 +104,13 @@ export class RemoteModuleRegistry {
 
         this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "registered" : "ready");
 
-        // // After introducting the "setRegistrationStatus" method, TypeScript seems to think that the only possible
-        // // values for registrationStatus is "none" and now complains about the lack of overlapping between "none" and "ready".
-        // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // // @ts-ignore
-        // if (this.#registrationStatus === "ready") {
-        //     this.#logSharedScope(runtime.logger);
-        // }
+        // After introducting the "setRegistrationStatus" method, TypeScript seems to think that the only possible
+        // values for registrationStatus is "none" and now complains about the lack of overlapping between "none" and "ready".
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (this.#registrationStatus === "ready") {
+            this.#logSharedScope(runtime.logger);
+        }
 
         return errors;
     }
@@ -157,7 +156,7 @@ export class RemoteModuleRegistry {
 
         this.#setRegistrationStatus("ready");
 
-        // this.#logSharedScope(runtime.logger);
+        this.#logSharedScope(runtime.logger);
 
         return errors;
     }

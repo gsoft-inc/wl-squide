@@ -17,13 +17,14 @@ const RemoteEntryPoint = "remoteEntry.js";
 // Webpack doesn't export ModuleFederationPlugin typings.
 // export type ModuleFederationPluginOptions = ConstructorParameters<typeof ModuleFederation.ModuleFederationPlugin>[0];
 export type ModuleFederationPluginOptions = ConstructorParameters<typeof ModuleFederationPlugin>[0];
-export type ModuleFederationRuntimePlugins = ModuleFederationPluginOptions["runtimePlugins"];
 export type ModuleFederationRemotesOption = ModuleFederationPluginOptions["remotes"];
-export type ModuleFederationSharedOption = ModuleFederationPluginOptions["shared"];
+
+export type ModuleFederationRuntimePlugins = NonNullable<ModuleFederationPluginOptions["runtimePlugins"]>;
+export type ModuleFederationShared = NonNullable<ModuleFederationPluginOptions["shared"]>;
 
 // Generally, only the host application should have eager dependencies.
 // For more informations about shared dependencies refer to: https://github.com/patricklafrance/wmf-versioning
-function getDefaultSharedDependencies(features: Features, isHost: boolean): ModuleFederationSharedOption {
+function getDefaultSharedDependencies(features: Features, isHost: boolean): ModuleFederationShared {
     return {
         "react": {
             singleton: true,
@@ -57,7 +58,7 @@ export interface Features {
 
 // Generally, only the host application should have eager dependencies.
 // For more informations about shared dependencies refer to: https://github.com/patricklafrance/wmf-versioning
-function getReactRouterSharedDependencies(isHost: boolean): ModuleFederationSharedOption {
+function getReactRouterSharedDependencies(isHost: boolean): ModuleFederationShared {
     return {
         "react-router-dom": {
             singleton: true,
@@ -70,7 +71,7 @@ function getReactRouterSharedDependencies(isHost: boolean): ModuleFederationShar
     };
 }
 
-function getMswSharedDependency(isHost: boolean): ModuleFederationSharedOption {
+function getMswSharedDependency(isHost: boolean): ModuleFederationShared {
     return {
         "@squide/msw": {
             singleton: true,
@@ -79,7 +80,7 @@ function getMswSharedDependency(isHost: boolean): ModuleFederationSharedOption {
     };
 }
 
-function getI18nextSharedDependency(isHost: boolean): ModuleFederationSharedOption {
+function getI18nextSharedDependency(isHost: boolean): ModuleFederationShared {
     return {
         "i18next": {
             singleton: true,
@@ -184,9 +185,10 @@ export function defineHostModuleFederationPluginOptions(applicationName: string,
         shared: merge.all([
             defaultSharedDependencies,
             shared
-        ]) as ModuleFederationSharedOption,
+        ]) as ModuleFederationShared,
         runtimePlugins: [
             path.resolve(directoryName, "./sharedDependenciesResolutionPlugin.js"),
+            path.resolve(directoryName, "./nonCacheableRemoteEntryPlugin.js"),
             ...runtimePlugins
         ],
         ...rest
@@ -206,7 +208,7 @@ function trySetHtmlWebpackPluginPublicPath(options: HtmlWebpackPlugin.Options) {
 export interface DefineDevHostConfigOptions extends Omit<DefineDevConfigOptions, "htmlWebpackPlugin" | "port"> {
     htmlWebpackPluginOptions?: HtmlWebpackPlugin.Options;
     features?: Features;
-    sharedDependencies?: ModuleFederationSharedOption;
+    sharedDependencies?: ModuleFederationShared;
     runtimePlugins?: ModuleFederationRuntimePlugins;
     moduleFederationPluginOptions?: ModuleFederationPluginOptions;
 }
@@ -249,7 +251,7 @@ export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: strin
 export interface DefineBuildHostConfigOptions extends Omit<DefineBuildConfigOptions, "htmlWebpackPlugin"> {
     htmlWebpackPluginOptions?: HtmlWebpackPlugin.Options;
     features?: Features;
-    sharedDependencies?: ModuleFederationSharedOption;
+    sharedDependencies?: ModuleFederationShared;
     runtimePlugins?: ModuleFederationRuntimePlugins;
     moduleFederationPluginOptions?: ModuleFederationPluginOptions;
 }
@@ -318,9 +320,10 @@ export function defineRemoteModuleFederationPluginOptions(applicationName: strin
         shared: merge.all([
             defaultSharedDependencies,
             shared
-        ]) as ModuleFederationSharedOption,
+        ]) as ModuleFederationShared,
         runtimePlugins: [
             path.resolve(directoryName, "./sharedDependenciesResolutionPlugin.js"),
+            path.resolve(directoryName, "./nonCacheableRemoteEntryPlugin.js"),
             ...runtimePlugins
         ],
         ...rest
@@ -345,7 +348,7 @@ const devRemoteModuleTransformer: WebpackConfigTransformer = (config: WebpackCon
 
 export interface DefineDevRemoteModuleConfigOptions extends Omit<DefineDevConfigOptions, "port" | "overlay"> {
     features?: Features;
-    sharedDependencies?: ModuleFederationSharedOption;
+    sharedDependencies?: ModuleFederationShared;
     runtimePlugins?: ModuleFederationRuntimePlugins;
     moduleFederationPluginOptions?: ModuleFederationPluginOptions;
 }
@@ -391,7 +394,7 @@ export function defineDevRemoteModuleConfig(swcConfig: SwcConfig, applicationNam
 
 export interface DefineBuildRemoteModuleConfigOptions extends DefineBuildConfigOptions {
     features?: Features;
-    sharedDependencies?: ModuleFederationSharedOption;
+    sharedDependencies?: ModuleFederationShared;
     runtimePlugins?: ModuleFederationRuntimePlugins;
     moduleFederationPluginOptions?: ModuleFederationPluginOptions;
 }

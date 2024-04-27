@@ -27,7 +27,7 @@ import { minVersion, parse, rcompare, type SemVer } from "semver";
 type Shared = FederationHost["shareScopeMap"][string][string][string];
 
 // Toggle to "true" to facilitate the debugging of this plugin.
-const isDebug = true;
+const isDebug = false;
 
 function log(...args: unknown[]) {
     if (isDebug) {

@@ -1,24 +1,6 @@
 import type { FederationHost } from "@module-federation/enhanced/runtime";
 import { resolveDependencyVersion } from "../src/sharedDependenciesResolutionPlugin.ts";
 
-/*
-host:        2.0
-remote-1:    2.1   <-----
-remote-2:    2.0
-
-host:        2.0   <-----
-remote-1:    3.1
-remote-2:    2.0
-
-host:        2.0
-remote-1:    3.1
-remote-2:    2.1   <-----
-
-host:       >2.0
-remote-1:    3.1
-remote-2:    2.1   <-----
-*/
-
 type Shared = FederationHost["shareScopeMap"][string][string][string];
 
 function createSharedVersion(from: string, version: string, singleton?: boolean): Shared {

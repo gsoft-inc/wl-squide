@@ -18,7 +18,7 @@ mergeDeferredRegistrations(candidates: []);
 
 ### Parameters
 
-- `candidats`: An array of [deferred registration](./registerLocalModules.md#defer-the-registration-of-routes-or-navigation-items) functions, `undefined` values will safely be ignored.
+- `candidates`: An array of [deferred registration](./registerLocalModules.md#defer-the-registration-of-routes-or-navigation-items) functions, `undefined` values will safely be ignored.
 
 ### Returns
 

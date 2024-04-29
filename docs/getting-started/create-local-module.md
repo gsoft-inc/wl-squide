@@ -10,11 +10,11 @@ Local modules have many uses but are especially useful when **migrating** from a
 
 Let's add a local module to demonstrate how it's done!
 
-> Loading remote modules at runtime with [Module Federation](https://webpack.js.org/concepts/module-federation/) is the primary focus of this shell and our recommended approach. It empowers teams to be **fully autonomous** by **deploying** their modules **independently** from the other parts of the application.
+> Loading remote modules at runtime with [Module Federation](https://module-federation.io/) is the primary focus of this shell and our recommended approach. It empowers teams to be **fully autonomous** by **deploying** their modules **independently** from the other parts of the application.
 >
-> However, we recognize that teams working on mature products may prefer to **gradually migrate** to a distributed architecture by first extracting subdomains into independent modules within their current monolithic setup before fully committing to remote modules loaded at runtime.
+> However, we recognize that some teams might prefer to first extract their subdomains into independent modules within a monolithic setup before fully committing to remote modules loaded at runtime.
 >
-> To facilitate this transition, this shell also supports local modules that are loaded at **build time**.
+> To facilitate this style of architecture, Squide also supports local modules that are loaded at **build time**.
 >
 > Both remote and local modules can be used within same application as this shell supports dual bootstrapping. For example, an application can be configured to load a few remote modules at runtime while also loading a few local modules.
 
@@ -73,8 +73,8 @@ Finally, configure the package to be shareable by adding the `name`, `version`, 
     "version": "0.0.1",
     "exports": {
         ".": {
-            "import": "./dist/register.js",
             "types": "./dist/register.d.ts",
+            "import": "./dist/register.js",
             "default": "./dist/register.js"
         }
     }
@@ -136,7 +136,7 @@ import { App } from "./App.tsx";
 
 // Define the remote modules.
 const Remotes: RemoteDefinition[] = [
-    { url: "http://localhost:8081", name: "remote1" }
+    { name: "remote1" }
 ];
 
 // Create the shell runtime.

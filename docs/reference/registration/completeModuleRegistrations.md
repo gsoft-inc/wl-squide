@@ -45,7 +45,7 @@ const context: AppContext = {
 };
 
 const Remotes: RemoteDefinition = [
-    { name: "remote1", url: "http://localhost:8081" }
+    { name: "remote1" }
 ];
 
 await registerLocalModules([register], runtime, { context });
@@ -109,7 +109,7 @@ const context: AppContext = {
 };
 
 const Remotes: RemoteDefinition = [
-    { name: "remote1", url: "http://localhost:8081" }
+    { name: "remote1" }
 ];
 
 await registerLocalModules([register], runtime, { context });

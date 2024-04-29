@@ -35,7 +35,7 @@ import { App } from "./App.tsx";
 const runtime = new FireflyRuntime();
 
 const Remotes: RemoteDefinition = [
-    { name: "remote1", url: "http://localhost:8081" }
+    { name: "remote1" }
 ];
 
 await registerRemoteModules(Remotes, runtime);

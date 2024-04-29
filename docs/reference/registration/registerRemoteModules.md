@@ -28,8 +28,7 @@ registerRemoteModules(remotes: [], runtime, options?: { context? })
 A `Promise` object with an array of `RemoteModuleRegistrationError` if any error happens during the registration.
 
 - `RemoteModuleRegistrationError`:
-    - `url`: The URL of the module federation remote that failed to load.
-    - `containerName`: The name of the [dynamic container](https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers) that Squide attempted to recover.
+    - `remoteName`: The name of the remote module that failed to load.
     - `moduleName`: The name of the [module](#name) that Squide attempted to recover.
     - `error`: The original error object.
 
@@ -48,7 +47,7 @@ const context: AppContext = {
 };
 
 const Remotes: RemoteDefinition = [
-    { name: "remote1", url: "http://localhost:8081" }
+    { name: "remote1" }
 ];
 
 await registerRemoteModules(Remotes, runtime, { context });
@@ -93,7 +92,7 @@ const context: AppContext = {
 };
 
 const Remotes: RemoteDefinition = [
-    { name: "remote1", url: "http://localhost:8081" }
+    { name: "remote1" }
 ];
 
 await registerRemoteModules(Remotes, runtime, { context });
@@ -157,7 +156,7 @@ const context: AppContext = {
 };
 
 const Remotes: RemoteDefinition = [
-    { name: "remote1", url: "http://localhost:8081" }
+    { name: "remote1" }
 ];
 
 (await registerRemoteModules(Remotes, runtime, { context })).forEach(x => {
@@ -173,65 +172,29 @@ To ease the configuration of remote modules, make sure that you first import the
 import type { RemoteDefinition } from "@squide/firefly";
 
 const Remotes: RemoteDefinition = [
-    { name: "REMOTE_NAME", url: "REMOTE_URL" }
+    { name: "REMOTE_NAME" }
 ];
 ```
 
 ### `name`
 
-The `name` property of a remote definition **must match** the `name` property defined in the remote module [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) configuration.
+The `name` property of a remote definition **must match** the `name` property defined in the remote module [ModuleFederationPlugin](https://module-federation.io/configure/index.html) configuration.
 
-If you are relying on either the Squide [defineDevRemoteModuleConfig](../webpack//defineDevRemoteModuleConfig.md) or [defineBuildRemoteModuleConfig](../webpack/defineBuildRemoteModuleConfig.md) function to add the `ModuleFederationPlugin` to the remote module webpack [configuration object](https://webpack.js.org/concepts/configuration/), then the remote module `name` is the second argument of the function.
+If you are relying on either the Squide [defineDevRemoteModuleConfig](../webpack/defineDevRemoteModuleConfig.md) or [defineBuildRemoteModuleConfig](../webpack/defineBuildRemoteModuleConfig.md) functions to add the `ModuleFederationPlugin` to the remote module webpack [configuration object](https://module-federation.io/), then the remote module `name` is the second argument of the function.
 
 In the following exemple, the remote module `name` is `remote1`.
 
 ```ts !#2 host/src/bootstrap.tsx
 const Remotes: RemoteDefinition = [
-    { name: "remote1", url: `http://localhost:${PORT}` }
+    { name: "remote1" }
 ];
 ```
 
-```js !#6 remote-module/src/webpack.dev.js
+```js !#6 remote-module/webpack.dev.js
 // @ts-check
 
 import { defineDevRemoteModuleConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", PORT);
-```
-
-### `url`
-
-The `url` property of a remote definition **must match** the [publicPath](https://webpack.js.org/guides/public-path/) of the remote module webpack [configuration object](https://webpack.js.org/concepts/configuration/).
-
-In the following exemple, the remote module `publicPath` is `http://localhost:8081`.
-
-```ts !#2 host/src/bootstrap.tsx
-const Remotes: RemoteDefinition = [
-    { name: "REMOTE_NAME", url: "http://localhost:8081" }
-];
-```
-
-In development mode, the `publicPath` is built from the provided `host` and `port` values. Therefore, if the port value is `8081`, then the generated `publicPath` would be `http://localhost:8081/`:
-
-```js !#6-8 remote-module/webpack.dev.js
-// @ts-check
-
-import { defineDevRemoteModuleConfig } from "@squide/firefly-configs";
-import { swcConfig } from "./swc.dev.js";
-
-export default defineDevRemoteModuleConfig(swcConfig, REMOTE_NAME, 8081, {
-    host: "localhost" // (This is the default value)
-});
-```
-
-In build mode, the `publicPath` is the third argument of the `defineBuildRemoteModuleConfig` function:
-
-```js !#6 remote-module/webpack.build.js
-// @ts-check
-
-import { defineBuildRemoteModuleConfig } from "@squide/firefly-configs";
-import { swcConfig } from "./swc.build.js";
-
-export default defineBuildRemoteModuleConfig(swcConfig, REMOTE_NAME, "http://localhost:8081/");
 ```

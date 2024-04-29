@@ -89,7 +89,7 @@ import { App } from "./App.tsx";
 
 // Define the remote modules.
 const Remotes: RemoteDefinition[] = [
-    { url: "http://localhost:8081", name: "remote1" }
+    { name: "remote1" }
 ];
 
 // Create the shell runtime.
@@ -265,7 +265,7 @@ import { registerHost } from "./register.tsx";
 
 // Define the remote modules.
 const Remotes: RemoteDefinition[] = [
-    { url: "http://localhost:8081", name: "remote1" }
+    { name: "remote1" }
 ];
 
 // Create the shell runtime.
@@ -334,13 +334,20 @@ export const swcConfig = defineDevConfig(targets);
 
 Then, open the `webpack.dev.js` file and use the [defineDevHostConfig](/reference/webpack/defineDevHostConfig.md) function to configure webpack:
 
-```js !#6-13 host/webpack.dev.js
+```js !#13-20 host/webpack.dev.js
 // @ts-check
 
 import { defineDevHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, {
+/**
+ * @typedef {import("@squide/firefly-configs").RemoteDefinition}[]
+ */
+const Remotes: RemoteDefinition[] = [
+    { name: "remote1", url: "http://localhost:8081" }
+];
+
+export default defineDevHostConfig(swcConfig, "host", 8080, Remotes, {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true,
@@ -368,13 +375,20 @@ export const swcConfig = defineBuildConfig(targets);
 
 Then, open the `webpack.build.js` file and use the [defineBuildHostConfig](/reference/webpack/defineBuildHostConfig.md) function to configure webpack:
 
-```js !#6-13 host/webpack.build.js
+```js !#13-20 host/webpack.build.js
 // @ts-check
 
 import { defineBuildHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildHostConfig(swcConfig, "host", {
+/**
+ * @typedef {import("@squide/firefly-configs").RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: "remote1", url: "http://localhost:8081" }
+];
+
+export default defineBuildHostConfig(swcConfig, "host", Remotes, {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true,

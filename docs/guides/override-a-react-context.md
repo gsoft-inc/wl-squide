@@ -4,7 +4,7 @@ order: 780
 
 # Override a React context
 
-In a federated application using [Module Federation](https://webpack.js.org/concepts/module-federation/), it's typical to configure various global [React context](https://legacy.reactjs.org/docs/context.html) at the root of the host application. These contexts are usually consumed down the line by the layouts and pages of the remote modules.
+In a federated application using [Module Federation](https://module-federation.io/), it's typical to configure various global [React context](https://legacy.reactjs.org/docs/context.html) at the root of the host application. These contexts are usually consumed down the line by the layouts and pages of the remote modules.
 
 Let's explore a simple example using a `BackgroundColorContext`:
 

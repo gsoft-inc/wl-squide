@@ -330,7 +330,7 @@ If you are experiencing issues with this section of the guide:
 
 ## Setup a local module
 
-Similarly to remote modules, the same isolated setup can be achieved for local modules. The main difference is that the `webpack.config.js` file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on webpack and [Module Federation](https://webpack.js.org/concepts/module-federation/).
+Similarly to remote modules, the same isolated setup can be achieved for local modules. The main difference is that the `webpack.config.js` file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on webpack and [Module Federation](https://module-federation.io/).
 
 First, open a terminal at the root of the local module application and install the `@squide/firefly-configs` package and its dependencies:
 

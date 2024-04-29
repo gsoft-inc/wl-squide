@@ -3,7 +3,6 @@
 import { isNetlify } from "@endpoints/shared";
 
 /**
- * A number, or a string containing a number.
  * @typedef {import("@squide/firefly-configs").RemoteDefinition}[]
  */
 export const Remotes = [

@@ -28,9 +28,8 @@ completeRemoteModuleRegistrations(runtime, data?)
 A `Promise` object with an array of `RemoteModuleRegistrationError` if any error happens during the completion of the remote modules registration process.
 
 - `RemoteModuleRegistrationError`:
-    - `url`: The URL of the module federation remote that failed to load.
-    - `containerName`: The name of the [dynamic container](https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers) that Squide attempted to recover.
-    - `moduleName`: The name of the module that Squide attempted to recover.
+    - `remoteName`: The name of the remote module that failed to load.
+    - `moduleName`: The name of the [module](#name) that Squide attempted to recover.
     - `error`: The original error object.
 
 ## Usage
@@ -48,7 +47,7 @@ const context: AppContext = {
 };
 
 const Remotes: RemoteDefinition = [
-    { name: "remote1", url: "http://localhost:8081" }
+    { name: "remote1" }
 ];
 
 await registerRemoteModules(Remotes, runtime, { context });
@@ -110,7 +109,7 @@ const context: AppContext = {
 };
 
 const Remotes: RemoteDefinition = [
-    { name: "remote1", url: "http://localhost:8081" }
+    { name: "remote1" }
 ];
 
 await registerRemoteModules(Remotes, runtime, { context });

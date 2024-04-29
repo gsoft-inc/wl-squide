@@ -27,7 +27,7 @@ const webpackConfig = defineBuildRemoteModuleConfig(swcConfig: {}, applicationNa
     - `features`: An optional object literal of feature switches to define additional shared dependencies.
         - `i18next`: Whether or not to add `@squide/i18next` as a shared dependency.
     - `sharedDependencies`: An optional object literal of additional (or updated) module federation shared dependencies.
-    - `moduleFederationPluginOptions`: An optional object literal of [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) options.
+    - `moduleFederationPluginOptions`: An optional object literal of [ModuleFederationPlugin](https://module-federation.io/configure/index.html) options.
 
 ## Returns
 
@@ -35,21 +35,15 @@ A webpack [configuration object](https://webpack.js.org/concepts/configuration/)
 
 ## Conventions
 
-To fulfill Squide remote module requirements, the `defineBuildRemoteModuleConfig` function will pre-configure the [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) with the following `filename` and `exposes` properties.
+To fulfill Squide remote module requirements, the `defineBuildRemoteModuleConfig` function will pre-configure the [ModuleFederationPlugin](https://module-federation.io/configure/index.html) with the following `filename` and `exposes` properties.
 
-```js !#6-9
-import ModuleFederationPlugin from "webpack/lib/container/ModuleFederationPlugin.js";
-
-export default {
-    plugins: [
-        ModuleFederationPlugin({
-            filename: "/remoteEntry.js",
-            exposes: {
-                "register.js": "./src/register"
-            }
-        })
-    ]
-};
+```js
+{
+    filename: "/remoteEntry.js",
+    exposes: {
+        "register.js": "./src/register"
+    }
+}
 ```
 
 !!!info
@@ -181,7 +175,7 @@ In the previous code sample, the `react` shared dependency `singleton` option wi
 
 ### Customize module federation configuration
 
-While you could customize the [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) configuration by providing your own object literal through the `moduleFederationPluginOptions` option, we recommend using the `defineRemoteModuleFederationPluginOptions(applicationName, options)` function as it will take care of **merging** the custom options with the default plugin options.
+While you could customize the [ModuleFederationPlugin](https://module-federation.io/configure/index.html) configuration by providing your own object literal through the `moduleFederationPluginOptions` option, we recommend using the `defineRemoteModuleFederationPluginOptions(applicationName, options)` function as it will take care of **merging** the custom options with the default plugin options.
 
 ```js !#7-9 remote-module/webpack.build.js
 // @ts-check
@@ -197,7 +191,7 @@ export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
 ```
 
 - `applicationName`: The host application name.
-- `moduleFederationPluginOptions`: An object literal of [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) options.
+- `moduleFederationPluginOptions`: An object literal of [ModuleFederationPlugin](https://module-federation.io/configure/index.html) options.
 
 ### Expose an additional module
 

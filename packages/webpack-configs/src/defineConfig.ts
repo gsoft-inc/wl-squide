@@ -1,4 +1,3 @@
-// import ModuleFederation from "@module-federation/enhanced/webpack";
 import { ModuleFederationPlugin } from "@module-federation/enhanced/webpack";
 import type { SwcConfig } from "@workleap/swc-configs";
 import { defineBuildConfig, defineBuildHtmlWebpackPluginConfig, defineDevConfig, defineDevHtmlWebpackPluginConfig, type DefineBuildConfigOptions, type DefineDevConfigOptions, type WebpackConfig, type WebpackConfigTransformer } from "@workleap/webpack-configs";
@@ -15,7 +14,6 @@ const RemoteRegisterModuleName = "./register";
 const RemoteEntryPoint = "remoteEntry.js";
 
 // Webpack doesn't export ModuleFederationPlugin typings.
-// export type ModuleFederationPluginOptions = ConstructorParameters<typeof ModuleFederation.ModuleFederationPlugin>[0];
 export type ModuleFederationPluginOptions = ConstructorParameters<typeof ModuleFederationPlugin>[0];
 export type ModuleFederationRemotesOption = ModuleFederationPluginOptions["remotes"];
 
@@ -171,6 +169,11 @@ export function defineHostModuleFederationPluginOptions(applicationName: string,
 
     return {
         name: applicationName,
+        // Since Squide modules are only exporting a register function with a standardized API
+        // it doesn't requires any typing.
+        dts: false,
+        // Currently only supporting .js remotes.
+        manifest: false,
         remotes: remotes.reduce((acc, x) => {
             // Object reduce are always a mess for typings.
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -237,7 +240,6 @@ export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: strin
         htmlWebpackPlugin: trySetHtmlWebpackPluginPublicPath(htmlWebpackPluginOptions ?? defineBuildHtmlWebpackPluginConfig()),
         plugins: [
             ...plugins,
-            // new ModuleFederation.ModuleFederationPlugin(moduleFederationPluginOptions)
             new ModuleFederationPlugin(moduleFederationPluginOptions)
         ],
         ...webpackOptions,
@@ -277,7 +279,6 @@ export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: str
         htmlWebpackPlugin: trySetHtmlWebpackPluginPublicPath(htmlWebpackPluginOptions ?? defineDevHtmlWebpackPluginConfig()),
         plugins: [
             ...plugins,
-            // new ModuleFederation.ModuleFederationPlugin(moduleFederationPluginOptions)
             new ModuleFederationPlugin(moduleFederationPluginOptions)
         ],
         transformers: [
@@ -309,6 +310,11 @@ export function defineRemoteModuleFederationPluginOptions(applicationName: strin
 
     return {
         name: applicationName,
+        // Since Squide modules are only exporting a register function with a standardized API
+        // it doesn't requires any typing.
+        dts: false,
+        // Currently only supporting .js remotes.
+        manifest: false,
         filename: RemoteEntryPoint,
         exposes: {
             [RemoteRegisterModuleName]: "./src/register",
@@ -380,7 +386,6 @@ export function defineDevRemoteModuleConfig(swcConfig: SwcConfig, applicationNam
         overlay: false,
         plugins: [
             ...plugins,
-            // new ModuleFederation.ModuleFederationPlugin(moduleFederationPluginOptions)
             new ModuleFederationPlugin(moduleFederationPluginOptions)
         ],
         transformers: [
@@ -420,7 +425,6 @@ export function defineBuildRemoteModuleConfig(swcConfig: SwcConfig, applicationN
         htmlWebpackPlugin,
         plugins: [
             ...plugins,
-            // new ModuleFederation.ModuleFederationPlugin(moduleFederationPluginOptions)
             new ModuleFederationPlugin(moduleFederationPluginOptions)
         ],
         transformers: [

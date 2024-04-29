@@ -16,8 +16,8 @@
     "type": "module",
     "exports": {
         ".": {
-            "import": "./dist/index.js",
             "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
             "default": "./dist/index.js"
         }
     },
@@ -32,13 +32,7 @@
     },
     "peerDependencies": {
         "react": "*",
-        "react-dom": "*",
-        "webpack": ">=5.0.0"
-    },
-    "peerDependenciesMeta": {
-        "webpack": {
-            "optional": true
-        }
+        "react-dom": "*"
     },
     "devDependencies": {
         "@swc/core": "1.4.13",
@@ -61,7 +55,7 @@
         "typescript": "5.4.5"
     },
     "dependencies": {
-        "@module-federation/enhanced": "0.1.9",
+        "@module-federation/enhanced": "0.1.11",
         "@squide/core": "workspace:*"
     },
     "sideEffects": false,

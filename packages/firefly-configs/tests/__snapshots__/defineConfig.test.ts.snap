@@ -3,6 +3,8 @@
 exports[`defineBuildHostConfig includes react-router and msw dependencies 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {},
     "shared": {
@@ -44,10 +46,12 @@ ModuleFederationPlugin {
 exports[`defineBuildRemoteModuleConfig includes react-router and msw dependencies 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
     "exposes": {
       "./register": "./src/register",
     },
     "filename": "remoteEntry.js",
+    "manifest": false,
     "name": "remote1",
     "shared": {
       "@squide/core": {
@@ -88,6 +92,8 @@ ModuleFederationPlugin {
 exports[`defineDevHostConfig includes react-router and msw dependencies 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {},
     "shared": {
@@ -129,10 +135,12 @@ ModuleFederationPlugin {
 exports[`defineDevRemoteModuleConfig includes react-router and msw dependencies 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
     "exposes": {
       "./register": "./src/register",
     },
     "filename": "remoteEntry.js",
+    "manifest": false,
     "name": "remote1",
     "shared": {
       "@squide/core": {

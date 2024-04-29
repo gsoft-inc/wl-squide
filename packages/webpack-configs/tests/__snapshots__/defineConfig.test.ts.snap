@@ -3,6 +3,8 @@
 exports[`defineBuildHostConfig the application name is set as the federation plugin application name 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {},
     "shared": {
@@ -32,6 +34,8 @@ ModuleFederationPlugin {
 exports[`defineBuildHostConfig the module federation plugin configuration includes the default shared dependencies 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {},
     "shared": {
@@ -61,6 +65,8 @@ ModuleFederationPlugin {
 exports[`defineBuildHostConfig the module federation plugin configuration includes the remotes 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {
       "remote1": "remote1@http://localhost/remote1/remoteEntry.js",
@@ -124,6 +130,8 @@ HtmlWebpackPlugin {
 exports[`defineBuildHostConfig when additional options are provided for an existing default shared dependency, add the consumer options to the default options 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {},
     "shared": {
@@ -153,6 +161,8 @@ ModuleFederationPlugin {
 exports[`defineBuildHostConfig when additional shared dependencies are provided, add the dependencies to the module federation plugin configuration 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {},
     "shared": {
@@ -189,6 +199,8 @@ ModuleFederationPlugin {
 exports[`defineBuildHostConfig when i18next is activated, add i18next shared dependency and requiredVersion: false to the react shared dependency definition 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {},
     "shared": {
@@ -230,6 +242,8 @@ ModuleFederationPlugin {
 exports[`defineBuildHostConfig when msw is activated, add msw shared dependency 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {},
     "shared": {
@@ -325,6 +339,8 @@ HtmlWebpackPlugin {
 exports[`defineBuildHostConfig when overriding options are provided for a default shared dependency, use the consumer option 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {},
     "shared": {
@@ -354,6 +370,8 @@ ModuleFederationPlugin {
 exports[`defineBuildHostConfig when the router is react-router, add react-router shared dependencies 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {},
     "shared": {
@@ -391,10 +409,12 @@ ModuleFederationPlugin {
 exports[`defineBuildRemoteModuleConfig the application name is set as the federation plugin application name 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
     "exposes": {
       "./register": "./src/register",
     },
     "filename": "remoteEntry.js",
+    "manifest": false,
     "name": "remote1",
     "shared": {
       "@squide/core": {
@@ -423,10 +443,12 @@ ModuleFederationPlugin {
 exports[`defineBuildRemoteModuleConfig the module federation plugin configuration includes the default shared dependencies 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
     "exposes": {
       "./register": "./src/register",
     },
     "filename": "remoteEntry.js",
+    "manifest": false,
     "name": "remote1",
     "shared": {
       "@squide/core": {
@@ -455,10 +477,12 @@ ModuleFederationPlugin {
 exports[`defineBuildRemoteModuleConfig when additional options are provided for an existing default shared dependency, add the consumer options to the default options 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
     "exposes": {
       "./register": "./src/register",
     },
     "filename": "remoteEntry.js",
+    "manifest": false,
     "name": "remote1",
     "shared": {
       "@squide/core": {
@@ -487,10 +511,12 @@ ModuleFederationPlugin {
 exports[`defineBuildRemoteModuleConfig when additional shared dependencies are provided, add the dependencies to the module federation plugin configuration 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
     "exposes": {
       "./register": "./src/register",
     },
     "filename": "remoteEntry.js",
+    "manifest": false,
     "name": "remote1",
     "shared": {
       "@squide/core": {
@@ -526,10 +552,12 @@ ModuleFederationPlugin {
 exports[`defineBuildRemoteModuleConfig when i18next is activated, add i18next shared dependency and requiredVersion: false to the react shared dependency definition 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
     "exposes": {
       "./register": "./src/register",
     },
     "filename": "remoteEntry.js",
+    "manifest": false,
     "name": "remote1",
     "shared": {
       "@squide/core": {
@@ -570,10 +598,12 @@ ModuleFederationPlugin {
 exports[`defineBuildRemoteModuleConfig when msw is activated, add msw shared dependency 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
     "exposes": {
       "./register": "./src/register",
     },
     "filename": "remoteEntry.js",
+    "manifest": false,
     "name": "remote1",
     "shared": {
       "@squide/core": {
@@ -606,10 +636,12 @@ ModuleFederationPlugin {
 exports[`defineBuildRemoteModuleConfig when overriding options are provided for a default shared dependency, use the consumer option 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
     "exposes": {
       "./register": "./src/register",
     },
     "filename": "remoteEntry.js",
+    "manifest": false,
     "name": "remote1",
     "shared": {
       "@squide/core": {
@@ -638,10 +670,12 @@ ModuleFederationPlugin {
 exports[`defineBuildRemoteModuleConfig when the router is react-router, add react-router shared dependencies 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
     "exposes": {
       "./register": "./src/register",
     },
     "filename": "remoteEntry.js",
+    "manifest": false,
     "name": "remote1",
     "shared": {
       "@squide/core": {
@@ -678,6 +712,8 @@ ModuleFederationPlugin {
 exports[`defineDevHostConfig the application name is set as the federation plugin application name 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {},
     "shared": {
@@ -707,6 +743,8 @@ ModuleFederationPlugin {
 exports[`defineDevHostConfig the module federation plugin configuration includes the default shared dependencies 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {},
     "shared": {
@@ -736,6 +774,8 @@ ModuleFederationPlugin {
 exports[`defineDevHostConfig the module federation plugin configuration includes the remotes 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {
       "remote1": "remote1@http://localhost/remote1/remoteEntry.js",
@@ -799,6 +839,8 @@ HtmlWebpackPlugin {
 exports[`defineDevHostConfig when additional options are provided for an existing default shared dependency, add the consumer options to the default options 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {},
     "shared": {
@@ -828,6 +870,8 @@ ModuleFederationPlugin {
 exports[`defineDevHostConfig when additional shared dependencies are provided, add the dependencies to the module federation plugin configuration 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {},
     "shared": {
@@ -864,6 +908,8 @@ ModuleFederationPlugin {
 exports[`defineDevHostConfig when i18next is activated, add i18next shared dependency and requiredVersion: false to the react shared dependency definition 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {},
     "shared": {
@@ -905,6 +951,8 @@ ModuleFederationPlugin {
 exports[`defineDevHostConfig when msw is activated, add msw shared dependency 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {},
     "shared": {
@@ -1000,6 +1048,8 @@ HtmlWebpackPlugin {
 exports[`defineDevHostConfig when overriding options are provided for a default shared dependency, use the consumer option 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {},
     "shared": {
@@ -1029,6 +1079,8 @@ ModuleFederationPlugin {
 exports[`defineDevHostConfig when the router is react-router, add react-router shared dependencies 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
+    "manifest": false,
     "name": "host",
     "remotes": {},
     "shared": {
@@ -1066,10 +1118,12 @@ ModuleFederationPlugin {
 exports[`defineDevRemoteModuleConfig the application name is set as the federation plugin application name 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
     "exposes": {
       "./register": "./src/register",
     },
     "filename": "remoteEntry.js",
+    "manifest": false,
     "name": "remote1",
     "shared": {
       "@squide/core": {
@@ -1098,10 +1152,12 @@ ModuleFederationPlugin {
 exports[`defineDevRemoteModuleConfig the module federation plugin configuration includes the default shared dependencies 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
     "exposes": {
       "./register": "./src/register",
     },
     "filename": "remoteEntry.js",
+    "manifest": false,
     "name": "remote1",
     "shared": {
       "@squide/core": {
@@ -1130,10 +1186,12 @@ ModuleFederationPlugin {
 exports[`defineDevRemoteModuleConfig when additional options are provided for an existing default shared dependency, add the consumer options to the default options 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
     "exposes": {
       "./register": "./src/register",
     },
     "filename": "remoteEntry.js",
+    "manifest": false,
     "name": "remote1",
     "shared": {
       "@squide/core": {
@@ -1162,10 +1220,12 @@ ModuleFederationPlugin {
 exports[`defineDevRemoteModuleConfig when additional shared dependencies are provided, add the dependencies to the module federation plugin configuration 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
     "exposes": {
       "./register": "./src/register",
     },
     "filename": "remoteEntry.js",
+    "manifest": false,
     "name": "remote1",
     "shared": {
       "@squide/core": {
@@ -1201,10 +1261,12 @@ ModuleFederationPlugin {
 exports[`defineDevRemoteModuleConfig when i18next is activated, add i18next shared dependency and requiredVersion: false to the react shared dependency definition 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
     "exposes": {
       "./register": "./src/register",
     },
     "filename": "remoteEntry.js",
+    "manifest": false,
     "name": "remote1",
     "shared": {
       "@squide/core": {
@@ -1245,10 +1307,12 @@ ModuleFederationPlugin {
 exports[`defineDevRemoteModuleConfig when msw is activated, add msw shared dependency 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
     "exposes": {
       "./register": "./src/register",
     },
     "filename": "remoteEntry.js",
+    "manifest": false,
     "name": "remote1",
     "shared": {
       "@squide/core": {
@@ -1281,10 +1345,12 @@ ModuleFederationPlugin {
 exports[`defineDevRemoteModuleConfig when overriding options are provided for a default shared dependency, use the consumer option 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
     "exposes": {
       "./register": "./src/register",
     },
     "filename": "remoteEntry.js",
+    "manifest": false,
     "name": "remote1",
     "shared": {
       "@squide/core": {
@@ -1313,10 +1379,12 @@ ModuleFederationPlugin {
 exports[`defineDevRemoteModuleConfig when the router is react-router, add react-router shared dependencies 1`] = `
 ModuleFederationPlugin {
   "_options": {
+    "dts": false,
     "exposes": {
       "./register": "./src/register",
     },
     "filename": "remoteEntry.js",
+    "manifest": false,
     "name": "remote1",
     "shared": {
       "@squide/core": {

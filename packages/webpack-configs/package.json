@@ -16,8 +16,8 @@
     "type": "module",
     "exports": {
         ".": {
-            "import": "./dist/index.js",
             "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
             "default": "./dist/index.js"
         }
     },
@@ -43,8 +43,8 @@
         "@swc/core": "1.4.13",
         "@swc/jest": "0.2.36",
         "@types/jest": "29.5.12",
-        "@types/semver": "7.5.8",
         "@types/node": "20.12.7",
+        "@types/semver": "7.5.8",
         "@workleap/eslint-plugin": "3.2.2",
         "@workleap/swc-configs": "2.2.3",
         "@workleap/tsup-configs": "3.0.6",
@@ -57,7 +57,7 @@
         "webpack": "5.91.0"
     },
     "dependencies": {
-        "@module-federation/enhanced": "0.1.9",
+        "@module-federation/enhanced": "0.1.11",
         "@workleap/webpack-configs": "1.5.1",
         "deepmerge": "4.3.1",
         "html-webpack-plugin": "5.6.0",

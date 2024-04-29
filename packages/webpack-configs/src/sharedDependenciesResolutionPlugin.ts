@@ -41,7 +41,13 @@ function findHighestVersionForMajor(entries: Shared[], major: number) {
     }) as Shared;
 }
 
-export function resolveDependencyVersion(pkgName: string, entries: Shared[], logFct: (...rest: unknown[]) => void = () => {}) {
+interface ResolveSharedDependencyResult {
+    resolvedEntry: Shared;
+    highestVersionEntry: Shared;
+}
+
+// The return type is required otherwise we get the following error: error TS2742: The inferred type of 'resolveSharedDependency' cannot be named without a reference to.
+export function resolveSharedDependency(pkgName: string, entries: Shared[], logFct: (...rest: unknown[]) => void = () => {}): ResolveSharedDependencyResult {
     const cleanedEntries = entries.map(x => ({
         ...x,
         // Removing any special characters like >,>=,^,~ etc...
@@ -51,7 +57,7 @@ export function resolveDependencyVersion(pkgName: string, entries: Shared[], log
     // From higher to lower versions.
     const sortedEntries = cleanedEntries.sort((x, y) => rcompare(x.version, y.version));
 
-    logFct("[squide] sorted the entries by version from higher to lower", sortedEntries);
+    logFct("[squide] Sorted the entries by version from higher to lower", sortedEntries);
 
     const highestVersionEntry = sortedEntries[0];
 
@@ -59,20 +65,26 @@ export function resolveDependencyVersion(pkgName: string, entries: Shared[], log
 
     // The host is always right!
     if (highestVersionEntry.from === "host") {
-        logFct("[squide] %cthis is the host version%c, great, resolving to:", "color: black; background-color: pink;", "", highestVersionEntry.version, highestVersionEntry);
+        logFct("[squide] %cThis is the host version%c, great, resolving to:", "color: black; background-color: pink;", "", highestVersionEntry.version, highestVersionEntry);
 
-        return highestVersionEntry;
+        return {
+            resolvedEntry: highestVersionEntry,
+            highestVersionEntry: highestVersionEntry
+        };
     }
 
-    logFct(`[squide] ${pkgName} highest requested version is not from the host.`);
+    logFct(`[squide] ${pkgName} Highest requested version is not from the host.`);
 
     const hostEntry = sortedEntries.find(x => x.from === "host");
 
     // Found nothing, that's odd but let's not break the app for this.
     if (!hostEntry) {
-        logFct(`[squide] the host is not requesting any version of ${pkgName}, %caborting%c.`, "color: black; background-color: pink;", "");
+        logFct(`[squide] The host is not requesting any version of ${pkgName}, %caborting%c.`, "color: black; background-color: pink;", "");
 
-        return highestVersionEntry;
+        return {
+            resolvedEntry: highestVersionEntry,
+            highestVersionEntry: highestVersionEntry
+        };
     }
 
     logFct(`[squide] ${pkgName} version requested by the host is:`, hostEntry.version, hostEntry);
@@ -82,24 +94,27 @@ export function resolveDependencyVersion(pkgName: string, entries: Shared[], log
 
     // Major versions should always be introduced by the host application.
     if (parsedHighestVersion.major === parsedHostVersion.major) {
-        logFct(`[squide] resolving to %c${parsedHighestVersion.major}%c.`, "color: black; background-color: pink;", "");
+        logFct(`[squide] Resolving to %c${parsedHighestVersion.major}%c.`, "color: black; background-color: pink;", "");
 
-        return highestVersionEntry;
+        return {
+            resolvedEntry: highestVersionEntry,
+            highestVersionEntry: highestVersionEntry
+        };
     }
 
-    logFct("[squide] the major number of the highest requested version is higher than the major number of the version requested by the host, looking for another version to resolve to.");
+    logFct("[squide] The major number of the highest requested version is higher than the major number of the version requested by the host, looking for another version to resolve to.");
 
     // Start at the second entry since the first entry is the current higher version entry.
     // The result could either be the actual host entry or any other entry that is higher than the version requested
     // by the host, but match the host entry major version number.
     const fallbackEntry = findHighestVersionForMajor(sortedEntries.splice(1), parsedHostVersion.major);
 
-    logFct(`[squide] the %chighest requested version%c for ${pkgName} that is in-range with the requested host major version number is:`, "color: black; background-color: pink;", "", fallbackEntry.version, fallbackEntry);
+    logFct(`[squide] The %chighest requested version%c for ${pkgName} that is in-range with the requested host major version number is:`, "color: black; background-color: pink;", "", fallbackEntry.version, fallbackEntry);
 
-    // Always print this log whether or not we are in debug mode.
-    logFct(`[squide] ${pkgName} version for has been forced to %c${fallbackEntry.version}%c.`, "color: black; background-color: pink;", "");
-
-    return fallbackEntry;
+    return {
+        resolvedEntry: fallbackEntry,
+        highestVersionEntry: highestVersionEntry
+    };
 }
 
 const plugin: () => FederationRuntimePlugin = () => {
@@ -108,7 +123,7 @@ const plugin: () => FederationRuntimePlugin = () => {
         resolveShare: function(args) {
             const { shareScopeMap, scope, pkgName } = args;
 
-            log(`[squide] resolving ${pkgName}:`, args);
+            log(`[squide] Resolving ${pkgName}:`, args);
 
             // This custom strategy only applies to singleton shared dependencies.
             const entries = Object.values(shareScopeMap[scope][pkgName]).filter(x => x.shareConfig.singleton);
@@ -123,15 +138,22 @@ const plugin: () => FederationRuntimePlugin = () => {
             // If there's only one version entry, then it means that everyone is requesting the same version
             // of the dependency.
             if (entries.length <= 1) {
-                log(`[squide] there's only one version requested for ${pkgName}, resolving to:`, entries[0].version, entries[0]);
+                log(`[squide] There's only one version requested for ${pkgName}, resolving to:`, entries[0].version, entries[0]);
 
                 return args;
             }
 
             args.resolver = () => {
-                log(`[squide] there's %cmore than one requested version%c for ${pkgName}:`, "color: black; background-color: pink;", "", entries.length, shareScopeMap[scope][pkgName]);
+                log(`[squide] There's %cmore than one requested version%c for ${pkgName}:`, "color: black; background-color: pink;", "", entries.length, shareScopeMap[scope][pkgName]);
 
-                return resolveDependencyVersion(pkgName, entries, log);
+                const { resolvedEntry, highestVersionEntry } = resolveSharedDependency(pkgName, entries, log);
+
+                if (resolvedEntry.version !== highestVersionEntry.version) {
+                    // eslint-disable-next-line max-len
+                    console.log(`%c[squide] "${highestVersionEntry.from}" requested version "${highestVersionEntry.version}" of "${pkgName}". This version is higher than the major number of the version requested by the host for this dependency (${resolvedEntry.version}). The version for "${pkgName}" has been forced to "${resolvedEntry.version}".`, "color: white; background-color: red;");
+                }
+
+                return resolvedEntry;
             };
 
             return args;

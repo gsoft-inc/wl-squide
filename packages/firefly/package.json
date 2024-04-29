@@ -16,8 +16,8 @@
     "type": "module",
     "exports": {
         ".": {
-            "import": "./dist/index.js",
             "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
             "default": "./dist/index.js"
         }
     },
@@ -63,9 +63,9 @@
     },
     "dependencies": {
         "@squide/core": "workspace:*",
+        "@squide/module-federation": "workspace:*",
         "@squide/msw": "workspace:*",
-        "@squide/react-router": "workspace:*",
-        "@squide/module-federation": "workspace:*"
+        "@squide/react-router": "workspace:*"
     },
     "sideEffects": false,
     "engines": {

@@ -1,7 +1,7 @@
 // @ts-check
 
 import { isNetlify } from "@basic/shared";
-import { defineDevHostConfig, defineDevRemoteModuleConfig } from "@squide/firefly-configs";
+import { defineDevHostConfig, defineDevRemoteModuleConfig } from "@squide/firefly-webpack-configs";
 import path from "node:path";
 import { swcConfig } from "./swc.dev.js";
 import { getSharedDependencies } from "./webpack.common.js";

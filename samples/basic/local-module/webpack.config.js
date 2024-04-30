@@ -1,7 +1,7 @@
 // @ts-check
 
 import { isNetlify } from "@basic/shared";
-import { defineDevHostConfig } from "@squide/firefly-configs";
+import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import path from "node:path";
 import { swcConfig } from "./swc.config.js";
 

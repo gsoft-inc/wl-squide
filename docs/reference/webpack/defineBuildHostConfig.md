@@ -55,11 +55,11 @@ For the full shared dependencies configuration, have a look at the [defineConfig
 ```js !#13 host/webpack.build.js
 // @ts-check
 
-import { defineBuildHostConfig } from "@squide/firefly-configs";
+import { defineBuildHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.build.js";
 
 /**
- * @typedef {import("@squide/firefly-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
  */
 const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
@@ -73,11 +73,11 @@ export default defineBuildHostConfig(swcConfig, "host", Remotes);
 ```js !#14-16 host/webpack.build.js
 // @ts-check
 
-import { defineBuildHostConfig } from "@squide/firefly-configs";
+import { defineBuildHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.build.js";
 
 /**
- * @typedef {import("@squide/firefly-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
  */
 const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
@@ -99,11 +99,11 @@ Features must be activated on the host application as well as every remote modul
 ```js !#14-18 host/webpack.build.js
 // @ts-check
 
-import { defineBuildHostConfig } from "@squide/firefly-configs";
+import { defineBuildHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.build.js";
 
 /**
- * @typedef {import("@squide/firefly-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
  */
 const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
@@ -127,11 +127,11 @@ Additional shared dependencies must be configured on the host application as wel
 ```js !#14-18 host/webpack.build.js
 // @ts-check
 
-import { defineBuildHostConfig } from "@squide/firefly-configs";
+import { defineBuildHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.build.js";
 
 /**
- * @typedef {import("@squide/firefly-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
  */
 const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
@@ -163,11 +163,11 @@ In the previous code sample, the `react` shared dependency will be **augmented**
 ```js !#14-18 host/webpack.build.js
 // @ts-check
 
-import { defineBuildHostConfig } from "@squide/firefly-configs";
+import { defineBuildHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.build.js";
 
 /**
- * @typedef {import("@squide/firefly-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
  */
 const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
@@ -200,11 +200,11 @@ While you could customize the [ModuleFederationPlugin](https://module-federation
 ```js !#14-16 host/webpack.build.js
 // @ts-check
 
-import { defineBuildHostConfig, defineHostModuleFederationPluginOptions } from "@squide/firefly-configs";
+import { defineBuildHostConfig, defineHostModuleFederationPluginOptions } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.build.js";
 
 /**
- * @typedef {import("@squide/firefly-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
  */
 const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
@@ -232,7 +232,7 @@ In the following exemple, the remote module `name` is `remote1`.
 
 ```js !#5 host/webpack.build.js
 /**
- * @typedef {import("@squide/firefly-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
  */
 const Remotes = [
     { name: "remote1", url: `http://localhost:8081` }
@@ -242,7 +242,7 @@ const Remotes = [
 ```js !#6 remote-module/webpack.build.js
 // @ts-check
 
-import { defineBuildRemoteModuleConfig } from "@squide/firefly-configs";
+import { defineBuildRemoteModuleConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineBuildRemoteModuleConfig(swcConfig, "remote1");
@@ -256,7 +256,7 @@ In the following exemple, the remote module `publicPath` is `http://localhost:80
 
 ```ts !#5 host/webpack.build.js
 /**
- * @typedef {import("@squide/firefly-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
  */
 const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }

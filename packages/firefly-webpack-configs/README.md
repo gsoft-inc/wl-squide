@@ -1,4 +1,4 @@
-# @squide/firefly-configs
+# @squide/firefly-webpack-configs
 
 ## Usage
 

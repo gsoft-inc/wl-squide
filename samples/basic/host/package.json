@@ -15,7 +15,7 @@
         "serve-build": "pnpm build && pnpm http-server dist -p 8080 -P http://localhost:8080? -c-1"
     },
     "devDependencies": {
-        "@squide/firefly-configs": "workspace:*",
+        "@squide/firefly-webpack-configs": "workspace:*",
         "@swc/core": "1.4.17",
         "@swc/helpers": "0.5.11",
         "@types/react": "18.3.1",

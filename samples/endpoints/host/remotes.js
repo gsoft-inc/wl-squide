@@ -3,7 +3,7 @@
 import { isNetlify } from "@endpoints/shared";
 
 /**
- * @typedef {import("@squide/firefly-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
  */
 export const Remotes = [
     {

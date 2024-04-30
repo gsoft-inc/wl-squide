@@ -34,7 +34,7 @@
         "react-router-dom": "*"
     },
     "devDependencies": {
-        "@squide/firefly-configs": "workspace:*",
+        "@squide/firefly-webpack-configs": "workspace:*",
         "@swc/core": "1.4.17",
         "@swc/helpers": "0.5.11",
         "@tanstack/react-query-devtools": "5.32.0",

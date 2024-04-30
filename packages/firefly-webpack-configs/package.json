@@ -1,5 +1,5 @@
 {
-    "name": "@squide/firefly-configs",
+    "name": "@squide/firefly-webpack-configs",
     "author": "Workleap",
     "version": "1.0.6",
     "description": "Webpack configuration helpers for the Squide firefly technology stack.",

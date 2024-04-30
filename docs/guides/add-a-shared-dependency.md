@@ -21,7 +21,7 @@ Sometimes, a `singleton` shared dependency is paired with the [strictVersion](ht
 ```js !#10 webpack.config.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/firefly-configs";
+import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, [], {
@@ -67,7 +67,7 @@ An [eager](https://module-federation.io/configure/shared.html#eager) shared depe
 ```js !#10 webpack.config.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/firefly-configs";
+import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, [], {
@@ -108,7 +108,7 @@ To configure shared dependencies, use the `sharedDependencies` option of any [de
 ```js !#7-11 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/firefly-configs";
+import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevHostConfig(swcConfig, "host", 8080, [], {
@@ -125,7 +125,7 @@ When a dependency is shared between a host application and a remote module, the 
 ```js !#7-11 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/firefly-configs";
+import { defineDevRemoteModuleConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {

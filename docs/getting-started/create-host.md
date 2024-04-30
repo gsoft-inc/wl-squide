@@ -13,17 +13,17 @@ Create a new application (we'll refer to ours as `host`), then open a terminal a
 
 +++ pnpm
 ```bash
-pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
+pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
 pnpm add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ yarn
 ```bash
-yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
+yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
 yarn add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ npm
 ```bash
-npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
+npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
 npm install @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++
@@ -373,11 +373,11 @@ Then, open the `webpack.dev.js` file and use the [defineDevHostConfig](/referenc
 ```js !#13-20 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/firefly-configs";
+import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
 /**
- * @typedef {import("@squide/firefly-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
  */
 const Remotes: RemoteDefinition[] = [
     { name: "remote1", url: "http://localhost:8081" }
@@ -414,11 +414,11 @@ Then, open the `webpack.build.js` file and use the [defineBuildHostConfig](/refe
 ```js !#13-20 host/webpack.build.js
 // @ts-check
 
-import { defineBuildHostConfig } from "@squide/firefly-configs";
+import { defineBuildHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.build.js";
 
 /**
- * @typedef {import("@squide/firefly-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
  */
 const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }

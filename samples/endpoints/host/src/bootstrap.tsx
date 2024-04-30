@@ -12,6 +12,7 @@ import { sessionAccessor, sessionManager } from "./session.ts";
 const consoleLogger = new ConsoleLogger();
 
 const runtime = new FireflyRuntime({
+    useMsw: !!process.env.USE_MSW,
     plugins: [createI18NextPlugin()],
     loggers: [consoleLogger],
     sessionAccessor
@@ -21,7 +22,7 @@ await registerLocalModules([registerShell(sessionManager, { host: "@endpoints/ho
 
 await registerRemoteModules(Remotes, runtime);
 
-if (process.env.USE_MSW) {
+if (runtime.isMswEnabled) {
     // Files that includes an import to the "msw" package are included dynamically to prevent adding
     // unused MSW stuff to the code bundles.
     const startMsw = (await import("../mocks/browser.ts")).startMsw;

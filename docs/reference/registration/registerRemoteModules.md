@@ -172,7 +172,7 @@ To ease the configuration of remote modules, make sure that you first import the
 import type { RemoteDefinition } from "@squide/firefly";
 
 const Remotes: RemoteDefinition = [
-    { name: "REMOTE_NAME" }
+    { name: "remote1" }
 ];
 ```
 

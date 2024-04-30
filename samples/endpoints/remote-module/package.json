@@ -7,9 +7,9 @@
     "license": "Apache-2.0",
     "type": "module",
     "scripts": {
-        "dev": "cross-env USE_MSW=true nodemon",
+        "dev": "nodemon",
         "dev-isolated": "cross-env USE_MSW=true ISOLATED=true pnpm dev",
-        "build": "cross-env USE_MSW=true webpack --config webpack.build.js",
+        "build": "webpack --config webpack.build.js",
         "serve-build": "pnpm build && pnpm http-server dist -p 8081 -P http://localhost:8081? -c-1",
         "build-isolated": "cross-env USE_MSW=true ISOLATED=true pnpm build-isolated:webpack && pnpm build-isolated:copy-redirects && pnpm build-isolated:copy-public-files",
         "build-isolated:webpack": "webpack --config webpack.build.js",

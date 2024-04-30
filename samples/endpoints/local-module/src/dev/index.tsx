@@ -13,6 +13,7 @@ const consoleLogger = new ConsoleLogger();
 // Create the shell runtime.
 // Services, loggers and sessionAccessor could be reuse through a shared packages or faked when in isolation.
 const runtime = new FireflyRuntime({
+    useMsw: !!process.env.USE_MSW,
     plugins: [createI18NextPlugin()],
     loggers: [consoleLogger],
     sessionAccessor
@@ -22,7 +23,7 @@ await registerLocalModules([registerShell(sessionManager), registerDev, register
 
 // Register MSW after the local modules has been registered since the request handlers
 // will be registered by the modules.
-if (process.env.USE_MSW) {
+if (runtime.isMswEnabled) {
     // Files including an import to the "msw" package are included dynamically to prevent adding
     // MSW stuff to the bundled when it's not used.
     const startMsw = (await import("../../mocks/browser.ts")).startMsw;

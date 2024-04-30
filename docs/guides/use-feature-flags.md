@@ -5,10 +5,10 @@ order: 840
 # Use feature flags
 
 !!!warning
-Before going forward with this guide, make sure that you completed the [setup Mock Service Worker](./setup-msw.md) and [fetch initial data](./fetch-initial-data.md) guides.
+Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) and [Fetch initial data](./fetch-initial-data.md) guides.
 !!!
 
-To continuously deliver value to our customers, [Workleap](https://workleap.com/) has adopted a feature flags system that allows to activate or deactivate functionalities without requiring code deployment. While "in-page" feature flags are straightforward to implement for a Squide application, feature flags that conditionally register pages or navigation items requires a more advanced [deferred registration](../reference/registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) mechanism.
+To continuously deliver value to our customers, Workleap has adopted a feature flags system that allows to activate or deactivate functionalities without requiring code deployment. While "in-page" feature flags are straightforward to implement for a Squide application, feature flags that conditionally register pages or navigation items requires a more advanced [deferred registration](../reference/registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) mechanism.
 
 ## Add an endpoint
 
@@ -44,7 +44,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
         to: "/page"
     });
 
-    if (process.env.USE_MSW) {
+    if (runtime.isMswEnabled) {
         // Files that includes an import to the "msw" package are included dynamically to prevent adding
         // unused MSW stuff to the application bundles.
         const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
@@ -176,7 +176,7 @@ import type { DeferredRegistrationData } from "@sample/shared";
 import { Page } from "./Page.tsx";
 
 export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = async runtime => {
-    if (process.env.USE_MSW) {
+    if (runtime.isMswEnabled) {
         // Files that includes an import to the "msw" package are included dynamically to prevent adding
         // unused MSW stuff to the application bundles.
         const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;

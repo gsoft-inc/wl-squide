@@ -12,14 +12,17 @@ First, open a terminal at the root of the host application and install the [msw]
 
 +++ pnpm
 ```bash
+pnpm add -D cross-env
 pnpm add msw
 ```
 +++ yarn
 ```bash
+yarn add -D cross-env
 yarn add msw
 ```
 +++ npm
 ```bash
+npm install -D cross-env
 npm install msw
 ```
 +++
@@ -42,12 +45,19 @@ Then, update the `dev` PNPM script to define with [cross-env](https://www.npmjs.
 
 Then, update the development [webpack](https://webpack.js.org/) configuration file to include the `USE_MSW` environment variable into the application bundles:
 
-```js !#7 webpack.dev.js
+```js !#14 webpack.dev.js
 // @ts-check
 
 import { defineDevHostConfig } from "@squide/firefly-configs";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, {
+/**
+ * @typedef {import("@squide/firefly-configs").RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: "remote1", url: "http://localhost:8081" }
+];
+
+export default defineDevHostConfig(swcConfig, "host", 8080, Remotes, {
     environmentVariables: {
         "USE_MSW": process.env.USE_MSW === "true"
     }
@@ -79,17 +89,18 @@ export function startMsw(moduleRequestHandlers: RequestHandler[]) {
 
 Then, update the bootstrapping code to [start the service](https://mswjs.io/docs/integrations/browser#setup) and [mark MSW as started](../reference/msw/setMswAsStarted.md) if MSW is enabled:
 
-```tsx !#19-29 host/src/bootstrap.tsx
+```tsx !#20-30 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
 
 const Remotes: RemoteDefinition[] = [
-    { url: "http://localhost:8081", name: "remote1" }
+    { name: "remote1" }
 ];
 
 const runtime = new FireflyRuntime({
+    useMsw: !!process.env.USE_MSW,
     loggers: [new ConsoleLogger()]
 });
 
@@ -98,7 +109,7 @@ await registerLocalModules([registerHost], runtime);
 await registerRemoteModules(Remotes, runtime);
 
 // Once both register functions are done, we can safely assume that all the request handlers has been registered.
-if (process.env.USE_MSW) {
+if (runtime.isMswEnabled) {
     // Files that includes an import to the "msw" package are included dynamically to prevent adding
     // unused MSW stuff to the application bundles.
     const startMsw = (await import("../mocks/browser.ts")).startMsw;
@@ -132,7 +143,7 @@ export function App() {
         <AppRouter
             fallbackElement={<div>Loading...</div>}
             errorElement={<div>An error occured!</div>}
-            waitForMsw={Boolean(process.env.USE_MSW)}
+            waitForMsw={!!process.env.USE_MSW}
         >
             {(routes, providerProps) => (
                 <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
@@ -182,7 +193,7 @@ Finally, register the request handler with the [FireflyRuntime](../reference/run
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly"; 
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
-    if (process.env.USE_MSW) {
+    if (runtime.isMswEnabled) {
         // Files that includes an import to the "msw" package are included dynamically to prevent adding
         // unused MSW stuff to the application bundles.
         const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;

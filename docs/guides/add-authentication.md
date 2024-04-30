@@ -5,7 +5,7 @@ order: 920
 # Add authentication
 
 !!!warning
-Before going forward with this guide, make sure that you completed the [setup Mock Service Worker](./setup-msw.md) and [fetch initial data](./fetch-initial-data.md) guides.
+Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) and [Fetch initial data](./fetch-initial-data.md) guides.
 !!!
 
 Most of our applications (if not all) will eventually requires the user to authenticate. To facilitate this process, the Squide [FireflyRuntime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/localStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the application registration flow is completed, the function will be made accessible to every module of the application.
@@ -99,7 +99,7 @@ Next, register the request handler using the host application registration funct
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 
 export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
-    if (process.env.USE_MSW) {
+    if (runtime.isMswEnabled) {
         // Files that includes an import to the "msw" package are included dynamically to prevent adding
         // unused MSW stuff to the application bundles.
         const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
@@ -179,7 +179,7 @@ export function Login() {
 }
 ```
 
-After the user logs in, the application is reloaded. This is a requirement of the [AppRouter](../reference/routing/appRouter.md) component's [onLoadPublicData](../reference/routing/appRouter.md#load-public-data) and [onLoadProtectedData](../reference/routing/appRouter.md#load-protected-data) handlers. Nevertheless, it's not a significant concern because [Workleap](https://workleap.com/) applications utilize a third-party service for authentication which requires a full refresh of the application.
+After the user logs in, the application is reloaded. This is a requirement of the [AppRouter](../reference/routing/appRouter.md) component's [onLoadPublicData](../reference/routing/appRouter.md#load-public-data) and [onLoadProtectedData](../reference/routing/appRouter.md#load-protected-data) handlers. Nevertheless, it's not a significant concern because Workleap's applications utilize a third-party service for authentication which requires a full refresh of the application.
 
 ## Create a session accessor function
 
@@ -616,7 +616,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
         element: <HomePage />
     });
 
-    if (process.env.USE_MSW) {
+    if (runtime.isMswEnabled) {
         // Files that includes an import to the "msw" package are included dynamically to prevent adding
         // unused MSW stuff to the application bundles.
         const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;

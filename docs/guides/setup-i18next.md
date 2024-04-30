@@ -4,7 +4,7 @@ order: 820
 
 # Setup i18next
 
-Most of the applications that forms the [Workleap](https://workleap.com/) platform are either already bilingual or will be in the future. To help feature teams with localized resources, Squide provides a native [plugin](../reference/i18next/i18nextPlugin.md) designed to adapt the [i18next](https://www.i18next.com/) library for federated applications.
+Most of the applications that forms the Workleap platform are either already bilingual or will be in the future. To help feature teams with localized resources, Squide provides a native [plugin](../reference/i18next/i18nextPlugin.md) designed to adapt the [i18next](https://www.i18next.com/) library for federated applications.
 
 !!!warning
 The examples in this guide load all the resources from single localized resources files. For a real Workleap application, you probably want to spread the resources into multiple files and load the files with a i18next [backend plugin](https://www.i18next.com/overview/plugins-and-utils#backends).
@@ -46,7 +46,7 @@ import { registerShell } from "@sample/shell";
 import { i18nextPlugin } from "@sample/i18next";
 
 const Remotes: RemoteDefinition[] = [
-    { url: "http://localhost:8081", name: "remote1" }
+    { url: name: "remote1" }
 ];
 
 // In this example:
@@ -174,7 +174,7 @@ Finally, update the webpack development and build configurations to activate the
 import { defineDevHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, {
+export default defineDevHostConfig(swcConfig, "host", 8080, [], {
     features: {
         i18next: true
     },
@@ -193,7 +193,7 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
 import { defineBuildHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildHostConfig(swcConfig, "host", {
+export default defineBuildHostConfig(swcConfig, "host", [], {
     features: {
         i18next: true
     },

@@ -5,10 +5,10 @@ order: 975
 # Fetch page data
 
 !!!warning
-Before going forward with this guide, make sure that you completed the [setup Mock Service Worker](./setup-msw.md) guide.
+Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) guide.
 !!!
 
-There are various approaches to fetching data for pages. At [Workleap](https://workleap.com/), our preference is usually to develop a dedicated endpoint per page, returning a denormalized document specifically tailored for that page. We rely on server state as our singular source of truth and leverage [React Query](https://tanstack.com/query/latest/) to manage data fetching and ensure our data remains up-to-date.
+There are various approaches to fetching data for pages. At Workleap, our preference is usually to develop a dedicated endpoint per page, returning a denormalized document specifically tailored for that page. We rely on server state as our singular source of truth and leverage [React Query](https://tanstack.com/query/latest/) to manage data fetching and ensure our data remains up-to-date.
 
 Although this approach works well, a few adjustments are necessary when transitioning from a monolithic application to a federated application.
 
@@ -203,7 +203,7 @@ Then, register the request handler using the module registration function:
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly"; 
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
-    if (process.env.USE_MSW) {
+    if (runtime.isMswEnabled) {
         // Files that includes an import to the "msw" package are included dynamically to prevent adding
         // unused MSW stuff to the application bundles.
         const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
@@ -255,17 +255,15 @@ export function Page() {
 The previous code sample uses [useSuspenseQuery](https://tanstack.com/query/latest/docs/react/reference/useSuspenseQuery) instead of [useQuery](https://tanstack.com/query/latest/docs/react/reference/useQuery) to fetch data. This enables an application to leverage a React [Suspense](https://react.dev/reference/react/Suspense) boundary to render a fallback element in a layout component while the data is being fetched:
 
 
-```tsx !#7-9 host/src/RootLayout.tsx
+```tsx !#6-8 host/src/RootLayout.tsx
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 
 export function RootLayout() {
     return (
-        <>
-            <Suspense fallback={<div>Loading...</div>}>
-                <Outlet />
-            </Suspense>
-        </>
+        <Suspense fallback={<div>Loading...</div>}>
+            <Outlet />
+        </Suspense>
     );
 }
 ```

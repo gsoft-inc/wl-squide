@@ -126,7 +126,7 @@ import { registerHost } from "./register.tsx";
 import { registerShell } from "@sample/shell";
 
 const Remotes: RemoteDefinition[] = [
-    { url: "http://localhost:8081", name: "remote1" }
+    { name: "remote1" }
 ];
 
 const runtime = new FireflyRuntime({
@@ -268,6 +268,10 @@ Next, add a new `dev-isolated` script to the `package.json` file to start the lo
 }
 ```
 
+!!!info
+If your project's `package.json` file does not already include the [cross-env](https://www.npmjs.com/package/cross-env) dependency, be sure to install `cross-env` as a development dependency.
+!!!
+
 The `dev-isolated` script is similar to the `dev` script but introduces a `ISOLATED` environment variable. This new environment variable will be utilized by the `webpack.dev.js` file to conditionally setup the development server for development in **isolation** or to be consumed by a host application through the `/remoteEntry.js` entry point:
 
 ### Configure webpack
@@ -310,7 +314,7 @@ let config;
 if (!process.env.ISOLATED) {
     config = defineDevRemoteModuleConfig(swcConfig, "remote1", 8081);
 } else {
-    config = defineDevHostConfig(swcConfig, "remote1", 8080);
+    config = defineDevHostConfig(swcConfig, "remote1", 8080, []);
 }
 
 export default config;
@@ -442,7 +446,7 @@ Finally, open the `webpack.config.js` file and use the the [defineDevHostConfig]
 import { defineDevHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.config.js";
 
-export default defineDevHostConfig(swcConfig, "local1", 8080);
+export default defineDevHostConfig(swcConfig, "local1", 8080, []);
 ```
 
 ### Add a new CLI script

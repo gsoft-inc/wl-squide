@@ -18,6 +18,7 @@ const runtime = new FireflyRuntime(options?: { loggers?: [], plugins?: [], sessi
 
 - `options`: An optional object literal of options:
     - `mode`: An optional mode to optimize Squide for `production`. Values are `"development"` (default) and `"production"`.
+    - `useMsw`: An optional boolean value indicating whether or not to create the runtime with MSW support.
     - `loggers`: An optional array of `Logger` instances.
     - `plugins`: An optional array of custom plugin instances.
     - `sessionAccessor`: An optional function returning the current session.
@@ -49,6 +50,21 @@ import { FireflyRuntime } from "@squide/firefly";
 const runtime = new FireflyRuntime({
     mode: "production"
 });
+```
+
+### Use Mock Service Worker
+
+```ts
+import { FireflyRuntime } from "@squide/firefly";
+
+const runtime = new FireflyRuntime({
+    useMsw: true
+});
+
+// Use the runtime to determine if MSW handlers should be registered.
+if (runtime.isMswEnabled) {
+    // ...
+}
 ```
 
 ### Register routes

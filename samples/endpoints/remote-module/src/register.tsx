@@ -140,7 +140,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
 }
 
 async function registerMsw(runtime: FireflyRuntime) {
-    if (process.env.USE_MSW) {
+    if (runtime.isMswEnabled) {
         // Files including an import to the "msw" package are included dynamically to prevent adding
         // MSW stuff to the bundled when it's not used.
         const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;

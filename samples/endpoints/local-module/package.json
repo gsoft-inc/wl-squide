@@ -14,9 +14,9 @@
         }
     },
     "scripts": {
-        "dev": "cross-env USE_MSW=true nodemon",
+        "dev": "nodemon",
         "dev-isolated": "cross-env USE_MSW=true ISOLATED=true nodemon --config nodemon.isolated.json",
-        "build": "cross-env USE_MSW=true tsup --config ./tsup.build.ts",
+        "build": "tsup --config ./tsup.build.ts",
         "serve-build": "pnpm build",
         "build-isolated": "cross-env USE_MSW=true ISOLATED=true webpack --config webpack.build.js",
         "serve-build-isolated": "pnpm build-isolated && pnpm http-server dist -p 8080 -P http://localhost:8080? -c-1"

@@ -4,7 +4,7 @@ order: 760
 
 # Add a shared dependency
 
-[Shared dependencies](https://webpack.js.org/plugins/module-federation-plugin/#sharing-libraries) represent one of the most powerful concepts within [Module Federation](https://webpack.js.org/plugins/module-federation-plugin). However, mastering its configuration can be quite challenging. **Failure** to configure shared dependencies properly in a federated application using Module Federation can significantly **impact** both **user** and **developer experiences**.
+[Shared dependencies](https://module-federation.io/configure/shared.html) represent one of the most powerful concepts of Module Federation. However, mastering its configuration can be quite challenging. **Failure** to configure shared dependencies properly in a federated application using Module Federation can significantly **impact** both **user** and **developer experiences**.
 
 Squide aims to simplify the configuration of shared dependencies by abstracting the [shared dependencies](#default-shared-dependencies) necessary for building an application with React, React Router, and optionally MSW and i18next. Nevertheless, every federated application will inevitably have to configure additional custom shared dependencies.
 
@@ -12,7 +12,7 @@ For a more comprehensive documentation of the Module Federation APIs, their func
 
 ## Understanding singleton dependencies
 
-A [singleton](https://webpack.js.org/plugins/module-federation-plugin/#singleton) shared dependency does exactly what its name suggests: it loads only a single instance of a dependency. This means that a dependency will be included in just one bundle file of the federated application.
+A [singleton](https://module-federation.io/configure/shared.html#singleton) shared dependency does exactly what its name suggests: it loads only a single instance of a dependency. This means that a dependency will be included in just one bundle file of the federated application.
 
 ### Strict versioning
 
@@ -24,7 +24,7 @@ Sometimes, a `singleton` shared dependency is paired with the [strictVersion](ht
 import { defineDevHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, {
+export default defineDevHostConfig(swcConfig, "host", 8080, [], {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true,
@@ -62,7 +62,7 @@ Libraries matching the following criterias are strong candidates to be configure
 
 ## Understanding eager dependencies
 
-An [eager](https://webpack.js.org/plugins/module-federation-plugin/#eager) shared dependency becomes available as soon as the host application starts. In simple terms, it is included in the host application bundle rather than being loaded lazily when it is first requested.
+An [eager](https://module-federation.io/configure/shared.html#eager) shared dependency becomes available as soon as the host application starts. In simple terms, it is included in the host application bundle rather than being loaded lazily when it is first requested.
 
 ```js !#10 webpack.config.js
 // @ts-check
@@ -70,7 +70,7 @@ An [eager](https://webpack.js.org/plugins/module-federation-plugin/#eager) share
 import { defineDevHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, {
+export default defineDevHostConfig(swcConfig, "host", 8080, [], {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true,
@@ -111,7 +111,7 @@ To configure shared dependencies, use the `sharedDependencies` option of any [de
 import { defineDevHostConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, {
+export default defineDevHostConfig(swcConfig, "host", 8080, [], {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true

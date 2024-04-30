@@ -27,6 +27,22 @@ npm install msw
 ```
 +++
 
+Then [initialize](https://mswjs.io/docs/cli/init/) MSW by executing the following command:
+
++++ pnpm
+```bash
+pnpm dlx msw init ./public
+```
++++ yarn
+```bash
+yarn dlx msw init ./public
+```
++++ npm
+```bash
+npx msw init ./public
+```
++++
+
 !!!warning
 While you can use any package manager to develop an application with Squide, it is highly recommended that you use [PNPM](https://pnpm.io/) as the guides has been developed and tested with PNPM.
 !!!

@@ -36,29 +36,23 @@ A `Promise` object with an array of `RemoteModuleRegistrationError` if any error
 
 ### Register a remote module
 
-```tsx !#10-12,14 host/src/bootstrap.tsx
+```tsx !#5-7,9 host/src/bootstrap.tsx
 import { FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
-import type { AppContext } from "@sample/shared";
 
 const runtime = new FireflyRuntime();
-
-const context: AppContext = {
-    name: "Test app"
-};
 
 const Remotes: RemoteDefinition = [
     { name: "remote1" }
 ];
 
-await registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime);
 ```
 
-```tsx !#5-15 remote-module/src/register.tsx
+```tsx !#5-8,10-13 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
-import type { AppContext } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 
-export function register: ModuleRegisterFunction<FireflyRuntime, AppContext>(runtime, context) {
+export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
     runtime.registerRoute({
         path: "/about",
         element: <AboutPage />
@@ -81,21 +75,17 @@ Sometimes, data must be fetched to determine which routes or navigation items sh
 
 To defer a registration to the second phase, a module registration function can **return an anonymous function**. Once the modules are registered and the [completeRemoteModuleRegistrations](./completeRemoteModuleRegistrations.md) function is called, the deferred registration functions will be executed.
 
-```tsx !#18,21 host/src/bootstrap.tsx
+```tsx !#14,17 host/src/bootstrap.tsx
 import { FireflyRuntime, completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
-import { fetchFeatureFlags, type AppContext } from "@sample/shared";
+import { fetchFeatureFlags } from "@sample/shared";
 
 const runtime = new FireflyRuntime();
-
-const context: AppContext = {
-    name: "Test app"
-};
 
 const Remotes: RemoteDefinition = [
     { name: "remote1" }
 ];
 
-await registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime);
 
 // Don't fetch data in the bootstrapping code for a real application. This is done here
 // strictly for demonstration purpose.
@@ -107,11 +97,11 @@ await completeRemoteModuleRegistrations(runtime, { featureFlags });
 
 ```tsx !#19-32 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
-import type { AppContext, DeferredRegistrationData } from "@sample/shared";
+import type { DeferredRegistrationData } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 import { FeatureAPage } from "./FeatureAPage.tsx";
 
-export const register: ModuleRegisterFunction<FireflyRuntime, AppContext, DeferredRegistrationData> = async (runtime, context) => {
+export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = async runtime => {
     runtime.registerRoute({
         path: "/about",
         element: <AboutPage />
@@ -145,21 +135,16 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext, Deferr
 
 ### Handle the registration errors
 
-```tsx !#14-16 host/src/bootstrap.tsx
+```tsx !#9-11 host/src/bootstrap.tsx
 import { FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
-import type { AppContext } from "@sample/shared";
 
 const runtime = new FireflyRuntime();
-
-const context: AppContext = {
-    name: "Test app"
-};
 
 const Remotes: RemoteDefinition = [
     { name: "remote1" }
 ];
 
-(await registerRemoteModules(Remotes, runtime, { context })).forEach(x => {
+(await registerRemoteModules(Remotes, runtime)).forEach(x => {
     console.log(x);
 });
 ```
@@ -196,5 +181,5 @@ const Remotes: RemoteDefinition = [
 import { defineDevRemoteModuleConfig } from "@squide/firefly-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevRemoteModuleConfig(swcConfig, "remote1", PORT);
+export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081);
 ```

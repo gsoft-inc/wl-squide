@@ -44,7 +44,7 @@ const runtime = new FireflyRuntime({
 
 ### Change the runtime mode
 
-```ts
+```ts !#4
 import { FireflyRuntime } from "@squide/firefly";
 
 const runtime = new FireflyRuntime({
@@ -54,7 +54,7 @@ const runtime = new FireflyRuntime({
 
 ### Use Mock Service Worker
 
-```ts
+```ts !#4,8
 import { FireflyRuntime } from "@squide/firefly";
 
 const runtime = new FireflyRuntime({

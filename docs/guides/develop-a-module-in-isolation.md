@@ -117,10 +117,9 @@ export function App() {
 
 And the `registerShell` function to setup the `RootLayout`, the `RootErrorBoundary` and any other shell assets:
 
-```tsx !#21 host/src/bootstrap.tsx
+```tsx !#16 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
-import type { AppContext} from "@sample/shared";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
 import { registerShell } from "@sample/shell";
@@ -133,14 +132,10 @@ const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger()]
 });
 
-const context: AppContext = {
-    name: "Demo application"
-};
-
 // Register the newly created shell module.
-await registerLocalModules([registerShell, registerHost], runtime, { context });
+await registerLocalModules([registerShell, registerHost], runtime);
 
-await registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime);
 
 const root = createRoot(document.getElementById("root")!);
 

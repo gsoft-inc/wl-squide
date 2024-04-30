@@ -150,7 +150,7 @@ async function registerMsw(runtime: FireflyRuntime) {
 }
 
 export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = async runtime => {
-    const i18nextInstance = await initI18next(runtime);
+    const i18nextInstance = initI18next(runtime);
 
     await registerMsw(runtime);
 

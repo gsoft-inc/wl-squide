@@ -116,11 +116,12 @@ async function registerMsw(runtime: FireflyRuntime) {
 
 export function registerShell(sessionManager: SessionManager, { host }: RegisterShellOptions = {}) {
     const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
-        await initI18next(runtime);
+        initI18next(runtime);
+
         await registerMsw(runtime);
 
         return mergeDeferredRegistrations([
-            await registerLayouts(runtime, { host }),
+            registerLayouts(runtime, { host }),
             registerRoutes(runtime, sessionManager, host)
         ]);
     };

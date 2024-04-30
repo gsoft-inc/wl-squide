@@ -98,7 +98,7 @@ Next, register the request handler using the host application registration funct
 ```tsx host/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 
-export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
+export const registerHost: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
     if (runtime.isMswEnabled) {
         // Files that includes an import to the "msw" package are included dynamically to prevent adding
         // unused MSW stuff to the application bundles.
@@ -558,7 +558,7 @@ export function RootLayout() {
 
 Finally, assemble everything:
 
-```tsx !#16,21,24,45-51 host/src/register.tsx
+```tsx !#17,22,25,46-52 host/src/register.tsx
 import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { RootLayout } from "./Rootlayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
@@ -566,8 +566,9 @@ import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { ModuleErrorBoundary } from "./ModuleErrorBoundary.tsx";
 import { LoginPage } from "./LoginPage.tsx";
 import { HomePage } from "./Homepage.tsx";
+import { NotFoundPage } from "./NotFoundPage.tsx";
 
-export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
+export const registerHost: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
     runtime.registerRoute({
         element: <RootLayout />,
         children: [
@@ -607,6 +608,14 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
         $visibility: "public",
         path: "/login",
         element: <LoginPage />
+    }, {
+        parentName: "root-error-boundary"
+    });
+
+    runtime.registerRoute({
+        $visibility: "public",
+        path: "*",
+        element: <NotFoundPage />
     }, {
         parentName: "root-error-boundary"
     });

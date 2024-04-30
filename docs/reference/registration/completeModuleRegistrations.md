@@ -33,23 +33,19 @@ completeModuleRegistrations(runtime, data?)
 
 ### Complete module registrations
 
-```tsx !#15-16,23 host/src/bootstrap.tsx
+```tsx !#11-12,19 host/src/bootstrap.tsx
 import { registerLocalModules, FireflyRuntime, completeModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { register } from "@sample/local-module";
-import { fetchFeatureFlags, type AppContext } from "@sample/shared";
+import { fetchFeatureFlags } from "@sample/shared";
 
 const runtime = new FireflyRuntime();
-
-const context: AppContext = {
-    name: "Test app"
-};
 
 const Remotes: RemoteDefinition = [
     { name: "remote1" }
 ];
 
-await registerLocalModules([register], runtime, { context });
-await registerRemoteModules(Remotes, runtime, { context });
+await registerLocalModules([register], runtime);
+await registerRemoteModules(Remotes, runtime);
 
 // Don't fetch data in the bootstrapping code for a real application. This is done here
 // strictly for demonstration purpose.
@@ -61,11 +57,11 @@ await completeModuleRegistrations(runtime, { featureFlags });
 
 ```tsx !#19-32 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
-import type { AppContext, DeferredRegistrationData } from "@sample/shared";
+import type { DeferredRegistrationData } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 import { FeatureAPage } from "./FeatureAPage.tsx";
 
-export const register: ModuleRegisterFunction<FireflyRuntime, AppContext, DeferredRegistrationData> = async (runtime, context) => {
+export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = async runtime => {
     runtime.registerRoute({
         path: "/about",
         element: <AboutPage />
@@ -97,23 +93,19 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext, Deferr
 
 ### Handle the completion errors
 
-```tsx !#22-30 host/src/bootstrap.tsx
+```tsx !#18-26 host/src/bootstrap.tsx
 import { registerLocalModules, FireflyRuntime, completeModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { register } from "@sample/local-module";
-import { fetchFeatureFlags, type AppContext } from "@sample/shared";
+import { fetchFeatureFlags } from "@sample/shared";
 
 const runtime = new FireflyRuntime();
-
-const context: AppContext = {
-    name: "Test app"
-};
 
 const Remotes: RemoteDefinition = [
     { name: "remote1" }
 ];
 
-await registerLocalModules([register], runtime, { context });
-await registerRemoteModules(Remotes, runtime, { context });
+await registerLocalModules([register], runtime);
+await registerRemoteModules(Remotes, runtime);
 
 // Don't fetch data in the bootstrapping code for a real application. This is done here
 // strictly for demonstration purpose.

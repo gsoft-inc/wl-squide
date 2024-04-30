@@ -25,8 +25,8 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n, host?: s
     });
 }
 
-export async function registerLayouts(runtime: FireflyRuntime, { host }: RegisterLayoutsOptions = {}) {
-    const i18nextInstance = await initI18next(runtime);
+export function registerLayouts(runtime: FireflyRuntime, { host }: RegisterLayoutsOptions = {}) {
+    const i18nextInstance = initI18next(runtime);
 
     return registerRoutes(runtime, i18nextInstance, host);
 }

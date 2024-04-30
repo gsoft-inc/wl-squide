@@ -7,10 +7,10 @@ import resourcesFr from "./locales/fr-CA/resources.json";
 
 export const i18NextInstanceKey = "layouts";
 
-export async function initI18next(runtime: FireflyRuntime) {
+export function initI18next(runtime: FireflyRuntime) {
     const i18nextPlugin = getI18nextPlugin(runtime) as i18nextPlugin<LanguageKey>;
 
-    const instance = await createInstance(i18nextPlugin.currentLanguage, {
+    const instance = createInstance(i18nextPlugin.currentLanguage, {
         resources: {
             "en-US": resourcesEn,
             "fr-CA": resourcesFr

@@ -34,18 +34,14 @@ A `Promise` object with an array of `LocalModuleRegistrationError` if any error 
 
 ### Complete local module registrations
 
-```tsx !#15,18 host/src/bootstrap.tsx
+```tsx !#11,14 host/src/bootstrap.tsx
 import { completeLocalModuleRegistrations, registerLocalModules, FireflyRuntime } from "@squide/firefly";
 import { register } from "@sample/local-module";
-import { fetchFeatureFlags, type AppContext } from "@sample/shared";
+import { fetchFeatureFlags } from "@sample/shared";
 
 const runtime = new FireflyRuntime();
 
-const context: AppContext = {
-    name: "Test app"
-};
-
-await registerLocalModules([register], runtime, { context });
+await registerLocalModules([register], runtime);
 
 // Don't fetch data in the bootstrapping code for a real application. This is done here
 // strictly for demonstration purpose.
@@ -57,11 +53,11 @@ await completeLocalModuleRegistrations(runtime, { featureFlags });
 
 ```tsx !#19-32 local-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
-import type { AppContext, DeferredRegistrationData } from "@sample/shared";
+import type { DeferredRegistrationData } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 import { FeatureAPage } from "./FeatureAPage.tsx";
 
-export const register: ModuleRegisterFunction<FireflyRuntime, AppContext, DeferredRegistrationData> = async (runtime, context) => {
+export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = async runtime => {
     runtime.registerRoute({
         path: "/about",
         element: <AboutPage />
@@ -93,16 +89,12 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext, Deferr
 
 ### Handle the completion errors
 
-```tsx !#17-19 host/src/bootstrap.tsx
+```tsx !#13-15 host/src/bootstrap.tsx
 import { completeLocalModuleRegistrations, registerLocalModules, FireflyRuntime } from "@squide/firefly";
 import { register } from "@sample/local-module";
-import { fetchFeatureFlags, type AppContext } from "@sample/shared";
+import { fetchFeatureFlags } from "@sample/shared";
 
 const runtime = new FireflyRuntime();
-
-const context: AppContext = {
-    name: "Test app"
-};
 
 await registerLocalModules([register], runtime, { context });
 

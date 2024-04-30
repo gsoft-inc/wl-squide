@@ -131,7 +131,7 @@ export function App() {
 }
 ```
 
-In this scenario, Hopper's components are used throughout the entire federated application, including the remote modules. Moreover, `@hopper/components` is defined as a [singleton](https://webpack.js.org/plugins/module-federation-plugin/#singleton) shared dependency:
+In this scenario, Hopper's components are used throughout the entire federated application, including the remote modules. Moreover, `@hopper/components` is defined as a [singleton](https://module-federation.io/configure/shared.html#singleton) shared dependency:
 
 ```js !#8-10 host/webpack.dev.js
 // @ts-check

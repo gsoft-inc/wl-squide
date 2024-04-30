@@ -218,7 +218,7 @@ export default defineBuildHostConfig(swcConfig, "host", Remotes, {
 ```
 
 - `applicationName`: The host application name.
-- `moduleFederationPluginOptions`: An object literal of [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) options.
+- `moduleFederationPluginOptions`: An object literal of [ModuleFederationPlugin](https://module-federation.io/configure/) options.
 
 ## Remote definition
 

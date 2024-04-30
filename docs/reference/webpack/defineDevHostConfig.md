@@ -196,7 +196,7 @@ In the previous code sample, the `react` shared dependency `singleton` option wi
 
 ### Customize module federation configuration
 
-While you could customize the [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) configuration by providing your own object literal through the `moduleFederationPluginOptions` option, we recommend using the `defineHostModuleFederationPluginOptions(applicationName, options)` function as it will take care of **merging** the custom options with the default plugin options.
+While you could customize the [ModuleFederationPlugin](https://module-federation.io/configure/) configuration by providing your own object literal through the `moduleFederationPluginOptions` option, we recommend using the `defineHostModuleFederationPluginOptions(applicationName, options)` function as it will take care of **merging** the custom options with the default plugin options.
 
 ```js !#14-16 host/webpack.dev.js
 // @ts-check
@@ -219,7 +219,7 @@ export default defineDevHostConfig(swcConfig, "host", 8080, Remotes, {
 ```
 
 - `applicationName`: The host application name.
-- `moduleFederationPluginOptions`: An object literal of [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) options.
+- `moduleFederationPluginOptions`: An object literal of [ModuleFederationPlugin](https://module-federation.io/configure/) options.
 
 ## Remote definition
 

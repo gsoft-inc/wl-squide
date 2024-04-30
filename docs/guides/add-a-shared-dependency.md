@@ -38,19 +38,57 @@ When specified, the `strictVersion` option will generate a **runtime error** if 
 
 ### Expected behaviors
 
+!!!warning
+Please note that Squide's singleton dependency version resolution algorithm **differs** from the native Module Federation behavior. By default, Squide registers a [runtime plugin](https://module-federation.io/plugin/dev/index.html) that customize the resolution of shared dependencies.
+!!!
+
 #### Minor or patch version
 
 When the version difference between a host application and a remote module is a **minor** or **patch** version, the higher version of the dependency will be loaded. For example:
 
-- If the host application is on `10.1.0` and a remote module is on `10.3.1` -> `10.3.1` will be loaded
-- If the host application is on `10.3.1` and a remote module is on `10.1.0` -> `10.3.1` will be loaded
+- If the host application is on `10.1.0` and a remote module is on `10.1.1` -> `10.1.1` will be loaded
+- If the host application is on `10.1.0` and a remote module is on `10.2.0` -> `10.2.0` will be loaded
 
 #### Major version
 
-If the version difference between a host application and a remote module is a **major** version, once again, the higher version of the dependency will be loaded. However, a **warning** will also be issued. For example:
+If the version difference between a host application and a remote module is a **major** version, once again, the higher version of the dependency will be loaded only if it's requested by the host application. For example:
 
-- If the host application is on `11.0.0` and a remote module is on `10.3.1` -> `11.0.0` will be loaded
-- If the host application is on `10.3.1` and a remote module is on `11.0.0` -> `11.0.0` will be loaded
+- If the host application is on `11.0.0` and a remote module is on `10.0.0` -> `11.0.0` will be loaded
+- If the host application is on `10.0.0` and a remote module is on `11.0.0` -> `10.0.0` will be loaded
+
+#### Additional examples
+
+Let's go through a few additional examples :point_down:
+
+##### Example 1
+
+```
+host:        2.0
+remote-1:    2.1   <-----
+remote-2:    2.0
+```
+
+The version requested by `remote-1` is selected because it only represents a **minor** difference from the version requested by the `host` application.
+
+##### Example 2
+
+```
+host:        2.0   <-----
+remote-1:    3.1
+remote-2:    2.0
+```
+
+The version requested by the `host` application is selected because `remote-1` is requesting a version with a **major** difference from the one requested by the `host` application.
+
+##### Example 3
+
+```
+host:        2.0
+remote-1:    3.1
+remote-2:    2.1   <-----
+```
+
+The version requested by `remote-2` is selected because `remote-1` is requesting a version with a **major** difference from the one requested by the `host` application. Therefore, `remote-2` requests the next highest version, which represents only a **minor** difference from the version requested by the `host` application.
 
 ### What should be configured as a shared dependency?
 

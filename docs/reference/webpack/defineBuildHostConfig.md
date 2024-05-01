@@ -15,13 +15,12 @@ This function is a wrapper built on top of [@workleap/web-configs](https://www.n
 ## Reference
 
 ```ts
-const webpackConfig = defineBuildHostConfig(swcConfig: {}, applicationName, remotes: [], options?: {})
+const webpackConfig = defineBuildHostConfig(swcConfig: {}, remotes: [], options?: {})
 ```
 
 ## Parameters
 
 - `swcConfig`: An SWC [configuration object](https://swc.rs/docs/configuration/swcrc).
-- `applicationName`: The host application name.
 - `remotes`: An array of `RemoteDefinition` (view the [Remote definition](#remote-definition) section).
 - `options`: An optional object literal of options:
     - Accepts most of webpack `definedBuildConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/#3-set-predefined-options).
@@ -65,7 +64,7 @@ const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
-export default defineBuildHostConfig(swcConfig, "host", Remotes);
+export default defineBuildHostConfig(swcConfig, Remotes);
 ```
 
 ### Activate additional features
@@ -83,7 +82,7 @@ const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
-export default defineBuildHostConfig(swcConfig, "host", Remotes, {
+export default defineBuildHostConfig(swcConfig, Remotes, {
     features: {
         i18next: true
     }
@@ -109,7 +108,7 @@ const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
-export default defineBuildHostConfig(swcConfig, "host", Remotes, {
+export default defineBuildHostConfig(swcConfig, Remotes, {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true
@@ -137,7 +136,7 @@ const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
-export default defineBuildHostConfig(swcConfig, "host", Remotes, {
+export default defineBuildHostConfig(swcConfig, Remotes, {
     sharedDependencies: {
         "react": {
             requiredVersion: "18.2.0"
@@ -173,7 +172,7 @@ const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
-export default defineBuildHostConfig(swcConfig, "host", Remotes, {
+export default defineBuildHostConfig(swcConfig, Remotes, {
     sharedDependencies: {
         "react": {
             singleton: false
@@ -195,7 +194,7 @@ In the previous code sample, the `react` shared dependency `singleton` option wi
 
 ### Customize module federation configuration
 
-While you could customize the [ModuleFederationPlugin](https://module-federation.io/configure/index.html) configuration by providing your own object literal through the `moduleFederationPluginOptions` option, we recommend using the `defineHostModuleFederationPluginOptions(applicationName, options)` function as it will take care of **merging** the custom options with the default plugin options.
+While you could customize the [ModuleFederationPlugin](https://module-federation.io/configure/index.html) configuration by providing your own object literal through the `moduleFederationPluginOptions` option, we recommend using the `defineHostModuleFederationPluginOptions(options)` function as it will take care of **merging** the custom options with the default plugin options.
 
 ```js !#14-16 host/webpack.build.js
 // @ts-check
@@ -210,8 +209,8 @@ const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
-export default defineBuildHostConfig(swcConfig, "host", Remotes, {
-    moduleFederationPluginOptions: defineHostModuleFederationPluginOptions("host", {
+export default defineBuildHostConfig(swcConfig, Remotes, {
+    moduleFederationPluginOptions: defineHostModuleFederationPluginOptions({
         runtime: "my-runtime-name"
     })
 });

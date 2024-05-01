@@ -139,7 +139,7 @@ In this scenario, Hopper's components are used throughout the entire federated a
 import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, [], {
+export default defineDevHostConfig(swcConfig, 8080, [], {
     sharedDependencies: {
         "@hopper/components": {
             singleton: true

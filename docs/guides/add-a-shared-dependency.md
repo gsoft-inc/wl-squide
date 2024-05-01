@@ -6,7 +6,7 @@ order: 760
 
 [Shared dependencies](https://module-federation.io/configure/shared.html) represent one of the most powerful concepts of Module Federation. However, mastering its configuration can be quite challenging. **Failure** to configure shared dependencies properly in a federated application using Module Federation can significantly **impact** both **user** and **developer experiences**.
 
-Squide aims to simplify the configuration of shared dependencies by abstracting the [shared dependencies](#default-shared-dependencies) necessary for building an application with React, React Router, and optionally MSW and i18next. Nevertheless, every federated application will inevitably have to configure additional custom shared dependencies.
+Squide aims to simplify the configuration of shared dependencies by abstracting the shared dependencies necessary for building an application with React, React Router, and optionally MSW and i18next. Nevertheless, every federated application will inevitably have to configure additional custom shared dependencies.
 
 For a more comprehensive documentation of the Module Federation APIs, their functionality, and their benefits, please refer to this [article](https://www.infoxicator.com/en/module-federation-shared-api).
 
@@ -24,7 +24,7 @@ Sometimes, a `singleton` shared dependency is paired with the [strictVersion](ht
 import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, [], {
+export default defineDevHostConfig(swcConfig, 8080, [], {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true,
@@ -108,7 +108,7 @@ An [eager](https://module-federation.io/configure/shared.html#eager) shared depe
 import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, [], {
+export default defineDevHostConfig(swcConfig, 8080, [], {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true,
@@ -149,7 +149,7 @@ To configure shared dependencies, use the `sharedDependencies` option of any [de
 import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, [], {
+export default defineDevHostConfig(swcConfig, 8080, [], {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true

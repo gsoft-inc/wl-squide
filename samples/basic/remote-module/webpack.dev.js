@@ -16,7 +16,7 @@ if (!process.env.ISOLATED) {
         }
     });
 } else {
-    config = defineDevHostConfig(swcConfig, "remote1", 8080, [], {
+    config = defineDevHostConfig(swcConfig, 8080, [], {
         entry: path.resolve("./src/dev/index.tsx"),
         overlay: false,
         sharedDependencies: getSharedDependencies(true),

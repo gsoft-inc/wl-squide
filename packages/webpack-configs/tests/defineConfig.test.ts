@@ -30,20 +30,20 @@ describe("defineDevHostConfig", () => {
     });
 
     test("the application name is set as the federation plugin application name", () => {
-        const config = defineDevHostConfig(SwcConfig, "host", 8080, []);
+        const config = defineDevHostConfig(SwcConfig, 8080, []);
         const result = findPlugin(config, matchConstructorName(ModuleFederationPlugin.name));
 
         expect(prepareModuleFederationPluginForSnapshot(result.plugin as WebpackPluginInstance)).toMatchSnapshot();
     });
 
     test("the application name is set as the output unique name", () => {
-        const result = defineDevHostConfig(SwcConfig, "host", 8080, []);
+        const result = defineDevHostConfig(SwcConfig, 8080, []);
 
         expect(result.output?.uniqueName).toBe("host");
     });
 
     test("the port number is set as the dev server port and the public path port", () => {
-        const result = defineDevHostConfig(SwcConfig, "host", 8080, []);
+        const result = defineDevHostConfig(SwcConfig, 8080, []);
 
         // "devServer" does exist but webpack types are a messed.
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -52,13 +52,13 @@ describe("defineDevHostConfig", () => {
     });
 
     test("when no public path is provided, the default public path is \"auto\"", () => {
-        const config = defineDevHostConfig(SwcConfig, "host", 8080, []);
+        const config = defineDevHostConfig(SwcConfig, 8080, []);
 
         expect(config.output?.publicPath).toBe("auto");
     });
 
     test("when a public path is provided, use the provided public path", () => {
-        const config = defineDevHostConfig(SwcConfig, "host", 8080, [], {
+        const config = defineDevHostConfig(SwcConfig, 8080, [], {
             publicPath: "http://localhost:8080/"
         });
 
@@ -66,7 +66,7 @@ describe("defineDevHostConfig", () => {
     });
 
     test("the module federation plugin configuration includes the remotes", () => {
-        const config = defineDevHostConfig(SwcConfig, "host", 8080, [
+        const config = defineDevHostConfig(SwcConfig, 8080, [
             { name: "remote1", url: "http://localhost/remote1" },
             { name: "remote2", url: "http://localhost/remote2" }
         ]);
@@ -77,14 +77,14 @@ describe("defineDevHostConfig", () => {
     });
 
     test("the module federation plugin configuration includes the default shared dependencies", () => {
-        const config = defineDevHostConfig(SwcConfig, "host", 8080, []);
+        const config = defineDevHostConfig(SwcConfig, 8080, []);
         const result = findPlugin(config, matchConstructorName(ModuleFederationPlugin.name));
 
         expect(prepareModuleFederationPluginForSnapshot(result.plugin as WebpackPluginInstance)).toMatchSnapshot();
     });
 
     test("when additional shared dependencies are provided, add the dependencies to the module federation plugin configuration", () => {
-        const config = defineDevHostConfig(SwcConfig, "host", 8080, [], {
+        const config = defineDevHostConfig(SwcConfig, 8080, [], {
             sharedDependencies: {
                 "first": {
                     singleton: true
@@ -102,7 +102,7 @@ describe("defineDevHostConfig", () => {
     });
 
     test("when additional options are provided for an existing default shared dependency, add the consumer options to the default options", () => {
-        const config = defineDevHostConfig(SwcConfig, "host", 8080, [], {
+        const config = defineDevHostConfig(SwcConfig, 8080, [], {
             sharedDependencies: {
                 "react": {
                     requiredVersion: "1.2.3"
@@ -116,7 +116,7 @@ describe("defineDevHostConfig", () => {
     });
 
     test("when overriding options are provided for a default shared dependency, use the consumer option", () => {
-        const config = defineDevHostConfig(SwcConfig, "host", 8080, [], {
+        const config = defineDevHostConfig(SwcConfig, 8080, [], {
             sharedDependencies: {
                 "react": {
                     eager: false,
@@ -131,7 +131,7 @@ describe("defineDevHostConfig", () => {
     });
 
     test("when the router is react-router, add react-router shared dependencies", () => {
-        const config = defineDevHostConfig(SwcConfig, "host", 8080, [], {
+        const config = defineDevHostConfig(SwcConfig, 8080, [], {
             features: {
                 router: "react-router"
             }
@@ -143,7 +143,7 @@ describe("defineDevHostConfig", () => {
     });
 
     test("when msw is activated, add msw shared dependency", () => {
-        const config = defineDevHostConfig(SwcConfig, "host", 8080, [], {
+        const config = defineDevHostConfig(SwcConfig, 8080, [], {
             features: {
                 msw: true
             }
@@ -155,7 +155,7 @@ describe("defineDevHostConfig", () => {
     });
 
     test("when i18next is activated, add i18next shared dependency and requiredVersion: false to the react shared dependency definition", () => {
-        const config = defineDevHostConfig(SwcConfig, "host", 8080, [], {
+        const config = defineDevHostConfig(SwcConfig, 8080, [], {
             features: {
                 i18next: true
             }
@@ -167,7 +167,7 @@ describe("defineDevHostConfig", () => {
     });
 
     test("when additional plugins are provided, the plugins are added to the configuration", () => {
-        const config = defineDevHostConfig(SwcConfig, "host", 8080, [], {
+        const config = defineDevHostConfig(SwcConfig, 8080, [], {
             plugins: [new DummyPlugin({})]
         });
 
@@ -177,7 +177,7 @@ describe("defineDevHostConfig", () => {
     });
 
     test("when configuration transformers are provided, the transformers are applied to the configuration", () => {
-        const result = defineDevHostConfig(SwcConfig, "host", 8080, [], {
+        const result = defineDevHostConfig(SwcConfig, 8080, [], {
             transformers: [(config: WebpackConfig) => {
                 config.entry = "updated by the dummy transformer";
 
@@ -189,7 +189,7 @@ describe("defineDevHostConfig", () => {
     });
 
     test("when no options are provided for the html webpack plugin, add a public path option", () => {
-        const config = defineDevHostConfig(SwcConfig, "host", 8080, []);
+        const config = defineDevHostConfig(SwcConfig, 8080, []);
 
         const result = findPlugin(config, matchConstructorName(HtmlWebpackPlugin.name));
 
@@ -206,7 +206,7 @@ describe("defineDevHostConfig", () => {
     });
 
     test("when options others than the public path option are provided for the html webpack plugin, add a public path option", () => {
-        const config = defineDevHostConfig(SwcConfig, "host", 8080, [], {
+        const config = defineDevHostConfig(SwcConfig, 8080, [], {
             htmlWebpackPluginOptions: {
                 favicon: "toto.png"
             }
@@ -218,7 +218,7 @@ describe("defineDevHostConfig", () => {
     });
 
     test("when a public path option is provided for the html webpack plugin, do not alter the provided public path option", () => {
-        const config = defineDevHostConfig(SwcConfig, "host", 8080, [], {
+        const config = defineDevHostConfig(SwcConfig, 8080, [], {
             htmlWebpackPluginOptions: {
                 publicPath: "/toto"
             }
@@ -237,20 +237,20 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("the application name is set as the federation plugin application name", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", []);
+        const config = defineBuildHostConfig(SwcConfig, []);
         const result = findPlugin(config, matchConstructorName(ModuleFederationPlugin.name));
 
         expect(prepareModuleFederationPluginForSnapshot(result.plugin as WebpackPluginInstance)).toMatchSnapshot();
     });
 
     test("when no public path is provided, the default public path is \"auto\"", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", []);
+        const config = defineBuildHostConfig(SwcConfig, []);
 
         expect(config.output?.publicPath).toBe("auto");
     });
 
     test("when a public path is provided, use the provided public path", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", [], {
+        const config = defineBuildHostConfig(SwcConfig, [], {
             publicPath: "http://localhost:8080/"
         });
 
@@ -258,7 +258,7 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("the module federation plugin configuration includes the remotes", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", [
+        const config = defineBuildHostConfig(SwcConfig, [
             { name: "remote1", url: "http://localhost/remote1" },
             { name: "remote2", url: "http://localhost/remote2" }
         ]);
@@ -269,14 +269,14 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("the module federation plugin configuration includes the default shared dependencies", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", []);
+        const config = defineBuildHostConfig(SwcConfig, []);
         const result = findPlugin(config, matchConstructorName(ModuleFederationPlugin.name));
 
         expect(prepareModuleFederationPluginForSnapshot(result.plugin as WebpackPluginInstance)).toMatchSnapshot();
     });
 
     test("when additional shared dependencies are provided, add the dependencies to the module federation plugin configuration", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", [], {
+        const config = defineBuildHostConfig(SwcConfig, [], {
             sharedDependencies: {
                 "first": {
                     singleton: true
@@ -294,7 +294,7 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("when additional options are provided for an existing default shared dependency, add the consumer options to the default options", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", [], {
+        const config = defineBuildHostConfig(SwcConfig, [], {
             sharedDependencies: {
                 "react": {
                     requiredVersion: "1.2.3"
@@ -308,7 +308,7 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("when overriding options are provided for a default shared dependency, use the consumer option", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", [], {
+        const config = defineBuildHostConfig(SwcConfig, [], {
             sharedDependencies: {
                 "react": {
                     eager: false,
@@ -323,7 +323,7 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("when the router is react-router, add react-router shared dependencies", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", [], {
+        const config = defineBuildHostConfig(SwcConfig, [], {
             features: {
                 router: "react-router"
             }
@@ -335,7 +335,7 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("when msw is activated, add msw shared dependency", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", [], {
+        const config = defineBuildHostConfig(SwcConfig, [], {
             features: {
                 msw: true
             }
@@ -347,7 +347,7 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("when i18next is activated, add i18next shared dependency and requiredVersion: false to the react shared dependency definition", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", [], {
+        const config = defineBuildHostConfig(SwcConfig, [], {
             features: {
                 i18next: true
             }
@@ -359,7 +359,7 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("when additional plugins are provided, the plugins are added to the configuration", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", [], {
+        const config = defineBuildHostConfig(SwcConfig, [], {
             plugins: [new DummyPlugin({})]
         });
 
@@ -369,7 +369,7 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("when configuration transformers are provided, the transformers are applied to the configuration", () => {
-        const result = defineBuildHostConfig(SwcConfig, "host", [], {
+        const result = defineBuildHostConfig(SwcConfig, [], {
             transformers: [(config: WebpackConfig) => {
                 config.entry = "updated by the dummy transformer";
 
@@ -381,7 +381,7 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("when no options are provided for the html webpack plugin, add a public path option", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", []);
+        const config = defineBuildHostConfig(SwcConfig, []);
 
         const result = findPlugin(config, matchConstructorName(HtmlWebpackPlugin.name));
 
@@ -394,7 +394,7 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("when options others than the public path option are provided for the html webpack plugin, add a public path option", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", [], {
+        const config = defineBuildHostConfig(SwcConfig, [], {
             htmlWebpackPluginOptions: {
                 favicon: "toto.png"
             }
@@ -406,7 +406,7 @@ describe("defineBuildHostConfig", () => {
     });
 
     test("when a public path option is provided for the html webpack plugin, do not alter the provided public path option", () => {
-        const config = defineBuildHostConfig(SwcConfig, "host", [], {
+        const config = defineBuildHostConfig(SwcConfig, [], {
             htmlWebpackPluginOptions: {
                 publicPath: "/toto"
             }
@@ -727,7 +727,7 @@ describe("defineBuildRemoteModuleConfig", () => {
 
 describe("defineHostModuleFederationPluginOptions", () => {
     test("merge the default options with the provided options", () => {
-        const result = defineHostModuleFederationPluginOptions("host", [], {
+        const result = defineHostModuleFederationPluginOptions([], {
             runtime: "a-custom-runtime-name"
         });
 
@@ -735,7 +735,7 @@ describe("defineHostModuleFederationPluginOptions", () => {
     });
 
     test("merge the shared dependencies with the default shared dependencies", () => {
-        const result = defineHostModuleFederationPluginOptions("host", [], {
+        const result = defineHostModuleFederationPluginOptions([], {
             shared: {
                 "react": {
                     singleton: false,

@@ -36,8 +36,8 @@ export interface FireflyDefineDevHostConfigOptions extends DefineDevHostConfigOp
 }
 
 // The function return type is mandatory, otherwise we get an error TS4058.
-export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: string, port: number, remotes: RemoteDefinition[], { features = {}, ...options }: FireflyDefineDevHostConfigOptions = {}): webpack.Configuration {
-    return baseDefineDevHostConfig(swcConfig, applicationName, port, remotes, {
+export function defineDevHostConfig(swcConfig: SwcConfig, port: number, remotes: RemoteDefinition[], { features = {}, ...options }: FireflyDefineDevHostConfigOptions = {}): webpack.Configuration {
+    return baseDefineDevHostConfig(swcConfig, port, remotes, {
         ...options,
         features: {
             router: "react-router",
@@ -52,8 +52,8 @@ export interface FireflyDefineBuildHostConfigOptions extends DefineBuildHostConf
 }
 
 // The function return type is mandatory, otherwise we get an error TS4058.
-export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: string, remotes: RemoteDefinition[], { features = {}, ...options }: FireflyDefineBuildHostConfigOptions = {}): webpack.Configuration {
-    return baseDefineBuildHostConfig(swcConfig, applicationName, remotes, {
+export function defineBuildHostConfig(swcConfig: SwcConfig, remotes: RemoteDefinition[], { features = {}, ...options }: FireflyDefineBuildHostConfigOptions = {}): webpack.Configuration {
+    return baseDefineBuildHostConfig(swcConfig, remotes, {
         ...options,
         features: {
             router: "react-router",

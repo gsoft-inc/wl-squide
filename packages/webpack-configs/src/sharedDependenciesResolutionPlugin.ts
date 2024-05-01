@@ -23,6 +23,7 @@ remote-2:    2.1   <-----
 
 import type { FederationHost, FederationRuntimePlugin } from "@module-federation/enhanced/runtime";
 import { minVersion, parse, rcompare, type SemVer } from "semver";
+import { HostApplicationName } from "./shared.ts";
 
 type Shared = FederationHost["shareScopeMap"][string][string][string];
 
@@ -64,7 +65,7 @@ export function resolveSharedDependency(pkgName: string, entries: Shared[], logF
     logFct(`[squide] ${pkgName} highest requested version is`, highestVersionEntry.version, highestVersionEntry);
 
     // The host is always right!
-    if (highestVersionEntry.from === "host") {
+    if (highestVersionEntry.from === HostApplicationName) {
         logFct("[squide] %cThis is the host version%c, great, resolving to:", "color: black; background-color: pink;", "", highestVersionEntry.version, highestVersionEntry);
 
         return {
@@ -75,7 +76,7 @@ export function resolveSharedDependency(pkgName: string, entries: Shared[], logF
 
     logFct(`[squide] ${pkgName} Highest requested version is not from the host.`);
 
-    const hostEntry = sortedEntries.find(x => x.from === "host");
+    const hostEntry = sortedEntries.find(x => x.from === HostApplicationName);
 
     // Found nothing, that's odd but let's not break the app for this.
     if (!hostEntry) {
@@ -126,7 +127,15 @@ const plugin: () => FederationRuntimePlugin = () => {
             log(`[squide] Resolving ${pkgName}:`, args);
 
             // This custom strategy only applies to singleton shared dependencies.
-            const entries = Object.values(shareScopeMap[scope][pkgName]).filter(x => x.shareConfig.singleton);
+            const entries = Object.values(shareScopeMap[scope][pkgName]).filter(x => {
+                return (
+                    // Temporary check until all the remotes on Webpack Module Federation has been updated to Module Federation 2.0.
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    x.singleton ||
+                    (x.shareConfig && x.shareConfig.singleton)
+                );
+            });
 
             // Not a singleton dependency.
             if (entries.length === 0) {

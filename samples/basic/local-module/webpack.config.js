@@ -5,7 +5,7 @@ import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import path from "node:path";
 import { swcConfig } from "./swc.config.js";
 
-export default defineDevHostConfig(swcConfig, "local1", 8080, [], {
+export default defineDevHostConfig(swcConfig, 8080, [], {
     entry: path.resolve("./src/dev/index.tsx"),
     overlay: false,
     sharedDependencies: {

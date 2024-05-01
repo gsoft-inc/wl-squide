@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.767840448782">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.767895379904">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.767840448782" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.767895379904" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.767840448782" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.767895379904" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.767840448782" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.767840448782" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.767895379904" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.767895379904" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -338,7 +338,7 @@
     </h2>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript"><code v-pre class="language-typescript">const webpackConfig = defineBuildHostConfig(swcConfig: {}, applicationName, remotes: [], options?: {})</code></pre>
+<pre class="language-typescript"><code v-pre class="language-typescript">const webpackConfig = defineBuildHostConfig(swcConfig: {}, remotes: [], options?: {})</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="parameters">
     <h2>
@@ -348,7 +348,6 @@
 </doc-anchor-target>
 <ul>
 <li><code v-pre>swcConfig</code>: An SWC <a href="https://swc.rs/docs/configuration/swcrc" class="outbound" target="_blank">configuration object</a>.</li>
-<li><code v-pre>applicationName</code>: The host application name.</li>
 <li><code v-pre>remotes</code>: An array of <code v-pre>RemoteDefinition</code> (view the <doc-anchor-trigger to="#remote-definition">Remote definition</doc-anchor-trigger> section).</li>
 <li><code v-pre>options</code>: An optional object literal of options:
 <ul>
@@ -414,7 +413,7 @@ const Remotes = [
     { name: &quot;remote1&quot;, url: &quot;http://localhost:8081&quot; }
 ];
 
-export default defineBuildHostConfig(swcConfig, &quot;host&quot;, Remotes);</code></pre>
+export default defineBuildHostConfig(swcConfig, Remotes);</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="activate-additional-features">
     <h3>
@@ -436,7 +435,7 @@ const Remotes = [
     { name: &quot;remote1&quot;, url: &quot;http://localhost:8081&quot; }
 ];
 
-export default defineBuildHostConfig(swcConfig, &quot;host&quot;, Remotes, {
+export default defineBuildHostConfig(swcConfig, Remotes, {
     features: {
         i18next: true
     }
@@ -479,7 +478,7 @@ const Remotes = [
     { name: &quot;remote1&quot;, url: &quot;http://localhost:8081&quot; }
 ];
 
-export default defineBuildHostConfig(swcConfig, &quot;host&quot;, Remotes, {
+export default defineBuildHostConfig(swcConfig, Remotes, {
     sharedDependencies: {
         &quot;@sample/shared&quot;: {
             singleton: true
@@ -524,7 +523,7 @@ const Remotes = [
     { name: &quot;remote1&quot;, url: &quot;http://localhost:8081&quot; }
 ];
 
-export default defineBuildHostConfig(swcConfig, &quot;host&quot;, Remotes, {
+export default defineBuildHostConfig(swcConfig, Remotes, {
     sharedDependencies: {
         &quot;react&quot;: {
             requiredVersion: &quot;18.2.0&quot;
@@ -562,7 +561,7 @@ const Remotes = [
     { name: &quot;remote1&quot;, url: &quot;http://localhost:8081&quot; }
 ];
 
-export default defineBuildHostConfig(swcConfig, &quot;host&quot;, Remotes, {
+export default defineBuildHostConfig(swcConfig, Remotes, {
     sharedDependencies: {
         &quot;react&quot;: {
             singleton: false
@@ -585,7 +584,7 @@ export default defineBuildHostConfig(swcConfig, &quot;host&quot;, Remotes, {
         <span>Customize module federation configuration</span>
     </h3>
 </doc-anchor-target>
-<p>While you could customize the <a href="https://module-federation.io/configure/index.html" class="outbound" target="_blank">ModuleFederationPlugin</a> configuration by providing your own object literal through the <code v-pre>moduleFederationPluginOptions</code> option, we recommend using the <code v-pre>defineHostModuleFederationPluginOptions(applicationName, options)</code> function as it will take care of <strong>merging</strong> the custom options with the default plugin options.</p>
+<p>While you could customize the <a href="https://module-federation.io/configure/index.html" class="outbound" target="_blank">ModuleFederationPlugin</a> configuration by providing your own object literal through the <code v-pre>moduleFederationPluginOptions</code> option, we recommend using the <code v-pre>defineHostModuleFederationPluginOptions(options)</code> function as it will take care of <strong>merging</strong> the custom options with the default plugin options.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/webpack.build.js</div>
 <pre class="language-javascript" data-line="14-16"><code v-pre class="language-javascript">// @ts-check
@@ -600,8 +599,8 @@ const Remotes = [
     { name: &quot;remote1&quot;, url: &quot;http://localhost:8081&quot; }
 ];
 
-export default defineBuildHostConfig(swcConfig, &quot;host&quot;, Remotes, {
-    moduleFederationPluginOptions: defineHostModuleFederationPluginOptions(&quot;host&quot;, {
+export default defineBuildHostConfig(swcConfig, Remotes, {
+    moduleFederationPluginOptions: defineHostModuleFederationPluginOptions({
         runtime: &quot;my-runtime-name&quot;
     })
 });</code></pre>

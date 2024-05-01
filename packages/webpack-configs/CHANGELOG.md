@@ -1,5 +1,11 @@
 # @squide/webpack-configs
 
+## 3.0.0
+
+### Major Changes
+
+- [#170](https://github.com/gsoft-inc/wl-squide/pull/170) [`119570f`](https://github.com/gsoft-inc/wl-squide/commit/119570f9c93341285a24e8be879d0a468ee2b5db) Thanks [@patricklafrance](https://github.com/patricklafrance)! - The host define function doesn't accept an "applicationName" anymore as it is now hardcoded to "host".
+
 ## 2.0.0
 
 ### Major Changes

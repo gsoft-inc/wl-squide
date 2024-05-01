@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.766291168294">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.767839820980">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.766291168294" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.767839820980" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.766291168294" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.767839820980" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -313,7 +313,7 @@
         <span>AppRouter</span>
     </h1>
 </doc-anchor-target>
-<p>A component that sets up and orchestrate Squide federated primitives with a React Router instance.</p>
+<p>A component that sets up and orchestrate Squide federated primitives with a <a href="https://reactrouter.com/en/main" class="outbound" target="_blank">React Router</a> instance.</p>
 <doc-anchor-target id="reference">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#reference">#</doc-anchor-trigger>
@@ -335,12 +335,12 @@
 <li><code v-pre>fallbackElement</code>: A React element to render while the application is being bootstrapped.</li>
 <li><code v-pre>errorElement</code>: A React element to render when there&#x27;s an unmanaged error during the bootstrapping of the application.</li>
 <li><code v-pre>waitForMsw</code>: Whether or not the application bootstrapping sequence should wait for MSW to be started before loading the data and rendering the active route.</li>
-<li><code v-pre>onLoadPublicData</code>: An optional handler to load the initial public data after the <strong>modules are registered</strong> and <strong>MSW is started</strong> (if enabled). This handler is called the first time a user navigate to a <a href="../../runtime/runtime-class/#register-a-public-route">public route</a>. Such public data could include feature flags.
+<li><code v-pre>onLoadPublicData</code>: An optional handler to load the initial public data after the <strong>modules are registered</strong> and <strong>MSW is started</strong> (if enabled). This handler is called the first time a user navigate to a <a href="../../runtime/runtime-class/#register-a-public-route">public route</a>.
 <ul>
 <li><code v-pre>signal</code>: An <a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal" class="outbound" target="_blank">AbortSignal</a> to cancel the previous HTTP request when the <code v-pre>onLoadPublicData</code> handler is called twice due to the <code v-pre>AppRouter</code> being re-rendered.</li>
 </ul>
 </li>
-<li><code v-pre>onLoadProtectedData</code>: An optional handler to load the initial protected data after the <strong>modules are registered</strong> and <strong>MSW is started</strong> (if enabled). This handler is called the first time a user navigate to a protected route (any route that has no <code v-pre>$visibility: public</code> hint). Such protected data could include a user session.
+<li><code v-pre>onLoadProtectedData</code>: An optional handler to load the initial protected data after the <strong>modules are registered</strong> and <strong>MSW is started</strong> (if enabled). This handler is called the first time a user navigate to a protected route (any route that has no <code v-pre>$visibility: public</code> hint).
 <ul>
 <li><code v-pre>signal</code>: An <a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal" class="outbound" target="_blank">AbortSignal</a> to cancel the previous HTTP request when the <code v-pre>onLoadPublicData</code> handler is called twice due to the <code v-pre>AppRouter</code> being re-rendered.</li>
 </ul>
@@ -608,9 +608,8 @@ export function App() {
 <p>For more information about deferred registrations, refer to the <a href="../../registration/registerremotemodules/#defer-the-registration-of-routes-or-navigation-items">registerRemoteModules</a> and <a href="../../registration/completemoduleregistrations/">completeModuleRegistrations</a> documentation.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="32-34,44"><code v-pre class="language-tsx">import { useState, useCallback } from &quot;react&quot;;
-import { AppRouter } from &quot;@squide/firefly&quot;;
-import { completeModuleRegistrations } from &quot;@squide/webpack-module-federation&quot;;
+<pre class="language-tsx" data-line="31-33,43"><code v-pre class="language-tsx">import { useState, useCallback } from &quot;react&quot;;
+import { AppRouter, completeModuleRegistrations } from &quot;@squide/firefly&quot;;
 import { Loading } from &quot;./Loading.tsx&quot;;
 import { ErrorBoundary } from &quot;./ErrorBoundary.tsx&quot;;
 import type { FeatureFlags } from &quot;@sample/shared&quot;;

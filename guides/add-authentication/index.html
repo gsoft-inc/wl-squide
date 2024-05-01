@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.766291168294">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.767839820980">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Add authentication</title>
     <meta name="title" content="Add authentication">
-    <meta name="description" content="Before going forward with this guide, make sure that you completed the setup Mock Service Worker and ">
+    <meta name="description" content="Before going forward with this guide, make sure that you completed the Setup Mock Service Worker and ">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/guides/add-authentication/">
@@ -21,23 +21,23 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/guides/add-authentication/">
     <meta property="og:title" content="Add authentication">
-    <meta property="og:description" content="Before going forward with this guide, make sure that you completed the setup Mock Service Worker and ">
+    <meta property="og:description" content="Before going forward with this guide, make sure that you completed the Setup Mock Service Worker and ">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/guides/add-authentication/">
     <meta property="twitter:title" content="Add authentication">
-    <meta property="twitter:description" content="Before going forward with this guide, make sure that you completed the setup Mock Service Worker and ">
+    <meta property="twitter:description" content="Before going forward with this guide, make sure that you completed the Setup Mock Service Worker and ">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.766291168294" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.767839820980" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.766291168294" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.767839820980" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -317,7 +317,7 @@
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>Before going forward with this guide, make sure that you completed the <a href="../setup-msw/">setup Mock Service Worker</a> and <a href="../fetch-initial-data/">fetch initial data</a> guides.</p>
+<p>Before going forward with this guide, make sure that you completed the <a href="../setup-msw/">Setup Mock Service Worker</a> and <a href="../fetch-initial-data/">Fetch initial data</a> guides.</p>
         </div>
     </div>
 </div>
@@ -440,8 +440,8 @@ export const requestHandlers: HttpHandler[] = [
 <div class="codeblock-title">host/src/register.tsx</div>
 <pre class="language-tsx"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 
-export const registerHost: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&gt; {
-    if (process.env.USE_MSW) {
+export const registerHost: ModuleRegisterFunction&lt;FireflyRuntime&gt; = async runtime =&gt; {
+    if (runtime.isMswEnabled) {
         // Files that includes an import to the &quot;msw&quot; package are included dynamically to prevent adding
         // unused MSW stuff to the application bundles.
         const requestHandlers = (await import(&quot;../mocks/handlers.ts&quot;)).requestHandlers;
@@ -519,7 +519,7 @@ export function Login() {
     );
 }</code></pre>
 </doc-codeblock></div>
-<p>After the user logs in, the application is reloaded. This is a requirement of the <a href="../../reference/routing/approuter/">AppRouter</a> component&#x27;s <a href="../../reference/routing/approuter/#load-public-data">onLoadPublicData</a> and <a href="../../reference/routing/approuter/#load-protected-data">onLoadProtectedData</a> handlers. Nevertheless, it&#x27;s not a significant concern because <a href="https://workleap.com/" class="outbound" target="_blank">Workleap</a> applications utilize a third-party service for authentication which requires a full refresh of the application.</p>
+<p>After the user logs in, the application is reloaded. This is a requirement of the <a href="../../reference/routing/approuter/">AppRouter</a> component&#x27;s <a href="../../reference/routing/approuter/#load-public-data">onLoadPublicData</a> and <a href="../../reference/routing/approuter/#load-protected-data">onLoadProtectedData</a> handlers. Nevertheless, it&#x27;s not a significant concern because Workleap&#x27;s applications utilize a third-party service for authentication which requires a full refresh of the application.</p>
 <doc-anchor-target id="create-a-session-accessor-function">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#create-a-session-accessor-function">#</doc-anchor-trigger>
@@ -922,15 +922,16 @@ export function RootLayout() {
 <p>Finally, assemble everything:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/register.tsx</div>
-<pre class="language-tsx" data-line="16,21,24,45-51"><code v-pre class="language-tsx">import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from &quot;@squide/firefly&quot;;
+<pre class="language-tsx" data-line="17,22,25,46-52"><code v-pre class="language-tsx">import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from &quot;@squide/firefly&quot;;
 import { RootLayout } from &quot;./Rootlayout.tsx&quot;;
 import { RootErrorBoundary } from &quot;./RootErrorBoundary.tsx&quot;;
 import { AuthenticationBoundary } from &quot;./AuthenticationBoundary.tsx&quot;;
 import { ModuleErrorBoundary } from &quot;./ModuleErrorBoundary.tsx&quot;;
 import { LoginPage } from &quot;./LoginPage.tsx&quot;;
 import { HomePage } from &quot;./Homepage.tsx&quot;;
+import { NotFoundPage } from &quot;./NotFoundPage.tsx&quot;;
 
-export const registerHost: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&gt; {
+export const registerHost: ModuleRegisterFunction&lt;FireflyRuntime&gt; = async runtime =&gt; {
     runtime.registerRoute({
         element: &lt;RootLayout /&gt;,
         children: [
@@ -975,11 +976,19 @@ export const registerHost: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtim
     });
 
     runtime.registerRoute({
+        $visibility: &quot;public&quot;,
+        path: &quot;*&quot;,
+        element: &lt;NotFoundPage /&gt;
+    }, {
+        parentName: &quot;root-error-boundary&quot;
+    });
+
+    runtime.registerRoute({
         index: true,
         element: &lt;HomePage /&gt;
     });
 
-    if (process.env.USE_MSW) {
+    if (runtime.isMswEnabled) {
         // Files that includes an import to the &quot;msw&quot; package are included dynamically to prevent adding
         // unused MSW stuff to the application bundles.
         const requestHandlers = (await import(&quot;../mocks/handlers.ts&quot;)).requestHandlers;

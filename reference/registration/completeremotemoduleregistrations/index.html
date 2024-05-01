@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.766291168294">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.767839820980">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.766291168294" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.767839820980" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.766291168294" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.767839820980" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -360,9 +360,8 @@
 <ul>
 <li><code v-pre>RemoteModuleRegistrationError</code>:
 <ul>
-<li><code v-pre>url</code>: The URL of the module federation remote that failed to load.</li>
-<li><code v-pre>containerName</code>: The name of the <a href="https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers" class="outbound" target="_blank">dynamic container</a> that Squide attempted to recover.</li>
-<li><code v-pre>moduleName</code>: The name of the module that Squide attempted to recover.</li>
+<li><code v-pre>remoteName</code>: The name of the remote module that failed to load.</li>
+<li><code v-pre>moduleName</code>: The name of the <a href="../registerremotemodules/#name">module</a> that Squide attempted to recover.</li>
 <li><code v-pre>error</code>: The original error object.</li>
 </ul>
 </li>
@@ -381,20 +380,16 @@
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
-<pre class="language-tsx" data-line="18,21"><code v-pre class="language-tsx">import { FireflyRuntime, completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from &quot;@squide/firefly&quot;;
-import { fetchFeatureFlags, type AppContext } from &quot;@sample/shared&quot;;
+<pre class="language-tsx" data-line="14,17"><code v-pre class="language-tsx">import { FireflyRuntime, completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from &quot;@squide/firefly&quot;;
+import { fetchFeatureFlags } from &quot;@sample/shared&quot;;
 
 const runtime = new FireflyRuntime();
 
-const context: AppContext = {
-    name: &quot;Test app&quot;
-};
-
 const Remotes: RemoteDefinition = [
-    { name: &quot;remote1&quot;, url: &quot;http://localhost:8081&quot; }
+    { name: &quot;remote1&quot; }
 ];
 
-await registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime);
 
 // Don't fetch data in the bootstrapping code for a real application. This is done here
 // strictly for demonstration purpose.
@@ -406,11 +401,11 @@ await completeRemoteModuleRegistrations(runtime, { featureFlags });</code></pre>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
 <pre class="language-tsx" data-line="19-32"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
-import type { AppContext, DeferredRegistrationData } from &quot;@sample/shared&quot;;
+import type { DeferredRegistrationData } from &quot;@sample/shared&quot;;
 import { AboutPage } from &quot;./AboutPage.tsx&quot;;
 import { FeatureAPage } from &quot;./FeatureAPage.tsx&quot;;
 
-export const register: ModuleRegisterFunction&lt;FireflyRuntime, AppContext, DeferredRegistrationData&gt; = async (runtime, context) =&gt; {
+export const register: ModuleRegisterFunction&lt;FireflyRuntime, unknown, DeferredRegistrationData&gt; = async runtime =&gt; {
     runtime.registerRoute({
         path: &quot;/about&quot;,
         element: &lt;AboutPage /&gt;
@@ -447,20 +442,16 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime, AppContext, Def
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
-<pre class="language-tsx" data-line="20-22"><code v-pre class="language-tsx">import { FireflyRuntime, completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from &quot;@squide/firefly&quot;;
-import { fetchFeatureFlags, type AppContext } from &quot;@sample/shared&quot;;
+<pre class="language-tsx" data-line="16-18"><code v-pre class="language-tsx">import { FireflyRuntime, completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from &quot;@squide/firefly&quot;;
+import { fetchFeatureFlags } from &quot;@sample/shared&quot;;
 
 const runtime = new FireflyRuntime();
 
-const context: AppContext = {
-    name: &quot;Test app&quot;
-};
-
 const Remotes: RemoteDefinition = [
-    { name: &quot;remote1&quot;, url: &quot;http://localhost:8081&quot; }
+    { name: &quot;remote1&quot; }
 ];
 
-await registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime);
 
 // Don't fetch data in the bootstrapping code for a real application. This is done here
 // strictly for demonstration purpose.

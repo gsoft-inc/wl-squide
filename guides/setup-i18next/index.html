@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.766291168294">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.767839820980">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.766291168294" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.767839820980" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.766291168294" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.767839820980" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -305,7 +305,7 @@
         <span>Setup i18next</span>
     </h1>
 </doc-anchor-target>
-<p>Most of the applications that forms the <a href="https://workleap.com/" class="outbound" target="_blank">Workleap</a> platform are either already bilingual or will be in the future. To help feature teams with localized resources, Squide provides a native <a href="../../reference/i18next/i18nextplugin/">plugin</a> designed to adapt the <a href="https://www.i18next.com/" class="outbound" target="_blank">i18next</a> library for federated applications.</p>
+<p>Most of the applications that forms the Workleap platform are either already bilingual or will be in the future. To help feature teams with localized resources, Squide provides a native <a href="../../reference/i18next/i18nextplugin/">plugin</a> designed to adapt the <a href="https://www.i18next.com/" class="outbound" target="_blank">i18next</a> library for federated applications.</p>
 <div class="flex mb-6">
     <div class="shrink-0 w-1 rounded-tl rounded-bl bg-yellow-500"></div>
     <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
@@ -374,16 +374,15 @@
 <p>Then, update the host application boostrapping code to register an instance of the <a href="../../reference/i18next/i18nextplugin/">i18nextplugin</a> with the <a href="../../reference/runtime/runtime-class/">FireflyRuntime</a> instance:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
-<pre class="language-tsx" data-line="17,20,23"><code v-pre class="language-tsx">import { createRoot } from &quot;react-dom/client&quot;;
+<pre class="language-tsx" data-line="16,19,22"><code v-pre class="language-tsx">import { createRoot } from &quot;react-dom/client&quot;;
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from &quot;@squide/firefly&quot;;
-import type { AppContext} from &quot;@sample/shared&quot;;
 import { App } from &quot;./App.tsx&quot;;
 import { registerHost } from &quot;./register.tsx&quot;;
 import { registerShell } from &quot;@sample/shell&quot;;
 import { i18nextPlugin } from &quot;@sample/i18next&quot;;
 
 const Remotes: RemoteDefinition[] = [
-    { url: &quot;http://localhost:8081&quot;, name: &quot;remote1&quot; }
+    { url: name: &quot;remote1&quot; }
 ];
 
 // In this example:
@@ -400,13 +399,9 @@ const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger()]
 });
 
-const context: AppContext = {
-    name: &quot;Demo application&quot;
-};
+await registerLocalModules([registerShell, registerHost], runtime);
 
-await registerLocalModules([registerShell, registerHost], runtime, { context });
-
-await registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime);
 
 const root = createRoot(document.getElementById(&quot;root&quot;)!);
 
@@ -518,10 +513,10 @@ export function HomePage() {
 <div class="codeblock-title">host/webpack.dev.js</div>
 <pre class="language-javascript" data-line="7-9"><code v-pre class="language-javascript">// @ts-check
 
-import { defineDevHostConfig } from &quot;@squide/firefly-configs&quot;;
+import { defineDevHostConfig } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.dev.js&quot;;
 
-export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
+export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, [], {
     features: {
         i18next: true
     },
@@ -537,10 +532,10 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
 <div class="codeblock-title">host/webpack.build.js</div>
 <pre class="language-javascript" data-line="7-9"><code v-pre class="language-javascript">// @ts-check
 
-import { defineBuildHostConfig } from &quot;@squide/firefly-configs&quot;;
+import { defineBuildHostConfig } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.build.js&quot;;
 
-export default defineBuildHostConfig(swcConfig, &quot;host&quot;, {
+export default defineBuildHostConfig(swcConfig, &quot;host&quot;, [], {
     features: {
         i18next: true
     },
@@ -618,16 +613,15 @@ export default defineBuildHostConfig(swcConfig, &quot;host&quot;, {
 <p>Then, update the <a href="../../reference/registration/registerlocalmodules/">local module</a> register function to create and register an instance of <code v-pre>i18next</code> with the <code v-pre>i18nextPlugin</code> plugin instance:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="11,13-15,17-24,27"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
+<pre class="language-tsx" data-line="10,12-14,16-23,26"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import { getI18nextPlugin } from &quot;@squide/i18next&quot;;
-import type { AppContext } from &quot;@sample/shared&quot;;
 import { Page } from &quot;./Page.tsx&quot;;
 import i18n from &quot;i18next&quot;;
 import { initReactI18next } from &quot;react-i18next&quot;;
 import resourcesEn from &quot;./locales/en-US/resources.json&quot;;
 import resourcesFr from &quot;./locales/fr-CA/resources.json&quot;;
 
-export const register: ModuleRegisterFunction&lt;FireflyRuntime, AppContext&gt; = (runtime, context) =&gt; {
+export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&gt; {
     const i18nextPlugin = getI18nextPlugin(runtime);
 
     const i18nextInstance = i18n
@@ -668,16 +662,15 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime, AppContext&gt; 
 <p>Then, localize the navigation items labels using the <a href="../../reference/i18next/i18nextnavigationitemlabel/">I18nextNavigationItemLabel</a> component. Since for this example, the resources are in the <code v-pre>navigationItems</code> namespace, there&#x27;s no need to specify a <code v-pre>namespace</code> property on the components as it will be inferred:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
-<pre class="language-tsx" data-line="38"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
+<pre class="language-tsx" data-line="37"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import { getI18nextPlugin, I18nextNavigationItemLabel } from &quot;@squide/i18next&quot;;
-import type { AppContext } from &quot;@sample/shared&quot;;
 import { Page } from &quot;./Page.tsx&quot;;
 import i18n from &quot;i18next&quot;;
 import { initReactI18next } from &quot;react-i18next&quot;;
 import resourcesEn from &quot;./locales/en-US/resources.json&quot;;
 import resourcesFr from &quot;./locales/fr-CA/resources.json&quot;;
 
-export const register: ModuleRegisterFunction&lt;FireflyRuntime, AppContext&gt; = (runtime, context) =&gt; {
+export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&gt; {
     const i18nextPlugin = getI18nextPlugin(runtime);
 
     const i18nextInstance = i18n
@@ -743,7 +736,7 @@ export function Page() {
 <div class="codeblock-title">remote-module/webpack.dev.js</div>
 <pre class="language-javascript" data-line="7-9"><code v-pre class="language-javascript">// @ts-check
 
-import { defineDevRemoteModuleConfig } from &quot;@squide/firefly-configs&quot;;
+import { defineDevRemoteModuleConfig } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.dev.js&quot;;
 
 export default defineDevRemoteModuleConfig(swcConfig, &quot;remote1&quot;, 8081, {
@@ -761,7 +754,7 @@ export default defineDevRemoteModuleConfig(swcConfig, &quot;remote1&quot;, 8081,
 <div class="codeblock-title">remote-module/webpack.build.js</div>
 <pre class="language-javascript" data-line="7-9"><code v-pre class="language-javascript">// @ts-check
 
-import { defineBuildRemoteModuleConfig } from &quot;@squide/firefly-configs&quot;;
+import { defineBuildRemoteModuleConfig } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.build.js&quot;;
 
 export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, {

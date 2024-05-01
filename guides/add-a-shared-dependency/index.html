@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.766291168294">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.767839820980">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Add a shared dependency</title>
     <meta name="title" content="Add a shared dependency">
-    <meta name="description" content="Shared dependencies represent one of the most powerful concepts within Module Federation.">
+    <meta name="description" content="Shared dependencies represent one of the most powerful concepts of Module Federation. However, mastering its configuration can be quite challenging. ">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/guides/add-a-shared-dependency/">
@@ -21,23 +21,23 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/guides/add-a-shared-dependency/">
     <meta property="og:title" content="Add a shared dependency">
-    <meta property="og:description" content="Shared dependencies represent one of the most powerful concepts within Module Federation.">
+    <meta property="og:description" content="Shared dependencies represent one of the most powerful concepts of Module Federation. However, mastering its configuration can be quite challenging. ">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/guides/add-a-shared-dependency/">
     <meta property="twitter:title" content="Add a shared dependency">
-    <meta property="twitter:description" content="Shared dependencies represent one of the most powerful concepts within Module Federation.">
+    <meta property="twitter:description" content="Shared dependencies represent one of the most powerful concepts of Module Federation. However, mastering its configuration can be quite challenging. ">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.766291168294" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.767839820980" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.766291168294" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.767839820980" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -305,7 +305,7 @@
         <span>Add a shared dependency</span>
     </h1>
 </doc-anchor-target>
-<p><a href="https://webpack.js.org/plugins/module-federation-plugin/#sharing-libraries" class="outbound" target="_blank">Shared dependencies</a> represent one of the most powerful concepts within <a href="https://webpack.js.org/plugins/module-federation-plugin" class="outbound" target="_blank">Module Federation</a>. However, mastering its configuration can be quite challenging. <strong>Failure</strong> to configure shared dependencies properly in a federated application using Module Federation can significantly <strong>impact</strong> both <strong>user</strong> and <strong>developer experiences</strong>.</p>
+<p><a href="https://module-federation.io/configure/shared.html" class="outbound" target="_blank">Shared dependencies</a> represent one of the most powerful concepts of Module Federation. However, mastering its configuration can be quite challenging. <strong>Failure</strong> to configure shared dependencies properly in a federated application using Module Federation can significantly <strong>impact</strong> both <strong>user</strong> and <strong>developer experiences</strong>.</p>
 <p>Squide aims to simplify the configuration of shared dependencies by abstracting the <doc-anchor-trigger to="#default-shared-dependencies">shared dependencies</doc-anchor-trigger> necessary for building an application with React, React Router, and optionally MSW and i18next. Nevertheless, every federated application will inevitably have to configure additional custom shared dependencies.</p>
 <p>For a more comprehensive documentation of the Module Federation APIs, their functionality, and their benefits, please refer to this <a href="https://www.infoxicator.com/en/module-federation-shared-api" class="outbound" target="_blank">article</a>.</p>
 <doc-anchor-target id="understanding-singleton-dependencies">
@@ -314,7 +314,7 @@
         <span>Understanding singleton dependencies</span>
     </h2>
 </doc-anchor-target>
-<p>A <a href="https://webpack.js.org/plugins/module-federation-plugin/#singleton" class="outbound" target="_blank">singleton</a> shared dependency does exactly what its name suggests: it loads only a single instance of a dependency. This means that a dependency will be included in just one bundle file of the federated application.</p>
+<p>A <a href="https://module-federation.io/configure/shared.html#singleton" class="outbound" target="_blank">singleton</a> shared dependency does exactly what its name suggests: it loads only a single instance of a dependency. This means that a dependency will be included in just one bundle file of the federated application.</p>
 <doc-anchor-target id="strict-versioning">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#strict-versioning">#</doc-anchor-trigger>
@@ -326,10 +326,10 @@
 <div class="codeblock-title">webpack.config.js</div>
 <pre class="language-javascript" data-line="10"><code v-pre class="language-javascript">// @ts-check
 
-import { defineDevHostConfig } from &quot;@squide/firefly-configs&quot;;
+import { defineDevHostConfig } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.dev.js&quot;;
 
-export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
+export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, [], {
     sharedDependencies: {
         &quot;@sample/shared&quot;: {
             singleton: true,
@@ -345,6 +345,22 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
         <span>Expected behaviors</span>
     </h3>
 </doc-anchor-target>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-yellow-500"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-yellow-500" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M22.48 15.59L14.01 1.45A2.968 2.968 0 0012.16.09c-.78-.19-1.58-.07-2.27.35-.41.25-.76.6-1.01 1.01v.01L.4 15.6c-.83 1.43-.33 3.27 1.1 4.1.45.26.95.4 1.48.4h16.95c.8-.01 1.55-.33 2.11-.9.56-.57.87-1.33.86-2.13a3.04 3.04 0 00-.42-1.48zm-1.87 2.21c-.19.19-.44.3-.69.3H2.99c-.17 0-.34-.05-.49-.13a.992.992 0 01-.37-1.35L10.6 2.48c.08-.14.2-.25.34-.33a.992.992 0 011.37.33l8.46 14.13c.09.15.13.32.13.49 0 .26-.1.51-.29.7z"></path>
+                    <path d="M11.45 12.1c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1s-1 .45-1 1v4c0 .56.45 1 1 1zM11.46 14.1c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>Please note that Squide&#x27;s singleton dependency version resolution algorithm <strong>differs</strong> from the native Module Federation behavior. By default, Squide registers a <a href="https://module-federation.io/plugin/dev/index.html" class="outbound" target="_blank">runtime plugin</a> that customize the resolution of shared dependencies.</p>
+        </div>
+    </div>
+</div>
 <doc-anchor-target id="minor-or-patch-version">
     <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#minor-or-patch-version">#</doc-anchor-trigger>
@@ -353,8 +369,8 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
 </doc-anchor-target>
 <p>When the version difference between a host application and a remote module is a <strong>minor</strong> or <strong>patch</strong> version, the higher version of the dependency will be loaded. For example:</p>
 <ul>
-<li>If the host application is on <code v-pre>10.1.0</code> and a remote module is on <code v-pre>10.3.1</code> -&gt; <code v-pre>10.3.1</code> will be loaded</li>
-<li>If the host application is on <code v-pre>10.3.1</code> and a remote module is on <code v-pre>10.1.0</code> -&gt; <code v-pre>10.3.1</code> will be loaded</li>
+<li>If the host application is on <code v-pre>10.1.0</code> and a remote module is on <code v-pre>10.1.1</code> -&gt; <code v-pre>10.1.1</code> will be loaded</li>
+<li>If the host application is on <code v-pre>10.1.0</code> and a remote module is on <code v-pre>10.2.0</code> -&gt; <code v-pre>10.2.0</code> will be loaded</li>
 </ul>
 <doc-anchor-target id="major-version">
     <h4>
@@ -362,11 +378,54 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
         <span>Major version</span>
     </h4>
 </doc-anchor-target>
-<p>If the version difference between a host application and a remote module is a <strong>major</strong> version, once again, the higher version of the dependency will be loaded. However, a <strong>warning</strong> will also be issued. For example:</p>
+<p>If the version difference between a host application and a remote module is a <strong>major</strong> version, once again, the higher version of the dependency will be loaded only if it&#x27;s requested by the host application. For example:</p>
 <ul>
-<li>If the host application is on <code v-pre>11.0.0</code> and a remote module is on <code v-pre>10.3.1</code> -&gt; <code v-pre>11.0.0</code> will be loaded</li>
-<li>If the host application is on <code v-pre>10.3.1</code> and a remote module is on <code v-pre>11.0.0</code> -&gt; <code v-pre>11.0.0</code> will be loaded</li>
+<li>If the host application is on <code v-pre>11.0.0</code> and a remote module is on <code v-pre>10.0.0</code> -&gt; <code v-pre>11.0.0</code> will be loaded</li>
+<li>If the host application is on <code v-pre>10.0.0</code> and a remote module is on <code v-pre>11.0.0</code> -&gt; <code v-pre>10.0.0</code> will be loaded</li>
 </ul>
+<doc-anchor-target id="additional-examples">
+    <h4>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#additional-examples">#</doc-anchor-trigger>
+        <span>Additional examples</span>
+    </h4>
+</doc-anchor-target>
+<p>Let&#x27;s go through a few additional examples <span class="docs-emoji">&#x1F447;</span></p>
+<doc-anchor-target id="example-1">
+    <h5>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#example-1">#</doc-anchor-trigger>
+        <span>Example 1</span>
+    </h5>
+</doc-anchor-target>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">host:        2.0
+remote-1:    2.1   &lt;-----
+remote-2:    2.0</code></pre>
+</doc-codeblock></div>
+<p>The version requested by <code v-pre>remote-1</code> is selected because it only represents a <strong>minor</strong> difference from the version requested by the <code v-pre>host</code> application.</p>
+<doc-anchor-target id="example-2">
+    <h5>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#example-2">#</doc-anchor-trigger>
+        <span>Example 2</span>
+    </h5>
+</doc-anchor-target>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">host:        2.0   &lt;-----
+remote-1:    3.1
+remote-2:    2.0</code></pre>
+</doc-codeblock></div>
+<p>The version requested by the <code v-pre>host</code> application is selected because <code v-pre>remote-1</code> is requesting a version with a <strong>major</strong> difference from the one requested by the <code v-pre>host</code> application.</p>
+<doc-anchor-target id="example-3">
+    <h5>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#example-3">#</doc-anchor-trigger>
+        <span>Example 3</span>
+    </h5>
+</doc-anchor-target>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">host:        2.0
+remote-1:    3.1
+remote-2:    2.1   &lt;-----</code></pre>
+</doc-codeblock></div>
+<p>The version requested by <code v-pre>remote-2</code> is selected because <code v-pre>remote-1</code> is requesting a version with a <strong>major</strong> difference from the one requested by the <code v-pre>host</code> application. Therefore, <code v-pre>remote-2</code> requests the next highest version, which represents only a <strong>minor</strong> difference from the version requested by the <code v-pre>host</code> application.</p>
 <doc-anchor-target id="what-should-be-configured-as-a-shared-dependency">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#what-should-be-configured-as-a-shared-dependency">#</doc-anchor-trigger>
@@ -385,15 +444,15 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
         <span>Understanding eager dependencies</span>
     </h2>
 </doc-anchor-target>
-<p>An <a href="https://webpack.js.org/plugins/module-federation-plugin/#eager" class="outbound" target="_blank">eager</a> shared dependency becomes available as soon as the host application starts. In simple terms, it is included in the host application bundle rather than being loaded lazily when it is first requested.</p>
+<p>An <a href="https://module-federation.io/configure/shared.html#eager" class="outbound" target="_blank">eager</a> shared dependency becomes available as soon as the host application starts. In simple terms, it is included in the host application bundle rather than being loaded lazily when it is first requested.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">webpack.config.js</div>
 <pre class="language-javascript" data-line="10"><code v-pre class="language-javascript">// @ts-check
 
-import { defineDevHostConfig } from &quot;@squide/firefly-configs&quot;;
+import { defineDevHostConfig } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.dev.js&quot;;
 
-export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
+export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, [], {
     sharedDependencies: {
         &quot;@sample/shared&quot;: {
             singleton: true,
@@ -423,9 +482,9 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
 <li><a href="https://www.npmjs.com/package/react-router-dom" class="outbound" target="_blank">react-router-dom</a></li>
 <li><a href="https://www.npmjs.com/package/@squide/core" class="outbound" target="_blank">@squide/core</a></li>
 <li><a href="https://www.npmjs.com/package/@squide/react-router" class="outbound" target="_blank">@squide/react-router</a></li>
-<li><a href="https://www.npmjs.com/package/@squide/webpack-module-federation" class="outbound" target="_blank">@squide/webpack-module-federation</a></li>
+<li><a href="https://www.npmjs.com/package/@squide/module-federation" class="outbound" target="_blank">@squide/module-federation</a></li>
 </ul>
-<p>For the full shared dependencies configuration, have a look at the <a href="https://github.com/gsoft-inc/wl-squide/blob/main/packages/webpack-module-federation/src/defineConfig.ts" class="outbound" target="_blank">defineConfig.ts</a> file on Github.</p>
+<p>For the full shared dependencies configuration, have a look at the <a href="https://github.com/gsoft-inc/wl-squide/blob/main/packages/webpack-configs/src/defineConfig.ts" class="outbound" target="_blank">defineConfig.ts</a> file on Github.</p>
 <blockquote>
 <p>You can <a href="../../reference/webpack/definedevhostconfig/#extend-a-default-shared-dependency">extend</a> or <a href="../../reference/webpack/definedevhostconfig/#override-a-default-shared-dependency">override</a> the default shared dependencies configuration.</p>
 </blockquote>
@@ -440,10 +499,10 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
 <div class="codeblock-title">host/webpack.dev.js</div>
 <pre class="language-javascript" data-line="7-11"><code v-pre class="language-javascript">// @ts-check
 
-import { defineDevHostConfig } from &quot;@squide/firefly-configs&quot;;
+import { defineDevHostConfig } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.dev.js&quot;;
 
-export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
+export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, [], {
     sharedDependencies: {
         &quot;@sample/shared&quot;: {
             singleton: true
@@ -456,7 +515,7 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
 <div class="codeblock-title">remote-module/webpack.dev.js</div>
 <pre class="language-javascript" data-line="7-11"><code v-pre class="language-javascript">// @ts-check
 
-import { defineDevRemoteModuleConfig } from &quot;@squide/firefly-configs&quot;;
+import { defineDevRemoteModuleConfig } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.dev.js&quot;;
 
 export default defineDevRemoteModuleConfig(swcConfig, &quot;remote1&quot;, 8081, {

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.766291168294">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.767839820980">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.766291168294" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.767839820980" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.766291168294" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.767839820980" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -358,7 +358,7 @@
 </ul>
 </li>
 <li><code v-pre>sharedDependencies</code>: An optional object literal of additional (or updated) module federation shared dependencies.</li>
-<li><code v-pre>moduleFederationPluginOptions</code>: An optional object literal of <a href="https://webpack.js.org/plugins/module-federation-plugin/" class="outbound" target="_blank">ModuleFederationPlugin</a> options.</li>
+<li><code v-pre>moduleFederationPluginOptions</code>: An optional object literal of <a href="https://module-federation.io/configure/index.html" class="outbound" target="_blank">ModuleFederationPlugin</a> options.</li>
 </ul>
 </li>
 </ul>
@@ -375,20 +375,14 @@
         <span>Conventions</span>
     </h2>
 </doc-anchor-target>
-<p>To fulfill Squide remote module requirements, the <code v-pre>defineBuildRemoteModuleConfig</code> function will pre-configure the <a href="https://webpack.js.org/plugins/module-federation-plugin/" class="outbound" target="_blank">ModuleFederationPlugin</a> with the following <code v-pre>filename</code> and <code v-pre>exposes</code> properties.</p>
+<p>To fulfill Squide remote module requirements, the <code v-pre>defineBuildRemoteModuleConfig</code> function will pre-configure the <a href="https://module-federation.io/configure/index.html" class="outbound" target="_blank">ModuleFederationPlugin</a> with the following <code v-pre>filename</code> and <code v-pre>exposes</code> properties.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-javascript" data-line="6-9"><code v-pre class="language-javascript">import ModuleFederationPlugin from &quot;webpack/lib/container/ModuleFederationPlugin.js&quot;;
-
-export default {
-    plugins: [
-        ModuleFederationPlugin({
-            filename: &quot;/remoteEntry.js&quot;,
-            exposes: {
-                &quot;register.js&quot;: &quot;./src/register&quot;
-            }
-        })
-    ]
-};</code></pre>
+<pre class="language-javascript"><code v-pre class="language-javascript">{
+    filename: &quot;/remoteEntry.js&quot;,
+    exposes: {
+        &quot;register.js&quot;: &quot;./src/register&quot;
+    }
+}</code></pre>
 </doc-codeblock></div>
 <div class="flex mb-6">
     <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
@@ -420,7 +414,7 @@ export default {
 <li><a href="https://www.npmjs.com/package/react-router-dom" class="outbound" target="_blank">react-router-dom</a></li>
 <li><a href="https://www.npmjs.com/package/@squide/core" class="outbound" target="_blank">@squide/core</a></li>
 <li><a href="https://www.npmjs.com/package/@squide/react-router" class="outbound" target="_blank">@squide/react-router</a></li>
-<li><a href="https://www.npmjs.com/package/@squide/webpack-module-federation" class="outbound" target="_blank">@squide/webpack-module-federation</a></li>
+<li><a href="https://www.npmjs.com/package/@squide/module-federation" class="outbound" target="_blank">@squide/module-federation</a></li>
 <li><a href="https://www.npmjs.com/package/@squide/msw" class="outbound" target="_blank">@squide/msw</a></li>
 </ul>
 <p>For the full shared dependencies configuration, have a look at the <a href="https://github.com/gsoft-inc/wl-squide/blob/main/packages/firefly/src/defineConfig.ts" class="outbound" target="_blank">defineConfig.ts</a> file on Github.</p>
@@ -440,7 +434,7 @@ export default {
 <div class="codeblock-title">remote-module/webpack.build.js</div>
 <pre class="language-javascript" data-line="6"><code v-pre class="language-javascript">// @ts-check
 
-import { defineBuildRemoteModuleConfig } from &quot;@squide/firefly-configs&quot;;
+import { defineBuildRemoteModuleConfig } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.build.js&quot;;
 
 export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;);</code></pre>
@@ -455,7 +449,7 @@ export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;);</c
 <div class="codeblock-title">remote-module/webpack.build.js</div>
 <pre class="language-javascript" data-line="7-9"><code v-pre class="language-javascript">// @ts-check
 
-import { defineBuildRemoteModuleConfig } from &quot;@squide/firefly-configs&quot;;
+import { defineBuildRemoteModuleConfig } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.build.js&quot;;
 
 export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, {
@@ -491,7 +485,7 @@ export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, {
 <div class="codeblock-title">remote-module/webpack.build.js</div>
 <pre class="language-javascript" data-line="7-11"><code v-pre class="language-javascript">// @ts-check
 
-import { defineBuildRemoteModuleConfig } from &quot;@squide/firefly-configs&quot;;
+import { defineBuildRemoteModuleConfig } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.build.js&quot;;
 
 export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, {
@@ -529,7 +523,7 @@ export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, {
 <div class="codeblock-title">remote-module/webpack.build.js</div>
 <pre class="language-javascript" data-line="7-11"><code v-pre class="language-javascript">// @ts-check
 
-import { defineBuildRemoteModuleConfig } from &quot;@squide/firefly-configs&quot;;
+import { defineBuildRemoteModuleConfig } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.build.js&quot;;
 
 export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, {
@@ -560,7 +554,7 @@ export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, {
 <div class="codeblock-title">remote-module/webpack.build.js</div>
 <pre class="language-javascript" data-line="7-11"><code v-pre class="language-javascript">// @ts-check
 
-import { defineBuildRemoteModuleConfig } from &quot;@squide/firefly-configs&quot;;
+import { defineBuildRemoteModuleConfig } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.build.js&quot;;
 
 export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, {
@@ -586,12 +580,12 @@ export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, {
         <span>Customize module federation configuration</span>
     </h3>
 </doc-anchor-target>
-<p>While you could customize the <a href="https://webpack.js.org/plugins/module-federation-plugin/" class="outbound" target="_blank">ModuleFederationPlugin</a> configuration by providing your own object literal through the <code v-pre>moduleFederationPluginOptions</code> option, we recommend using the <code v-pre>defineRemoteModuleFederationPluginOptions(applicationName, options)</code> function as it will take care of <strong>merging</strong> the custom options with the default plugin options.</p>
+<p>While you could customize the <a href="https://module-federation.io/configure/index.html" class="outbound" target="_blank">ModuleFederationPlugin</a> configuration by providing your own object literal through the <code v-pre>moduleFederationPluginOptions</code> option, we recommend using the <code v-pre>defineRemoteModuleFederationPluginOptions(applicationName, options)</code> function as it will take care of <strong>merging</strong> the custom options with the default plugin options.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/webpack.build.js</div>
 <pre class="language-javascript" data-line="7-9"><code v-pre class="language-javascript">// @ts-check
 
-import { defineBuildRemoteModuleConfig, defineRemoteModuleFederationPluginOptions } from &quot;@squide/firefly-configs&quot;;
+import { defineBuildRemoteModuleConfig, defineRemoteModuleFederationPluginOptions } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.build.js&quot;;
 
 export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, {
@@ -602,7 +596,7 @@ export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, {
 </doc-codeblock></div>
 <ul>
 <li><code v-pre>applicationName</code>: The host application name.</li>
-<li><code v-pre>moduleFederationPluginOptions</code>: An object literal of <a href="https://webpack.js.org/plugins/module-federation-plugin/" class="outbound" target="_blank">ModuleFederationPlugin</a> options.</li>
+<li><code v-pre>moduleFederationPluginOptions</code>: An object literal of <a href="https://module-federation.io/configure/index.html" class="outbound" target="_blank">ModuleFederationPlugin</a> options.</li>
 </ul>
 <doc-anchor-target id="expose-an-additional-module">
     <h3>
@@ -614,7 +608,7 @@ export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, {
 <div class="codeblock-title">remote-module/webpack.build.js</div>
 <pre class="language-javascript" data-line="7-11"><code v-pre class="language-javascript">// @ts-check
 
-import { defineBuildRemoteModuleConfig, defineRemoteModuleFederationPluginOptions } from &quot;@squide/firefly-configs&quot;;
+import { defineBuildRemoteModuleConfig, defineRemoteModuleFederationPluginOptions } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.build.js&quot;;
 
 export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, {

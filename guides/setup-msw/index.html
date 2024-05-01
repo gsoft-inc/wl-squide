@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.766291168294">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.767839820980">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.766291168294" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.767839820980" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.766291168294" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.767839820980" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -317,19 +317,43 @@
 <doc-tab v-cloak id="pnpm">
 <template #title>pnpm</template>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">pnpm add msw</code></pre>
+<pre class="language-bash"><code v-pre class="language-bash">pnpm add -D cross-env
+pnpm add msw</code></pre>
 </doc-codeblock></div>
 </doc-tab>
 <doc-tab v-cloak id="yarn">
 <template #title>yarn</template>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">yarn add msw</code></pre>
+<pre class="language-bash"><code v-pre class="language-bash">yarn add -D cross-env
+yarn add msw</code></pre>
 </doc-codeblock></div>
 </doc-tab>
 <doc-tab v-cloak id="npm">
 <template #title>npm</template>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">npm install msw</code></pre>
+<pre class="language-bash"><code v-pre class="language-bash">npm install -D cross-env
+npm install msw</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+</doc-tabs>
+<p>Then <a href="https://mswjs.io/docs/cli/init/" class="outbound" target="_blank">initialize</a> MSW by executing the following command:</p>
+<doc-tabs>
+<doc-tab v-cloak id="pnpm">
+<template #title>pnpm</template>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">pnpm dlx msw init ./public</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab v-cloak id="yarn">
+<template #title>yarn</template>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">yarn dlx msw init ./public</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab v-cloak id="npm">
+<template #title>npm</template>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">npx msw init ./public</code></pre>
 </doc-codeblock></div>
 </doc-tab>
 </doc-tabs>
@@ -367,11 +391,18 @@
 <p>Then, update the development <a href="https://webpack.js.org/" class="outbound" target="_blank">webpack</a> configuration file to include the <code v-pre>USE_MSW</code> environment variable into the application bundles:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">webpack.dev.js</div>
-<pre class="language-javascript" data-line="7"><code v-pre class="language-javascript">// @ts-check
+<pre class="language-javascript" data-line="14"><code v-pre class="language-javascript">// @ts-check
 
-import { defineDevHostConfig } from &quot;@squide/webpack-module-federation&quot;;
+import { defineDevHostConfig } from &quot;@squide/firefly-webpack-configs&quot;;
 
-export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
+/**
+ * @typedef {import(&quot;@squide/firefly-webpack-configs&quot;).RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: &quot;remote1&quot;, url: &quot;http://localhost:8081&quot; }
+];
+
+export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, Remotes, {
     environmentVariables: {
         &quot;USE_MSW&quot;: process.env.USE_MSW === &quot;true&quot;
     }
@@ -418,16 +449,17 @@ export function startMsw(moduleRequestHandlers: RequestHandler[]) {
 <p>Then, update the bootstrapping code to <a href="https://mswjs.io/docs/integrations/browser#setup" class="outbound" target="_blank">start the service</a> and <a href="../../reference/msw/setmswasstarted/">mark MSW as started</a> if MSW is enabled:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
-<pre class="language-tsx" data-line="19-29"><code v-pre class="language-tsx">import { createRoot } from &quot;react-dom/client&quot;;
+<pre class="language-tsx" data-line="20-30"><code v-pre class="language-tsx">import { createRoot } from &quot;react-dom/client&quot;;
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from &quot;@squide/firefly&quot;;
 import { App } from &quot;./App.tsx&quot;;
 import { registerHost } from &quot;./register.tsx&quot;;
 
 const Remotes: RemoteDefinition[] = [
-    { url: &quot;http://localhost:8081&quot;, name: &quot;remote1&quot; }
+    { name: &quot;remote1&quot; }
 ];
 
 const runtime = new FireflyRuntime({
+    useMsw: !!process.env.USE_MSW,
     loggers: [new ConsoleLogger()]
 });
 
@@ -436,7 +468,7 @@ await registerLocalModules([registerHost], runtime);
 await registerRemoteModules(Remotes, runtime);
 
 // Once both register functions are done, we can safely assume that all the request handlers has been registered.
-if (process.env.USE_MSW) {
+if (runtime.isMswEnabled) {
     // Files that includes an import to the &quot;msw&quot; package are included dynamically to prevent adding
     // unused MSW stuff to the application bundles.
     const startMsw = (await import(&quot;../mocks/browser.ts&quot;)).startMsw;
@@ -473,7 +505,7 @@ export function App() {
         &lt;AppRouter
             fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
             errorElement={&lt;div&gt;An error occured!&lt;/div&gt;}
-            waitForMsw={Boolean(process.env.USE_MSW)}
+            waitForMsw={!!process.env.USE_MSW}
         &gt;
             {(routes, providerProps) =&gt; (
                 &lt;RouterProvider router={createBrowserRouter(routes)} {...providerProps} /&gt;
@@ -530,7 +562,7 @@ export const requestHandlers: HttpHandler[] = [
 <pre class="language-typescript" data-line="4,7,9"><code v-pre class="language-typescript">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;; 
 
 export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = async runtime =&gt; {
-    if (process.env.USE_MSW) {
+    if (runtime.isMswEnabled) {
         // Files that includes an import to the &quot;msw&quot; package are included dynamically to prevent adding
         // unused MSW stuff to the application bundles.
         const requestHandlers = (await import(&quot;../mocks/handlers.ts&quot;)).requestHandlers;

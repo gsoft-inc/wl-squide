@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.766291168294">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.767839820980">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Fetch page data</title>
     <meta name="title" content="Fetch page data">
-    <meta name="description" content="Before going forward with this guide, make sure that you completed the setup Mock Service Worker guide.">
+    <meta name="description" content="Before going forward with this guide, make sure that you completed the Setup Mock Service Worker guide.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/guides/fetch-page-data/">
@@ -21,23 +21,23 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/guides/fetch-page-data/">
     <meta property="og:title" content="Fetch page data">
-    <meta property="og:description" content="Before going forward with this guide, make sure that you completed the setup Mock Service Worker guide.">
+    <meta property="og:description" content="Before going forward with this guide, make sure that you completed the Setup Mock Service Worker guide.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/guides/fetch-page-data/">
     <meta property="twitter:title" content="Fetch page data">
-    <meta property="twitter:description" content="Before going forward with this guide, make sure that you completed the setup Mock Service Worker guide.">
+    <meta property="twitter:description" content="Before going forward with this guide, make sure that you completed the Setup Mock Service Worker guide.">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.766291168294" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.767839820980" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.766291168294" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.767839820980" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -317,11 +317,11 @@
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>Before going forward with this guide, make sure that you completed the <a href="../setup-msw/">setup Mock Service Worker</a> guide.</p>
+<p>Before going forward with this guide, make sure that you completed the <a href="../setup-msw/">Setup Mock Service Worker</a> guide.</p>
         </div>
     </div>
 </div>
-<p>There are various approaches to fetching data for pages. At <a href="https://workleap.com/" class="outbound" target="_blank">Workleap</a>, our preference is usually to develop a dedicated endpoint per page, returning a denormalized document specifically tailored for that page. We rely on server state as our singular source of truth and leverage <a href="https://tanstack.com/query/latest/" class="outbound" target="_blank">React Query</a> to manage data fetching and ensure our data remains up-to-date.</p>
+<p>There are various approaches to fetching data for pages. At Workleap, our preference is usually to develop a dedicated endpoint per page, returning a denormalized document specifically tailored for that page. We rely on server state as our singular source of truth and leverage <a href="https://tanstack.com/query/latest/" class="outbound" target="_blank">React Query</a> to manage data fetching and ensure our data remains up-to-date.</p>
 <p>Although this approach works well, a few adjustments are necessary when transitioning from a monolithic application to a federated application.</p>
 <doc-anchor-target id="install-react-query">
     <h2>
@@ -558,7 +558,7 @@ export const requestHandlers: HttpHandler[] = [
 <pre class="language-tsx" data-line="7"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;; 
 
 export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = async runtime =&gt; {
-    if (process.env.USE_MSW) {
+    if (runtime.isMswEnabled) {
         // Files that includes an import to the &quot;msw&quot; package are included dynamically to prevent adding
         // unused MSW stuff to the application bundles.
         const requestHandlers = (await import(&quot;../mocks/handlers.ts&quot;)).requestHandlers;
@@ -612,16 +612,14 @@ export function Page() {
 <p>The previous code sample uses <a href="https://tanstack.com/query/latest/docs/react/reference/useSuspenseQuery" class="outbound" target="_blank">useSuspenseQuery</a> instead of <a href="https://tanstack.com/query/latest/docs/react/reference/useQuery" class="outbound" target="_blank">useQuery</a> to fetch data. This enables an application to leverage a React <a href="https://react.dev/reference/react/Suspense" class="outbound" target="_blank">Suspense</a> boundary to render a fallback element in a layout component while the data is being fetched:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/RootLayout.tsx</div>
-<pre class="language-tsx" data-line="7-9"><code v-pre class="language-tsx">import { Suspense } from &quot;react&quot;;
+<pre class="language-tsx" data-line="6-8"><code v-pre class="language-tsx">import { Suspense } from &quot;react&quot;;
 import { Outlet } from &quot;react-router-dom&quot;;
 
 export function RootLayout() {
     return (
-        &lt;&gt;
-            &lt;Suspense fallback={&lt;div&gt;Loading...&lt;/div&gt;}&gt;
-                &lt;Outlet /&gt;
-            &lt;/Suspense&gt;
-        &lt;/&gt;
+        &lt;Suspense fallback={&lt;div&gt;Loading...&lt;/div&gt;}&gt;
+            &lt;Outlet /&gt;
+        &lt;/Suspense&gt;
     );
 }</code></pre>
 </doc-codeblock></div>

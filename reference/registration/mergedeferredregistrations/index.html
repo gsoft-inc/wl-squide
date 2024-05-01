@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.766291168294">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.767839820980">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.766291168294" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.767839820980" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.766291168294" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.767839820980" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -331,7 +331,7 @@
     </h3>
 </doc-anchor-target>
 <ul>
-<li><code v-pre>candidats</code>: An array of <a href="../registerlocalmodules/#defer-the-registration-of-routes-or-navigation-items">deferred registration</a> functions, <code v-pre>undefined</code> values will safely be ignored.</li>
+<li><code v-pre>candidates</code>: An array of <a href="../registerlocalmodules/#defer-the-registration-of-routes-or-navigation-items">deferred registration</a> functions, <code v-pre>undefined</code> values will safely be ignored.</li>
 </ul>
 <doc-anchor-target id="returns">
     <h3>
@@ -354,15 +354,14 @@
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">shell/src/register.tsx</div>
 <pre class="language-tsx"><code v-pre class="language-tsx">import { mergeDeferredRegistrations, type ModuleRegisterFunction, type FireflyRuntime } from &quot;@squide/firefly&quot;;
-import type { AppContext } from &quot;@sample/shared&quot;;
 import { registerLayouts } from &quot;@sample/layouts&quot;;
 import { registerAppShell } from &quot;./registerAppShell.tsx&quot;;
 
 function registerRoutes(runtime: FireflyRuntime) {
-    ...
+    // ...
 }
 
-export function register: ModuleRegisterFunction&lt;FireflyRuntime, AppContext&gt;(runtime, context) {
+export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = async runtime =&gt; {
     return mergeDeferredRegistrations([
         await registerLayouts(runtime),
         await registerAppShell(runtime),

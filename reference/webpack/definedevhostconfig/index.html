@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.766291168294">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.767839820980">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.766291168294" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.767839820980" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.766291168294" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.766291168294" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.767839820980" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.767839820980" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -338,7 +338,7 @@
     </h2>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript"><code v-pre class="language-typescript">const webpackConfig = defineDevHostConfig(swcConfig: {}, applicationName, port, options?: {})</code></pre>
+<pre class="language-typescript"><code v-pre class="language-typescript">const webpackConfig = defineDevHostConfig(swcConfig: {}, applicationName, port, remotes: [], options?: {})</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="parameters">
     <h2>
@@ -350,6 +350,7 @@
 <li><code v-pre>swcConfig</code>: An SWC <a href="https://swc.rs/docs/configuration/swcrc" class="outbound" target="_blank">configuration object</a>.</li>
 <li><code v-pre>applicationName</code>: The host application name.</li>
 <li><code v-pre>port</code>: The host application port.</li>
+<li><code v-pre>remotes</code>: An array of <code v-pre>RemoteDefinition</code> (view the <doc-anchor-trigger to="#remote-definition">Remote definition</doc-anchor-trigger> section).</li>
 <li><code v-pre>options</code>: An optional object literal of options:
 <ul>
 <li>Accepts most of webpack <code v-pre>definedDevConfig</code> <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/#3-set-predefined-options" class="outbound" target="_blank">predefined options</a>.</li>
@@ -360,7 +361,7 @@
 </ul>
 </li>
 <li><code v-pre>sharedDependencies</code>: An optional object literal of additional (or updated) module federation shared dependencies.</li>
-<li><code v-pre>moduleFederationPluginOptions</code>: An optional object literal of <a href="https://webpack.js.org/plugins/module-federation-plugin/" class="outbound" target="_blank">ModuleFederationPlugin</a> options.</li>
+<li><code v-pre>moduleFederationPluginOptions</code>: An optional object literal of <a href="https://module-federation.io/configure/index.html" class="outbound" target="_blank">ModuleFederationPlugin</a> options.</li>
 </ul>
 </li>
 </ul>
@@ -384,7 +385,7 @@
 <li><a href="https://www.npmjs.com/package/react-router-dom" class="outbound" target="_blank">react-router-dom</a></li>
 <li><a href="https://www.npmjs.com/package/@squide/core" class="outbound" target="_blank">@squide/core</a></li>
 <li><a href="https://www.npmjs.com/package/@squide/react-router" class="outbound" target="_blank">@squide/react-router</a></li>
-<li><a href="https://www.npmjs.com/package/@squide/webpack-module-federation" class="outbound" target="_blank">@squide/webpack-module-federation</a></li>
+<li><a href="https://www.npmjs.com/package/@squide/module-federation" class="outbound" target="_blank">@squide/module-federation</a></li>
 <li><a href="https://www.npmjs.com/package/@squide/msw" class="outbound" target="_blank">@squide/msw</a></li>
 </ul>
 <p>For the full shared dependencies configuration, have a look at the <a href="https://github.com/gsoft-inc/wl-squide/blob/main/packages/firefly/src/defineConfig.ts" class="outbound" target="_blank">defineConfig.ts</a> file on Github.</p>
@@ -402,12 +403,19 @@
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/webpack.dev.js</div>
-<pre class="language-javascript" data-line="6"><code v-pre class="language-javascript">// @ts-check
+<pre class="language-javascript" data-line="13"><code v-pre class="language-javascript">// @ts-check
 
-import { defineDevHostConfig } from &quot;@squide/firefly-configs&quot;;
+import { defineDevHostConfig } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.dev.js&quot;;
 
-export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080);</code></pre>
+/**
+ * @typedef {import(&quot;@squide/firefly-webpack-configs&quot;).RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: &quot;remote1&quot;, url: &quot;http://localhost:8081&quot; }
+];
+
+export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, Remotes);</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="activate-optional-features">
     <h3>
@@ -417,12 +425,19 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080);</code></p
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/webpack.dev.js</div>
-<pre class="language-javascript" data-line="7-9"><code v-pre class="language-javascript">// @ts-check
+<pre class="language-javascript" data-line="14-16"><code v-pre class="language-javascript">// @ts-check
 
-import { defineDevHostConfig } from &quot;@squide/firefly-configs&quot;;
+import { defineDevHostConfig } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.dev.js&quot;;
 
-export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
+/**
+ * @typedef {import(&quot;@squide/firefly-webpack-configs&quot;).RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: &quot;remote1&quot;, url: &quot;http://localhost:8081&quot; }
+];
+
+export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, Remotes, {
     features: {
         i18next: true
     }
@@ -453,12 +468,19 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/webpack.dev.js</div>
-<pre class="language-javascript" data-line="7-11"><code v-pre class="language-javascript">// @ts-check
+<pre class="language-javascript" data-line="14-18"><code v-pre class="language-javascript">// @ts-check
 
-import { defineDevHostConfig } from &quot;@squide/firefly-configs&quot;;
+import { defineDevHostConfig } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.dev.js&quot;;
 
-export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
+/**
+ * @typedef {import(&quot;@squide/firefly-webpack-configs&quot;).RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: &quot;remote1&quot;, url: &quot;http://localhost:8081&quot; }
+];
+
+export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, Remotes, {
     sharedDependencies: {
         &quot;@sample/shared&quot;: {
             singleton: true
@@ -491,12 +513,19 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/webpack.dev.js</div>
-<pre class="language-javascript" data-line="7-11"><code v-pre class="language-javascript">// @ts-check
+<pre class="language-javascript" data-line="14-18"><code v-pre class="language-javascript">// @ts-check
 
-import { defineDevHostConfig } from &quot;@squide/firefly-configs&quot;;
+import { defineDevHostConfig } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.dev.js&quot;;
 
-export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
+/**
+ * @typedef {import(&quot;@squide/firefly-webpack-configs&quot;).RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: &quot;remote1&quot;, url: &quot;http://localhost:8081&quot; }
+];
+
+export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, Remotes, {
     sharedDependencies: {
         &quot;react&quot;: {
             requiredVersion: &quot;18.2.0&quot;
@@ -504,7 +533,7 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
     }
 });</code></pre>
 </doc-codeblock></div>
-<p>In the previous code sample, the <code v-pre>react</code> shared dependency will be <strong>augmented</strong> with the newly provided <code v-pre>strictVersion</code> option. The resulting shared dependency will be:</p>
+<p>In the previous code sample, the <code v-pre>react</code> shared dependency will be <strong>augmented</strong> with the <code v-pre>strictVersion</code> option. The resulting shared dependency will be:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-javascript" data-line="5"><code v-pre class="language-javascript">{
     &quot;react&quot;: {
@@ -522,10 +551,17 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/webpack.dev.js</div>
-<pre class="language-javascript" data-line="7-11"><code v-pre class="language-javascript">// @ts-check
+<pre class="language-javascript" data-line="14-18"><code v-pre class="language-javascript">// @ts-check
 
-import { defineDevHostConfig } from &quot;@squide/firefly-configs&quot;;
+import { defineDevHostConfig } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.dev.js&quot;;
+
+/**
+ * @typedef {import(&quot;@squide/firefly-webpack-configs&quot;).RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: &quot;remote1&quot;, url: &quot;http://localhost:8081&quot; }
+];
 
 export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
     sharedDependencies: {
@@ -550,15 +586,22 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
         <span>Customize module federation configuration</span>
     </h3>
 </doc-anchor-target>
-<p>While you could customize the <a href="https://webpack.js.org/plugins/module-federation-plugin/" class="outbound" target="_blank">ModuleFederationPlugin</a> configuration by providing your own object literal through the <code v-pre>moduleFederationPluginOptions</code> option, we recommend using the <code v-pre>defineHostModuleFederationPluginOptions(applicationName, options)</code> function as it will take care of <strong>merging</strong> the custom options with the default plugin options.</p>
+<p>While you could customize the <a href="https://module-federation.io/configure/" class="outbound" target="_blank">ModuleFederationPlugin</a> configuration by providing your own object literal through the <code v-pre>moduleFederationPluginOptions</code> option, we recommend using the <code v-pre>defineHostModuleFederationPluginOptions(applicationName, options)</code> function as it will take care of <strong>merging</strong> the custom options with the default plugin options.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/webpack.dev.js</div>
-<pre class="language-javascript" data-line="7-9"><code v-pre class="language-javascript">// @ts-check
+<pre class="language-javascript" data-line="14-16"><code v-pre class="language-javascript">// @ts-check
 
-import { defineDevHostConfig, defineHostModuleFederationPluginOptions } from &quot;@squide/firefly-configs&quot;;
+import { defineDevHostConfig, defineHostModuleFederationPluginOptions } from &quot;@squide/firefly-webpack-configs&quot;;
 import { swcConfig } from &quot;./swc.dev.js&quot;;
 
-export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
+/**
+ * @typedef {import(&quot;@squide/firefly-webpack-configs&quot;).RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: &quot;remote1&quot;, url: &quot;http://localhost:8081&quot; }
+];
+
+export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, Remotes, {
     moduleFederationPluginOptions: defineHostModuleFederationPluginOptions(&quot;host&quot;, {
         runtime: &quot;my-runtime-name&quot;
     })
@@ -566,8 +609,70 @@ export default defineDevHostConfig(swcConfig, &quot;host&quot;, 8080, {
 </doc-codeblock></div>
 <ul>
 <li><code v-pre>applicationName</code>: The host application name.</li>
-<li><code v-pre>moduleFederationPluginOptions</code>: An object literal of <a href="https://webpack.js.org/plugins/module-federation-plugin/" class="outbound" target="_blank">ModuleFederationPlugin</a> options.</li>
+<li><code v-pre>moduleFederationPluginOptions</code>: An object literal of <a href="https://module-federation.io/configure/" class="outbound" target="_blank">ModuleFederationPlugin</a> options.</li>
 </ul>
+<doc-anchor-target id="remote-definition">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#remote-definition">#</doc-anchor-trigger>
+        <span>Remote definition</span>
+    </h2>
+</doc-anchor-target>
+<doc-anchor-target id="name">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#name">#</doc-anchor-trigger>
+        <span><code v-pre>name</code></span>
+    </h3>
+</doc-anchor-target>
+<p>The <code v-pre>name</code> property of a remote definition <strong>must match</strong> the <code v-pre>name</code> property defined in the remote module <a href="https://module-federation.io/configure/index.html" class="outbound" target="_blank">ModuleFederationPlugin</a> configuration.</p>
+<p>If you are relying on the Squide <a href="../definedevremotemoduleconfig/">defineDevRemoteModuleConfig</a> function to add the <code v-pre>ModuleFederationPlugin</code> to the remote module webpack <a href="https://module-federation.io/" class="outbound" target="_blank">configuration object</a>, then the remote module <code v-pre>name</code> is the second argument of the function.</p>
+<p>In the following exemple, the remote module <code v-pre>name</code> is <code v-pre>remote1</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/webpack.dev.js</div>
+<pre class="language-javascript" data-line="5"><code v-pre class="language-javascript">/**
+ * @typedef {import(&quot;@squide/firefly-webpack-configs&quot;).RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: &quot;remote1&quot;, url: `http://localhost:8081` }
+];</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">remote-module/webpack.dev.js</div>
+<pre class="language-javascript" data-line="6"><code v-pre class="language-javascript">// @ts-check
+
+import { defineDevRemoteModuleConfig } from &quot;@squide/firefly-webpack-configs&quot;;
+import { swcConfig } from &quot;./swc.dev.js&quot;;
+
+export default defineDevRemoteModuleConfig(swcConfig, &quot;remote1&quot;, 8081);</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="url">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#url">#</doc-anchor-trigger>
+        <span><code v-pre>url</code></span>
+    </h3>
+</doc-anchor-target>
+<p>The <code v-pre>url</code> property of a remote definition <strong>must match</strong> the <a href="https://webpack.js.org/guides/public-path/" class="outbound" target="_blank">publicPath</a> of the remote module webpack <a href="https://webpack.js.org/concepts/configuration/" class="outbound" target="_blank">configuration object</a>.</p>
+<p>In the following exemple, the remote module <code v-pre>publicPath</code> is <code v-pre>http://localhost:8081</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/webpack.dev.js</div>
+<pre class="language-typescript" data-line="5"><code v-pre class="language-typescript">/**
+ * @typedef {import(&quot;@squide/firefly-webpack-configs&quot;).RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: &quot;remote1&quot;, url: &quot;http://localhost:8081&quot; }
+];</code></pre>
+</doc-codeblock></div>
+<p>The <code v-pre>publicPath</code> is built from the provided <code v-pre>host</code> and <code v-pre>port</code> values. Therefore, if the port value is <code v-pre>8081</code>, then the generated <code v-pre>publicPath</code> would be <code v-pre>http://localhost:8081</code>:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">remote-module/webpack.dev.js</div>
+<pre class="language-javascript" data-line="6-8"><code v-pre class="language-javascript">// @ts-check
+
+import { defineDevRemoteModuleConfig } from &quot;@squide/firefly-webpack-configs&quot;;
+import { swcConfig } from &quot;./swc.dev.js&quot;;
+
+export default defineDevRemoteModuleConfig(swcConfig, &quot;remote1&quot;, 8081, {
+    host: &quot;localhost&quot; // (This is the default value)
+});</code></pre>
+</doc-codeblock></div>
 
                                 
                                 <!-- Required only on API pages -->

@@ -1,5 +1,12 @@
 # @squide/i18next
 
+## 1.1.5
+
+### Patch Changes
+
+- Updated dependencies [[`89ace29`](https://github.com/gsoft-inc/wl-squide/commit/89ace29b9aeadbbe83cfa71dd137b9f1a115c283)]:
+  - @squide/core@4.0.0
+
 ## 1.1.4
 
 ### Patch Changes

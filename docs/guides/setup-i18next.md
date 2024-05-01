@@ -4,7 +4,7 @@ order: 820
 
 # Setup i18next
 
-Most of the applications that forms the [Workleap](https://workleap.com/) platform are either already bilingual or will be in the future. To help feature teams with localized resources, Squide provides a native [plugin](../reference/i18next/i18nextPlugin.md) designed to adapt the [i18next](https://www.i18next.com/) library for federated applications.
+Most of the applications that forms the Workleap platform are either already bilingual or will be in the future. To help feature teams with localized resources, Squide provides a native [plugin](../reference/i18next/i18nextPlugin.md) designed to adapt the [i18next](https://www.i18next.com/) library for federated applications.
 
 !!!warning
 The examples in this guide load all the resources from single localized resources files. For a real Workleap application, you probably want to spread the resources into multiple files and load the files with a i18next [backend plugin](https://www.i18next.com/overview/plugins-and-utils#backends).
@@ -36,17 +36,16 @@ While you can use any package manager to develop an application with Squide, it 
 
 Then, update the host application boostrapping code to register an instance of the [i18nextplugin](../reference/i18next/i18nextPlugin.md) with the [FireflyRuntime](../reference/runtime/runtime-class.md) instance:
 
-```tsx !#17,20,23 host/src/bootstrap.tsx
+```tsx !#16,19,22 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
-import type { AppContext} from "@sample/shared";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
 import { registerShell } from "@sample/shell";
 import { i18nextPlugin } from "@sample/i18next";
 
 const Remotes: RemoteDefinition[] = [
-    { url: "http://localhost:8081", name: "remote1" }
+    { url: name: "remote1" }
 ];
 
 // In this example:
@@ -63,13 +62,9 @@ const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger()]
 });
 
-const context: AppContext = {
-    name: "Demo application"
-};
+await registerLocalModules([registerShell, registerHost], runtime);
 
-await registerLocalModules([registerShell, registerHost], runtime, { context });
-
-await registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime);
 
 const root = createRoot(document.getElementById("root")!);
 
@@ -171,10 +166,10 @@ Finally, update the webpack development and build configurations to activate the
 ```js !#7-9 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/firefly-configs";
+import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, {
+export default defineDevHostConfig(swcConfig, "host", 8080, [], {
     features: {
         i18next: true
     },
@@ -190,10 +185,10 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
 ```js !#7-9 host/webpack.build.js
 // @ts-check
 
-import { defineBuildHostConfig } from "@squide/firefly-configs";
+import { defineBuildHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildHostConfig(swcConfig, "host", {
+export default defineBuildHostConfig(swcConfig, "host", [], {
     features: {
         i18next: true
     },
@@ -256,17 +251,16 @@ Notice that this time, a standard `navigationItems` namespace has been added to 
 
 Then, update the [local module](../reference/registration/registerLocalModules.md) register function to create and register an instance of `i18next` with the `i18nextPlugin` plugin instance:
 
-```tsx !#11,13-15,17-24,27 remote-module/src/register.tsx
+```tsx !#10,12-14,16-23,26 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { getI18nextPlugin } from "@squide/i18next";
-import type { AppContext } from "@sample/shared";
 import { Page } from "./Page.tsx";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import resourcesEn from "./locales/en-US/resources.json";
 import resourcesFr from "./locales/fr-CA/resources.json";
 
-export const register: ModuleRegisterFunction<FireflyRuntime, AppContext> = (runtime, context) => {
+export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     const i18nextPlugin = getI18nextPlugin(runtime);
 
     const i18nextInstance = i18n
@@ -303,17 +297,16 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext> = (run
 
 Then, localize the navigation items labels using the [I18nextNavigationItemLabel](../reference/i18next/I18nextNavigationItemLabel.md) component. Since for this example, the resources are in the `navigationItems` namespace, there's no need to specify a `namespace` property on the components as it will be inferred:
 
-```tsx !#38 remote-module/src/register.tsx
+```tsx !#37 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { getI18nextPlugin, I18nextNavigationItemLabel } from "@squide/i18next";
-import type { AppContext } from "@sample/shared";
 import { Page } from "./Page.tsx";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import resourcesEn from "./locales/en-US/resources.json";
 import resourcesFr from "./locales/fr-CA/resources.json";
 
-export const register: ModuleRegisterFunction<FireflyRuntime, AppContext> = (runtime, context) => {
+export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     const i18nextPlugin = getI18nextPlugin(runtime);
 
     const i18nextInstance = i18n
@@ -373,7 +366,7 @@ Finally, update the webpack development and build configurations to activate the
 ```js !#7-9 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/firefly-configs";
+import { defineDevRemoteModuleConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
@@ -391,7 +384,7 @@ export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
 ```js !#7-9 remote-module/webpack.build.js
 // @ts-check
 
-import { defineBuildRemoteModuleConfig } from "@squide/firefly-configs";
+import { defineBuildRemoteModuleConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.build.js";
 
 export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {

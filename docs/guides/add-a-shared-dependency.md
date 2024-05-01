@@ -4,7 +4,7 @@ order: 760
 
 # Add a shared dependency
 
-[Shared dependencies](https://webpack.js.org/plugins/module-federation-plugin/#sharing-libraries) represent one of the most powerful concepts within [Module Federation](https://webpack.js.org/plugins/module-federation-plugin). However, mastering its configuration can be quite challenging. **Failure** to configure shared dependencies properly in a federated application using Module Federation can significantly **impact** both **user** and **developer experiences**.
+[Shared dependencies](https://module-federation.io/configure/shared.html) represent one of the most powerful concepts of Module Federation. However, mastering its configuration can be quite challenging. **Failure** to configure shared dependencies properly in a federated application using Module Federation can significantly **impact** both **user** and **developer experiences**.
 
 Squide aims to simplify the configuration of shared dependencies by abstracting the [shared dependencies](#default-shared-dependencies) necessary for building an application with React, React Router, and optionally MSW and i18next. Nevertheless, every federated application will inevitably have to configure additional custom shared dependencies.
 
@@ -12,7 +12,7 @@ For a more comprehensive documentation of the Module Federation APIs, their func
 
 ## Understanding singleton dependencies
 
-A [singleton](https://webpack.js.org/plugins/module-federation-plugin/#singleton) shared dependency does exactly what its name suggests: it loads only a single instance of a dependency. This means that a dependency will be included in just one bundle file of the federated application.
+A [singleton](https://module-federation.io/configure/shared.html#singleton) shared dependency does exactly what its name suggests: it loads only a single instance of a dependency. This means that a dependency will be included in just one bundle file of the federated application.
 
 ### Strict versioning
 
@@ -21,10 +21,10 @@ Sometimes, a `singleton` shared dependency is paired with the [strictVersion](ht
 ```js !#10 webpack.config.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/firefly-configs";
+import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, {
+export default defineDevHostConfig(swcConfig, "host", 8080, [], {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true,
@@ -38,19 +38,57 @@ When specified, the `strictVersion` option will generate a **runtime error** if 
 
 ### Expected behaviors
 
+!!!warning
+Please note that Squide's singleton dependency version resolution algorithm **differs** from the native Module Federation behavior. By default, Squide registers a [runtime plugin](https://module-federation.io/plugin/dev/index.html) that customize the resolution of shared dependencies.
+!!!
+
 #### Minor or patch version
 
 When the version difference between a host application and a remote module is a **minor** or **patch** version, the higher version of the dependency will be loaded. For example:
 
-- If the host application is on `10.1.0` and a remote module is on `10.3.1` -> `10.3.1` will be loaded
-- If the host application is on `10.3.1` and a remote module is on `10.1.0` -> `10.3.1` will be loaded
+- If the host application is on `10.1.0` and a remote module is on `10.1.1` -> `10.1.1` will be loaded
+- If the host application is on `10.1.0` and a remote module is on `10.2.0` -> `10.2.0` will be loaded
 
 #### Major version
 
-If the version difference between a host application and a remote module is a **major** version, once again, the higher version of the dependency will be loaded. However, a **warning** will also be issued. For example:
+If the version difference between a host application and a remote module is a **major** version, once again, the higher version of the dependency will be loaded only if it's requested by the host application. For example:
 
-- If the host application is on `11.0.0` and a remote module is on `10.3.1` -> `11.0.0` will be loaded
-- If the host application is on `10.3.1` and a remote module is on `11.0.0` -> `11.0.0` will be loaded
+- If the host application is on `11.0.0` and a remote module is on `10.0.0` -> `11.0.0` will be loaded
+- If the host application is on `10.0.0` and a remote module is on `11.0.0` -> `10.0.0` will be loaded
+
+#### Additional examples
+
+Let's go through a few additional examples :point_down:
+
+##### Example 1
+
+```
+host:        2.0
+remote-1:    2.1   <-----
+remote-2:    2.0
+```
+
+The version requested by `remote-1` is selected because it only represents a **minor** difference from the version requested by the `host` application.
+
+##### Example 2
+
+```
+host:        2.0   <-----
+remote-1:    3.1
+remote-2:    2.0
+```
+
+The version requested by the `host` application is selected because `remote-1` is requesting a version with a **major** difference from the one requested by the `host` application.
+
+##### Example 3
+
+```
+host:        2.0
+remote-1:    3.1
+remote-2:    2.1   <-----
+```
+
+The version requested by `remote-2` is selected because `remote-1` is requesting a version with a **major** difference from the one requested by the `host` application. Therefore, `remote-2` requests the next highest version, which represents only a **minor** difference from the version requested by the `host` application.
 
 ### What should be configured as a shared dependency?
 
@@ -62,15 +100,15 @@ Libraries matching the following criterias are strong candidates to be configure
 
 ## Understanding eager dependencies
 
-An [eager](https://webpack.js.org/plugins/module-federation-plugin/#eager) shared dependency becomes available as soon as the host application starts. In simple terms, it is included in the host application bundle rather than being loaded lazily when it is first requested.
+An [eager](https://module-federation.io/configure/shared.html#eager) shared dependency becomes available as soon as the host application starts. In simple terms, it is included in the host application bundle rather than being loaded lazily when it is first requested.
 
 ```js !#10 webpack.config.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/firefly-configs";
+import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, {
+export default defineDevHostConfig(swcConfig, "host", 8080, [], {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true,
@@ -95,9 +133,9 @@ Since Squide has dependencies on React and React Router, the [define*](../refere
 - [react-router-dom](https://www.npmjs.com/package/react-router-dom)
 - [@squide/core](https://www.npmjs.com/package/@squide/core)
 - [@squide/react-router](https://www.npmjs.com/package/@squide/react-router)
-- [@squide/webpack-module-federation](https://www.npmjs.com/package/@squide/webpack-module-federation)
+- [@squide/module-federation](https://www.npmjs.com/package/@squide/module-federation)
 
-For the full shared dependencies configuration, have a look at the [defineConfig.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/webpack-module-federation/src/defineConfig.ts) file on Github.
+For the full shared dependencies configuration, have a look at the [defineConfig.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/webpack-configs/src/defineConfig.ts) file on Github.
 
 > You can [extend](../reference/webpack/defineDevHostConfig.md#extend-a-default-shared-dependency) or [override](../reference/webpack/defineDevHostConfig.md#override-a-default-shared-dependency) the default shared dependencies configuration.
 
@@ -108,10 +146,10 @@ To configure shared dependencies, use the `sharedDependencies` option of any [de
 ```js !#7-11 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/firefly-configs";
+import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, {
+export default defineDevHostConfig(swcConfig, "host", 8080, [], {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true
@@ -125,7 +163,7 @@ When a dependency is shared between a host application and a remote module, the 
 ```js !#7-11 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/firefly-configs";
+import { defineDevRemoteModuleConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {

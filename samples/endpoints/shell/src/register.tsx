@@ -105,7 +105,7 @@ function registerRoutes(runtime: FireflyRuntime, sessionManager: SessionManager,
 }
 
 async function registerMsw(runtime: FireflyRuntime) {
-    if (process.env.USE_MSW) {
+    if (runtime.isMswEnabled) {
         // Files including an import to the "msw" package are included dynamically to prevent adding
         // MSW stuff to the bundled when it's not used.
         const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
@@ -116,11 +116,12 @@ async function registerMsw(runtime: FireflyRuntime) {
 
 export function registerShell(sessionManager: SessionManager, { host }: RegisterShellOptions = {}) {
     const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
-        await initI18next(runtime);
+        initI18next(runtime);
+
         await registerMsw(runtime);
 
         return mergeDeferredRegistrations([
-            await registerLayouts(runtime, { host }),
+            registerLayouts(runtime, { host }),
             registerRoutes(runtime, sessionManager, host)
         ]);
     };

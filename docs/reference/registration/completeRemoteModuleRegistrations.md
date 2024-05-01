@@ -28,30 +28,25 @@ completeRemoteModuleRegistrations(runtime, data?)
 A `Promise` object with an array of `RemoteModuleRegistrationError` if any error happens during the completion of the remote modules registration process.
 
 - `RemoteModuleRegistrationError`:
-    - `url`: The URL of the module federation remote that failed to load.
-    - `containerName`: The name of the [dynamic container](https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers) that Squide attempted to recover.
-    - `moduleName`: The name of the module that Squide attempted to recover.
+    - `remoteName`: The name of the remote module that failed to load.
+    - `moduleName`: The name of the [module](./registerRemoteModules.md#name) that Squide attempted to recover.
     - `error`: The original error object.
 
 ## Usage
 
 ### Complete remote module registrations
 
-```tsx !#18,21 host/src/bootstrap.tsx
+```tsx !#14,17 host/src/bootstrap.tsx
 import { FireflyRuntime, completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
-import { fetchFeatureFlags, type AppContext } from "@sample/shared";
+import { fetchFeatureFlags } from "@sample/shared";
 
 const runtime = new FireflyRuntime();
 
-const context: AppContext = {
-    name: "Test app"
-};
-
 const Remotes: RemoteDefinition = [
-    { name: "remote1", url: "http://localhost:8081" }
+    { name: "remote1" }
 ];
 
-await registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime);
 
 // Don't fetch data in the bootstrapping code for a real application. This is done here
 // strictly for demonstration purpose.
@@ -63,11 +58,11 @@ await completeRemoteModuleRegistrations(runtime, { featureFlags });
 
 ```tsx !#19-32 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
-import type { AppContext, DeferredRegistrationData } from "@sample/shared";
+import type { DeferredRegistrationData } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 import { FeatureAPage } from "./FeatureAPage.tsx";
 
-export const register: ModuleRegisterFunction<FireflyRuntime, AppContext, DeferredRegistrationData> = async (runtime, context) => {
+export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = async runtime => {
     runtime.registerRoute({
         path: "/about",
         element: <AboutPage />
@@ -99,21 +94,17 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext, Deferr
 
 ### Handle the completion errors
 
-```tsx !#20-22 host/src/bootstrap.tsx
+```tsx !#16-18 host/src/bootstrap.tsx
 import { FireflyRuntime, completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
-import { fetchFeatureFlags, type AppContext } from "@sample/shared";
+import { fetchFeatureFlags } from "@sample/shared";
 
 const runtime = new FireflyRuntime();
 
-const context: AppContext = {
-    name: "Test app"
-};
-
 const Remotes: RemoteDefinition = [
-    { name: "remote1", url: "http://localhost:8081" }
+    { name: "remote1" }
 ];
 
-await registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime);
 
 // Don't fetch data in the bootstrapping code for a real application. This is done here
 // strictly for demonstration purpose.

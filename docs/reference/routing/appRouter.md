@@ -6,7 +6,7 @@ toc:
 
 # AppRouter
 
-A component that sets up and orchestrate Squide federated primitives with a React Router instance.
+A component that sets up and orchestrate Squide federated primitives with a [React Router](https://reactrouter.com/en/main) instance.
 
 ## Reference
 
@@ -21,9 +21,9 @@ A component that sets up and orchestrate Squide federated primitives with a Reac
 - `fallbackElement`: A React element to render while the application is being bootstrapped.
 - `errorElement`: A React element to render when there's an unmanaged error during the bootstrapping of the application.
 - `waitForMsw`: Whether or not the application bootstrapping sequence should wait for MSW to be started before loading the data and rendering the active route.
-- `onLoadPublicData`: An optional handler to load the initial public data after the **modules are registered** and **MSW is started** (if enabled). This handler is called the first time a user navigate to a [public route](../runtime/runtime-class.md#register-a-public-route). Such public data could include feature flags.
+- `onLoadPublicData`: An optional handler to load the initial public data after the **modules are registered** and **MSW is started** (if enabled). This handler is called the first time a user navigate to a [public route](../runtime/runtime-class.md#register-a-public-route).
     - `signal`: An [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal) to cancel the previous HTTP request when the `onLoadPublicData` handler is called twice due to the `AppRouter` being re-rendered.
-- `onLoadProtectedData`: An optional handler to load the initial protected data after the **modules are registered** and **MSW is started** (if enabled). This handler is called the first time a user navigate to a protected route (any route that has no `$visibility: public` hint). Such protected data could include a user session.
+- `onLoadProtectedData`: An optional handler to load the initial protected data after the **modules are registered** and **MSW is started** (if enabled). This handler is called the first time a user navigate to a protected route (any route that has no `$visibility: public` hint).
     - `signal`: An [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal) to cancel the previous HTTP request when the `onLoadPublicData` handler is called twice due to the `AppRouter` being re-rendered.
 - `isPublicDataLoaded`: Whether or not the initial public data has been loaded.
 - `isProtectedDataLoaded`: Whether or not the initial protected data has been loaded.
@@ -240,10 +240,9 @@ Don't forget to forward the [AbortSignal](https://developer.mozilla.org/en-US/do
 
 For more information about deferred registrations, refer to the [registerRemoteModules](../registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) and [completeModuleRegistrations](../registration/completeModuleRegistrations.md) documentation.
 
-```tsx !#32-34,44 host/src/App.tsx
+```tsx !#31-33,43 host/src/App.tsx
 import { useState, useCallback } from "react";
-import { AppRouter } from "@squide/firefly";
-import { completeModuleRegistrations } from "@squide/webpack-module-federation";
+import { AppRouter, completeModuleRegistrations } from "@squide/firefly";
 import { Loading } from "./Loading.tsx";
 import { ErrorBoundary } from "./ErrorBoundary.tsx";
 import type { FeatureFlags } from "@sample/shared";

@@ -5,7 +5,7 @@ order: 980
 # Fetch initial data
 
 !!!warning
-Before going forward with this guide, make sure that you completed the [setup Mock Service Worker](./setup-msw.md) guide.
+Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) guide.
 !!!
 
 Retrieving the initial data of an application is a crucial aspect that isn't always straightforward to implement. That's why we encourage feature teams to build their initial data fetching strategy on top of the Squide [AppRouter](../reference/routing/appRouter.md) component.
@@ -56,7 +56,7 @@ Then, register the request handler using the module registration function:
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly"; 
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
-    if (process.env.USE_MSW) {
+    if (runtime.isMswEnabled) {
         // Files that includes an import to the "msw" package are included dynamically to prevent adding
         // unused MSW stuff to the application bundles.
         const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
@@ -196,13 +196,11 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
         to: "/initial-data"
     });
 
-    if (process.env.USE_MSW) {
-        // Files that includes an import to the "msw" package are included dynamically to prevent adding
-        // unused MSW stuff to the application bundles.
-        const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
+    // Files that includes an import to the "msw" package are included dynamically to prevent adding
+    // unused MSW stuff to the application bundles.
+    const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
 
-        runtime.registerRequestHandlers(requestHandlers);
-    }
+    runtime.registerRequestHandlers(requestHandlers);
 }
 ```
 

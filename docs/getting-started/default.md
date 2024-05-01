@@ -30,7 +30,7 @@ npm create @workleap/project@latest <output-directory>
 
 We have built this shell to facilitate the adoption of federated applications at Workleap by **enforcing patterns** that we believe will help feature teams successfully implement a distributed architecture.
 
-The shell itself is a lightweight [API layer](/reference) built on top of [Module Federation](https://webpack.js.org/concepts/module-federation/) and [React Router](https://reactrouter.com), with the goal of maximizing the strength of both libraries while interfering as little as possible with their functionality.
+The shell itself is a lightweight [API layer](/reference) built on top of [Module Federation](https://module-federation.io/) and [React Router](https://reactrouter.com), with the goal of maximizing the strength of both libraries while interfering as little as possible with their functionality.
 
 ### Module Federation
 
@@ -78,11 +78,9 @@ While developing the [API](/reference) of Squide, we kept a few guiding principl
 
 Module Federation comes with a few manageable limitations that are important to consider when architecting your distributed application:
 
-- A [shared dependency](https://webpack.js.org/plugins/module-federation-plugin/#sharing-hints) cannot be tree-shaken. Since remote modules are loaded at runtime, [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin) cannot infer which parts of a shared dependency will be used by the application modules. Therefore, tree-shaking is disabled for shared dependencies.
+- A [shared dependency](https://module-federation.io/configure/shared.html) cannot be tree-shaken. Since remote modules are loaded at runtime, module federation cannot infer which parts of a shared dependency will be used by the application modules. Therefore, tree-shaking is disabled for shared dependencies.
 
-- Module Federation does not support [React Fast Refresh](https://github.com/pmmmwh/react-refresh-webpack-plugin). However, it does support [Hot Module Replacement](https://webpack.js.org/concepts/hot-module-replacement/).
-
-> These limitations are not specific to Squide, they are specific to Module Federation.
+- Updating a [shared dependency](https://module-federation.io/configure/shared.html) to a new major version is not always straightforward and may result in complex deployment processes.
 
 ## Create your project
 

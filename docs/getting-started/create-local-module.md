@@ -10,11 +10,11 @@ Local modules have many uses but are especially useful when **migrating** from a
 
 Let's add a local module to demonstrate how it's done!
 
-> Loading remote modules at runtime with [Module Federation](https://webpack.js.org/concepts/module-federation/) is the primary focus of this shell and our recommended approach. It empowers teams to be **fully autonomous** by **deploying** their modules **independently** from the other parts of the application.
+> Loading remote modules at runtime with [Module Federation](https://module-federation.io/) is the primary focus of this shell and our recommended approach. It empowers teams to be **fully autonomous** by **deploying** their modules **independently** from the other parts of the application.
 >
-> However, we recognize that teams working on mature products may prefer to **gradually migrate** to a distributed architecture by first extracting subdomains into independent modules within their current monolithic setup before fully committing to remote modules loaded at runtime.
+> However, we recognize that some teams might prefer to first extract their subdomains into independent modules within a monolithic setup before fully committing to remote modules loaded at runtime.
 >
-> To facilitate this transition, this shell also supports local modules that are loaded at **build time**.
+> To facilitate this style of architecture, Squide also supports local modules that are loaded at **build time**.
 >
 > Both remote and local modules can be used within same application as this shell supports dual bootstrapping. For example, an application can be configured to load a few remote modules at runtime while also loading a few local modules.
 
@@ -24,17 +24,17 @@ Create a new application (we'll refer to ours as `local-module`), then open a te
 
 +++ pnpm
 ```bash
-pnpm add -D @workleap/tsup-configs tsup typescript
+pnpm add -D @workleap/tsup-configs tsup typescript @types/react @types/react-dom
 pnpm add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ yarn
 ```bash
-yarn add -D @workleap/tsup-configs tsup typescript
+yarn add -D @workleap/tsup-configs tsup typescript @types/react @types/react-dom
 yarn add @squide/firefly react @squide/firefly react-dom react-router-dom react-error-boundary
 ```
 +++ npm
 ```bash
-npm add -D @workleap/tsup-configs tsup typescript
+npm add -D @workleap/tsup-configs tsup typescript @types/react @types/react-dom
 npm install @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++
@@ -73,8 +73,8 @@ Finally, configure the package to be shareable by adding the `name`, `version`, 
     "version": "0.0.1",
     "exports": {
         ".": {
-            "import": "./dist/register.js",
             "types": "./dist/register.d.ts",
+            "import": "./dist/register.js",
             "default": "./dist/register.js"
         }
     }
@@ -85,12 +85,11 @@ Finally, configure the package to be shareable by adding the `name`, `version`, 
 
 Next, register the local module routes and navigation items with [registerRoute](/reference/runtime/runtime-class.md#register-routes) and [registerNavigationItem](/reference/runtime/runtime-class.md#register-navigation-items) functions:
 
-```tsx !#6-9,11-14 local-module/src/register.tsx
+```tsx !#5-8,10-13 local-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
-import type { AppContext } from "@sample/shared";
 import { Page } from "./Page.tsx";
 
-export const register: ModuleRegisterFunction<FireflyRuntime, AppContext> = (runtime, context) => {
+export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         path: "/local/page",
         element: <Page />
@@ -125,18 +124,17 @@ Go back to the `host` application and add a dependency to the `@sample/local-mod
 }
 ```
 
-Then, register the local module with the [registerLocalModule](/reference/registration/registerLocalModules.md) function:
+Then, register the local module with the [registerLocalModules](/reference/registration/registerLocalModules.md) function:
 
-```tsx !#4,26 host/src/bootstrap.tsx
+```tsx !#3,20 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
-import type { AppContext } from "@sample/shared";
+import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, registerLocalModules, type RemoteDefinition } from "@squide/firefly";
 import { register as registerMyLocalModule } from "@sample/local-module";
 import { App } from "./App.tsx";
 
 // Define the remote modules.
 const Remotes: RemoteDefinition[] = [
-    { url: "http://localhost:8081", name: "remote1" }
+    { name: "remote1" }
 ];
 
 // Create the shell runtime.
@@ -144,16 +142,11 @@ const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger()]
 });
 
-// Create an optional context.
-const context: AppContext = {
-    name: "Demo application"
-};
-
 // Register the remote module.
-await registerRemoteModules(Remotes, runtime, context);
+await registerRemoteModules(Remotes, runtime);
 
 // Register the local module.
-registerLocalModule([registerMyLocalModule], runtime, context);
+registerLocalModules([registerMyLocalModule], runtime);
 
 const root = createRoot(document.getElementById("root"));
 

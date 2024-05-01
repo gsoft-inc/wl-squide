@@ -1,18 +1,14 @@
 // @ts-check
 
-/**
- * @param {boolean} isHost
- * @returns {Record<string, any>}
- */
-export function getSharedDependencies(isHost) {
+export function getSharedDependencies() {
     return {
         "@endpoints/layouts": {
             singleton: true,
-            eager: isHost ? true : undefined
+            eager: true
         },
         "@endpoints/shared": {
             singleton: true,
-            eager: isHost ? true : undefined
+            eager: true
         }
     };
 }

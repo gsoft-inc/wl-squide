@@ -1,14 +1,16 @@
 // @ts-check
 
-import { defineBuildHostConfig } from "@squide/firefly-configs";
+import { isNetlify } from "@endpoints/shared";
+import { defineBuildHostConfig } from "@squide/firefly-webpack-configs";
+import { Remotes } from "./remotes.js";
 import { swcConfig } from "./swc.build.js";
 import { features, getSharedDependencies } from "./webpack.common.js";
 
-export default defineBuildHostConfig(swcConfig, "host", {
+export default defineBuildHostConfig(swcConfig, "host", Remotes, {
     features,
-    sharedDependencies: getSharedDependencies(true),
+    sharedDependencies: getSharedDependencies(),
     environmentVariables: {
-        "NETLIFY": process.env.NETLIFY === "true",
+        "NETLIFY": isNetlify,
         "USE_MSW": process.env.USE_MSW === "true"
     }
 });

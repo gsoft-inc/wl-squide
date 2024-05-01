@@ -15,7 +15,7 @@ This function is a wrapper built on top of [@workleap/web-configs](https://www.n
 ## Reference
 
 ```ts
-const webpackConfig = defineDevHostConfig(swcConfig: {}, applicationName, port, options?: {})
+const webpackConfig = defineDevHostConfig(swcConfig: {}, applicationName, port, remotes: [], options?: {})
 ```
 
 ## Parameters
@@ -23,13 +23,14 @@ const webpackConfig = defineDevHostConfig(swcConfig: {}, applicationName, port, 
 - `swcConfig`: An SWC [configuration object](https://swc.rs/docs/configuration/swcrc).
 - `applicationName`: The host application name.
 - `port`: The host application port.
+- `remotes`: An array of `RemoteDefinition` (view the [Remote definition](#remote-definition) section).
 - `options`: An optional object literal of options:
     - Accepts most of webpack `definedDevConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/#3-set-predefined-options).
     - `htmlWebpackPluginOptions`: An optional object literal accepting any property of the [HtmlWebpackPlugin](https://github.com/jantimon/html-webpack-plugin#options).
     - `features`: An optional object literal of feature switches to define additional shared dependencies.
         - `i18next`: Whether or not to add `@squide/i18next` as a shared dependency.
     - `sharedDependencies`: An optional object literal of additional (or updated) module federation shared dependencies.
-    - `moduleFederationPluginOptions`: An optional object literal of [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) options.
+    - `moduleFederationPluginOptions`: An optional object literal of [ModuleFederationPlugin](https://module-federation.io/configure/index.html) options.
 
 ## Returns
 
@@ -43,7 +44,7 @@ The `defineDevHostConfig` function will add the following shared dependencies as
 - [react-router-dom](https://www.npmjs.com/package/react-router-dom)
 - [@squide/core](https://www.npmjs.com/package/@squide/core)
 - [@squide/react-router](https://www.npmjs.com/package/@squide/react-router)
-- [@squide/webpack-module-federation](https://www.npmjs.com/package/@squide/webpack-module-federation)
+- [@squide/module-federation](https://www.npmjs.com/package/@squide/module-federation)
 - [@squide/msw](https://www.npmjs.com/package/@squide/msw)
 
 For the full shared dependencies configuration, have a look at the [defineConfig.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/firefly/src/defineConfig.ts) file on Github.
@@ -52,24 +53,38 @@ For the full shared dependencies configuration, have a look at the [defineConfig
 
 ### Define a webpack config
 
-```js !#6 host/webpack.dev.js
+```js !#13 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/firefly-configs";
+import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080);
+/**
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: "remote1", url: "http://localhost:8081" }
+];
+
+export default defineDevHostConfig(swcConfig, "host", 8080, Remotes);
 ```
 
 ### Activate optional features
 
-```js !#7-9 host/webpack.dev.js
+```js !#14-16 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/firefly-configs";
+import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, {
+/**
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: "remote1", url: "http://localhost:8081" }
+];
+
+export default defineDevHostConfig(swcConfig, "host", 8080, Remotes, {
     features: {
         i18next: true
     }
@@ -82,13 +97,20 @@ Features must be activated on the host application as well as every remote modul
 
 ### Specify additional shared dependencies
 
-```js !#7-11 host/webpack.dev.js
+```js !#14-18 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/firefly-configs";
+import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, {
+/**
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: "remote1", url: "http://localhost:8081" }
+];
+
+export default defineDevHostConfig(swcConfig, "host", 8080, Remotes, {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true
@@ -103,13 +125,20 @@ Additional shared dependencies must be configured on the host application as wel
 
 ### Extend a default shared dependency
 
-```js !#7-11 host/webpack.dev.js
+```js !#14-18 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/firefly-configs";
+import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, {
+/**
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: "remote1", url: "http://localhost:8081" }
+];
+
+export default defineDevHostConfig(swcConfig, "host", 8080, Remotes, {
     sharedDependencies: {
         "react": {
             requiredVersion: "18.2.0"
@@ -118,7 +147,7 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
 });
 ```
 
-In the previous code sample, the `react` shared dependency will be **augmented** with the newly provided `strictVersion` option. The resulting shared dependency will be:
+In the previous code sample, the `react` shared dependency will be **augmented** with the `strictVersion` option. The resulting shared dependency will be:
 
 ```js !#5
 {
@@ -132,11 +161,18 @@ In the previous code sample, the `react` shared dependency will be **augmented**
 
 ### Override a default shared dependency
 
-```js !#7-11 host/webpack.dev.js
+```js !#14-18 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/firefly-configs";
+import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
+
+/**
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: "remote1", url: "http://localhost:8081" }
+];
 
 export default defineDevHostConfig(swcConfig, "host", 8080, {
     sharedDependencies: {
@@ -160,15 +196,22 @@ In the previous code sample, the `react` shared dependency `singleton` option wi
 
 ### Customize module federation configuration
 
-While you could customize the [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) configuration by providing your own object literal through the `moduleFederationPluginOptions` option, we recommend using the `defineHostModuleFederationPluginOptions(applicationName, options)` function as it will take care of **merging** the custom options with the default plugin options.
+While you could customize the [ModuleFederationPlugin](https://module-federation.io/configure/) configuration by providing your own object literal through the `moduleFederationPluginOptions` option, we recommend using the `defineHostModuleFederationPluginOptions(applicationName, options)` function as it will take care of **merging** the custom options with the default plugin options.
 
-```js !#7-9 host/webpack.dev.js
+```js !#14-16 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig, defineHostModuleFederationPluginOptions } from "@squide/firefly-configs";
+import { defineDevHostConfig, defineHostModuleFederationPluginOptions } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, {
+/**
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: "remote1", url: "http://localhost:8081" }
+];
+
+export default defineDevHostConfig(swcConfig, "host", 8080, Remotes, {
     moduleFederationPluginOptions: defineHostModuleFederationPluginOptions("host", {
         runtime: "my-runtime-name"
     })
@@ -176,7 +219,62 @@ export default defineDevHostConfig(swcConfig, "host", 8080, {
 ```
 
 - `applicationName`: The host application name.
-- `moduleFederationPluginOptions`: An object literal of [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) options.
+- `moduleFederationPluginOptions`: An object literal of [ModuleFederationPlugin](https://module-federation.io/configure/) options.
 
+## Remote definition
+
+### `name`
+
+The `name` property of a remote definition **must match** the `name` property defined in the remote module [ModuleFederationPlugin](https://module-federation.io/configure/index.html) configuration.
+
+If you are relying on the Squide [defineDevRemoteModuleConfig](../webpack/defineDevRemoteModuleConfig.md) function to add the `ModuleFederationPlugin` to the remote module webpack [configuration object](https://module-federation.io/), then the remote module `name` is the second argument of the function.
+
+In the following exemple, the remote module `name` is `remote1`.
+
+```js !#5 host/webpack.dev.js
+/**
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: "remote1", url: `http://localhost:8081` }
+];
+```
+
+```js !#6 remote-module/webpack.dev.js
+// @ts-check
+
+import { defineDevRemoteModuleConfig } from "@squide/firefly-webpack-configs";
+import { swcConfig } from "./swc.dev.js";
+
+export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081);
+```
+
+### `url`
+
+The `url` property of a remote definition **must match** the [publicPath](https://webpack.js.org/guides/public-path/) of the remote module webpack [configuration object](https://webpack.js.org/concepts/configuration/).
+
+In the following exemple, the remote module `publicPath` is `http://localhost:8081`.
+
+```ts !#5 host/webpack.dev.js
+/**
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: "remote1", url: "http://localhost:8081" }
+];
+```
+
+The `publicPath` is built from the provided `host` and `port` values. Therefore, if the port value is `8081`, then the generated `publicPath` would be `http://localhost:8081`:
+
+```js !#6-8 remote-module/webpack.dev.js
+// @ts-check
+
+import { defineDevRemoteModuleConfig } from "@squide/firefly-webpack-configs";
+import { swcConfig } from "./swc.dev.js";
+
+export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
+    host: "localhost" // (This is the default value)
+});
+```
 
 

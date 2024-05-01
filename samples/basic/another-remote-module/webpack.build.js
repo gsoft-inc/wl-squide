@@ -1,6 +1,6 @@
 // @ts-check
 
-import { defineBuildRemoteModuleConfig } from "@squide/firefly-configs";
+import { defineBuildRemoteModuleConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.build.js";
 import { getSharedDependencies } from "./webpack.common.js";
 

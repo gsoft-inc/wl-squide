@@ -14,17 +14,17 @@ Create a new application (we'll refer to ours as `remote-module`), then open a t
 
 +++ pnpm
 ```bash
-pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss @types/react @types/react-dom
 pnpm add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ yarn
 ```bash
-yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss @types/react @types/react-dom
 yarn add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ npm
 ```bash
-npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss @types/react @types/react-dom
 npm install @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++
@@ -62,12 +62,11 @@ Then, ensure that you are developing your module using [ESM syntax](https://deve
 
 Next, register the remote module routes and navigation items with the [registerRoute](/reference/runtime/runtime-class.md#register-routes) and [registerNavigationItem](/reference/runtime/runtime-class.md#register-navigation-items) functions:
 
-```tsx !#6-9,11-14 remote-module/src/register.tsx
+```tsx !#5-8,10-13 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
-import type { AppContext } from "@sample/shared";
 import { Page } from "./Page.tsx";
 
-export const register: ModuleRegisterFunction<FireflyRuntime, AppContext> = (runtime, context) => {
+export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         path: "/remote/page",
         element: <Page />
@@ -115,7 +114,7 @@ Then, open the `webpack.dev.js` file and use the [defineDevRemoteModuleConfig](/
 ```js !#6-12 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/firefly-configs";
+import { defineDevRemoteModuleConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
 export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
@@ -148,7 +147,7 @@ Then, open the `webpack.build.js` file and use the [defineBuildRemoteModuleConfi
 ```js !#6-12 remote-module/webpack.build.js
 // @ts-check
 
-import { defineBuildRemoteModuleConfig } from "@squide/firefly-configs";
+import { defineBuildRemoteModuleConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.build.js";
 
 export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {

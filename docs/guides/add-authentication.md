@@ -5,7 +5,7 @@ order: 920
 # Add authentication
 
 !!!warning
-Before going forward with this guide, make sure that you completed the [setup Mock Service Worker](./setup-msw.md) and [fetch initial data](./fetch-initial-data.md) guides.
+Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) and [Fetch initial data](./fetch-initial-data.md) guides.
 !!!
 
 Most of our applications (if not all) will eventually requires the user to authenticate. To facilitate this process, the Squide [FireflyRuntime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/localStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the application registration flow is completed, the function will be made accessible to every module of the application.
@@ -98,8 +98,8 @@ Next, register the request handler using the host application registration funct
 ```tsx host/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 
-export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
-    if (process.env.USE_MSW) {
+export const registerHost: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
+    if (runtime.isMswEnabled) {
         // Files that includes an import to the "msw" package are included dynamically to prevent adding
         // unused MSW stuff to the application bundles.
         const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
@@ -179,7 +179,7 @@ export function Login() {
 }
 ```
 
-After the user logs in, the application is reloaded. This is a requirement of the [AppRouter](../reference/routing/appRouter.md) component's [onLoadPublicData](../reference/routing/appRouter.md#load-public-data) and [onLoadProtectedData](../reference/routing/appRouter.md#load-protected-data) handlers. Nevertheless, it's not a significant concern because [Workleap](https://workleap.com/) applications utilize a third-party service for authentication which requires a full refresh of the application.
+After the user logs in, the application is reloaded. This is a requirement of the [AppRouter](../reference/routing/appRouter.md) component's [onLoadPublicData](../reference/routing/appRouter.md#load-public-data) and [onLoadProtectedData](../reference/routing/appRouter.md#load-protected-data) handlers. Nevertheless, it's not a significant concern because Workleap's applications utilize a third-party service for authentication which requires a full refresh of the application.
 
 ## Create a session accessor function
 
@@ -558,7 +558,7 @@ export function RootLayout() {
 
 Finally, assemble everything:
 
-```tsx !#16,21,24,45-51 host/src/register.tsx
+```tsx !#17,22,25,46-52 host/src/register.tsx
 import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { RootLayout } from "./Rootlayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
@@ -566,8 +566,9 @@ import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { ModuleErrorBoundary } from "./ModuleErrorBoundary.tsx";
 import { LoginPage } from "./LoginPage.tsx";
 import { HomePage } from "./Homepage.tsx";
+import { NotFoundPage } from "./NotFoundPage.tsx";
 
-export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
+export const registerHost: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
     runtime.registerRoute({
         element: <RootLayout />,
         children: [
@@ -612,11 +613,19 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerRoute({
+        $visibility: "public",
+        path: "*",
+        element: <NotFoundPage />
+    }, {
+        parentName: "root-error-boundary"
+    });
+
+    runtime.registerRoute({
         index: true,
         element: <HomePage />
     });
 
-    if (process.env.USE_MSW) {
+    if (runtime.isMswEnabled) {
         // Files that includes an import to the "msw" package are included dynamically to prevent adding
         // unused MSW stuff to the application bundles.
         const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;

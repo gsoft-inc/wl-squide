@@ -62,9 +62,9 @@ test("when only remote modules are registered and they are ready, return true", 
     }));
 
     await remoteModuleRegistry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" },
-        { name: "Dummy-3", url: "http://anything3.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
     ], runtime);
 
     await remoteModuleRegistry.completeModuleRegistrations(runtime, {});
@@ -98,9 +98,9 @@ test("when only remote module deferred registrations are registered and they are
     }));
 
     await remoteModuleRegistry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" },
-        { name: "Dummy-3", url: "http://anything3.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
     ], runtime);
 
 
@@ -123,9 +123,9 @@ test("when local module deferred registrations and remote module deferred regist
     ], runtime);
 
     await remoteModuleRegistry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" },
-        { name: "Dummy-3", url: "http://anything3.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
     ], runtime);
 
     await localModuleRegistry.completeModuleRegistrations(runtime, {});
@@ -148,9 +148,9 @@ test("when local module deferred registrations and remote modules are registered
     ], runtime);
 
     await remoteModuleRegistry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" },
-        { name: "Dummy-3", url: "http://anything3.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
     ], runtime);
 
     await localModuleRegistry.completeModuleRegistrations(runtime, {});
@@ -173,9 +173,9 @@ test("when local modules and remote module deferred registrations are registered
     ], runtime);
 
     await remoteModuleRegistry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" },
-        { name: "Dummy-3", url: "http://anything3.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
     ], runtime);
 
     await localModuleRegistry.completeModuleRegistrations(runtime, {});
@@ -208,9 +208,9 @@ test("when only remote module deferred registrations are registered and they are
     }));
 
     await remoteModuleRegistry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" },
-        { name: "Dummy-3", url: "http://anything3.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
     ], runtime);
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeFalsy();
@@ -230,9 +230,9 @@ test("when local module deferred registrations and remote module deferred regist
     ], runtime);
 
     await remoteModuleRegistry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" },
-        { name: "Dummy-3", url: "http://anything3.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
     ], runtime);
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeFalsy();
@@ -252,9 +252,9 @@ test("when local module deferred registrations and remote module deferred regist
     ], runtime);
 
     await remoteModuleRegistry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" },
-        { name: "Dummy-3", url: "http://anything3.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
     ], runtime);
 
     await localModuleRegistry.completeModuleRegistrations(runtime, {});
@@ -276,9 +276,9 @@ test("when local module deferred registrations and remote module deferred regist
     ], runtime);
 
     await remoteModuleRegistry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" },
-        { name: "Dummy-3", url: "http://anything3.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
     ], runtime);
 
     await remoteModuleRegistry.completeModuleRegistrations(runtime, {});

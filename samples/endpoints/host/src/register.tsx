@@ -58,7 +58,7 @@ async function registerMsw(runtime: FireflyRuntime) {
 }
 
 export const registerHost: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
-    const i18nextInstance = await initI18next(runtime);
+    const i18nextInstance = initI18next(runtime);
 
     await registerMsw(runtime);
 

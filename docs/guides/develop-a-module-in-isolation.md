@@ -117,30 +117,25 @@ export function App() {
 
 And the `registerShell` function to setup the `RootLayout`, the `RootErrorBoundary` and any other shell assets:
 
-```tsx !#21 host/src/bootstrap.tsx
+```tsx !#16 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
-import type { AppContext} from "@sample/shared";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
 import { registerShell } from "@sample/shell";
 
 const Remotes: RemoteDefinition[] = [
-    { url: "http://localhost:8081", name: "remote1" }
+    { name: "remote1" }
 ];
 
 const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger()]
 });
 
-const context: AppContext = {
-    name: "Demo application"
-};
-
 // Register the newly created shell module.
-await registerLocalModules([registerShell, registerHost], runtime, { context });
+await registerLocalModules([registerShell, registerHost], runtime);
 
-await registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime);
 
 const root = createRoot(document.getElementById("root")!);
 
@@ -268,6 +263,10 @@ Next, add a new `dev-isolated` script to the `package.json` file to start the lo
 }
 ```
 
+!!!info
+If your project's `package.json` file does not already include the [cross-env](https://www.npmjs.com/package/cross-env) dependency, be sure to install `cross-env` as a development dependency.
+!!!
+
 The `dev-isolated` script is similar to the `dev` script but introduces a `ISOLATED` environment variable. This new environment variable will be utilized by the `webpack.dev.js` file to conditionally setup the development server for development in **isolation** or to be consumed by a host application through the `/remoteEntry.js` entry point:
 
 ### Configure webpack
@@ -302,7 +301,7 @@ To configure webpack, open the `webpack.dev.js` file and update the configuratio
 ```js !#8,11 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig, defineDevHostConfig } from "@squide/firefly-configs";
+import { defineDevRemoteModuleConfig, defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
 let config;
@@ -310,7 +309,7 @@ let config;
 if (!process.env.ISOLATED) {
     config = defineDevRemoteModuleConfig(swcConfig, "remote1", 8081);
 } else {
-    config = defineDevHostConfig(swcConfig, "remote1", 8080);
+    config = defineDevHostConfig(swcConfig, "remote1", 8080, []);
 }
 
 export default config;
@@ -330,21 +329,21 @@ If you are experiencing issues with this section of the guide:
 
 ## Setup a local module
 
-Similarly to remote modules, the same isolated setup can be achieved for local modules. The main difference is that the `webpack.config.js` file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on webpack and [Module Federation](https://webpack.js.org/concepts/module-federation/).
+Similarly to remote modules, the same isolated setup can be achieved for local modules. The main difference is that the `webpack.config.js` file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on webpack and [Module Federation](https://module-federation.io/).
 
-First, open a terminal at the root of the local module application and install the `@squide/firefly-configs` package and its dependencies:
+First, open a terminal at the root of the local module application and install the `@squide/firefly-webpack-configs` package and its dependencies:
 
 +++ pnpm
 ```bash
-pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
 ```
 +++ yarn
 ```bash
-yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
 ```
 +++ npm
 ```bash
-npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
+npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss
 ```
 +++
 
@@ -439,10 +438,10 @@ Finally, open the `webpack.config.js` file and use the the [defineDevHostConfig]
 ```js local-module/webpack.config.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/firefly-configs";
+import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.config.js";
 
-export default defineDevHostConfig(swcConfig, "local1", 8080);
+export default defineDevHostConfig(swcConfig, "local1", 8080, []);
 ```
 
 ### Add a new CLI script

@@ -13,17 +13,17 @@ Create a new application (we'll refer to ours as `host`), then open a terminal a
 
 +++ pnpm
 ```bash
-pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript
+pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
 pnpm add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ yarn
 ```bash
-yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript
+yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
 yarn add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ npm
 ```bash
-npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript
+npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
 npm install @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++
@@ -44,6 +44,7 @@ host
 ├──── App.tsx
 ├──── RootLayout.tsx
 ├──── HomePage.tsx
+├──── NotFoundPage.tsx
 ├──── bootstrap.tsx
 ├──── index.ts
 ├──── register.tsx
@@ -81,15 +82,14 @@ export {};
 
 Next, to register the modules, instanciate a shell [FireflyRuntime](/reference/runtime/runtime-class.md) instance and register the remote module with the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function (the configuration of the remote module will be covered in the [next section](create-remote-module.md)):
 
-```tsx !#12-14,17-19,22 host/src/bootstrap.tsx
+```tsx !#11-13,16 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
-import type { AppContext} from "@sample/shared";
 import { App } from "./App.tsx";
 
 // Define the remote modules.
 const Remotes: RemoteDefinition[] = [
-    { url: "http://localhost:8081", name: "remote1" }
+    { name: "remote1" }
 ];
 
 // Create the shell runtime.
@@ -97,13 +97,8 @@ const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger()]
 });
 
-// Create an optional context.
-const context: AppContext = {
-    name: "Demo application"
-};
-
 // Register the remote module.
-await registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime;
 
 const root = createRoot(document.getElementById("root")!);
 
@@ -256,16 +251,15 @@ The [ManagedRoutes](../reference/routing/ManagedRoutes.md) placeholder indicates
 
 Finally, update the bootstrapping code to [register](../reference/registration/registerLocalModules.md) the newly created local module:
 
-```tsx !#23 host/src/bootstrap.tsx
+```tsx !#17 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
-import type { AppContext} from "@sample/shared";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
 
 // Define the remote modules.
 const Remotes: RemoteDefinition[] = [
-    { url: "http://localhost:8081", name: "remote1" }
+    { name: "remote1" }
 ];
 
 // Create the shell runtime.
@@ -273,16 +267,11 @@ const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger()]
 });
 
-// Create an optional context.
-const context: AppContext = {
-    name: "Demo application"
-};
-
 // Register the newly created local module.
-await registerLocalModules([registerHost], runtime, { context });
+await registerLocalModules([registerHost], runtime);
 
 // Register the remote module.
-await registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime);
 
 const root = createRoot(document.getElementById("root")!);
 
@@ -291,6 +280,53 @@ root.render(
         <App />
     </RuntimeContext.Provider>
 );
+```
+
+### Not found page (404)
+
+Now, let's ensure that users who enter a wrong URL end up somewhere by registering a custom [no-match route](https://reactrouter.com/en/main/start/faq#how-do-i-add-a-no-match-404-route-in-react-router-v6). First, create the `NotFoundPage` component, which will serve as the page for handling not found routes:
+
+```tsx host/src/NotFoundPage.tsx
+export function NotFoundPage() {
+    return (
+        <div>Not found! Please try another page.</div>
+    );
+}
+```
+
+Then, register the newly created component as the `*` route:
+
+```tsx !#19-24 host/src/register.tsx
+import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
+import { HomePage } from "./HomePage.tsx";
+import { NotFoundPage } from "./NotFoundPage.tsx";
+import { RootLayout } from "./RootLayout.tsx";
+
+export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
+    runtime.registerRoute({
+        // Pathless route to declare a root layout.
+        element: <RootLayout />,
+        children: [
+            // Placeholder to indicate where managed routes (routes that are not hoisted or nested)
+            // will be rendered.
+            ManagedRoutes
+        ]
+    }, {
+        hoist: true
+    });
+
+    runtime.registerRoute({
+        path: "*",
+        element: <NotFoundPage />
+    }, {
+        hoist: true
+    });
+
+    runtime.registerRoute({
+        index: true,
+        element: <HomePage />
+    });
+};
 ```
 
 ## Configure webpack
@@ -334,13 +370,20 @@ export const swcConfig = defineDevConfig(targets);
 
 Then, open the `webpack.dev.js` file and use the [defineDevHostConfig](/reference/webpack/defineDevHostConfig.md) function to configure webpack:
 
-```js !#6-13 host/webpack.dev.js
+```js !#13-20 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/firefly-configs";
+import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, {
+/**
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
+ */
+const Remotes: RemoteDefinition[] = [
+    { name: "remote1", url: "http://localhost:8081" }
+];
+
+export default defineDevHostConfig(swcConfig, "host", 8080, Remotes, {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true,
@@ -368,13 +411,20 @@ export const swcConfig = defineBuildConfig(targets);
 
 Then, open the `webpack.build.js` file and use the [defineBuildHostConfig](/reference/webpack/defineBuildHostConfig.md) function to configure webpack:
 
-```js !#6-13 host/webpack.build.js
+```js !#13-20 host/webpack.build.js
 // @ts-check
 
-import { defineBuildHostConfig } from "@squide/firefly-configs";
+import { defineBuildHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildHostConfig(swcConfig, "host", {
+/**
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
+ */
+const Remotes = [
+    { name: "remote1", url: "http://localhost:8081" }
+];
+
+export default defineBuildHostConfig(swcConfig, "host", Remotes, {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true,

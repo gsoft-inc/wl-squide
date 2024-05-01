@@ -18,7 +18,7 @@ mergeDeferredRegistrations(candidates: []);
 
 ### Parameters
 
-- `candidats`: An array of [deferred registration](./registerLocalModules.md#defer-the-registration-of-routes-or-navigation-items) functions, `undefined` values will safely be ignored.
+- `candidates`: An array of [deferred registration](./registerLocalModules.md#defer-the-registration-of-routes-or-navigation-items) functions, `undefined` values will safely be ignored.
 
 ### Returns
 
@@ -32,15 +32,14 @@ A function or `undefined`:
 
 ```tsx shell/src/register.tsx
 import { mergeDeferredRegistrations, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
-import type { AppContext } from "@sample/shared";
 import { registerLayouts } from "@sample/layouts";
 import { registerAppShell } from "./registerAppShell.tsx";
 
 function registerRoutes(runtime: FireflyRuntime) {
-    ...
+    // ...
 }
 
-export function register: ModuleRegisterFunction<FireflyRuntime, AppContext>(runtime, context) {
+export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
     return mergeDeferredRegistrations([
         await registerLayouts(runtime),
         await registerAppShell(runtime),

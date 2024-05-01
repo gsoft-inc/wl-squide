@@ -1,0 +1,179 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`defineBuildHostConfig includes react-router and msw dependencies 1`] = `
+ModuleFederationPlugin {
+  "_options": {
+    "dts": false,
+    "manifest": false,
+    "name": "host",
+    "remotes": {},
+    "shared": {
+      "@squide/core": {
+        "eager": true,
+        "singleton": true,
+      },
+      "@squide/module-federation": {
+        "eager": true,
+        "singleton": true,
+      },
+      "@squide/msw": {
+        "eager": true,
+        "singleton": true,
+      },
+      "@squide/react-router": {
+        "eager": true,
+        "singleton": true,
+      },
+      "react": {
+        "eager": true,
+        "requiredVersion": undefined,
+        "singleton": true,
+      },
+      "react-dom": {
+        "eager": true,
+        "singleton": true,
+      },
+      "react-router-dom": {
+        "eager": true,
+        "singleton": true,
+      },
+    },
+  },
+  "name": "ModuleFederationPlugin",
+}
+`;
+
+exports[`defineBuildRemoteModuleConfig includes react-router and msw dependencies 1`] = `
+ModuleFederationPlugin {
+  "_options": {
+    "dts": false,
+    "exposes": {
+      "./register": "./src/register",
+    },
+    "filename": "remoteEntry.js",
+    "manifest": false,
+    "name": "remote1",
+    "shared": {
+      "@squide/core": {
+        "eager": undefined,
+        "singleton": true,
+      },
+      "@squide/module-federation": {
+        "eager": undefined,
+        "singleton": true,
+      },
+      "@squide/msw": {
+        "eager": undefined,
+        "singleton": true,
+      },
+      "@squide/react-router": {
+        "eager": undefined,
+        "singleton": true,
+      },
+      "react": {
+        "eager": undefined,
+        "requiredVersion": undefined,
+        "singleton": true,
+      },
+      "react-dom": {
+        "eager": undefined,
+        "singleton": true,
+      },
+      "react-router-dom": {
+        "eager": undefined,
+        "singleton": true,
+      },
+    },
+  },
+  "name": "ModuleFederationPlugin",
+}
+`;
+
+exports[`defineDevHostConfig includes react-router and msw dependencies 1`] = `
+ModuleFederationPlugin {
+  "_options": {
+    "dts": false,
+    "manifest": false,
+    "name": "host",
+    "remotes": {},
+    "shared": {
+      "@squide/core": {
+        "eager": true,
+        "singleton": true,
+      },
+      "@squide/module-federation": {
+        "eager": true,
+        "singleton": true,
+      },
+      "@squide/msw": {
+        "eager": true,
+        "singleton": true,
+      },
+      "@squide/react-router": {
+        "eager": true,
+        "singleton": true,
+      },
+      "react": {
+        "eager": true,
+        "requiredVersion": undefined,
+        "singleton": true,
+      },
+      "react-dom": {
+        "eager": true,
+        "singleton": true,
+      },
+      "react-router-dom": {
+        "eager": true,
+        "singleton": true,
+      },
+    },
+  },
+  "name": "ModuleFederationPlugin",
+}
+`;
+
+exports[`defineDevRemoteModuleConfig includes react-router and msw dependencies 1`] = `
+ModuleFederationPlugin {
+  "_options": {
+    "dts": false,
+    "exposes": {
+      "./register": "./src/register",
+    },
+    "filename": "remoteEntry.js",
+    "manifest": false,
+    "name": "remote1",
+    "shared": {
+      "@squide/core": {
+        "eager": undefined,
+        "singleton": true,
+      },
+      "@squide/module-federation": {
+        "eager": undefined,
+        "singleton": true,
+      },
+      "@squide/msw": {
+        "eager": undefined,
+        "singleton": true,
+      },
+      "@squide/react-router": {
+        "eager": undefined,
+        "singleton": true,
+      },
+      "react": {
+        "eager": undefined,
+        "requiredVersion": undefined,
+        "singleton": true,
+      },
+      "react-dom": {
+        "eager": undefined,
+        "singleton": true,
+      },
+      "react-router-dom": {
+        "eager": undefined,
+        "singleton": true,
+      },
+    },
+  },
+  "name": "ModuleFederationPlugin",
+}
+`;

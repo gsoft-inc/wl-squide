@@ -1,6 +1,6 @@
 // @ts-check
 
-import { defineBuildHostConfig, defineBuildRemoteModuleConfig } from "@squide/firefly-configs";
+import { defineBuildHostConfig, defineBuildRemoteModuleConfig } from "@squide/firefly-webpack-configs";
 import path from "node:path";
 import { swcConfig } from "./swc.build.js";
 import { features, getSharedDependencies } from "./webpack.common.js";
@@ -17,7 +17,7 @@ if (!process.env.ISOLATED) {
         }
     });
 } else {
-    config = defineBuildHostConfig(swcConfig, "remote1", {
+    config = defineBuildHostConfig(swcConfig, "remote1", [], {
         entry: path.resolve("./src/dev/index.tsx"),
         features,
         sharedDependencies: getSharedDependencies(true),

@@ -4,7 +4,7 @@
         "paths": {
             "@squide/core": ["../../../packages/core/src/index.ts"],
             "@squide/react-router": ["../../../packages/react-router/src/index.ts"],
-            "@squide/webpack-module-federation": ["../../../packages/webpack-module-federation/src/index.ts"],
+            "@squide/module-federation": ["../../../packages/module-federation/src/index.ts"],
             "@squide/webpack-configs": ["../../../packages/webpack-configs/src/index.ts"],
             "@squide/fakes": ["../../../packages/fakes/src/index.ts"],
             "@basic/shared": ["../shared/src/index.ts"]

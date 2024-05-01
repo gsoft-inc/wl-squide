@@ -28,8 +28,7 @@ registerRemoteModules(remotes: [], runtime, options?: { context? })
 A `Promise` object with an array of `RemoteModuleRegistrationError` if any error happens during the registration.
 
 - `RemoteModuleRegistrationError`:
-    - `url`: The URL of the module federation remote that failed to load.
-    - `containerName`: The name of the [dynamic container](https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers) that Squide attempted to recover.
+    - `remoteName`: The name of the remote module that failed to load.
     - `moduleName`: The name of the [module](#name) that Squide attempted to recover.
     - `error`: The original error object.
 
@@ -37,29 +36,23 @@ A `Promise` object with an array of `RemoteModuleRegistrationError` if any error
 
 ### Register a remote module
 
-```tsx !#10-12,14 host/src/bootstrap.tsx
+```tsx !#5-7,9 host/src/bootstrap.tsx
 import { FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
-import type { AppContext } from "@sample/shared";
 
 const runtime = new FireflyRuntime();
 
-const context: AppContext = {
-    name: "Test app"
-};
-
 const Remotes: RemoteDefinition = [
-    { name: "remote1", url: "http://localhost:8081" }
+    { name: "remote1" }
 ];
 
-await registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime);
 ```
 
-```tsx !#5-15 remote-module/src/register.tsx
+```tsx !#5-8,10-13 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
-import type { AppContext } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 
-export function register: ModuleRegisterFunction<FireflyRuntime, AppContext>(runtime, context) {
+export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
     runtime.registerRoute({
         path: "/about",
         element: <AboutPage />
@@ -82,21 +75,17 @@ Sometimes, data must be fetched to determine which routes or navigation items sh
 
 To defer a registration to the second phase, a module registration function can **return an anonymous function**. Once the modules are registered and the [completeRemoteModuleRegistrations](./completeRemoteModuleRegistrations.md) function is called, the deferred registration functions will be executed.
 
-```tsx !#18,21 host/src/bootstrap.tsx
+```tsx !#14,17 host/src/bootstrap.tsx
 import { FireflyRuntime, completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
-import { fetchFeatureFlags, type AppContext } from "@sample/shared";
+import { fetchFeatureFlags } from "@sample/shared";
 
 const runtime = new FireflyRuntime();
 
-const context: AppContext = {
-    name: "Test app"
-};
-
 const Remotes: RemoteDefinition = [
-    { name: "remote1", url: "http://localhost:8081" }
+    { name: "remote1" }
 ];
 
-await registerRemoteModules(Remotes, runtime, { context });
+await registerRemoteModules(Remotes, runtime);
 
 // Don't fetch data in the bootstrapping code for a real application. This is done here
 // strictly for demonstration purpose.
@@ -108,11 +97,11 @@ await completeRemoteModuleRegistrations(runtime, { featureFlags });
 
 ```tsx !#19-32 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
-import type { AppContext, DeferredRegistrationData } from "@sample/shared";
+import type { DeferredRegistrationData } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 import { FeatureAPage } from "./FeatureAPage.tsx";
 
-export const register: ModuleRegisterFunction<FireflyRuntime, AppContext, DeferredRegistrationData> = async (runtime, context) => {
+export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = async runtime => {
     runtime.registerRoute({
         path: "/about",
         element: <AboutPage />
@@ -146,21 +135,16 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext, Deferr
 
 ### Handle the registration errors
 
-```tsx !#14-16 host/src/bootstrap.tsx
+```tsx !#9-11 host/src/bootstrap.tsx
 import { FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
-import type { AppContext } from "@sample/shared";
 
 const runtime = new FireflyRuntime();
 
-const context: AppContext = {
-    name: "Test app"
-};
-
 const Remotes: RemoteDefinition = [
-    { name: "remote1", url: "http://localhost:8081" }
+    { name: "remote1" }
 ];
 
-(await registerRemoteModules(Remotes, runtime, { context })).forEach(x => {
+(await registerRemoteModules(Remotes, runtime)).forEach(x => {
     console.log(x);
 });
 ```
@@ -173,65 +157,29 @@ To ease the configuration of remote modules, make sure that you first import the
 import type { RemoteDefinition } from "@squide/firefly";
 
 const Remotes: RemoteDefinition = [
-    { name: "REMOTE_NAME", url: "REMOTE_URL" }
+    { name: "remote1" }
 ];
 ```
 
 ### `name`
 
-The `name` property of a remote definition **must match** the `name` property defined in the remote module [ModuleFederationPlugin](https://webpack.js.org/plugins/module-federation-plugin/) configuration.
+The `name` property of a remote definition **must match** the `name` property defined in the remote module [ModuleFederationPlugin](https://module-federation.io/configure/index.html) configuration.
 
-If you are relying on either the Squide [defineDevRemoteModuleConfig](../webpack//defineDevRemoteModuleConfig.md) or [defineBuildRemoteModuleConfig](../webpack/defineBuildRemoteModuleConfig.md) function to add the `ModuleFederationPlugin` to the remote module webpack [configuration object](https://webpack.js.org/concepts/configuration/), then the remote module `name` is the second argument of the function.
+If you are relying on either the Squide [defineDevRemoteModuleConfig](../webpack/defineDevRemoteModuleConfig.md) or [defineBuildRemoteModuleConfig](../webpack/defineBuildRemoteModuleConfig.md) functions to add the `ModuleFederationPlugin` to the remote module webpack [configuration object](https://module-federation.io/), then the remote module `name` is the second argument of the function.
 
 In the following exemple, the remote module `name` is `remote1`.
 
 ```ts !#2 host/src/bootstrap.tsx
 const Remotes: RemoteDefinition = [
-    { name: "remote1", url: `http://localhost:${PORT}` }
+    { name: "remote1" }
 ];
 ```
 
-```js !#6 remote-module/src/webpack.dev.js
+```js !#6 remote-module/webpack.dev.js
 // @ts-check
 
-import { defineDevRemoteModuleConfig } from "@squide/firefly-configs";
+import { defineDevRemoteModuleConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevRemoteModuleConfig(swcConfig, "remote1", PORT);
-```
-
-### `url`
-
-The `url` property of a remote definition **must match** the [publicPath](https://webpack.js.org/guides/public-path/) of the remote module webpack [configuration object](https://webpack.js.org/concepts/configuration/).
-
-In the following exemple, the remote module `publicPath` is `http://localhost:8081`.
-
-```ts !#2 host/src/bootstrap.tsx
-const Remotes: RemoteDefinition = [
-    { name: "REMOTE_NAME", url: "http://localhost:8081" }
-];
-```
-
-In development mode, the `publicPath` is built from the provided `host` and `port` values. Therefore, if the port value is `8081`, then the generated `publicPath` would be `http://localhost:8081/`:
-
-```js !#6-8 remote-module/webpack.dev.js
-// @ts-check
-
-import { defineDevRemoteModuleConfig } from "@squide/firefly-configs";
-import { swcConfig } from "./swc.dev.js";
-
-export default defineDevRemoteModuleConfig(swcConfig, REMOTE_NAME, 8081, {
-    host: "localhost" // (This is the default value)
-});
-```
-
-In build mode, the `publicPath` is the third argument of the `defineBuildRemoteModuleConfig` function:
-
-```js !#6 remote-module/webpack.build.js
-// @ts-check
-
-import { defineBuildRemoteModuleConfig } from "@squide/firefly-configs";
-import { swcConfig } from "./swc.build.js";
-
-export default defineBuildRemoteModuleConfig(swcConfig, REMOTE_NAME, "http://localhost:8081/");
+export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081);
 ```

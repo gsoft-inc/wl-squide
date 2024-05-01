@@ -9,6 +9,10 @@ export function getSharedDependencies(isHost) {
         "@basic/shared": {
             singleton: true,
             eager: isHost ? true : undefined
+        },
+        "useless-lib": {
+            singleton: true,
+            eager: isHost ? true : undefined
         }
     };
 }

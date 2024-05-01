@@ -1,6 +1,5 @@
-import { useMemo, useSyncExternalStore } from "react";
-
 import { addLocalModuleRegistrationStatusChangedListener, getLocalModuleRegistrationStatus, removeLocalModuleRegistrationStatusChangedListener, type ModuleRegistrationStatus } from "@squide/core";
+import { useMemo, useSyncExternalStore } from "react";
 import { addRemoteModuleRegistrationStatusChangedListener, getRemoteModuleRegistrationStatus, removeRemoteModuleRegistrationStatusChangedListener } from "./registerRemoteModules.ts";
 
 export function areModulesRegistered(localModuleRegistrationStatus: ModuleRegistrationStatus, remoteModuleRegistrationStatus: ModuleRegistrationStatus) {

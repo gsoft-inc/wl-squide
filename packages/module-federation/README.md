@@ -1,4 +1,4 @@
-# @squide/webpack-module-federation
+# @squide/module-federation
 
 ## Usage
 

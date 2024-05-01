@@ -12,7 +12,7 @@ However, at certain points in the lifecycle of a federated application, the host
 
 - To forward a user session object, a built-in [sessionAccessor](../reference/runtime/runtime-class.md#parameters) function is available.
 
-- To forward other types of initial data, such as a user tenant subscription, as shown in the [fetch initial data](./fetch-initial-data.md#fetch-the-data-1) guide, the data can be forwarded to modules through a React context.
+- To forward other types of initial data, such as a user tenant subscription, as shown in the [Fetch initial data](./fetch-initial-data.md#fetch-the-data-1) guide, the data can be forwarded to modules through a React context.
 
 ## React Query
 

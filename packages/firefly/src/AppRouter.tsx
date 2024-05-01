@@ -1,7 +1,7 @@
 import { isNil, useLogOnceLogger } from "@squide/core";
+import { useAreModulesReady, useAreModulesRegistered } from "@squide/module-federation";
 import { useIsMswStarted } from "@squide/msw";
 import { findRouteByPath, useIsRouteProtected, useRouteMatch, useRoutes, type Route } from "@squide/react-router";
-import { useAreModulesReady, useAreModulesRegistered } from "@squide/webpack-module-federation";
 import { cloneElement, useCallback, useEffect, useMemo, type ReactElement } from "react";
 import { ErrorBoundary, useErrorBoundary } from "react-error-boundary";
 import { Outlet, useLocation, type RouterProviderProps } from "react-router-dom";

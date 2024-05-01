@@ -26,6 +26,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
+            node-version: ">=20.0.0"
             check-latest: true
 
       - uses: pnpm/action-setup@v3

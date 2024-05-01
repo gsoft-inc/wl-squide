@@ -42,9 +42,9 @@ test("can register all the modules", async () => {
     const registry = new RemoteModuleRegistry(loadRemote);
 
     await registry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" },
-        { name: "Dummy-3", url: "http://anything3.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
     ], runtime);
 
     expect(register1).toHaveBeenCalled();
@@ -59,9 +59,9 @@ test("when called twice, throw an error", async () => {
 
     const registry = new RemoteModuleRegistry(loadRemote);
 
-    await registry.registerModules([{ name: "Dummy-1", url: "http://anything1.com" }], runtime);
+    await registry.registerModules([{ name: "Dummy-1" }], runtime);
 
-    await expect(async () => registry.registerModules([{ name: "Dummy-1", url: "http://anything1.com" }], runtime)).rejects.toThrow(/The registerRemoteModules function can only be called once/);
+    await expect(async () => registry.registerModules([{ name: "Dummy-1" }], runtime)).rejects.toThrow(/The registerRemoteModules function can only be called once/);
 });
 
 test("when there are no deferred registrations, once all the modules are registered, set the status to \"ready\"", async () => {
@@ -72,8 +72,8 @@ test("when there are no deferred registrations, once all the modules are registe
     const registry = new RemoteModuleRegistry(loadRemote);
 
     await registry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" }
     ], runtime);
 
     expect(registry.registrationStatus).toBe("ready");
@@ -87,8 +87,8 @@ test("when there are deferred registrations, once all the modules are registered
     const registry = new RemoteModuleRegistry(loadRemote);
 
     await registry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" }
     ], runtime);
 
     expect(registry.registrationStatus).toBe("registered");
@@ -114,9 +114,9 @@ test("when a module registration fail, register the remaining modules", async ()
     const registry = new RemoteModuleRegistry(loadRemote);
 
     await registry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" },
-        { name: "Dummy-3", url: "http://anything3.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
     ], runtime);
 
     expect(register1).toHaveBeenCalled();
@@ -140,9 +140,9 @@ test("when a module registration fail, return the error", async () => {
     const registry = new RemoteModuleRegistry(loadRemote);
 
     const errors = await registry.registerModules([
-        { name: "Dummy-1", url: "http://anything1.com" },
-        { name: "Dummy-2", url: "http://anything2.com" },
-        { name: "Dummy-3", url: "http://anything3.com" }
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
     ], runtime);
 
     expect(errors.length).toBe(1);

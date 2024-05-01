@@ -4,7 +4,7 @@ order: 780
 
 # Override a React context
 
-In a federated application using [Module Federation](https://webpack.js.org/concepts/module-federation/), it's typical to configure various global [React context](https://legacy.reactjs.org/docs/context.html) at the root of the host application. These contexts are usually consumed down the line by the layouts and pages of the remote modules.
+In a federated application using [Module Federation](https://module-federation.io/), it's typical to configure various global [React context](https://legacy.reactjs.org/docs/context.html) at the root of the host application. These contexts are usually consumed down the line by the layouts and pages of the remote modules.
 
 Let's explore a simple example using a `BackgroundColorContext`:
 
@@ -131,15 +131,15 @@ export function App() {
 }
 ```
 
-In this scenario, Hopper's components are used throughout the entire federated application, including the remote modules. Moreover, `@hopper/components` is defined as a [singleton](https://webpack.js.org/plugins/module-federation-plugin/#singleton) shared dependency:
+In this scenario, Hopper's components are used throughout the entire federated application, including the remote modules. Moreover, `@hopper/components` is defined as a [singleton](https://module-federation.io/configure/shared.html#singleton) shared dependency:
 
 ```js !#8-10 host/webpack.dev.js
 // @ts-check
 
-import { defineDevHostConfig } from "@squide/firefly-configs";
+import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, {
+export default defineDevHostConfig(swcConfig, "host", 8080, [], {
     sharedDependencies: {
         "@hopper/components": {
             singleton: true

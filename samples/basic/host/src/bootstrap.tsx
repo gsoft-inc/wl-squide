@@ -1,23 +1,19 @@
 import { registerLocalModule } from "@basic/local-module";
-import { isNetlify, registerLayouts, type AppContext } from "@basic/shared";
+import { registerLayouts, type AppContext } from "@basic/shared";
 import { registerShell } from "@basic/shell";
-import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
+import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, registerRemoteModules } from "@squide/firefly";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { Remotes } from "../remotes.js";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
 import { sessionAccessor, sessionManager } from "./session.ts";
 
-const Remotes: RemoteDefinition[] = [
-    {
-        name: "remote1",
-        url: isNetlify ? "https://squide-basic-remote-module.netlify.app" : "http://localhost:8081"
-    },
-    {
-        name: "remote2",
-        url: isNetlify ? "https://squide-basic-another-remote-module.netlify.app" : "http://localhost:8082"
-    }
-];
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { version } from "useless-lib";
+
+console.log("[basic-sample] host:", version);
 
 const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger()],

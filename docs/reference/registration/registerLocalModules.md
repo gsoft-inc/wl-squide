@@ -34,26 +34,20 @@ A `Promise` object with an array of `LocalModuleRegistrationError` if any error 
 
 ### Register a local module
 
-```tsx !#11 host/src/bootstrap.tsx
+```tsx !#6 host/src/bootstrap.tsx
 import { registerLocalModules, FireflyRuntime } from "@squide/firefly";
 import { register } from "@sample/local-module";
-import type { AppContext } from "@sample/shared";
 
 const runtime = new FireflyRuntime();
 
-const context: AppContext = {
-    name: "Test app"
-};
-
-await registerLocalModules([register], runtime, { context });
+await registerLocalModules([register], runtime);
 ```
 
-```tsx !#5-15 local-module/src/register.tsx
+```tsx !#5-8,10-13 local-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
-import type { AppContext } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 
-export function register: ModuleRegisterFunction<FireflyRuntime, AppContext>(runtime, context) {
+export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
     runtime.registerRoute({
         path: "/about",
         element: <AboutPage />
@@ -76,18 +70,14 @@ Sometimes, data must be fetched to determine which routes or navigation items sh
 
 To defer a registration to the second phase, a module registration function can **return an anonymous function**. Once the modules are registered and the [completeLocalModuleRegistrations](./completeLocalModuleRegistrations.md) function is called, the deferred registration functions will be executed.
 
-```tsx !#15,18 host/src/bootstrap.tsx
+```tsx !#11,14 host/src/bootstrap.tsx
 import { completeLocalModuleRegistrations, registerLocalModules, FireflyRuntime } from "@squide/firefly";
 import { register } from "@sample/local-module";
-import { fetchFeatureFlags, type AppContext } from "@sample/shared";
+import { fetchFeatureFlags } from "@sample/shared";
 
 const runtime = new FireflyRuntime();
 
-const context: AppContext = {
-    name: "Test app"
-};
-
-await registerLocalModules([register], runtime, { context });
+await registerLocalModules([register], runtime);
 
 // Don't fetch data in the bootstrapping code for a real application. This is done here
 // strictly for demonstration purpose.
@@ -99,11 +89,11 @@ await completeLocalModuleRegistrations(runtime, { featureFlags });
 
 ```tsx !#19-32 local-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
-import type { AppContext, DeferredRegistrationData } from "@sample/shared";
+import type { DeferredRegistrationData } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 import { FeatureAPage } from "./FeatureAPage.tsx";
 
-export const register: ModuleRegisterFunction<FireflyRuntime, AppContext, DeferredRegistrationData> = async (runtime, context) => {
+export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = async runtime => {
     runtime.registerRoute({
         path: "/about",
         element: <AboutPage />
@@ -137,18 +127,13 @@ export const register: ModuleRegisterFunction<FireflyRuntime, AppContext, Deferr
 
 ### Handle the registration errors
 
-```tsx !#11-13 host/src/bootstrap.tsx
+```tsx !#6-8 host/src/bootstrap.tsx
 import { registerLocalModules, FireflyRuntime } from "@squide/firefly";
 import { register } from "@sample/local-module";
-import type { AppContext } from "@sample/shared";
 
 const runtime = new FireflyRuntime();
 
-const context: AppContext = {
-    name: "Test app"
-};
-
-(await registerLocalModules([register], runtime, { context })).forEach(x => {
+(await registerLocalModules([register], runtime)).forEach(x => {
     console.log(x);
 });
 ```

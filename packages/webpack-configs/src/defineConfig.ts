@@ -6,6 +6,7 @@ import type HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "node:path";
 import url from "node:url";
 import type webpack from "webpack";
+import { HostApplicationName } from "./shared.ts";
 
 const directoryName = url.fileURLToPath(new URL(".", import.meta.url));
 
@@ -157,7 +158,7 @@ export interface DefineHostModuleFederationPluginOptions extends ModuleFederatio
 }
 
 // The function return type is mandatory, otherwise we got an error TS4058.
-export function defineHostModuleFederationPluginOptions(applicationName: string, remotes: RemoteDefinition[], options: DefineHostModuleFederationPluginOptions): ModuleFederationPluginOptions {
+export function defineHostModuleFederationPluginOptions(remotes: RemoteDefinition[], options: DefineHostModuleFederationPluginOptions): ModuleFederationPluginOptions {
     const {
         features = {},
         shared = {},
@@ -168,7 +169,7 @@ export function defineHostModuleFederationPluginOptions(applicationName: string,
     const defaultSharedDependencies = resolveDefaultSharedDependencies(features, true);
 
     return {
-        name: applicationName,
+        name: HostApplicationName,
         // Since Squide modules are only exporting a register function with a standardized API
         // it doesn't requires any typing.
         dts: false,
@@ -217,7 +218,7 @@ export interface DefineDevHostConfigOptions extends Omit<DefineDevConfigOptions,
 }
 
 // The function return type is mandatory, otherwise we got an error TS4058.
-export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: string, port: number, remotes: RemoteDefinition[], options: DefineDevHostConfigOptions = {}): webpack.Configuration {
+export function defineDevHostConfig(swcConfig: SwcConfig, port: number, remotes: RemoteDefinition[], options: DefineDevHostConfigOptions = {}): webpack.Configuration {
     const {
         entry = path.resolve("./src/index.ts"),
         publicPath = "auto",
@@ -228,7 +229,7 @@ export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: strin
         features,
         sharedDependencies,
         runtimePlugins,
-        moduleFederationPluginOptions = defineHostModuleFederationPluginOptions(applicationName, remotes, { features, shared: sharedDependencies, runtimePlugins }),
+        moduleFederationPluginOptions = defineHostModuleFederationPluginOptions(remotes, { features, shared: sharedDependencies, runtimePlugins }),
         ...webpackOptions
     } = options;
 
@@ -244,7 +245,7 @@ export function defineDevHostConfig(swcConfig: SwcConfig, applicationName: strin
         ],
         ...webpackOptions,
         transformers: [
-            createSetUniqueNameTransformer(applicationName),
+            createSetUniqueNameTransformer(HostApplicationName),
             ...transformers
         ]
     });
@@ -259,7 +260,7 @@ export interface DefineBuildHostConfigOptions extends Omit<DefineBuildConfigOpti
 }
 
 // The function return type is mandatory, otherwise we got an error TS4058.
-export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: string, remotes: RemoteDefinition[], options: DefineBuildHostConfigOptions = {}): webpack.Configuration {
+export function defineBuildHostConfig(swcConfig: SwcConfig, remotes: RemoteDefinition[], options: DefineBuildHostConfigOptions = {}): webpack.Configuration {
     const {
         entry = path.resolve("./src/index.ts"),
         publicPath = "auto",
@@ -269,7 +270,7 @@ export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: str
         features,
         sharedDependencies,
         runtimePlugins,
-        moduleFederationPluginOptions = defineHostModuleFederationPluginOptions(applicationName, remotes, { features, shared: sharedDependencies, runtimePlugins }),
+        moduleFederationPluginOptions = defineHostModuleFederationPluginOptions(remotes, { features, shared: sharedDependencies, runtimePlugins }),
         ...webpackOptions
     } = options;
 
@@ -283,7 +284,7 @@ export function defineBuildHostConfig(swcConfig: SwcConfig, applicationName: str
         ],
         transformers: [
             forceNamedChunkIdsTransformer,
-            createSetUniqueNameTransformer(applicationName),
+            createSetUniqueNameTransformer(HostApplicationName),
             ...transformers
         ],
         ...webpackOptions

@@ -169,7 +169,7 @@ Finally, update the webpack development and build configurations to activate the
 import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, "host", 8080, [], {
+export default defineDevHostConfig(swcConfig, 8080, [], {
     features: {
         i18next: true
     },
@@ -188,7 +188,7 @@ export default defineDevHostConfig(swcConfig, "host", 8080, [], {
 import { defineBuildHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildHostConfig(swcConfig, "host", [], {
+export default defineBuildHostConfig(swcConfig, [], {
     features: {
         i18next: true
     },

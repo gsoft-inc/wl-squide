@@ -6,7 +6,7 @@ import { Remotes } from "./remotes.js";
 import { swcConfig } from "./swc.build.js";
 import { features, getSharedDependencies } from "./webpack.common.js";
 
-export default defineBuildHostConfig(swcConfig, "host", Remotes, {
+export default defineBuildHostConfig(swcConfig, Remotes, {
     features,
     sharedDependencies: getSharedDependencies(),
     environmentVariables: {

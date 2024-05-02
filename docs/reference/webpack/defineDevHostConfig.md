@@ -59,7 +59,7 @@ import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
 /**
- * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition[]}
  */
 const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
@@ -77,7 +77,7 @@ import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
 /**
- * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition[]}
  */
 const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
@@ -103,7 +103,7 @@ import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
 /**
- * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition[]}
  */
 const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
@@ -131,7 +131,7 @@ import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
 /**
- * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition[]}
  */
 const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
@@ -167,7 +167,7 @@ import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
 /**
- * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition[]}
  */
 const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
@@ -204,7 +204,7 @@ import { defineDevHostConfig, defineHostModuleFederationPluginOptions } from "@s
 import { swcConfig } from "./swc.dev.js";
 
 /**
- * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition[]}
  */
 const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
@@ -232,7 +232,7 @@ In the following exemple, the remote module `name` is `remote1`.
 
 ```js !#5 host/webpack.dev.js
 /**
- * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition[]}
  */
 const Remotes = [
     { name: "remote1", url: `http://localhost:8081` }
@@ -256,7 +256,7 @@ In the following exemple, the remote module `publicPath` is `http://localhost:80
 
 ```ts !#5 host/webpack.dev.js
 /**
- * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition[]}
  */
 const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }

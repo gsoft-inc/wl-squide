@@ -67,7 +67,7 @@ Then, update the development [webpack](https://webpack.js.org/) configuration fi
 import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 
 /**
- * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition}[]
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition[]}
  */
 const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }

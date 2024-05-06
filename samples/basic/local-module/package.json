@@ -16,8 +16,7 @@
     "scripts": {
         "dev": "nodemon",
         "dev-isolated": "nodemon --config nodemon.isolated.json",
-        "build": "tsup --config ./tsup.build.ts",
-        "serve-build": "pnpm build"
+        "build": "tsup --config ./tsup.build.ts"
     },
     "peerDependencies": {
         "@basic/shared": "*",

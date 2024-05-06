@@ -10,7 +10,8 @@
         "dev": "nodemon",
         "dev-isolated": "cross-env ISOLATED=true pnpm dev",
         "build": "webpack --config webpack.build.js",
-        "serve-build": "pnpm build && pnpm http-server dist -p 8082 -P http://localhost:8082? -c-1"
+        "serve-build": "pnpm http-server dist -p 8082 -P http://localhost:8082? -c-1",
+        "deploy": "netlify deploy --dir=samples/basic/another-remote-module/dist --site=2673b626-74aa-4c03-8a8f-8c794e90fd07 --prod"
     },
     "devDependencies": {
         "@squide/firefly-webpack-configs": "workspace:*",
@@ -26,6 +27,7 @@
         "cross-env": "7.0.3",
         "eslint": "8.57.0",
         "http-server": "14.1.1",
+        "netlify-cli": "17.23.1",
         "nodemon": "3.1.0",
         "typescript": "5.4.5",
         "webpack": "5.91.0",

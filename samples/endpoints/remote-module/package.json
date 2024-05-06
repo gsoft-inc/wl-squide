@@ -10,12 +10,12 @@
         "dev": "nodemon",
         "dev-isolated": "cross-env USE_MSW=true ISOLATED=true pnpm dev",
         "build": "webpack --config webpack.build.js",
-        "serve-build": "pnpm build && pnpm http-server dist -p 8081 -P http://localhost:8081? -c-1",
+        "serve-build": "pnpm http-server dist -p 8081 -P http://localhost:8081? -c-1",
         "build-isolated": "cross-env USE_MSW=true ISOLATED=true pnpm build-isolated:webpack && pnpm build-isolated:copy-redirects && pnpm build-isolated:copy-public-files",
         "build-isolated:webpack": "webpack --config webpack.build.js",
         "build-isolated:copy-redirects": "copyfiles _redirects dist",
         "build-isolated:copy-public-files": "copyfiles -u 1 public/favicon.png public/mockServiceWorker.js dist",
-        "serve-build-isolated": "pnpm build-isolated && pnpm http-server dist -p 8080 -P http://localhost:8080? -c-1"
+        "serve-build-isolated": "pnpm http-server dist -p 8080 -P http://localhost:8080? -c-1"
     },
     "devDependencies": {
         "@squide/firefly-webpack-configs": "workspace:*",

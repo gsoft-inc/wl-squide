@@ -28,6 +28,11 @@
             "dependsOn": ["build"],
             "outputs": ["dist/**"],
             "outputMode": "new-only"
+        },
+        "deploy-isolated": {
+            "dependsOn": ["build-isolated"],
+            "outputs": ["dist/**"],
+            "outputMode": "new-only"
         }
     }
 }

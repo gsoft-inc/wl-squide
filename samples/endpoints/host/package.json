@@ -12,7 +12,8 @@
     "build:webpack": "webpack --config webpack.build.js",
     "build:copy-redirects": "copyfiles _redirects dist",
     "build:copy-public-files": "copyfiles -u 1 public/favicon.png public/mockServiceWorker.js dist",
-    "serve-build": "pnpm http-server dist -p 8080 -P http://localhost:8080? -c-1"
+    "serve-build": "pnpm http-server dist -p 8080 -P http://localhost:8080? -c-1",
+    "deploy": "netlify deploy --dir=samples/endpoints/host/dist --site=4bde6b8b-cea6-487f-913b-acec9332eb2f --prod"
   },
   "devDependencies": {
     "@squide/fakes": "workspace:*",
@@ -31,6 +32,7 @@
     "cross-env": "7.0.3",
     "eslint": "8.57.0",
     "http-server": "14.1.1",
+    "netlify-cli": "17.23.1",
     "nodemon": "3.1.0",
     "typescript": "5.4.5",
     "webpack": "5.91.0",

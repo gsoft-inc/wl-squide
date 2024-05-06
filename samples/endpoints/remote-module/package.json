@@ -15,7 +15,9 @@
         "build-isolated:webpack": "webpack --config webpack.build.js",
         "build-isolated:copy-redirects": "copyfiles _redirects dist",
         "build-isolated:copy-public-files": "copyfiles -u 1 public/favicon.png public/mockServiceWorker.js dist",
-        "serve-build-isolated": "pnpm http-server dist -p 8080 -P http://localhost:8080? -c-1"
+        "serve-build-isolated": "pnpm http-server dist -p 8080 -P http://localhost:8080? -c-1",
+        "deploy": "netlify deploy --dir=samples/endpoints/remote-module/dist --site=a3f091c3-2bc9-4c50-83a0-72fc6d7fa158 --prod",
+        "deploy-isolated": "netlify deploy --dir=samples/endpoints/remote-module/dist --site=1eacb274-6182-420e-b6e7-ada6f10cc487 --prod"
     },
     "devDependencies": {
         "@squide/firefly-webpack-configs": "workspace:*",
@@ -33,6 +35,7 @@
         "cross-env": "7.0.3",
         "eslint": "8.57.0",
         "http-server": "14.1.1",
+        "netlify-cli": "17.23.1",
         "nodemon": "3.1.0",
         "typescript": "5.4.5",
         "webpack": "5.91.0",

@@ -10,6 +10,7 @@
         "url": "git+https://github.com/gsoft-inc/wl-squide.git"
     },
     "scripts": {
+        "postinstall": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf node_modules/.cache",
         "dev": "turbo run dev --filter=./packages/*",
         "build": "turbo run build --filter=./packages/*",
         "ci-build": "turbo run build --filter=./packages/* --cache-dir=node_modules/.cache/turbo",

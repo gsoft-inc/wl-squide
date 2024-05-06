@@ -88,8 +88,20 @@ jobs:
       - name: Build endpoints sample
         run: pnpm ci-build-endpoints
 
-      - name: Lint packages & samples
-        run: pnpm lint
+    #   - name: Lint packages & samples
+    #     run: pnpm lint
+
+      - name: Lint ESLint
+        run: pnpm lint:eslint
+
+      - name: Lint installed-check
+        run: pnpm lint:installed-check
+
+      - name: Lint Knip
+        run: pnpm lint:knip
+
+      - name: Lint types
+        run: pnpm lint:types
 
       - name: Test packages
         run: pnpm test

@@ -6,7 +6,7 @@ const config: Config = {
     ],
     testRegex: "/tests/*/.*\\.test\\.(ts|tsx)$",
     testPathIgnorePatterns: ["/node_modules/", "/dist/"],
-    cacheDirectory: "./node_modules/.cache/jest",
+    cacheDirectory: "/node_modules/.cache/jest",
     clearMocks: true,
     verbose: true
 };

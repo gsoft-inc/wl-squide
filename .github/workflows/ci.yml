@@ -63,14 +63,6 @@ jobs:
             restore-keys: |
               ${{ runner.os }}-knip-
 
-      - name: Cache Knip
-        uses: actions/cache@v4
-        with:
-            path: node_modules/.cache/knip
-            key: ${{ runner.os }}-knip-${{ github.sha }}
-            restore-keys: |
-              ${{ runner.os }}-knip-
-
       - name: Cache Jest
         uses: actions/cache@v4
         with:
@@ -88,20 +80,8 @@ jobs:
       - name: Build endpoints sample
         run: pnpm ci-build-endpoints
 
-    #   - name: Lint packages & samples
-    #     run: pnpm lint
-
-      - name: Lint ESLint
-        run: pnpm lint:eslint
-
-      - name: Lint installed-check
-        run: pnpm lint:installed-check
-
-      - name: Lint Knip
-        run: pnpm lint:knip
-
-      - name: Lint types
-        run: pnpm lint:types
+      - name: Lint packages & samples
+        run: pnpm lint
 
       - name: Test packages
         run: pnpm test

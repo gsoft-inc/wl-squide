@@ -1,6 +1,7 @@
 {
     "name": "@getting-started/root",
     "author": "Workleap",
+    "version": "0.0.0",
     "description": "A template for the getting-started guide of Squide.",
     "private": true,
     "type": "module",

@@ -12,7 +12,8 @@ const config: Config = {
         ...pathsToModuleNameMapper(compilerOptions.paths, {
             prefix: "<rootDir>"
         })
-    }
+    },
+    cacheDirectory: "./node_modules/.cache/jest"
 };
 
 export default config;

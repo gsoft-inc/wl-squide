@@ -67,7 +67,13 @@ jobs:
         uses: actions/cache@v4
         with:
           path: packages/**/node_modules/.cache/jest
-          key: ${{ runner.os }}-jest-${{ hashFiles('packages/**/node_modules/.cache/jest/**') }}
+          key: ${{ runner.os }}-jest-${{ hashFiles('packages/**/node_modules/.cache/jest') }}
+
+      - name: Print files (A)
+        shell: bash
+        run: |
+          find packages/subdir/node_modules/.cache/jest
+          ls -R
 
       - name: Build packages
         run: pnpm ci-build

@@ -5,10 +5,6 @@
     "private": true,
     "type": "module",
     "license": "Apache-2.0",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/gsoft-inc/wl-squide.git"
-    },
     "scripts": {
         "dev": "turbo run dev --filter=./packages/*",
         "build": "turbo run build --filter=./packages/*",

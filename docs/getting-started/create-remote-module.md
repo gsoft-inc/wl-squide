@@ -4,6 +4,25 @@ order: 90
 
 # Create a remote module
 
+!!!warning Use an existing template
+
+We highly recommend going through the entire getting started guide. However, if you prefer to scaffold the application we'll be building, a template is available.
+
++++ pnpm
+```bash
+pnpm dlx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
+```
++++ yarn
+```bash
+yarn dlx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
+```
++++ npm
+```bash
+npx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
+```
++++
+!!!
+
 Remote modules are modules that are not included in the host application build but are instead **loaded at runtime** from a remote server. They provide a way for teams to be **fully autonomous** by **independently deploying** their modules without relying on the other parts of the application.
 
 Let's add our first remote module!
@@ -14,17 +33,17 @@ Create a new application (we'll refer to ours as `remote-module`), then open a t
 
 +++ pnpm
 ```bash
-pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss @types/react @types/react-dom
+pnpm add -D @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss @types/react @types/react-dom
 pnpm add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ yarn
 ```bash
-yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss @types/react @types/react-dom
+yarn add -D @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss @types/react @types/react-dom
 yarn add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ npm
 ```bash
-npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss @types/react @types/react-dom
+npm install -D @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss @types/react @types/react-dom
 npm install @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++
@@ -111,19 +130,13 @@ export const swcConfig = defineDevConfig(targets);
 
 Then, open the `webpack.dev.js` file and use the [defineDevRemoteModuleConfig](/reference/webpack/defineDevRemoteModuleConfig.md) function to configure webpack:
 
-```js !#6-12 remote-module/webpack.dev.js
+```js !#6 remote-module/webpack.dev.js
 // @ts-check
 
 import { defineDevRemoteModuleConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
-    sharedDependencies: {
-        "@sample/shared": {
-            singleton: true
-        }
-    }
-});
+export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081);
 ```
 
 > If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) documentation.
@@ -144,19 +157,13 @@ export const swcConfig = defineBuildConfig(targets);
 
 Then, open the `webpack.build.js` file and use the [defineBuildRemoteModuleConfig](/reference/webpack/defineBuildRemoteModuleConfig.md) function to configure webpack:
 
-```js !#6-12 remote-module/webpack.build.js
+```js !#6 remote-module/webpack.build.js
 // @ts-check
 
 import { defineBuildRemoteModuleConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.build.js";
 
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
-    sharedDependencies: {
-        "@sample/shared": {
-            singleton: true
-        }
-    }
-});
+export default defineBuildRemoteModuleConfig(swcConfig, "remote1");
 ```
 
 > If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/) documentation.

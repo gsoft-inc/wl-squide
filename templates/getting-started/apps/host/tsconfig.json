@@ -1,0 +1,9 @@
+{
+    "extends": "@workleap/typescript-configs/web-application.json",
+    "compilerOptions": {
+        "paths": {
+            "@getting-started/local-module": ["../local-module/src/register.tsx"],
+        }
+    },
+    "exclude": ["dist", "node_modules"]
+}

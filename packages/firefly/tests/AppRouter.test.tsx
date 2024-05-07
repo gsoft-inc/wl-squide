@@ -610,5 +610,5 @@ test("throw an error if no custom no match route are registered", async () => {
 
     expect(() => renderWithRuntime(runtime, createAppRouter({
         waitForMsw: false
-    }))).toThrow(/For the AppRouter component to work properly, the application must be a define a custom no match router/);
+    }))).toThrow(/For the AppRouter component to work properly, the application must define a custom no match route/);
 });

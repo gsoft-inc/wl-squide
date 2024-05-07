@@ -4,6 +4,25 @@ order: 80
 
 # Create a local module
 
+!!!warning Use an existing template
+
+We highly recommend going through the entire getting started guide. However, if you prefer to scaffold the application we'll be building, a template is available.
+
++++ pnpm
+```bash
+pnpm dlx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
+```
++++ yarn
+```bash
+yarn dlx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
+```
++++ npm
+```bash
+npx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
+```
++++
+!!!
+
 Local modules are regular modules that are part of the **host application build**. They are independent modules that expose a `registration` function to the host application's bootstrapping code. A local module can be a standalone package, a sibling project (in a monorepo setup), or even a local folder within the host application.
 
 Local modules have many uses but are especially useful when **migrating** from a **monolithic application** to a distributed application or when **launching** a **new product** with an unrefined business domain.
@@ -69,7 +88,7 @@ Finally, configure the package to be shareable by adding the `name`, `version`, 
 
 ```json local-module/package.json
 {
-    "name": "@sample/local-module",
+    "name": "@getting-started/local-module",
     "version": "0.0.1",
     "exports": {
         ".": {
@@ -114,23 +133,24 @@ export function Page() {
 
 ## Register the local module
 
-Go back to the `host` application and add a dependency to the `@sample/local-module` package in the host application `package.json` file:
+Go back to the `host` application and add a dependency to the `@getting-started/local-module` package in the host application `package.json` file:
 
 ```json host/package.json
 {
     "dependencies": {
-        "@sample/local-module": "0.0.1"
+        "@getting-started/local-module": "0.0.1"
     }
 }
 ```
 
 Then, register the local module with the [registerLocalModules](/reference/registration/registerLocalModules.md) function:
 
-```tsx !#3,20 host/src/bootstrap.tsx
+```tsx !#3,21 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, registerLocalModules, type RemoteDefinition } from "@squide/firefly";
-import { register as registerMyLocalModule } from "@sample/local-module";
+import { register as registerMyLocalModule } from "@getting-started/local-module";
 import { App } from "./App.tsx";
+import { registerHost } from "./register.tsx";
 
 // Define the remote modules.
 const Remotes: RemoteDefinition[] = [
@@ -146,9 +166,9 @@ const runtime = new FireflyRuntime({
 await registerRemoteModules(Remotes, runtime);
 
 // Register the local module.
-registerLocalModules([registerMyLocalModule], runtime);
+registerLocalModules([registerHost, registerMyLocalModule], runtime);
 
-const root = createRoot(document.getElementById("root"));
+const root = createRoot(document.getElementById("root")!);
 
 root.render(
     <RuntimeContext.Provider value={runtime}>

@@ -53,7 +53,7 @@ jobs:
       - name: Create release Pull Request or publish to NPM
         uses: changesets/action@v1
         with:
-          commit: "ci(changesets): version packages2"
+          commit: "ci(changesets): version packages"
           title: "Changeset: New Version"
           # This expects you to have a script called release which does a build for your packages and calls changeset publish
           publish: pnpm publish-pkg

@@ -13,7 +13,8 @@ const config: Config = {
             prefix: "<rootDir>"
         })
     },
-    setupFilesAfterEnv: ["<rootDir>/jest-setup.js"]
+    setupFilesAfterEnv: ["<rootDir>/jest-setup.js"],
+    cacheDirectory: "./node_modules/.cache/jest"
 };
 
 export default config;

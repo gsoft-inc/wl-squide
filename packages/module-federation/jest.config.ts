@@ -17,7 +17,8 @@ const config: Config = {
         __webpack_share_scopes__: {
             default: {}
         }
-    }
+    },
+    cacheDirectory: "./node_modules/.cache/jest"
 };
 
 export default config;

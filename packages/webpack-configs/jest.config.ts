@@ -19,7 +19,8 @@ const config: Config = {
         // Must add the ".js" file extension because the files from @workleap/webpack-configs
         // are ESM only and therefore must be processed by SWC.
         "^.+\\.(js|ts)$": ["@swc/jest", swcConfig as Record<string, unknown>]
-    }
+    },
+    cacheDirectory: "./node_modules/.cache/jest"
 };
 
 export default config;

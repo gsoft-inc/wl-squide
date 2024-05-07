@@ -4,23 +4,13 @@ order: 80
 
 # Create a local module
 
-!!!warning Use an existing template
+!!!info Use an existing template
 
-We highly recommend going through the entire getting started guide. However, if you prefer to scaffold the application we'll be building, a template is available.
+We highly recommend going through the entire getting started guide. However, if you prefer to scaffold the application we'll be building, a template is available with [degit](https://github.com/Rich-Harris/degit):
 
-+++ pnpm
-```bash
-pnpm dlx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
-```
-+++ yarn
-```bash
-yarn dlx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
-```
-+++ npm
 ```bash
 npx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
 ```
-+++
 !!!
 
 Local modules are regular modules that are part of the **host application build**. They are independent modules that expose a `registration` function to the host application's bootstrapping code. A local module can be a standalone package, a sibling project (in a monorepo setup), or even a local folder within the host application.
@@ -28,14 +18,6 @@ Local modules are regular modules that are part of the **host application build*
 Local modules have many uses but are especially useful when **migrating** from a **monolithic application** to a distributed application or when **launching** a **new product** with an unrefined business domain.
 
 Let's add a local module to demonstrate how it's done!
-
-> Loading remote modules at runtime with [Module Federation](https://module-federation.io/) is the primary focus of this shell and our recommended approach. It empowers teams to be **fully autonomous** by **deploying** their modules **independently** from the other parts of the application.
->
-> However, we recognize that some teams might prefer to first extract their subdomains into independent modules within a monolithic setup before fully committing to remote modules loaded at runtime.
->
-> To facilitate this style of architecture, Squide also supports local modules that are loaded at **build time**.
->
-> Both remote and local modules can be used within same application as this shell supports dual bootstrapping. For example, an application can be configured to load a few remote modules at runtime while also loading a few local modules.
 
 ## Install the packages
 

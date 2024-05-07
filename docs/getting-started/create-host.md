@@ -5,23 +5,13 @@ label: Create an host app
 
 # Create an host application
 
-!!!warning Use an existing template
+!!!info Use an existing template
 
-We highly recommend going through the entire getting started guide. However, if you prefer to scaffold the application we'll be building, a template is available.
+We highly recommend going through the entire getting started guide. However, if you prefer to scaffold the application we'll be building, a template is available with [degit](https://github.com/Rich-Harris/degit):
 
-+++ pnpm
-```bash
-pnpm dlx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
-```
-+++ yarn
-```bash
-yarn dlx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
-```
-+++ npm
 ```bash
 npx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
 ```
-+++
 !!!
 
 Let's begin by creating the application that will serve as the entry point for our federated application and host the application modules.

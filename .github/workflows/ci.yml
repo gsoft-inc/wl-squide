@@ -63,14 +63,6 @@ jobs:
             restore-keys: |
               ${{ runner.os }}-knip-
 
-      - name: Cache Jest
-        uses: actions/cache@v4
-        with:
-            path: node_modules/.cache/jest
-            key: ${{ runner.os }}-jest-${{ github.sha }}
-            restore-keys: |
-                ${{ runner.os }}-jest-
-
       - name: Build packages
         run: pnpm ci-build
 

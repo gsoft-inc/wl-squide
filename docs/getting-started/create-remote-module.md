@@ -4,23 +4,13 @@ order: 90
 
 # Create a remote module
 
-!!!warning Use an existing template
+!!!info Use an existing template
 
-We highly recommend going through the entire getting started guide. However, if you prefer to scaffold the application we'll be building, a template is available.
+We highly recommend going through the entire getting started guide. However, if you prefer to scaffold the application we'll be building, a template is available with [degit](https://github.com/Rich-Harris/degit):
 
-+++ pnpm
-```bash
-pnpm dlx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
-```
-+++ yarn
-```bash
-yarn dlx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
-```
-+++ npm
 ```bash
 npx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
 ```
-+++
 !!!
 
 Remote modules are modules that are not included in the host application build but are instead **loaded at runtime** from a remote server. They provide a way for teams to be **fully autonomous** by **independently deploying** their modules without relying on the other parts of the application.

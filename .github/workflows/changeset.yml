@@ -3,7 +3,7 @@ name: Changesets
 # Pnpm setup based on https://github.com/pnpm/action-setup#use-cache-to-reduce-installation-time
 
 on:
-  push:
+  pull_request:
     branches: ["main"]
 env:
   CI: true
@@ -31,7 +31,7 @@ jobs:
         uses: pnpm/action-setup@v3
         id: pnpm-install
         with:
-          version: 8
+          version: 9
           run_install: false
 
       - name: Get pnpm store directory

@@ -1,6 +1,5 @@
 // @ts-check
 
-import { isNetlify } from "@basic/shared";
 import { defineDevHostConfig, defineDevRemoteModuleConfig } from "@squide/firefly-webpack-configs";
 import path from "node:path";
 import { swcConfig } from "./swc.dev.js";
@@ -12,7 +11,7 @@ if (!process.env.ISOLATED) {
     config = defineDevRemoteModuleConfig(swcConfig, "remote1", 8081, {
         sharedDependencies: getSharedDependencies(false),
         environmentVariables: {
-            "NETLIFY": isNetlify
+            "NETLIFY": process.env.NETLIFY === "true"
         }
     });
 } else {
@@ -21,7 +20,7 @@ if (!process.env.ISOLATED) {
         overlay: false,
         sharedDependencies: getSharedDependencies(true),
         environmentVariables: {
-            "NETLIFY": isNetlify
+            "NETLIFY": process.env.NETLIFY === "true"
         }
     });
 }

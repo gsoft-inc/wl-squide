@@ -15,8 +15,7 @@
     },
     "scripts": {
         "dev": "nodemon",
-        "build": "tsup --config ./tsup.build.ts",
-        "serve-build": "pnpm build"
+        "build": "tsup --config ./tsup.build.ts"
     },
     "peerDependencies": {
         "@endpoints/shared": "*",

@@ -39,7 +39,7 @@ You'll find two samples:
 
 ## Installation
 
-This project uses PNPM, therefore, you must [install PNPM](https://pnpm.io/installation) first:
+This project uses PNPM, therefore, you must install [PNPM](https://pnpm.io/installation) v9+ first:
 
 ```bash
 npm install -g pnpm

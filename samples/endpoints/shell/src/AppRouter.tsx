@@ -71,6 +71,8 @@ function fetchProtectedData(
         })
         .catch((error: unknown) => {
             if (isApiError(error) && error.status === 401) {
+                setIsProtectedDataLoaded(true);
+
                 // The authentication boundary will redirect to the login page.
                 return;
             }

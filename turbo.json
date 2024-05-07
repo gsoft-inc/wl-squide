@@ -1,0 +1,38 @@
+{
+    "$schema": "https://turbo.build/schema.json",
+    "globalEnv": ["USE_MSW", "ISOLATED", "NETLIFY"],
+    "pipeline": {
+        "dev": {
+            "dependsOn": ["build"],
+            "outputs": ["dist/**"],
+            "persistent": true,
+            "outputMode": "new-only"
+        },
+        "build": {
+            "dependsOn": ["^build"],
+            "outputs": ["dist/**"],
+            "outputMode": "new-only"
+        },
+        "serve-build": {
+            "dependsOn": ["build"],
+            "cache": false,
+            "persistent": true,
+            "outputMode": "new-only"
+        },
+        "build-isolated": {
+            "dependsOn": ["build"],
+            "outputs": ["dist/**"],
+            "outputMode": "new-only"
+        },
+        "deploy": {
+            "dependsOn": ["build"],
+            "outputs": ["dist/**"],
+            "outputMode": "new-only"
+        },
+        "deploy-isolated": {
+            "dependsOn": ["build-isolated"],
+            "outputs": ["dist/**"],
+            "outputMode": "new-only"
+        }
+    }
+}

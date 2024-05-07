@@ -72,7 +72,7 @@ jobs:
       - name: Print files (A)
         shell: bash
         run: |
-          find packages/subdir/node_modules/.cache/jest
+          find packages/**/node_modules/.cache/jest
           ls -R
 
       - name: Build packages

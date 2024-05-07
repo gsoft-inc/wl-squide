@@ -46,6 +46,7 @@ jobs:
           key: ${{ runner.os }}-turbo-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-turbo-
+         save-always: true
 
       - name: Cache ESLint
         uses: actions/cache@v4
@@ -54,6 +55,7 @@ jobs:
           key: ${{ runner.os }}-eslint-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-eslint-
+          save-always: true
 
       - name: Cache Knip
         uses: actions/cache@v4
@@ -62,17 +64,19 @@ jobs:
           key: ${{ runner.os }}-knip-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-knip-
+          save-always: true
 
       - name: Cache Jest
         uses: actions/cache@v4
         with:
           path: packages/**/node_modules/.cache/jest
           key: ${{ runner.os }}-jest2-${{ hashFiles('packages/**/node_modules/.cache/jest') }}
+          save-always: true
 
       - name: Print files (A)
         shell: bash
         run: |
-          find packages/**/node_modules/.cache/jest 2&> /dev/null || true
+          find packages/**/node_modules/.cache/jest
 
       - name: Build packages
         run: pnpm ci-build

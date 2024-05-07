@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.768357394129">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.768368073016">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Create a local module</title>
     <meta name="title" content="Create a local module">
-    <meta name="description" content="Local modules are regular modules that are part of the host application build. They are independent modules that expose a ">
+    <meta name="description" content="We highly recommend going through the entire getting started guide.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/getting-started/create-local-module/">
@@ -21,23 +21,23 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/getting-started/create-local-module/">
     <meta property="og:title" content="Create a local module">
-    <meta property="og:description" content="Local modules are regular modules that are part of the host application build. They are independent modules that expose a ">
+    <meta property="og:description" content="We highly recommend going through the entire getting started guide.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/getting-started/create-local-module/">
     <meta property="twitter:title" content="Create a local module">
-    <meta property="twitter:description" content="Local modules are regular modules that are part of the host application build. They are independent modules that expose a ">
+    <meta property="twitter:description" content="We highly recommend going through the entire getting started guide.">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.768357394129" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.768368073016" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.768357394129" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.768368073016" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.768357394129" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.768357394129" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.768368073016" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.768368073016" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -305,6 +305,43 @@
         <span>Create a local module</span>
     </h1>
 </doc-anchor-target>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-yellow-500"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-yellow-500" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M22.48 15.59L14.01 1.45A2.968 2.968 0 0012.16.09c-.78-.19-1.58-.07-2.27.35-.41.25-.76.6-1.01 1.01v.01L.4 15.6c-.83 1.43-.33 3.27 1.1 4.1.45.26.95.4 1.48.4h16.95c.8-.01 1.55-.33 2.11-.9.56-.57.87-1.33.86-2.13a3.04 3.04 0 00-.42-1.48zm-1.87 2.21c-.19.19-.44.3-.69.3H2.99c-.17 0-.34-.05-.49-.13a.992.992 0 01-.37-1.35L10.6 2.48c.08-.14.2-.25.34-.33a.992.992 0 011.37.33l8.46 14.13c.09.15.13.32.13.49 0 .26-.1.51-.29.7z"></path>
+                    <path d="M11.45 12.1c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1s-1 .45-1 1v4c0 .56.45 1 1 1zM11.46 14.1c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+            <h5>Use an existing template</h5>
+<p>We highly recommend going through the entire getting started guide. However, if you prefer to scaffold the application we&#x27;ll be building, a template is available.</p>
+<doc-tabs>
+<doc-tab v-cloak id="pnpm">
+<template #title>pnpm</template>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">pnpm dlx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab v-cloak id="yarn">
+<template #title>yarn</template>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">yarn dlx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab v-cloak id="npm">
+<template #title>npm</template>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">npx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+</doc-tabs>
+        </div>
+    </div>
+</div>
 <p>Local modules are regular modules that are part of the <strong>host application build</strong>. They are independent modules that expose a <code v-pre>registration</code> function to the host application&#x27;s bootstrapping code. A local module can be a standalone package, a sibling project (in a monorepo setup), or even a local folder within the host application.</p>
 <p>Local modules have many uses but are especially useful when <strong>migrating</strong> from a <strong>monolithic application</strong> to a distributed application or when <strong>launching</strong> a <strong>new product</strong> with an unrefined business domain.</p>
 <p>Let&#x27;s add a local module to demonstrate how it&#x27;s done!</p>
@@ -387,7 +424,7 @@ npm install @squide/firefly react react-dom react-router-dom react-error-boundar
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/package.json</div>
 <pre class="language-json"><code v-pre class="language-json">{
-    &quot;name&quot;: &quot;@sample/local-module&quot;,
+    &quot;name&quot;: &quot;@getting-started/local-module&quot;,
     &quot;version&quot;: &quot;0.0.1&quot;,
     &quot;exports&quot;: {
         &quot;.&quot;: {
@@ -437,22 +474,23 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&
         <span>Register the local module</span>
     </h2>
 </doc-anchor-target>
-<p>Go back to the <code v-pre>host</code> application and add a dependency to the <code v-pre>@sample/local-module</code> package in the host application <code v-pre>package.json</code> file:</p>
+<p>Go back to the <code v-pre>host</code> application and add a dependency to the <code v-pre>@getting-started/local-module</code> package in the host application <code v-pre>package.json</code> file:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/package.json</div>
 <pre class="language-json"><code v-pre class="language-json">{
     &quot;dependencies&quot;: {
-        &quot;@sample/local-module&quot;: &quot;0.0.1&quot;
+        &quot;@getting-started/local-module&quot;: &quot;0.0.1&quot;
     }
 }</code></pre>
 </doc-codeblock></div>
 <p>Then, register the local module with the <a href="../../reference/registration/registerlocalmodules/">registerLocalModules</a> function:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
-<pre class="language-tsx" data-line="3,20"><code v-pre class="language-tsx">import { createRoot } from &quot;react-dom/client&quot;;
+<pre class="language-tsx" data-line="3,21"><code v-pre class="language-tsx">import { createRoot } from &quot;react-dom/client&quot;;
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, registerLocalModules, type RemoteDefinition } from &quot;@squide/firefly&quot;;
-import { register as registerMyLocalModule } from &quot;@sample/local-module&quot;;
+import { register as registerMyLocalModule } from &quot;@getting-started/local-module&quot;;
 import { App } from &quot;./App.tsx&quot;;
+import { registerHost } from &quot;./register.tsx&quot;;
 
 // Define the remote modules.
 const Remotes: RemoteDefinition[] = [
@@ -468,9 +506,9 @@ const runtime = new FireflyRuntime({
 await registerRemoteModules(Remotes, runtime);
 
 // Register the local module.
-registerLocalModules([registerMyLocalModule], runtime);
+registerLocalModules([registerHost, registerMyLocalModule], runtime);
 
-const root = createRoot(document.getElementById(&quot;root&quot;));
+const root = createRoot(document.getElementById(&quot;root&quot;)!);
 
 root.render(
     &lt;RuntimeContext.Provider value={runtime}&gt;

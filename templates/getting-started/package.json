@@ -1,0 +1,26 @@
+{
+    "name": "@getting-started/root",
+    "author": "Workleap",
+    "description": "A template for the getting-started guide of Squide.",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "pnpm -r --parallel dev",
+        "build": "pnpm -r --parallel build",
+        "lint": "pnpm run \"/^lint:.*/\"",
+        "lint:eslint": "eslint . --max-warnings=-0 --cache --cache-location node_modules/.cache/eslint",
+        "lint:types": "pnpm -r --parallel --include-workspace-root exec tsc",
+        "list-outdated-deps": "pnpm outdated -r --format list !eslint",
+        "update-outdated-deps": "pnpm update -r --latest !eslint"
+    },
+    "devDependencies": {
+        "@typescript-eslint/parser": "7.8.0",
+        "@workleap/eslint-plugin": "3.2.2",
+        "@workleap/typescript-configs": "3.0.2",
+        "eslint": "8.57.0",
+        "typescript": "5.4.5"
+    },
+    "engines": {
+        "node": ">=20.0.0"
+    }
+}

@@ -153,6 +153,53 @@ const configureSampleLibrary: KnipTransformer = ({ entry, ...config }) => {
     };
 };
 
+const configureTemplateHost: KnipTransformer = ({ entry, ignoreDependencies, ...config }) => {
+    return {
+        ...config,
+        entry: [
+            ...(entry as string[] ?? []),
+            "src/index.ts"
+        ],
+        ignoreDependencies: [
+            ...(ignoreDependencies as string[] ?? []),
+            // Browserlist isn't supported by plugins.
+            "@workleap/browserslist-config"
+        ],
+        eslint: true,
+        webpack: {
+            config: ["webpack.*.js"]
+        }
+    };
+};
+
+const configureTemplateLocalModule: KnipTransformer = ({ entry, ...config }) => {
+    return {
+        ...config,
+        entry: [
+            ...(entry as string[] ?? []),
+            "src/register.tsx"
+        ],
+        eslint: true,
+        tsup: {
+            config: ["tsup.*.ts"]
+        }
+    };
+};
+
+const configureTemplateRemoteModule: KnipTransformer = ({ entry, ...config }) => {
+    return {
+        ...config,
+        entry: [
+            ...(entry as string[] ?? []),
+            "src/register.tsx"
+        ],
+        eslint: true,
+        webpack: {
+            config: ["webpack.*.js"]
+        }
+    };
+};
+
 const rootConfig: KnipWorkspaceConfig = defineWorkspace({
     ignoreBinaries: [
         // This binaries is called "build-endpoints-isolated" for the samples.
@@ -178,7 +225,7 @@ const mswConfig: KnipWorkspaceConfig = defineWorkspace({
     configurePackage
 ]);
 
-const sampleModuleHost: KnipWorkspaceConfig = defineWorkspace({}, [
+const sampleHost: KnipWorkspaceConfig = defineWorkspace({}, [
     configureSampleHost,
     ignoreWebpackConfigsLoaders(),
     ignoreBrowserslist,
@@ -188,19 +235,6 @@ const sampleModuleHost: KnipWorkspaceConfig = defineWorkspace({}, [
 const sampleLocalModuleConfig: KnipWorkspaceConfig = defineWorkspace({}, [
     configureSampleLocalModule,
     ignoreWebpackConfigsLoaders(),
-    ignoreBrowserslist,
-    configureMsw
-]);
-
-const sampleBasicLocalModuleConfig: KnipWorkspaceConfig = defineWorkspace({
-    ignoreDependencies: [
-        // It seems like because it's used with a non-standard nodemon filename, knip can't detect the usage
-        // of the webpack CLI.
-        "webpack-cli"
-    ]
-}, [
-    configureSampleLocalModule,
-    ignoreWebpackConfigsLoaders({ ignoreMiniCssExtractPlugin: true }),
     ignoreBrowserslist,
     configureMsw
 ]);
@@ -217,24 +251,56 @@ const sampleLibraryConfig: KnipWorkspaceConfig = defineWorkspace({}, [
     configureMsw
 ]);
 
+const sampleBasicLocalModuleConfig: KnipWorkspaceConfig = defineWorkspace({
+    ignoreDependencies: [
+        // It seems like because it's used with a non-standard nodemon filename, knip can't detect the usage
+        // of the webpack CLI.
+        "webpack-cli"
+    ]
+}, [
+    configureSampleLocalModule,
+    ignoreWebpackConfigsLoaders({ ignoreMiniCssExtractPlugin: true }),
+    ignoreBrowserslist,
+    configureMsw
+]);
+
+const templateHost: KnipWorkspaceConfig = defineWorkspace({}, [
+    configureTemplateHost,
+    ignoreWebpackConfigsLoaders(),
+    ignoreBrowserslist
+]);
+
+const templateLocalModuleConfig: KnipWorkspaceConfig = defineWorkspace({}, [
+    configureTemplateLocalModule
+]);
+
+const templateRemoteModuleConfig: KnipWorkspaceConfig = defineWorkspace({}, [
+    configureTemplateRemoteModule,
+    ignoreWebpackConfigsLoaders(),
+    ignoreBrowserslist
+]);
+
 const config: KnipConfig = {
     workspaces: {
         ".": rootConfig,
         "packages/*": packagesConfig,
         "packages/msw": mswConfig,
-        "samples/basic/host": sampleModuleHost,
+        "samples/basic/host": sampleHost,
         "samples/basic/local-module": sampleBasicLocalModuleConfig,
         "samples/basic/another-remote-module": sampleRemoteModuleConfig,
         "samples/basic/remote-module": sampleRemoteModuleConfig,
         "samples/basic/shared": sampleLibraryConfig,
         "samples/basic/shell": sampleLibraryConfig,
-        "samples/endpoints/host": sampleModuleHost,
+        "samples/endpoints/host": sampleHost,
         "samples/endpoints/local-module": sampleLocalModuleConfig,
         "samples/endpoints/remote-module": sampleRemoteModuleConfig,
         "samples/endpoints/shared": sampleLibraryConfig,
         "samples/endpoints/shell": sampleLibraryConfig,
         "samples/endpoints/i18next": sampleLibraryConfig,
-        "samples/endpoints/layouts": sampleLibraryConfig
+        "samples/endpoints/layouts": sampleLibraryConfig,
+        "templates/getting-started/apps/host": templateHost,
+        "templates/getting-started/apps/local-module": templateLocalModuleConfig,
+        "templates/getting-started/apps/remote-module": templateRemoteModuleConfig
     },
     exclude: [
         // It cause issues with config like Jest "projects".

@@ -5,6 +5,25 @@ label: Create an host app
 
 # Create an host application
 
+!!!warning Use an existing template
+
+We highly recommend going through the entire getting started guide. However, if you prefer to scaffold the application we'll be building, a template is available.
+
++++ pnpm
+```bash
+pnpm dlx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
+```
++++ yarn
+```bash
+yarn dlx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
+```
++++ npm
+```bash
+npx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
+```
++++
+!!!
+
 Let's begin by creating the application that will serve as the entry point for our federated application and host the application modules.
 
 ## Install the packages
@@ -13,17 +32,17 @@ Create a new application (we'll refer to ours as `host`), then open a terminal a
 
 +++ pnpm
 ```bash
-pnpm add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
+pnpm add -D @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
 pnpm add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ yarn
 ```bash
-yarn add -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
+yarn add -D @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
 yarn add @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++ npm
 ```bash
-npm install -D @workleap/webpack-configs @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
+npm install -D @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
 npm install @squide/firefly react react-dom react-router-dom react-error-boundary
 ```
 +++
@@ -98,7 +117,7 @@ const runtime = new FireflyRuntime({
 });
 
 // Register the remote module.
-await registerRemoteModules(Remotes, runtime;
+await registerRemoteModules(Remotes, runtime);
 
 const root = createRoot(document.getElementById("root")!);
 
@@ -253,7 +272,7 @@ Finally, update the bootstrapping code to [register](../reference/registration/r
 
 ```tsx !#17 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
+import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerLocalModules, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
 
@@ -370,7 +389,7 @@ export const swcConfig = defineDevConfig(targets);
 
 Then, open the `webpack.dev.js` file and use the [defineDevHostConfig](/reference/webpack/defineDevHostConfig.md) function to configure webpack:
 
-```js !#13-20 host/webpack.dev.js
+```js !#13 host/webpack.dev.js
 // @ts-check
 
 import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
@@ -379,18 +398,11 @@ import { swcConfig } from "./swc.dev.js";
 /**
  * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition[]}
  */
-const Remotes: RemoteDefinition[] = [
+const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
-export default defineDevHostConfig(swcConfig, 8080, Remotes, {
-    sharedDependencies: {
-        "@sample/shared": {
-            singleton: true,
-            eager: true
-        }
-    }
-});
+export default defineDevHostConfig(swcConfig, 8080, Remotes);
 ```
 
 > If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) documentation.
@@ -411,7 +423,7 @@ export const swcConfig = defineBuildConfig(targets);
 
 Then, open the `webpack.build.js` file and use the [defineBuildHostConfig](/reference/webpack/defineBuildHostConfig.md) function to configure webpack:
 
-```js !#13-20 host/webpack.build.js
+```js !#13 host/webpack.build.js
 // @ts-check
 
 import { defineBuildHostConfig } from "@squide/firefly-webpack-configs";
@@ -424,14 +436,7 @@ const Remotes = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
-export default defineBuildHostConfig(swcConfig, Remotes, {
-    sharedDependencies: {
-        "@sample/shared": {
-            singleton: true,
-            eager: true
-        }
-    }
-});
+export default defineBuildHostConfig(swcConfig, Remotes);
 ```
 
 > If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/) documentation.

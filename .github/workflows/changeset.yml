@@ -22,34 +22,32 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+          run_install: false
+
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-            check-latest: true
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        id: pnpm-install
-        with:
-          version: 8
-          run_install: false
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          node-version: ">=20.0.0"
+          check-latest: true,
+          cache: pnpm
 
       - name: Install Dependencies
-        run: pnpm i --frozen-lockfile
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache turborepo
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.cache/turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
+      - name: Build packages
+        run: pnpm ci-build
 
       - name: Create release Pull Request or publish to NPM
         uses: changesets/action@v1
@@ -57,7 +55,7 @@ jobs:
           commit: "ci(changesets): version packages"
           title: "Changeset: New Version"
           # This expects you to have a script called release which does a build for your packages and calls changeset publish
-          publish: pnpm run ci-release
+          publish: pnpm publish-pkg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.WORKLEAP_NPM_TOKEN }}

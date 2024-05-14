@@ -15,4 +15,5 @@ export * from "./useIsActiveRouteProtected.ts";
 export * from "./useIsAppReady.ts";
 export * from "./useProtectedData.ts";
 export * from "./usePublicData.ts";
+export * from "./useTanstackQueryProtectedData.ts";
 

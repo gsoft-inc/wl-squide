@@ -35,8 +35,7 @@
         "react": "*",
         "react-dom": "*",
         "react-error-boundary": "*",
-        "react-router-dom": "*",
-        "@tanstack/react-query": "*"
+        "react-router-dom": "*"
     },
     "devDependencies": {
         "@swc/core": "1.4.17",

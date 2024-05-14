@@ -1,5 +1,5 @@
 import { FeatureFlagsContext, SubscriptionContext, TelemetryServiceContext, fetchJson, type FeatureFlags, type Session, type SessionManager, type Subscription, type TelemetryService } from "@endpoints/shared";
-import { AppRouter as FireflyAppRouter, completeModuleRegistrations, useCompleteDeferredRegistrationsCallback, useIsAppReady, useLogger, useProtectedData, usePublicData, useRuntime } from "@squide/firefly";
+import { AppRouter as FireflyAppRouter, completeModuleRegistrations, useCompleteDeferredRegistrationsCallback, useIsAppReady, useLogger, useProtectedData, usePublicData, useRuntime, useTanstackQueryProtectedData } from "@squide/firefly";
 import { useChangeLanguage, useI18nextInstance } from "@squide/i18next";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect } from "react";
@@ -34,15 +34,8 @@ function BootstrappingRoute(props: BootstrappingRouteProps) {
     const changeLanguage = useChangeLanguage();
 
     const { canFetchPublicData, setPublicDataAsReady } = usePublicData();
-    const { canFetchProtectedData, setProtectedDataAsReady } = useProtectedData();
+    const { queryOptions, setProtectedDataAsReady } = useTanstackQueryProtectedData();
 
-    // const canFetchPublicData = useCanFetchPublicData(waitForMsw);
-    // const canFetchProtectedData = useCanFetchProtectedData(waitForMsw);
-
-    // console.log("****************************************************************************************************************** canFetchPublicData", canFetchPublicData);
-    // console.log("****************************************************************************************************************** canFetchProtectedData", canFetchProtectedData);
-
-    // TODO: How to make sure it doesn't disable the query once the app is started?!?!
     const { data: featureFlags } = useQuery({
         queryKey: ["/api/feature-flags"],
         queryFn: async () => {
@@ -56,8 +49,6 @@ function BootstrappingRoute(props: BootstrappingRouteProps) {
         // retryOnMount: false
     });
 
-    // console.log("****************************************************************************************************************** After fetch feature flags");
-
     useEffect(() => {
         if (featureFlags) {
             logger.debug("[shell] %cFeature flags has been fetched%c:", "color: white; background-color: green;", "", featureFlags);
@@ -66,14 +57,9 @@ function BootstrappingRoute(props: BootstrappingRouteProps) {
         }
     }, [featureFlags, setPublicDataAsReady, logger]);
 
-    // console.log("****************************************************************************************************************** Before fetch session");
-
-    // TODO: How to make sure it doesn't disable the query once the app is started?!?!
     const { data: session } = useQuery({
         queryKey: ["/api/session"],
         queryFn: async () => {
-            // console.log("****************************************************************************************************************** fetching session");
-
             const data = await fetchJson("/api/session");
 
             const result: Session = {
@@ -86,16 +72,9 @@ function BootstrappingRoute(props: BootstrappingRouteProps) {
 
             return result;
         },
-        enabled: canFetchProtectedData,
-        throwOnError: true
-        // throwOnError: canFetchProtectedData
-        // retryOnMount: false
-        // refetchOnMount: false
+        ...queryOptions
     });
 
-    // console.log("****************************************************************************************************************** After fetch session");
-
-    // TODO: How to make sure it doesn't disable the query once the app is started?!?!
     const { data: subscription } = useQuery({
         queryKey: ["/api/subscription"],
         queryFn: async () => {
@@ -103,13 +82,8 @@ function BootstrappingRoute(props: BootstrappingRouteProps) {
 
             return data as Subscription;
         },
-        enabled: canFetchProtectedData,
-        throwOnError: true
-        // throwOnError: canFetchProtectedData
-        // retryOnMount: false
+        ...queryOptions
     });
-
-    // console.log("****************************************************************************************************************** After fetch subscription");
 
     useEffect(() => {
         if (session) {
@@ -136,19 +110,12 @@ function BootstrappingRoute(props: BootstrappingRouteProps) {
         }
     }, [session, subscription, setProtectedDataAsReady]);
 
-    // const isPublicDataReady = !!featureFlags;
-    // const isProtectedDataReady = !!session && !!subscription;
-
-    // console.log("****************************************************************************************************************** Before complete registration callback");
-
     useCompleteDeferredRegistrationsCallback(useCallback(() => {
         completeModuleRegistrations(runtime, {
             featureFlags,
             session
         });
     }, [featureFlags, session, runtime]));
-
-    // console.log("****************************************************************************************************************** isAppReady", isAppReady);
 
     if (!useIsAppReady()) {
         return <Loading />;

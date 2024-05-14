@@ -2,7 +2,7 @@
     "name": "@squide/firefly",
     "author": "Workleap",
     "version": "8.0.0",
-    "description": "Helpers to facilitate the creation of a shell package with Squide firefly technology stack.",
+    "description": "Helpers to facilitate the creation of an application with the Squide firefly technology stack.",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
@@ -35,7 +35,8 @@
         "react": "*",
         "react-dom": "*",
         "react-error-boundary": "*",
-        "react-router-dom": "*"
+        "react-router-dom": "*",
+        "@tanstack/react-query": "*"
     },
     "devDependencies": {
         "@swc/core": "1.4.17",

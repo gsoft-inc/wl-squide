@@ -18,9 +18,9 @@ const runtime = new FireflyRuntime({
     sessionAccessor
 });
 
-registerLocalModules([registerShell(sessionManager, { host: "@endpoints/host" }), registerHost, registerLocalModule], runtime);
+await registerLocalModules([registerShell(sessionManager, { host: "@endpoints/host" }), registerHost, registerLocalModule], runtime);
 
-registerRemoteModules(Remotes, runtime);
+await registerRemoteModules(Remotes, runtime);
 
 if (runtime.isMswEnabled) {
     // Files that includes an import to the "msw" package are included dynamically to prevent adding

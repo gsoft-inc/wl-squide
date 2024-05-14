@@ -21,7 +21,7 @@ const runtime = new FireflyRuntime({
 
 // Registering the remote module as a static module because the "register" function
 // is local when developing in isolation.
-registerLocalModules([registerShell(sessionManager), registerDev, registerModule], runtime);
+await registerLocalModules([registerShell(sessionManager), registerDev, registerModule], runtime);
 
 // Register MSW after the local modules has been registered since the request handlers
 // will be registered by the modules.

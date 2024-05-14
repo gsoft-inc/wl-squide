@@ -19,7 +19,7 @@ const runtime = new FireflyRuntime({
     sessionAccessor
 });
 
-registerLocalModules([registerShell(sessionManager), registerDev, registerLocalModule], runtime);
+await registerLocalModules([registerShell(sessionManager), registerDev, registerLocalModule], runtime);
 
 // Register MSW after the local modules has been registered since the request handlers
 // will be registered by the modules.

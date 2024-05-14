@@ -142,6 +142,9 @@ importers:
       '@squide/react-router':
         specifier: workspace:*
         version: link:../react-router
+      '@tanstack/react-query':
+        specifier: '*'
+        version: 5.32.0(react@18.3.1)
     devDependencies:
       '@swc/core':
         specifier: 1.4.17

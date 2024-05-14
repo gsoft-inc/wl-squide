@@ -462,8 +462,8 @@ If you are experiencing issues with this guide:
     - `[squide] 1/4 Registering local module.`
     - `[squide] 1/4 Local module registration completed.`
     - `[squide] Found 1 remote module to register.`
-    - `[squide] 1/1 Loading module "./register" from container "remote1" of remote "http://localhost:8081/remoteEntry.js".`
-    - `[squide] 1/1 Container "remote1" of remote "http://localhost:8081/remoteEntry.js" registration completed.`
+    - `[squide] 1/1 Loading module "register" of "remote1".`
+    - `[squide] 1/1 Completed registration for module "register" of remote "remote1"`
 - Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/host).
 - Refer to the [troubleshooting](../troubleshooting.md) page.
 

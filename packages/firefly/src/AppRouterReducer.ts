@@ -235,11 +235,9 @@ export function useAppRouterReducer(waitForMsw: boolean, waitForPublicData: bool
         waitForMsw,
         waitForPublicData,
         waitForProtectedData,
-        // There could be a race-condition where the modules are registered before the event listener has been registered.
+        // When the modules registration functions are awaited, the event listeners are registered after the modules are registered.
         areModulesRegistered: getAreModulesRegistered(),
-        // There could be a race-condition where the modules are ready before the event listener has been registered.
         areModulesReady: getAreModulesReady(),
-        // There could be a race-condition where MSW is ready before the event listener has been registered.
         isMswReady: isMswReady(),
         canFetchPublicData: false,
         canFetchProtectedData: false,

@@ -50,7 +50,8 @@ function BootstrappingRoute(props: BootstrappingRouteProps) {
 
             return data as FeatureFlags;
         },
-        enabled: canFetchPublicData
+        enabled: canFetchPublicData,
+        throwOnError: true
         // throwOnError: canFetchPublicData
         // retryOnMount: false
     });
@@ -85,7 +86,8 @@ function BootstrappingRoute(props: BootstrappingRouteProps) {
 
             return result;
         },
-        enabled: canFetchProtectedData
+        enabled: canFetchProtectedData,
+        throwOnError: true
         // throwOnError: canFetchProtectedData
         // retryOnMount: false
         // refetchOnMount: false
@@ -101,7 +103,8 @@ function BootstrappingRoute(props: BootstrappingRouteProps) {
 
             return data as Subscription;
         },
-        enabled: canFetchProtectedData
+        enabled: canFetchProtectedData,
+        throwOnError: true
         // throwOnError: canFetchProtectedData
         // retryOnMount: false
     });

@@ -29,7 +29,5 @@ export function useAreModulesRegistered() {
     const localModuleStatus = useSyncExternalStore(subscribeToLocalModuleRegistrationStatusChanged, getLocalModuleRegistrationStatus);
     const remoteModuleStatus = useSyncExternalStore(subscribeToRemoteModuleRegistrationStatusChanged, getRemoteModuleRegistrationStatus);
 
-    return useMemo(() => {
-        return areModulesRegistered(localModuleStatus, remoteModuleStatus);
-    }, [localModuleStatus, remoteModuleStatus]);
+    return useMemo(() => areModulesRegistered(localModuleStatus, remoteModuleStatus), [localModuleStatus, remoteModuleStatus]);
 }

@@ -36,7 +36,5 @@ export function useAreModulesReady() {
         }
     }, []);
 
-    return useMemo(() => {
-        return areModulesReady(localModuleStatus, remoteModuleStatus);
-    }, [localModuleStatus, remoteModuleStatus]);
+    return useMemo(() => areModulesReady(localModuleStatus, remoteModuleStatus), [localModuleStatus, remoteModuleStatus]);
 }

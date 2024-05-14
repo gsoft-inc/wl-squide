@@ -3,12 +3,12 @@
 
 import { RuntimeContext, __resetLocalModuleRegistrations, registerLocalModules } from "@squide/core";
 import { completeModuleRegistrations } from "@squide/module-federation";
-import { __resetMswStatus, setMswAsStarted } from "@squide/msw";
+import { __resetMswStatus, setMswAsReady } from "@squide/msw";
 import { render, screen } from "@testing-library/react";
 import type { ReactElement, ReactNode } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { AppRouter, type AppRouterProps } from "../src/AppRouter.tsx";
-import { FireflyRuntime } from "../src/fireflyRuntime.tsx";
+import { FireflyRuntime } from "../src/FireflyRuntime.tsx";
+import { LegacyAppRouter, type LegacyAppRouterProps } from "../src/LegacyAppRouter.tsx";
 
 function Loading() {
     return (
@@ -22,9 +22,9 @@ function ErrorBoundary() {
     );
 }
 
-function createAppRouter(props: Omit<AppRouterProps, "fallbackElement" | "errorElement" | "children">) {
+function createAppRouter(props: Omit<LegacyAppRouterProps, "fallbackElement" | "errorElement" | "children">) {
     return (
-        <AppRouter
+        <LegacyAppRouter
             fallbackElement={<Loading />}
             errorElement={<ErrorBoundary />}
             {...props}
@@ -32,7 +32,7 @@ function createAppRouter(props: Omit<AppRouterProps, "fallbackElement" | "errorE
             {(routes, providerProps) => (
                 <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
             )}
-        </AppRouter>
+        </LegacyAppRouter>
     );
 }
 
@@ -235,7 +235,7 @@ test("when a onLoadProtectedData handler is provided and the protected data is l
     expect(await screen.findByTestId("route")).toBeInTheDocument();
 });
 
-test("when msw is enabled and msw is not started, render the fallback element", async () => {
+test("when msw is enabled and msw is not ready, render the fallback element", async () => {
     const runtime = new FireflyRuntime();
 
     runtime.registerRoute({
@@ -254,7 +254,7 @@ test("when msw is enabled and msw is not started, render the fallback element", 
     expect(await screen.findByTestId("loading")).toBeInTheDocument();
 });
 
-test("when msw is enabled and msw is started, render the router", async () => {
+test("when msw is enabled and msw is ready, render the router", async () => {
     const runtime = new FireflyRuntime();
 
     runtime.registerRoute({
@@ -273,7 +273,7 @@ test("when msw is enabled and msw is started, render the router", async () => {
 
     await registerLocalModules([() => {}], runtime);
 
-    setMswAsStarted();
+    setMswAsReady();
 
     renderWithRuntime(runtime, createAppRouter({
         waitForMsw: true

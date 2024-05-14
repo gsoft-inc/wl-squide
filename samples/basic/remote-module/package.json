@@ -46,5 +46,8 @@
         "react-error-boundary": "4.0.13",
         "react-router-dom": "6.23.0",
         "useless-lib": "^2.1.0"
+    },
+    "engines": {
+        "node": ">=20.0.0"
     }
 }

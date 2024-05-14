@@ -24,6 +24,7 @@
         "@squide/fakes": "*",
         "@squide/firefly": "*",
         "@squide/i18next": "*",
+        "@tanstack/react-query": "*",
         "i18next": "*",
         "i18next-browser-languagedetector": "*",
         "msw": "*",
@@ -50,5 +51,8 @@
         "nodemon": "3.1.0",
         "tsup": "8.0.2",
         "typescript": "5.4.5"
+    },
+    "engines": {
+        "node": ">=20.0.0"
     }
 }

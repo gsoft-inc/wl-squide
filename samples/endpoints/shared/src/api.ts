@@ -38,6 +38,8 @@ export async function fetchJson(url: string, { signal }: FetchJsonOptions = {}) 
     });
 
     if (!response.ok) {
+        console.log("++++++++++++++++++++++++++++++++++++++++++++++++++ will throw error", response.status, response.statusText);
+
         throw new ApiError(response.status, response.statusText);
     }
 

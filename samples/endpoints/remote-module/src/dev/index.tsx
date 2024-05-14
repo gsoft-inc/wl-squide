@@ -1,6 +1,6 @@
 import { createI18NextPlugin } from "@endpoints/i18next";
 import { registerShell } from "@endpoints/shell";
-import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, setMswAsStarted } from "@squide/firefly";
+import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, setMswAsReady } from "@squide/firefly";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { register as registerModule } from "../register.tsx";
@@ -21,7 +21,7 @@ const runtime = new FireflyRuntime({
 
 // Registering the remote module as a static module because the "register" function
 // is local when developing in isolation.
-await registerLocalModules([registerShell(sessionManager), registerDev, registerModule], runtime);
+registerLocalModules([registerShell(sessionManager), registerDev, registerModule], runtime);
 
 // Register MSW after the local modules has been registered since the request handlers
 // will be registered by the modules.
@@ -33,7 +33,7 @@ if (runtime.isMswEnabled) {
     startMsw(runtime.requestHandlers)
         .then(() => {
             // Indicate to resources that are dependent on MSW that the service has been started.
-            setMswAsStarted();
+            setMswAsReady();
         })
         .catch((error: unknown) => {
             consoleLogger.debug("[host-app] An error occured while starting MSW.", error);

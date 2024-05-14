@@ -1,22 +1,10 @@
 import type { DeferredRegistrationData } from "@endpoints/shared";
 import type { DeferredRegistrationFunction, FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
 import { I18nextNavigationItemLabel } from "@squide/i18next";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { i18n } from "i18next";
 import type { ReactNode } from "react";
+import { QueryProvider } from "./QueryProvider.tsx";
 import { initI18next } from "./i18next.ts";
-
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            refetchOnWindowFocus: false,
-            retry: failureCount => {
-                return failureCount <= 2;
-            }
-        }
-    }
-});
 
 interface ProvidersProps {
     children: ReactNode;
@@ -24,12 +12,9 @@ interface ProvidersProps {
 
 function Providers({ children }: ProvidersProps) {
     return (
-        <QueryClientProvider client={queryClient}>
+        <QueryProvider>
             {children}
-            {process.env.ISOLATED && (
-                <ReactQueryDevtools initialIsOpen={false} />
-            )}
-        </QueryClientProvider>
+        </QueryProvider>
     );
 }
 
@@ -71,10 +56,6 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
     });
 
     return ({ featureFlags } = {}) => {
-        if (!runtime.getSession()) {
-            throw new Error("The deferred registrations are broken as they are executed before the protected data has been loaded.");
-        }
-
         if (featureFlags?.featureA) {
             runtime.registerRoute({
                 path: "/feature-a",

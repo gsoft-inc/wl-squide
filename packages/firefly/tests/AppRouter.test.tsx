@@ -7,8 +7,8 @@ import { __resetMswStatus, setMswAsReady } from "@squide/msw";
 import { render, screen } from "@testing-library/react";
 import type { ReactElement, ReactNode } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { FireflyRuntime } from "../src/FireflyRuntime.tsx";
 import { LegacyAppRouter, type LegacyAppRouterProps } from "../src/LegacyAppRouter.tsx";
-import { FireflyRuntime } from "../src/fireflyRuntime2.tsx";
 
 function Loading() {
     return (

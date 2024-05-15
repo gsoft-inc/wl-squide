@@ -1,5 +1,4 @@
-import { isApiError, postJson } from "@endpoints/shared";
-import { useIsAuthenticated } from "@squide/firefly";
+import { isApiError, postJson, useIsAuthenticated } from "@endpoints/shared";
 import { useI18nextInstance } from "@squide/i18next";
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Trans, useTranslation } from "react-i18next";

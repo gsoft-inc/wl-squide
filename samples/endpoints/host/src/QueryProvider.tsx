@@ -12,7 +12,8 @@ const queryClient = new QueryClient({
                 }
 
                 return failureCount <= 2;
-            }
+            },
+            refetchInterval: 20 * 1000
         }
     }
 });

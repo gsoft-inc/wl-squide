@@ -1,40 +1,23 @@
-import { FeatureFlagsContext, SubscriptionContext, TelemetryServiceContext, fetchJson, type FeatureFlags, type Session, type SessionManager, type Subscription, type TelemetryService } from "@endpoints/shared";
-import { AppRouter as FireflyAppRouter, completeModuleRegistrations, useCompleteDeferredRegistrationsCallback, useIsAppReady, useLogger, useProtectedData, usePublicData, useRuntime, useTanstackQueryProtectedData } from "@squide/firefly";
-import { useChangeLanguage, useI18nextInstance } from "@squide/i18next";
+import { FeatureFlagsContext, SessionManagerContext, SubscriptionContext, TelemetryServiceContext, fetchJson, isApiError, type FeatureFlags, type Session, type Subscription, type TelemetryService } from "@endpoints/shared";
+import { AppRouter as FireflyAppRouter, completeModuleRegistrations, useCompleteDeferredRegistrationsCallback, useIsAppReady, useLogger, useRuntime, useTanstackQueryProtectedData, useTanstackQueryPublicData } from "@squide/firefly";
+import { useChangeLanguage } from "@squide/i18next";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Loading } from "./Loading.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
-import { i18NextInstanceKey } from "./i18next.ts";
-
-function Loading() {
-    const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
-    const { t } = useTranslation("AppRouter", { i18n: i18nextInstance });
-
-    return (
-        <div>{t("loadingMessage")}</div>
-    );
-}
+import { useTanstackQuerySessionManager } from "./TanstackQuerySessionManager.ts";
 
 interface BootstrappingRouteProps {
-    sessionManager: SessionManager;
     telemetryService: TelemetryService;
 }
 
-function BootstrappingRoute(props: BootstrappingRouteProps) {
-    const {
-        sessionManager,
-        telemetryService
-    } = props;
-
+function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
     const logger = useLogger();
     const runtime = useRuntime();
 
-    const changeLanguage = useChangeLanguage();
-
-    const { canFetchPublicData, setPublicDataAsReady } = usePublicData();
-    const { queryOptions, setProtectedDataAsReady } = useTanstackQueryProtectedData();
+    const { publicQueryOptions, setPublicDataAsReady } = useTanstackQueryPublicData();
+    const { protectedQueryOptions, setProtectedDataAsReady } = useTanstackQueryProtectedData((error: unknown) => isApiError(error) && error.status === 401);
 
     const { data: featureFlags } = useQuery({
         queryKey: ["/api/feature-flags"],
@@ -43,10 +26,7 @@ function BootstrappingRoute(props: BootstrappingRouteProps) {
 
             return data as FeatureFlags;
         },
-        enabled: canFetchPublicData,
-        throwOnError: true
-        // throwOnError: canFetchPublicData
-        // retryOnMount: false
+        ...publicQueryOptions
     });
 
     useEffect(() => {
@@ -72,8 +52,10 @@ function BootstrappingRoute(props: BootstrappingRouteProps) {
 
             return result;
         },
-        ...queryOptions
+        ...protectedQueryOptions
     });
+
+    const sessionManager = useTanstackQuerySessionManager(session!);
 
     const { data: subscription } = useQuery({
         queryKey: ["/api/subscription"],
@@ -82,21 +64,20 @@ function BootstrappingRoute(props: BootstrappingRouteProps) {
 
             return data as Subscription;
         },
-        ...queryOptions
+        ...protectedQueryOptions
     });
+
+    const changeLanguage = useChangeLanguage();
 
     useEffect(() => {
         if (session) {
             logger.debug("[shell] %cSession has been fetched%c:", "color: white; background-color: green;", "", session);
 
-            // TODO: Remove this API from Squide and replace by in consumer side by a context.
-            sessionManager.setSession(session);
-
             // When the session has been retrieved, update the language to match the user
             // preferred language.
             changeLanguage(session.user.preferredLanguage);
         }
-    }, [session, sessionManager, changeLanguage, logger]);
+    }, [session, changeLanguage, logger]);
 
     useEffect(() => {
         if (subscription) {
@@ -123,25 +104,25 @@ function BootstrappingRoute(props: BootstrappingRouteProps) {
 
     return (
         <FeatureFlagsContext.Provider value={featureFlags}>
-            <SubscriptionContext.Provider value={subscription}>
-                <TelemetryServiceContext.Provider value={telemetryService}>
-                    <Outlet />
-                </TelemetryServiceContext.Provider>
-            </SubscriptionContext.Provider>
+            <SessionManagerContext.Provider value={sessionManager}>
+                <SubscriptionContext.Provider value={subscription}>
+                    <TelemetryServiceContext.Provider value={telemetryService}>
+                        <Outlet />
+                    </TelemetryServiceContext.Provider>
+                </SubscriptionContext.Provider>
+            </SessionManagerContext.Provider>
         </FeatureFlagsContext.Provider>
     );
 }
 
 export interface AppRouterProps {
     waitForMsw: boolean;
-    sessionManager: SessionManager;
     telemetryService: TelemetryService;
 }
 
 export function AppRouter(props: AppRouterProps) {
     const {
         waitForMsw,
-        sessionManager,
         telemetryService
     } = props;
 
@@ -157,12 +138,7 @@ export function AppRouter(props: AppRouterProps) {
                                     errorElement: <RootErrorBoundary />,
                                     children: [
                                         {
-                                            element: (
-                                                <BootstrappingRoute
-                                                    sessionManager={sessionManager}
-                                                    telemetryService={telemetryService}
-                                                />
-                                            ),
+                                            element: <BootstrappingRoute telemetryService={telemetryService} />,
                                             children: registeredRoutes
                                         }
                                     ]

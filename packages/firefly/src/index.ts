@@ -16,4 +16,5 @@ export * from "./useIsAppReady.ts";
 export * from "./useProtectedData.ts";
 export * from "./usePublicData.ts";
 export * from "./useTanstackQueryProtectedData.ts";
+export * from "./useTanstackQueryPublicData.ts";
 

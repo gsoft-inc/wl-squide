@@ -6,7 +6,6 @@ import { createRoot } from "react-dom/client";
 import { register as registerModule } from "../register.tsx";
 import { App } from "./App.tsx";
 import { registerDev } from "./register.tsx";
-import { sessionAccessor, sessionManager } from "./session.ts";
 
 const consoleLogger = new ConsoleLogger();
 
@@ -15,13 +14,12 @@ const consoleLogger = new ConsoleLogger();
 const runtime = new FireflyRuntime({
     useMsw: !!process.env.USE_MSW,
     plugins: [createI18NextPlugin()],
-    loggers: [consoleLogger],
-    sessionAccessor
+    loggers: [consoleLogger]
 });
 
 // Registering the remote module as a static module because the "register" function
 // is local when developing in isolation.
-await registerLocalModules([registerShell(sessionManager), registerDev, registerModule], runtime);
+await registerLocalModules([registerShell(), registerDev, registerModule], runtime);
 
 // Register MSW after the local modules has been registered since the request handlers
 // will be registered by the modules.

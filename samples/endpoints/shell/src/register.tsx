@@ -1,5 +1,4 @@
 import { registerLayouts } from "@endpoints/layouts";
-import type { SessionManager } from "@endpoints/shared";
 import { ManagedRoutes, mergeDeferredRegistrations, type FireflyRuntime, type ModuleRegisterFunction } from "@squide/firefly";
 import { RootLayout } from "./RootLayout.tsx";
 import { initI18next } from "./i18next.ts";
@@ -9,57 +8,7 @@ export interface RegisterShellOptions {
     host?: string;
 }
 
-function registerRoutes(runtime: FireflyRuntime, sessionManager: SessionManager, host?: string) {
-    // runtime.registerRoute({
-    //     // Pathless route to declare a root layout and a root error boundary.
-    //     $visibility: "public",
-    //     element: <RootLayout />,
-    //     children: [
-    //         {
-    //             // Public pages like the login and logout pages will be rendered under this pathless route.
-    //             $visibility: "public",
-    //             $name: "root-error-boundary",
-    //             errorElement: <RootErrorBoundary />,
-    //             children: [
-    //                 {
-    //                     // Pathless route to declare an authenticated boundary.
-    //                     lazy: () => import("./AuthenticationBoundary.tsx"),
-    //                     children: [
-    //                         {
-    //                             // Pathless route to declare an authenticated layout.
-    //                             lazy: async () => {
-    //                                 const { AuthenticatedLayout } = await import("./AuthenticatedLayout.tsx");
-
-    //                                 return {
-    //                                     element: <AuthenticatedLayout sessionManager={sessionManager} />
-    //                                 };
-    //                             },
-    //                             children: [
-    //                                 {
-    //                                     // Pathless route to declare an error boundary inside the layout instead of outside.
-    //                                     // It's quite useful to prevent losing the layout when an unmanaged error occurs.
-    //                                     lazy: async () => {
-    //                                         const { ModuleErrorBoundary } = await import("./ModuleErrorBoundary.tsx");
-
-    //                                         return {
-    //                                             errorElement: <ModuleErrorBoundary />
-    //                                         };
-    //                                     },
-    //                                     children: [
-    //                                         ManagedRoutes
-    //                                     ]
-    //                                 }
-    //                             ]
-    //                         }
-    //                     ]
-    //                 }
-    //             ]
-    //         }
-    //     ]
-    // }, {
-    //     hoist: true
-    // });
-
+function registerRoutes(runtime: FireflyRuntime, host?: string) {
     runtime.registerRoute({
         // Pathless route to declare a root layout and a root error boundary.
         $visibility: "public",
@@ -76,7 +25,7 @@ function registerRoutes(runtime: FireflyRuntime, sessionManager: SessionManager,
                             const { AuthenticatedLayout } = await import("./AuthenticatedLayout.tsx");
 
                             return {
-                                element: <AuthenticatedLayout sessionManager={sessionManager} />
+                                element: <AuthenticatedLayout />
                             };
                         },
                         children: [
@@ -161,7 +110,7 @@ async function registerMsw(runtime: FireflyRuntime) {
     }
 }
 
-export function registerShell(sessionManager: SessionManager, { host }: RegisterShellOptions = {}) {
+export function registerShell({ host }: RegisterShellOptions = {}) {
     const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
         initI18next(runtime);
 
@@ -169,7 +118,7 @@ export function registerShell(sessionManager: SessionManager, { host }: Register
 
         return mergeDeferredRegistrations([
             registerLayouts(runtime, { host }),
-            registerRoutes(runtime, sessionManager, host)
+            registerRoutes(runtime, host)
         ]);
     };
 

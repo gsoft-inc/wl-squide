@@ -10,6 +10,7 @@
         "paidLabel": "Payé",
         "notPaidLabel": "Non payé",
         "userLabel": "Utilisateur",
+        "updateSessionButtonLabel": "Modifier la session",
         "disconnectButtonLabel": "Se déconnecter",
         "loadingMessage": "Chargement..."
     },

@@ -17,5 +17,24 @@ export const sessionHandlers: HttpHandler[] = [
         await simulateDelay(500);
 
         return HttpResponse.json(session);
+    }),
+    http.post("/api/update-session", async () => {
+        const session = sessionManager.getSession();
+
+        if (!session) {
+            return new HttpResponse(null, {
+                status: 401
+            });
+        }
+
+        sessionManager.setSession({
+            userId: session.userId,
+            username: Math.random().toString(20),
+            preferredLanguage: session.preferredLanguage
+        });
+
+        return new HttpResponse(null, {
+            status: 200
+        });
     })
 ];

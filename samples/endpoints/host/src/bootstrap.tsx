@@ -7,18 +7,16 @@ import { createRoot } from "react-dom/client";
 import { Remotes } from "../remotes.js";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
-import { sessionAccessor, sessionManager } from "./session.ts";
 
 const consoleLogger = new ConsoleLogger();
 
 const runtime = new FireflyRuntime({
     useMsw: !!process.env.USE_MSW,
     plugins: [createI18NextPlugin()],
-    loggers: [consoleLogger],
-    sessionAccessor
+    loggers: [consoleLogger]
 });
 
-await registerLocalModules([registerShell(sessionManager, { host: "@endpoints/host" }), registerHost, registerLocalModule], runtime);
+await registerLocalModules([registerShell({ host: "@endpoints/host" }), registerHost, registerLocalModule], runtime);
 
 await registerRemoteModules(Remotes, runtime);
 

@@ -6,7 +6,6 @@ import { createRoot } from "react-dom/client";
 import { registerLocalModule } from "../register.tsx";
 import { App } from "./App.tsx";
 import { registerDev } from "./register.tsx";
-import { sessionAccessor, sessionManager } from "./session.ts";
 
 const consoleLogger = new ConsoleLogger();
 
@@ -15,11 +14,10 @@ const consoleLogger = new ConsoleLogger();
 const runtime = new FireflyRuntime({
     useMsw: !!process.env.USE_MSW,
     plugins: [createI18NextPlugin()],
-    loggers: [consoleLogger],
-    sessionAccessor
+    loggers: [consoleLogger]
 });
 
-await registerLocalModules([registerShell(sessionManager), registerDev, registerLocalModule], runtime);
+await registerLocalModules([registerShell(), registerDev, registerLocalModule], runtime);
 
 // Register MSW after the local modules has been registered since the request handlers
 // will be registered by the modules.

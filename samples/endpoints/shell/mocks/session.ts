@@ -1,4 +1,4 @@
-import { FakeSessionKey } from "@endpoints/shared";
+import { FakeSessionStorageKey } from "@endpoints/shared";
 import { LocalStorageSessionManager } from "@squide/fakes";
 
 export interface Session {
@@ -7,4 +7,4 @@ export interface Session {
     preferredLanguage: string;
 }
 
-export const sessionManager = new LocalStorageSessionManager<Session>({ key: FakeSessionKey });
+export const sessionManager = new LocalStorageSessionManager<Session>({ key: FakeSessionStorageKey });

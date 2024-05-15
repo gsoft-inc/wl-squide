@@ -1,5 +1,5 @@
-import { postJson, toSubscriptionStatusLabel, useSubscription, type Session, type SessionManager } from "@endpoints/shared";
-import { isNavigationLink, useLogger, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
+import { postJson, toSubscriptionStatusLabel, useSessionManager, useSubscription } from "@endpoints/shared";
+import { isNavigationLink, useLogger, useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { useI18nextInstance } from "@squide/i18next";
 import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
@@ -43,16 +43,13 @@ const renderSection: RenderSectionFunction = (elements, index, level) => {
     );
 };
 
-export interface AuthenticatedLayoutProps {
-    sessionManager: SessionManager;
-}
-
-export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps) {
+export function AuthenticatedLayout() {
     const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
     const { t } = useTranslation("AuthenticatedLayout", { i18n: i18nextInstance });
 
     const logger = useLogger();
-    const session = useSession() as Session;
+    const sessionManager = useSessionManager();
+    const session = sessionManager?.getSession();
     const subscription = useSubscription();
 
     const subscriptionStatusLabel = toSubscriptionStatusLabel(subscription!.status, {
@@ -63,12 +60,12 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
 
     const navigate = useNavigate();
 
-    const handleDisconnect = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
+    const handleDisconnect = useCallback((event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
-        await postJson("/api/logout")
+        postJson("/api/logout")
             .then(() => {
-                sessionManager.clearSession();
+                sessionManager?.clearSession();
 
                 logger.debug("[shell] The user session has been cleared.");
 
@@ -78,6 +75,15 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
                 throw new Error("An unknown error happened while disconnecting the user.");
             });
     }, [logger, navigate, sessionManager]);
+
+    const handleUpdateSession = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+
+        postJson("/api/update-session")
+            .then(() => {
+                logger.debug("[shell] Updated the user session.");
+            });
+    }, [logger]);
 
     const navigationItems = useNavigationItems();
     const renderedNavigationItems = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
@@ -92,6 +98,11 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
                     {/* Must check for a null session because when the disconnect button is clicked, it will clear the session and rerender this layout. */}
                     {/* eslint-disable-next-line max-len */}
                     ({t("subscriptionLabel")}: <span style={{ fontWeight: "bold" }}>{subscriptionStatusLabel}</span><span style={{ marginLeft: "10px", marginRight: "10px" }}>-</span>{t("userLabel")}: <span style={{ fontWeight: "bold" }}>{session?.user?.name}/{session?.user?.preferredLanguage}</span>)
+                </div>
+                <div>
+                    <button type="button" onClick={handleUpdateSession} style={{ whiteSpace: "nowrap", marginRight: "10px" }}>
+                        {t("updateSessionButtonLabel")}
+                    </button>
                 </div>
                 <div>
                     <button type="button" onClick={handleDisconnect} style={{ whiteSpace: "nowrap" }}>

@@ -9,7 +9,7 @@ export type IsUnauthorizedErrorCallback = (error: unknown) => boolean;
 type MapUseQueryResultToData<T> = { [K in keyof T]: T[K] extends UseQueryResult<infer U> ? U : never };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOptions<T>, isUnauthorizedError: IsUnauthorizedErrorCallback) {
+export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOptions<T>, isUnauthorizedError: IsUnauthorizedErrorCallback): MapUseQueryResultToData<QueriesResults<T>> {
     const {
         canFetchProtectedData,
         isProtectedDataReady,

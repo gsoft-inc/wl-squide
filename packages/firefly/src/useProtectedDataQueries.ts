@@ -1,8 +1,11 @@
-import { useQueries, type QueriesOptions } from "@tanstack/react-query";
+import { useQueries, type QueriesOptions, type QueriesResults, type UseQueryResult } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useAppRouterDispatcher, useAppRouterState } from "./AppRouterContext.ts";
 
 export type IsUnauthorizedErrorCallback2 = (error: unknown) => boolean;
+
+// This converts an array of UseQueryResult to an array of the data type of each query result
+type MapUseQueryResultToData<T> = { [K in keyof T]: T[K] extends UseQueryResult<infer U> ? U : never};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOptions<T>, isUnauthorizedError: IsUnauthorizedErrorCallback2) {
@@ -37,7 +40,7 @@ export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOp
         })),
         combine: results => {
             return {
-                data: results.map(x => x.data),
+                data: results.map(x => x.data) as MapUseQueryResultToData<QueriesResults<T>>,
                 isReady: results.length === queries.length && results.every(x => x.data)
             };
         }

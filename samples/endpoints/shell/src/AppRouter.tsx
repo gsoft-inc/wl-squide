@@ -1,8 +1,7 @@
 import { FeatureFlagsContext, SessionManagerContext, SubscriptionContext, TelemetryServiceContext, fetchJson, isApiError, type FeatureFlags, type Session, type Subscription, type TelemetryService } from "@endpoints/shared";
-import { AppRouter as FireflyAppRouter, completeModuleRegistrations, useCompleteDeferredRegistrationsCallback, useIsAppReady, useLogger, useRuntime, useTanstackQueryProtectedData, useTanstackQueryPublicData } from "@squide/firefly";
+import { AppRouter as FireflyAppRouter, completeModuleRegistrations, useCanCompleteRegistrations, useIsBootstrapping, useLogger, useProtectedDataQueries, usePublicDataQueries, useRuntime } from "@squide/firefly";
 import { useChangeLanguage } from "@squide/i18next";
-import { useQuery } from "@tanstack/react-query";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Loading } from "./Loading.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
@@ -16,56 +15,49 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
     const logger = useLogger();
     const runtime = useRuntime();
 
-    const { publicQueryOptions, setPublicDataAsReady } = useTanstackQueryPublicData();
-    const { protectedQueryOptions, setProtectedDataAsReady } = useTanstackQueryProtectedData((error: unknown) => isApiError(error) && error.status === 401);
+    const [featureFlags] = usePublicDataQueries([
+        {
+            queryKey: ["/api/feature-flags"],
+            queryFn: async () => {
+                const data = await fetchJson("/api/feature-flags");
 
-    const { data: featureFlags } = useQuery({
-        queryKey: ["/api/feature-flags"],
-        queryFn: async () => {
-            const data = await fetchJson("/api/feature-flags");
-
-            return data as FeatureFlags;
-        },
-        ...publicQueryOptions
-    });
+                return data as FeatureFlags;
+            }
+        }
+    ]);
 
     useEffect(() => {
         if (featureFlags) {
             logger.debug("[shell] %cFeature flags has been fetched%c:", "color: white; background-color: green;", "", featureFlags);
-
-            setPublicDataAsReady();
         }
-    }, [featureFlags, setPublicDataAsReady, logger]);
+    }, [featureFlags, logger]);
 
-    const { data: session } = useQuery({
-        queryKey: ["/api/session"],
-        queryFn: async () => {
-            const data = await fetchJson("/api/session");
+    const [session, subscription] = useProtectedDataQueries([
+        {
+            queryKey: ["/api/session"],
+            queryFn: async () => {
+                const data = await fetchJson("/api/session");
 
-            const result: Session = {
-                user: {
-                    id: data.userId,
-                    name: data.username,
-                    preferredLanguage: data.preferredLanguage
-                }
-            };
+                const result: Session = {
+                    user: {
+                        id: data.userId,
+                        name: data.username,
+                        preferredLanguage: data.preferredLanguage
+                    }
+                };
 
-            return result;
+                return result;
+            }
         },
-        ...protectedQueryOptions
-    });
+        {
+            queryKey: ["/api/subscription"],
+            queryFn: async () => {
+                const data = await fetchJson("/api/subscription");
 
-    const sessionManager = useTanstackQuerySessionManager(session!);
-
-    const { data: subscription } = useQuery({
-        queryKey: ["/api/subscription"],
-        queryFn: async () => {
-            const data = await fetchJson("/api/subscription");
-
-            return data as Subscription;
-        },
-        ...protectedQueryOptions
-    });
+                return data as Subscription;
+            }
+        }
+    ], (error: unknown) => isApiError(error) && error.status === 401);
 
     const changeLanguage = useChangeLanguage();
 
@@ -75,7 +67,7 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
 
             // When the session has been retrieved, update the language to match the user
             // preferred language.
-            changeLanguage(session.user.preferredLanguage);
+            changeLanguage((session as Session).user.preferredLanguage);
         }
     }, [session, changeLanguage, logger]);
 
@@ -85,27 +77,27 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
         }
     }, [subscription, logger]);
 
+    const canCompleteRegistrations = useCanCompleteRegistrations();
+
     useEffect(() => {
-        if (session && subscription) {
-            setProtectedDataAsReady();
+        if (canCompleteRegistrations) {
+            completeModuleRegistrations(runtime, {
+                featureFlags,
+                session
+            });
         }
-    }, [session, subscription, setProtectedDataAsReady]);
+    }, [canCompleteRegistrations, featureFlags, session, runtime]);
 
-    useCompleteDeferredRegistrationsCallback(useCallback(() => {
-        completeModuleRegistrations(runtime, {
-            featureFlags,
-            session
-        });
-    }, [featureFlags, session, runtime]));
+    const sessionManager = useTanstackQuerySessionManager((session as Session)!);
 
-    if (!useIsAppReady()) {
+    if (useIsBootstrapping()) {
         return <Loading />;
     }
 
     return (
-        <FeatureFlagsContext.Provider value={featureFlags}>
+        <FeatureFlagsContext.Provider value={featureFlags as FeatureFlags}>
             <SessionManagerContext.Provider value={sessionManager}>
-                <SubscriptionContext.Provider value={subscription}>
+                <SubscriptionContext.Provider value={subscription as Subscription}>
                     <TelemetryServiceContext.Provider value={telemetryService}>
                         <Outlet />
                     </TelemetryServiceContext.Provider>

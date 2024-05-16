@@ -16,6 +16,7 @@ export interface AppRouterState {
     isPublicDataReady: boolean;
     isProtectedDataReady: boolean;
     isActiveRouteProtected: boolean;
+    isUnauthorized: boolean;
     isAppReady: boolean;
 }
 
@@ -26,7 +27,8 @@ export type AppRouterActionType =
 | "public-data-ready"
 | "protected-data-ready"
 | "active-route-is-public"
-| "active-route-is-protected";
+| "active-route-is-protected"
+| "is-unauthorized";
 
 export interface AppRouterAction {
     type: AppRouterActionType;
@@ -91,14 +93,20 @@ function evaluateCanCompleteRegistrations(state: AppRouterState): AppRouterState
         waitForPublicData,
         waitForProtectedData,
         areModulesRegistered: areModulesRegisteredValue,
-        areModulesReady: areModulesReadyValue,
+        // areModulesReady: areModulesReadyValue,
         isMswReady: isMswReadyValue,
         isPublicDataReady,
         isProtectedDataReady,
-        isActiveRouteProtected
+        isActiveRouteProtected,
+        isUnauthorized
     } = state;
 
-    const canCompleteRegistrations = !areModulesReadyValue && areModulesRegisteredValue
+    // const canCompleteRegistrations = !areModulesReadyValue && areModulesRegisteredValue
+    //     && (!waitForMsw || isMswReadyValue)
+    //     && (!waitForPublicData || isPublicDataReady)
+    //     && (!waitForProtectedData || !isActiveRouteProtected || isProtectedDataReady);
+
+    const canCompleteRegistrations = !isUnauthorized && areModulesRegisteredValue
         && (!waitForMsw || isMswReadyValue)
         && (!waitForPublicData || isPublicDataReady)
         && (!waitForProtectedData || !isActiveRouteProtected || isProtectedDataReady);
@@ -123,10 +131,11 @@ function evaluateIsAppReady(state: AppRouterState): AppRouterState {
         isMswReady: isMswReadyValue,
         isPublicDataReady,
         isProtectedDataReady,
-        isActiveRouteProtected
+        isActiveRouteProtected,
+        isUnauthorized
     } = state;
 
-    const isReady = areModulesReadyValue
+    const isReady = !isUnauthorized && areModulesReadyValue
         && (!waitForMsw || isMswReadyValue)
         && (!waitForPublicData || isPublicDataReady)
         && (!waitForProtectedData || !isActiveRouteProtected || isProtectedDataReady);
@@ -202,6 +211,14 @@ function reducer(state: AppRouterState, action: AppRouterAction) {
 
             break;
         }
+        case "is-unauthorized": {
+            newState = {
+                ...newState,
+                isUnauthorized: true
+            };
+
+            break;
+        }
         default: {
             throw new Error(`[squide] The AppRouter component state reducer doesn't support action type "${action.type}".`);
         }
@@ -245,6 +262,7 @@ export function useAppRouterReducer(waitForMsw: boolean, waitForPublicData: bool
         isPublicDataReady: false,
         isProtectedDataReady: false,
         isActiveRouteProtected: false,
+        isUnauthorized: false,
         isAppReady: false
     });
 

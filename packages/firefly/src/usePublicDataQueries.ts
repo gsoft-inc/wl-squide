@@ -7,7 +7,7 @@ import { useAppRouterDispatcher, useAppRouterState } from "./AppRouterContext.ts
 type MapUseQueryResultToData<T> = { [K in keyof T]: T[K] extends UseQueryResult<infer U> ? U : never };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function usePublicDataQueries<T extends Array<any>>(queries: QueriesOptions<T>) {
+export function usePublicDataQueries<T extends Array<any>>(queries: QueriesOptions<T>): MapUseQueryResultToData<QueriesResults<T>> {
     const { canFetchPublicData, isPublicDataReady } = useAppRouterState();
 
     const dispatch = useAppRouterDispatcher();

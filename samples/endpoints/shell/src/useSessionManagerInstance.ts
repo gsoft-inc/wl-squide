@@ -23,7 +23,7 @@ class TanstackQuerySessionManager implements SessionManager {
     }
 }
 
-export function useTanstackQuerySessionManager(session: Session) {
+export function useSessionManagerInstance(session: Session) {
     const queryClient = useQueryClient();
 
     return useMemo(() => new TanstackQuerySessionManager(session, queryClient), [session, queryClient]);

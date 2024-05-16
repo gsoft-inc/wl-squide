@@ -26,6 +26,7 @@ export function LogoutPage({ host }: LogoutPageProps) {
             </p>}
             <div>{t("message")}</div>
             <Link to="/login">{t("loginButtonLabel")}</Link>
+            <Link to="/">Root</Link>
         </>
     );
 }

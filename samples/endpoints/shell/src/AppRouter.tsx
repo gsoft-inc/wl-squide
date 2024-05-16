@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Loading } from "./Loading.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
-import { useTanstackQuerySessionManager } from "./TanstackQuerySessionManager.ts";
+import { useSessionManagerInstance } from "./useSessionManagerInstance.ts";
 
 interface BootstrappingRouteProps {
     telemetryService: TelemetryService;
@@ -67,7 +67,7 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
 
             // When the session has been retrieved, update the language to match the user
             // preferred language.
-            changeLanguage((session as Session).user.preferredLanguage);
+            changeLanguage(session.user.preferredLanguage);
         }
     }, [session, changeLanguage, logger]);
 
@@ -88,16 +88,16 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
         }
     }, [canCompleteRegistrations, featureFlags, session, runtime]);
 
-    const sessionManager = useTanstackQuerySessionManager((session as Session)!);
+    const sessionManager = useSessionManagerInstance(session!);
 
     if (useIsBootstrapping()) {
         return <Loading />;
     }
 
     return (
-        <FeatureFlagsContext.Provider value={featureFlags as FeatureFlags}>
+        <FeatureFlagsContext.Provider value={featureFlags}>
             <SessionManagerContext.Provider value={sessionManager}>
-                <SubscriptionContext.Provider value={subscription as Subscription}>
+                <SubscriptionContext.Provider value={subscription}>
                     <TelemetryServiceContext.Provider value={telemetryService}>
                         <Outlet />
                     </TelemetryServiceContext.Provider>

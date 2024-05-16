@@ -93,11 +93,6 @@ function registerRoutes(runtime: FireflyRuntime, host?: string) {
     }, {
         parentName: "root-layout"
     });
-
-    runtime.registerNavigationItem({
-        $label: "Logout page",
-        to: "/logout"
-    });
 }
 
 async function registerMsw(runtime: FireflyRuntime) {

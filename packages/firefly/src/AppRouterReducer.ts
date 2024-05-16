@@ -204,9 +204,17 @@ function reducer(state: AppRouterState, action: AppRouterAction) {
             break;
         }
         case "active-route-is-protected": {
+            // let isAppReady = newState.isAppReady;
+
+            // // TODO: find a better syntax.
+            // if (isAppReady && !newState.isProtectedDataReady) {
+            //     isAppReady = false;
+            // }
+
             newState = {
                 ...newState,
                 isActiveRouteProtected: true
+                // isAppReady
             };
 
             break;

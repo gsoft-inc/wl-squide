@@ -2,13 +2,14 @@ import { useQueries, type QueriesOptions, type QueriesResults, type UseQueryResu
 import { useEffect } from "react";
 import { useAppRouterDispatcher, useAppRouterState } from "./AppRouterContext.ts";
 
-export type IsUnauthorizedErrorCallback2 = (error: unknown) => boolean;
+export type IsUnauthorizedErrorCallback = (error: unknown) => boolean;
 
-// This converts an array of UseQueryResult to an array of the data type of each query result
-type MapUseQueryResultToData<T> = { [K in keyof T]: T[K] extends UseQueryResult<infer U> ? U : never};
+// This converts an array of UseQueryResult to an array of the data type of each query result.
+// For more information, view: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-1.html#mapped-types-on-tuples-and-arrays.
+type MapUseQueryResultToData<T> = { [K in keyof T]: T[K] extends UseQueryResult<infer U> ? U : never };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOptions<T>, isUnauthorizedError: IsUnauthorizedErrorCallback2) {
+export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOptions<T>, isUnauthorizedError: IsUnauthorizedErrorCallback) {
     const {
         canFetchProtectedData,
         isProtectedDataReady,

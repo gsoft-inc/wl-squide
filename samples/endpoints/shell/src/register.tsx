@@ -13,43 +13,44 @@ function registerRoutes(runtime: FireflyRuntime, host?: string) {
         // Pathless route to declare a root layout and a root error boundary.
         $visibility: "public",
         $name: "root-layout",
-        element: <RootLayout />,
+        element: <RootLayout />
+    }, {
+        hoist: true
+    });
+
+    runtime.registerRoute({
+        // Pathless route to declare an authenticated boundary.
+        lazy: () => import("./AuthenticationBoundary.tsx"),
         children: [
             {
-                // Pathless route to declare an authenticated boundary.
-                lazy: () => import("./AuthenticationBoundary.tsx"),
+                // Pathless route to declare an authenticated layout.
+                lazy: async () => {
+                    const { AuthenticatedLayout } = await import("./AuthenticatedLayout.tsx");
+
+                    return {
+                        element: <AuthenticatedLayout />
+                    };
+                },
                 children: [
                     {
-                        // Pathless route to declare an authenticated layout.
+                        // Pathless route to declare an error boundary inside the layout instead of outside.
+                        // It's quite useful to prevent losing the layout when an unmanaged error occurs.
                         lazy: async () => {
-                            const { AuthenticatedLayout } = await import("./AuthenticatedLayout.tsx");
+                            const { ModuleErrorBoundary } = await import("./ModuleErrorBoundary.tsx");
 
                             return {
-                                element: <AuthenticatedLayout />
+                                errorElement: <ModuleErrorBoundary />
                             };
                         },
                         children: [
-                            {
-                                // Pathless route to declare an error boundary inside the layout instead of outside.
-                                // It's quite useful to prevent losing the layout when an unmanaged error occurs.
-                                lazy: async () => {
-                                    const { ModuleErrorBoundary } = await import("./ModuleErrorBoundary.tsx");
-
-                                    return {
-                                        errorElement: <ModuleErrorBoundary />
-                                    };
-                                },
-                                children: [
-                                    ManagedRoutes
-                                ]
-                            }
+                            ManagedRoutes
                         ]
                     }
                 ]
             }
         ]
     }, {
-        hoist: true
+        parentName: "root-layout"
     });
 
     runtime.registerRoute({

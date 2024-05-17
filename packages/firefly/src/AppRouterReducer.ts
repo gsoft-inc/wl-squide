@@ -34,7 +34,9 @@ export interface AppRouterAction {
     type: AppRouterActionType;
 }
 
-function useVerboseDispatch(dispatch: Dispatch<AppRouterAction>) {
+export type AppRouterDispatch = Dispatch<AppRouterAction>;
+
+function useVerboseDispatch(dispatch: AppRouterDispatch) {
     const logger = useLogger();
 
     return useCallback((action: AppRouterAction) => {
@@ -93,18 +95,12 @@ function evaluateCanCompleteRegistrations(state: AppRouterState): AppRouterState
         waitForPublicData,
         waitForProtectedData,
         areModulesRegistered: areModulesRegisteredValue,
-        // areModulesReady: areModulesReadyValue,
         isMswReady: isMswReadyValue,
         isPublicDataReady,
         isProtectedDataReady,
         isActiveRouteProtected,
         isUnauthorized
     } = state;
-
-    // const canCompleteRegistrations = !areModulesReadyValue && areModulesRegisteredValue
-    //     && (!waitForMsw || isMswReadyValue)
-    //     && (!waitForPublicData || isPublicDataReady)
-    //     && (!waitForProtectedData || !isActiveRouteProtected || isProtectedDataReady);
 
     const canCompleteRegistrations = !isUnauthorized && areModulesRegisteredValue
         && (!waitForMsw || isMswReadyValue)
@@ -204,17 +200,9 @@ function reducer(state: AppRouterState, action: AppRouterAction) {
             break;
         }
         case "active-route-is-protected": {
-            // let isAppReady = newState.isAppReady;
-
-            // // TODO: find a better syntax.
-            // if (isAppReady && !newState.isProtectedDataReady) {
-            //     isAppReady = false;
-            // }
-
             newState = {
                 ...newState,
                 isActiveRouteProtected: true
-                // isAppReady
             };
 
             break;
@@ -255,7 +243,7 @@ function getAreModulesReady() {
     return areModulesReady(localModuleStatus, remoteModuleStatus);
 }
 
-export function useAppRouterReducer(waitForMsw: boolean, waitForPublicData: boolean, waitForProtectedData: boolean): [AppRouterState, Dispatch<AppRouterAction>] {
+export function useAppRouterReducer(waitForMsw: boolean, waitForPublicData: boolean, waitForProtectedData: boolean): [AppRouterState, AppRouterDispatch] {
     const [state, originalDispatch] = useReducer(reducer, {
         waitForMsw,
         waitForPublicData,

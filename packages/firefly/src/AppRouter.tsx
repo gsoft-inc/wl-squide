@@ -3,14 +3,14 @@ import { findRouteByPath, useRoutes, type Route } from "@squide/react-router";
 import { useEffect, useMemo, type ReactElement } from "react";
 import type { RouterProviderProps } from "react-router-dom";
 import { AppRouterDispatcherContext, AppRouterStateContext } from "./AppRouterContext.ts";
-import { useAppRouterReducer } from "./AppRouterReducer.ts";
+import { useAppRouterReducer, type AppRouterDispatch, type AppRouterState } from "./AppRouterReducer.ts";
 import { RootRoute } from "./RootRoute.tsx";
 
 export interface AppRouterRenderFunctionArgs {
     routes: Route[];
 }
 
-export type RenderRouterProviderFunction = (rootRoute: ReactElement, registeredRoutes: Route[], providerProps: Omit<RouterProviderProps, "router">) => ReactElement;
+export type RenderRouterProviderFunction = (rootRoute: ReactElement, registeredRoutes: Route[], providerProps: Omit<RouterProviderProps, "router">, state: AppRouterState, dispatch: AppRouterDispatch) => ReactElement;
 
 export interface AppRouterProps {
     waitForMsw: boolean;
@@ -48,7 +48,8 @@ export function AppRouter(props: AppRouterProps) {
         }
     }, [state, routes]);
 
-    const routerProvider = useMemo(() => renderRouterProvider(<RootRoute />, routes, {}), [routes, renderRouterProvider]);
+    // The state is required as a dependency of the useMemo otherwise re-renders will be missed when the state change.
+    const routerProvider = useMemo(() => renderRouterProvider(<RootRoute />, routes, {}, state, dispatch), [routes, renderRouterProvider, state, dispatch]);
 
     return (
         <AppRouterDispatcherContext.Provider value={dispatch}>

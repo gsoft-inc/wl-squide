@@ -72,6 +72,16 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
         parentPath: "/federated-tabs"
     });
 
+    runtime.registerRoute({
+        path: "/feature-b",
+        lazy: () => import("./FeatureBPage.tsx")
+    });
+
+    runtime.registerRoute({
+        path: "/feature-c",
+        lazy: () => import("./FeatureCPage.tsx")
+    });
+
     runtime.registerNavigationItem({
         $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="episodesTab" />,
         to: "/federated-tabs/episodes"
@@ -95,11 +105,6 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
 
     return ({ featureFlags } = {}) => {
         if (featureFlags?.featureB) {
-            runtime.registerRoute({
-                path: "/feature-b",
-                lazy: () => import("./FeatureBPage.tsx")
-            });
-
             runtime.registerNavigationItem({
                 $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="featureBPage" />,
                 to: "/feature-b"
@@ -107,11 +112,6 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
         }
 
         if (featureFlags?.featureC) {
-            runtime.registerRoute({
-                path: "/feature-c",
-                lazy: () => import("./FeatureCPage.tsx")
-            });
-
             runtime.registerNavigationItem({
                 $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="featureCPage" />,
                 to: "/feature-c"

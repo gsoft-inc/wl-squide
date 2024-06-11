@@ -120,7 +120,7 @@ export function AppRouter(props: AppRouterProps) {
 
     return (
         <FireflyAppRouter waitForMsw={waitForMsw} waitForPublicData waitForProtectedData>
-            {(rootRoute, registeredRoutes) => (
+            {({ rootRoute, registeredRoutes }) => (
                 <RouterProvider
                     router={createBrowserRouter([
                         {

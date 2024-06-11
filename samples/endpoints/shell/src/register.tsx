@@ -81,19 +81,19 @@ function registerRoutes(runtime: FireflyRuntime, host?: string) {
         parentName: "root-layout"
     });
 
-    runtime.registerRoute({
-        $visibility: "public",
-        path: "*",
-        lazy: async () => {
-            const { NoMatchPage } = await import("./NoMatchPage.tsx");
+    // runtime.registerRoute({
+    //     $visibility: "public",
+    //     path: "*",
+    //     lazy: async () => {
+    //         const { NoMatchPage } = await import("./NoMatchPage.tsx");
 
-            return {
-                element: <NoMatchPage path={location.pathname} host={host} />
-            };
-        }
-    }, {
-        parentName: "root-layout"
-    });
+    //         return {
+    //             element: <NoMatchPage path={location.pathname} host={host} />
+    //         };
+    //     }
+    // }, {
+    //     parentName: "root-layout"
+    // });
 }
 
 async function registerMsw(runtime: FireflyRuntime) {

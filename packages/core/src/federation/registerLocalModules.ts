@@ -83,7 +83,7 @@ export class LocalModuleRegistry {
             return Promise.resolve(errors);
         }
 
-        this.#setRegistrationStatus("in-completion");
+        this.#setRegistrationStatus("completing-deferred-registrations");
 
         await Promise.allSettled(this.#deferredRegistrations.map(async ({ index, fct: deferredRegister }) => {
             runtime.logger.debug(`[squide] ${index} Completing local module deferred registration.`, "Data:", data);

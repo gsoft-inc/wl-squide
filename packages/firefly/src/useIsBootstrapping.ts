@@ -1,7 +1,10 @@
 import { useAppRouterState } from "./AppRouterContext.ts";
 
 export function useIsBootstrapping() {
-    const { isAppReady, isUnauthorized } = useAppRouterState();
+    const {
+        isAppReady,
+        isAppReadyForUnauthorizedRequest
+    } = useAppRouterState();
 
-    return !isAppReady && !isUnauthorized;
+    return !isAppReady && !isAppReadyForUnauthorizedRequest;
 }

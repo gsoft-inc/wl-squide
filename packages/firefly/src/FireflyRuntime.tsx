@@ -1,7 +1,8 @@
-import type { RuntimeOptions } from "@squide/core";
+import type { RegisterRouteOptions, RuntimeOptions } from "@squide/core";
 import { MswPlugin } from "@squide/msw";
-import { ReactRouterRuntime } from "@squide/react-router";
+import { ReactRouterRuntime, type Route } from "@squide/react-router";
 import type { RequestHandler } from "msw";
+import { getAreModulesReady, getAreModulesRegistered } from "./AppRouterReducer.ts";
 
 export interface FireflyRuntimeOptions extends RuntimeOptions {
     useMsw?: boolean;
@@ -49,6 +50,16 @@ export class FireflyRuntime extends ReactRouterRuntime {
         }
 
         return this.#mswPlugin.requestHandlers;
+    }
+
+    registerRoute(route: Route, options: RegisterRouteOptions = {}) {
+        console.log("*****************************************************", getAreModulesRegistered(), getAreModulesReady(), route);
+
+        if (getAreModulesRegistered()) {
+            throw new Error("[squide] Cannot register a route once the modules are registered. Are you trying to register a route in a deferred registration function? Only navigation items can be registered in a deferred registration function.");
+        }
+
+        super.registerRoute(route, options);
     }
 
     get isMswEnabled() {

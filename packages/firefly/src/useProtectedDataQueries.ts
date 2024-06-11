@@ -26,13 +26,14 @@ export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOp
                     return false;
                 }
 
-                // When a 401 status code is returned by a query, since "throwOnError" is true, it should be caught by a root error boundary
-                // that will redirect the user to a login page. To render this login page, React will re-render the AppRouter component and the
-                // BootstrappingRoute component which will throw an error again if "throwOnError" remains true and cause an infinite loop.
-                // To fix this, when a unauthorized error is thrown, we notify the AppRouter component state reducerm, which will set isUnauthorized to true
-                // and instruct Tanstack Query  to throw the error only if isUnauthorized is false.
                 if (isUnauthorizedError(error)) {
+                    // Will transition the state to allow the routes to render even if the bootstrapping is not complete, because otherwise
+                    // a login page for example could not be rendered.
                     dispatch({ type: "is-unauthorized" });
+
+                    // A React Router error boundary cannot redirect to a page. Therefore, the redirection should be done by a custom
+                    // Aunthentication Boundary in consumer code, so there's no need to throw for 401 errors.
+                    return false;
                 }
 
                 return true;

@@ -1,9 +1,8 @@
-import { isApiError } from "@endpoints/shared";
 import { useLogger } from "@squide/firefly";
 import { useI18nextInstance } from "@squide/i18next";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { Navigate, isRouteErrorResponse, useLocation, useRouteError } from "react-router-dom";
+import { isRouteErrorResponse, useLocation, useRouteError } from "react-router-dom";
 import { i18NextInstanceKey } from "./i18next.ts";
 
 function getErrorMessage(error: unknown) {
@@ -27,10 +26,6 @@ export function RootErrorBoundary() {
     const handleReloadButtonClick = useCallback(() => {
         window.location.reload();
     }, []);
-
-    if (isApiError(error) && error.status === 401) {
-        return <Navigate to="/login" />;
-    }
 
     logger.error(`[shell] An unmanaged error occurred while rendering the route with path ${location.pathname}`, error);
 

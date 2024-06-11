@@ -43,6 +43,11 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
         parentPath: "/federated-tabs"
     });
 
+    runtime.registerRoute({
+        path: "/feature-a",
+        lazy: () => import("./FeatureAPage.tsx")
+    });
+
     runtime.registerNavigationItem({
         $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="subscriptionPage" />,
         to: "/subscription"
@@ -57,11 +62,6 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
 
     return ({ featureFlags } = {}) => {
         if (featureFlags?.featureA) {
-            runtime.registerRoute({
-                path: "/feature-a",
-                lazy: () => import("./FeatureAPage.tsx")
-            });
-
             runtime.registerNavigationItem({
                 $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="featureAPage" />,
                 to: "/feature-a"

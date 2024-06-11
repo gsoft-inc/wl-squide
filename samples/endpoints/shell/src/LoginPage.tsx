@@ -1,8 +1,7 @@
-import { isApiError, postJson, useIsAuthenticated } from "@endpoints/shared";
+import { isApiError, postJson } from "@endpoints/shared";
 import { useI18nextInstance } from "@squide/i18next";
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Navigate } from "react-router-dom";
 import { i18NextInstanceKey } from "./i18next.ts";
 
 export interface LoginPageProps {
@@ -54,12 +53,6 @@ export function LoginPage({ host }: LoginPageProps) {
     const handlePasswordChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setPassword(event.target.value);
     }, []);
-
-    const isAuthenticated = useIsAuthenticated();
-
-    if (isAuthenticated) {
-        return <Navigate to="/" />;
-    }
 
     return (
         <>

@@ -131,7 +131,7 @@ export class RemoteModuleRegistry {
             return Promise.resolve(errors);
         }
 
-        this.#setRegistrationStatus("in-completion");
+        this.#setRegistrationStatus("completing-deferred-registrations");
 
         await Promise.allSettled(this.#deferredRegistrations.map(async ({ remoteName, index, fct: deferredRegister }) => {
             runtime.logger.debug(`[squide] ${index} Completing registration for module "${RemoteRegisterModuleName}" of remote "${remoteName}".`);

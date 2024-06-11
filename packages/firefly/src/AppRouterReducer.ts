@@ -18,6 +18,7 @@ export interface AppRouterState {
     isActiveRouteProtected: boolean;
     isUnauthorized: boolean;
     isAppReady: boolean;
+    isAppReadyForUnauthorizedRequest: boolean;
 }
 
 export type AppRouterActionType =
@@ -26,7 +27,6 @@ export type AppRouterActionType =
 | "msw-ready"
 | "public-data-ready"
 | "protected-data-ready"
-| "active-route-is-public"
 | "active-route-is-protected"
 | "is-unauthorized";
 
@@ -46,7 +46,7 @@ function useVerboseDispatch(dispatch: AppRouterDispatch) {
     }, [dispatch, logger]);
 }
 
-function evaluateCanFetchPublicData(state: AppRouterState): AppRouterState {
+function computeCanFetchPublicData(state: AppRouterState): AppRouterState {
     const {
         areModulesRegistered: areModulesRegisteredValue,
         areModulesReady: areModulesReadyValue,
@@ -57,7 +57,7 @@ function evaluateCanFetchPublicData(state: AppRouterState): AppRouterState {
     const canFetch = isPublicDataReady || ((areModulesRegisteredValue || areModulesReadyValue) && isMswReadyValue);
 
     // This is an optimization to keep the same state object if the state hasn't changed.
-    if (state.canFetchPublicData !== canFetch) {
+    if (canFetch && !state.canFetchPublicData) {
         return {
             ...state,
             canFetchPublicData: canFetch
@@ -67,7 +67,7 @@ function evaluateCanFetchPublicData(state: AppRouterState): AppRouterState {
     return state;
 }
 
-function evaluateCanFetchProtectedData(state: AppRouterState): AppRouterState {
+function computeCanFetchProtectedData(state: AppRouterState): AppRouterState {
     const {
         areModulesRegistered: areModulesRegisteredValue,
         areModulesReady: areModulesReadyValue,
@@ -79,7 +79,7 @@ function evaluateCanFetchProtectedData(state: AppRouterState): AppRouterState {
     const canFetch = isProtectedDataReady || ((areModulesRegisteredValue || areModulesReadyValue) && isMswReadyValue && isActiveRouteProtected);
 
     // This is an optimization to keep the same state object if the state hasn't changed.
-    if (state.canFetchProtectedData !== canFetch) {
+    if (canFetch && !state.canFetchProtectedData) {
         return {
             ...state,
             canFetchProtectedData: canFetch
@@ -89,7 +89,7 @@ function evaluateCanFetchProtectedData(state: AppRouterState): AppRouterState {
     return state;
 }
 
-function evaluateCanCompleteRegistrations(state: AppRouterState): AppRouterState {
+function computeCanCompleteRegistrations(state: AppRouterState): AppRouterState {
     const {
         waitForMsw,
         waitForPublicData,
@@ -108,7 +108,7 @@ function evaluateCanCompleteRegistrations(state: AppRouterState): AppRouterState
         && (!waitForProtectedData || !isActiveRouteProtected || isProtectedDataReady);
 
     // This is an optimization to keep the same state object if the state hasn't changed.
-    if (state.canCompleteRegistrations !== canCompleteRegistrations) {
+    if (canCompleteRegistrations && !state.canCompleteRegistrations) {
         return {
             ...state,
             canCompleteRegistrations
@@ -118,7 +118,7 @@ function evaluateCanCompleteRegistrations(state: AppRouterState): AppRouterState
     return state;
 }
 
-function evaluateIsAppReady(state: AppRouterState): AppRouterState {
+function computeIsAppReady(state: AppRouterState): AppRouterState {
     const {
         waitForMsw,
         waitForPublicData,
@@ -131,16 +131,40 @@ function evaluateIsAppReady(state: AppRouterState): AppRouterState {
         isUnauthorized
     } = state;
 
-    const isReady = !isUnauthorized && areModulesReadyValue
+    const isAppReady = !isUnauthorized && areModulesReadyValue
         && (!waitForMsw || isMswReadyValue)
         && (!waitForPublicData || isPublicDataReady)
         && (!waitForProtectedData || !isActiveRouteProtected || isProtectedDataReady);
 
     // This is an optimization to keep the same state object if the state hasn't changed.
-    if (state.isAppReady !== isReady) {
+    if (isAppReady && !state.isAppReady) {
         return {
             ...state,
-            isAppReady: isReady
+            isAppReady
+        };
+    }
+
+    return state;
+}
+
+function computeIsAppReadyForUnauthorizedUser(state: AppRouterState): AppRouterState {
+    const {
+        waitForMsw,
+        waitForPublicData,
+        isMswReady: isMswReadyValue,
+        isPublicDataReady,
+        isUnauthorized
+    } = state;
+
+    const isAppReadyForUnauthorizedRequest = isUnauthorized
+        && (!waitForMsw || isMswReadyValue)
+        && (!waitForPublicData || isPublicDataReady);
+
+    // This is an optimization to keep the same state object if the state hasn't changed.
+    if (isAppReadyForUnauthorizedRequest && !state.isAppReadyForUnauthorizedRequest) {
+        return {
+            ...state,
+            isAppReadyForUnauthorizedRequest
         };
     }
 
@@ -191,14 +215,6 @@ function reducer(state: AppRouterState, action: AppRouterAction) {
 
             break;
         }
-        case "active-route-is-public": {
-            newState = {
-                ...newState,
-                isActiveRouteProtected: false
-            };
-
-            break;
-        }
         case "active-route-is-protected": {
             newState = {
                 ...newState,
@@ -221,22 +237,23 @@ function reducer(state: AppRouterState, action: AppRouterAction) {
     }
 
     // Compute derived states.
-    newState = evaluateCanFetchPublicData(newState);
-    newState = evaluateCanFetchProtectedData(newState);
-    newState = evaluateCanCompleteRegistrations(newState);
-    newState = evaluateIsAppReady(newState);
+    newState = computeCanFetchPublicData(newState);
+    newState = computeCanFetchProtectedData(newState);
+    newState = computeCanCompleteRegistrations(newState);
+    newState = computeIsAppReady(newState);
+    newState = computeIsAppReadyForUnauthorizedUser(newState);
 
     return newState;
 }
 
-function getAreModulesRegistered() {
+export function getAreModulesRegistered() {
     const localModuleStatus = getLocalModuleRegistrationStatus();
     const remoteModuleStatus = getRemoteModuleRegistrationStatus();
 
     return areModulesRegistered(localModuleStatus, remoteModuleStatus);
 }
 
-function getAreModulesReady() {
+export function getAreModulesReady() {
     const localModuleStatus = getLocalModuleRegistrationStatus();
     const remoteModuleStatus = getRemoteModuleRegistrationStatus();
 
@@ -259,7 +276,8 @@ export function useAppRouterReducer(waitForMsw: boolean, waitForPublicData: bool
         isProtectedDataReady: false,
         isActiveRouteProtected: false,
         isUnauthorized: false,
-        isAppReady: false
+        isAppReady: false,
+        isAppReadyForUnauthorizedRequest: false
     });
 
     const {
@@ -303,6 +321,8 @@ export function useAppRouterReducer(waitForMsw: boolean, waitForPublicData: bool
             removeMswStateChangedListener(handleMswStateChange);
         };
     }, [isMswReadyValue, dispatch]);
+
+    useEffect(() => {});
 
     return [state, dispatch];
 }

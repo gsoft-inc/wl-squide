@@ -11,6 +11,7 @@
         "notPaidLabel": "Non payé",
         "userLabel": "Utilisateur",
         "updateSessionButtonLabel": "Modifier la session",
+        "shuffleFeatureFlagsLabel": "Brasser les feature flags",
         "disconnectButtonLabel": "Se déconnecter",
         "loadingMessage": "Chargement..."
     },

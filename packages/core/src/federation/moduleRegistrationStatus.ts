@@ -1,1 +1,1 @@
-export type ModuleRegistrationStatus = "none" | "in-progress" | "registered" | "completing-deferred-registrations" | "ready";
+export type ModuleRegistrationStatus = "none" | "registering-modules" | "modules-registered" | "registering-deferred-registration" | "ready";

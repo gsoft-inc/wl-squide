@@ -1,6 +1,7 @@
 import { useQueries, type QueriesOptions, type QueriesResults, type UseQueryResult } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAppRouterDispatcher, useAppRouterState } from "./AppRouterContext.ts";
+import { useCanFetchProtectedData } from "./useCanFetchProtectedData.ts";
 
 export type IsUnauthorizedErrorCallback = (error: unknown) => boolean;
 
@@ -11,10 +12,11 @@ type MapUseQueryResultToData<T> = { [K in keyof T]: T[K] extends UseQueryResult<
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOptions<T>, isUnauthorizedError: IsUnauthorizedErrorCallback): MapUseQueryResultToData<QueriesResults<T>> {
     const {
-        canFetchProtectedData,
         isProtectedDataReady,
         isUnauthorized
     } = useAppRouterState();
+
+    const canFetchProtectedData = useCanFetchProtectedData();
 
     const dispatch = useAppRouterDispatcher();
 
@@ -48,8 +50,18 @@ export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOp
         }
     });
 
+    const isReadyRef = useRef(false);
+
+    useEffect(() => {
+        if (isReadyRef.current && data) {
+            dispatch({ type: "protected-data-updated" });
+        }
+    }, [data, dispatch]);
+
     useEffect(() => {
         if (isReady) {
+            isReadyRef.current = true;
+
             dispatch({ type: "protected-data-ready" });
         }
     }, [isReady, dispatch]);

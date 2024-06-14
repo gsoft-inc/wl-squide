@@ -34,7 +34,7 @@ export class LocalModuleRegistry {
 
         runtime.logger.debug(`[squide] Found ${registerFunctions.length} local module${registerFunctions.length !== 1 ? "s" : ""} to register.`);
 
-        this.#setRegistrationStatus("in-progress");
+        this.#setRegistrationStatus("registering-modules");
 
         await Promise.allSettled(registerFunctions.map(async (x, index) => {
             runtime.logger.debug(`[squide] ${index + 1}/${registerFunctions.length} Registering local module.`);
@@ -62,37 +62,37 @@ export class LocalModuleRegistry {
             runtime.logger.debug(`[squide] ${index + 1}/${registerFunctions.length} Local module registration completed.`);
         }));
 
-        this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "registered" : "ready");
+        this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "modules-registered" : "ready");
 
         return errors;
     }
 
-    async completeModuleRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data?: TData) {
+    async registerDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
         const errors: LocalModuleRegistrationError[] = [];
 
-        if (this.#registrationStatus === "none" || this.#registrationStatus === "in-progress") {
-            throw new Error("[squide] The completeLocalModuleRegistration function can only be called once the registerLocalModules function terminated.");
+        if (this.#registrationStatus === "none" || this.#registrationStatus === "registering-modules") {
+            throw new Error("[squide] The registerDeferredRegistrations function can only be called once the registerLocalModules function terminated.");
         }
 
-        if (this.#registrationStatus !== "registered" && this.#deferredRegistrations.length > 0) {
-            throw new Error("[squide] The completeLocalModuleRegistration function can only be called once.");
+        if (this.#registrationStatus !== "modules-registered" && this.#deferredRegistrations.length > 0) {
+            throw new Error("[squide] The registerDeferredRegistrations function can only be called once.");
         }
 
         if (this.#registrationStatus === "ready") {
             // No deferred registrations were returned by the local modules, skip the completion process.
-            return Promise.resolve(errors);
+            return errors;
         }
 
-        this.#setRegistrationStatus("completing-deferred-registrations");
+        this.#setRegistrationStatus("registering-deferred-registration");
 
         await Promise.allSettled(this.#deferredRegistrations.map(async ({ index, fct: deferredRegister }) => {
-            runtime.logger.debug(`[squide] ${index} Completing local module deferred registration.`, "Data:", data);
+            runtime.logger.debug(`[squide] ${index} Registering local module deferred registration.`, "Data:", data);
 
             try {
-                await deferredRegister(data);
+                await deferredRegister(data, "register");
             } catch (error: unknown) {
                 runtime.logger.error(
-                    `[squide] ${index} An error occured while completing the registration of a local module.`,
+                    `[squide] ${index} An error occured while registering the deferred registrations of a local module.`,
                     error
                 );
 
@@ -101,10 +101,39 @@ export class LocalModuleRegistry {
                 });
             }
 
-            runtime.logger.debug(`[squide] ${index} Completed local module deferred registration.`);
+            runtime.logger.debug(`[squide] ${index} Registered local module deferred registration.`);
         }));
 
         this.#setRegistrationStatus("ready");
+
+        return errors;
+    }
+
+    async updateDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
+        const errors: LocalModuleRegistrationError[] = [];
+
+        if (this.#registrationStatus !== "ready") {
+            throw new Error("[squide] The updateDeferredRegistrations function can only be called once the local modules are ready.");
+        }
+
+        await Promise.allSettled(this.#deferredRegistrations.map(async ({ index, fct: deferredRegister }) => {
+            runtime.logger.debug(`[squide] ${index} Updating local module deferred registration.`, "Data:", data);
+
+            try {
+                await deferredRegister(data, "update");
+            } catch (error: unknown) {
+                runtime.logger.error(
+                    `[squide] ${index} An error occured while updating the deferred registrations of a local module.`,
+                    error
+                );
+
+                errors.push({
+                    error
+                });
+            }
+
+            runtime.logger.debug(`[squide] ${index} Updated local module deferred registration.`);
+        }));
 
         return errors;
     }
@@ -144,8 +173,12 @@ export function registerLocalModules<TRuntime extends Runtime = Runtime, TContex
     return localModuleRegistry.registerModules(registerFunctions, runtime, options);
 }
 
-export function completeLocalModuleRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data?: TData) {
-    return localModuleRegistry.completeModuleRegistrations(runtime, data);
+export function registerLocalModuleDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
+    return localModuleRegistry.registerDeferredRegistrations(runtime, data);
+}
+
+export function updateLocalModuleDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
+    return localModuleRegistry.updateDeferredRegistrations(runtime, data);
 }
 
 export function getLocalModuleRegistrationStatus() {

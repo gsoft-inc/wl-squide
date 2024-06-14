@@ -1,5 +1,5 @@
 import { FeatureFlagsContext, SessionManagerContext, SubscriptionContext, TelemetryServiceContext, fetchJson, isApiError, type FeatureFlags, type Session, type Subscription, type TelemetryService } from "@endpoints/shared";
-import { AppRouter as FireflyAppRouter, completeModuleRegistrations, useCanCompleteRegistrations, useIsBootstrapping, useLogger, useProtectedDataQueries, usePublicDataQueries, useRuntime } from "@squide/firefly";
+import { AppRouter as FireflyAppRouter, useCanRegisterDeferredRegistrations, useCanUpdateDeferredRegistrations, useIsBootstrapping, useLogger, useProtectedDataQueries, usePublicDataQueries, useRegisterDeferredRegistrations, useRuntime, useUpdateDeferredRegistrations } from "@squide/firefly";
 import { useChangeLanguage } from "@squide/i18next";
 import { useEffect } from "react";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
@@ -77,16 +77,29 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
         }
     }, [subscription, logger]);
 
-    const canCompleteRegistrations = useCanCompleteRegistrations();
+    const canRegisterDeferredRegistrations = useCanRegisterDeferredRegistrations();
+    const canUpdateDeferredRegistrations = useCanUpdateDeferredRegistrations();
+
+    const registerDeferredRegistrations = useRegisterDeferredRegistrations();
+    const updateDeferredRegistrations = useUpdateDeferredRegistrations();
 
     useEffect(() => {
-        if (canCompleteRegistrations) {
-            completeModuleRegistrations(runtime, {
+        if (canRegisterDeferredRegistrations) {
+            registerDeferredRegistrations(runtime, {
                 featureFlags,
                 session
             });
         }
-    }, [canCompleteRegistrations, featureFlags, session, runtime]);
+    }, [canRegisterDeferredRegistrations, registerDeferredRegistrations, featureFlags, session, runtime]);
+
+    useEffect(() => {
+        if (canUpdateDeferredRegistrations) {
+            updateDeferredRegistrations(runtime, {
+                featureFlags,
+                session
+            });
+        }
+    });
 
     const sessionManager = useSessionManagerInstance(session!);
 

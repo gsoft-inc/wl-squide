@@ -2,7 +2,7 @@
 // has been handled and additional tests will be added once bugs are discovered.
 
 import { RuntimeContext, __resetLocalModuleRegistrations, registerLocalModules } from "@squide/core";
-import { completeModuleRegistrations } from "@squide/module-federation";
+import { registerDeferredRegistrations } from "@squide/module-federation";
 import { __resetMswStatus, setMswAsReady } from "@squide/msw";
 import { render, screen } from "@testing-library/react";
 import type { ReactElement, ReactNode } from "react";
@@ -323,7 +323,7 @@ test("when a onCompleteRegistrations handler is provided and the deferred regist
     await registerLocalModules([() => () => new Promise(() => {})], runtime);
 
     renderWithRuntime(runtime, createAppRouter({
-        onCompleteRegistrations: () => completeModuleRegistrations(runtime, {}),
+        onCompleteRegistrations: () => registerDeferredRegistrations(runtime, {}),
         waitForMsw: false
     }));
 
@@ -352,7 +352,7 @@ test("when a onCompleteRegistrations handler is provided and the deferred regist
     }], runtime);
 
     function handleCompleteRegistration() {
-        return completeModuleRegistrations(runtime, {});
+        return registerDeferredRegistrations(runtime, {});
     }
 
     const { rerender } = renderWithRuntime(runtime, createAppRouter({
@@ -392,7 +392,7 @@ test("when a onCompleteRegistrations handler is provided and a onLoadPublicData 
     const handleLoadPublicData = () => Promise.resolve();
 
     const handleCompleteRegistrations = jest.fn(() => {
-        return completeModuleRegistrations(runtime, {});
+        return registerDeferredRegistrations(runtime, {});
     });
 
     const { rerender } = renderWithRuntime(runtime, createAppRouter({
@@ -450,7 +450,7 @@ test("when a onCompleteRegistrations handler is provided and a onLoadProtectedDa
     const handleLoadProtectedData = () => Promise.resolve();
 
     const handleCompleteRegistrations = jest.fn(() => {
-        return completeModuleRegistrations(runtime, {});
+        return registerDeferredRegistrations(runtime, {});
     });
 
     const { rerender } = renderWithRuntime(runtime, createAppRouter({
@@ -509,7 +509,7 @@ test("when a onCompleteRegistrations handler is provided, a onLoadPublicData han
     const handleLoadProtectedData = () => Promise.resolve();
 
     const handleCompleteRegistrations = jest.fn(() => {
-        return completeModuleRegistrations(runtime, {});
+        return registerDeferredRegistrations(runtime, {});
     });
 
     const { rerender } = renderWithRuntime(runtime, createAppRouter({

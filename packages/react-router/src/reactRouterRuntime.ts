@@ -1,5 +1,5 @@
 import { RootMenuId, Runtime, type RegisterNavigationItemOptions, type RegisterRouteOptions } from "@squide/core";
-import { NavigationItemRegistry, type RootNavigationItem } from "./navigationItemRegistry.ts";
+import { NavigationItemDeferredRegistrationScope, NavigationItemDeferredRegistrationTransactionalScope, NavigationItemRegistry, type RootNavigationItem } from "./navigationItemRegistry.ts";
 import { ManagedRoutes, ManagedRoutesOutletName } from "./outlets.ts";
 import { RouteRegistry, type Route } from "./routeRegistry.ts";
 
@@ -14,6 +14,29 @@ function translateManagedRoutesParentId(parentId?: string) {
 export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
     readonly #routeRegistry = new RouteRegistry();
     readonly #navigationItemRegistry = new NavigationItemRegistry();
+    #navigationItemScope?: NavigationItemDeferredRegistrationScope;
+
+    startDeferredRegistrationScope(transactional: boolean = false) {
+        if (this.#navigationItemScope) {
+            throw new Error("[squide] Cannot start a new deferred registration scope when there's already an active scope. Did you forget to complete the previous scope?");
+        }
+
+        if (transactional) {
+            this.#navigationItemScope = new NavigationItemDeferredRegistrationTransactionalScope(this.#navigationItemRegistry);
+        } else {
+            this.#navigationItemScope = new NavigationItemDeferredRegistrationScope(this.#navigationItemRegistry);
+        }
+    }
+
+    completeDeferredRegistrationScope() {
+        if (!this.#navigationItemScope) {
+            throw new Error("[squide] A deferred registration scope must be started before calling the complete function. Did you forget to start the scope?");
+        }
+
+        this.#navigationItemScope?.complete();
+
+        this.#navigationItemScope = undefined;
+    }
 
     registerRoute(route: Route, options: RegisterRouteOptions = {}) {
         const result = this.#routeRegistry.add(route, options);
@@ -25,8 +48,7 @@ export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
 
             this._logger.debug(
                 `[squide] The following route has been %cregistered%c${parentLog}.`, "color: white; background-color: green;", "%s",
-                "Newly registered item:",
-                route,
+                "Newly registered item:", route,
                 "All registered routes:", this.#routeRegistry.routes
             );
 
@@ -51,15 +73,27 @@ export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
     }
 
     registerNavigationItem(navigationItem: RootNavigationItem, { menuId = RootMenuId }: RegisterNavigationItemOptions = {}) {
-        this.#navigationItemRegistry.add(menuId, navigationItem);
+        if (this.#navigationItemScope) {
+            this.#navigationItemScope.addItem(menuId, navigationItem);
 
-        const items = this.#navigationItemRegistry.getItems(menuId)!;
+            const items = this.#navigationItemScope.getItems(menuId)!;
 
-        this._logger.debug(
-            `[squide] The following navigation item has been %cregistered%c to the "${menuId}" menu for a total of ${items.length} item${items.length !== 1 ? "s" : ""}.`, "color: white; background-color: green;", "%s",
-            "Newly registered item:", navigationItem,
-            "All registered items:", this.#navigationItemRegistry.getItems(menuId)
-        );
+            this._logger.debug(
+                `[squide] The following deferred navigation item has been %cregistered%c to the "${menuId}" menu for a total of ${items.length} deferred item${items.length !== 1 ? "s" : ""}.`, "color: white; background-color: green;", "%s",
+                "Newly registered item:", navigationItem,
+                "All registered items:", items
+            );
+        } else {
+            this.#navigationItemRegistry.add(menuId, "static", navigationItem);
+
+            const items = this.#navigationItemRegistry.getItems(menuId)!;
+
+            this._logger.debug(
+                `[squide] The following static navigation item has been %cregistered%c to the "${menuId}" menu for a total of ${items.length} static item${items.length !== 1 ? "s" : ""}.`, "color: white; background-color: green;", "%s",
+                "Newly registered item:", navigationItem,
+                "All registered items:", items
+            );
+        }
     }
 
     getNavigationItems(menuId: string = RootMenuId) {

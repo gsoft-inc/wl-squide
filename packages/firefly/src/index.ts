@@ -10,11 +10,14 @@ export * from "./AppRouterContext.ts";
 export * from "./AppRouterReducer.ts";
 export * from "./LegacyAppRouter.tsx";
 
-export * from "./useCanCompleteRegistrations.ts";
+export * from "./useCanFetchProtectedData.ts";
+export * from "./useCanFetchPublicData.ts";
+export * from "./useCanRegisterDeferredRegistrations.ts";
+export * from "./useCanUpdateDeferredRegistrations.ts";
 export * from "./useIsActiveRouteProtected.ts";
 export * from "./useIsBootstrapping.ts";
-export * from "./useProtectedData.ts";
 export * from "./useProtectedDataQueries.ts";
-export * from "./usePublicData.ts";
 export * from "./usePublicDataQueries.ts";
+export * from "./useRegisterDeferredRegistrations.ts";
+export * from "./useUpdateDeferredRegistrations.ts";
 

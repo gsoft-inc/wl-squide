@@ -85,6 +85,15 @@ export function AuthenticatedLayout() {
             });
     }, [logger]);
 
+    const handleShuffleFeatureFlags = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+
+        postJson("/api/shuffle-feature-flags")
+            .then(() => {
+                logger.debug("[shell] Shuffled the feature flags.");
+            });
+    }, [logger]);
+
     const navigationItems = useNavigationItems();
     const renderedNavigationItems = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
@@ -102,6 +111,11 @@ export function AuthenticatedLayout() {
                 <div>
                     <button type="button" onClick={handleUpdateSession} style={{ whiteSpace: "nowrap", marginRight: "10px" }}>
                         {t("updateSessionButtonLabel")}
+                    </button>
+                </div>
+                <div>
+                    <button type="button" onClick={handleShuffleFeatureFlags} style={{ whiteSpace: "nowrap", marginRight: "10px" }}>
+                        {t("shuffleFeatureFlagsLabel")}
                     </button>
                 </div>
                 <div>

@@ -2,7 +2,7 @@ import type { RegisterRouteOptions, RuntimeOptions } from "@squide/core";
 import { MswPlugin } from "@squide/msw";
 import { ReactRouterRuntime, type Route } from "@squide/react-router";
 import type { RequestHandler } from "msw";
-import { getAreModulesReady, getAreModulesRegistered } from "./AppRouterReducer.ts";
+import { getAreModulesRegistered } from "./AppRouterReducer.ts";
 
 export interface FireflyRuntimeOptions extends RuntimeOptions {
     useMsw?: boolean;
@@ -41,9 +41,14 @@ export class FireflyRuntime extends ReactRouterRuntime {
             throw new Error("[squide] Cannot register the provided MSW request handlers because the runtime hasn't been initialized with MSW. Did you instanciate the FireflyRuntime with the \"useMsw\" option?");
         }
 
+        if (getAreModulesRegistered()) {
+            throw new Error("[squide] Cannot register an MSW request handlers once the modules are registered. Are you trying to register an MSW request handler in a deferred registration function? Only navigation items can be registered in a deferred registration function.");
+        }
+
         this.#mswPlugin.registerRequestHandlers(handlers);
     }
 
+    // Must define a return type otherwise we get an "error TS2742: The inferred type of 'requestHandlers' cannot be named" error.
     get requestHandlers(): RequestHandler[] {
         if (!this.#mswPlugin) {
             throw new Error("[squide] Cannot retrieve MSW request handlers because the runtime hasn't been initialized with MSW. Did you instanciate the FireflyRuntime with the \"useMsw\" option?");
@@ -53,8 +58,6 @@ export class FireflyRuntime extends ReactRouterRuntime {
     }
 
     registerRoute(route: Route, options: RegisterRouteOptions = {}) {
-        console.log("*****************************************************", getAreModulesRegistered(), getAreModulesReady(), route);
-
         if (getAreModulesRegistered()) {
             throw new Error("[squide] Cannot register a route once the modules are registered. Are you trying to register a route in a deferred registration function? Only navigation items can be registered in a deferred registration function.");
         }

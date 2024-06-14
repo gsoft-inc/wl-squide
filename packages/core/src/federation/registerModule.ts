@@ -1,6 +1,8 @@
 import type { Runtime } from "../runtime/runtime.ts";
 
-export type DeferredRegistrationFunction<TData = unknown> = (data?: TData) => Promise<void> | void;
+export type DeferredRegistrationOperation = "register" | "update";
+
+export type DeferredRegistrationFunction<TData = unknown> = (data: TData, operation: DeferredRegistrationOperation) => Promise<void> | void;
 
 export type ModuleRegisterFunction<TRuntime extends Runtime = Runtime, TContext = unknown, TData = unknown> = (runtime: TRuntime, context?: TContext) => Promise<DeferredRegistrationFunction<TData> | void> | DeferredRegistrationFunction<TData> | void;
 

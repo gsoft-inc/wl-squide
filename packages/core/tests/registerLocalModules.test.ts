@@ -84,7 +84,7 @@ test("when there are no deferred registrations, once all the modules are registe
     expect(registry.registrationStatus).toBe("ready");
 });
 
-test("when there are deferred registrations, once all the modules are registered, set the status to \"registered\"", async () => {
+test("when there are deferred registrations, once all the modules are registered, set the status to \"modules-registered\"", async () => {
     const registry = new LocalModuleRegistry();
 
     await registry.registerModules([
@@ -92,7 +92,7 @@ test("when there are deferred registrations, once all the modules are registered
         () => () => {}
     ], runtime);
 
-    expect(registry.registrationStatus).toBe("registered");
+    expect(registry.registrationStatus).toBe("modules-registered");
 });
 
 test("when a module registration fail, register the remaining modules", async () => {

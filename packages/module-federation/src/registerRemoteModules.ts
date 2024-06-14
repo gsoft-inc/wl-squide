@@ -61,7 +61,7 @@ export class RemoteModuleRegistry {
 
         runtime.logger.debug(`[squide] Found ${remotes.length} remote module${remotes.length !== 1 ? "s" : ""} to register.`);
 
-        this.#setRegistrationStatus("in-progress");
+        this.#setRegistrationStatus("registering-modules");
 
         await Promise.allSettled(remotes.map(async (x, index) => {
             const remoteName = x.name;
@@ -102,7 +102,7 @@ export class RemoteModuleRegistry {
             }
         }));
 
-        this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "registered" : "ready");
+        this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "modules-registered" : "ready");
 
         // After introducting the "setRegistrationStatus" method, TypeScript seems to think that the only possible
         // values for registrationStatus is "none" and now complains about the lack of overlapping between "none" and "ready".
@@ -115,32 +115,32 @@ export class RemoteModuleRegistry {
         return errors;
     }
 
-    async completeModuleRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data?: TData) {
+    async registerDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
         const errors: RemoteModuleRegistrationError[] = [];
 
-        if (this.#registrationStatus === "none" || this.#registrationStatus === "in-progress") {
-            throw new Error("[squide] The completeRemoteModuleRegistration function can only be called once the registerRemoteModules function terminated.");
+        if (this.#registrationStatus === "none" || this.#registrationStatus === "registering-modules") {
+            throw new Error("[squide] The registerDeferredRegistrations function can only be called once the registerRemoteModules function terminated.");
         }
 
-        if (this.#registrationStatus !== "registered" && this.#deferredRegistrations.length > 0) {
-            throw new Error("[squide] The completeRemoteModuleRegistration function can only be called once.");
+        if (this.#registrationStatus !== "modules-registered" && this.#deferredRegistrations.length > 0) {
+            throw new Error("[squide] The registerDeferredRegistrations function can only be called once.");
         }
 
         if (this.#registrationStatus === "ready") {
             // No deferred registrations were returned by the remote modules, skip the completion process.
-            return Promise.resolve(errors);
+            return errors;
         }
 
-        this.#setRegistrationStatus("completing-deferred-registrations");
+        this.#setRegistrationStatus("registering-deferred-registration");
 
         await Promise.allSettled(this.#deferredRegistrations.map(async ({ remoteName, index, fct: deferredRegister }) => {
-            runtime.logger.debug(`[squide] ${index} Completing registration for module "${RemoteRegisterModuleName}" of remote "${remoteName}".`);
+            runtime.logger.debug(`[squide] ${index} Registering the deferred registrations for module "${RemoteRegisterModuleName}" of remote "${remoteName}".`);
 
             try {
-                await deferredRegister(data);
+                await deferredRegister(data, "register");
             } catch (error: unknown) {
                 runtime.logger.error(
-                    `[squide] ${index} An error occured while completing the registration for module "${RemoteRegisterModuleName}" of remote "${remoteName}".`,
+                    `[squide] ${index} An error occured while registering the deferred registrations for module "${RemoteRegisterModuleName}" of remote "${remoteName}".`,
                     error
                 );
 
@@ -151,12 +151,43 @@ export class RemoteModuleRegistry {
                 });
             }
 
-            runtime.logger.debug(`[squide] ${index} Completed registration for module "${RemoteRegisterModuleName}" of remote "${remoteName}".`);
+            runtime.logger.debug(`[squide] ${index} Registered the deferred registrations for module "${RemoteRegisterModuleName}" of remote "${remoteName}".`);
         }));
 
         this.#setRegistrationStatus("ready");
 
         this.#logSharedScope(runtime.logger);
+
+        return errors;
+    }
+
+    async updateDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
+        const errors: RemoteModuleRegistrationError[] = [];
+
+        if (this.#registrationStatus !== "ready") {
+            throw new Error("[squide] The updateDeferredRegistrations function can only be called once the remote modules are ready.");
+        }
+
+        await Promise.allSettled(this.#deferredRegistrations.map(async ({ remoteName, index, fct: deferredRegister }) => {
+            runtime.logger.debug(`[squide] ${index} Updating the deferred registrations for module "${RemoteRegisterModuleName}" of remote "${remoteName}".`);
+
+            try {
+                await deferredRegister(data, "update");
+            } catch (error: unknown) {
+                runtime.logger.error(
+                    `[squide] ${index} An error occured while updating the deferred registrations for module "${RemoteRegisterModuleName}" of remote "${remoteName}".`,
+                    error
+                );
+
+                errors.push({
+                    remoteName,
+                    moduleName: RemoteRegisterModuleName,
+                    error
+                });
+            }
+
+            runtime.logger.debug(`[squide] ${index} Updated the deferred registrations for module "${RemoteRegisterModuleName}" of remote "${remoteName}".`);
+        }));
 
         return errors;
     }
@@ -193,8 +224,12 @@ export function registerRemoteModules<TRuntime extends Runtime = Runtime, TConte
     return remoteModuleRegistry.registerModules<TRuntime, TContext, TData>(remotes, runtime, options);
 }
 
-export function completeRemoteModuleRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data?: TData) {
-    return remoteModuleRegistry.completeModuleRegistrations(runtime, data);
+export function registerRemoteModuleDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
+    return remoteModuleRegistry.registerDeferredRegistrations(runtime, data);
+}
+
+export function updateRemoteModuleDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
+    return remoteModuleRegistry.updateDeferredRegistrations(runtime, data);
 }
 
 export function getRemoteModuleRegistrationStatus() {

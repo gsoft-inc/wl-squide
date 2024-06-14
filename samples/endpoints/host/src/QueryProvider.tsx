@@ -13,7 +13,7 @@ const queryClient = new QueryClient({
 
                 return failureCount <= 2;
             },
-            refetchInterval: 20 * 1000
+            refetchInterval: 5 * 1000
         }
     }
 });

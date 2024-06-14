@@ -55,6 +55,10 @@ export abstract class Runtime<TRoute = unknown, TNavigationItem = unknown> {
 
     abstract getNavigationItems(menuId?: string): TNavigationItem[];
 
+    abstract startDeferredRegistrationScope(transactional?: boolean): void;
+
+    abstract completeDeferredRegistrationScope(): void;
+
     get mode() {
         return this._mode;
     }
@@ -89,7 +93,7 @@ export abstract class Runtime<TRoute = unknown, TNavigationItem = unknown> {
         return this._sessionAccessor();
     }
 
-    // Prefixed by _ to indicate that it's considered as an "internal" method.
+    // Prefixed by _ to indicate that it's considered as an "internal" method, cannot use "#"" because of inheritance.
     _completeRegistration() {
         this._logger.debug("[squide] %cModules are ready%c.", "color: white; background-color: green;", "");
     }

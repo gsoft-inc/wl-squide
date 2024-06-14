@@ -14,8 +14,7 @@
     },
     "FeatureBPage": {
         "title": "Fonctionnalité B",
-        "servedBy": "Cette page est servi par <code>@endpoints/remote-module</code>",
-        "message": "Cette page est uniquement disponible si la fonctionnalité <code>featureB</code> est activé."
+        "servedBy": "Cette page est servi par <code>@endpoints/remote-module</code>"
     },
     "FeatureCPage": {
         "title": "Fonctionnalité C",

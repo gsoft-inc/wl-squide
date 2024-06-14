@@ -23,7 +23,6 @@
     "peerDependencies": {
         "@endpoints/shared": "*",
         "@endpoints/shell": "*",
-        "@squide/fakes": "*",
         "@squide/firefly": "*",
         "@tanstack/react-query": "rc",
         "msw": "*",

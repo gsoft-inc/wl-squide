@@ -12,6 +12,7 @@
         "userLabel": "User",
         "updateSessionButtonLabel": "Update session",
         "shuffleFeatureFlagsLabel": "Shuffle feature flags",
+        "deactivateFeatureBLabel": "Deactivate feature B",
         "disconnectButtonLabel": "Disconnect",
         "loadingMessage": "Loading..."
     },

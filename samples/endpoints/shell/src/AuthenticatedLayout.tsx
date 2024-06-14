@@ -94,6 +94,15 @@ export function AuthenticatedLayout() {
             });
     }, [logger]);
 
+    const handleDeactivateFeatureB = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+
+        postJson("/api/deactivate-feature-b")
+            .then(() => {
+                logger.debug("[shell] Deactivated feature B.");
+            });
+    }, [logger]);
+
     const navigationItems = useNavigationItems();
     const renderedNavigationItems = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
@@ -116,6 +125,11 @@ export function AuthenticatedLayout() {
                 <div>
                     <button type="button" onClick={handleShuffleFeatureFlags} style={{ whiteSpace: "nowrap", marginRight: "10px" }}>
                         {t("shuffleFeatureFlagsLabel")}
+                    </button>
+                </div>
+                <div>
+                    <button type="button" onClick={handleDeactivateFeatureB} style={{ whiteSpace: "nowrap", marginRight: "10px" }}>
+                        {t("deactivateFeatureBLabel")}
                     </button>
                 </div>
                 <div>

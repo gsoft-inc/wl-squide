@@ -16,7 +16,6 @@
         "deploy":"netlify deploy --dir=samples/endpoints/host/dist --site=4bde6b8b-cea6-487f-913b-acec9332eb2f --prod"
     },
     "devDependencies":{
-        "@squide/fakes":"workspace:*",
         "@squide/firefly-webpack-configs":"workspace:*",
         "@swc/core":"1.4.17",
         "@swc/helpers":"0.5.11",

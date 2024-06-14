@@ -19,11 +19,13 @@
         "build": "tsup --config ./tsup.build.ts"
     },
     "peerDependencies": {
+        "@squide/fakes": "*",
         "@squide/firefly": "*",
         "react": "*",
         "react-dom": "*"
     },
     "devDependencies": {
+        "@squide/fakes": "workspace:*",
         "@squide/firefly": "workspace:*",
         "@types/react": "18.3.1",
         "@types/react-dom": "18.3.0",

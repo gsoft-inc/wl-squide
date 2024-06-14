@@ -7,7 +7,7 @@ const queryClient = new QueryClient({
         queries: {
             refetchOnWindowFocus: false,
             retry: (failureCount, error) => {
-                if (isApiError(error) && error.status === 401) {
+                if (isApiError(error) && (error.status === 401 || error.status === 403)) {
                     return false;
                 }
 

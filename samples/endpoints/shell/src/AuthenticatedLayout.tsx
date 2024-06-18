@@ -4,6 +4,7 @@ import { useI18nextInstance } from "@squide/i18next";
 import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Loading } from "./Loading.tsx";
 import { i18NextInstanceKey } from "./i18next.ts";
 
 type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
@@ -138,9 +139,10 @@ export function AuthenticatedLayout() {
                     </button>
                 </div>
             </div>
-            <Suspense fallback={<div>{t("loadingMessage")}</div>}>
+            <Outlet />
+            {/* <Suspense fallback={<Loading />}>
                 <Outlet />
-            </Suspense>
+            </Suspense> */}
         </>
     );
 }

@@ -13,8 +13,7 @@
         "updateSessionButtonLabel": "Update session",
         "shuffleFeatureFlagsLabel": "Shuffle feature flags",
         "deactivateFeatureBLabel": "Deactivate feature B",
-        "disconnectButtonLabel": "Disconnect",
-        "loadingMessage": "Loading..."
+        "disconnectButtonLabel": "Disconnect"
     },
     "ModuleErrorBoundary": {
         "title": "Unmanaged error",

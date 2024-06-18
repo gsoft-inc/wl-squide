@@ -77,6 +77,7 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
         }
     }, [subscription, logger]);
 
+    // TODO: Add an abstraction on top of this.
     const canRegisterDeferredRegistrations = useCanRegisterDeferredRegistrations();
     const canUpdateDeferredRegistrations = useCanUpdateDeferredRegistrations();
 

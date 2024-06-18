@@ -1,6 +1,7 @@
 import { useQueries, type QueriesOptions, type QueriesResults, type UseQueryResult } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
-import { useAppRouterDispatcher, useAppRouterState } from "./AppRouterContext.ts";
+import { useCallback, useEffect, useRef } from "react";
+import { useAppRouterDispatcher } from "./AppRouterContext.ts";
+import { GlobalDataQueriesError } from "./GlobalDataQueriesError.ts";
 import { useCanFetchPublicData } from "./useCanFetchPublicData.ts";
 
 // This converts an array of UseQueryResult to an array of the data type of each query result.
@@ -9,24 +10,34 @@ type MapUseQueryResultToData<T> = { [K in keyof T]: T[K] extends UseQueryResult<
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function usePublicDataQueries<T extends Array<any>>(queries: QueriesOptions<T>): MapUseQueryResultToData<QueriesResults<T>> {
-    const state = useAppRouterState();
     const canFetchPublicData = useCanFetchPublicData();
 
     const dispatch = useAppRouterDispatcher();
 
-    const { data, isReady } = useQueries({
+    const combineResults = useCallback((results: UseQueryResult<unknown, Error>[]) => {
+        const errors = results.filter(x => x.error).map(x => x.error) as Error[];
+
+        return {
+            data: results.map(x => x.data) as MapUseQueryResultToData<QueriesResults<T>>,
+            errors,
+            hasErrors: errors.length > 0,
+            isReady: results.length === queries.length && results.every(x => x.data)
+        };
+    }, [queries.length]);
+
+    const { data, errors: queriesErrors, hasErrors, isReady } = useQueries({
         queries: queries.map(x => ({
             enabled: canFetchPublicData,
-            throwOnError: !state.isPublicDataReady,
             ...x
         })),
-        combine: results => {
-            return {
-                data: results.map(x => x.data) as MapUseQueryResultToData<QueriesResults<T>>,
-                isReady: results.length === queries.length && results.every(x => x.data)
-            };
-        }
+        combine: combineResults
     });
+
+    useEffect(() => {
+        if (hasErrors) {
+            throw new GlobalDataQueriesError("[squide] Global public data queries failed.", queriesErrors);
+        }
+    }, [hasErrors, queriesErrors]);
 
     const isReadyRef = useRef(false);
 

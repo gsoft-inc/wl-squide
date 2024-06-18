@@ -1,6 +1,7 @@
 import { useQueries, type QueriesOptions, type QueriesResults, type UseQueryResult } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useAppRouterDispatcher, useAppRouterState } from "./AppRouterContext.ts";
+import { GlobalDataQueriesError } from "./GlobalDataQueriesError.ts";
 import { useCanFetchProtectedData } from "./useCanFetchProtectedData.ts";
 
 export type IsUnauthorizedErrorCallback = (error: unknown) => boolean;
@@ -11,44 +12,48 @@ type MapUseQueryResultToData<T> = { [K in keyof T]: T[K] extends UseQueryResult<
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOptions<T>, isUnauthorizedError: IsUnauthorizedErrorCallback): MapUseQueryResultToData<QueriesResults<T>> {
+    const canFetchProtectedData = useCanFetchProtectedData();
+
+    const dispatch = useAppRouterDispatcher();
+
+    const combineResults = useCallback((results: UseQueryResult<unknown, Error>[]) => {
+        const errors = results.filter(x => x.error).map(x => x.error) as Error[];
+
+        return {
+            data: results.map(x => x.data) as MapUseQueryResultToData<QueriesResults<T>>,
+            errors,
+            hasErrors: errors.length > 0,
+            isReady: results.length === queries.length && results.every(x => x.data)
+        };
+    }, [queries.length]);
+
+    const { data, errors: queriesErrors, hasErrors, isReady } = useQueries({
+        queries: queries.map(x => ({
+            enabled: canFetchProtectedData,
+            ...x
+        })),
+        combine: combineResults
+    });
+
     const {
         isProtectedDataReady,
         isUnauthorized
     } = useAppRouterState();
 
-    const canFetchProtectedData = useCanFetchProtectedData();
+    useEffect(() => {
+        if (hasErrors) {
+            if (!isProtectedDataReady && !isUnauthorized && queriesErrors.some(x => isUnauthorizedError(x))) {
+                // Will transition the state to allow the routes to render even if the bootstrapping is not complete, because otherwise
+                // a login page for example could not be rendered.
+                dispatch({ type: "is-unauthorized" });
+            }
 
-    const dispatch = useAppRouterDispatcher();
-
-    const { data, isReady } = useQueries({
-        queries: queries.map(x => ({
-            enabled: canFetchProtectedData,
-            throwOnError: (error: unknown) => {
-                if (isProtectedDataReady || isUnauthorized) {
-                    return false;
-                }
-
-                if (isUnauthorizedError(error)) {
-                    // Will transition the state to allow the routes to render even if the bootstrapping is not complete, because otherwise
-                    // a login page for example could not be rendered.
-                    dispatch({ type: "is-unauthorized" });
-
-                    // A React Router error boundary cannot redirect to a page. Therefore, the redirection should be done by a custom
-                    // Aunthentication Boundary in consumer code, so there's no need to throw for 401 errors.
-                    return false;
-                }
-
-                return true;
-            },
-            ...x
-        })),
-        combine: results => {
-            return {
-                data: results.map(x => x.data) as MapUseQueryResultToData<QueriesResults<T>>,
-                isReady: results.length === queries.length && results.every(x => x.data)
-            };
+            // Otherwise, when a user is logged off, a refetch might throws a 401.
+            if (!queriesErrors.every(x => isUnauthorizedError(x))) {
+                throw new GlobalDataQueriesError("[squide] Global protected data queries failed.", queriesErrors);
+            }
         }
-    });
+    }, [hasErrors, queriesErrors, isProtectedDataReady, isUnauthorized, isUnauthorizedError, dispatch]);
 
     const isReadyRef = useRef(false);
 

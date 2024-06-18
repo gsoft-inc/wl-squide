@@ -24,7 +24,7 @@
         "@endpoints/shared": "*",
         "@endpoints/shell": "*",
         "@squide/firefly": "*",
-        "@tanstack/react-query": "rc",
+        "@tanstack/react-query": "5.32.0",
         "msw": "*",
         "react": "*",
         "react-dom": "*",

@@ -13,8 +13,7 @@
         "updateSessionButtonLabel": "Modifier la session",
         "shuffleFeatureFlagsLabel": "Brasser les feature flags",
         "deactivateFeatureBLabel": "Désactiver la feature B",
-        "disconnectButtonLabel": "Se déconnecter",
-        "loadingMessage": "Chargement..."
+        "disconnectButtonLabel": "Se déconnecter"
     },
     "ModuleErrorBoundary": {
         "title": "Erreur non gérée",

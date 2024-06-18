@@ -10,6 +10,7 @@ export * from "./AppRouterContext.ts";
 export * from "./AppRouterReducer.ts";
 export * from "./LegacyAppRouter.tsx";
 
+export * from "./GlobalDataQueriesError.ts";
 export * from "./useCanFetchProtectedData.ts";
 export * from "./useCanFetchPublicData.ts";
 export * from "./useCanRegisterDeferredRegistrations.ts";

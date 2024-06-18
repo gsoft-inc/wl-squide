@@ -1,7 +1,7 @@
 import { FeatureFlagsContext, SessionManagerContext, SubscriptionContext, TelemetryServiceContext, fetchJson, isApiError, type FeatureFlags, type Session, type Subscription, type TelemetryService } from "@endpoints/shared";
-import { AppRouter as FireflyAppRouter, useCanRegisterDeferredRegistrations, useCanUpdateDeferredRegistrations, useIsBootstrapping, useLogger, useProtectedDataQueries, usePublicDataQueries, useRegisterDeferredRegistrations, useRuntime, useUpdateDeferredRegistrations } from "@squide/firefly";
+import { AppRouter as FireflyAppRouter, useDeferredRegistrations, useIsBootstrapping, useLogger, useProtectedDataQueries, usePublicDataQueries } from "@squide/firefly";
 import { useChangeLanguage } from "@squide/i18next";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Loading } from "./Loading.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
@@ -13,7 +13,6 @@ interface BootstrappingRouteProps {
 
 function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
     const logger = useLogger();
-    const runtime = useRuntime();
 
     const [featureFlags] = usePublicDataQueries([
         {
@@ -77,30 +76,10 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
         }
     }, [subscription, logger]);
 
-    // TODO: Add an abstraction on top of this.
-    const canRegisterDeferredRegistrations = useCanRegisterDeferredRegistrations();
-    const canUpdateDeferredRegistrations = useCanUpdateDeferredRegistrations();
-
-    const registerDeferredRegistrations = useRegisterDeferredRegistrations();
-    const updateDeferredRegistrations = useUpdateDeferredRegistrations();
-
-    useEffect(() => {
-        if (canRegisterDeferredRegistrations) {
-            registerDeferredRegistrations(runtime, {
-                featureFlags,
-                session
-            });
-        }
-    }, [canRegisterDeferredRegistrations, registerDeferredRegistrations, featureFlags, session, runtime]);
-
-    useEffect(() => {
-        if (canUpdateDeferredRegistrations) {
-            updateDeferredRegistrations(runtime, {
-                featureFlags,
-                session
-            });
-        }
-    });
+    useDeferredRegistrations(useMemo(() => ({
+        featureFlags,
+        session
+    }), [featureFlags, session]));
 
     const sessionManager = useSessionManagerInstance(session!);
 

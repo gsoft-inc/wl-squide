@@ -15,6 +15,7 @@ export * from "./useCanFetchProtectedData.ts";
 export * from "./useCanFetchPublicData.ts";
 export * from "./useCanRegisterDeferredRegistrations.ts";
 export * from "./useCanUpdateDeferredRegistrations.ts";
+export * from "./useDeferredRegistrations.ts";
 export * from "./useIsActiveRouteProtected.ts";
 export * from "./useIsBootstrapping.ts";
 export * from "./useProtectedDataQueries.ts";

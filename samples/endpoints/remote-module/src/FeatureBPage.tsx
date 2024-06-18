@@ -15,14 +15,9 @@ export function FeatureBPage() {
         telemetryService?.track("Mounting FeatureBPage from remote-1.");
     }, [telemetryService]);
 
-    const { error, data } = useSuspenseQuery({
-        queryKey: ["/api/feature-b"],
-        queryFn: () => {
-            return fetchJson("/api/feature-b");
-        }
-    });
-
-    console.log("***************************************** FeatureBPage", error);
+    const { data } = useSuspenseQuery({ queryKey: ["/api/feature-b"], queryFn: () => {
+        return fetchJson("/api/feature-b");
+    } });
 
     return (
         <>

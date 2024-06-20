@@ -11,3 +11,7 @@ export class GlobalDataQueriesError extends Error {
         return this.#errors;
     }
 }
+
+export function isGlobalDataQueriesError(error?: unknown): error is GlobalDataQueriesError {
+    return error !== undefined && error !== null && error instanceof GlobalDataQueriesError;
+}

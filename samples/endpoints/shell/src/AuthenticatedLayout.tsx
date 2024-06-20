@@ -1,5 +1,5 @@
 import { postJson, toSubscriptionStatusLabel, useSessionManager, useSubscription } from "@endpoints/shared";
-import { isNavigationLink, useLogger, useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
+import { isNavigationLink, useFireflyNavigationItems, useLogger, useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { useI18nextInstance } from "@squide/i18next";
 import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
@@ -47,6 +47,8 @@ const renderSection: RenderSectionFunction = (elements, index, level) => {
 export function AuthenticatedLayout() {
     const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
     const { t } = useTranslation("AuthenticatedLayout", { i18n: i18nextInstance });
+
+    const navItems = useNavigationItems();
 
     const logger = useLogger();
     const sessionManager = useSessionManager();
@@ -104,8 +106,11 @@ export function AuthenticatedLayout() {
             });
     }, [logger]);
 
-    const navigationItems = useNavigationItems();
+    // const navigationItems = useNavigationItems();
+    const navigationItems = useFireflyNavigationItems();
     const renderedNavigationItems = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
+
+    console.log("************************************************************ Rendering AuthenticatedLayout", navItems);
 
     return (
         <>
@@ -139,10 +144,9 @@ export function AuthenticatedLayout() {
                     </button>
                 </div>
             </div>
-            <Outlet />
-            {/* <Suspense fallback={<Loading />}>
+            <Suspense fallback={<Loading />}>
                 <Outlet />
-            </Suspense> */}
+            </Suspense>
         </>
     );
 }

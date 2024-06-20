@@ -81,6 +81,8 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
         session
     }), [featureFlags, session]));
 
+    console.log("***************************************************** Rendering BootstrappingRoute");
+
     const sessionManager = useSessionManagerInstance(session!);
 
     if (useIsBootstrapping()) {
@@ -113,26 +115,28 @@ export function AppRouter(props: AppRouterProps) {
 
     return (
         <FireflyAppRouter waitForMsw={waitForMsw} waitForPublicData waitForProtectedData>
-            {({ rootRoute, registeredRoutes }) => (
-                <RouterProvider
-                    router={createBrowserRouter([
-                        {
-                            element: rootRoute,
-                            children: [
-                                {
-                                    errorElement: <RootErrorBoundary />,
-                                    children: [
-                                        {
-                                            element: <BootstrappingRoute telemetryService={telemetryService} />,
-                                            children: registeredRoutes
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ])}
-                />
-            )}
+            {({ rootRoute, registeredRoutes }) => {
+                return (
+                    <RouterProvider
+                        router={createBrowserRouter([
+                            {
+                                element: rootRoute,
+                                children: [
+                                    {
+                                        errorElement: <RootErrorBoundary />,
+                                        children: [
+                                            {
+                                                element: <BootstrappingRoute telemetryService={telemetryService} />,
+                                                children: registeredRoutes
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ])}
+                    />
+                );
+            }}
         </FireflyAppRouter>
     );
 }

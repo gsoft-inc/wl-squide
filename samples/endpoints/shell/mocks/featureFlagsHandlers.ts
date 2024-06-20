@@ -13,11 +13,15 @@ export const featureFlagsHandlers: HttpHandler[] = [
         return HttpResponse.json(featureFlags);
     }),
     http.post("/api/shuffle-feature-flags", async () => {
-        featureFlagsManager.setFeatureFlags({
+        const newFeatureFlags = {
             featureA: Math.random() < 0.5,
             featureB: true,
             featureC: Math.random() < 0.5
-        });
+        };
+
+        featureFlagsManager.setFeatureFlags(newFeatureFlags);
+
+        console.log("[endpoints] New feature flags are:", newFeatureFlags);
 
         return new HttpResponse(null, {
             status: 200

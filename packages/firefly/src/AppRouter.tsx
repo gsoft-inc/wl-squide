@@ -20,16 +20,16 @@ export type RenderRouterProviderFunction = (args: RenderRouterProviderFunctionAr
 
 export interface AppRouterProps {
     waitForMsw: boolean;
-    waitForPublicData: boolean;
-    waitForProtectedData: boolean;
+    waitForPublicData?: boolean;
+    waitForProtectedData?: boolean;
     children: RenderRouterProviderFunction;
 }
 
 export function AppRouter(props: AppRouterProps) {
     const {
         waitForMsw,
-        waitForPublicData,
-        waitForProtectedData,
+        waitForPublicData = false,
+        waitForProtectedData = false,
         children: renderRouterProvider
     } = props;
 

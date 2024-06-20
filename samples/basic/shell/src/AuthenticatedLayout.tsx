@@ -1,7 +1,8 @@
-import { useApplicationEventBusListener, type Session, type SessionManager } from "@basic/shared";
-import { isNavigationLink, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
+import { useApplicationEventBusListener, useSessionManager } from "@basic/shared";
+import { isNavigationLink, useFireflyNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Loading } from "./Loading.tsx";
 
 type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
 
@@ -40,12 +41,9 @@ const renderSection: RenderSectionFunction = (elements, index, level) => {
     );
 };
 
-export interface AuthenticatedLayoutProps {
-    sessionManager: SessionManager;
-}
-
-export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps) {
-    const session = useSession() as Session;
+export function AuthenticatedLayout() {
+    const sessionManager = useSessionManager();
+    const session = sessionManager?.getSession();
 
     const navigate = useNavigate();
 
@@ -58,12 +56,12 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
     const handleDisconnect = useCallback((event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
-        sessionManager.clearSession();
+        sessionManager?.clearSession();
 
         navigate("/logout");
     }, [navigate, sessionManager]);
 
-    const navigationItems = useNavigationItems();
+    const navigationItems = useFireflyNavigationItems();
     const renderedNavigationItems = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (
@@ -79,7 +77,7 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
                     <button type="button" onClick={handleDisconnect}>Disconnect</button>
                 </div>
             </div>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loading />}>
                 <Outlet />
             </Suspense>
         </>

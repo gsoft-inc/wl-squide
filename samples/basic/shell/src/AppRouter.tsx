@@ -1,17 +1,38 @@
-import { useToastListener } from "@basic/shared";
-import { AppRouter as FireflyAppRouter } from "@squide/firefly";
+import { SessionManagerContext, useToastListener } from "@basic/shared";
+import { AppRouter as FireflyAppRouter, useIsBootstrapping } from "@squide/firefly";
 import { useCallback } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { AppRouterErrorBoundary } from "./AppRouterErrorBoundary.tsx";
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Loading } from "./Loading.tsx";
+import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { ToastContainer, useToastContainer } from "./toast.tsx";
+import { useSessionManagerInstance } from "./useSessionManagerInstance.ts";
 
-function Loading() {
-    return (
-        <div>Loading...</div>
-    );
-}
+// export function AppRouter() {
+//     const { toastState, addToast } = useToastContainer();
 
-export function AppRouter() {
+//     const handleShowToast = useCallback((message: string) => {
+//         addToast(message);
+//     }, [addToast]);
+
+//     useToastListener(handleShowToast);
+
+//     return (
+//         <ToastContainer state={toastState}>
+//             <FireflyAppRouter
+//                 fallbackElement={<Loading />}
+//                 errorElement={<AppRouterErrorBoundary />}
+//                 waitForMsw={false}
+//             >
+//                 {(routes, providerProps) => (
+//                     <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
+//                 )}
+//             </FireflyAppRouter>
+//         </ToastContainer>
+//     );
+// }
+
+
+function BootstrappingRoute() {
     const { toastState, addToast } = useToastContainer();
 
     const handleShowToast = useCallback((message: string) => {
@@ -20,17 +41,46 @@ export function AppRouter() {
 
     useToastListener(handleShowToast);
 
+    const sessionManager = useSessionManagerInstance();
+
+    if (useIsBootstrapping()) {
+        return <Loading />;
+    }
+
     return (
-        <ToastContainer state={toastState}>
-            <FireflyAppRouter
-                fallbackElement={<Loading />}
-                errorElement={<AppRouterErrorBoundary />}
-                waitForMsw={false}
-            >
-                {(routes, providerProps) => (
-                    <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
-                )}
-            </FireflyAppRouter>
-        </ToastContainer>
+        <SessionManagerContext.Provider value={sessionManager}>
+            <ToastContainer state={toastState}>
+                <Outlet />
+            </ToastContainer>
+        </SessionManagerContext.Provider>
+    );
+}
+
+export function AppRouter() {
+    return (
+        <FireflyAppRouter waitForMsw={false}>
+            {({ rootRoute, registeredRoutes }) => {
+                return (
+                    <RouterProvider
+                        router={createBrowserRouter([
+                            {
+                                element: rootRoute,
+                                children: [
+                                    {
+                                        errorElement: <RootErrorBoundary />,
+                                        children: [
+                                            {
+                                                element: <BootstrappingRoute />,
+                                                children: registeredRoutes
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ])}
+                    />
+                );
+            }}
+        </FireflyAppRouter>
     );
 }

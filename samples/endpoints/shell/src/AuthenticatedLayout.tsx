@@ -1,5 +1,5 @@
 import { postJson, toSubscriptionStatusLabel, useSessionManager, useSubscription } from "@endpoints/shared";
-import { isNavigationLink, useFireflyNavigationItems, useLogger, useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
+import { isNavigationLink, useFireflyNavigationItems, useLogger, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { useI18nextInstance } from "@squide/i18next";
 import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,9 +11,9 @@ type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, l
 
 type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactNode;
 
-const renderLinkItem: RenderLinkItemFunction = ({ label, linkProps, additionalProps: { highlight, ...additionalProps } }, index, level) => {
+const renderLinkItem: RenderLinkItemFunction = ({ key, label, linkProps, additionalProps: { highlight, ...additionalProps } }) => {
     return (
-        <li key={`${level}-${index}`} style={{ fontWeight: highlight ? "bold" : "normal" }}>
+        <li key={key} style={{ fontWeight: highlight ? "bold" : "normal" }}>
             <Link {...linkProps} {...additionalProps}>
                 {label}
             </Link>
@@ -21,9 +21,9 @@ const renderLinkItem: RenderLinkItemFunction = ({ label, linkProps, additionalPr
     );
 };
 
-const renderSectionItem: RenderSectionItemFunction = ({ label, section }, index, level) => {
+const renderSectionItem: RenderSectionItemFunction = ({ key, label, section }) => {
     return (
-        <li key={`${level}-${index}`} style={{ display: "flex", gap: "5px" }}>
+        <li key={key} style={{ display: "flex", gap: "5px" }}>
             {label}
             <div style={{ display: "flex", alignItems: "center", fontSize: "12px" }}>
                 ({section})
@@ -47,8 +47,6 @@ const renderSection: RenderSectionFunction = (elements, index, level) => {
 export function AuthenticatedLayout() {
     const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
     const { t } = useTranslation("AuthenticatedLayout", { i18n: i18nextInstance });
-
-    const navItems = useNavigationItems();
 
     const logger = useLogger();
     const sessionManager = useSessionManager();
@@ -106,11 +104,8 @@ export function AuthenticatedLayout() {
             });
     }, [logger]);
 
-    // const navigationItems = useNavigationItems();
     const navigationItems = useFireflyNavigationItems();
     const renderedNavigationItems = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
-
-    console.log("************************************************************ Rendering AuthenticatedLayout", navItems);
 
     return (
         <>

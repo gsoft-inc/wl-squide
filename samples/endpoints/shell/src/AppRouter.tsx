@@ -81,8 +81,6 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
         session
     }), [featureFlags, session]));
 
-    console.log("***************************************************** Rendering BootstrappingRoute");
-
     const sessionManager = useSessionManagerInstance(session!);
 
     if (useIsBootstrapping()) {

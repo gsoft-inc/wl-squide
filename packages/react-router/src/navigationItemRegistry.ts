@@ -3,12 +3,14 @@ import type { ReactNode } from "react";
 import type { LinkProps } from "react-router-dom";
 
 export interface NavigationLink extends Omit<LinkProps, "children"> {
+    $key?: string;
     $label: ReactNode;
     $additionalProps?: Record<string, unknown>;
     children?: never;
 }
 
 export interface NavigationSection {
+    $key?: string;
     $label: ReactNode;
     $additionalProps?: Record<string, unknown>;
     children: NavigationItem[];

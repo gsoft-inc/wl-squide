@@ -89,6 +89,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
     });
 
     runtime.registerNavigationItem({
+        $key: "episodes-tab",
         $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="episodesTab" />,
         to: "/federated-tabs/episodes"
     }, {
@@ -96,6 +97,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
     });
 
     runtime.registerNavigationItem({
+        $key: "locations-tab",
         $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="locationsTab" />,
         to: "/federated-tabs/locations"
     }, {
@@ -103,6 +105,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
     });
 
     runtime.registerNavigationItem({
+        $key: "failing-tab",
         $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="failingTab" />,
         to: "/federated-tabs/failing"
     }, {
@@ -112,6 +115,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
     return ({ featureFlags }) => {
         if (featureFlags?.featureB) {
             runtime.registerNavigationItem({
+                $key: "feature-b",
                 $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="featureBPage" />,
                 to: "/feature-b"
             });
@@ -119,6 +123,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
 
         if (featureFlags?.featureC) {
             runtime.registerNavigationItem({
+                $key: "feature-c",
                 $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="featureCPage" />,
                 to: "/feature-c"
             });

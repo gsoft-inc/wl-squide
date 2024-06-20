@@ -4,12 +4,14 @@ import type { LinkProps } from "react-router-dom";
 import { isLinkItem, type NavigationItem, type NavigationLink, type NavigationSection, type RootNavigationItem } from "./navigationItemRegistry.ts";
 
 export interface NavigationLinkRenderProps {
+    key?: string;
     label: ReactNode;
     linkProps: Omit<LinkProps, "children">;
     additionalProps: Record<string, unknown>;
 }
 
 export interface NavigationSectionRenderProps {
+    key?: string;
     label: ReactNode;
     section: ReactNode;
     additionalProps: Record<string, unknown>;
@@ -25,16 +27,18 @@ export type RenderItemFunction = (item: NavigationItemRenderProps, index: number
 
 export type RenderSectionFunction = (elements: ReactNode[], index: number, level: number) => ReactNode;
 
-function toLinkProps({ $label, $additionalProps, ...linkProps }: NavigationLink): NavigationLinkRenderProps {
+function toLinkProps({ $key, $label, $additionalProps, ...linkProps }: NavigationLink): NavigationLinkRenderProps {
     return {
+        key: $key,
         label: $label,
         linkProps,
         additionalProps: $additionalProps ?? {}
     };
 }
 
-function toMenuProps({ $label, $additionalProps }: NavigationSection, sectionElement: ReactNode): NavigationSectionRenderProps {
+function toMenuProps({ $key, $label, $additionalProps }: NavigationSection, sectionElement: ReactNode): NavigationSectionRenderProps {
     return {
+        key: $key,
         label: $label,
         section: sectionElement,
         additionalProps: $additionalProps ?? {}

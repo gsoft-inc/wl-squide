@@ -42,22 +42,13 @@ export function AppRouter(props: AppRouterProps) {
         logger.debug("[squide] AppRouter state updated:", state);
     }, [state, logger]);
 
-    // The state is required as a dependency of the useMemo otherwise re-renders will be missed when the state change.
     const routerProvider = useMemo(() => {
-        console.log("********************************************************* computing routerProvider useMemo");
-
         return renderRouterProvider({
             rootRoute: <RootRoute />,
             registeredRoutes: routes,
             routerProviderProps: {}
         });
     }, [routes, renderRouterProvider]);
-
-    // const routerProvider = renderRouterProvider({
-    //     rootRoute: <RootRoute />,
-    //     registeredRoutes: routes,
-    //     routerProviderProps: {}
-    // });
 
     return (
         <AppRouterDispatcherContext.Provider value={dispatch}>

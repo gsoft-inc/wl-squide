@@ -1,6 +1,5 @@
 import { ManagedRoutes, type FireflyRuntime, type ModuleRegisterFunction } from "@squide/firefly";
 import { HomePage } from "./HomePage.tsx";
-import { NotFoundPage } from "./NotFoundPage.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 
 export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
@@ -12,14 +11,6 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
             // will be rendered.
             ManagedRoutes
         ]
-    }, {
-        hoist: true
-    });
-
-    runtime.registerRoute({
-        $visibility: "public",
-        path: "*",
-        element: <NotFoundPage />
     }, {
         hoist: true
     });

@@ -7,9 +7,9 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Loading } from "./Loading.tsx";
 import { i18NextInstanceKey } from "./i18next.ts";
 
-type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
+type RenderLinkItemFunction = (item: NavigationLinkRenderProps, key: string) => ReactNode;
 
-type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactNode;
+type RenderSectionItemFunction = (item: NavigationSectionRenderProps, key: string) => ReactNode;
 
 const renderLinkItem: RenderLinkItemFunction = ({ key, label, linkProps, additionalProps: { highlight, ...additionalProps } }) => {
     return (
@@ -32,8 +32,8 @@ const renderSectionItem: RenderSectionItemFunction = ({ key, label, section }) =
     );
 };
 
-const renderItem: RenderItemFunction = (item, index, level) => {
-    return isNavigationLink(item) ? renderLinkItem(item, index, level) : renderSectionItem(item, index, level);
+const renderItem: RenderItemFunction = (item, key) => {
+    return isNavigationLink(item) ? renderLinkItem(item, key) : renderSectionItem(item, key);
 };
 
 const renderSection: RenderSectionFunction = (elements, index, level) => {

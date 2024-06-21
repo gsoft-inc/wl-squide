@@ -23,9 +23,9 @@ export function isNavigationLink(item: NavigationItemRenderProps): item is Navig
     return !isNil((item as NavigationLinkRenderProps).linkProps);
 }
 
-export type RenderItemFunction = (item: NavigationItemRenderProps, index: number, level: number) => ReactNode;
+export type RenderItemFunction = (item: NavigationItemRenderProps, key: string, index: number, level: number) => ReactNode;
 
-export type RenderSectionFunction = (elements: ReactNode[], index: number, level: number) => ReactNode;
+export type RenderSectionFunction = (elements: ReactNode[], key: string, index: number, level: number) => ReactNode;
 
 function toLinkProps({ $key, $label, $additionalProps, ...linkProps }: NavigationLink): NavigationLinkRenderProps {
     return {
@@ -45,22 +45,24 @@ function toMenuProps({ $key, $label, $additionalProps }: NavigationSection, sect
     };
 }
 
-function renderItems(items: NavigationItem[], renderItem: RenderItemFunction, renderSection: RenderSectionFunction, index: number, level: number) {
+function renderItems(items: NavigationItem[], renderItem: RenderItemFunction, renderSection: RenderSectionFunction, key: string, index: number, level: number) {
     const itemElements = items.map((x, itemIndex) => {
         let itemElement: ReactNode;
 
         if (isLinkItem(x)) {
-            itemElement = renderItem(toLinkProps(x), itemIndex, level);
+            itemElement = renderItem(toLinkProps(x), x.$key ? x.$key : `${itemIndex}-${level}`, itemIndex, level);
         } else {
-            const sectionElement = renderItems(x.children, renderItem, renderSection, 0, level + 1);
+            const sectionIndex = 0;
+            const sectionLevel = level + 1;
+            const sectionElement = renderItems(x.children, renderItem, renderSection, x.$key ? x.$key : `${sectionIndex}-${sectionLevel}`, sectionIndex, sectionLevel);
 
-            itemElement = renderItem(toMenuProps(x, sectionElement), itemIndex, level);
+            itemElement = renderItem(toMenuProps(x, sectionElement), x.$key ? x.$key : `${itemIndex}-${level}`, itemIndex, level);
         }
 
         return itemElement;
     });
 
-    return renderSection(itemElements, index, level);
+    return renderSection(itemElements, key ? key : `${index}-${level}`, index, level);
 }
 
 export function useRenderedNavigationItems(
@@ -86,6 +88,6 @@ export function useRenderedNavigationItems(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             .map(({ $priority, ...itemProps }) => itemProps);
 
-        return renderItems(sortedItems, renderItem, renderSection, 0, 0);
+        return renderItems(sortedItems, renderItem, renderSection, "root", 0, 0);
     }, [navigationItems, renderItem, renderSection]);
 }

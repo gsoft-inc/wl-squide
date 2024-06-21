@@ -35,11 +35,11 @@
         "react-dom": "*"
     },
     "devDependencies": {
-        "@swc/core": "1.4.17",
+        "@swc/core": "1.6.3",
         "@swc/jest": "0.2.36",
         "@types/jest": "29.5.12",
-        "@types/node": "20.12.7",
-        "@types/react": "18.3.1",
+        "@types/node": "20.14.7",
+        "@types/react": "18.3.3",
         "@types/react-dom": "18.3.0",
         "@workleap/eslint-plugin": "3.2.2",
         "@workleap/swc-configs": "2.2.3",
@@ -50,12 +50,12 @@
         "jest-environment-jsdom": "29.7.0",
         "react": "18.3.1",
         "react-dom": "18.3.1",
-        "ts-jest": "29.1.2",
-        "tsup": "8.0.2",
-        "typescript": "5.4.5"
+        "ts-jest": "29.1.5",
+        "tsup": "8.1.0",
+        "typescript": "5.5.2"
     },
     "dependencies": {
-        "@module-federation/enhanced": "0.1.11",
+        "@module-federation/enhanced": "0.1.21",
         "@squide/core": "workspace:*"
     },
     "sideEffects": false,

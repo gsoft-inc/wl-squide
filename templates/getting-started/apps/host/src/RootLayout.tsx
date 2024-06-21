@@ -1,4 +1,4 @@
-import { isNavigationLink, useNavigationItems, useRenderedNavigationItems, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
+import { isNavigationLink, useFireflyNavigationItems, useRenderedNavigationItems, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { Suspense } from "react";
 import { Link, Outlet } from "react-router-dom";
 
@@ -31,7 +31,7 @@ const renderSection: RenderSectionFunction = (elements, key) => {
 
 export function RootLayout() {
     // Retrieve the navigation items registered by the remote modules.
-    const navigationItems = useNavigationItems();
+    const navigationItems = useFireflyNavigationItems();
 
     // Transform the navigation items into React elements.
     const navigationElements = useRenderedNavigationItems(navigationItems, renderItem, renderSection);

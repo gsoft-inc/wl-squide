@@ -6,6 +6,7 @@ export interface NavigationLink extends Omit<LinkProps, "children"> {
     $key?: string;
     $label: ReactNode;
     $additionalProps?: Record<string, unknown>;
+    $canRender?: (obj?: unknown) => boolean;
     children?: never;
 }
 
@@ -13,6 +14,7 @@ export interface NavigationSection {
     $key?: string;
     $label: ReactNode;
     $additionalProps?: Record<string, unknown>;
+    $canRender?: (obj?: unknown) => boolean;
     children: NavigationItem[];
     to?: never;
 }

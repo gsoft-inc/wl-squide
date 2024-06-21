@@ -1,6 +1,6 @@
 import { isGlobalDataQueriesError, useLogger } from "@squide/firefly";
 import { useI18nextInstance } from "@squide/i18next";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { isRouteErrorResponse, useLocation, useRouteError } from "react-router-dom";
 import { i18NextInstanceKey } from "./i18next.ts";
@@ -27,13 +27,15 @@ export function RootErrorBoundary() {
         window.location.reload();
     }, []);
 
-    if (isRouteErrorResponse(error)) {
-        logger.error(`[shell] An unmanaged error occurred while rendering the route with path ${location.pathname}`, `${error.status} ${error.statusText}`);
-    } else if (isGlobalDataQueriesError(error)) {
-        logger.error(`[shell] An unmanaged error occurred while rendering the route with path ${location.pathname}`, error.message, error.errors);
-    } else {
-        logger.error(`[shell] An unmanaged error occurred while rendering the route with path ${location.pathname}`, error);
-    }
+    useEffect(() => {
+        if (isRouteErrorResponse(error)) {
+            logger.error(`[shell] An unmanaged error occurred while rendering the route with path ${location.pathname}`, `${error.status} ${error.statusText}`);
+        } else if (isGlobalDataQueriesError(error)) {
+            logger.error(`[shell] An unmanaged error occurred while rendering the route with path ${location.pathname}`, error.message, error.errors);
+        } else {
+            logger.error(`[shell] An unmanaged error occurred while rendering the route with path ${location.pathname}`, error);
+        }
+    }, [location.pathname, error, logger]);
 
     return (
         <div>

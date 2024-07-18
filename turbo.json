@@ -1,5 +1,5 @@
 {
-    "$schema": "https://turbo.build/schema.json",
+    "$schema": "https://turbo.build/schema.v1.json",
     "globalEnv": ["USE_MSW", "ISOLATED", "NETLIFY"],
     "pipeline": {
         "dev": {

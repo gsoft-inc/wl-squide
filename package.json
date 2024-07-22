@@ -11,6 +11,7 @@
         "ci-build": "turbo run build --filter=./packages/* --cache-dir=node_modules/.cache/turbo",
         "pretest": "turbo run build --filter=./packages/*",
         "test": "jest",
+        "test-no-build": "jest",
         "prelint": "turbo run build",
         "lint": "pnpm run \"/^lint:.*/\"",
         "lint:eslint": "eslint . --max-warnings=-0 --cache --cache-location node_modules/.cache/eslint",

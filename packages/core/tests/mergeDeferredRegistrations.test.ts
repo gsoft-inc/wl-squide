@@ -10,25 +10,25 @@ test("when deferred registrations are provided, all the deferred registrations a
 
     const mergeFunction = mergeDeferredRegistrations([fct1, fct2, fct3]);
 
-    await mergeFunction!();
+    await mergeFunction!("foo", "register");
 
     expect(fct1).toHaveBeenCalledTimes(1);
     expect(fct2).toHaveBeenCalledTimes(1);
     expect(fct3).toHaveBeenCalledTimes(1);
 });
 
-test("when deferred registrations are provided and there's deferred data, all the deferred registrations are called with the data", async () => {
+test("when deferred registrations are provided, all the deferred registrations are called with the provided data and state", async () => {
     const fct1: DeferredRegistrationFunction<string> = jest.fn();
     const fct2: DeferredRegistrationFunction<string> = jest.fn();
     const fct3: DeferredRegistrationFunction<string> = jest.fn();
 
     const mergeFunction = mergeDeferredRegistrations([fct1, fct2, fct3]);
 
-    await mergeFunction!("foo");
+    await mergeFunction!("foo", "register");
 
-    expect(fct1).toHaveBeenCalledWith("foo");
-    expect(fct2).toHaveBeenCalledWith("foo");
-    expect(fct3).toHaveBeenCalledWith("foo");
+    expect(fct1).toHaveBeenCalledWith("foo", "register");
+    expect(fct2).toHaveBeenCalledWith("foo", "register");
+    expect(fct3).toHaveBeenCalledWith("foo", "register");
 });
 
 test("when void results are provided, the void results are ignored", async () => {
@@ -37,10 +37,10 @@ test("when void results are provided, the void results are ignored", async () =>
 
     const mergeFunction = mergeDeferredRegistrations([noop(), fct1, noop(), fct2]);
 
-    await mergeFunction!("foo");
+    await mergeFunction!("foo", "register");
 
-    expect(fct1).toHaveBeenCalledWith("foo");
-    expect(fct2).toHaveBeenCalledWith("foo");
+    expect(fct1).toHaveBeenCalledWith("foo", "register");
+    expect(fct2).toHaveBeenCalledWith("foo", "register");
 });
 
 test("when no deferred registrations are provided, return undefined", () => {
@@ -54,9 +54,9 @@ test("when a single deferred registration is provided, the deferred registration
 
     const mergeFunction = mergeDeferredRegistrations([fct]);
 
-    await mergeFunction!("foo");
+    await mergeFunction!("foo", "register");
 
-    expect(fct).toHaveBeenCalledWith("foo");
+    expect(fct).toHaveBeenCalledWith("foo", "register");
 });
 
 test("when a single deferred registration is provided, return the deferred registration", async () => {

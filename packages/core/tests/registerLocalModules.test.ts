@@ -25,6 +25,14 @@ class DummyRuntime extends Runtime<unknown, unknown> {
     getNavigationItems() {
         return [];
     }
+
+    startDeferredRegistrationScope(): void {
+        throw new Error("Method not implemented.");
+    }
+
+    completeDeferredRegistrationScope(): void {
+        throw new Error("Method not implemented.");
+    }
 }
 
 const runtime = new DummyRuntime();

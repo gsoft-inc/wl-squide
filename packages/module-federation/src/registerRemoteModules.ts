@@ -119,7 +119,7 @@ export class RemoteModuleRegistry {
         const errors: RemoteModuleRegistrationError[] = [];
 
         if (this.#registrationStatus === "none" || this.#registrationStatus === "registering-modules") {
-            throw new Error("[squide] The registerDeferredRegistrations function can only be called once the registerRemoteModules function terminated.");
+            throw new Error("[squide] The registerDeferredRegistrations function can only be called once the remote modules are registered.");
         }
 
         if (this.#registrationStatus !== "modules-registered" && this.#deferredRegistrations.length > 0) {

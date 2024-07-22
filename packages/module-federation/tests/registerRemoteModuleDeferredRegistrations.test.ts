@@ -25,6 +25,14 @@ class DummyRuntime extends Runtime<unknown, unknown> {
     getNavigationItems() {
         return [];
     }
+
+    startDeferredRegistrationScope(): void {
+        throw new Error("Method not implemented.");
+    }
+
+    completeDeferredRegistrationScope(): void {
+        throw new Error("Method not implemented.");
+    }
 }
 
 const runtime = new DummyRuntime();
@@ -32,7 +40,7 @@ const runtime = new DummyRuntime();
 test("when called before registerRemoteModules, throw an error", async () => {
     const registry = new RemoteModuleRegistry(jest.fn());
 
-    await expect(() => registry.registerDeferredRegistrations(runtime, {})).rejects.toThrow(/The completeRemoteModuleRegistration function can only be called once the registerRemoteModules function terminated/);
+    await expect(() => registry.registerDeferredRegistrations(runtime, {})).rejects.toThrow(/The registerDeferredRegistrations function can only be called once the remote modules are registered/);
 });
 
 test("when called twice, throw an error", async () => {
@@ -49,7 +57,7 @@ test("when called twice, throw an error", async () => {
 
     await registry.registerDeferredRegistrations(runtime, {});
 
-    await expect(() => registry.registerDeferredRegistrations(runtime, {})).rejects.toThrow(/The completeRemoteModuleRegistration function can only be called once/);
+    await expect(() => registry.registerDeferredRegistrations(runtime, {})).rejects.toThrow(/The registerDeferredRegistrations function can only be called once/);
 });
 
 test("when called for the first time but the registration status is already \"ready\", return a resolving promise", async () => {
@@ -77,9 +85,7 @@ test("can complete all the deferred registrations", async () => {
     const register2 = jest.fn();
     const register3 = jest.fn();
 
-    const loadRemote = jest.fn();
-
-    loadRemote
+    const loadRemote = jest.fn()
         .mockResolvedValueOnce({
             register: () => register1
         })
@@ -126,9 +132,9 @@ test("when all the deferred registrations are completed, set the status to \"rea
 });
 
 test("when a deferred registration is asynchronous, the function can be awaited", async () => {
-    const loadRemote = jest.fn();
+    let hasBeenCompleted = false;
 
-    loadRemote
+    const loadRemote = jest.fn()
         .mockResolvedValueOnce({
             register: () => () => {}
         })
@@ -145,8 +151,6 @@ test("when a deferred registration is asynchronous, the function can be awaited"
 
     const registry = new RemoteModuleRegistry(loadRemote);
 
-    let hasBeenCompleted = false;
-
     await registry.registerModules([
         { name: "Dummy-1" },
         { name: "Dummy-2" },
@@ -162,9 +166,7 @@ test("when a deferred registration fail, complete the remaining deferred registr
     const register1 = jest.fn();
     const register3 = jest.fn();
 
-    const loadRemote = jest.fn();
-
-    loadRemote
+    const loadRemote = jest.fn()
         .mockResolvedValueOnce({
             register: () => register1
         })
@@ -190,9 +192,7 @@ test("when a deferred registration fail, complete the remaining deferred registr
 });
 
 test("when a deferred registration fail, return the error", async () => {
-    const loadRemote = jest.fn();
-
-    loadRemote
+    const loadRemote = jest.fn()
         .mockResolvedValueOnce({
             register: () => () => {}
         })
@@ -217,14 +217,12 @@ test("when a deferred registration fail, return the error", async () => {
     expect(errors[0]!.error!.toString()).toContain("Module 2 deferred registration failed");
 });
 
-test("when data is provided, all the deferred registrations receive the data object", async () => {
+test("all the deferred registrations receive the data object", async () => {
     const register1 = jest.fn();
     const register2 = jest.fn();
     const register3 = jest.fn();
 
-    const loadRemote = jest.fn();
-
-    loadRemote
+    const loadRemote = jest.fn()
         .mockResolvedValueOnce({
             register: () => register1
         })
@@ -249,9 +247,44 @@ test("when data is provided, all the deferred registrations receive the data obj
 
     await registry.registerDeferredRegistrations(runtime, data);
 
-    expect(register1).toHaveBeenCalledWith(data);
-    expect(register2).toHaveBeenCalledWith(data);
-    expect(register3).toHaveBeenCalledWith(data);
+    expect(register1).toHaveBeenCalledWith(data, "register");
+    expect(register2).toHaveBeenCalledWith(data, "register");
+    expect(register3).toHaveBeenCalledWith(data, "register");
+});
+
+test("all the deferred registrations receive \"register\" as state", async () => {
+    const register1 = jest.fn();
+    const register2 = jest.fn();
+    const register3 = jest.fn();
+
+    const loadRemote = jest.fn()
+        .mockResolvedValueOnce({
+            register: () => register1
+        })
+        .mockResolvedValueOnce({
+            register: () => register2
+        })
+        .mockResolvedValueOnce({
+            register: () => register3
+        });
+
+    const registry = new RemoteModuleRegistry(loadRemote);
+
+    await registry.registerModules([
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
+    ], runtime);
+
+    const data = {
+        foo: "bar"
+    };
+
+    await registry.registerDeferredRegistrations(runtime, data);
+
+    expect(register1).toHaveBeenCalledWith(data, "register");
+    expect(register2).toHaveBeenCalledWith(data, "register");
+    expect(register3).toHaveBeenCalledWith(data, "register");
 });
 
 

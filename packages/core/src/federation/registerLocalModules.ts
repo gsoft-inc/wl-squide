@@ -71,7 +71,7 @@ export class LocalModuleRegistry {
         const errors: LocalModuleRegistrationError[] = [];
 
         if (this.#registrationStatus === "none" || this.#registrationStatus === "registering-modules") {
-            throw new Error("[squide] The registerDeferredRegistrations function can only be called once the registerLocalModules function terminated.");
+            throw new Error("[squide] The registerDeferredRegistrations function can only be called once the local modules are registered.");
         }
 
         if (this.#registrationStatus !== "modules-registered" && this.#deferredRegistrations.length > 0) {

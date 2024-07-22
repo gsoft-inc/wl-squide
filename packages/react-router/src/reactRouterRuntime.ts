@@ -33,9 +33,10 @@ export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
             throw new Error("[squide] A deferred registration scope must be started before calling the complete function. Did you forget to start the scope?");
         }
 
-        this.#navigationItemScope?.complete();
-
-        this.#navigationItemScope = undefined;
+        if (this.#navigationItemScope) {
+            this.#navigationItemScope.complete();
+            this.#navigationItemScope = undefined;
+        }
     }
 
     registerRoute(route: Route, options: RegisterRouteOptions = {}) {

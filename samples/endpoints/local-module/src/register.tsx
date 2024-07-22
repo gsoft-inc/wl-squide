@@ -45,7 +45,13 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
 
     runtime.registerRoute({
         path: "/feature-a",
-        lazy: () => import("./FeatureAPage.tsx")
+        lazy: async () => {
+            const { FeatureAPage } = await import("./FeatureAPage.tsx");
+
+            return {
+                element: <Providers><FeatureAPage /></Providers>
+            };
+        }
     });
 
     runtime.registerNavigationItem({

@@ -63,7 +63,7 @@ function renderItems(items: NavigationItem[], renderItem: RenderItemFunction, re
         } else {
             const sectionIndex = 0;
             const sectionLevel = level + 1;
-            const sectionElement = renderItems(x.children, renderItem, renderSection, x.$key ? x.$key : `${sectionIndex}-${sectionLevel}`, sectionIndex, sectionLevel);
+            const sectionElement = renderItems(x.children, renderItem, renderSection, x.$key ?? `${sectionIndex}-${sectionLevel}`, sectionIndex, sectionLevel);
 
             itemElement = renderItem(toMenuProps(x, sectionElement), x.$key ?? `${itemIndex}-${level}`, itemIndex, level);
         }
@@ -71,7 +71,12 @@ function renderItems(items: NavigationItem[], renderItem: RenderItemFunction, re
         return itemElement;
     });
 
-    return renderSection(itemElements, key ?? `${index}-${level}`, index, level);
+    // Filter out elements that are null or undefined because of the "canRender" prop.
+    const renderedElements = itemElements.filter(x => x);
+
+    if (renderedElements.length > 0) {
+        return renderSection(renderedElements, key ?? `${index}-${level}`, index, level);
+    }
 }
 
 export function useRenderedNavigationItems(

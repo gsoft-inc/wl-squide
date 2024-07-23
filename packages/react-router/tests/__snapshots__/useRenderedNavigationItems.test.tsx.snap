@@ -414,3 +414,81 @@ exports[`support 3 section levels 1`] = `
   </li>
 </ul>
 `;
+
+exports[`when a link item canRender prop return false, the item is not rendered 1`] = `
+<ul
+  data-index="0"
+  data-key="root"
+  data-level="0"
+>
+  <li
+    data-index="1"
+    data-key="1-0"
+    data-level="0"
+  >
+    <div
+      to="/bar"
+    >
+      Bar
+    </div>
+  </li>
+</ul>
+`;
+
+exports[`when a section item canRender prop return false, the item is not rendered 1`] = `
+<ul
+  data-index="0"
+  data-key="root"
+  data-level="0"
+>
+  <li
+    data-index="1"
+    data-key="1-0"
+    data-level="0"
+  >
+    <div
+      to="/acme"
+    >
+      acme
+    </div>
+  </li>
+</ul>
+`;
+
+exports[`when the canRender prop of all the items of a nested section return false, do not render the section 1`] = `
+<ul
+  data-index="0"
+  data-key="root"
+  data-level="0"
+>
+  <li
+    data-index="0"
+    data-key="0-0"
+    data-level="0"
+  >
+    Foo
+  </li>
+  <li
+    data-index="1"
+    data-key="1-0"
+    data-level="0"
+  >
+    John
+    <ul
+      data-index="0"
+      data-key="0-1"
+      data-level="1"
+    >
+      <li
+        data-index="0"
+        data-key="0-1"
+        data-level="1"
+      >
+        Doe
+      </li>
+    </ul>
+  </li>
+</ul>
+`;
+
+exports[`when the canRender prop of all the root items return false, do not render the root section 1`] = `null`;

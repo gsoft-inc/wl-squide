@@ -30,7 +30,6 @@ export interface RemoteModuleRegistrationError {
 
 export class RemoteModuleRegistry {
     #registrationStatus: ModuleRegistrationStatus = "none";
-
     readonly #deferredRegistrations: DeferredRegistration[] = [];
     readonly #loadRemote: LoadRemoteFunction;
     readonly #statusChangedListeners = new Set<RemoteModuleRegistrationStatusChangedListener>();
@@ -210,11 +209,6 @@ export class RemoteModuleRegistry {
 
     get registrationStatus() {
         return this.#registrationStatus;
-    }
-
-    // Required to test hooks that dependent on the registration status.
-    resetRegistrationStatus() {
-        this.#registrationStatus = "none";
     }
 }
 

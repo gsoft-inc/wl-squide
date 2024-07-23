@@ -21,8 +21,7 @@ export interface LocalModuleRegistrationError {
 
 export class LocalModuleRegistry {
     #registrationStatus: ModuleRegistrationStatus = "none";
-    #deferredRegistrations: DeferredRegistration[] = [];
-
+    readonly #deferredRegistrations: DeferredRegistration[] = [];
     readonly #statusChangedListeners = new Set<LocalModuleRegistrationStatusChangedListener>();
 
     async registerModules<TRuntime extends Runtime = Runtime, TContext = unknown, TData = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext, TData>[], runtime: TRuntime, { context }: RegisterLocalModulesOptions<TContext> = {}) {
@@ -157,14 +156,6 @@ export class LocalModuleRegistry {
     get registrationStatus() {
         return this.#registrationStatus;
     }
-
-    // Strictly for Jest tests, this is NOT ideal.
-    __reset() {
-        // Bypass the "setRegistrationStatus" function to prevent calling the listeners.
-        this.#registrationStatus = "none";
-        this.#deferredRegistrations = [];
-        this.#statusChangedListeners.clear();
-    }
 }
 
 const localModuleRegistry = new LocalModuleRegistry();
@@ -191,9 +182,4 @@ export function addLocalModuleRegistrationStatusChangedListener(callback: LocalM
 
 export function removeLocalModuleRegistrationStatusChangedListener(callback: LocalModuleRegistrationStatusChangedListener) {
     localModuleRegistry.removeStatusChangedListener(callback);
-}
-
-// Strictly for Jest tests, this is NOT ideal.
-export function __resetLocalModuleRegistrations() {
-    localModuleRegistry.__reset();
 }

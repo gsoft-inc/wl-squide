@@ -4,17 +4,17 @@ import type { LinkProps } from "react-router-dom";
 import { isLinkItem, type NavigationItem, type NavigationLink, type NavigationSection, type RootNavigationItem } from "./navigationItemRegistry.ts";
 
 export interface NavigationLinkRenderProps {
-    key?: string;
     label: ReactNode;
     linkProps: Omit<LinkProps, "children">;
     additionalProps: Record<string, unknown>;
+    canRender?: (obj?: unknown) => boolean;
 }
 
 export interface NavigationSectionRenderProps {
-    key?: string;
     label: ReactNode;
     section: ReactNode;
     additionalProps: Record<string, unknown>;
+    canRender?: (obj?: unknown) => boolean;
 }
 
 export type NavigationItemRenderProps = NavigationLinkRenderProps | NavigationSectionRenderProps;
@@ -27,21 +27,30 @@ export type RenderItemFunction = (item: NavigationItemRenderProps, key: string, 
 
 export type RenderSectionFunction = (elements: ReactNode[], key: string, index: number, level: number) => ReactNode;
 
-function toLinkProps({ $key, $label, $additionalProps, ...linkProps }: NavigationLink): NavigationLinkRenderProps {
+function toLinkProps({
+    // Explicitly omitted because the "$key" prop shouldn't be used by the consumer.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    $key,
+    $label,
+    $additionalProps,
+    $canRender,
+    // All the remaining props that belongs to the react-router Link component.
+    ...linkProps
+}: NavigationLink): NavigationLinkRenderProps {
     return {
-        key: $key,
         label: $label,
         linkProps,
-        additionalProps: $additionalProps ?? {}
+        additionalProps: $additionalProps ?? {},
+        canRender: $canRender
     };
 }
 
-function toMenuProps({ $key, $label, $additionalProps }: NavigationSection, sectionElement: ReactNode): NavigationSectionRenderProps {
+function toMenuProps({ $label, $additionalProps, $canRender }: NavigationSection, sectionElement: ReactNode): NavigationSectionRenderProps {
     return {
-        key: $key,
         label: $label,
         section: sectionElement,
-        additionalProps: $additionalProps ?? {}
+        additionalProps: $additionalProps ?? {},
+        canRender: $canRender
     };
 }
 
@@ -50,19 +59,19 @@ function renderItems(items: NavigationItem[], renderItem: RenderItemFunction, re
         let itemElement: ReactNode;
 
         if (isLinkItem(x)) {
-            itemElement = renderItem(toLinkProps(x), x.$key ? x.$key : `${itemIndex}-${level}`, itemIndex, level);
+            itemElement = renderItem(toLinkProps(x), x.$key ?? `${itemIndex}-${level}`, itemIndex, level);
         } else {
             const sectionIndex = 0;
             const sectionLevel = level + 1;
             const sectionElement = renderItems(x.children, renderItem, renderSection, x.$key ? x.$key : `${sectionIndex}-${sectionLevel}`, sectionIndex, sectionLevel);
 
-            itemElement = renderItem(toMenuProps(x, sectionElement), x.$key ? x.$key : `${itemIndex}-${level}`, itemIndex, level);
+            itemElement = renderItem(toMenuProps(x, sectionElement), x.$key ?? `${itemIndex}-${level}`, itemIndex, level);
         }
 
         return itemElement;
     });
 
-    return renderSection(itemElements, key ? key : `${index}-${level}`, index, level);
+    return renderSection(itemElements, key ?? `${index}-${level}`, index, level);
 }
 
 export function useRenderedNavigationItems(

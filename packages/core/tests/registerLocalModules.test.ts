@@ -132,4 +132,26 @@ test("when a module registration fail, return the error", async () => {
     expect(errors[0]!.error!.toString()).toContain("Module 2 registration failed");
 });
 
+test("when a context is provided, all the register functions receive the provided context", async () => {
+    const register1 = jest.fn();
+    const register2 = jest.fn();
+    const register3 = jest.fn();
+
+    const registry = new LocalModuleRegistry();
+
+    const context = {
+        foo: "bar"
+    };
+
+    await registry.registerModules([
+        register1,
+        register2,
+        register3
+    ], runtime, { context });
+
+    expect(register1).toHaveBeenCalledWith(runtime, context);
+    expect(register2).toHaveBeenCalledWith(runtime, context);
+    expect(register3).toHaveBeenCalledWith(runtime, context);
+});
+
 

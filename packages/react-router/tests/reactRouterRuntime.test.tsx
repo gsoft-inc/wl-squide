@@ -201,7 +201,7 @@ describe("registerRoute", () => {
             expect(routes[0].$visibility).toBe("protected");
         });
 
-        test("when a root route has no visibility property, it is considered as an \"protected\" route", () => {
+        test("when a root route has no visibility property, it is considered as a \"protected\" route", () => {
             const runtime = new ReactRouterRuntime();
 
             registerManagedRoutesOutlet(runtime);

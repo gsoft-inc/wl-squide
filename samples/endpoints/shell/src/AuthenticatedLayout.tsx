@@ -11,7 +11,7 @@ type RenderLinkItemFunction = (item: NavigationLinkRenderProps, key: string) => 
 
 type RenderSectionItemFunction = (item: NavigationSectionRenderProps, key: string) => ReactNode;
 
-const renderLinkItem: RenderLinkItemFunction = ({ key, label, linkProps, additionalProps: { highlight, ...additionalProps } }) => {
+const renderLinkItem: RenderLinkItemFunction = ({ label, linkProps, additionalProps: { highlight, ...additionalProps } }, key) => {
     return (
         <li key={key} style={{ fontWeight: highlight ? "bold" : "normal" }}>
             <Link {...linkProps} {...additionalProps}>
@@ -21,7 +21,7 @@ const renderLinkItem: RenderLinkItemFunction = ({ key, label, linkProps, additio
     );
 };
 
-const renderSectionItem: RenderSectionItemFunction = ({ key, label, section }) => {
+const renderSectionItem: RenderSectionItemFunction = ({ label, section }, key) => {
     return (
         <li key={key} style={{ display: "flex", gap: "5px" }}>
             {label}
@@ -36,9 +36,9 @@ const renderItem: RenderItemFunction = (item, key) => {
     return isNavigationLink(item) ? renderLinkItem(item, key) : renderSectionItem(item, key);
 };
 
-const renderSection: RenderSectionFunction = (elements, index, level) => {
+const renderSection: RenderSectionFunction = (elements, key) => {
     return (
-        <ul key={`${level}-${index}`} style={{ display: "flex", gap: "10px", padding: 0, listStyleType: "none" }}>
+        <ul key={key} style={{ display: "flex", gap: "10px", padding: 0, listStyleType: "none" }}>
             {elements}
         </ul>
     );

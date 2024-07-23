@@ -34,9 +34,7 @@ test("can register all the modules", async () => {
     const register2 = jest.fn();
     const register3 = jest.fn();
 
-    const loadRemote = jest.fn();
-
-    loadRemote
+    const loadRemote = jest.fn()
         .mockResolvedValueOnce({
             register: register1
         })
@@ -106,9 +104,7 @@ test("when a module registration fail, register the remaining modules", async ()
     const register1 = jest.fn();
     const register3 = jest.fn();
 
-    const loadRemote = jest.fn();
-
-    loadRemote
+    const loadRemote = jest.fn()
         .mockResolvedValueOnce({
             register: register1
         })
@@ -132,9 +128,7 @@ test("when a module registration fail, register the remaining modules", async ()
 });
 
 test("when a module registration fail, return the error", async () => {
-    const loadRemote = jest.fn();
-
-    loadRemote
+    const loadRemote = jest.fn()
         .mockResolvedValueOnce({
             register: () => {}
         })
@@ -155,4 +149,37 @@ test("when a module registration fail, return the error", async () => {
 
     expect(errors.length).toBe(1);
     expect(errors[0]!.error!.toString()).toContain("Module 2 registration failed");
+});
+
+test("when a context is provided, all the register functions receive the provided context", async () => {
+    const register1 = jest.fn();
+    const register2 = jest.fn();
+    const register3 = jest.fn();
+
+    const loadRemote = jest.fn()
+        .mockResolvedValueOnce({
+            register: register1
+        })
+        .mockResolvedValueOnce({
+            register: register2
+        })
+        .mockResolvedValueOnce({
+            register: register3
+        });
+
+    const registry = new RemoteModuleRegistry(loadRemote);
+
+    const context = {
+        foo: "bar"
+    };
+
+    await registry.registerModules([
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
+    ], runtime, { context });
+
+    expect(register1).toHaveBeenCalledWith(runtime, context);
+    expect(register2).toHaveBeenCalledWith(runtime, context);
+    expect(register3).toHaveBeenCalledWith(runtime, context);
 });

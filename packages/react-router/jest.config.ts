@@ -8,6 +8,9 @@ const config: Config = {
     transform: {
         "^.+\\.(js|ts|tsx)$": ["@swc/jest", swcConfig as Record<string, unknown>]
     },
+    transformIgnorePatterns: [
+        "node_modules/(?!.pnpm|memoize|mimic-function)"
+    ],
     moduleNameMapper: {
         ...pathsToModuleNameMapper(compilerOptions.paths, {
             prefix: "<rootDir>"

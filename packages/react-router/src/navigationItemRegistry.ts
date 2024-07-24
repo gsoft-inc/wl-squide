@@ -1,4 +1,5 @@
 import { isNil } from "@squide/core";
+import memoize, { memoizeClear } from "memoize";
 import type { ReactNode } from "react";
 import type { LinkProps } from "react-router-dom";
 
@@ -72,7 +73,7 @@ export class NavigationItemDeferredRegistrationTransactionalScope extends Naviga
     }
 
     getItems(menuId: string) {
-        return this.#activeItems.get(menuId)?.map(x => x.item);
+        return this.#activeItems.get(menuId)?.map(x => x.item) ?? [];
     }
 
     complete() {
@@ -83,13 +84,25 @@ export class NavigationItemDeferredRegistrationTransactionalScope extends Naviga
                 this._registry.add(x.menuId, x.registrationType, x.item);
             });
         });
+
+        this.#activeItems.clear();
     }
 }
 
 export class NavigationItemRegistry {
+    // <menuId, RegistryItem[]>
     readonly #menus: Map<string, RegistryItem[]> = new Map();
 
-    // add(menuId: string, navigationItem: RootNavigationItem) {
+    // Since the "getItems" function is transforming the menus items from registry items to navigation items, the result of
+    // the transformation is memoized to ensure the returned array is immutable and can be use in React closures.
+    readonly #memoizedGetItems = memoize((menuId: string) => this.#menus.get(menuId)?.map(x => x.item) ?? []);
+
+    #setItems(menuId: string, items: RegistryItem[]) {
+        this.#menus.set(menuId, items);
+
+        memoizeClear(this.#memoizedGetItems);
+    }
+
     add(menuId: string, registrationType: NavigationItemRegistrationType, navigationItem: RootNavigationItem) {
         // Create a new array so the navigation items array is immutable.
         const items = [
@@ -101,11 +114,11 @@ export class NavigationItemRegistry {
             }
         ];
 
-        this.#menus.set(menuId, items);
+        this.#setItems(menuId, items);
     }
 
     getItems(menuId: string) {
-        return this.#menus.get(menuId)?.map(x => x.item);
+        return this.#memoizedGetItems(menuId);
     }
 
     clearDeferredItems() {
@@ -122,9 +135,9 @@ export class NavigationItemRegistry {
             const key = next.value;
             const registryItems = this.#menus.get(key)!;
 
-            // Keep the navigation items array immutable by only updating the array if something changed.
+            // Keep the "getItems" function immutable by only updating the menu arrays if the items actually changed.
             if (registryItems.some(x => x.registrationType === "deferred")) {
-                this.#menus.set(key, registryItems.filter(x => x.registrationType !== "deferred"));
+                this.#setItems(key, registryItems.filter(x => x.registrationType !== "deferred"));
             }
         }
     }

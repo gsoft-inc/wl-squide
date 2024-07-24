@@ -98,7 +98,7 @@ export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
     }
 
     getNavigationItems(menuId: string = RootMenuId) {
-        return this.#navigationItemRegistry.getItems(menuId) ?? [];
+        return this.#navigationItemRegistry.getItems(menuId);
     }
 
     _completeRegistration() {

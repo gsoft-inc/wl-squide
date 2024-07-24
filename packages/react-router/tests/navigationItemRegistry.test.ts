@@ -1,0 +1,176 @@
+import { NavigationItemRegistry } from "../src/navigationItemRegistry.ts";
+
+test("can add a single deferred item", () => {
+    const registry = new NavigationItemRegistry();
+
+    registry.add("foo", "deferred", {
+        $label: "1",
+        to: "1"
+    });
+
+    expect(registry.getItems("foo")[0]).toBeDefined();
+    expect(registry.getItems("foo")[0].$label).toBe("1");
+    expect(registry.getItems("foo")[0].to).toBe("1");
+});
+
+test("can add a single static item", () => {
+    const registry = new NavigationItemRegistry();
+
+    registry.add("foo", "static", {
+        $label: "1",
+        to: "1"
+    });
+
+    expect(registry.getItems("foo")[0]).toBeDefined();
+    expect(registry.getItems("foo")[0].$label).toBe("1");
+    expect(registry.getItems("foo")[0].to).toBe("1");
+});
+
+test("can add multiple items", () => {
+    const registry = new NavigationItemRegistry();
+
+    registry.add("foo", "deferred", {
+        $label: "1",
+        to: "1"
+    });
+
+    registry.add("foo", "static", {
+        $label: "2",
+        to: "2"
+    });
+
+    expect(registry.getItems("foo").length).toBe(2);
+});
+
+test("can add items for different menus", () => {
+    const registry = new NavigationItemRegistry();
+
+    registry.add("foo", "deferred", {
+        $label: "1",
+        to: "1"
+    });
+
+    registry.add("foo", "static", {
+        $label: "2",
+        to: "2"
+    });
+
+    registry.add("bar", "deferred", {
+        $label: "3",
+        to: "3"
+    });
+
+    expect(registry.getItems("foo").length).toBe(2);
+    expect(registry.getItems("bar").length).toBe(1);
+});
+
+describe("getItems", () => {
+    test("an empty array is returned when there's no registered items for the specified menu id", () => {
+        const registry = new NavigationItemRegistry();
+
+        registry.add("foo", "deferred", {
+            $label: "1",
+            to: "1"
+        });
+
+        registry.add("foo", "static", {
+            $label: "2",
+            to: "2"
+        });
+
+        registry.add("bar", "deferred", {
+            $label: "3",
+            to: "3"
+        });
+
+        expect(Array.isArray(registry.getItems("toto"))).toBeTruthy();
+        expect(registry.getItems("toto").length).toBe(0);
+    });
+
+    test("the returned items are immutable", () => {
+        const registry = new NavigationItemRegistry();
+
+        registry.add("foo", "static", {
+            $label: "1",
+            to: "/1"
+        });
+
+        const result1 = registry.getItems("foo");
+        const result2 = registry.getItems("foo");
+
+        expect(result1).toBe(result2);
+
+        registry.add("foo", "static", {
+            $label: "2",
+            to: "/2"
+        });
+
+        const result3 = registry.getItems("foo");
+
+        expect(result1).not.toBe(result3);
+        expect(result2).not.toBe(result3);
+    });
+});
+
+describe("clearDeferredItems", () => {
+    test("clear all deferred items", () => {
+        const registry = new NavigationItemRegistry();
+
+        registry.add("foo", "deferred", {
+            $label: "1",
+            to: "1"
+        });
+
+        registry.add("foo", "static", {
+            $label: "2",
+            to: "2"
+        });
+
+        registry.add("bar", "deferred", {
+            $label: "3",
+            to: "3"
+        });
+
+        expect(registry.getItems("foo").length).toBe(2);
+        expect(registry.getItems("bar").length).toBe(1);
+
+        registry.clearDeferredItems();
+
+        expect(registry.getItems("foo").length).toBe(1);
+        expect(registry.getItems("bar").length).toBe(0);
+    });
+
+    test("do not clear static items", () => {
+        const registry = new NavigationItemRegistry();
+
+        registry.add("foo", "static", {
+            $label: "1",
+            to: "1"
+        });
+
+        expect(registry.getItems("foo").length).toBe(1);
+
+        registry.clearDeferredItems();
+
+        expect(registry.getItems("foo")[0]).toBeDefined();
+        expect(registry.getItems("foo")[0].$label).toBe("1");
+        expect(registry.getItems("foo")[0].to).toBe("1");
+    });
+
+    test("when there's no deferred items to clear, do not mutate the menu arrays", () => {
+        const registry = new NavigationItemRegistry();
+
+        registry.add("foo", "static", {
+            $label: "1",
+            to: "1"
+        });
+
+        const array1 = registry.getItems("foo");
+
+        registry.clearDeferredItems();
+
+        const array2 = registry.getItems("foo");
+
+        expect(array1).toBe(array2);
+    });
+});

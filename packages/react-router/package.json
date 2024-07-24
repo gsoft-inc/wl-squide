@@ -59,7 +59,8 @@
         "typescript": "5.5.3"
     },
     "dependencies": {
-        "@squide/core": "workspace:*"
+        "@squide/core": "workspace:*",
+        "memoize": "10.0.0"
     },
     "sideEffects": false,
     "engines": {

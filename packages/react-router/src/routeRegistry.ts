@@ -47,7 +47,8 @@ export function createIndexKey(route: Route) {
 
 
 export class RouteRegistry {
-    #routes: Route[];
+    // TODO: Maybe merge with routesIndex?
+    #routes: Route[] = [];
 
     // Using an index to speed up the look up of parent routes.
     // <indexKey, Route>
@@ -56,10 +57,6 @@ export class RouteRegistry {
     // A collection of pending routes to registered once their layout is registered.
     // <parentPath | parentName, Route[]>
     readonly #pendingRegistrations: Map<string, Route[]> = new Map();
-
-    constructor() {
-        this.#routes = [];
-    }
 
     #addIndex(route: Route) {
         const key = createIndexKey(route);
@@ -229,6 +226,8 @@ export class RouteRegistry {
         return this.#routes;
     }
 
+    // TODO: Should probably return an array instead of the actual Map.
+    // Could save the parent path|name and the actual route as the value to help with that
     get pendingRegistrations() {
         return this.#pendingRegistrations;
     }

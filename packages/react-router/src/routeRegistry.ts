@@ -45,18 +45,16 @@ export function createIndexKey(route: Route) {
     return undefined;
 }
 
-
 export class RouteRegistry {
-    // TODO: Maybe merge with routesIndex?
     #routes: Route[] = [];
 
-    // Using an index to speed up the look up of parent routes.
+    // An index to speed up the look up of parent routes.
     // <indexKey, Route>
     readonly #routesIndex: Map<string, Route> = new Map();
 
-    // A collection of pending routes to registered once their layout is registered.
+    // An index of pending routes to registered once their parent is registered.
     // <parentPath | parentName, Route[]>
-    readonly #pendingRegistrations: Map<string, Route[]> = new Map();
+    readonly #pendingRegistrationsIndex: Map<string, Route[]> = new Map();
 
     #addIndex(route: Route) {
         const key = createIndexKey(route);
@@ -88,7 +86,6 @@ export class RouteRegistry {
                 const result = this.#recursivelyAddRoutes(route.children);
 
                 route.children = result.newRoutes;
-
                 completedPendingRegistrations.push(...result.completedPendingRegistrations);
             }
 
@@ -100,7 +97,6 @@ export class RouteRegistry {
             // of the route).
             if (indexKey) {
                 const pendingRegistrations = this.#tryRegisterPendingRoutes(indexKey);
-
                 completedPendingRegistrations.unshift(...pendingRegistrations);
             }
 
@@ -114,7 +110,7 @@ export class RouteRegistry {
     }
 
     #tryRegisterPendingRoutes(parentId: string) {
-        const pendingRegistrations = this.#pendingRegistrations.get(parentId);
+        const pendingRegistrations = this.#pendingRegistrationsIndex.get(parentId);
 
         if (pendingRegistrations) {
             // Try to register the pending routes.
@@ -122,7 +118,7 @@ export class RouteRegistry {
 
             if (registrationStatus === "registered") {
                 // Remove the pending registrations.
-                this.#pendingRegistrations.delete(parentId);
+                this.#pendingRegistrationsIndex.delete(parentId);
 
                 return pendingRegistrations;
             }
@@ -188,12 +184,12 @@ export class RouteRegistry {
         const layoutRoute = this.#routesIndex.get(parentId);
 
         if (!layoutRoute) {
-            const pendingRegistration = this.#pendingRegistrations.get(parentId);
+            const pendingRegistration = this.#pendingRegistrationsIndex.get(parentId);
 
             if (pendingRegistration) {
                 pendingRegistration.push(...routes);
             } else {
-                this.#pendingRegistrations.set(parentId, [...routes]);
+                this.#pendingRegistrationsIndex.set(parentId, [...routes]);
             }
 
             return {
@@ -226,9 +222,7 @@ export class RouteRegistry {
         return this.#routes;
     }
 
-    // TODO: Should probably return an array instead of the actual Map.
-    // Could save the parent path|name and the actual route as the value to help with that
     get pendingRegistrations() {
-        return this.#pendingRegistrations;
+        return this.#pendingRegistrationsIndex;
     }
 }

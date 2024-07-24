@@ -68,6 +68,19 @@ test("adding an item doesn't add the item to the registry", () => {
     expect(registry.getItems("foo").length).toBe(0);
 });
 
+test("when there's no items for the provided menu id, return an empty array", () => {
+    const registry = new NavigationItemRegistry();
+    const scope = new NavigationItemDeferredRegistrationTransactionalScope(registry);
+
+    scope.addItem("foo", {
+        $label: "bar",
+        to: "/bar"
+    });
+
+    expect(Array.isArray(registry.getItems("toto"))).toBeTruthy();
+    expect(registry.getItems("toto").length).toBe(0);
+});
+
 test("completing the scope add all the active items to the registry", () => {
     const registry = new NavigationItemRegistry();
     const scope = new NavigationItemDeferredRegistrationTransactionalScope(registry);

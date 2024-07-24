@@ -59,11 +59,11 @@ export class NavigationItemDeferredRegistrationScope {
 }
 
 export class NavigationItemDeferredRegistrationTransactionalScope extends NavigationItemDeferredRegistrationScope {
-    readonly #activeItems: Map<string, RegistryItem[]> = new Map();
+    readonly #activeItemsIndex: Map<string, RegistryItem[]> = new Map();
 
     addItem(menuId: string, navigationItem: RootNavigationItem) {
-        this.#activeItems.set(menuId, [
-            ...(this.#activeItems.get(menuId) ?? []),
+        this.#activeItemsIndex.set(menuId, [
+            ...(this.#activeItemsIndex.get(menuId) ?? []),
             {
                 menuId,
                 registrationType: "deferred",
@@ -73,32 +73,32 @@ export class NavigationItemDeferredRegistrationTransactionalScope extends Naviga
     }
 
     getItems(menuId: string) {
-        return this.#activeItems.get(menuId)?.map(x => x.item) ?? [];
+        return this.#activeItemsIndex.get(menuId)?.map(x => x.item) ?? [];
     }
 
     complete() {
         this._registry.clearDeferredItems();
 
-        this.#activeItems.forEach(items => {
+        this.#activeItemsIndex.forEach(items => {
             items.forEach(x => {
                 this._registry.add(x.menuId, x.registrationType, x.item);
             });
         });
 
-        this.#activeItems.clear();
+        this.#activeItemsIndex.clear();
     }
 }
 
 export class NavigationItemRegistry {
     // <menuId, RegistryItem[]>
-    readonly #menus: Map<string, RegistryItem[]> = new Map();
+    readonly #menusIndex: Map<string, RegistryItem[]> = new Map();
 
     // Since the "getItems" function is transforming the menus items from registry items to navigation items, the result of
     // the transformation is memoized to ensure the returned array is immutable and can be use in React closures.
-    readonly #memoizedGetItems = memoize((menuId: string) => this.#menus.get(menuId)?.map(x => x.item) ?? []);
+    readonly #memoizedGetItems = memoize((menuId: string) => this.#menusIndex.get(menuId)?.map(x => x.item) ?? []);
 
     #setItems(menuId: string, items: RegistryItem[]) {
-        this.#menus.set(menuId, items);
+        this.#menusIndex.set(menuId, items);
 
         memoizeClear(this.#memoizedGetItems);
     }
@@ -106,7 +106,7 @@ export class NavigationItemRegistry {
     add(menuId: string, registrationType: NavigationItemRegistrationType, navigationItem: RootNavigationItem) {
         // Create a new array so the navigation items array is immutable.
         const items = [
-            ...(this.#menus.get(menuId) ?? []),
+            ...(this.#menusIndex.get(menuId) ?? []),
             {
                 menuId,
                 registrationType,
@@ -122,7 +122,7 @@ export class NavigationItemRegistry {
     }
 
     clearDeferredItems() {
-        const keys = this.#menus.keys();
+        const keys = this.#menusIndex.keys();
 
         // eslint-disable-next-line no-constant-condition
         while (true) {
@@ -133,7 +133,7 @@ export class NavigationItemRegistry {
             }
 
             const key = next.value;
-            const registryItems = this.#menus.get(key)!;
+            const registryItems = this.#menusIndex.get(key)!;
 
             // Keep the "getItems" function immutable by only updating the menu arrays if the items actually changed.
             if (registryItems.some(x => x.registrationType === "deferred")) {

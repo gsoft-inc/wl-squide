@@ -1,6 +1,6 @@
 import type { RegisterRouteOptions } from "@squide/core";
 import type { IndexRouteObject, NonIndexRouteObject } from "react-router-dom";
-import { ManagedRoutesOutletName, isManagedRoutesOutletRoute } from "./outlets.ts";
+import { ManagedRoutes, ManagedRoutesOutletName, isManagedRoutesOutletRoute } from "./outlets.ts";
 
 export type RouteVisibility = "public" | "protected";
 
@@ -222,7 +222,27 @@ export class RouteRegistry {
         return this.#routes;
     }
 
-    get pendingRegistrations() {
-        return this.#pendingRegistrationsIndex;
+    getPendingRegistrations() {
+        return new PendingRegistrations(this.#pendingRegistrationsIndex);
+    }
+}
+
+export class PendingRegistrations {
+    readonly #pendingRegistrationsIndex: Map<string, Route[]> = new Map();
+
+    constructor(pendingRegistrationsIndex: Map<string, Route[]> = new Map()) {
+        this.#pendingRegistrationsIndex = pendingRegistrationsIndex;
+    }
+
+    getPendingRouteIds() {
+        return Array.from(this.#pendingRegistrationsIndex.keys());
+    }
+
+    getPendingRegistrationsForRoute(parentId: string) {
+        return this.#pendingRegistrationsIndex.get(parentId) ?? [];
+    }
+
+    isManagedRoutesOutletPending() {
+        return this.#pendingRegistrationsIndex.has(ManagedRoutes.$name!);
     }
 }

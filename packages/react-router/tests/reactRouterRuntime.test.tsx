@@ -1131,6 +1131,102 @@ describe("getNavigationItems", () => {
     });
 });
 
+describe("deferred registration scope", () => {
+    test("can start and complete a scope", () => {
+        const runtime = new ReactRouterRuntime();
+
+        expect(() => {
+            runtime.startDeferredRegistrationScope();
+            runtime.completeDeferredRegistrationScope();
+        }).not.toThrow();
+    });
+
+    test("when a scope is started, can register a navigation item", () => {
+        const runtime = new ReactRouterRuntime();
+
+        runtime.startDeferredRegistrationScope();
+
+        runtime.registerNavigationItem({
+            $label: "Foo",
+            to: "foo"
+        });
+
+        expect(runtime.getNavigationItems().length).toBe(1);
+
+        runtime.completeDeferredRegistrationScope();
+
+        expect(runtime.getNavigationItems().length).toBe(1);
+    });
+
+    test("when a scope is started, can register a route", () => {
+        const runtime = new ReactRouterRuntime();
+
+        runtime.startDeferredRegistrationScope();
+
+        runtime.registerRoute({
+            path: "/foo",
+            element: <div>Hello!</div>
+        }, {
+            hoist: true
+        });
+
+        expect(runtime.routes.length).toBe(1);
+
+        runtime.completeDeferredRegistrationScope();
+
+        expect(runtime.routes.length).toBe(1);
+    });
+
+    test("when a scope is completed, can register a navigation item", () => {
+        const runtime = new ReactRouterRuntime();
+
+        runtime.startDeferredRegistrationScope();
+
+        runtime.registerNavigationItem({
+            $label: "Foo",
+            to: "foo"
+        });
+
+        expect(runtime.getNavigationItems().length).toBe(1);
+
+        runtime.completeDeferredRegistrationScope();
+
+        runtime.registerNavigationItem({
+            $label: "Bar",
+            to: "bar"
+        });
+
+        expect(runtime.getNavigationItems().length).toBe(2);
+    });
+
+    test("when a scope is completed, can register a route", () => {
+        const runtime = new ReactRouterRuntime();
+
+        runtime.startDeferredRegistrationScope();
+
+        runtime.registerRoute({
+            path: "/foo",
+            element: <div>Hello!</div>
+        }, {
+            hoist: true
+        });
+
+        expect(runtime.routes.length).toBe(1);
+
+        runtime.completeDeferredRegistrationScope();
+
+        runtime.registerRoute({
+            path: "/bar",
+            element: <div>Hello!</div>
+        }, {
+            hoist: true
+        });
+
+
+        expect(runtime.routes.length).toBe(2);
+    });
+});
+
 describe("_completeRegistration", () => {
     describe("managed routes", () => {
         test("when the outlet is missing, the error message mentions the ManagedRoutes outlet", () => {

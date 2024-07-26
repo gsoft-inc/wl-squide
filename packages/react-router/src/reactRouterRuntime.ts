@@ -1,6 +1,6 @@
 import { RootMenuId, Runtime, type RegisterNavigationItemOptions, type RegisterRouteOptions } from "@squide/core";
 import { NavigationItemDeferredRegistrationScope, NavigationItemDeferredRegistrationTransactionalScope, NavigationItemRegistry, type RootNavigationItem } from "./navigationItemRegistry.ts";
-import { ManagedRoutes, ManagedRoutesOutletName } from "./outlets.ts";
+import { ManagedRoutesOutletName } from "./outlets.ts";
 import { RouteRegistry, type Route } from "./routeRegistry.ts";
 
 function translateManagedRoutesParentId(parentId?: string) {
@@ -102,36 +102,34 @@ export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
     }
 
     _completeRegistration() {
-        const pendingRegistrations = this.#routeRegistry.pendingRegistrations;
+        const pendingRegistrations = this.#routeRegistry.getPendingRegistrations();
+        const pendingRoutes = pendingRegistrations.getPendingRouteIds();
 
-        if (pendingRegistrations.size > 0) {
-            if (pendingRegistrations.has(ManagedRoutes.$name!)) {
-                // eslint-disable-next-line max-len
-                throw new Error("[squide] The ManagedRoutes placeholder is missing from the router configuration. The ManagedRoutes placeholder must be defined as a children of an hoisted route. Did you include a ManagedRoutes placeholder and hoist the ManagedRoutes placeholder's parent route?");
+        if (pendingRoutes.length > 0) {
+            if (pendingRegistrations.isManagedRoutesOutletPending()) {
+                throw new Error("[squide] The ManagedRoutes outlet is missing from the router configuration. The ManagedRoutes outlet must be defined as a children of an hoisted route. Did you include a ManagedRoutes outlet and hoist the ManagedRoutes outlet's parent route?");
             }
 
-            let message = `[squide] ${pendingRegistrations.size} parent route${pendingRegistrations.size !== 1 ? "s" : ""} were expected to be registered but ${pendingRegistrations.size !== 0 ? "are" : "is"} missing:\r\n\r\n`;
-            let index = 0;
+            let message = `[squide] ${pendingRoutes.length} route${pendingRoutes.length !== 1 ? "s were" : "is"} expected to be registered but ${pendingRoutes.length !== 0 ? "are" : "is"} missing:\r\n\r\n`;
 
-            // It's easier to use for ... of with a Map object.
-            for (const [parentId, nestedRoutes] of pendingRegistrations) {
-                index++;
-
-                message += `${index}/${pendingRegistrations.size} Missing parent route with the following path or name: "${parentId}"\r\n`;
+            pendingRoutes.forEach((x, index) => {
+                message += `${index}/${pendingRoutes.length} Missing route with the following path or name: "${x}"\r\n`;
                 message += "    Pending registrations:\r\n";
 
-                for (const x of nestedRoutes) {
-                    message += `        - "${x.path ?? x.$name ?? "(no identifier)"}"\r\n`;
-                }
+                const nestedPendingRegistrations = pendingRegistrations.getPendingRegistrationsForRoute(x);
+
+                nestedPendingRegistrations.forEach(y => {
+                    message += `        - "${y.path ?? y.$name ?? "(no identifier)"}"\r\n`;
+                });
 
                 message += "\r\n";
-            }
+            });
 
-            message += `If you are certain that the parent route${pendingRegistrations.size !== 1 ? "s" : ""} has been registered, make sure that the following conditions are met:\r\n`;
-            message += "- The missing parent routes \"path\" or \"name\" property perfectly match the provided \"parentPath\" or \"parentName\" (make sure that there's no leading or trailing \"/\" that differs).\r\n";
-            message += "- The missing parent routes has been registered with the runtime.registerRoute function. A route cannot be registered under a parent route that has not be registered with the runtime.registerRoute function.\r\n";
+            message += `If you are certain that the route${pendingRoutes.length !== 1 ? "s" : ""} has been registered, make sure that the following conditions are met:\r\n`;
+            message += "- The missing routes \"path\" or \"name\" property perfectly match the provided \"parentPath\" or \"parentName\" (make sure that there's no leading or trailing \"/\" that differs).\r\n";
+            message += "- The missing routes has been registered with the runtime.registerRoute function. A route cannot be registered under a parent route that has not be registered with the runtime.registerRoute function.\r\n";
             message += "For more information about nested routes, refers to https://gsoft-inc.github.io/wl-squide/reference/runtime/runtime-class/#register-nested-routes-under-an-existing-route.\r\n";
-            message += "For more information about the ManagedRoutes placeholder, refers to https://gsoft-inc.github.io/wl-squide/reference/routing/managedroutes.";
+            message += "For more information about the ManagedRoutes outlet, refers to https://gsoft-inc.github.io/wl-squide/reference/routing/managedroutes.";
 
             if (this._mode === "development") {
                 throw new Error(message);

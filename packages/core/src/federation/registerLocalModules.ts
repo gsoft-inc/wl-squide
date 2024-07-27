@@ -1,6 +1,6 @@
 import type { Runtime } from "../runtime/runtime.ts";
-import { isFunction } from "../shared/assertions.ts";
-import type { ModuleRegistrationStatus } from "./moduleRegistrationStatus.ts";
+import { isFunction, isNil } from "../shared/assertions.ts";
+import type { ModuleRegistrationError, ModuleRegistrationStatus, ModuleRegistrationStatusChangedListener, ModuleRegistry, RegisterModulesOptions } from "./moduleRegistry.ts";
 import { registerModule, type DeferredRegistrationFunction, type ModuleRegisterFunction } from "./registerModule.ts";
 
 interface DeferredRegistration<TData = unknown> {
@@ -8,48 +8,38 @@ interface DeferredRegistration<TData = unknown> {
     fct: DeferredRegistrationFunction<TData>;
 }
 
-export interface RegisterLocalModulesOptions<TContext> {
-    context?: TContext;
-}
-
-export type LocalModuleRegistrationStatusChangedListener = () => void;
-
-export interface LocalModuleRegistrationError {
-    // The registration error.
-    error: unknown;
-}
-
-export class LocalModuleRegistry {
+export class LocalModuleRegistry implements ModuleRegistry {
     #registrationStatus: ModuleRegistrationStatus = "none";
-    readonly #deferredRegistrations: DeferredRegistration[] = [];
-    readonly #statusChangedListeners = new Set<LocalModuleRegistrationStatusChangedListener>();
 
-    async registerModules<TRuntime extends Runtime = Runtime, TContext = unknown, TData = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext, TData>[], runtime: TRuntime, { context }: RegisterLocalModulesOptions<TContext> = {}) {
-        const errors: LocalModuleRegistrationError[] = [];
+    readonly #deferredRegistrations: DeferredRegistration[] = [];
+    readonly #statusChangedListeners = new Set<ModuleRegistrationStatusChangedListener>();
+
+    async registerModules<TRuntime extends Runtime = Runtime<unknown, unknown>, TContext = unknown, TData = unknown>(registrationFunctions: ModuleRegisterFunction<TRuntime, TContext, TData>[], runtime: TRuntime, { context }: RegisterModulesOptions<TContext> = {}) {
+        const errors: ModuleRegistrationError[] = [];
 
         if (this.#registrationStatus !== "none") {
             throw new Error("[squide] The registerLocalModules function can only be called once.");
         }
 
-        runtime.logger.debug(`[squide] Found ${registerFunctions.length} local module${registerFunctions.length !== 1 ? "s" : ""} to register.`);
+        runtime.logger.debug(`[squide] Found ${registrationFunctions.length} local module${registrationFunctions.length !== 1 ? "s" : ""} to register.`);
 
         this.#setRegistrationStatus("registering-modules");
 
-        await Promise.allSettled(registerFunctions.map(async (x, index) => {
-            runtime.logger.debug(`[squide] ${index + 1}/${registerFunctions.length} Registering local module.`);
+        await Promise.allSettled(registrationFunctions.map(async (x, index) => {
+            runtime.logger.debug(`[squide] ${index + 1}/${registrationFunctions.length} Registering local module.`);
 
             try {
                 const optionalDeferredRegistration = await registerModule(x as ModuleRegisterFunction<Runtime, TContext, TData>, runtime, context);
 
                 if (isFunction(optionalDeferredRegistration)) {
                     this.#deferredRegistrations.push({
-                        index: `${index + 1}/${registerFunctions.length}`,
+                        index: `${index + 1}/${registrationFunctions.length}`,
                         fct: optionalDeferredRegistration as DeferredRegistrationFunction
                     });
                 }
             } catch (error: unknown) {
                 runtime.logger.error(
-                    `[squide] ${index + 1}/${registerFunctions.length} An error occured while registering a local module.`,
+                    `[squide] ${index + 1}/${registrationFunctions.length} An error occured while registering a local module.`,
                     error
                 );
 
@@ -58,7 +48,7 @@ export class LocalModuleRegistry {
                 });
             }
 
-            runtime.logger.debug(`[squide] ${index + 1}/${registerFunctions.length} Local module registration completed.`);
+            runtime.logger.debug(`[squide] ${index + 1}/${registrationFunctions.length} Local module registration completed.`);
         }));
 
         this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "modules-registered" : "ready");
@@ -67,7 +57,7 @@ export class LocalModuleRegistry {
     }
 
     async registerDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
-        const errors: LocalModuleRegistrationError[] = [];
+        const errors: ModuleRegistrationError[] = [];
 
         if (this.#registrationStatus === "none" || this.#registrationStatus === "registering-modules") {
             throw new Error("[squide] The registerDeferredRegistrations function can only be called once the local modules are registered.");
@@ -109,7 +99,7 @@ export class LocalModuleRegistry {
     }
 
     async updateDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
-        const errors: LocalModuleRegistrationError[] = [];
+        const errors: ModuleRegistrationError[] = [];
 
         if (this.#registrationStatus !== "ready") {
             throw new Error("[squide] The updateDeferredRegistrations function can only be called once the local modules are ready.");
@@ -137,11 +127,11 @@ export class LocalModuleRegistry {
         return errors;
     }
 
-    registerStatusChangedListener(callback: LocalModuleRegistrationStatusChangedListener) {
+    registerStatusChangedListener(callback: ModuleRegistrationStatusChangedListener) {
         this.#statusChangedListeners.add(callback);
     }
 
-    removeStatusChangedListener(callback: LocalModuleRegistrationStatusChangedListener) {
+    removeStatusChangedListener(callback: ModuleRegistrationStatusChangedListener) {
         this.#statusChangedListeners.delete(callback);
     }
 
@@ -158,28 +148,41 @@ export class LocalModuleRegistry {
     }
 }
 
-const localModuleRegistry = new LocalModuleRegistry();
+let localModuleRegistry: ModuleRegistry;
 
-export function registerLocalModules<TRuntime extends Runtime = Runtime, TContext = unknown, TData = unknown>(registerFunctions: ModuleRegisterFunction<TRuntime, TContext, TData>[], runtime: TRuntime, options?: RegisterLocalModulesOptions<TContext>) {
-    return localModuleRegistry.registerModules(registerFunctions, runtime, options);
+function getLocalModuleRegistry() {
+    if (isNil(localModuleRegistry)) {
+        localModuleRegistry = new LocalModuleRegistry();
+    }
+
+    return localModuleRegistry;
+}
+
+// This function should only be used by tests.
+export function __setLocalModuleRegistry(registry: ModuleRegistry) {
+    localModuleRegistry = registry;
+}
+
+export function registerLocalModules<TRuntime extends Runtime = Runtime, TContext = unknown, TData = unknown>(modules: ModuleRegisterFunction<TRuntime, TContext, TData>[], runtime: TRuntime, options?: RegisterModulesOptions<TContext>) {
+    return getLocalModuleRegistry().registerModules(modules, runtime, options);
 }
 
 export function registerLocalModuleDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
-    return localModuleRegistry.registerDeferredRegistrations(runtime, data);
+    return getLocalModuleRegistry().registerDeferredRegistrations(runtime, data);
 }
 
 export function updateLocalModuleDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
-    return localModuleRegistry.updateDeferredRegistrations(runtime, data);
+    return getLocalModuleRegistry().updateDeferredRegistrations(runtime, data);
 }
 
 export function getLocalModuleRegistrationStatus() {
-    return localModuleRegistry.registrationStatus;
+    return getLocalModuleRegistry().registrationStatus;
 }
 
-export function addLocalModuleRegistrationStatusChangedListener(callback: LocalModuleRegistrationStatusChangedListener) {
-    localModuleRegistry.registerStatusChangedListener(callback);
+export function addLocalModuleRegistrationStatusChangedListener(callback: ModuleRegistrationStatusChangedListener) {
+    getLocalModuleRegistry().registerStatusChangedListener(callback);
 }
 
-export function removeLocalModuleRegistrationStatusChangedListener(callback: LocalModuleRegistrationStatusChangedListener) {
-    localModuleRegistry.removeStatusChangedListener(callback);
+export function removeLocalModuleRegistrationStatusChangedListener(callback: ModuleRegistrationStatusChangedListener) {
+    getLocalModuleRegistry().removeStatusChangedListener(callback);
 }

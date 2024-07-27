@@ -51,6 +51,7 @@ export function removeMswStateChangedListener(callback: MswStateChangedListener)
     mswState.removeStateChangedListener(callback);
 }
 
+// TODO: Replace by a set function for the MswState instance.
 // Strictly for Jest tests, this is NOT ideal.
 export function __resetMswStatus() {
     mswState._reset();

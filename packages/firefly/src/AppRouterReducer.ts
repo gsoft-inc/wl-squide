@@ -157,6 +157,44 @@ export function getAreModulesReady() {
     return areModulesReady(localModuleStatus, remoteModuleStatus);
 }
 
+export function useModuleRegistrationStatusDispatcher(areModulesRegisteredValue: boolean, areModulesReadyValue: boolean, dispatch: AppRouterDispatch) {
+    return useEffect(() => {
+        const handleModulesRegistrationStatusChange = () => {
+            if (!areModulesRegisteredValue && getAreModulesRegistered()) {
+                dispatch({ type: "modules-registered" });
+            }
+
+            if (!areModulesReadyValue && getAreModulesReady()) {
+                dispatch({ type: "modules-ready" });
+            }
+        };
+
+        addLocalModuleRegistrationStatusChangedListener(handleModulesRegistrationStatusChange);
+        addRemoteModuleRegistrationStatusChangedListener(handleModulesRegistrationStatusChange);
+
+        return () => {
+            removeLocalModuleRegistrationStatusChangedListener(handleModulesRegistrationStatusChange);
+            removeRemoteModuleRegistrationStatusChangedListener(handleModulesRegistrationStatusChange);
+        };
+    }, [areModulesRegisteredValue, areModulesReadyValue, dispatch]);
+}
+
+export function useMswStatusDispatcher(isMswReadyValue: boolean, dispatch: AppRouterDispatch) {
+    useEffect(() => {
+        const handleMswStateChange = () => {
+            if (!isMswReadyValue && isMswReady()) {
+                dispatch({ type: "msw-ready" });
+            }
+        };
+
+        addMswStateChangedListener(handleMswStateChange);
+
+        return () => {
+            removeMswStateChangedListener(handleMswStateChange);
+        };
+    }, [isMswReadyValue, dispatch]);
+}
+
 export function useAppRouterReducer(waitForMsw: boolean, waitForPublicData: boolean, waitForProtectedData: boolean): [AppRouterState, AppRouterDispatch] {
     const [state, originalDispatch] = useReducer(reducer, {
         waitForMsw,
@@ -180,41 +218,8 @@ export function useAppRouterReducer(waitForMsw: boolean, waitForPublicData: bool
 
     const dispatch = useVerboseDispatch(originalDispatch);
 
-    useEffect(() => {
-        const handleModulesRegistrationStatusChange = () => {
-            if (!areModulesRegisteredValue && getAreModulesRegistered()) {
-                dispatch({ type: "modules-registered" });
-            }
-
-            if (!areModulesReadyValue && getAreModulesReady()) {
-                dispatch({ type: "modules-ready" });
-            }
-        };
-
-        addLocalModuleRegistrationStatusChangedListener(handleModulesRegistrationStatusChange);
-        addRemoteModuleRegistrationStatusChangedListener(handleModulesRegistrationStatusChange);
-
-        return () => {
-            removeLocalModuleRegistrationStatusChangedListener(handleModulesRegistrationStatusChange);
-            removeRemoteModuleRegistrationStatusChangedListener(handleModulesRegistrationStatusChange);
-        };
-    }, [areModulesRegisteredValue, areModulesReadyValue, dispatch]);
-
-    useEffect(() => {
-        const handleMswStateChange = () => {
-            if (!isMswReadyValue && isMswReady()) {
-                dispatch({ type: "msw-ready" });
-            }
-        };
-
-        addMswStateChangedListener(handleMswStateChange);
-
-        return () => {
-            removeMswStateChangedListener(handleMswStateChange);
-        };
-    }, [isMswReadyValue, dispatch]);
-
-    useEffect(() => {});
+    useModuleRegistrationStatusDispatcher(areModulesRegisteredValue, areModulesReadyValue, dispatch);
+    useMswStatusDispatcher(isMswReadyValue, dispatch);
 
     return [state, dispatch];
 }

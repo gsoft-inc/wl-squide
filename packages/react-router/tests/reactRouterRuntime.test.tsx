@@ -1131,7 +1131,7 @@ describe("getNavigationItems", () => {
     });
 });
 
-describe("deferred registration scope", () => {
+describe("startDeferredRegistrationScope & completeDeferredRegistrationScope", () => {
     test("can start and complete a scope", () => {
         const runtime = new ReactRouterRuntime();
 

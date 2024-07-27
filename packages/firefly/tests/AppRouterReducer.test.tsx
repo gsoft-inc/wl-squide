@@ -13,11 +13,6 @@ import { FireflyRuntime } from "../src/FireflyRuntime.tsx";
         areModulesReady: getAreModulesReady(),
         isMswReady: isMswReady(),
 
-- when local modules are registered but remote modules are not registered, "areModulesRegistered" is false
-
-- when local modules are not registered but remote modules are registered, "areModulesRegistered" is false
-
-- when local modules and remote modules are registered, "areModulesRegistered" is true
 
 - when local modules are ready but remote modules are not ready, "areModulesReady" is false
 
@@ -25,11 +20,7 @@ import { FireflyRuntime } from "../src/FireflyRuntime.tsx";
 
 - when local modules and remote modules are ready, "areModulesReady" is true
 
-
--> Ajouter les autres actions aux test du dispatcher
-
--> The strategy could be to extract the "modules-registered", "modules-ready" and "msw-ready" pieces to standalone hooks and test them
-    independently
+- TODO: Missing MSW dispatcher
 
 */
 
@@ -67,6 +58,69 @@ describe("useAppRouterReducer", () => {
         expect(state.waitForMsw).toBeFalsy();
         expect(state.waitForPublicData).toBeFalsy();
         expect(state.waitForProtectedData).toBeFalsy();
+    });
+
+    test("when \"modules-registered\" is dispatched, \"areModulesRegistered\" is true", () => {
+        const runtime = new FireflyRuntime();
+
+        const { result } = renderWithRuntime(runtime, false, false, false);
+
+        expect(result.current[0].areModulesRegistered).toBeFalsy();
+
+        act(() => {
+            // dispatch
+            result.current[1]({ type: "modules-registered" });
+        });
+
+        expect(result.current[0].areModulesRegistered).toBeTruthy();
+    });
+
+    test("when \"modules-ready\" is dispatched, \"areModulesReady\" is true", () => {
+        const runtime = new FireflyRuntime();
+
+        const { result } = renderWithRuntime(runtime, false, false, false);
+
+        expect(result.current[0].areModulesReady).toBeFalsy();
+
+        act(() => {
+            // dispatch
+            result.current[1]({ type: "modules-ready" });
+        });
+
+        expect(result.current[0].areModulesReady).toBeTruthy();
+    });
+
+    test("when \"modules-ready\" is dispatched, \"deferredRegistrationsUpdatedAt\" is set to the current timestamp", () => {
+        jest.spyOn(global.Date, "now")
+            .mockImplementationOnce(() => Date.parse("2020-02-14"));
+
+        const runtime = new FireflyRuntime();
+
+        const { result } = renderWithRuntime(runtime, false, false, false);
+
+        expect(result.current[0].deferredRegistrationsUpdatedAt).toBeUndefined();
+
+        act(() => {
+            // dispatch
+            result.current[1]({ type: "modules-ready" });
+        });
+
+        expect(result.current[0].deferredRegistrationsUpdatedAt).toEqual(Date.parse("2020-02-14"));
+    });
+
+    test("when \"msw-ready\" is dispatched, \"isMswReady\" is true", () => {
+        const runtime = new FireflyRuntime();
+
+        const { result } = renderWithRuntime(runtime, false, false, false);
+
+        expect(result.current[0].isMswReady).toBeFalsy();
+
+        act(() => {
+            // dispatch
+            result.current[1]({ type: "msw-ready" });
+        });
+
+        expect(result.current[0].isMswReady).toBeTruthy();
     });
 
     test("when \"public-data-ready\" is dispatched, \"isPublicDataReady\" is true", () => {
@@ -339,4 +393,6 @@ describe("useModuleRegistrationStatusDispatcher", () => {
 
         expect(dispatch).toHaveBeenCalledWith({ type: "modules-registered" });
     });
+
+    // TODO: Missing the dispatch tests for "modules-ready";
 });

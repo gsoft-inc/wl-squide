@@ -1,5 +1,4 @@
-import { useRuntime, type LocalModuleRegistrationError } from "@squide/core";
-import type { RemoteModuleRegistrationError } from "@squide/module-federation";
+import { useRuntime, type ModuleRegistrationError } from "@squide/core";
 import { useEffect } from "react";
 import { useCanRegisterDeferredRegistrations } from "./useCanRegisterDeferredRegistrations.ts";
 import { useCanUpdateDeferredRegistrations } from "./useCanUpdateDeferredRegistrations.ts";
@@ -7,8 +6,8 @@ import { useRegisterDeferredRegistrations } from "./useRegisterDeferredRegistrat
 import { useUpdateDeferredRegistrations } from "./useUpdateDeferredRegistrations.ts";
 
 export interface DeferredRegistrationsErrorsObject {
-    localModuleErrors: LocalModuleRegistrationError[];
-    remoteModuleErrors: RemoteModuleRegistrationError[];
+    localModuleErrors: ModuleRegistrationError[];
+    remoteModuleErrors: ModuleRegistrationError[];
 }
 
 export type OnDeferredRegistrationsErrorCallback = (errorsObject: DeferredRegistrationsErrorsObject) => void;

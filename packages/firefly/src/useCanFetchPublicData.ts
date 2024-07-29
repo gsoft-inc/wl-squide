@@ -2,6 +2,7 @@ import { useAppRouterState } from "./AppRouterContext.ts";
 
 export function useCanFetchPublicData() {
     const {
+        waitForMsw,
         areModulesRegistered,
         areModulesReady,
         isMswReady,
@@ -16,7 +17,7 @@ export function useCanFetchPublicData() {
             // depends on the protected data.
             (areModulesRegistered || areModulesReady)
             // Wait for MSW since the endpoints for the protected data might be an MSW endpoint when in development.
-            && isMswReady
+            && (!waitForMsw || isMswReady)
         )
     );
 }

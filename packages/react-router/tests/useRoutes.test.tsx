@@ -3,7 +3,7 @@ import { renderHook, type RenderHookOptions } from "@testing-library/react";
 import { ReactRouterRuntime } from "../src/reactRouterRuntime.ts";
 import { useRoutes } from "../src/useRoutes.ts";
 
-function renderWithRuntime<TProps>(runtime: ReactRouterRuntime, additionalProps: RenderHookOptions<TProps> = {}) {
+function renderUseRoutesHook<TProps>(runtime: ReactRouterRuntime, additionalProps: RenderHookOptions<TProps> = {}) {
     return renderHook(() => useRoutes(), {
         wrapper: ({ children }) => (
             <RuntimeContext.Provider value={runtime}>
@@ -31,7 +31,7 @@ test("returns all the registered routes", () => {
         hoist: true
     });
 
-    const { result } = renderWithRuntime(runtime);
+    const { result } = renderUseRoutesHook(runtime);
 
     expect(result.current.length).toBe(2);
 });
@@ -46,7 +46,7 @@ test("returned array is immutable", () => {
         hoist: true
     });
 
-    const { result, rerender } = renderWithRuntime(runtime);
+    const { result, rerender } = renderUseRoutesHook(runtime);
 
     const array1 = result.current;
 

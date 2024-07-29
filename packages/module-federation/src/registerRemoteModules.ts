@@ -208,7 +208,7 @@ export class RemoteModuleRegistry {
 let remoteModuleRegistry: ModuleRegistry;
 
 function getRemoteModuleRegistry() {
-    if (isNil(remoteModuleRegistry)) {
+    if (!remoteModuleRegistry) {
         remoteModuleRegistry = new RemoteModuleRegistry((remoteName, moduleName) => loadModuleFederationRemote(`${remoteName}/${moduleName}`));
     }
 

@@ -11,5 +11,5 @@ export abstract class Plugin {
         return this._name;
     }
 
-    _setRuntime?(runtime: Runtime): void;
+    setRuntime?(runtime: Runtime): void;
 }

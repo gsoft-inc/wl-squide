@@ -1,5 +1,5 @@
 import type { Runtime } from "../runtime/runtime.ts";
-import { isFunction, isNil } from "../shared/assertions.ts";
+import { isFunction } from "../shared/assertions.ts";
 import type { ModuleRegistrationError, ModuleRegistrationStatus, ModuleRegistrationStatusChangedListener, ModuleRegistry, RegisterModulesOptions } from "./moduleRegistry.ts";
 import { registerModule, type DeferredRegistrationFunction, type ModuleRegisterFunction } from "./registerModule.ts";
 
@@ -151,7 +151,7 @@ export class LocalModuleRegistry implements ModuleRegistry {
 let localModuleRegistry: ModuleRegistry;
 
 function getLocalModuleRegistry() {
-    if (isNil(localModuleRegistry)) {
+    if (!localModuleRegistry) {
         localModuleRegistry = new LocalModuleRegistry();
     }
 

@@ -26,33 +26,35 @@ export class MswState {
     get isReady() {
         return this.#isReady;
     }
-
-    // Strictly for Jest tests, this is NOT ideal.
-    _reset() {
-        this.#isReady = false;
-    }
 }
 
-const mswState = new MswState();
+let mswState: MswState;
+
+function getMswState() {
+    if (!mswState) {
+        mswState = new MswState();
+    }
+
+    return mswState;
+}
+
+// This function should only be used by tests.
+export function __setMswState(state: MswState) {
+    mswState = state;
+}
 
 export function setMswAsReady() {
-    mswState.setAsStarted();
+    getMswState().setAsStarted();
 }
 
 export function isMswReady() {
-    return mswState.isReady;
+    return getMswState().isReady;
 }
 
 export function addMswStateChangedListener(callback: MswStateChangedListener) {
-    mswState.addStateChangedListener(callback);
+    getMswState().addStateChangedListener(callback);
 }
 
 export function removeMswStateChangedListener(callback: MswStateChangedListener) {
-    mswState.removeStateChangedListener(callback);
-}
-
-// TODO: Replace by a set function for the MswState instance.
-// Strictly for Jest tests, this is NOT ideal.
-export function __resetMswStatus() {
-    mswState._reset();
+    getMswState().removeStateChangedListener(callback);
 }

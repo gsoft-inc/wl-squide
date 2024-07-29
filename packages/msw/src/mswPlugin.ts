@@ -11,7 +11,7 @@ export class MswPlugin extends Plugin {
         super(MswPlugin.name);
     }
 
-    _setRuntime(runtime: Runtime) {
+    setRuntime(runtime: Runtime) {
         this.#runtime = runtime;
     }
 

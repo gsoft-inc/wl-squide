@@ -41,8 +41,8 @@ export abstract class Runtime<TRoute = unknown, TNavigationItem = unknown> {
         this._sessionAccessor = sessionAccessor;
 
         this._plugins.forEach(x => {
-            if (x._setRuntime) {
-                x._setRuntime(this);
+            if (x.setRuntime) {
+                x.setRuntime(this);
             }
         });
     }

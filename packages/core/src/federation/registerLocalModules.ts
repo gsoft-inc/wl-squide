@@ -148,7 +148,7 @@ export class LocalModuleRegistry implements ModuleRegistry {
     }
 }
 
-let localModuleRegistry: ModuleRegistry;
+let localModuleRegistry: ModuleRegistry | undefined;
 
 function getLocalModuleRegistry() {
     if (!localModuleRegistry) {
@@ -161,6 +161,11 @@ function getLocalModuleRegistry() {
 // This function should only be used by tests.
 export function __setLocalModuleRegistry(registry: ModuleRegistry) {
     localModuleRegistry = registry;
+}
+
+// This function should only be used by tests.
+export function __clearLocalModuleRegistry() {
+    localModuleRegistry = undefined;
 }
 
 export function registerLocalModules<TRuntime extends Runtime = Runtime, TContext = unknown, TData = unknown>(modules: ModuleRegisterFunction<TRuntime, TContext, TData>[], runtime: TRuntime, options?: RegisterModulesOptions<TContext>) {

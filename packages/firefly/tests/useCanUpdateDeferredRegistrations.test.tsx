@@ -30,7 +30,7 @@ function renderUseCanUpdateDeferredRegistrationsHook<TProps>(state: AppRouterSta
     });
 }
 
-test("when modules are ready, and the deferred registrations has been registered once, and the public data has been updated, return true", () => {
+test("when modules are ready, the deferred registrations has been registered once, and the public data has been updated, return true", () => {
     const state = createDefaultAppRouterState();
     state.areModulesReady = true;
     state.deferredRegistrationsUpdatedAt = Date.parse("2020-02-14");
@@ -41,7 +41,7 @@ test("when modules are ready, and the deferred registrations has been registered
     expect(result.current).toBeTruthy();
 });
 
-test("when modules are ready, and the deferred registrations has been registered once, and the protected data has been updated, return true", () => {
+test("when modules are ready, the deferred registrations has been registered once, and the protected data has been updated, return true", () => {
     const state = createDefaultAppRouterState();
     state.areModulesReady = true;
     state.deferredRegistrationsUpdatedAt = Date.parse("2020-02-14");
@@ -52,7 +52,7 @@ test("when modules are ready, and the deferred registrations has been registered
     expect(result.current).toBeTruthy();
 });
 
-test("when modules are ready, and the deferred registrations has been registered once, and the public data has been updated, and the protected data has been updated, return true", () => {
+test("when modules are ready, the deferred registrations has been registered once, the public data has been updated, and the protected data has been updated, return true", () => {
     const state = createDefaultAppRouterState();
     state.areModulesReady = true;
     state.deferredRegistrationsUpdatedAt = Date.parse("2020-02-14");
@@ -79,7 +79,7 @@ test("when there's no deferred registrations, return false", () => {
     const state = createDefaultAppRouterState();
     state.areModulesReady = true;
     state.deferredRegistrationsUpdatedAt = undefined;
-    state.publicDataUpdatedAt = Date.parse("2020-03-14");
+    state.publicDataUpdatedAt = Date.parse("2020-02-14");
 
     const { result } = renderUseCanUpdateDeferredRegistrationsHook(state);
 

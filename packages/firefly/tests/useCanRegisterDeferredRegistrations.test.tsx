@@ -30,7 +30,7 @@ function renderUseCanRegisterDeferredRegistrationsHook<TProps>(state: AppRouterS
     });
 }
 
-test("when modules are registered but not ready, and public data is ready, and protected data is ready, return true", () => {
+test("when modules are registered but not ready, public data is ready, and protected data is ready, return true", () => {
     const state = createDefaultAppRouterState();
     state.areModulesRegistered = true;
     state.areModulesReady = false;

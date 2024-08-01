@@ -39,7 +39,7 @@ test("when the protected data has already been fetched, return true", () => {
     expect(result.current).toBeTruthy();
 });
 
-test("when the modules are registered, and the active route is protected, and msw is ready, return true", () => {
+test("when the modules are registered, the active route is protected, and msw is ready, return true", () => {
     const state = createDefaultAppRouterState();
     state.areModulesRegistered = true;
     state.isActiveRouteProtected = true;
@@ -61,7 +61,7 @@ test("when the modules are ready, and the active route is protected, and msw is 
     expect(result.current).toBeTruthy();
 });
 
-test("when the modules are registered or ready, and the active route is protected, and msw is not ready but it's not required to wait for msw, return true", () => {
+test("when the modules are registered or ready, the active route is protected, and msw is not ready but it's not required to wait for msw, return true", () => {
     const state = createDefaultAppRouterState();
     state.areModulesReady = true;
     state.isActiveRouteProtected = true;

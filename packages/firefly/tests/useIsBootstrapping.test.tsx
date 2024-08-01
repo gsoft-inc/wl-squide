@@ -30,7 +30,7 @@ function renderUseIsBootstrappingHook<TProps>(state: AppRouterState, additionalP
     });
 }
 
-test("when modules are ready, and msw is ready, and public data is ready, and protected data is ready, return false", () => {
+test("when modules are ready, and msw is ready, public data is ready, and protected data is ready, return false", () => {
     const state = createDefaultAppRouterState();
     state.areModulesReady = true;
     state.isMswReady = true;

@@ -1,5 +1,5 @@
-import { __setLocalModuleRegistry, RuntimeContext, type ModuleRegistrationError, type ModuleRegistrationStatus, type ModuleRegistrationStatusChangedListener, type ModuleRegistry } from "@squide/core";
-import { __setRemoteModuleRegistry } from "@squide/module-federation";
+import { __clearLocalModuleRegistry, __setLocalModuleRegistry, RuntimeContext, type ModuleRegistrationError, type ModuleRegistrationStatus, type ModuleRegistrationStatusChangedListener, type ModuleRegistry } from "@squide/core";
+import { __clearRemoteModuleRegistry, __setRemoteModuleRegistry } from "@squide/module-federation";
 import { __setMswState, MswState, type MswStateChangedListener } from "@squide/msw";
 import type { ReactRouterRuntime } from "@squide/react-router";
 import { act, renderHook, type RenderHookOptions } from "@testing-library/react";
@@ -75,6 +75,11 @@ class DummyMswState extends MswState {
         return this.#isReady;
     }
 }
+
+afterEach(() => {
+    __clearLocalModuleRegistry();
+    __clearRemoteModuleRegistry();
+});
 
 describe("useAppRouterReducer", () => {
     function renderUseAppRouterReducerHook<TProps>(runtime: ReactRouterRuntime, waitForMsw: boolean, waitForPublicData: boolean, waitForProtectedData: boolean, additionalProps: RenderHookOptions<TProps> = {}) {

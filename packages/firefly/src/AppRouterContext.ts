@@ -1,6 +1,6 @@
 import { isNil } from "@squide/core";
-import { createContext, useContext, type Dispatch } from "react";
-import type { AppRouterAction, AppRouterState } from "./AppRouterReducer.ts";
+import { createContext, useContext } from "react";
+import type { AppRouterDispatch, AppRouterState } from "./AppRouterReducer.ts";
 
 export const AppRouterStateContext = createContext<AppRouterState | undefined>(undefined);
 
@@ -14,7 +14,7 @@ export function useAppRouterState() {
     return state;
 }
 
-export const AppRouterDispatcherContext = createContext<Dispatch<AppRouterAction> | undefined>(undefined);
+export const AppRouterDispatcherContext = createContext<AppRouterDispatch | undefined>(undefined);
 
 export function useAppRouterDispatcher() {
     const dispatch = useContext(AppRouterDispatcherContext);

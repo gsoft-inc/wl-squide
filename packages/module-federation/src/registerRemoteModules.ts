@@ -205,7 +205,7 @@ export class RemoteModuleRegistry {
     }
 }
 
-let remoteModuleRegistry: ModuleRegistry;
+let remoteModuleRegistry: ModuleRegistry | undefined;
 
 function getRemoteModuleRegistry() {
     if (!remoteModuleRegistry) {
@@ -218,6 +218,11 @@ function getRemoteModuleRegistry() {
 // This function should only be used by tests.
 export function __setRemoteModuleRegistry(registry: ModuleRegistry) {
     remoteModuleRegistry = registry;
+}
+
+// This function should only be used by tests.
+export function __clearRemoteModuleRegistry() {
+    remoteModuleRegistry = undefined;
 }
 
 export function registerRemoteModules<TRuntime extends Runtime = Runtime, TContext = unknown>(remotes: RemoteDefinition[], runtime: TRuntime, options?: RegisterModulesOptions<TContext>) {
@@ -241,5 +246,5 @@ export function addRemoteModuleRegistrationStatusChangedListener(callback: Modul
 }
 
 export function removeRemoteModuleRegistrationStatusChangedListener(callback: ModuleRegistrationStatusChangedListener) {
-    remoteModuleRegistry.removeStatusChangedListener(callback);
+    getRemoteModuleRegistry().removeStatusChangedListener(callback);
 }

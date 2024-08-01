@@ -1,7 +1,7 @@
 import { addLocalModuleRegistrationStatusChangedListener, getLocalModuleRegistrationStatus, removeLocalModuleRegistrationStatusChangedListener, useLogger } from "@squide/core";
 import { addRemoteModuleRegistrationStatusChangedListener, areModulesReady, areModulesRegistered, getRemoteModuleRegistrationStatus, removeRemoteModuleRegistrationStatusChangedListener } from "@squide/module-federation";
 import { addMswStateChangedListener, isMswReady, removeMswStateChangedListener } from "@squide/msw";
-import { useCallback, useEffect, useReducer, type Dispatch } from "react";
+import { useCallback, useEffect, useMemo, useReducer, type Dispatch } from "react";
 
 export interface AppRouterState {
     waitForMsw: boolean;
@@ -195,8 +195,26 @@ export function useMswStatusDispatcher(isMswReadyValue: boolean, dispatch: AppRo
     }, [isMswReadyValue, dispatch]);
 }
 
+let dispatchProxyFactory: ((reactDispatch: AppRouterDispatch) => AppRouterDispatch) | undefined;
+
+// This function should only be used by tests.
+export function __setAppReducerDispatchProxyFactory(factory: (reactDispatch: AppRouterDispatch) => AppRouterDispatch) {
+    dispatchProxyFactory = factory;
+}
+
+// This function should only be used by tests.
+export function __clearAppReducerDispatchProxy() {
+    dispatchProxyFactory = undefined;
+}
+
+function useDispatchProxy(reactDispatch: AppRouterDispatch) {
+    return useMemo(() => {
+        return dispatchProxyFactory ? dispatchProxyFactory(reactDispatch) : reactDispatch;
+    }, [reactDispatch]);
+}
+
 export function useAppRouterReducer(waitForMsw: boolean, waitForPublicData: boolean, waitForProtectedData: boolean): [AppRouterState, AppRouterDispatch] {
-    const [state, originalDispatch] = useReducer(reducer, {
+    const [state, reactDispatch] = useReducer(reducer, {
         waitForMsw,
         waitForPublicData,
         waitForProtectedData,
@@ -216,7 +234,10 @@ export function useAppRouterReducer(waitForMsw: boolean, waitForPublicData: bool
         isMswReady: isMswReadyValue
     } = state;
 
-    const dispatch = useVerboseDispatch(originalDispatch);
+    // The dispatch proxy is strictly an utility allowing tests to mock the useReducer dispatch function. It's easier
+    // than mocking the import from React.
+    const dispatchProxy = useDispatchProxy(reactDispatch);
+    const dispatch = useVerboseDispatch(dispatchProxy);
 
     useModuleRegistrationStatusDispatcher(areModulesRegisteredValue, areModulesReadyValue, dispatch);
     useMswStatusDispatcher(isMswReadyValue, dispatch);

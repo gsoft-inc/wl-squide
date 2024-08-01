@@ -20,7 +20,7 @@ function hasError({ localModuleErrors, remoteModuleErrors }: DeferredRegistratio
     return localModuleErrors.length > 0 || remoteModuleErrors.length > 0;
 }
 
-export async function useDeferredRegistrations(data: unknown, { onError }: UseDeferredRegistrationsOptions = {}) {
+export function useDeferredRegistrations(data: unknown, { onError }: UseDeferredRegistrationsOptions = {}) {
     const runtime = useRuntime();
 
     const canRegisterDeferredRegistrations = useCanRegisterDeferredRegistrations();

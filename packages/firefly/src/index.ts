@@ -23,6 +23,3 @@ export * from "./usePublicDataQueries.ts";
 export * from "./useRegisterDeferredRegistrations.ts";
 export * from "./useUpdateDeferredRegistrations.ts";
 
-// TO DELETE
-export * from "./LegacyAppRouter.tsx";
-

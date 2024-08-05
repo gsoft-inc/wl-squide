@@ -16,9 +16,9 @@ export interface ModuleRegistrationError {
 export abstract class ModuleRegistry {
     abstract registerModules<TRuntime extends Runtime = Runtime, TContext = unknown>(modules: unknown, runtime: TRuntime, options?: RegisterModulesOptions<TContext>): Promise<ModuleRegistrationError[]>;
 
-    abstract registerDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData): Promise<ModuleRegistrationError[]>;
+    abstract registerDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(data: TData, runtime: TRuntime): Promise<ModuleRegistrationError[]>;
 
-    abstract updateDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData): Promise<ModuleRegistrationError[]>;
+    abstract updateDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(data: TData, runtime: TRuntime): Promise<ModuleRegistrationError[]>;
 
     abstract registerStatusChangedListener(callback: ModuleRegistrationStatusChangedListener): void;
 

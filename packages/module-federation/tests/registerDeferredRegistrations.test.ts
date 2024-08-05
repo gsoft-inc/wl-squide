@@ -56,10 +56,10 @@ test("register local and remote deferred registrations", async () => {
         foo: "bar"
     };
 
-    await registerDeferredRegistrations(runtime, data);
+    await registerDeferredRegistrations(data, runtime);
 
-    expect(localRegistrationsSpy).toHaveBeenCalledWith(runtime, data);
-    expect(remoteRegistrationsSpy).toHaveBeenCalledWith(runtime, data);
+    expect(localRegistrationsSpy).toHaveBeenCalledWith(data, runtime);
+    expect(remoteRegistrationsSpy).toHaveBeenCalledWith(data, runtime);
 });
 
 test("start and complete a deferred registration scope", async () => {
@@ -92,7 +92,7 @@ test("start and complete a deferred registration scope", async () => {
     const startScopeSpy = jest.spyOn(runtime, "startDeferredRegistrationScope");
     const completeScopeSpy = jest.spyOn(runtime, "completeDeferredRegistrationScope");
 
-    await registerDeferredRegistrations(runtime, data);
+    await registerDeferredRegistrations(data, runtime);
 
     expect(startScopeSpy).toHaveBeenCalledTimes(1);
     expect(completeScopeSpy).toHaveBeenCalledTimes(1);
@@ -133,7 +133,7 @@ test("when an unmanaged error is thrown, complete the deferred registration scop
 
     // Oddly, I can't get it to work with expect(() => {}).toThrow();
     try {
-        await registerDeferredRegistrations(runtime, data);
+        await registerDeferredRegistrations(data, runtime);
     } catch (error: unknown) {
         // ....
     }

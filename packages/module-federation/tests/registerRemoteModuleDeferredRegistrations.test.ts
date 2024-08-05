@@ -40,7 +40,7 @@ const runtime = new DummyRuntime();
 test("when called before registerRemoteModules, throw an error", async () => {
     const registry = new RemoteModuleRegistry(jest.fn());
 
-    await expect(() => registry.registerDeferredRegistrations(runtime, {})).rejects.toThrow(/The registerDeferredRegistrations function can only be called once the remote modules are registered/);
+    await expect(() => registry.registerDeferredRegistrations({}, runtime)).rejects.toThrow(/The registerDeferredRegistrations function can only be called once the remote modules are registered/);
 });
 
 test("when called twice, throw an error", async () => {
@@ -55,9 +55,9 @@ test("when called twice, throw an error", async () => {
         { name: "Dummy-2" }
     ], runtime);
 
-    await registry.registerDeferredRegistrations(runtime, {});
+    await registry.registerDeferredRegistrations({}, runtime);
 
-    await expect(() => registry.registerDeferredRegistrations(runtime, {})).rejects.toThrow(/The registerDeferredRegistrations function can only be called once/);
+    await expect(() => registry.registerDeferredRegistrations({}, runtime)).rejects.toThrow(/The registerDeferredRegistrations function can only be called once/);
 });
 
 test("when called for the first time but the registration status is already \"ready\", return a resolving promise", async () => {
@@ -75,7 +75,7 @@ test("when called for the first time but the registration status is already \"re
 
     expect(registry.registrationStatus).toBe("ready");
 
-    await registry.registerDeferredRegistrations(runtime, {});
+    await registry.registerDeferredRegistrations({}, runtime);
 
     expect(registry.registrationStatus).toBe("ready");
 });
@@ -104,7 +104,7 @@ test("can complete all the deferred registrations", async () => {
         { name: "Dummy-3" }
     ], runtime);
 
-    await registry.registerDeferredRegistrations(runtime, {});
+    await registry.registerDeferredRegistrations({}, runtime);
 
     expect(register1).toHaveBeenCalled();
     expect(register2).toHaveBeenCalled();
@@ -126,7 +126,7 @@ test("when all the deferred registrations are completed, set the status to \"rea
 
     expect(registry.registrationStatus).toBe("modules-registered");
 
-    await registry.registerDeferredRegistrations(runtime, {});
+    await registry.registerDeferredRegistrations({}, runtime);
 
     expect(registry.registrationStatus).toBe("ready");
 });
@@ -157,7 +157,7 @@ test("when a deferred registration is asynchronous, the function can be awaited"
         { name: "Dummy-3" }
     ], runtime);
 
-    await registry.registerDeferredRegistrations(runtime, {});
+    await registry.registerDeferredRegistrations({}, runtime);
 
     expect(hasBeenCompleted).toBeTruthy();
 });
@@ -185,7 +185,7 @@ test("when a deferred registration fail, complete the remaining deferred registr
         { name: "Dummy-3" }
     ], runtime);
 
-    await registry.registerDeferredRegistrations(runtime, {});
+    await registry.registerDeferredRegistrations({}, runtime);
 
     expect(register1).toHaveBeenCalled();
     expect(register3).toHaveBeenCalled();
@@ -211,7 +211,7 @@ test("when a deferred registration fail, return the error", async () => {
         { name: "Dummy-3" }
     ], runtime);
 
-    const errors = await registry.registerDeferredRegistrations(runtime, {});
+    const errors = await registry.registerDeferredRegistrations({}, runtime);
 
     expect(errors.length).toBe(1);
     expect(errors[0]!.error!.toString()).toContain("Module 2 deferred registration failed");
@@ -245,7 +245,7 @@ test("all the deferred registrations receive the data object", async () => {
         foo: "bar"
     };
 
-    await registry.registerDeferredRegistrations(runtime, data);
+    await registry.registerDeferredRegistrations(data, runtime);
 
     expect(register1).toHaveBeenCalledWith(data, "register");
     expect(register2).toHaveBeenCalledWith(data, "register");
@@ -280,7 +280,7 @@ test("all the deferred registrations receive \"register\" as state", async () =>
         foo: "bar"
     };
 
-    await registry.registerDeferredRegistrations(runtime, data);
+    await registry.registerDeferredRegistrations(data, runtime);
 
     expect(register1).toHaveBeenCalledWith(data, "register");
     expect(register2).toHaveBeenCalledWith(data, "register");

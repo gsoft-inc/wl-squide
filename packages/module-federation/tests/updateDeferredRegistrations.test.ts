@@ -54,15 +54,15 @@ test("update local and remote deferred registrations", async () => {
         foo: "bar"
     };
 
-    await registerDeferredRegistrations(runtime, data);
+    await registerDeferredRegistrations(data, runtime);
 
     const localRegistrationsSpy = jest.spyOn(localModuleRegistry, "updateDeferredRegistrations");
     const remoteRegistrationsSpy = jest.spyOn(remoteModuleRegistry, "updateDeferredRegistrations");
 
-    await updateDeferredRegistrations(runtime, data);
+    await updateDeferredRegistrations(data, runtime);
 
-    expect(localRegistrationsSpy).toHaveBeenCalledWith(runtime, data);
-    expect(remoteRegistrationsSpy).toHaveBeenCalledWith(runtime, data);
+    expect(localRegistrationsSpy).toHaveBeenCalledWith(data, runtime);
+    expect(remoteRegistrationsSpy).toHaveBeenCalledWith(data, runtime);
 });
 
 test("start and complete a deferred registration scope", async () => {
@@ -92,12 +92,12 @@ test("start and complete a deferred registration scope", async () => {
         foo: "bar"
     };
 
-    await registerDeferredRegistrations(runtime, data);
+    await registerDeferredRegistrations(data, runtime);
 
     const startScopeSpy = jest.spyOn(runtime, "startDeferredRegistrationScope");
     const completeScopeSpy = jest.spyOn(runtime, "completeDeferredRegistrationScope");
 
-    await updateDeferredRegistrations(runtime, data);
+    await updateDeferredRegistrations(data, runtime);
 
     expect(startScopeSpy).toHaveBeenCalledTimes(1);
     expect(completeScopeSpy).toHaveBeenCalledTimes(1);
@@ -130,7 +130,7 @@ test("when an unmanaged error is thrown, complete the deferred registration scop
         foo: "bar"
     };
 
-    await registerDeferredRegistrations(runtime, data);
+    await registerDeferredRegistrations(data, runtime);
 
     jest.spyOn(localModuleRegistry, "updateDeferredRegistrations").mockImplementation(() => {
         throw new Error("Something went wrong!");
@@ -140,7 +140,7 @@ test("when an unmanaged error is thrown, complete the deferred registration scop
 
     // Oddly, I can't get it to work with expect(() => {}).toThrow();
     try {
-        await updateDeferredRegistrations(runtime, data);
+        await updateDeferredRegistrations(data, runtime);
     } catch (error: unknown) {
         // ....
     }

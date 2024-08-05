@@ -6,8 +6,8 @@ import { useAppRouterDispatcher } from "./AppRouterContext.ts";
 export function useUpdateDeferredRegistrations() {
     const dispatch = useAppRouterDispatcher();
 
-    return useCallback(async <TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data?: TData) => {
-        const errors = await updateDeferredRegistrations(runtime, data);
+    return useCallback(async <TData = unknown, TRuntime extends Runtime = Runtime>(data: TData, runtime: TRuntime) => {
+        const errors = await updateDeferredRegistrations(data, runtime);
 
         dispatch({ type: "deferred-registrations-updated" });
 

@@ -107,7 +107,7 @@ export class RemoteModuleRegistry {
         return errors;
     }
 
-    async registerDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
+    async registerDeferredRegistrations<TData = unknown, TRuntime extends Runtime = Runtime>(data: TData, runtime: TRuntime) {
         const errors: RemoteModuleRegistrationError[] = [];
 
         if (this.#registrationStatus === "none" || this.#registrationStatus === "registering-modules") {
@@ -153,7 +153,7 @@ export class RemoteModuleRegistry {
         return errors;
     }
 
-    async updateDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
+    async updateDeferredRegistrations<TData = unknown, TRuntime extends Runtime = Runtime>(data: TData, runtime: TRuntime) {
         const errors: RemoteModuleRegistrationError[] = [];
 
         if (this.#registrationStatus !== "ready") {
@@ -229,12 +229,12 @@ export function registerRemoteModules<TRuntime extends Runtime = Runtime, TConte
     return getRemoteModuleRegistry().registerModules(remotes, runtime, options);
 }
 
-export function registerRemoteModuleDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
-    return getRemoteModuleRegistry().registerDeferredRegistrations(runtime, data);
+export function registerRemoteModuleDeferredRegistrations<TData = unknown, TRuntime extends Runtime = Runtime>(data: TData, runtime: TRuntime) {
+    return getRemoteModuleRegistry().registerDeferredRegistrations(data, runtime);
 }
 
-export function updateRemoteModuleDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
-    return getRemoteModuleRegistry().updateDeferredRegistrations(runtime, data);
+export function updateRemoteModuleDeferredRegistrations<TData = unknown, TRuntime extends Runtime = Runtime>(data: TData, runtime: TRuntime) {
+    return getRemoteModuleRegistry().updateDeferredRegistrations(data, runtime);
 }
 
 export function getRemoteModuleRegistrationStatus() {

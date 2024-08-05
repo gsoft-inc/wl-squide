@@ -56,7 +56,7 @@ export class LocalModuleRegistry implements ModuleRegistry {
         return errors;
     }
 
-    async registerDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
+    async registerDeferredRegistrations<TData = unknown, TRuntime extends Runtime = Runtime>(data: TData, runtime: TRuntime) {
         const errors: ModuleRegistrationError[] = [];
 
         if (this.#registrationStatus === "none" || this.#registrationStatus === "registering-modules") {
@@ -98,7 +98,7 @@ export class LocalModuleRegistry implements ModuleRegistry {
         return errors;
     }
 
-    async updateDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
+    async updateDeferredRegistrations<TData = unknown, TRuntime extends Runtime = Runtime>(data: TData, runtime: TRuntime) {
         const errors: ModuleRegistrationError[] = [];
 
         if (this.#registrationStatus !== "ready") {
@@ -172,12 +172,12 @@ export function registerLocalModules<TRuntime extends Runtime = Runtime, TContex
     return getLocalModuleRegistry().registerModules(modules, runtime, options);
 }
 
-export function registerLocalModuleDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
-    return getLocalModuleRegistry().registerDeferredRegistrations(runtime, data);
+export function registerLocalModuleDeferredRegistrations<TData = unknown, TRuntime extends Runtime = Runtime>(data: TData, runtime: TRuntime) {
+    return getLocalModuleRegistry().registerDeferredRegistrations(data, runtime);
 }
 
-export function updateLocalModuleDeferredRegistrations<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data: TData) {
-    return getLocalModuleRegistry().updateDeferredRegistrations(runtime, data);
+export function updateLocalModuleDeferredRegistrations<TData = unknown, TRuntime extends Runtime = Runtime>(data: TData, runtime: TRuntime) {
+    return getLocalModuleRegistry().updateDeferredRegistrations(data, runtime);
 }
 
 export function getLocalModuleRegistrationStatus() {

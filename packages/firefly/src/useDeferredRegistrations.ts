@@ -32,7 +32,7 @@ export function useDeferredRegistrations(data: unknown, { onError }: UseDeferred
     useEffect(() => {
         if (canRegisterDeferredRegistrations) {
             const register = async () => {
-                const errors = await registerDeferredRegistrations(runtime, data);
+                const errors = await registerDeferredRegistrations(data, runtime);
 
                 if (hasError(errors) && onError) {
                     onError(errors);
@@ -46,7 +46,7 @@ export function useDeferredRegistrations(data: unknown, { onError }: UseDeferred
     useEffect(() => {
         if (canUpdateDeferredRegistrations) {
             const update = async () => {
-                const errors = await updateDeferredRegistrations(runtime, data);
+                const errors = await updateDeferredRegistrations(data, runtime);
 
                 if (hasError(errors) && onError) {
                     onError(errors);

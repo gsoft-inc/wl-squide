@@ -11,7 +11,7 @@ A runtime instance give modules access to functionalities such as routing, navig
 ## Reference
 
 ```ts
-const runtime = new FireflyRuntime(options?: { loggers?: [], plugins?: [], sessionAccessor?: () => {} })
+const runtime = new FireflyRuntime(options?: { loggers?: [], plugins?: [] })
 ```
 
 ### Parameters
@@ -21,7 +21,6 @@ const runtime = new FireflyRuntime(options?: { loggers?: [], plugins?: [], sessi
     - `useMsw`: An optional boolean value indicating whether or not to create the runtime with MSW support.
     - `loggers`: An optional array of `Logger` instances.
     - `plugins`: An optional array of custom plugin instances.
-    - `sessionAccessor`: An optional function returning the current session.
 
 ## Usage
 
@@ -29,16 +28,9 @@ const runtime = new FireflyRuntime(options?: { loggers?: [], plugins?: [], sessi
 
 ```ts
 import { ConsoleLogger, FireflyRuntime } from "@squide/firefly";
-import { LocalStorageSessionManager } from "@squide/fakes";
-import { type AppSession } from "@sample/shared";
-
-const sessionManager = new LocalStorageSessionManager();
 
 const runtime = new FireflyRuntime({
-    loggers: [new ConsoleLogger()],
-    sessionAccessor: () => {
-        return sessionManager.getSession();
-    };
+    loggers: [new ConsoleLogger()]
 });
 ```
 
@@ -502,12 +494,3 @@ const plugin = runtime.getPlugin(MyPlugin.name) as MyPlugin;
 ```
 
 [!ref Learn more about plugins](../plugins/plugin.md)
-
-### Retrieve the current session
-
-```ts
-import type { AppSession } from "@sample/shared";
-
-// If no sessionAccessor has been provided, an error is thrown.
-const session = runtime.getSession() as AppSession;
-```

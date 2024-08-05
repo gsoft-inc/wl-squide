@@ -3,7 +3,7 @@ import { registerDeferredRegistrations } from "@squide/module-federation";
 import { useCallback } from "react";
 
 export function useRegisterDeferredRegistrations() {
-    return useCallback(<TRuntime extends Runtime = Runtime, TData = unknown>(runtime: TRuntime, data?: TData) => {
-        return registerDeferredRegistrations(runtime, data);
+    return useCallback(<TData = unknown, TRuntime extends Runtime = Runtime>(data: TData, runtime: TRuntime) => {
+        return registerDeferredRegistrations(data, runtime);
     }, []);
 }

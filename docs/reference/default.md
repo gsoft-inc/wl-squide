@@ -24,7 +24,6 @@ toc:
 - [useNavigationItems](./runtime/useNavigationItems.md)
 - [useLogger](./runtime/useLogger.md)
 - [usePlugin](./runtime/usePlugin.md)
-- [useSession](./runtime/useSession.md)
 
 ### Registration
 
@@ -38,7 +37,6 @@ toc:
 
 ### Routing
 
-- [AppRouter](./routing/AppRouter.md)
 - [ManagedRoutes](./routing/ManagedRoutes.md)
 - [useRenderedNavigationItems](./routing/useRenderedNavigationItems.md)
 - [useRouteMatch](./routing/useRouteMatch.md)
@@ -56,10 +54,6 @@ toc:
 - [EventBus](./messaging/EventBus.md)
 - [useEventBusDispatcher](./messaging/useEventBusDispatcher.md)
 - [useEventBusListener](./messaging/useEventBusListener.md)
-
-### Session
-
-- [useIsAuthenticated](./session/useIsAuthenticated.md)
 
 ### Plugins
 

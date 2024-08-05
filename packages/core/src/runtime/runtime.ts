@@ -3,15 +3,12 @@ import { EventBus } from "../messaging/eventBus.ts";
 import type { Plugin } from "../plugins/plugin.ts";
 import { RuntimeLogger } from "./RuntimeLogger.ts";
 
-export type SessionAccessorFunction = () => unknown;
-
 export type RuntimeMode = "development" | "production";
 
 export interface RuntimeOptions {
     mode?: RuntimeMode;
     loggers?: Logger[];
     plugins?: Plugin[];
-    sessionAccessor?: SessionAccessorFunction;
 }
 
 export interface RegisterRouteOptions {
@@ -31,14 +28,12 @@ export abstract class Runtime<TRoute = unknown, TNavigationItem = unknown> {
     protected readonly _logger: RuntimeLogger;
     protected readonly _eventBus: EventBus;
     protected readonly _plugins: Plugin[];
-    protected _sessionAccessor?: SessionAccessorFunction;
 
-    constructor({ mode = "development", loggers, plugins = [], sessionAccessor }: RuntimeOptions = {}) {
+    constructor({ mode = "development", loggers, plugins = [] }: RuntimeOptions = {}) {
         this._mode = mode;
         this._plugins = plugins;
         this._logger = new RuntimeLogger(loggers);
         this._eventBus = new EventBus({ logger: this._logger });
-        this._sessionAccessor = sessionAccessor;
 
         this._plugins.forEach(x => {
             if (x.setRuntime) {
@@ -83,14 +78,6 @@ export abstract class Runtime<TRoute = unknown, TNavigationItem = unknown> {
 
     get eventBus() {
         return this._eventBus;
-    }
-
-    getSession() {
-        if (!this._sessionAccessor) {
-            throw new Error("[squide] Cannot retrieve the session because no session accessor has been provided. Did you provide a sessionAccessor function to the Runtime instance?");
-        }
-
-        return this._sessionAccessor();
     }
 
     // Prefixed by _ to indicate that it's considered as an "internal" method, cannot use "#"" because of inheritance.

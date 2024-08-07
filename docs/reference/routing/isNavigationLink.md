@@ -6,7 +6,7 @@ toc:
 
 # isNavigationLink
 
-Indicate whether or not a navigation item should be rendered as a link. This utility is particularly handy when rendering a menu [with nested items](../runtime/runtime-class.md#register-nested-navigation-items).
+Indicate whether or not a navigation item is a `NavigationLink`. This utility is particularly handy when rendering a menu [with nested items](../runtime/runtime-class.md#register-nested-navigation-items).
 
 ## Reference
 
@@ -20,7 +20,7 @@ const isLink = isNavigationLink(item)
 
 ### Returns
 
-A boolean value indicating whether or not the navigation item should be rendered as a link.
+A `boolean` value indicating whether or not the navigation item should be rendered as a link.
 
 ## Usage
 

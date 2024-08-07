@@ -56,9 +56,9 @@ The most distinctive aspect of this shell is the conventions it enforces for loa
 
 1. During bootstrap, the host application attempts to [load predefined modules](/reference/registration/registerRemoteModules.md) and calls a registration function with a specific name and signature for each successfully loaded module.
 
-2. During registration, a module receives [the shared services](/reference/runtime/runtime-class.md) of the federated application and use them to dynamically register its [routes](/reference/runtime/runtime-class.md#register-routes) and [navigation items](/reference/runtime/runtime-class.md#register-navigation-items).
+2. During registration, a module receives the [runtime](/reference/runtime/runtime-class.md) of the federated application and use the instance to dynamically register its [routes](/reference/runtime/runtime-class.md#register-routes) and [navigation items](/reference/runtime/runtime-class.md#register-navigation-items).
 
-3. Once [all the modules are registered](/reference/registration/useAreModulesReady.md), the host application will create a React Router [instance](https://reactrouter.com/en/main/routers/create-browser-router) with the registered routes and [renders a navigation menu](/reference/routing/useRenderedNavigationItems.md) with the registered navigation items.
+3. Once all the modules are registered, the host application will create a React Router [instance](https://reactrouter.com/en/main/routers/create-browser-router) with the registered routes and [renders a navigation menu](/reference/routing/useRenderedNavigationItems.md) with the registered navigation items.
 
 That's a nutshell overview. Of course, there is more to it, but these are the main ideas.
 

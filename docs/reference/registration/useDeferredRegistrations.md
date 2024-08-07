@@ -8,7 +8,7 @@ toc:
 Register the modules [deferred registration](./registerLocalModules.md#defer-the-registration-of-navigation-items) functions when the global data is initially fetched or update the deferred registration functions whenever the global data change.
 
 !!!info
-This hook should always be used in combination with [deferred registration](./registerLocalModules.md#defer-the-registration-of-navigation-items) functions and with either the [usePublicDataQueries]() hook or the [useProtectedDataQueries]() hook (can be both).
+This hook should always be used in combination with [deferred registration](./registerLocalModules.md#defer-the-registration-of-navigation-items) functions and with either the [usePublicDataQueries](../tanstack-query/usePublicDataQueries.md) hook or the [useProtectedDataQueries](../tanstack-query/useProtectedDataQueries.md) hook (can be both).
 !!!
 
 ## Reference

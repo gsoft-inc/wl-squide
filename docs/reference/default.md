@@ -29,7 +29,7 @@ toc:
 
 - [registerLocalModules](./registration/registerLocalModules.md)
 - [registerRemoteModules](./registration/registerRemoteModules.md)
-- [useAreModulesReady](./registration/useAreModulesReady.md)
+- [useDeferredRegistrations](./registration/useDeferredRegistrations.md)
 - [mergeDeferredRegistrations](./registration/mergeDeferredRegistrations.md)
 
 ### Routing
@@ -41,10 +41,11 @@ toc:
 - [resolveRouteSegments](./routing/resolveRouteSegments.md)
 - [isNavigationLink](./routing/isNavigationLink.md)
 
-### Tanstack Queries
+### TanStack Query
 
 - [usePublicDataQueries](./tanstack-queries/usePublicDataQueries.md)
 - [useProtectedDataQueries](./tanstack-queries/useProtectedDataQueries.md)
+- [isGlobalDataQueriesError](./tanstack-query/isGlobalDataQueriesError.md)
 
 ### Logging
 

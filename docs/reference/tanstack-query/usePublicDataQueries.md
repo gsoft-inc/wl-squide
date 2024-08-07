@@ -6,6 +6,12 @@ toc:
 
 # usePublicDataQueries
 
+Execute the specified [TanStack queries](https://tanstack.com/query/latest/docs/framework/react/reference/useQueries) when the modules are ready and, when applicable, MSW is ready.
+
+!!!warning
+Only use this hook for public global data that is fetched by the `AppRouter` component, do not use this hook in product feature components.
+!!!
+
 ## Reference
 
 ```ts
@@ -18,7 +24,7 @@ const results = usePublicDataQueries(queries: [])
 
 ### Returns
 
-An array of query results. The order returned is the same as the input order.
+An array of query response data. The order returned is the same as the input order.
 
 ## Usage
 

@@ -18,7 +18,7 @@ const runtime = new FireflyRuntime(options?: { mode?, useMsw?, loggers?, plugins
 
 - `options`: An optional object literal of options:
     - `mode`: An optional mode to optimize Squide for `production`. Values are `"development"` (default) and `"production"`.
-    - `useMsw`: An optional boolean value indicating whether or not to create the runtime with MSW support.
+    - `useMsw`: An optional `boolean` value indicating whether or not to create the runtime with MSW support.
     - `loggers`: An optional array of `Logger` instances.
     - `plugins`: An optional array of custom plugin instances.
 
@@ -69,7 +69,7 @@ runtime.registerRoute(route, options?: { hoist?, parentPath?, parentName? })
     - `$name`: An optional name for the route.
     - `$visibility`: An optional visibility indicator for the route. Accepted values are `"public"` or `"protected"`.
 - `options`: An optional object literal of options:
-    - `hoist`: An optional boolean value to register the route at the root of the router. The default value is `false`.
+    - `hoist`: An optional `boolean` value to register the route at the root of the router. The default value is `false`.
     - `parentPath`: An optional path of a parent route to register this new route under.
     - `parentName`: An optional name of a parent route to register this new route under.
 

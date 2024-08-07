@@ -1,5 +1,5 @@
 import { useApplicationEventBusListener, useSessionManager } from "@basic/shared";
-import { isNavigationLink, useFireflyNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
+import { isNavigationLink, useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Loading } from "./Loading.tsx";
@@ -61,7 +61,7 @@ export function AuthenticatedLayout() {
         navigate("/logout");
     }, [navigate, sessionManager]);
 
-    const navigationItems = useFireflyNavigationItems();
+    const navigationItems = useNavigationItems();
     const renderedNavigationItems = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (

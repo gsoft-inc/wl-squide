@@ -21,7 +21,7 @@ const isMswReady = useIsMswReady(enabled)
 
 ### Returns
 
-A boolean indicating if MSW is ready.
+A `boolean` value indicating whether or not MSW is ready.
 
 ## Usage
 

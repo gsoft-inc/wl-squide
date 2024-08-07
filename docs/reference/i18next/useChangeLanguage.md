@@ -20,7 +20,7 @@ None
 
 ### Returns
 
-A function to change the current language of an `i18nextPlugin` instance: `(newLanguage: string) => void`.
+A function to change the current language of an `i18nextPlugin` instance: `(newLanguage) => void`.
 
 ## Usage
 

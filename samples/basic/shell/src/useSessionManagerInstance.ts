@@ -1,22 +1,23 @@
 import type { Session, SessionManager } from "@basic/shared";
+import { LocalStorageSessionManager } from "@squide/fakes";
 import { useMemo } from "react";
 
-class InMemorySessionManager implements SessionManager {
-    #session: Session | undefined;
+class MySessionManager implements SessionManager {
+    readonly #localStorageSessionManager = new LocalStorageSessionManager<Session>();
 
     setSession(session: Session) {
-        this.#session = session;
+        this.#localStorageSessionManager.setSession(session);
     }
 
     getSession() {
-        return this.#session;
+        return this.#localStorageSessionManager.getSession();
     }
 
     clearSession() {
-        this.#session = undefined;
+        this.#localStorageSessionManager.clearSession();
     }
 }
 
 export function useSessionManagerInstance() {
-    return useMemo(() => new InMemorySessionManager(), []);
+    return useMemo(() => new MySessionManager(), []);
 }

@@ -1026,7 +1026,7 @@ importers:
     dependencies:
       '@react-aria/toast':
         specifier: '*'
-        version: 3.0.0-beta.13(react@18.3.1)
+        version: 3.0.0-beta.14(react@18.3.1)
       '@react-stately/toast':
         specifier: '*'
         version: 3.0.0-beta.5(react@18.3.1)
@@ -1046,6 +1046,9 @@ importers:
       '@basic/shared':
         specifier: workspace:*
         version: link:../shared
+      '@squide/fakes':
+        specifier: workspace:*
+        version: link:../../../packages/fakes
       '@squide/firefly':
         specifier: workspace:*
         version: link:../../../packages/firefly
@@ -3783,8 +3786,8 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
 
-  '@react-aria/i18n@3.12.0':
-    resolution: {integrity: sha512-d/w/snV798ZEluipTjROjDi5htS36ks6XprYquqotgraOjuFOhbfv1F8seigh0AyLz0VBHveTd2t2hfrQKZ+Ww==}
+  '@react-aria/i18n@3.12.1':
+    resolution: {integrity: sha512-0q3gyogF9Ekah+9LOo6tcfshxsk2Ope+KdbtFHJVhznedMxn6RpHGcVur5ImbQ1dYafA5CmjBUGJW70b56+BGA==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0
 
@@ -3793,8 +3796,8 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
 
-  '@react-aria/interactions@3.22.0':
-    resolution: {integrity: sha512-7DdoaQXpLiSygaw9QI/cI8pHTqLEVOJBNmPTLYgLT1nnW+V8trYTFSYMQjtOUt5Lsa0dOgXgA8LZQnxYfsYDWQ==}
+  '@react-aria/interactions@3.22.1':
+    resolution: {integrity: sha512-5TLzQaDAQQ5C70yG8GInbO4wIylKY67RfTIIwQPGR/4n5OIjbUD8BOj3NuSsuZ/frUPaBXo1VEBBmSO23fxkjw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0
 
@@ -3803,8 +3806,8 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
 
-  '@react-aria/landmark@3.0.0-beta.13':
-    resolution: {integrity: sha512-aWnJo+yJyCcAiogqF6157pQtJlsP5J2k/GcWlQoOcJw+/t/wAC7x8DzmPRrUq7E//Qtll5hMaovfwohGxojy6w==}
+  '@react-aria/landmark@3.0.0-beta.14':
+    resolution: {integrity: sha512-+IFU/Mag11yEF5AL73CqWgZlp7ZL6bYhn9F71M28B7DNOw5w8H++bcEzZ+OhzWWECLAgIlXr3XOUYxNnE/gHNA==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0
 
@@ -3825,8 +3828,8 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
 
-  '@react-aria/toast@3.0.0-beta.13':
-    resolution: {integrity: sha512-QeOFWhphB8yEH1c1+6/38LF1hB4vrcXMpCaGCfrs4Sr8YSCcj1hWB/yAp0RXqgz6RkWgVDEZ2IZvMGmV1CtVVw==}
+  '@react-aria/toast@3.0.0-beta.14':
+    resolution: {integrity: sha512-PKcv1NpIpw4bBCAA1GiPosJzgsjcWTfIZnC7ZVoJEG9VIEzsIHcejSGcZxdI//DYmdmL1L2xLAkp3gn3HislkQ==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0
 
@@ -3835,8 +3838,8 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
 
-  '@react-aria/utils@3.25.0':
-    resolution: {integrity: sha512-DO0gx0OhEmdw+lUlcwQfuulk1ul82NhStYfgt3SDuf5yYchC/3YvIOrPLjh05NmMxc9jQxDPeuyujMI5plfAvQ==}
+  '@react-aria/utils@3.25.1':
+    resolution: {integrity: sha512-5Uj864e7T5+yj78ZfLnfHqmypLiqW2mN+nsdslog2z5ssunTqjolVeM15ootXskjISlZ7MojLpq97kIC4nlnAw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0
 
@@ -3865,8 +3868,8 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
 
-  '@react-types/button@3.9.5':
-    resolution: {integrity: sha512-drk7HE/S43pxCAwLXH1Yyb65xd4dtwfEWUjKLtjQb5PPSUqwjuzzZZvyhwo/zc4jPC6zfzVAKsdsCk1sce6UHg==}
+  '@react-types/button@3.9.6':
+    resolution: {integrity: sha512-8lA+D5JLbNyQikf8M/cPP2cji91aVTcqjrGpDqI7sQnaLFikM8eFR6l1ZWGtZS5MCcbfooko77ha35SYplSQvw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0
 
@@ -3875,8 +3878,8 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
 
-  '@react-types/shared@3.24.0':
-    resolution: {integrity: sha512-0mTSGqxq1ETwVLgpBKb7XzCLh0/agnH7a9EbOMonVwWJbuYw2YP8S3VwOMvFrvVToqYir4Z/xS5Waiz+0Ix1dQ==}
+  '@react-types/shared@3.24.1':
+    resolution: {integrity: sha512-AUQeGYEm/zDTN6zLzdXolDxz3Jk5dDL7f506F07U8tBwxNNI3WRdhU84G0/AaFikOZzDXhOZDr3MhQMzyE7Ydw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0
 
@@ -13836,15 +13839,15 @@ snapshots:
       '@swc/helpers': 0.5.12
       react: 18.3.1
 
-  '@react-aria/i18n@3.12.0(react@18.3.1)':
+  '@react-aria/i18n@3.12.1(react@18.3.1)':
     dependencies:
       '@internationalized/date': 3.5.5
       '@internationalized/message': 3.1.4
       '@internationalized/number': 3.5.3
       '@internationalized/string': 3.2.3
       '@react-aria/ssr': 3.9.5(react@18.3.1)
-      '@react-aria/utils': 3.25.0(react@18.3.1)
-      '@react-types/shared': 3.24.0(react@18.3.1)
+      '@react-aria/utils': 3.25.1(react@18.3.1)
+      '@react-types/shared': 3.24.1(react@18.3.1)
       '@swc/helpers': 0.5.12
       react: 18.3.1
 
@@ -13856,11 +13859,11 @@ snapshots:
       '@swc/helpers': 0.5.12
       react: 18.3.1
 
-  '@react-aria/interactions@3.22.0(react@18.3.1)':
+  '@react-aria/interactions@3.22.1(react@18.3.1)':
     dependencies:
       '@react-aria/ssr': 3.9.5(react@18.3.1)
-      '@react-aria/utils': 3.25.0(react@18.3.1)
-      '@react-types/shared': 3.24.0(react@18.3.1)
+      '@react-aria/utils': 3.25.1(react@18.3.1)
+      '@react-types/shared': 3.24.1(react@18.3.1)
       '@swc/helpers': 0.5.12
       react: 18.3.1
 
@@ -13872,10 +13875,10 @@ snapshots:
       react: 18.3.1
       use-sync-external-store: 1.2.2(react@18.3.1)
 
-  '@react-aria/landmark@3.0.0-beta.13(react@18.3.1)':
+  '@react-aria/landmark@3.0.0-beta.14(react@18.3.1)':
     dependencies:
-      '@react-aria/utils': 3.25.0(react@18.3.1)
-      '@react-types/shared': 3.24.0(react@18.3.1)
+      '@react-aria/utils': 3.25.1(react@18.3.1)
+      '@react-types/shared': 3.24.1(react@18.3.1)
       '@swc/helpers': 0.5.12
       react: 18.3.1
       use-sync-external-store: 1.2.2(react@18.3.1)
@@ -13902,15 +13905,15 @@ snapshots:
       '@swc/helpers': 0.5.12
       react: 18.3.1
 
-  '@react-aria/toast@3.0.0-beta.13(react@18.3.1)':
+  '@react-aria/toast@3.0.0-beta.14(react@18.3.1)':
     dependencies:
-      '@react-aria/i18n': 3.12.0(react@18.3.1)
-      '@react-aria/interactions': 3.22.0(react@18.3.1)
-      '@react-aria/landmark': 3.0.0-beta.13(react@18.3.1)
-      '@react-aria/utils': 3.25.0(react@18.3.1)
+      '@react-aria/i18n': 3.12.1(react@18.3.1)
+      '@react-aria/interactions': 3.22.1(react@18.3.1)
+      '@react-aria/landmark': 3.0.0-beta.14(react@18.3.1)
+      '@react-aria/utils': 3.25.1(react@18.3.1)
       '@react-stately/toast': 3.0.0-beta.5(react@18.3.1)
-      '@react-types/button': 3.9.5(react@18.3.1)
-      '@react-types/shared': 3.24.0(react@18.3.1)
+      '@react-types/button': 3.9.6(react@18.3.1)
+      '@react-types/shared': 3.24.1(react@18.3.1)
       '@swc/helpers': 0.5.12
       react: 18.3.1
 
@@ -13923,11 +13926,11 @@ snapshots:
       clsx: 2.1.1
       react: 18.3.1
 
-  '@react-aria/utils@3.25.0(react@18.3.1)':
+  '@react-aria/utils@3.25.1(react@18.3.1)':
     dependencies:
       '@react-aria/ssr': 3.9.5(react@18.3.1)
       '@react-stately/utils': 3.10.2(react@18.3.1)
-      '@react-types/shared': 3.24.0(react@18.3.1)
+      '@react-types/shared': 3.24.1(react@18.3.1)
       '@swc/helpers': 0.5.12
       clsx: 2.1.1
       react: 18.3.1
@@ -13959,16 +13962,16 @@ snapshots:
       '@react-types/shared': 3.23.1(react@18.3.1)
       react: 18.3.1
 
-  '@react-types/button@3.9.5(react@18.3.1)':
+  '@react-types/button@3.9.6(react@18.3.1)':
     dependencies:
-      '@react-types/shared': 3.24.0(react@18.3.1)
+      '@react-types/shared': 3.24.1(react@18.3.1)
       react: 18.3.1
 
   '@react-types/shared@3.23.1(react@18.3.1)':
     dependencies:
       react: 18.3.1
 
-  '@react-types/shared@3.24.0(react@18.3.1)':
+  '@react-types/shared@3.24.1(react@18.3.1)':
     dependencies:
       react: 18.3.1
 

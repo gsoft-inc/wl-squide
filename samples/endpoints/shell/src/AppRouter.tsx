@@ -56,7 +56,7 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
                 return data as Subscription;
             }
         }
-    ], (error: unknown) => isApiError(error) && error.status === 401);
+    ], error => isApiError(error) && error.status === 401);
 
     const changeLanguage = useChangeLanguage();
 

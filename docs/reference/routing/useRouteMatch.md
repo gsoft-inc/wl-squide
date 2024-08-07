@@ -11,7 +11,7 @@ Execute [React Router's matching algorithm](https://reactrouter.com/en/main/util
 ## Reference
 
 ```ts
-const match = useRouteMatch(locationArg)
+const match = useRouteMatch(locationArg, options?: { throwWhenThereIsNoMatch? })
 ```
 
 ### Parameters

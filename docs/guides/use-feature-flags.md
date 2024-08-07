@@ -158,7 +158,7 @@ To address this, Squide offers an alternate [deferred registration](../reference
 
 2. The second phase enables modules to register routes and navigation items that are dependent on initial data. We refer to this second phase as **deferred registrations**.
 
-To defer a registration to the second phase, a module registration function can **return an anonymous function**. Once the modules are registered and the [completeLocalModuleRegistrations](../reference/registration/completeRemoteModuleRegistrations.md) function is called, the deferred registration functions will be executed.
+To defer a registration to the second phase, a module registration function can **return an anonymous function**. Once the modules are registered and the [TBD](../reference/registration/completeRemoteModuleRegistrations.md) function is called, the deferred registration functions will be executed.
 
 First, let's update the module registration function to return an anonymous function that will receive the feature flags:
 
@@ -202,7 +202,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
 }
 ```
 
-Finally, open the host application code again and update the `App` component to utilize the `AppRouter` component's `onCompleteRegistrations` handler to [complete the module registrations](../reference/registration/completeRemoteModuleRegistrations.md) with the feature flags:
+Finally, open the host application code again and update the `App` component to utilize the `AppRouter` component's `onCompleteRegistrations` handler to [TBD](../reference/registration/completeRemoteModuleRegistrations.md) with the feature flags:
 
 ```tsx !#27-32,39 host/src/App.tsx
 import { useState, useCallback } from "react";

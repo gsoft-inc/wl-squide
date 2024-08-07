@@ -11,7 +11,7 @@ A plugin to faciliate the integration of [i18next](https://www.i18next.com/) in 
 ## Reference
 
 ```ts
-const plugin = new i18nextPlugin(supportedLanguages: [], fallbackLanguage, queryStringKey, options?: { detection?: {} })
+const plugin = new i18nextPlugin(supportedLanguages: [], fallbackLanguage, queryStringKey, options?: { detection? })
 ```
 
 ### Parameters

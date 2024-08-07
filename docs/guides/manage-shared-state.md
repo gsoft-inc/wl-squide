@@ -8,11 +8,9 @@ Effective management of the shared state is a crucial aspect of a federated appl
 
 ## Forward the initial data
 
-However, at certain points in the lifecycle of a federated application, the host will fetch initial data that should be fordwarded to the modules. Such examples include a user session and a user tenant subscription status:
+However, in the lifecycle of a federated application, the host will fetch initial data that should be fordwarded to the modules. Such examples include a user session and a user tenant subscription status.
 
-- To forward a user session object, a built-in [sessionAccessor](../reference/runtime/runtime-class.md#parameters) function is available.
-
-- To forward other types of initial data, such as a user tenant subscription, as shown in the [Fetch initial data](./fetch-initial-data.md#fetch-the-data-1) guide, the data can be forwarded to modules through a React context.
+As shown in the [Fetch initial data](./fetch-initial-data.md#fetch-the-data-1) guide, the initial data can be forwarded to modules through a React context.
 
 ## React Query
 

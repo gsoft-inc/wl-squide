@@ -1,7 +1,7 @@
-import { useNavigationItems } from "@squide/react-router";
+import { useRuntimeNavigationItems } from "@squide/react-router";
 import { useAppRouterState } from "./AppRouterContext.ts";
 
-export function useFireflyNavigationItems() {
+export function useNavigationItems() {
     // This is not the most sophisticated strategy but it seems to be good enough for now.
     // The idea is that when deferred registrations are used by the consumer applications, the deferred registrations could
     // be updated when the global data is updated. If the deferred registrations are updated, it means that the registered
@@ -12,5 +12,5 @@ export function useFireflyNavigationItems() {
     // even introducing new module states.
     useAppRouterState();
 
-    return useNavigationItems();
+    return useRuntimeNavigationItems();
 }

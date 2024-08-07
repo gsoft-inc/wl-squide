@@ -30,7 +30,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
             };
         }
     }, {
-        parentName: "root-error-boundary"
+        parentName: "root-layout"
     });
 
     runtime.registerRoute({

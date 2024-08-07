@@ -5,6 +5,7 @@ import type { RouterProviderProps } from "react-router-dom";
 import { AppRouterDispatcherContext, AppRouterStateContext } from "./AppRouterContext.ts";
 import { useAppRouterReducer } from "./AppRouterReducer.ts";
 import { RootRoute } from "./RootRoute.tsx";
+import { useStrictRegistrationMode } from "./useStrictRegistrationMode.ts";
 
 export interface AppRouterRenderFunctionArgs {
     routes: Route[];
@@ -37,6 +38,8 @@ export function AppRouter(props: AppRouterProps) {
 
     const logger = useLogger();
     const routes = useRoutes();
+
+    useStrictRegistrationMode();
 
     useEffect(() => {
         logger.debug("[squide] AppRouter state updated:", state);

@@ -2,10 +2,10 @@ import { RuntimeContext } from "@squide/core";
 import { renderHook } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { ReactRouterRuntime } from "../src/reactRouterRuntime.ts";
-import { useNavigationItems } from "../src/useNavigationItems.ts";
+import { useRuntimeNavigationItems } from "../src/useRuntimeNavigationItems.ts";
 
 function renderUseNavigationItemsHook(runtime: ReactRouterRuntime, menuId?: string) {
-    return renderHook(() => useNavigationItems({ menuId }), {
+    return renderHook(() => useRuntimeNavigationItems({ menuId }), {
         wrapper: ({ children }: { children?: ReactNode }) => (
             <RuntimeContext.Provider value={runtime}>
                 {children}

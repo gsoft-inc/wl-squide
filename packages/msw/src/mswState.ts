@@ -13,7 +13,7 @@ export class MswState {
         this.#stateChangedListeners.delete(callback);
     }
 
-    setAsStarted() {
+    setAsReady() {
         if (!this.#isReady) {
             this.#isReady = true;
 
@@ -44,7 +44,7 @@ export function __setMswState(state: MswState) {
 }
 
 export function setMswAsReady() {
-    getMswState().setAsStarted();
+    getMswState().setAsReady();
 }
 
 export function isMswReady() {

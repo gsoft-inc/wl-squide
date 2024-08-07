@@ -10,7 +10,7 @@ import { registerDev } from "./register.tsx";
 const consoleLogger = new ConsoleLogger();
 
 // Create the shell runtime.
-// Services, loggers and sessionAccessor could be reuse through a shared packages or faked when in isolation.
+// Services and loggers could be reuse through a shared packages or faked when in isolation.
 const runtime = new FireflyRuntime({
     useMsw: !!process.env.USE_MSW,
     plugins: [createI18NextPlugin()],

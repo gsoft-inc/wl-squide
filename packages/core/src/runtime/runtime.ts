@@ -81,7 +81,6 @@ export abstract class Runtime<TRoute = unknown, TNavigationItem = unknown> {
     }
 
     // Prefixed by _ to indicate that it's considered as an "internal" method, cannot use "#"" because of inheritance.
-    _completeRegistration() {
-        this._logger.debug("[squide] %cModules are ready%c.", "color: white; background-color: green;", "");
-    }
+    // Not abstract so concrete classes are not required to provide an implementation.
+    _validateRegistrations() {}
 }

@@ -9,7 +9,7 @@ toc:
 Retrieve a `FireflyRuntime` instance.
 
 !!!info
-When possible, prefer [useRoutes](./useRoutes.md), [useNavigationItems](./useNavigationItems.md), [useLogger](./useLogger.md), [useSession](./useSession.md) to `useRuntime`.
+When possible, prefer [useRoutes](./useRoutes.md), [useNavigationItems](./useNavigationItems.md), [useLogger](./useLogger.md), to `useRuntime`.
 !!!
 
 ## Reference

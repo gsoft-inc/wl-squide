@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { AppRouterDispatcherContext, AppRouterStateContext } from "../src/AppRouterContext.ts";
 import { __clearAppReducerDispatchProxy, __setAppReducerDispatchProxyFactory, useAppRouterReducer, type AppRouterDispatch, type AppRouterState } from "../src/AppRouterReducer.ts";
 import { FireflyRuntime } from "../src/FireflyRuntime.tsx";
-import { useDeferredRegistrations, type OnDeferredRegistrationsErrorCallback } from "../src/useDeferredRegistrations.ts";
+import { useDeferredRegistrations, type DeferredRegistrationsErrorCallback } from "../src/useDeferredRegistrations.ts";
 
 function sleep(delay: number) {
     return new Promise(resolve => setTimeout(resolve, delay));
@@ -37,7 +37,7 @@ function renderUseAppReducerHook<TProps>(runtime: Runtime, additionalProps: Rend
     });
 }
 
-function renderUseDeferredRegistrationsHook<TProps>(runtime: Runtime, state: AppRouterState, dispatch: AppRouterDispatch, data: unknown, onError?: OnDeferredRegistrationsErrorCallback, additionalProps: RenderHookOptions<TProps> = {}) {
+function renderUseDeferredRegistrationsHook<TProps>(runtime: Runtime, state: AppRouterState, dispatch: AppRouterDispatch, data: unknown, onError?: DeferredRegistrationsErrorCallback, additionalProps: RenderHookOptions<TProps> = {}) {
     return renderHook(() => useDeferredRegistrations(data, { onError }), {
         wrapper: ({ children }: { children?: ReactNode }) => (
             <RuntimeContext.Provider value={runtime}>

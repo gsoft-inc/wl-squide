@@ -10,10 +10,10 @@ export interface DeferredRegistrationsErrorsObject {
     remoteModuleErrors: ModuleRegistrationError[];
 }
 
-export type OnDeferredRegistrationsErrorCallback = (errorsObject: DeferredRegistrationsErrorsObject) => void;
+export type DeferredRegistrationsErrorCallback = (errorsObject: DeferredRegistrationsErrorsObject) => void;
 
 export interface UseDeferredRegistrationsOptions {
-    onError?: OnDeferredRegistrationsErrorCallback;
+    onError?: DeferredRegistrationsErrorCallback;
 }
 
 function hasError({ localModuleErrors, remoteModuleErrors }: DeferredRegistrationsErrorsObject) {

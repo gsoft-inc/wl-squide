@@ -3,16 +3,16 @@ toc:
     depth: 2-3
 ---
 
+TBD: Je crois que ce hook n'est plus nécessaire.
+
 # useAreModulesReady
 
-Force the application to re-render once the registration process has been completed for all the modules. Without this hook, the page is rendered with an empty router as it happens before the remote modules registered their routes and navigation items.
+Forces an application to re-render once the registration process has been completed for all the modules. Without this hook, the application would be rendered with an empty router as the rendering would happen before the remote modules registered their routes and navigation items.
 
 !!!info
-If your application is using the [AppRouter](../routing/appRouter.md) component, you shouldn't use this hook.
-!!!
+TBD
 
-!!!info
-If your application supports [deferred registrations](./registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items), make sure to pair this hook with the [useAreModulesRegistered](./useAreModulesRegistered.md) hook. 
+Only use this hook if your application is registering remote modules and doesn't use [useDeferredRegistrations](./useDeferredRegistrations.md), [usePublicDataQueries]() or [useProtectedDataQueries]().
 !!!
 
 ## Reference

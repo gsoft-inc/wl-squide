@@ -103,7 +103,7 @@ export function startMsw(moduleRequestHandlers: RequestHandler[]) {
 }
 ```
 
-Then, update the bootstrapping code to [start the service](https://mswjs.io/docs/integrations/browser#setup) and [mark MSW as started](../reference/msw/setMswAsStarted.md) if MSW is enabled:
+Then, update the bootstrapping code to [start the service](https://mswjs.io/docs/integrations/browser#setup) and [mark MSW as ready](../reference/msw/setMswAsReady.md) if MSW is enabled:
 
 ```tsx !#20-30 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
@@ -133,7 +133,7 @@ if (runtime.isMswEnabled) {
     // Will start MSW with the modules request handlers.
     startMsw(runtime.requestHandlers).then(() => {
         // Indicate that MSW has been started and the routes can now be safely rendered.
-        setMswAsStarted();
+        setMswAsReady();
     });
 }
 

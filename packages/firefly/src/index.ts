@@ -8,18 +8,18 @@ export * from "./FireflyRuntime.tsx";
 export * from "./AppRouter.tsx";
 export * from "./AppRouterContext.ts";
 export * from "./AppRouterReducer.ts";
-
 export * from "./GlobalDataQueriesError.ts";
 export * from "./useCanFetchProtectedData.ts";
 export * from "./useCanFetchPublicData.ts";
 export * from "./useCanRegisterDeferredRegistrations.ts";
 export * from "./useCanUpdateDeferredRegistrations.ts";
 export * from "./useDeferredRegistrations.ts";
-export * from "./useFireflyNavigationItems.ts";
 export * from "./useIsActiveRouteProtected.ts";
 export * from "./useIsBootstrapping.ts";
+export * from "./useNavigationItems.ts";
 export * from "./useProtectedDataQueries.ts";
 export * from "./usePublicDataQueries.ts";
 export * from "./useRegisterDeferredRegistrations.ts";
+export * from "./useStrictRegistrationMode.ts";
 export * from "./useUpdateDeferredRegistrations.ts";
 

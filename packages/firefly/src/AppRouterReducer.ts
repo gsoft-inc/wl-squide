@@ -158,6 +158,8 @@ export function getAreModulesReady() {
 }
 
 export function useModuleRegistrationStatusDispatcher(areModulesRegisteredValue: boolean, areModulesReadyValue: boolean, dispatch: AppRouterDispatch) {
+    const logger = useLogger();
+
     return useEffect(() => {
         const handleModulesRegistrationStatusChange = () => {
             if (!areModulesRegisteredValue && getAreModulesRegistered()) {
@@ -166,6 +168,8 @@ export function useModuleRegistrationStatusDispatcher(areModulesRegisteredValue:
 
             if (!areModulesReadyValue && getAreModulesReady()) {
                 dispatch({ type: "modules-ready" });
+
+                logger.debug("[squide] %cModules are ready%c.", "color: white; background-color: green;", "");
             }
         };
 
@@ -176,7 +180,7 @@ export function useModuleRegistrationStatusDispatcher(areModulesRegisteredValue:
             removeLocalModuleRegistrationStatusChangedListener(handleModulesRegistrationStatusChange);
             removeRemoteModuleRegistrationStatusChangedListener(handleModulesRegistrationStatusChange);
         };
-    }, [areModulesRegisteredValue, areModulesReadyValue, dispatch]);
+    }, [areModulesRegisteredValue, areModulesReadyValue, dispatch, logger]);
 }
 
 export function useMswStatusDispatcher(isMswReadyValue: boolean, dispatch: AppRouterDispatch) {

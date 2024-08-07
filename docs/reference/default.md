@@ -29,11 +29,8 @@ toc:
 
 - [registerLocalModules](./registration/registerLocalModules.md)
 - [registerRemoteModules](./registration/registerRemoteModules.md)
-- [completeModuleRegistrations](./registration/completeModuleRegistrations.md)
-- [completeLocalModuleRegistrations](./registration/completeLocalModuleRegistrations.md)
-- [completeRemoteModuleRegistrations](./registration/completeRemoteModuleRegistrations.md)
-- [useAreModulesRegistered](./registration/useAreModulesRegistered.md)
 - [useAreModulesReady](./registration/useAreModulesReady.md)
+- [mergeDeferredRegistrations](./registration/mergeDeferredRegistrations.md)
 
 ### Routing
 
@@ -43,6 +40,11 @@ toc:
 - [useIsRouteProtected](./routing/useIsRouteProtected.md)
 - [resolveRouteSegments](./routing/resolveRouteSegments.md)
 - [isNavigationLink](./routing/isNavigationLink.md)
+
+### Tanstack Queries
+
+- [usePublicDataQueries](./tanstack-queries/usePublicDataQueries.md)
+- [useProtectedDataQueries](./tanstack-queries/useProtectedDataQueries.md)
 
 ### Logging
 
@@ -69,7 +71,7 @@ toc:
 ### Mock Service Worker
 
 - [useIsMswReady](./msw/useIsMswReady.md)
-- [setMswAsStarted](./msw/setMswAsStarted.md)
+- [setMswAsReady](./msw/setMswAsReady.md)
 
 ### i18next
 

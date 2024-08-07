@@ -6,7 +6,7 @@ order: 90
 
 # registerRemoteModules
 
-Register one or many remote module(s). During the registration process, the module `register` function will be invoked with a `FireflyRuntime` instance and an optional `context` object. To **defer the registration** of specific routes or navigation items, a registration function can return an anonymous function.
+Register one or many remote module(s). During the registration process, the module `register` function will be invoked with a `FireflyRuntime` instance and an optional `context` object. To **defer the registration** of navigation items, a registration function can return an anonymous function.
 
 > A remote module is a module that is not part of the current build but is **loaded at runtime** from a remote server.
 
@@ -18,7 +18,7 @@ registerRemoteModules(remotes: [], runtime, options?: { context? })
 
 ### Parameters
 
-- `remotes`: An array of `RemoteDefinition` (view the [Remote definition](#remote-definition) section).
+- `remotes`: An array of [RemoteDefinition](#remote-definition).
 - `runtime`: A `FireflyRuntime` instance.
 - `options`: An optional object literal of options:
     - `context`: An optional context object that will be pass to the registration function.
@@ -27,17 +27,20 @@ registerRemoteModules(remotes: [], runtime, options?: { context? })
 
 A `Promise` object with an array of `RemoteModuleRegistrationError` if any error happens during the registration.
 
-- `RemoteModuleRegistrationError`:
-    - `remoteName`: The name of the remote module that failed to load.
-    - `moduleName`: The name of the [module](#name) that Squide attempted to recover.
-    - `error`: The original error object.
+#### `RemoteModuleRegistrationError`
+
+- `remoteName`: The name of the remote module that failed to load.
+- `moduleName`: The name of the [module](#name) that Squide attempted to recover.
+- `error`: The original `Error` object.
 
 ## Usage
 
 ### Register a remote module
 
-```tsx !#5-7,9 host/src/bootstrap.tsx
-import { FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
+```tsx !#7-9,11 host/src/bootstrap.tsx
+import { FireflyRuntime, registerRemoteModules, RuntimeContext, type RemoteDefinition } from "@squide/firefly";
+import { createRoot } from "react";
+import { App } from "./App.tsx";
 
 const runtime = new FireflyRuntime();
 
@@ -46,13 +49,21 @@ const Remotes: RemoteDefinition = [
 ];
 
 await registerRemoteModules(Remotes, runtime);
+
+const root = createRoot(document.getElementById("root")!);
+
+root.render(
+    <RuntimeContext.Provider value={runtime}>
+        <App />
+    </RuntimeContext.Provider>
+);
 ```
 
 ```tsx !#5-8,10-13 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { AboutPage } from "./AboutPage.tsx";
 
-export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
+export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         path: "/about",
         element: <AboutPage />
@@ -65,19 +76,21 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
 }
 ```
 
-### Defer the registration of routes or navigation items
+### Defer the registration of navigation items
 
-Sometimes, data must be fetched to determine which routes or navigation items should be registered by a given module. To address this, Squide offers a **two-phase registration mechanism**:
+Sometimes, data must be fetched to determine which navigation items should be registered by a given module. To address this, Squide offers a **two-phase registration mechanism**:
 
-1. The first phase allows modules to register their routes and navigation items that are not dependent on initial data (in addition to their MSW request handlers when fake endpoints are available).
+1. The first phase allows modules to register navigation items that are not dependent on initial data (in addition to their routes and MSW request handlers when fake endpoints are available).
 
-2. The second phase enables modules to register routes and navigation items that are dependent on initial data. Such a use case would be determining whether a route should be registered based on a feature flag. We refer to this second phase as **deferred registrations**.
+2. The second phase enables modules to register navigation items that are dependent on initial data. Such a use case would be determining whether a navigation item should be registered based on a feature flag. We refer to this second phase as **deferred registrations**.
 
-To defer a registration to the second phase, a module registration function can **return an anonymous function**. Once the modules are registered and the [completeRemoteModuleRegistrations](./completeRemoteModuleRegistrations.md) function is called, the deferred registration functions will be executed.
+To defer a registration to the second phase, a module registration function can **return an anonymous function**. Once the modules are registered, the deferred registration functions will be executed.
 
-```tsx !#14,17 host/src/bootstrap.tsx
-import { FireflyRuntime, completeRemoteModuleRegistrations, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
-import { fetchFeatureFlags } from "@sample/shared";
+```tsx !#12 host/src/bootstrap.tsx
+import { FireflyRuntime, registerRemoteModules, RuntimeContext, type RemoteDefinition } from "@squide/firefly";
+import { createRoot } from "react";
+import { register } from "@sample/local-module";
+import { App } from "./App.tsx";
 
 const runtime = new FireflyRuntime();
 
@@ -87,21 +100,70 @@ const Remotes: RemoteDefinition = [
 
 await registerRemoteModules(Remotes, runtime);
 
-// Don't fetch data in the bootstrapping code for a real application. This is done here
-// strictly for demonstration purpose.
-const featureFlags = await fetchFeatureFlags();
+const root = createRoot(document.getElementById("root")!);
 
-// Complete the module registrations with the feature flags data.
-await completeRemoteModuleRegistrations(runtime, { featureFlags });
+root.render(
+    <RuntimeContext.Provider value={runtime}>
+        <App />
+    </RuntimeContext.Provider>
+);
 ```
 
-```tsx !#19-32 remote-module/src/register.tsx
+```tsx !#10-14 host/src/AppRouter.tsx
+import { usePublicDataQueries, useDeferredRegistrations, useIsBootstrapping, AppRouter as FireflyAppRouter } from "@squide/firefly";
+import { useMemo } from "react";
+import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
+import type { DeferredRegistrationData } from "@sample/shared";
+import { getFeatureFlagsQuery } from "./getFeatureFlagsQuery.ts";
+
+function BootstrappingRoute() {
+    const [featureFlags] = usePublicDataQueries([getFeatureFlagsQuery]);
+
+    const data: DeferredRegistrationData = useMemo(() => ({ 
+        featureFlags 
+    }), [featureFlags])
+
+    useDeferredRegistrations(data);
+
+    if (useIsBootstrapping()) {
+        return <div>Loading...</div>;
+    }
+
+    return <Outlet />;
+}
+
+export function AppRouter() {
+    return (
+        <FireflyAppRouter waitForMsw={false} waitForPublicData waitForProtectedData={false}>
+            {({ rootRoute, registeredRoutes }) => {
+                return (
+                    <RouterProvider
+                        router={createBrowserRouter([
+                            {
+                                element: rootRoute,
+                                children: [
+                                    {
+                                        element: <BootstrappingRoute />,
+                                        children: registeredRoutes
+                                    }
+                                ]
+                            }
+                        ])}
+                    />
+                );
+            }}
+        </FireflyAppRouter>
+    );
+}
+```
+
+```tsx !#20-23,27-35 local-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import type { DeferredRegistrationData } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
 import { FeatureAPage } from "./FeatureAPage.tsx";
 
-export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = async runtime => {
+export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = runtime => {
     runtime.registerRoute({
         path: "/about",
         element: <AboutPage />
@@ -112,16 +174,19 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
         to: "/about"
     });
 
+    // Routes are always registered. If a route may not be available for a group of user, conditionally register
+    // it's navigation item with a deferred registration.
+    // To manage direct hits to a conditional route, render an error boundary whenever the endpoint returns a 401 status code.
+    runtime.registerRoute({
+        path: "/feature-a",
+        element: <FeatureAPage />
+    });
+
     // Once the feature flags has been loaded by the host application, by completing the module registrations process,
     // the deferred registration function will be called with the feature flags data.
-    return ({ featureFlags } = {}) => {
+    return ({ featureFlags }) => {
         // Only register the "feature-a" route and navigation item if the feature is active.
         if (featureFlags.featureA) {
-            runtime.registerRoute({
-                path: "/feature-a",
-                element: <FeatureAPage />
-            });
-
             runtime.registerNavigationItem({
                 $label: "Feature A",
                 to: "/feature-a"
@@ -131,7 +196,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
 }
 ```
 
-[!ref completeRemoteModuleRegistrations](./completeRemoteModuleRegistrations.md)
+[!ref useDeferredRegistrations](./useDeferredRegistrations.md)
 
 ### Handle the registration errors
 
@@ -145,7 +210,7 @@ const Remotes: RemoteDefinition = [
 ];
 
 (await registerRemoteModules(Remotes, runtime)).forEach(x => {
-    console.log(x);
+    console.error(x);
 });
 ```
 

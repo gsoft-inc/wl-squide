@@ -101,7 +101,7 @@ export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
         return this.#navigationItemRegistry.getItems(menuId);
     }
 
-    _completeRegistration() {
+    _validateRegistrations() {
         const pendingRegistrations = this.#routeRegistry.getPendingRegistrations();
         const pendingRoutes = pendingRegistrations.getPendingRouteIds();
 
@@ -110,7 +110,7 @@ export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
                 throw new Error("[squide] The ManagedRoutes outlet is missing from the router configuration. The ManagedRoutes outlet must be defined as a children of an hoisted route. Did you include a ManagedRoutes outlet and hoist the ManagedRoutes outlet's parent route?");
             }
 
-            let message = `[squide] ${pendingRoutes.length} route${pendingRoutes.length !== 1 ? "s were" : "is"} expected to be registered but ${pendingRoutes.length !== 0 ? "are" : "is"} missing:\r\n\r\n`;
+            let message = `[squide] ${pendingRoutes.length} route${pendingRoutes.length !== 1 ? "s were" : " is"} expected to be registered but ${pendingRoutes.length !== 1 ? "are" : "is"} missing:\r\n\r\n`;
 
             pendingRoutes.forEach((x, index) => {
                 message += `${index}/${pendingRoutes.length} Missing route with the following path or name: "${x}"\r\n`;
@@ -138,6 +138,6 @@ export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
             }
         }
 
-        super._completeRegistration();
+        super._validateRegistrations();
     }
 }

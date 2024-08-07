@@ -1,8 +1,11 @@
 # useIsMswReady
 
-Force the application to re-render once [Mock Service Worker](https://mswjs.io/) (MSW) is started. Without this hook, the page is rendered before all the request handlers are registered to MSW which could results in 404 errors.
+Force the application to re-render once [Mock Service Worker](https://mswjs.io/) (MSW) is ready. Without this hook, the page is rendered before all the request handlers are registered to MSW which could results in 404 errors.
 
 !!!info
+
+TBD TBD
+
 If your application is using the [AppRouter](../routing/appRouter.md) component, you shouldn't use this hook.
 !!!
 
@@ -18,14 +21,14 @@ const isMswReady = useIsMswReady(enabled)
 
 ### Returns
 
-A boolean indicating if MSW is started.
+A boolean indicating if MSW is ready.
 
 ## Usage
 
 ```ts
-import { useIsMswStarted } from "@squide/firefly";
+import { useIsMswReady } from "@squide/firefly";
 
-const isMswStarted = useIsMswStarted(process.env.USE_MSW);
+const isMswReady = useIsMswReady(process.env.USE_MSW);
 ```
 
-[!ref Also take a look at the `setIsMswAsStarted` function](./setMswAsStarted.md)
+[!ref Also take a look at the `setIsMswAsReady` function](./setMswAsReady.md)

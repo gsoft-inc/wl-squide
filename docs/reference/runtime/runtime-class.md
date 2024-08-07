@@ -11,7 +11,7 @@ A runtime instance give modules access to functionalities such as routing, navig
 ## Reference
 
 ```ts
-const runtime = new FireflyRuntime(options?: { loggers?: [], plugins?: [] })
+const runtime = new FireflyRuntime(options?: { mode?, useMsw?, loggers?, plugins? })
 ```
 
 ### Parameters
@@ -62,7 +62,7 @@ if (runtime.isMswEnabled) {
 ### Register routes
 
 ```ts
-runtime.registerRoute(route, options?: {})
+runtime.registerRoute(route, options?: { hoist?, parentPath?, parentName? })
 ```
 
 - `route`: accept any properties of a React Router [Route](https://reactrouter.com/en/main/components/route) component with the addition of:
@@ -259,7 +259,7 @@ const routes = runtime.routes;
 ### Register navigation items
 
 ```ts
-runtime.registerNavigationItem(item, options?: {})
+runtime.registerNavigationItem(item, options?: { menuId? })
 ```
 
 - `item`: `NavigationSection | NavigationLink`.

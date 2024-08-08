@@ -229,7 +229,7 @@ Unauthorized requests are a special case that shouldn't be handled by an error b
 
 To address this, when the server returns a `401` status code, the `useProtectedDataQueries` hook instructs Squide to immediately render the page, triggering the authentication boundary, that will eventually redirect the user to a login page.
 
-Since everything is handled behind the scene by Squide, there's nothing specific to do as a consumer other than defining an `AuthenticationBoundary` component and providing a `isUnauthorizedError` handler to the `useProtectedDataQueries` hook.
+Since Squide handles everything behind the scenes, there is nothing specific for you to do as a consumer, except to register an `AuthenticationBoundary` component and provide an `isUnauthorizedError` handler to the `useProtectedDataQueries` hook.
 
 ```tsx host/src/AuthenticationBoundary.tsx
 import { useContext } from "react";

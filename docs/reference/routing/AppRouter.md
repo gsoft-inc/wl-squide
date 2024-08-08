@@ -1,4 +1,5 @@
 ---
+order: 110
 toc:
     depth: 2-3
 ---
@@ -15,7 +16,7 @@ A component that sets up Squide federated primitives with a [React Router](https
 </AppRouter>
 ```
 
-### Parameters
+### Properties
 
 - `waitForMsw`: A `boolean` value indicating whether or not Squide should delay the rendering of the requested page until the [MSW](https://mswjs.io/) request handlers are registered.
 - `waitForPublicData`: An optional `boolean` value indicating whether or not Squide should delay the rendering of the requested page until the **public** data is ready. The default value is `false`.
@@ -66,28 +67,18 @@ export function AppRouter() {
 
 ### Define a root error boundary
 
+In this context, an error boundary is a React Router [errorElement](https://reactrouter.com/en/main/route/error-element).
+
 ```tsx host/src/RootErrorBoundary.tsx
-import { isRouteErrorResponse, useLocation, useRouteError } from "react-router-dom";
-
-function getErrorMessage(error: unknown) {
-    if (isRouteErrorResponse(error)) {
-        return `${error.status} ${error.statusText}`;
-    }
-
-    return error instanceof Error
-        ? error.message
-        : JSON.stringify(error);
-}
+import { useRouteError } from "react-router-dom";
 
 export function RootErrorBoundary() {
     const error = useRouteError();
-    const location = useLocation();
 
     return (
-        <div style={{ color: "red" }}>
+        <div>
             <h2>Unmanaged error</h2>
             <p>An unmanaged error occurred and the application is broken, try refreshing your browser.</p>
-            <span role="img" aria-label="pointer">👉</span> {getErrorMessage(error)}
         </div>
     );
 }

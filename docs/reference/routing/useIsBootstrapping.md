@@ -1,11 +1,12 @@
 ---
+order: 90
 toc:
     depth: 2-3
 ---
 
 # useIsBootstrapping
 
-Indicate whether or not the application is currently being bootstrap, e.g. registering the modules, registering the deferred registrations, getting [MSW](https://mswjs.io/) ready, fetching the global data, etc..
+Indicate whether or not the application is currently being bootstrapped, e.g. registering the modules, registering the deferred registrations, getting [MSW](https://mswjs.io/) ready, fetching the global data, etc..
 
 ## Reference
 

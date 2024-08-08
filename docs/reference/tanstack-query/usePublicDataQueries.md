@@ -6,10 +6,10 @@ toc:
 
 # usePublicDataQueries
 
-Execute the specified [TanStack queries](https://tanstack.com/query/latest/docs/framework/react/reference/useQueries) when the modules are ready and, when applicable, MSW is ready.
+Execute the specified [TanStack queries](https://tanstack.com/query/latest/docs/framework/react/reference/useQueries) when the modules are ready and, when applicable, [MSW](https://mswjs.io/) is ready.
 
 !!!warning
-Only use this hook for public global data that is fetched by the `AppRouter` component, do not use this hook in product feature components.
+Only use this hook for public global data that is fetched by your application `AppRouter` component, do not use this hook in product feature components.
 !!!
 
 ## Reference
@@ -27,6 +27,8 @@ const results = usePublicDataQueries(queries: [])
 An array of query response data. The order returned is the same as the input order.
 
 ## Usage
+
+### Define a query
 
 ```tsx !#6-21,38 host/src/AppRouter.tsx
 import { usePublicDataQueries, useIsBootstrapping, AppRouter as FireflyAppRouter } from "@squide/firefly";
@@ -67,9 +69,8 @@ export function AppRouter() {
         <FireflyAppRouter 
             waitForMsw
             waitForPublicData
-            waitForProtectedData={false}
         >
-            {({ rootRoute, registeredRoutes }) => {
+            {({ rootRoute, registeredRoutes, routerProviderProps }) => {
                 return (
                     <RouterProvider
                         router={createBrowserRouter([
@@ -83,6 +84,7 @@ export function AppRouter() {
                                 ]
                             }
                         ])}
+                        {...routerProviderProps}
                     />
                 );
             }}
@@ -90,3 +92,7 @@ export function AppRouter() {
     );
 }
 ```
+
+### Define multiple queries
+
+### Handle fetch errors

@@ -113,7 +113,7 @@ export function AppRouter(props: AppRouterProps) {
 
     return (
         <FireflyAppRouter waitForMsw={waitForMsw} waitForPublicData waitForProtectedData>
-            {({ rootRoute, registeredRoutes }) => {
+            {({ rootRoute, registeredRoutes, routerProviderProps }) => {
                 return (
                     <RouterProvider
                         router={createBrowserRouter([
@@ -121,17 +121,14 @@ export function AppRouter(props: AppRouterProps) {
                                 element: rootRoute,
                                 children: [
                                     {
+                                        element: <BootstrappingRoute telemetryService={telemetryService} />,
                                         errorElement: <RootErrorBoundary />,
-                                        children: [
-                                            {
-                                                element: <BootstrappingRoute telemetryService={telemetryService} />,
-                                                children: registeredRoutes
-                                            }
-                                        ]
+                                        children: registeredRoutes
                                     }
                                 ]
                             }
                         ])}
+                        {...routerProviderProps}
                     />
                 );
             }}

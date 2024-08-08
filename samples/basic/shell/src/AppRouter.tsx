@@ -34,7 +34,7 @@ function BootstrappingRoute() {
 export function AppRouter() {
     return (
         <FireflyAppRouter waitForMsw={false}>
-            {({ rootRoute, registeredRoutes }) => {
+            {({ rootRoute, registeredRoutes, routerProviderProps }) => {
                 return (
                     <RouterProvider
                         router={createBrowserRouter([
@@ -42,17 +42,14 @@ export function AppRouter() {
                                 element: rootRoute,
                                 children: [
                                     {
+                                        element: <BootstrappingRoute />,
                                         errorElement: <RootErrorBoundary />,
-                                        children: [
-                                            {
-                                                element: <BootstrappingRoute />,
-                                                children: registeredRoutes
-                                            }
-                                        ]
+                                        children: registeredRoutes
                                     }
                                 ]
                             }
                         ])}
+                        {...routerProviderProps}
                     />
                 );
             }}

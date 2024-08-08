@@ -115,8 +115,8 @@ function BootstrappingRoute() {
 
 export function AppRouter() {
     return (
-        <FireflyAppRouter waitForMsw={false} waitForPublicData waitForProtectedData={false}>
-            {({ rootRoute, registeredRoutes }) => {
+        <FireflyAppRouter waitForMsw={false} waitForPublicData>
+            {({ rootRoute, registeredRoutes, routerProviderProps }) => {
                 return (
                     <RouterProvider
                         router={createBrowserRouter([
@@ -130,6 +130,7 @@ export function AppRouter() {
                                 ]
                             }
                         ])}
+                        {...routerProviderProps}
                     />
                 );
             }}

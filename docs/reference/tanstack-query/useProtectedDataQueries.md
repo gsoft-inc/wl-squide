@@ -6,10 +6,10 @@ toc:
 
 # useProtectedDataQueries
 
-Execute the specified [TanStack queries](https://tanstack.com/query/latest/docs/framework/react/reference/useQueries) when the modules are ready, the active route is protected and, when applicable, MSW is ready.
+Execute the specified [TanStack queries](https://tanstack.com/query/latest/docs/framework/react/reference/useQueries) when the modules are ready, the active route is protected and, when applicable, [MSW](https://mswjs.io/) is ready.
 
 !!!warning
-Only use this hook for protected global data that is fetched by the `AppRouter` component, do not use this hook in product feature components.
+Only use this hook for protected global data that is fetched by your application `AppRouter` component, do not use this hook in product feature components.
 !!!
 
 ## Reference
@@ -29,7 +29,9 @@ An array of query response data. The order returned is the same as the input ord
 
 ## Usage
 
-```tsx !#18-43,63 host/src/AppRouter.tsx
+### Define a query
+
+```tsx !#18-43,62 host/src/AppRouter.tsx
 import { usePublicDataQueries, useIsBootstrapping, AppRouter as FireflyAppRouter } from "@squide/firefly";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ApiError, SessionContext, SubscriptionContext, type Session, type Subscription } from "@sample/shared";
@@ -91,10 +93,9 @@ export function AppRouter() {
     return (
         <FireflyAppRouter 
             waitForMsw
-            waitForPublicData={false}
             waitForProtectedData
         >
-            {({ rootRoute, registeredRoutes }) => {
+            {({ rootRoute, registeredRoutes, routerProviderProps }) => {
                 return (
                     <RouterProvider
                         router={createBrowserRouter([
@@ -108,6 +109,7 @@ export function AppRouter() {
                                 ]
                             }
                         ])}
+                        {...routerProviderProps}
                     />
                 );
             }}
@@ -115,3 +117,11 @@ export function AppRouter() {
     );
 }
 ```
+
+### Define multiple queries
+
+### Handle fetch errors
+
+### Handle 401 response
+
+-> AuthenticationBoundary

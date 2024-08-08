@@ -34,18 +34,14 @@ toc:
 
 ### Routing
 
+- [AppRouter](./routing/AppRouter.md)
 - [ManagedRoutes](./routing/ManagedRoutes.md)
 - [useRenderedNavigationItems](./routing/useRenderedNavigationItems.md)
+- [useIsBoostrapping](./routing/useIsBootstrapping.md)
 - [useRouteMatch](./routing/useRouteMatch.md)
 - [useIsRouteProtected](./routing/useIsRouteProtected.md)
 - [resolveRouteSegments](./routing/resolveRouteSegments.md)
 - [isNavigationLink](./routing/isNavigationLink.md)
-
-### TanStack Query
-
-- [usePublicDataQueries](./tanstack-queries/usePublicDataQueries.md)
-- [useProtectedDataQueries](./tanstack-queries/useProtectedDataQueries.md)
-- [isGlobalDataQueriesError](./tanstack-query/isGlobalDataQueriesError.md)
 
 ### Logging
 
@@ -68,6 +64,12 @@ toc:
 - [defineDevRemoteModuleConfig](./webpack/defineDevRemoteModuleConfig.md)
 - [defineBuildHostConfig](./webpack/defineBuildHostConfig.md)
 - [defineBuildRemoteModuleConfig](./webpack/defineBuildRemoteModuleConfig.md)
+
+### TanStack Query
+
+- [usePublicDataQueries](./tanstack-query/usePublicDataQueries.md)
+- [useProtectedDataQueries](./tanstack-query/useProtectedDataQueries.md)
+- [isGlobalDataQueriesError](./tanstack-query/isGlobalDataQueriesError.md)
 
 ### Mock Service Worker
 

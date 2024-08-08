@@ -73,8 +73,8 @@ function BootstrappingRoute() {
 
 export function AppRouter() {
     return (
-        <FireflyAppRouter waitForMsw={false} waitForPublicData waitForProtectedData>
-            {({ rootRoute, registeredRoutes }) => {
+        <FireflyAppRouter waitForMsw={false}>
+            {({ rootRoute, registeredRoutes, routerProviderProps }) => {
                 return (
                     <RouterProvider
                         router={createBrowserRouter([
@@ -88,6 +88,7 @@ export function AppRouter() {
                                 ]
                             }
                         ])}
+                        {...routerProviderProps}
                     />
                 );
             }}
@@ -98,27 +99,34 @@ export function AppRouter() {
 
 ### Handle registration errors
 
-```tsx !#10-18
+```tsx !#10-18,21 host/src/AppRouter.tsx
 import { useDeferredRegistrations, type DeferredRegistrationsErrorCallback } from "@squide/firefly";
 import type { DeferredRegistrationData } from "@sample/shared";
 import { useMemo } from "react";
 
-const data: DeferredRegistrationData = useMemo(() => ({
-    featureFlags,
-    session
-}), [featureFlags, session]);
+function BootstrappingRoute() {
+    const [featureFlags] = usePublicDataQueries([getFeatureFlagsQuery]);
 
-const handleErrors: DeferredRegistrationsErrorCallback = errors => {
-    errors.localModuleErrors.forEach(x => {
-        console.error(x);
+    const data: DeferredRegistrationData = useMemo(() => ({ featureFlags }), [featureFlags]);
+
+    const handleErrors: DeferredRegistrationsErrorCallback = errors => {
+        errors.localModuleErrors.forEach(x => {
+            console.error(x);
+        });
+
+        errors.remoteModuleErrors.forEach(x => {
+            console.error(x);
+        });
+    };
+
+    useDeferredRegistrations(data, {
+        onError: handleErrors
     });
 
-    errors.remoteModuleErrors.forEach(x => {
-        console.error(x);
-    });
-};
+    if (useIsBootstrapping()) {
+        return <div>Loading...</div>;
+    }
 
-useDeferredRegistrations(data, {
-    onError: handleErrors
-});
+    return <Outlet />;
+}
 ```

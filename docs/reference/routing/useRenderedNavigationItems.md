@@ -24,20 +24,21 @@ const elements = useRenderedNavigationItems(
 ### Parameters
 
 - `navigationItems`: An array of `NavigationLink | NavigationSection` to render.
-- `renderItem`: A function to render a single link from a navigation item
+- `renderItem`: A function to render a link from a navigation item
 - `renderSection`: A function to render a section from a collection of items.
 
 #### `NavigationLink`
 
-- `$key`: An optional key identifying the link.
+Accept any properties of a React Router [Link](https://reactrouter.com/en/main/components/link) component with the addition of:
+
+- `$key`: An optional key identifying the link. Usually used as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
 - `$label`: The link label. Could either by a `string` or a `ReactNode`.
 - `$canRender`: An optional function accepting an object and returning a `boolean` indicating whether or not the link should be rendered.
 - `$additionalProps`: An optional object literal of additional props to apply to the link component.
-- Any React Router [Link](https://reactrouter.com/en/main/components/link) component props.
 
 #### `NavigationSection`
 
-- `$key`: An optional key identifying the section.
+- `$key`: An optional key identifying the section. Usually used as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
 - `$label`: The section label. Could either by a `string` or a `ReactNode`.
 - `$canRender`: An optional function accepting an object and returning a `boolean` indicating whether or not the section should be rendered.
 - `$additionalProps`: An optional object literal of additional props to apply to the section component.
@@ -50,6 +51,12 @@ An array of `ReactElement`.
 ## Usage
 
 ### Render nested items
+
+!!!info
+We recommend always providing a `$key` property for a navigation item, as it ensures the menus doesn't flicker when [deferred registrations](../registration/registerLocalModules.md#defer-the-registration-of-navigation-items) are updated. Be sure to use a unique key.
+
+When no `$key` property is provided, a default key value is computed based on the `index` and `level` properties. While this works in most cases, the default key cannot guarantee that the menu won't flicker during updates.
+!!!
 
 ```tsx !#38-40,42-48,52 host/src/RootLayout.tsx
 import type { ReactNode } from "react";
@@ -64,13 +71,13 @@ import {
     type NavigationSectionRenderProps
 } from "@squide/react-router";
 
-type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
+type RenderLinkItemFunction = (item: NavigationLinkRenderProps, key: string) => ReactNode;
 
-type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactNode;
+type RenderSectionItemFunction = (item: NavigationSectionRenderProps, key: string) => ReactNode;
 
-const renderLinkItem: RenderLinkItemFunction = ({ label, linkProps, additionalProps }, index, level) => {
+const renderLinkItem: RenderLinkItemFunction = ({ label, linkProps, additionalProps }, key) => {
     return (
-        <li key={`${level}-${index}`}>
+        <li key={key}>
             <Link {...linkProps} {...additionalProps}>
                 {label}
             </Link>
@@ -78,9 +85,9 @@ const renderLinkItem: RenderLinkItemFunction = ({ label, linkProps, additionalPr
     );
 };
 
-const renderSectionItem: RenderSectionItemFunction = ({ label, section }, index, level) => {
+const renderSectionItem: RenderSectionItemFunction = ({ label, section }, key) => {
     return (
-        <li key={`${level}-${index}`}>
+        <li key={key}>
             {label}
             <div>
                 ({section})
@@ -89,13 +96,13 @@ const renderSectionItem: RenderSectionItemFunction = ({ label, section }, index,
     );
 };
 
-const renderItem: RenderItemFunction = (item, index, level) => {
-    return isNavigationLink(item) ? renderLinkItem(item, index, level) : renderSectionItem(item, index, level);
+const renderItem: RenderItemFunction = (item, key) => {
+    return isNavigationLink(item) ? renderLinkItem(item, key) : renderSectionItem(item, key;
 };
 
-const renderSection: RenderSectionFunction = (elements, index, level) => {
+const renderSection: RenderSectionFunction = (elements, key, index, level) => {
     return (
-        <ul key={`${level}-${index}`}>
+        <ul key={key}>
             {elements}
         </ul>
     );
@@ -132,13 +139,13 @@ import {
     type NavigationSectionRenderProps
 } from "@squide/react-router";
 
-type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number, userId: string) => ReactNode;
+type RenderLinkItemFunction = (item: NavigationLinkRenderProps, key: string, userId: string) => ReactNode;
 
-type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactNode;
+type RenderSectionItemFunction = (item: NavigationSectionRenderProps, key: string) => ReactNode;
 
-const renderLinkItem: RenderLinkItemFunction = ({ label, { to, ...linkProps}, additionalProps }, index, level, userId) => {
+const renderLinkItem: RenderLinkItemFunction = ({ label, { to, ...linkProps}, additionalProps }, key, userId) => {
     return (
-        <li key={`${level}-${index}`}>
+        <li key={key}>
             <Link to={resolveRouteSegments(to as string, { userId })} {...linkProps} {...additionalProps}>
                 {label}
             </Link>
@@ -146,9 +153,9 @@ const renderLinkItem: RenderLinkItemFunction = ({ label, { to, ...linkProps}, ad
     );
 };
 
-const renderSectionItem: RenderSectionItemFunction = ({ label, section }, index, level) => {
+const renderSectionItem: RenderSectionItemFunction = ({ label, section }, key) => {
     return (
-        <li key={`${level}-${index}`}>
+        <li key={key}>
             {label}
             <div>
                 ({section})
@@ -158,16 +165,16 @@ const renderSectionItem: RenderSectionItemFunction = ({ label, section }, index,
 };
 
 function renderItem(userId: string) {
-    const fct: RenderItemFunction = (item, index, level) => {
-        return isNavigationLink(item) ? renderLinkItem(item, index, level, userId) : renderSectionItem(item, index, level);
+    const fct: RenderItemFunction = (item, key) => {
+        return isNavigationLink(item) ? renderLinkItem(item, key, userId) : renderSectionItem(item, key);
     };
 
     return fct;
 }
 
-const renderSection: RenderSectionFunction = (elements, index, level) => {
+const renderSection: RenderSectionFunction = (elements, key) => {
     return (
-        <ul key={`${level}-${index}`}>
+        <ul key={key}>
             {elements}
         </ul>
     );
@@ -188,11 +195,12 @@ export function UserProfileLayout() {
 }
 ```
 
-```tsx !#6 remote-module/src/register.tsx
+```tsx !#7 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = (runtime) => {
     runtime.registerNavigationItem({
+        $key: "user-profile",
         $label: "User profile",
         to: "/user-profile/:userId"
     }, {

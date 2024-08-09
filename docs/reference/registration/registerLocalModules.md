@@ -44,7 +44,7 @@ const runtime = new FireflyRuntime();
 await registerLocalModules([register], runtime);
 ```
 
-```tsx !#5-8,10-13 local-module/src/register.tsx
+```tsx !#5-8,10-14 local-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { AboutPage } from "./AboutPage.tsx";
 
@@ -55,6 +55,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
+        $key: "about",
         $label: "About",
         to: "/about"
     });
@@ -139,7 +140,7 @@ export function AppRouter() {
 }
 ```
 
-```tsx !#20-23,27-35 local-module/src/register.tsx
+```tsx !#21-24,28-37 local-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import type { DeferredRegistrationData } from "@sample/shared";
 import { AboutPage } from "./AboutPage.tsx";
@@ -152,6 +153,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
     });
 
     runtime.registerNavigationItem({
+        $key: "about",
         $label: "About",
         to: "/about"
     });
@@ -170,6 +172,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
         // Only register the "feature-a" route and navigation item if the feature is active.
         if (featureFlags.featureA) {
             runtime.registerNavigationItem({
+                $key: "feature-a",
                 $label: "Feature A",
                 to: "/feature-a"
             });

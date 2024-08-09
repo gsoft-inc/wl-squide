@@ -6,7 +6,7 @@ toc:
 
 # useRouteMatch
 
-Execute [React Router's matching algorithm](https://reactrouter.com/en/main/utils/match-routes) against the registered routes and a given `location` to determine if any route match the location.
+Execute [React Router's matching algorithm](https://reactrouter.com/en/main/utils/match-routes) against Squide's routes registry and a given `location` to determine if any route match the location.
 
 ## Reference
 

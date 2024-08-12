@@ -23,17 +23,17 @@ Create a new application (we'll refer to ours as `host`), then open a terminal a
 +++ pnpm
 ```bash
 pnpm add -D @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
-pnpm add @squide/firefly react react-dom react-router-dom react-error-boundary
+pnpm add @squide/firefly react react-dom react-router-dom react-error-boundary @tanstack/react-query
 ```
 +++ yarn
 ```bash
 yarn add -D @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
-yarn add @squide/firefly react react-dom react-router-dom react-error-boundary
+yarn add @squide/firefly react react-dom react-router-dom react-error-boundary @tanstack/react-query
 ```
 +++ npm
 ```bash
 npm install -D @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
-npm install @squide/firefly react react-dom react-router-dom react-error-boundary
+npm install @squide/firefly react react-dom react-router-dom react-error-boundary @tanstack/react-query
 ```
 +++
 
@@ -50,10 +50,10 @@ host
 ├── public
 ├──── index.html
 ├── src
+├──── AppRouter.tsx
 ├──── App.tsx
 ├──── RootLayout.tsx
 ├──── HomePage.tsx
-├──── NotFoundPage.tsx
 ├──── bootstrap.tsx
 ├──── index.ts
 ├──── register.tsx
@@ -117,6 +117,8 @@ root.render(
     </RuntimeContext.Provider>
 );
 ```
+
+Then, create an abstraction over the `AppRouter`
 
 Then, render the [AppRouter](../reference/routing/appRouter.md) component to define a React Router [browser instance](https://reactrouter.com/en/main/routers/create-browser-router) configured with the registered routes:
 

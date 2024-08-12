@@ -9,7 +9,7 @@ toc:
 Execute the specified [TanStack queries](https://tanstack.com/query/latest/docs/framework/react/reference/useQueries) when the modules are ready, the active route is protected and, when applicable, [MSW](https://mswjs.io/) is ready.
 
 !!!warning
-Only use this hook for protected global data that is fetched by your application `AppRouter` component, do not use this hook in product feature components.
+Use this hook for protected global data fetched during the **bootstrapping phase** of your application. Avoid using it in product feature components.
 !!!
 
 ## Reference
@@ -29,14 +29,16 @@ An array of query response data. The order returned is the same as the input ord
 
 ### Throws
 
-If an unmanaged error occur while performing any of the fetch requests, a [GlobalDataQueriesError](./isGlobalDataQueriesError.md#globaldataquerieserror) will be thrown.
+If an unmanaged error occur while performing any of the fetch requests, a [GlobalDataQueriesError](./isGlobalDataQueriesError.md#globaldataquerieserror) is thrown.
 
 ## Usage
 
 ### Define queries
 
-```tsx !#18-43,62 host/src/AppRouter.tsx
-import { useProtectedDataQueries, useIsBootstrapping, AppRouter as FireflyAppRouter } from "@squide/firefly";
+A `BootstrappingRoute` component is introduced in the following example because this hook must be rendered as a child of `rootRoute`.
+
+```tsx !#16-41,60,70 host/src/App.tsx
+import { useProtectedDataQueries, useIsBootstrapping, AppRouter } from "@squide/firefly";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ApiError, SessionContext, SubscriptionContext, type Session, type Subscription } from "@sample/shared";
 
@@ -47,9 +49,7 @@ async function fetchJson(url: string) {
         throw new ApiError(response.status, response.statusText);
     }
 
-    const data = await response.json();
-
-    return data;
+    return await response.json();
 }
 
 function BootstrappingRoute() {
@@ -93,9 +93,9 @@ function BootstrappingRoute() {
     );
 }
 
-export function AppRouter() {
+export function App() {
     return (
-        <FireflyAppRouter 
+        <AppRouter 
             waitForMsw
             waitForProtectedData
         >
@@ -117,14 +117,14 @@ export function AppRouter() {
                     />
                 );
             }}
-        </FireflyAppRouter>
+        </AppRouter>
     );
 }
 ```
 
 ### Handle fetch errors
 
-Errors from the `useIsProtectedDataQueries` hook are typically unmanaged and should be handled by an error boundary. In this context, an error boundary is a React Router [errorElement](https://reactrouter.com/en/main/route/error-element).
+This hook throws [GlobalDataQueriesError](./isGlobalDataQueriesError.md#globaldataquerieserror) instances, which are typically **unmanaged** and should be handled by an error boundary. To assert that an error is an instance of `GlobalDataQueriesError`, use the [isGlobalDataQueriesError](./isGlobalDataQueriesError.md) function.
 
 ```tsx !#10 host/src/RootErrorBoundary.tsx
 import { useLogger, isGlobalDataQueriesError } from "@squide/firefly";
@@ -150,8 +150,8 @@ export function RootErrorBoundary() {
 }
 ```
 
-```tsx !#58 host/src/AppRouter.tsx
-import { useProtectedDataQueries, useIsBootstrapping, AppRouter as FireflyAppRouter } from "@squide/firefly";
+```tsx !#58 host/src/App.tsx
+import { useProtectedDataQueries, useIsBootstrapping, AppRouter } from "@squide/firefly";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ApiError, SessionContext, type Session } from "@sample/shared";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
@@ -193,9 +193,9 @@ function BootstrappingRoute() {
     );
 }
 
-export function AppRouter() {
+export function App() {
     return (
-        <FireflyAppRouter 
+        <AppRouter 
             waitForMsw
             waitForProtectedData
         >
@@ -218,7 +218,7 @@ export function AppRouter() {
                     />
                 );
             }}
-        </FireflyAppRouter>
+        </AppRouter>
     );
 }
 ```
@@ -227,9 +227,9 @@ export function AppRouter() {
 
 Unauthorized requests are a special case that shouldn't be handled by an error boundary, as this would cause an **infinite loop** with the application's authentication boundary.
 
-To address this, when the server returns a `401` status code, the `useProtectedDataQueries` hook instructs Squide to immediately render the page, triggering the authentication boundary, that will eventually redirect the user to a login page.
+To handle this, when the server returns a `401` status code, the `useProtectedDataQueries` hook instructs Squide to immediately render the page, triggering the authentication boundary, that will eventually redirect the user to a login page.
 
-Since Squide handles everything behind the scenes, there is nothing specific for you to do as a consumer, except to register an `AuthenticationBoundary` component and provide an `isUnauthorizedError` handler to the `useProtectedDataQueries` hook.
+Since Squide manages this process behind the scenes, you only need to register an `AuthenticationBoundary` component and provide an `isUnauthorizedError` handler to the `useProtectedDataQueries` hook.
 
 ```tsx host/src/AuthenticationBoundary.tsx
 import { useContext } from "react";
@@ -246,6 +246,10 @@ export function AuthenticationBoundary() {
     return <Navigate to="/login" />;
 }
 ```
+
+!!!info
+The `registerHost` function is registered as a [local module](../registration/registerLocalModules.md) of the host application.
+!!!
 
 ```tsx !#8 host/src/registerHost.tsx
 import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
@@ -268,12 +272,8 @@ export function registerHost() {
 }
 ```
 
-!!!info
-The `registerHost` function is registered as a [local module](../registration/registerLocalModules.md) of the host application.
-!!!
-
-```tsx !#29 host/src/AppRouter.tsx
-import { useProtectedDataQueries, useIsBootstrapping, AppRouter as FireflyAppRouter } from "@squide/firefly";
+```tsx !#29 host/src/App.tsx
+import { useProtectedDataQueries, useIsBootstrapping, AppRouter } from "@squide/firefly";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ApiError, SessionContext, type Session } from "@sample/shared";
 
@@ -314,9 +314,9 @@ function BootstrappingRoute() {
     );
 }
 
-export function AppRouter() {
+export function App() {
     return (
-        <FireflyAppRouter 
+        <AppRouter 
             waitForMsw
             waitForProtectedData
         >
@@ -338,7 +338,7 @@ export function AppRouter() {
                     />
                 );
             }}
-        </FireflyAppRouter>
+        </AppRouter>
     );
 }
 ```

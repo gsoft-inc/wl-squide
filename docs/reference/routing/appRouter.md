@@ -31,8 +31,37 @@ The `AppRouter` component is required for any Squide application.
 
 ### Define a router provider
 
-```tsx !#17-30 host/src/AppRouter.tsx
-import { useIsBootstrapping, AppRouter as FireflyAppRouter } from "@squide/firefly";
+The `rootRoute` component provided as an argument to the `AppRouter` rendering function must always be rendered as a parent of the `registeredRoutes`.
+
+```tsx !#8-16 host/src/App.tsx
+import { AppRouter } from "@squide/firefly";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
+export function App() {
+    <AppRouter waitForMsw={false}>
+        {({ rootRoute, registeredRoutes, routerProviderProps }) => {
+            return (
+                <RouterProvider
+                    router={createBrowserRouter([
+                        {
+                            element: rootRoute,
+                            children: registeredRoutes
+                        }
+                    ])}
+                    {...routerProviderProps}
+                />
+            );
+        }}
+    </AppRouter>
+}
+```
+
+### Define a loading component
+
+A `BootstrappingRoute` component is introduced in the following example because the [useIsBootstrapping](../routing/useIsBootstrapping.md) hook must be rendered as a child of `rootRoute`.
+
+```tsx !#5-7,23 host/src/App.tsx
+import { useIsBootstrapping, AppRouter } from "@squide/firefly";
 import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
 
 function BootstrappingRoute() {
@@ -43,9 +72,9 @@ function BootstrappingRoute() {
     return <Outlet />;
 }
 
-export function AppRouter() {
+export function App() {
     return (
-        <FireflyAppRouter waitForMsw={false}>
+        <AppRouter waitForMsw={false}>
             {({ rootRoute, registeredRoutes, routerProviderProps }) => {
                 return (
                     <RouterProvider
@@ -64,14 +93,17 @@ export function AppRouter() {
                     />
                 );
             }}
-        </FireflyAppRouter>
+        </AppRouter>
     );
 }
 ```
 
+
 ### Define a root error boundary
 
-In this context, an error boundary is a React Router [errorElement](https://reactrouter.com/en/main/route/error-element).
+A React Router [errorElement](https://reactrouter.com/en/main/route/error-element) retrieves the current error using the [useRouteError](https://reactrouter.com/en/main/hooks/use-route-error) hook.
+
+The root error boundary should always wrap the `registeredRoutes` and, when application, the `BootstrapingRoute` component.
 
 ```tsx host/src/RootErrorBoundary.tsx
 import { useRouteError } from "react-router-dom";
@@ -88,22 +120,14 @@ export function RootErrorBoundary() {
 }
 ```
 
-```tsx !#25 host/src/AppRouter.tsx
-import { useIsBootstrapping, AppRouter as FireflyAppRouter } from "@squide/firefly";
-import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
+```tsx !#16 host/src/App.tsx
+import { AppRouter } from "@squide/firefly";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
-function BootstrappingRoute() {
-    if (useIsBootstrapping()) {
-        return <div>Loading...</div>;
-    }
-
-    return <Outlet />;
-}
-
-export function AppRouter() {
+export function App() {
     return (
-        <FireflyAppRouter waitForMsw={false}>
+        <AppRouter waitForMsw={false}>
             {({ rootRoute, registeredRoutes, routerProviderProps }) => {
                 return (
                     <RouterProvider
@@ -112,7 +136,6 @@ export function AppRouter() {
                                 element: rootRoute,
                                 children: [
                                     {
-                                        element: <BootstrappingRoute />,
                                         errorElement: <RootErrorBoundary />,
                                         children: registeredRoutes
                                     }
@@ -123,55 +146,46 @@ export function AppRouter() {
                     />
                 );
             }}
-        </FireflyAppRouter>
+        </AppRouter>
     );
 }
 ```
 
 ### Delay rendering until MSW is ready
 
-```tsx !#14 host/src/AppRouter.tsx
-import { useIsBootstrapping, AppRouter as FireflyAppRouter } from "@squide/firefly";
-import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
+```tsx !#7 host/src/App.tsx
+import { AppRouter } from "@squide/firefly";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-function BootstrappingRoute() {
-    if (useIsBootstrapping()) {
-        return <div>Loading...</div>;
-    }
-
-    return <Outlet />;
-}
-
-export function AppRouter() {
+export function App() {
     return (
-        <FireflyAppRouter waitForMsw={true}>
+        <AppRouter 
+            waitForMsw={true}
+        >
             {({ rootRoute, registeredRoutes, routerProviderProps }) => {
                 return (
                     <RouterProvider
                         router={createBrowserRouter([
                             {
                                 element: rootRoute,
-                                children: [
-                                    {
-                                        element: <BootstrappingRoute />,
-                                        children: registeredRoutes
-                                    }
-                                ]
+                                children: registeredRoutes
                             }
                         ])}
                         {...routerProviderProps}
                     />
                 );
             }}
-        </FireflyAppRouter>
+        </AppRouter>
     );
 }
 ```
 
 ### Delay rendering until the public data is ready
 
-```tsx !#24 host/src/AppRouter.tsx
-import { useIsBootstrapping, usePublicDataQueries, AppRouter as FireflyAppRouter } from "@squide/firefly";
+A `BootstrappingRoute` component is introduced in the following example because the [usePublicDataQueries](../tanstack-query/usePublicDataQueries.md) hook must be rendered as a child of `rootRoute`.
+
+```tsx !#7,24 host/src/App.tsx
+import { useIsBootstrapping, usePublicDataQueries, AppRouter } from "@squide/firefly";
 import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
 import { FeatureFlagsContext } from "@sample/shared";
 import { getFeatureFlagsQuery } from "./getFeatureFlagsQuery.ts";
@@ -190,9 +204,9 @@ function BootstrappingRoute() {
     );
 }
 
-export function AppRouter() {
+export function App() {
     return (
-        <FireflyAppRouter 
+        <AppRouter 
             waitForMsw={true}
             waitForPublicData={true}
         >
@@ -214,15 +228,17 @@ export function AppRouter() {
                     />
                 );
             }}
-        </FireflyAppRouter>
+        </AppRouter>
     );
 }
 ```
 
 ### Delay rendering until the protected data is ready
 
-```tsx !#27 host/src/AppRouter.tsx
-import { useIsBootstrapping, useProtectedDataQueries, AppRouter as FireflyAppRouter } from "@squide/firefly";
+A `BootstrappingRoute` component is introduced in the following example because the [useProtectedDataQueries](../tanstack-query/useProtectedDataQueries.md) hook must be rendered as a child of `rootRoute`.
+
+```tsx !#7-10,27 host/src/App.tsx
+import { useIsBootstrapping, useProtectedDataQueries, AppRouter } from "@squide/firefly";
 import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
 import { SessionContext, isApiError } from "@sample/shared";
 import { getSessionQuery } from "./getSessionQuery.ts";
@@ -244,9 +260,9 @@ function BootstrappingRoute() {
     );
 }
 
-export function AppRouter() {
+export function App() {
     return (
-        <FireflyAppRouter 
+        <AppRouter 
             waitForMsw={true}
             waitForProtectedData={true}
         >
@@ -268,7 +284,7 @@ export function AppRouter() {
                     />
                 );
             }}
-        </FireflyAppRouter>
+        </AppRouter>
     );
 }
 ```

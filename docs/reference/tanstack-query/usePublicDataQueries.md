@@ -6,10 +6,10 @@ toc:
 
 # usePublicDataQueries
 
-Execute the specified [TanStack queries](https://tanstack.com/query/latest/docs/framework/react/reference/useQueries) when the modules are ready and, when applicable, [MSW](https://mswjs.io/) is ready.
+Execute the specified [TanStack queries](https://tanstack.com/query/latest/docs/framework/react/reference/useQueries) once the modules are ready and, if applicable, [MSW](https://mswjs.io/) is also ready.
 
 !!!warning
-Only use this hook for public global data that is fetched by your application `AppRouter` component, do not use this hook in product feature components.
+Use this hook for public global data fetched during the **bootstrapping phase** of your application. Avoid using it in product feature components.
 !!!
 
 ## Reference
@@ -28,14 +28,16 @@ An array of query response data. The order returned is the same as the input ord
 
 ### Throws
 
-If an unmanaged error occur while performing any of the fetch requests, a [GlobalDataQueriesError](./isGlobalDataQueriesError.md#globaldataquerieserror) will be thrown.
+If an unmanaged error occur while performing any of the fetch requests, a [GlobalDataQueriesError](./isGlobalDataQueriesError.md#globaldataquerieserror) is thrown.
 
 ## Usage
 
 ### Define queries
 
-```tsx !#6-21,38 host/src/AppRouter.tsx
-import { usePublicDataQueries, useIsBootstrapping, AppRouter as FireflyAppRouter } from "@squide/firefly";
+A `BootstrappingRoute` component is introduced in the following example because this hook must be rendered as a child of `rootRoute`.
+
+```tsx !#6-19,36,46 host/src/App.tsx
+import { usePublicDataQueries, useIsBootstrapping, AppRouter } from "@squide/firefly";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ApiError, FeatureFlagsContext, type FeatureFlags } from "@sample/shared";
 
@@ -50,9 +52,7 @@ function BootstrappingRoute() {
                     throw new ApiError(response.status, response.statusText);
                 }
 
-                const data = await response.json();
-
-                return data as FeatureFlags;
+                return (await response.json()) as FeatureFlags;
             }
         }
     ]);
@@ -68,9 +68,9 @@ function BootstrappingRoute() {
     );
 }
 
-export function AppRouter() {
+export function App() {
     return (
-        <FireflyAppRouter 
+        <AppRouter 
             waitForMsw
             waitForPublicData
         >
@@ -92,14 +92,14 @@ export function AppRouter() {
                     />
                 );
             }}
-        </FireflyAppRouter>
+        </AppRouter>
     );
 }
 ```
 
 ### Handle fetch errors
 
-Errors from the `useIsPublicDataQueries` hook are typically unmanaged and should be handled by an error boundary. In this context, an error boundary is a React Router [errorElement](https://reactrouter.com/en/main/route/error-element).
+This hook throws [GlobalDataQueriesError](./isGlobalDataQueriesError.md#globaldataquerieserror) instances, which are typically **unmanaged** and should be handled by an error boundary. To assert that an error is an instance of `GlobalDataQueriesError`, use the [isGlobalDataQueriesError](./isGlobalDataQueriesError.md) function.
 
 ```tsx !#10 host/src/RootErrorBoundary.tsx
 import { useLogger, isGlobalDataQueriesError } from "@squide/firefly";
@@ -125,8 +125,8 @@ export function RootErrorBoundary() {
 }
 ```
 
-```tsx !#50 host/src/AppRouter.tsx
-import { usePublicDataQueries, useIsBootstrapping, AppRouter as FireflyAppRouter } from "@squide/firefly";
+```tsx !#48 host/src/App.tsx
+import { usePublicDataQueries, useIsBootstrapping, AppRouter } from "@squide/firefly";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ApiError, FeatureFlagsContext, type FeatureFlags } from "@sample/shared";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
@@ -142,9 +142,7 @@ function BootstrappingRoute() {
                     throw new ApiError(response.status, response.statusText);
                 }
 
-                const data = await response.json();
-
-                return data as FeatureFlags;
+                return (await response.json()) as FeatureFlags;
             }
         }
     ]);
@@ -160,9 +158,9 @@ function BootstrappingRoute() {
     );
 }
 
-export function AppRouter() {
+export function App() {
     return (
-        <FireflyAppRouter 
+        <AppRouter 
             waitForMsw
             waitForPublicData
         >
@@ -185,7 +183,7 @@ export function AppRouter() {
                     />
                 );
             }}
-        </FireflyAppRouter>
+        </AppRouter>
     );
 }
 ```

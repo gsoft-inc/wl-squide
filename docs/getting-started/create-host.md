@@ -50,7 +50,6 @@ host
 ├── public
 ├──── index.html
 ├── src
-├──── AppRouter.tsx
 ├──── App.tsx
 ├──── RootLayout.tsx
 ├──── HomePage.tsx
@@ -118,8 +117,6 @@ root.render(
 );
 ```
 
-Then, create an abstraction over the `AppRouter`
-
 Then, render the [AppRouter](../reference/routing/appRouter.md) component to define a React Router [browser instance](https://reactrouter.com/en/main/routers/create-browser-router) configured with the registered routes:
 
 ```tsx host/src/App.tsx
@@ -128,14 +125,20 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 export function App() {
     return (
-        <AppRouter
-            fallbackElement={<div>Loading...</div>}
-            errorElement={<div>An error occured!</div>}
-            waitForMsw={false}
-        >
-            {(routes, providerProps) => (
-                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
-            )}
+        <AppRouter waitForMsw={false}>
+            {({ rootRoute, registeredRoutes, routerProviderProps }) => {
+                return (
+                    <RouterProvider
+                        router={createBrowserRouter([
+                            {
+                                element: rootRoute,
+                                children: registeredRoutes
+                            }
+                        ])}
+                        {...routerProviderProps}
+                    />
+                );
+            }}
         </AppRouter>
     );
 }
@@ -229,7 +232,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 };
 ```
 
-And an [hoisted route](../reference/runtime/runtime-class.md#register-an-hoisted-route) to render the `RootLayout` and the [ManagedRoutes](../reference/routing/ManagedRoutes.md) placeholder:
+And an [hoisted route](../reference/runtime/runtime-class.md#register-an-hoisted-route) to render the `RootLayout` and the [ManagedRoutes](../reference/routing/managedRoutes.md) placeholder:
 
 ```tsx !#8,12,15 host/src/register.tsx
 import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
@@ -257,7 +260,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 ```
 
 !!!info
-The [ManagedRoutes](../reference/routing/ManagedRoutes.md) placeholder indicates where routes that are neither hoisted or nested with a [parentPath](../reference/runtime/runtime-class.md#register-nested-navigation-items) or [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option will be rendered. In this example, the homepage route is considered as a managed route and will be rendered under the `ManagedRoutes` placeholder.
+The [ManagedRoutes](../reference/routing/managedRoutes.md) placeholder indicates where routes that are neither hoisted or nested with a [parentPath](../reference/runtime/runtime-class.md#register-nested-navigation-items) or [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option will be rendered. In this example, the homepage route is considered as a managed route and will be rendered under the `ManagedRoutes` placeholder.
 !!!
 
 Finally, update the bootstrapping code to [register](../reference/registration/registerLocalModules.md) the newly created local module:

@@ -6,7 +6,7 @@ toc:
 
 # useIsBootstrapping
 
-Indicate whether or not the application is currently being bootstrapped, e.g. registering the modules, registering the deferred registrations, getting [MSW](https://mswjs.io/) ready, fetching the global data, etc..
+Indicate whether the application is currently being bootstrapped, such as registering modules, handling deferred registrations, preparing [MSW](https://mswjs.io/), fetching global data, etc.
 
 ## Reference
 
@@ -24,8 +24,10 @@ A `boolean` value indicating whether or not the application is bootstrapping.
 
 ## Usage
 
-```tsx host/src/AppRouter.tsx
-import { useIsBootstrapping, AppRouter as FireflyAppRouter } from "@squide/firefly";
+A `BootstrappingRoute` component is introduced in the following example because this hook must be rendered as a child of `rootRoute`.
+
+```tsx !#5 host/src/App.tsx
+import { useIsBootstrapping, AppRouter } from "@squide/firefly";
 import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
 
 function BootstrappingRoute() {
@@ -36,9 +38,9 @@ function BootstrappingRoute() {
     return <Outlet />;
 }
 
-export function AppRouter() {
+export function App() {
     return (
-        <FireflyAppRouter waitForMsw={false}>
+        <AppRouter waitForMsw={false}>
             {({ rootRoute, registeredRoutes, routerProviderProps }) => {
                 return (
                     <RouterProvider
@@ -57,7 +59,7 @@ export function AppRouter() {
                     />
                 );
             }}
-        </FireflyAppRouter>
+        </AppRouter>
     );
 }
 ```

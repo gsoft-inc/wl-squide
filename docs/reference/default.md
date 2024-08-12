@@ -17,7 +17,7 @@ toc:
 ### Runtime
 
 - [FireflyRuntime class](./runtime/runtime-class.md)
-- [RuntimeContext](./runtime/runtime-context.md)
+- [RuntimeContext](./runtime/runtimeContext.md)
 - [useRuntime](./runtime/useRuntime.md)
 - [useRuntimeMode](./runtime/useRuntimeMode.md)
 - [useRoutes](./runtime/useRoutes.md)
@@ -35,7 +35,7 @@ toc:
 ### Routing
 
 - [AppRouter](./routing/AppRouter.md)
-- [ManagedRoutes](./routing/ManagedRoutes.md)
+- [ManagedRoutes](./routing/managedRoutes.md)
 - [useRenderedNavigationItems](./routing/useRenderedNavigationItems.md)
 - [useIsBoostrapping](./routing/useIsBootstrapping.md)
 - [useRouteMatch](./routing/useRouteMatch.md)

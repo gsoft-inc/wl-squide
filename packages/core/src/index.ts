@@ -7,7 +7,6 @@ export * from "./runtime/RuntimeContext.ts";
 export * from "./runtime/RuntimeLogger.ts";
 export * from "./runtime/useEventBus.ts";
 export * from "./runtime/useLogger.ts";
-export * from "./runtime/useLogOnceLogger.ts";
 export * from "./runtime/usePlugin.ts";
 export * from "./runtime/useRuntimeMode.ts";
 

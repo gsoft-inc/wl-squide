@@ -12,7 +12,7 @@ const consoleLogger = new ConsoleLogger();
 
 const runtime = new FireflyRuntime({
     useMsw: !!process.env.USE_MSW,
-    plugins: [createI18NextPlugin()],
+    plugins: [x => createI18NextPlugin(x)],
     loggers: [consoleLogger]
 });
 

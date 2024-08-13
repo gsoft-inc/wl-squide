@@ -73,7 +73,6 @@ toc:
 
 ### Mock Service Worker
 
-- [useIsMswReady](./msw/useIsMswReady.md)
 - [setMswAsReady](./msw/setMswAsReady.md)
 
 ### i18next

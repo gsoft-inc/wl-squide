@@ -184,10 +184,14 @@ export function useModuleRegistrationStatusDispatcher(areModulesRegisteredValue:
 }
 
 export function useMswStatusDispatcher(isMswReadyValue: boolean, dispatch: AppRouterDispatch) {
+    const logger = useLogger();
+
     useEffect(() => {
         const handleMswStateChange = () => {
             if (!isMswReadyValue && isMswReady()) {
                 dispatch({ type: "msw-ready" });
+
+                logger.debug("[squide] %cMSW is ready%c.", "color: white; background-color: green;", "");
             }
         };
 
@@ -196,7 +200,7 @@ export function useMswStatusDispatcher(isMswReadyValue: boolean, dispatch: AppRo
         return () => {
             removeMswStateChangedListener(handleMswStateChange);
         };
-    }, [isMswReadyValue, dispatch]);
+    }, [isMswReadyValue, dispatch, logger]);
 }
 
 let dispatchProxyFactory: ((reactDispatch: AppRouterDispatch) => AppRouterDispatch) | undefined;

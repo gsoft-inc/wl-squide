@@ -159,7 +159,7 @@ import {
     type RenderSectionFunction
 } from "@squide/firefly";
 
-const renderItem: RenderItemFunction = (item, index, level) => {
+const renderItem: RenderItemFunction = (item, key) => {
     // To keep thing simple, this sample doesn't support nested navigation items.
     // For an example including support for nested navigation items, have a look at
     // https://gsoft-inc.github.io/wl-squide/reference/routing/userenderednavigationitems/
@@ -170,7 +170,7 @@ const renderItem: RenderItemFunction = (item, index, level) => {
     const { label, linkProps, additionalProps } = item;
 
     return (
-        <li key={`${level}-${index}`}>
+        <li key={key}>
             <Link {...linkProps} {...additionalProps}>
                 {label}
             </Link>
@@ -178,9 +178,9 @@ const renderItem: RenderItemFunction = (item, index, level) => {
     );
 };
 
-const renderSection: RenderSectionFunction = (elements, index, level) => {
+const renderSection: RenderSectionFunction = (elements, key) => {
     return (
-        <ul key={`${level}-${index}`}>
+        <ul key={key}>
             {elements}
         </ul>
     );
@@ -468,7 +468,8 @@ If you are experiencing issues with this guide:
     - `[squide] 1/4 Local module registration completed.`
     - `[squide] Found 1 remote module to register.`
     - `[squide] 1/1 Loading module "register" of "remote1".`
-    - `[squide] 1/1 Completed registration for module "register" of remote "remote1"`
+    - `[squide] 1/1 Registering module "register" of remote "remote1".`
+    - `[squide] 1/1 The registration of the remote "remote1" is completed.`
 - Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/host).
 - Refer to the [troubleshooting](../troubleshooting.md) page.
 

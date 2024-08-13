@@ -9,22 +9,18 @@ export interface FireflyRuntimeOptions extends RuntimeOptions {
 }
 
 export class FireflyRuntime extends ReactRouterRuntime {
-    readonly #mswPlugin?: MswPlugin;
     readonly #useMsw: boolean;
 
     constructor({ plugins, useMsw, ...options }: FireflyRuntimeOptions = {}) {
         if (useMsw) {
-            const mswPlugin = new MswPlugin();
-
             super({
                 plugins: [
                     ...(plugins ?? []),
-                    mswPlugin
+                    runtime => new MswPlugin(runtime)
                 ],
                 ...options
             });
 
-            this.#mswPlugin = mswPlugin;
             this.#useMsw = true;
         } else {
             super({
@@ -37,7 +33,9 @@ export class FireflyRuntime extends ReactRouterRuntime {
     }
 
     registerRequestHandlers(handlers: RequestHandler[]) {
-        if (!this.#mswPlugin) {
+        const mswPlugin = this.getPlugin(MswPlugin.name) as MswPlugin;
+
+        if (!mswPlugin) {
             throw new Error("[squide] Cannot register the provided MSW request handlers because the runtime hasn't been initialized with MSW. Did you instanciate the FireflyRuntime with the \"useMsw\" option?");
         }
 
@@ -45,16 +43,18 @@ export class FireflyRuntime extends ReactRouterRuntime {
             throw new Error("[squide] Cannot register an MSW request handlers once the modules are registered. Are you trying to register an MSW request handler in a deferred registration function? Only navigation items can be registered in a deferred registration function.");
         }
 
-        this.#mswPlugin.registerRequestHandlers(handlers);
+        mswPlugin.registerRequestHandlers(handlers);
     }
 
     // Must define a return type otherwise we get an "error TS2742: The inferred type of 'requestHandlers' cannot be named" error.
     get requestHandlers(): RequestHandler[] {
-        if (!this.#mswPlugin) {
+        const mswPlugin = this.getPlugin(MswPlugin.name) as MswPlugin;
+
+        if (!mswPlugin) {
             throw new Error("[squide] Cannot retrieve MSW request handlers because the runtime hasn't been initialized with MSW. Did you instanciate the FireflyRuntime with the \"useMsw\" option?");
         }
 
-        return this.#mswPlugin.requestHandlers;
+        return mswPlugin.requestHandlers;
     }
 
     registerRoute(route: Route, options: RegisterRouteOptions = {}) {

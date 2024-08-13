@@ -5,10 +5,12 @@ import { RuntimeLogger } from "./RuntimeLogger.ts";
 
 export type RuntimeMode = "development" | "production";
 
+export type PluginFactory = (runtime: Runtime) => Plugin;
+
 export interface RuntimeOptions {
     mode?: RuntimeMode;
     loggers?: Logger[];
-    plugins?: Plugin[];
+    plugins?: PluginFactory[];
 }
 
 export interface RegisterRouteOptions {
@@ -31,15 +33,11 @@ export abstract class Runtime<TRoute = unknown, TNavigationItem = unknown> {
 
     constructor({ mode = "development", loggers, plugins = [] }: RuntimeOptions = {}) {
         this._mode = mode;
-        this._plugins = plugins;
         this._logger = new RuntimeLogger(loggers);
         this._eventBus = new EventBus({ logger: this._logger });
 
-        this._plugins.forEach(x => {
-            if (x.setRuntime) {
-                x.setRuntime(this);
-            }
-        });
+        // It's important to instanciate the plugins once all the properties are set.
+        this._plugins = plugins.map(x => x(this));
     }
 
     abstract registerRoute(route: TRoute, options?: RegisterRouteOptions): void;

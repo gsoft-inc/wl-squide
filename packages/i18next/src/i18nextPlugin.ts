@@ -31,7 +31,6 @@ export function findSupportedPreferredLanguage<T extends string>(userPreferredLa
 }
 
 export class i18nextPlugin<T extends string = string> extends Plugin {
-    #runtime?: Runtime;
     #currentLanguage?: T;
 
     readonly #supportedLanguages: T[];
@@ -39,8 +38,8 @@ export class i18nextPlugin<T extends string = string> extends Plugin {
     readonly #languageDetector: LanguageDetector;
     readonly #registry = new i18nextInstanceRegistry();
 
-    constructor(supportedLanguages: T[], fallbackLanguage: T, queryStringKey: string, { detection }: i18nextPluginOptions = {}) {
-        super(i18nextPlugin.name);
+    constructor(supportedLanguages: T[], fallbackLanguage: T, queryStringKey: string, { detection }: i18nextPluginOptions = {}, runtime: Runtime) {
+        super(i18nextPlugin.name, runtime);
 
         this.#supportedLanguages = supportedLanguages;
         this.#fallbackLanguage = fallbackLanguage;
@@ -52,14 +51,10 @@ export class i18nextPlugin<T extends string = string> extends Plugin {
         });
     }
 
-    _setRuntime(runtime: Runtime) {
-        this.#runtime = runtime;
-    }
-
     registerInstance(key: string, instance: i18n) {
         this.#registry.add(key, instance);
 
-        this.#runtime?.logger.debug(`[squide] Registered a new i18next instance with key "${key}":`, instance);
+        this._runtime.logger.debug(`[squide] Registered a new i18next instance with key "${key}":`, instance);
     }
 
     getInstance(key: string) {
@@ -79,12 +74,12 @@ export class i18nextPlugin<T extends string = string> extends Plugin {
         if (detectedLanguage) {
             // The navigator language preferences could be something like ["en-US", "en", "fr-CA", "fr"].
             if (Array.isArray(detectedLanguage)) {
-                this.#runtime?.logger.debug(`[squide] Detected ${detectedLanguage.map(x => `"${x}"`).join(",")} as user language${detectedLanguage.length >= 1 ? "s" : ""}.`);
+                this._runtime.logger.debug(`[squide] Detected ${detectedLanguage.map(x => `"${x}"`).join(",")} as user language${detectedLanguage.length >= 1 ? "s" : ""}.`);
 
                 // Ensure the navigator language preferences includes at least one supported language.
                 detectedLanguage = findSupportedPreferredLanguage(detectedLanguage, this.#supportedLanguages);
             } else {
-                this.#runtime?.logger.debug(`[squide] Detected "${detectedLanguage}" as user language.`);
+                this._runtime.logger.debug(`[squide] Detected "${detectedLanguage}" as user language.`);
 
                 // Ensure the navigator language preferences includes at least one supported language.
                 detectedLanguage = findSupportedPreferredLanguage([detectedLanguage], this.#supportedLanguages);
@@ -97,7 +92,7 @@ export class i18nextPlugin<T extends string = string> extends Plugin {
 
         this.#currentLanguage = detectedLanguage as T;
 
-        this.#runtime?.logger.debug(`[squide] The language has been set to "${this.#currentLanguage}".`);
+        this._runtime.logger.debug(`[squide] The language has been set to "${this.#currentLanguage}".`);
     }
 
     get currentLanguage() {
@@ -120,7 +115,7 @@ export class i18nextPlugin<T extends string = string> extends Plugin {
 
             this.#currentLanguage = language;
 
-            this.#runtime?.logger.debug(`[squide] The language has been changed to "${this.#currentLanguage}".`);
+            this._runtime.logger.debug(`[squide] The language has been changed to "${this.#currentLanguage}".`);
         }
     }
 }

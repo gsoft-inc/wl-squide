@@ -24,17 +24,17 @@ Create a new application (we'll refer to ours as `remote-module`), then open a t
 +++ pnpm
 ```bash
 pnpm add -D @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss @types/react @types/react-dom
-pnpm add @squide/firefly react react-dom react-router-dom react-error-boundary
+pnpm add @squide/firefly react react-dom react-router-dom react-error-boundary @tanstack/react-query
 ```
 +++ yarn
 ```bash
 yarn add -D @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss @types/react @types/react-dom
-yarn add @squide/firefly react react-dom react-router-dom react-error-boundary
+yarn add @squide/firefly react react-dom react-router-dom react-error-boundary @tanstack/react-query
 ```
 +++ npm
 ```bash
 npm install -D @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss @types/react @types/react-dom
-npm install @squide/firefly react react-dom react-router-dom react-error-boundary
+npm install @squide/firefly react react-dom react-router-dom react-error-boundary @tanstack/react-query
 ```
 +++
 
@@ -71,7 +71,7 @@ Then, ensure that you are developing your module using [ESM syntax](https://deve
 
 Next, register the remote module routes and navigation items with the [registerRoute](/reference/runtime/runtime-class.md#register-routes) and [registerNavigationItem](/reference/runtime/runtime-class.md#register-navigation-items) functions:
 
-```tsx !#5-8,10-13 remote-module/src/register.tsx
+```tsx !#5-8,10-14 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Page } from "./Page.tsx";
 
@@ -82,6 +82,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
+        $key: "remote-page",
         $label: "Remote/Page",
         to: "/remote/page"
     });
@@ -185,8 +186,8 @@ Start the `host` and the `remote-module` applications in development mode using 
 If you are experiencing issues with this guide:
 
 - Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong:
-    - `[squide] The following route has been registered. Newly registered item: ...`
-    - `[squide] The following navigation item has been registered to the "root" menu for a total of 2 items. Newly registered item: ...`
+    - `[squide] The following route has been registered.`
+    - `[squide] The following static navigation item has been registered to the "root" menu for a total of 2 static items.`
 - Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/remote-module).
 - Refer to the [troubleshooting](../troubleshooting.md) page.
 

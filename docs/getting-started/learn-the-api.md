@@ -88,7 +88,7 @@ import { FireflyRuntime } from "@squide/firefly";
 import { MyPlugin } from "@sample/my-plugin";
 
 const runtime = new FireflyRuntime({
-    plugins: [new MyPlugin()]
+    plugins: [x => new MyPlugin(x)]
 });
 ```
 

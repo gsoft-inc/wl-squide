@@ -18,9 +18,27 @@ const runtime = new FireflyRuntime(options?: { mode?, useMsw?, loggers?, plugins
 
 - `options`: An optional object literal of options:
     - `mode`: An optional mode to optimize Squide for `production`. Values are `"development"` (default) and `"production"`.
-    - `useMsw`: An optional `boolean` value indicating whether or not to create the runtime with MSW support.
+    - `useMsw`: An optional `boolean` value indicating whether or not to create the runtime with [Mock Service Work](https://mswjs.io/) (MSW) support.
     - `loggers`: An optional array of `Logger` instances.
-    - `plugins`: An optional array of custom plugin instances.
+    - `plugins`: An optional array of `Plugin` factory functions.
+
+### Methods
+
+- `registerRoute(route, options?)`: Register a route.
+- `registerNavigationItem(navigationItem, options?)`: Register a navigation item.
+- `getNavigationItems(menuId?)`: Retrieve the registered navigation items.
+- `registerRequestHandlers(handlers)`: Register the MSW request handlers.
+- `getPlugin(name)`: Retrieve the registered plugin by the specified `name`.
+
+### Getters
+
+- `mode`: Retrieve the runtime mode.
+- `routes`: Retrieve the registered routes.
+- `requestHandlers`: Retrieve the registered MSW request handlers.
+- `plugins`: Retrieve the registered plugins.
+- `logger`: Retrieve the runtime logger.
+- `eventBus`: Retrieve the runtime event bus.
+- `isMswEnabled`: Indicate whether or not MSW is enabled.
 
 ## Usage
 
@@ -497,12 +515,14 @@ runtime.eventBus.dispatch("write-to-host", "Hello host!");
 
 ### Register a plugin
 
+The plugin factory function receives the `Runtime` instance as parameter.
+
 ```ts !#5
 import { FireflyRuntime } from "@squide/firefly";
 import { MyPlugin } from "@sample/my-plugin";
 
 const runtime = new FireflyRuntime({
-    plugins: [new MyPlugin()]
+    plugins: [x => new MyPlugin(x)]
 });
 ```
 

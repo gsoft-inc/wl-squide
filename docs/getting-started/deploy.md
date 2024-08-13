@@ -36,8 +36,9 @@ Or by adding a `_redirects` file into the Netlify publish directory:
 Configure the remote modules production URL:
 
 ```ts
-import { RemoteDefinition } from "@squide/firefly-webpack-configs";
-
+/**
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition[]}
+ */
 const Remotes: RemoteDefinition[] = [
     {
         name: "remote1",

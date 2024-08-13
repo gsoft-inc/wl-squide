@@ -6,7 +6,7 @@ toc:
 
 # usePublicDataQueries
 
-Execute the specified [TanStack queries](https://tanstack.com/query/latest/docs/framework/react/reference/useQueries) once the modules are ready and, if applicable, [MSW](https://mswjs.io/) is also ready.
+Execute the specified [TanStack queries](https://tanstack.com/query/latest/docs/framework/react/reference/useQueries) once the modules are ready and, if applicable, [Mock Service Worker](https://mswjs.io/) is also ready.
 
 !!!warning
 Use this hook for public global data fetched during the **bootstrapping phase** of your application. Avoid using it in product feature components.

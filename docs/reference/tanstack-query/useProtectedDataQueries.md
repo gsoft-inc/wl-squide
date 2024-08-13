@@ -6,7 +6,7 @@ toc:
 
 # useProtectedDataQueries
 
-Execute the specified [TanStack queries](https://tanstack.com/query/latest/docs/framework/react/reference/useQueries) when the modules are ready, the active route is protected and, when applicable, [MSW](https://mswjs.io/) is ready.
+Execute the specified [TanStack queries](https://tanstack.com/query/latest/docs/framework/react/reference/useQueries) when the modules are ready, the active route is protected and, when applicable, [Mock Service Worker](https://mswjs.io/) is ready.
 
 !!!warning
 Use this hook for protected global data fetched during the **bootstrapping phase** of your application. Avoid using it in product feature components.

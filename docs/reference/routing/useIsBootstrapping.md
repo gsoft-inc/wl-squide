@@ -6,7 +6,7 @@ toc:
 
 # useIsBootstrapping
 
-Indicate whether the application is currently being bootstrapped, such as registering modules, handling deferred registrations, preparing [MSW](https://mswjs.io/), fetching global data, etc.
+Indicate whether the application is currently being bootstrapped, such as registering modules, handling deferred registrations, preparing [Mock Service Worker](https://mswjs.io/), fetching global data, etc.
 
 ## Reference
 

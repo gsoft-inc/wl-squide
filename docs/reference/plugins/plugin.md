@@ -7,23 +7,24 @@ toc:
 
 An abstract base class to define a plugin.
 
+## Protected members
+
+- `_runtime`: Access the plugin `Runtime` instance.
+
+## Getters
+
+- `name`: Return the name of the plugin.
+
 ## Usage
 
 ### Define a plugin
 
-```ts !#3 my-plugin/src/myPlugin.ts
-import { Plugin, type FireflyRuntime } from "@squide/firefly";
+```ts my-plugin/src/myPlugin.ts
+import { Plugin, type Runtime } from "@squide/firefly";
 
 export class MyPlugin extends Plugin {
-    #runtime: FireflyRuntime;
-
-    constructor() {
-        super(MyPlugin.name);
-    }
-
-    // An optional method that can be implemented to get an hold on the current runtime instance.
-    setRuntime(runtime: FireflyRuntime) {
-        this.#runtime = runtime;
+    constructor(runtime: Runtime) {
+        super(MyPlugin.name, runtime);
     }
 }
 ```
@@ -35,8 +36,24 @@ import { FireflyRuntime } from "@squide/firefly";
 import { MyPlugin } from "@sample/my-plugin";
 
 const runtime = new FireflyRuntime({
-    plugins: [new MyPlugin()]
+    plugins: [x => new MyPlugin(x)]
 });
+```
+
+### Use a plugin runtime instance
+
+```ts !#9 my-plugin/src/myPlugin.ts
+import { Plugin, type Runtime } from "@squide/firefly";
+
+export class MyPlugin extends Plugin {
+    constructor(runtime: Runtime) {
+        super(MyPlugin.name, runtime);
+    }
+
+    sayHello() {
+        this._runtime.logger.debug("Hello!");
+    }
+}
 ```
 
 ### Retrieve a plugin from a runtime instance
@@ -52,11 +69,11 @@ const myPlugin = runtime.getPlugin(MyPlugin.name) as MyPlugin;
 We recommend pairing a plugin definition with a custom function to retrieve the plugin from a runtime instance.
 
 ```ts !#9-11 my-plugin/src/myPlugin.ts
-import { Plugin, type FireflyRuntime } from "@squide/firefly";
+import { Plugin, type Runtime } from "@squide/firefly";
 
-export class MyPlugin extends FireflyRuntime {
-    constructor() {
-        super(MyPlugin.name);
+export class MyPlugin extends Plugin {
+    constructor(runtime: Runtime) {
+        super(MyPlugin.name, runtime);
     }
 }
 

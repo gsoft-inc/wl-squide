@@ -22,7 +22,7 @@ The `AppRouter` component is required for any Squide application.
 
 ### Properties
 
-- `waitForMsw`: A `boolean` value indicating whether or not Squide should delay the rendering of the requested page until the [MSW](https://mswjs.io/) request handlers are registered.
+- `waitForMsw`: A `boolean` value indicating whether or not Squide should delay the rendering of the requested page until the [Mock Service Worker](https://mswjs.io/) request handlers are registered.
 - `waitForPublicData`: An optional `boolean` value indicating whether or not Squide should delay the rendering of the requested page until the **public** data is ready. The default value is `false`.
 - `waitForProtectedData`: An optional `boolean` value indicating whether or not Squide should delay the rendering of the requested page until the **protected** data is ready. The default value is `false`.
 - `children`: A render function defining a [RouterProvider](https://reactrouter.com/en/main/routers/router-provider) component with `rootRoute`, `registeredRoutes` and `routerProviderProps`.

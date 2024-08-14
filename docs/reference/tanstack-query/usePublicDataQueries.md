@@ -36,7 +36,35 @@ If an unmanaged error occur while performing any of the fetch requests, a [Globa
 
 A `BootstrappingRoute` component is introduced in the following example because this hook must be rendered as a child of `rootRoute`.
 
-```tsx !#6-19,36,46 host/src/App.tsx
+```ts shared/src/apiError.ts
+export class ApiError extends Error {
+    readonly #status: number;
+    readonly #statusText: string;
+    readonly #stack?: string;
+
+    constructor(status: number, statusText: string, innerStack?: string) {
+        super(`${status} ${statusText}`);
+
+        this.#status = status;
+        this.#statusText = statusText;
+        this.#stack = innerStack;
+    }
+
+    get status() {
+        return this.#status;
+    }
+
+    get statusText() {
+        return this.#statusText;
+    }
+
+    get stack() {
+        return this.#stack;
+    }
+}
+```
+
+```tsx !#6-19,21-23,36,46 host/src/App.tsx
 import { usePublicDataQueries, useIsBootstrapping, AppRouter } from "@squide/firefly";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ApiError, FeatureFlagsContext, type FeatureFlags } from "@sample/shared";
@@ -96,6 +124,12 @@ export function App() {
     );
 }
 ```
+
+#### `waitForPublicData` & `useIsBootstrapping`
+
+To ensure the `AppRouter` component wait for the public data to be ready before rendering the requested route, set the [waitForPublicData](../reference/routing/appRouter.md#delay-rendering-until-the-public-data-is-ready) property to `true`.
+
+Combine this hook with the [useIsBootstrapping](../reference/routing/useIsBootstrapping.md) hook to display a loader until the public data is fetched and the application is ready.
 
 ### Handle fetch errors
 

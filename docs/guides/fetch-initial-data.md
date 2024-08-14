@@ -194,7 +194,7 @@ The `usePublicDataQueries` hook is a wrapper around TanStack Query's native [use
 
 To ensure the `AppRouter` component wait for the public data to be ready before rendering the requested route, set the [waitForPublicData](../reference/routing/appRouter.md#delay-rendering-until-the-public-data-is-ready) property to `true`.
 
-Use the [useIsBootstrapping](../reference/routing/useIsBootstrapping.md) hook to display a loader until the public data is fetched and the application is ready.
+Combine the `usePublicDataQueries` with the [useIsBootstrapping](../reference/routing/useIsBootstrapping.md) hook to display a loader until the public data is fetched and the application is ready.
 
 ### Use the endpoint data
 

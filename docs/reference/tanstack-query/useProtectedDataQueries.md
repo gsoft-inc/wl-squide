@@ -37,27 +37,55 @@ If an unmanaged error occur while performing any of the fetch requests, a [Globa
 
 A `BootstrappingRoute` component is introduced in the following example because this hook must be rendered as a child of `rootRoute`.
 
-```tsx !#16-41,60,70 host/src/App.tsx
+```ts shared/src/apiError.ts
+export class ApiError extends Error {
+    readonly #status: number;
+    readonly #statusText: string;
+    readonly #stack?: string;
+
+    constructor(status: number, statusText: string, innerStack?: string) {
+        super(`${status} ${statusText}`);
+
+        this.#status = status;
+        this.#statusText = statusText;
+        this.#stack = innerStack;
+    }
+
+    get status() {
+        return this.#status;
+    }
+
+    get statusText() {
+        return this.#statusText;
+    }
+
+    get stack() {
+        return this.#stack;
+    }
+}
+
+export function isApiError(error?: unknown): error is ApiError {
+    return error !== undefined && error !== null && error instanceof ApiError;
+}
+```
+
+```tsx !#6-41,43-45,60,70 host/src/App.tsx
 import { useProtectedDataQueries, useIsBootstrapping, AppRouter } from "@squide/firefly";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ApiError, SessionContext, SubscriptionContext, type Session, type Subscription } from "@sample/shared";
-
-async function fetchJson(url: string) {
-    const response = await fetch(url);
-
-    if (!response.ok) {
-        throw new ApiError(response.status, response.statusText);
-    }
-
-    return await response.json();
-}
 
 function BootstrappingRoute() {
     const [session, subscription] = useProtectedDataQueries([
         {
             queryKey: ["/api/session"],
             queryFn: async () => {
-                const data = await fetchJson("/api/session");
+                const response = await fetch("/api/session");
+
+                if (!response.ok) {
+                    throw new ApiError(response.status, response.statusText);
+                }
+
+                const data = await response.json();
 
                 const result: Session = {
                     user: {
@@ -73,9 +101,13 @@ function BootstrappingRoute() {
         {
             queryKey: ["/api/subscription"],
             queryFn: async () => {
-                const data = await fetchJson("/api/subscription");
+                const response = await fetch("/api/subscription");
 
-                return data as Subscription;
+                if (!response.ok) {
+                    throw new ApiError(response.status, response.statusText);
+                }
+
+                return (await response.json()) as Subscription;
             }
         }
     ], error => isApiError(error) && error.status === 401);
@@ -121,6 +153,12 @@ export function App() {
     );
 }
 ```
+
+#### `waitForProtectedData` & `useIsBootstrapping`
+
+To ensure the `AppRouter` component wait for the protected data to be ready before rendering the requested route, set the [waitForProtectedData](../reference/routing/appRouter.md#delay-rendering-until-the-protected-data-is-ready) property to `true`.
+
+Combine this hook with the [useIsBootstrapping](../reference/routing/useIsBootstrapping.md) hook to display a loader until the protected data is fetched and the application is ready.
 
 ### Handle fetch errors
 

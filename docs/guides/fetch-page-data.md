@@ -8,11 +8,11 @@ order: 975
 Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) guide.
 !!!
 
-There are various approaches to fetching data for pages. At Workleap, our preference is usually to develop a dedicated endpoint per page, returning a denormalized document specifically tailored for that page. We rely on server state as our singular source of truth and leverage [React Query](https://tanstack.com/query/latest/) to manage data fetching and ensure our data remains up-to-date.
+There are various approaches to fetching data for pages. At Workleap, our preference is usually to develop a backend for frontend with a **dedicated endpoint per page**, returning a **data** structure specifically **tailored** for that **page**. We rely on **server state** as our single **source of truth** and leverage [Tanstack Query](https://tanstack.com/query/latest/) to manage data fetching and ensure our data remains up-to-date.
 
 Although this approach works well, a few adjustments are necessary when transitioning from a monolithic application to a federated application.
 
-## Install React Query
+## Install Tanstack Query
 
 First, open a terminal at the root of the module and install the following packages:
 
@@ -57,6 +57,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
+        $key: "page",
         $label: "Page",
         to: "/page"
     });
@@ -64,7 +65,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 ```
 
 !!!info
-To minimize unexpected situations and faciliate maintenance, the React Query cache shouldn't be shared between the host application and the modules. As the React Query cache is located in the `QueryClient`, both the host application and the modules should instantiate their own `QueryClient` instance.
+To minimize unexpected situations and faciliate maintenance, the Tanstack Query cache shouldn't be shared between the host application and the modules. As the Tanstack Query cache is located in the `QueryClient`, both the host application and the modules should instantiate their own `QueryClient` instance.
 !!!
 
 ## Create a component for providers
@@ -95,6 +96,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
+        $key: "page",
         $label: "Page",
         to: "/page"
     });
@@ -133,6 +135,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
+        $key: "page",
         $label: "Page",
         to: "/page"
     });
@@ -169,6 +172,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
+        $key: "page",
         $label: "Page",
         to: "/page"
     });
@@ -230,7 +234,7 @@ export function Page() {
         const data = await response.json();
 
         return data;
-    } });
+    }});
 
     return (
         <div>

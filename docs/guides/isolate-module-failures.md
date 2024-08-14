@@ -12,7 +12,7 @@ Nevertheless, an application can get very close to iframes failure isolation by 
 
 ## Create an error boundary
 
-First, define an error boundary to catch module errors. For this example we'll name it `RootErrorBoundary`:
+First, define a React Router's error boundary to catch module errors. For this example we'll name it `RootErrorBoundary`:
 
 ```tsx host/src/RootErrorBoundary.tsx
 export function RootErrorBoundary() {
@@ -24,7 +24,9 @@ export function RootErrorBoundary() {
 
 ## Register the error boundary
 
-Then, update the host application `registerHost` function to declare the `RootErrorBoundary` component below the `RootLayout` but above the routes of the modules. By doing so, if a module encounters an unhandled error, the error boundary will only replace the section rendered by the `Outlet` component within the `RootLayout` rather than the entire page:
+Then, update the host application `registerHost` function to declare the `RootErrorBoundary` component below the `RootLayout` but above the routes of the modules. By doing so, if a module encounters an unhandled error, the error boundary will only replace the section rendered by the `Outlet` component within the `RootLayout` rather than the entire page.
+
+A React Router's error boundary is declared with the [errorElement](https://reactrouter.com/en/main/route/error-element) of a route:
 
 ```tsx !#7,11 host/src/register.tsx
 import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
@@ -53,7 +55,7 @@ By implementing this mechanism, the level of failure isolation achieved is **com
 
 ### Hoisted pages
 
-If your application is [hoisting pages](../reference/runtime/runtime-class.md#register-an-hoisted-route), it's important to note that they will be rendered outside of the host application's root error boundary. To prevent breaking the entire application when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router's `errorElement` property for each hoisted page:
+If your application is [hoisting pages](../reference/runtime/runtime-class.md#register-an-hoisted-route), it's important to note that they will be rendered outside of the host application's `RootErrorBoundary` component. To prevent breaking the entire application when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router's error boundary for each hoisted page as well, again using [errorElement](https://reactrouter.com/en/main/route/error-element):
 
 ```tsx !#9,11 remote-module/src/register.tsx
 import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
@@ -73,7 +75,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 ## Try it :rocket:
 
-Start the application in a development environment using the `dev` script. Update any of your application routes that is rendered under the newly created error boundary (e.g. that is not hoisted) and throw an `Error`. The error should be handled by the error boundary instead of breaking the whole application.
+Start the application in a development environment using the `dev` script. Update any of your application routes that is rendered under the newly created error boundary (e.g. that is not hoisted) and throw an `Error`. The error should be handled by the `RootErrorBoundary` component instead of breaking the whole application.
 
 ### Troubleshoot issues
 

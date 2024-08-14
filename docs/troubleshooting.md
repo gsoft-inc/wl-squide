@@ -35,7 +35,7 @@ For additional information on shared dependency versioning, please refer to the 
 
 ## Console logs
 
-To faciliate the debugging of a Squide application bootstrapping flow, a lot of information is logged into the console when in development. We recommend using these logs if you suspect that something is wrong with the bootstrapping process of your application.
+To faciliate the debugging of a Squide application bootstrapping flow, a lot of information is logged into the console when in development. We recommend using these logs if you suspect that **something** is **wrong** with the **bootstrapping** process of your **application**.
 
 ### Modules registration
 

@@ -90,7 +90,7 @@ Ensure that the shared project is configured as a [shared dependency](./add-a-sh
 
 ### Create a custom error class
 
-Then, in a shared project, create a `ApiError` class:
+Then, in the same shared project, create a `ApiError` class:
 
 ```ts shared/src/apiError.ts
 export class ApiError extends Error {
@@ -126,7 +126,7 @@ export function isApiError(error?: unknown): error is ApiError {
 
 ### Fetch the data
 
-Finally, update the `App` component to add the [usePublicDataQueries](../reference/tanstack-query/usePublicDataQueries.md) hook. The hook will fetch the data from `/api/count` and forward the retrieved count value through `FetchCountContext`:
+Finally, update the `App` component to add the [usePublicDataQueries](../reference/tanstack-query/usePublicDataQueries.md) hook. The hook will fetch the data from `/api/count` and forward the retrieved `fetchCount` value through `FetchCountContext`:
 
 ```tsx !#6-21,23-25,38 host/src/App.tsx
 import { AppRouter, usePublicDataQueries, useIsBootstrapping } from "@squide/firefly";
@@ -192,9 +192,9 @@ The `usePublicDataQueries` hook is a wrapper around TanStack Query's native [use
 
 #### `waitForPublicData` & `useIsBootstrapping`
 
-To ensure the `AppRouter` component's state wait for the public data to be ready before rendering the requested route, set the [waitForPublicData](../reference/routing/appRouter.md#delay-rendering-until-the-public-data-is-ready) property to `true`.
+To ensure the `AppRouter` component wait for the public data to be ready before rendering the requested route, set the [waitForPublicData](../reference/routing/appRouter.md#delay-rendering-until-the-public-data-is-ready) property to `true`.
 
-To display a loader until the public data is fetched and the application is ready, use the [useIsBootstrapping](../reference/routing/useIsBootstrapping.md) hook.
+Use the [useIsBootstrapping](../reference/routing/useIsBootstrapping.md) hook to display a loader until the public data is fetched and the application is ready.
 
 ### Use the endpoint data
 
@@ -227,7 +227,7 @@ export function Page() {
 }
 ```
 
-Finally, register both components:
+Finally, register both components, either in the host application or within any module:
 
 ```tsx !#8,12 host/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -307,10 +307,6 @@ export const requestHandlers: HttpHandler[] = [
 
 If you've registered the [public data request handler](#add-an-endpoint), the newly created request handler should be automatically registered.
 
-!!!warning
-In the previous code sample, for the sake of simplicity, we haven't secured the request handler or implemented session management. However, please be aware that you should do it for a real Workleap application.
-!!!
-
 ### Create a shared context
 
 Then, in a shared project, create a `SubscriptionContext`:
@@ -330,12 +326,12 @@ export function useSubscription() {
 ```
 
 !!!info
-Ensure that the shared project is configured as a [shared dependency](./add-a-shared-dependency.md).
+If you're not adding the `SubscriptionContext` to the shared project created earlier for the public data example, make sure to configure this new shared project as a [shared dependency](./add-a-shared-dependency.md).
 !!!
 
 ### Fetch the data
 
-Finally, update the `App` component to add the [useProtectedDataQueries](../reference/tanstack-query/useProtectedDataQueries.md) hook. The hook will fetch the data from `/api/subscription` and forward the retrieved count value through `SubscriptionContext`:
+Finally, update the `App` component to add the [useProtectedDataQueries](../reference/tanstack-query/useProtectedDataQueries.md) hook. The hook will fetch the data from `/api/subscription` and forward the retrieved `subscription` data through `SubscriptionContext`:
 
 ```tsx !#23-42,62 host/src/App.tsx
 import { AppRouter, usePublicDataQueries, useProtectedDataQueries, useIsBootstrapping } from "@squide/firefly";
@@ -425,7 +421,7 @@ The `useProtectedDataQueries` hook is a wrapper around TanStack Query's native [
 
 #### `waitForProtectedData`
 
-To ensure the `AppRouter` component's state wait for the protected data to be ready before rendering the requested route, set the [waitForProtectedData](../reference/routing/appRouter.md#delay-rendering-until-the-public-data-is-ready) property to `true`.
+To ensure the `AppRouter` component wait for the protected data to be ready before rendering the requested route, set the [waitForProtectedData](../reference/routing/appRouter.md#delay-rendering-until-the-public-data-is-ready) property to `true`.
 
 ### Use the endpoint data
 

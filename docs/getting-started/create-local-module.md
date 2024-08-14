@@ -126,6 +126,10 @@ Go back to the `host` application and add a dependency to the `@getting-started/
 }
 ```
 
+!!!info
+If your project is set up as a monorepo, use `workspace:*` for the version instead of `0.0.1`.
+!!!
+
 Then, register the local module with the [registerLocalModules](/reference/registration/registerLocalModules.md) function:
 
 ```tsx !#3,21 host/src/bootstrap.tsx

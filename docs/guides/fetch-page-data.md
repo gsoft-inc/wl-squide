@@ -105,9 +105,9 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 ## Setup the development tools
 
-To faciliate development, React Query provides [devtools](https://tanstack.com/query/latest/docs/react/devtools) to help visualize all of the inner workings of React Query.
+To faciliate development, Tanstack Query provides [devtools](https://tanstack.com/query/latest/docs/react/devtools) to help visualize all of the inner workings of Tanstack Query.
 
-However, the React Query devtools has not been developed to handle a federated application with multiple `QueryClient` instances. To use the devtools, you must define a `ReactQueryDevtools` component for each `QueryClient` instance:
+However, the Tanstack Query devtools has not been developed to handle a federated application with multiple `QueryClient` instances. To use the devtools, you must define a `ReactQueryDevtools` component for each `QueryClient` instance:
 
 ```tsx !#14 src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -142,7 +142,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 }
 ```
 
-Then, depending on which page of the application has been rendered, a distinct devtools instance will be accessible. For a better experience, we recommend activating the React Query devtools exclusively when developing a module [in isolation](./develop-a-module-in-isolation.md):
+Then, depending on which page of the application has been rendered, a distinct devtools instance will be accessible. For a better experience, we **recommend activating** the Tanstack Query **devtools** exclusively when **developing** a **module** [in isolation](./develop-a-module-in-isolation.md):
 
 ```tsx !#14-16 src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -219,7 +219,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
 
 Then, update the `Page` component to fetch and render the data with `useSuspenseQuery`:
 
-```tsx !#10-15 src/Page.tsx
+```tsx !#10-14 src/Page.tsx
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 interface Character {
@@ -231,9 +231,8 @@ interface Character {
 export function Page() {
     const { data: characters } = useSuspenseQuery({ queryKey: ["/api/characters"], queryFn: () => {
         const response = await fetch("/api/characters");
-        const data = await response.json();
-
-        return data;
+        
+        return await response.json();
     }});
 
     return (
@@ -274,9 +273,9 @@ export function RootLayout() {
 
 ## Try it :rocket:
 
-Start the local module in a development environment using the `dev-isolated` script. If you haven't completed the [develop a module in isolation](./develop-a-module-in-isolation.md) guide, use the `dev` script instead and skip the part about React Query devtools. Then, navigate to the `/page` page. 
+Start the local module in a development environment using the `dev-isolated` script. If you haven't completed the [develop a module in isolation](./develop-a-module-in-isolation.md) guide, use the `dev` script instead and skip the part about Tanstack Query devtools. Then, navigate to the `/page` page. 
 
-You should notice that the character's data is being fetch from the MSW request handler and rendered on the page. Additionally, you should notice that the React Query devtools are available (a ribbon at the bottom right corner).
+You should notice that the character's data is being fetch from the MSW request handler and rendered on the page. Additionally, you should notice that the Tanstack Query devtools are available (a ribbon at the bottom right corner).
 
 #### Troubleshoot issues
 

@@ -153,15 +153,13 @@ export function App() {
 
 ### Delay rendering until MSW is ready
 
-```tsx !#7 host/src/App.tsx
+```tsx !#6 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 export function App() {
     return (
-        <AppRouter 
-            waitForMsw={true}
-        >
+        <AppRouter waitForMsw>
             {({ rootRoute, registeredRoutes, routerProviderProps }) => {
                 return (
                     <RouterProvider
@@ -207,8 +205,8 @@ function BootstrappingRoute() {
 export function App() {
     return (
         <AppRouter 
-            waitForMsw={true}
-            waitForPublicData={true}
+            waitForMsw
+            waitForPublicData
         >
             {({ rootRoute, registeredRoutes, routerProviderProps }) => {
                 return (
@@ -263,8 +261,8 @@ function BootstrappingRoute() {
 export function App() {
     return (
         <AppRouter 
-            waitForMsw={true}
-            waitForProtectedData={true}
+            waitForMsw
+            waitForProtectedData
         >
             {({ rootRoute, registeredRoutes, routerProviderProps }) => {
                 return (

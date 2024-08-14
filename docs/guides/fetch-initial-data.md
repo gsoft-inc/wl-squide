@@ -14,17 +14,17 @@ Retrieving the initial data of an application is a crucial aspect that isn't alw
 
 At first glance, one might wonder what could be so complicated about fetching the initial data of an application. It's only fetches ...right? Well, there are several concerns to take into account for a Squide application:
 
-- When in development, the initial data cannot be fetched until the Mock Service Worker (MSW) **request handlers** are **registered** and **MSW is started**.
+- When in development, the initial data cannot be fetched until the Mock Service Worker (MSW) **request handlers** are **registered** and **MSW is ready**.
 
-- To register the MSW request handlers, the **remote modules** must be **registered** first.
+- To register the MSW request handlers, the **modules** (including the remote modules) must be **registered** first.
 
 - If the requested page is _public_, only the initial public data should be fetched.
 
 - If the requested page is _protected_, **both** the initial **public** and **protected data** should be **fetched**.
 
-- The requested page cannot be rendered until the initial data has been fetched.
+- The requested page rendering must be delayed until the initial data has been fetched.
 
-- A **unique loading spinner** should be displayed to the user while the modules are being registered, the MSW request handlers are being registered and the initial data is being fetched, ensuring **no flickering** due to different spinners being rendered.
+- A **unique loading spinner** should be displayed to the user during this process, ensuring there's **no flickering** due to different spinners being rendered.
 
 To help manage those concerns, Squide offer an `AppRouter` component that takes care of setuping Squide federated primitive and orchestrating the different states.
 
@@ -32,9 +32,9 @@ To help manage those concerns, Squide offer an `AppRouter` component that takes 
 
 ### Add an endpoint
 
-First, define an MSW request handler that returns the number of times it has been fetched:
+First, define in the host application an MSW request handler that returns the number of times it has been fetched:
 
-```ts mocks/handlers.ts
+```ts host/mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
 
 let fetchCount = 0;
@@ -52,7 +52,7 @@ export const requestHandlers: HttpHandler[] = [
 
 Then, register the request handler using the module registration function:
 
-```tsx !#7 src/register.tsx
+```tsx !#7 host/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly"; 
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
@@ -65,6 +65,10 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
     }
 }
 ```
+
+!!!info
+Don't forget to mark the registration function as `async` since there's a dynamic import.
+!!!
 
 ### Create a shared context
 
@@ -86,66 +90,81 @@ Ensure that the shared project is configured as a [shared dependency](./add-a-sh
 
 ### Fetch the data
 
-Finally, open the host application code and update the `App` component to utilize the `AppRouter` component's [onLoadPublicData](../reference/routing/appRouter.md#load-public-data) handler. This handler will fetch the count and forward the retrieved value through `FetchCountContext`:
+Finally, update the `App` component to add the [usePublicDataQueries](../reference/tanstack-query/usePublicDataQueries.md) hook. The hook will fetch the data from `/api/count` and forward the retrieved count value through `FetchCountContext`:
 
-```tsx !#8,17,19-21,24,26-27 host/src/App.tsx
-import { useState, useCallback } from "react";
-import { AppRouter } from "@squide/firefly";
-import { FetchCountContext } from "@sample/shared";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+```tsx !#6-21,23-25,38 host/src/App.tsx
+import { AppRouter, usePublicDataQueries, useIsBootstrapping } from "@squide/firefly";
+import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
+import { FetchCountContext, ApiError } from "@sample/shared";
 
-async function fetchPublicData(setFetchCount: (fetchCount: number) => void, signal: AbortSignal) {
-    const response = await fetch("/api/count", {
-        signal
-    });
+function BootstrappingRoute() {
+    const [fetchCount] = usePublicDataQueries([
+        {
+            queryKey: ["/api/count"],
+            queryFn: async () => {
+                const response = await fetch("/api/count");
 
-    const data = await response.json();
+                if (!response.ok) {
+                    throw new ApiError(response.status, response.statusText);
+                }
 
-    setFetchCount(data.count);
-}
+                const data = await response.json();
 
-export function App() {
-    const [fetchCount, setFetchCount] = useState(0);
+                return data.count as number;
+            }
+        }
+    ]);
 
-    const handleLoadPublicData = useCallback((signal: AbortSignal) => {
-        return fetchPublicData(setFetchCount, signal);
-    }, []);
+    if (useIsBootstrapping()) {
+        return <div>Loading...</div>
+    }
 
     return (
         <FetchCountContext.Provider value={fetchCount}>
-            <AppRouter
-                onLoadPublicData={handleLoadPublicData}
-                isPublicDataLoaded={!!fetchCount}
-                fallbackElement={<div>Loading...</div>}
-                errorElement={<div>An error occured!</div>}
-                waitForMsw={true}
-            >
-                {(routes, providerProps) => (
-                    <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
-                )}
-            </AppRouter>
+            <Outlet />
         </FetchCountContext.Provider>
+    )
+}
+
+export function App() {
+    return (
+        <AppRouter
+            waitForMsw
+            waitForPublicData
+        >
+            {({ rootRoute, registeredRoutes, routerProviderProps }) => {
+                return (
+                    <RouterProvider
+                        router={createBrowserRouter([
+                            {
+                                element: rootRoute,
+                                children: registeredRoutes
+                            }
+                        ])}
+                        {...routerProviderProps}
+                    />
+                );
+            }}
+        </AppRouter>
     );
 }
 ```
 
-!!!info
-The `onLoadPublicData` handler receives as first argument an [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal) that should be forwarded to the HTTP client initiating the public data GET request. The signal will cancel the previous HTTP request when the `onLoadPublicData` handler is called twice due to the `AppRouter` being re-rendered.
-!!!
+#### `usePublicDataQueries`
 
-!!!info
-The `onLoadPublicData` handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object. When the [async](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) keyword is included in a function signature, the function will automatically return a `Promise` object.
-!!!
+The `usePublicDataQueries` hook is a wrapper around TanStack Query's native [useQueries](https://tanstack.com/query/latest/docs/framework/react/reference/useQueries) hook. This wrapper coordinates the execution of the queries with the `AppRouter` component's state.
 
-!!!info
-The `isPublicDataLoaded` must be provided to indicate whether or not the public data loading is completed.
-!!!
+#### `waitForPublicData` & `useIsBootstrapping`
+
+To ensure the `AppRouter` component's state wait for the public data to be ready before rendering the requested route, set the [waitForPublicData](../reference/routing/appRouter.md#delay-rendering-until-the-public-data-is-ready) property to `true`.
+
+To display a loader until the public data is fetched and the application is ready, use the [useIsBootstrapping](../reference/routing/useIsBootstrapping.md) hook.
 
 ### Use the endpoint data
 
-Now, create a `InitialDataLayout` component that utilizes the count retrieved from `FetchCountContext` and render pages with a green background color if the value is odd:
+Now, create a `InitialDataLayout` component that uses the count retrieved from `FetchCountContext` and render pages with a green background color if the value is odd:
 
-```tsx !#5,10 src/InitialDataLayout.tsx
+```tsx !#5,10 host/src/InitialDataLayout.tsx
 import { useFetchCount } from "@sample/shared";
 import { Outlet } from "react-router-dom";
 
@@ -164,7 +183,7 @@ export function InitialDataLayout() {
 
 Then, create a `Page` component:
 
-```tsx src/Page.tsx
+```tsx host/src/Page.tsx
 export function Page() {
     return (
         <div>When the fetch count is odd, my background should be green.</div>
@@ -174,7 +193,7 @@ export function Page() {
 
 Finally, register both components:
 
-```tsx !#8,12 src/register.tsx
+```tsx !#8,12 host/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { InitialDataLayout } from "./InitialDataLayout.tsx";
 import { Page } from "./Page.tsx";
@@ -192,6 +211,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
     });
 
     runtime.registerNavigationItem({
+        $key: "initial-data",
         $label: "Initial data Page",
         to: "/initial-data"
     });
@@ -218,13 +238,13 @@ If you are experiencing issues with this section of the guide:
 
 ## Fetch protected data
 
-Now, let's load _protected_ data. The process is similar to fetching public data, but this time, we'll use the [onLoadProtectedData](../reference/routing/appRouter.md#load-protected-data) handler of the `AppRouter` component instead.
+Now, let's load _protected_ data. The process is similar to fetching public data, but this time, we'll use the [useProtectedDataQueries](../reference/tanstack-query/useProtectedDataQueries.md) hook instead.
 
 ### Add an endpoint
 
 First, define a MSW request handler that returns a user tenant subscription data:
 
-```ts !#14-21 mocks/handlers.ts
+```ts !#14-21 host/mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
 
 let fetchCount = 0;
@@ -279,89 +299,103 @@ Ensure that the shared project is configured as a [shared dependency](./add-a-sh
 
 ### Fetch the data
 
-Finally, open the host application code and update the `App` component to utilize the `AppRouter` component's `onLoadProtectedData` handler. This handler will fetch the user tenant subscription and forward the retrieved value through `SubscriptionContext`:
+Finally, update the `App` component to add the [useProtectedDataQueries](../reference/tanstack-query/useProtectedDataQueries.md) hook. The hook will fetch the data from `/api/subscription` and forward the retrieved count value through `SubscriptionContext`:
 
-```tsx !#18,32,38-40,44,47,49 host/src/App.tsx
-import { useState, useCallback } from "react";
-import { AppRouter } from "@squide/firefly";
-import { FetchCountContext, SubscriptionContext, type Subscription } from "@sample/shared";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+```tsx !#23-42,62 host/src/App.tsx
+import { AppRouter, usePublicDataQueries, useProtectedDataQueries, useIsBootstrapping } from "@squide/firefly";
+import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
+import { FetchCountContext, SubscriptionContext, ApiError, isApiError, type Subscription } from "@sample/shared";
 
-async function fetchPublicData(setFetchCount: (fetchCount: number) => void, signal: AbortSignal) {
-    const response = await fetch("/api/count", {
-        signal
-    });
+function BootstrappingRoute() {
+    const [fetchCount] = usePublicDataQueries([
+        {
+            queryKey: ["/api/count"],
+            queryFn: async () => {
+                const response = await fetch("/api/count");
 
-    const data = await response.json();
+                if (!response.ok) {
+                    throw new ApiError(response.status, response.statusText);
+                }
 
-    setFetchCount(data.count);
-}
+                const data = await response.json();
 
-async function fetchProtectedData(setSubscription: (subscription: Subscription) => void, signal: AbortSignal) {
-    const response = await fetch("/api/subscription", {
-        signal
-    });
+                return data.count as number;
+            }
+        }
+    ]);
 
-    const data = await response.json();
+    const [subscription] = useProtectedDataQueries([
+        {
+            queryKey: ["/api/subscription"],
+            queryFn: async () => {
+                const response = await fetch("/api/subscription");
 
-    const subscription: Subscription = {
-        status: data.status
-    };
+                if (!response.ok) {
+                    throw new ApiError(response.status, response.statusText);
+                }
 
-    setSubscription(subscription);
-}
+                const data = await response.json();
 
-export function App() {
-    const [fetchCount, setFetchCount] = useState(0);
-    const [subscription, setSubscription] = useState<Subscription>();
+                const subscription: Subscription = {
+                    status: data.status
+                };
 
-    const handleLoadPublicData = useCallback((signal: AbortController) => {
-        return fetchPublicData(setFetchCount, signal);
-    }, []);
+                return subscription;
+            }
+        }
+    ], error => isApiError(error) && error.status === 401);
 
-    const handleLoadProtectedData = useCallback((signal: AbortController) => {
-        return fetchProtectedData(setSubscription, signal);
-    }, []);
+    if (useIsBootstrapping()) {
+        return <div>Loading...</div>
+    }
 
     return (
         <FetchCountContext.Provider value={fetchCount}>
             <SubscriptionContext.Provider value={subscription}>
-                <AppRouter
-                    onLoadPublicData={handleLoadPublicData}
-                    onLoadProtectedData={handleLoadProtectedData}
-                    isPublicDataLoaded={!!fetchCount}
-                    isProtectedDataLoaded={!!subscription}
-                    fallbackElement={<div>Loading...</div>}
-                    errorElement={<div>An error occured!</div>}
-                    waitForMsw={true}
-                >
-                    {(routes, providerProps) => (
-                        <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
-                    )}
-                </AppRouter>
-            <SubscriptionContext.Provider />
+                <Outlet />
+            </SubscriptionContext.Provider>
         </FetchCountContext.Provider>
+    )
+}
+
+export function App() {
+    return (
+        <AppRouter
+            waitForMsw
+            waitForPublicData
+            waitForProtectedData
+        >
+            {({ rootRoute, registeredRoutes, routerProviderProps }) => {
+                return (
+                    <RouterProvider
+                        router={createBrowserRouter([
+                            {
+                                element: rootRoute,
+                                children: registeredRoutes
+                            }
+                        ])}
+                        {...routerProviderProps}
+                    />
+                );
+            }}
+        </AppRouter>
     );
 }
 ```
 
-!!!info
-The `onLoadProtectedData` handler receives as first argument an [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal) that should be forwarded to the HTTP client initiating the public data GET request. The signal will cancel the previous HTTP request when the `onLoadProtectedData` handler is called twice due to the `AppRouter` being re-rendered.
-!!!
+#### `useProtectedDataQueries`
 
-!!!info
-The `onLoadProtectedData` handler must return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object. When the [async](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) keyword is included in a function signature, the function will automatically return a `Promise` object.
-!!!
+The `useProtectedDataQueries` hook is a wrapper around TanStack Query's native [useQueries](https://tanstack.com/query/latest/docs/framework/react/reference/useQueries) hook. This wrapper coordinates the execution of the queries with the `AppRouter` component's state.
 
-!!!info
-The `isProtectedDataLoaded` must be provided to indicate whether or not the protected data loading is completed.
-!!!
+#### `waitForProtectedData`
+
+To ensure the `AppRouter` component's state wait for the protected data to be ready before rendering the requested route, set the [waitForProtectedData](../reference/routing/appRouter.md#delay-rendering-until-the-public-data-is-ready) property to `true`.
 
 ### Use the endpoint data
 
 Now, update the `InitialDataLayout` component that was previously created for the [public data example](#use-the-endpoint-data) to render the user tenant subscription status:
 
-```tsx !#6,11 src/InitialDataLayout.tsx
+```tsx !#6,11 host/src/InitialDataLayout.tsx
 import { useFetchCount, useSubscription } from "@sample/shared";
 import { Outlet } from "react-router-dom";
 

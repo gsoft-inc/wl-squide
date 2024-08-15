@@ -8,9 +8,9 @@ order: 975
 Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) guide.
 !!!
 
-There are various approaches to fetching data for pages. At Workleap, our preference is usually to develop a backend for frontend with a **dedicated endpoint per page**, returning a **data** structure specifically **tailored** for that **page**. We rely on **server state** as our single **source of truth** and leverage [Tanstack Query](https://tanstack.com/query/latest/) to manage data fetching and ensure our data remains up-to-date.
+There are various approaches to fetching data for pages. At Workleap, our preference is usually to develop a backend for frontend (BFF) with a **dedicated endpoint per page**, returning a **data** structure specifically **tailored** for that **page**. We rely on **server state** as our single **source of truth** and leverage [Tanstack Query](https://tanstack.com/query/latest/) to manage data fetching.
 
-Although this approach works well, a few adjustments are necessary when transitioning from a monolithic application to a federated application.
+Although this approach works well, a few adjustments are necessary when transitioning from a monolithic application to a federated application. Let's explore these changes!
 
 ## Install Tanstack Query
 
@@ -41,7 +41,7 @@ While you can use any package manager to develop an application with Squide, it 
 
 Then, instanciate a [QueryClient](https://tanstack.com/query/latest/docs/react/reference/QueryClient) instance in the module registration function and wrap the routes element with a [QueryClientProvider](https://tanstack.com/query/latest/docs/react/reference/QueryClientProvider):
 
-```tsx !#7,12 src/register.tsx
+```tsx !#7,12 remote/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Page } from "./Page.tsx";
@@ -72,7 +72,7 @@ To minimize unexpected situations and faciliate maintenance, the Tanstack Query 
 
 If the module register multiple routes, to prevent duplicating registration code, you can create a `Providers` component:
 
-```tsx !#9-15,20 src/register.tsx
+```tsx !#9-15,20 remote/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Page } from "./Page.tsx";
@@ -109,7 +109,7 @@ To faciliate development, Tanstack Query provides [devtools](https://tanstack.co
 
 However, the Tanstack Query devtools has not been developed to handle a federated application with multiple `QueryClient` instances. To use the devtools, you must define a `ReactQueryDevtools` component for each `QueryClient` instance:
 
-```tsx !#14 src/register.tsx
+```tsx !#14 remote/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -144,7 +144,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 Then, depending on which page of the application has been rendered, a distinct devtools instance will be accessible. For a better experience, we **recommend activating** the Tanstack Query **devtools** exclusively when **developing** a **module** [in isolation](./develop-a-module-in-isolation.md):
 
-```tsx !#14-16 src/register.tsx
+```tsx !#14-16 remote/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -183,7 +183,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 Now, let's fetch some data. First, add a [Mock Service Worker](https://mswjs.io/) (MSW) request handler to the local module:
 
-```ts mocks/handlers.ts
+```ts remote/mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
 
 export const requestHandlers: HttpHandler[] = [
@@ -203,7 +203,7 @@ export const requestHandlers: HttpHandler[] = [
 
 Then, register the request handler using the module registration function:
 
-```tsx !#7 src/register.tsx
+```tsx !#7 remote/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly"; 
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
@@ -219,7 +219,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
 
 Then, update the `Page` component to fetch and render the data with `useSuspenseQuery`:
 
-```tsx !#10-14 src/Page.tsx
+```tsx !#10-14 remote/src/Page.tsx
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 interface Character {

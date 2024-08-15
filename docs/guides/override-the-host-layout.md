@@ -30,7 +30,7 @@ To hoist module pages, add the [hoist](../reference/runtime/runtime-class.md#reg
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { LocalLayout } from "./LocalLayout.tsx";
 import { LocalErrorBoundary } from "./LocalErrorBoundary.tsx";
-import { LoginPage } from "./LoginPage.tsx";
+import { Page } from "./Page.tsx";
 
 export function register: ModuleRegisterFunction<FireflyRuntime>(runtime) {
     runtime.registerRoute({
@@ -38,13 +38,13 @@ export function register: ModuleRegisterFunction<FireflyRuntime>(runtime) {
         element: <LocalLayout />,
         children: [
             {
-                // Custom error boundary ensuring errors from the login page doesn't prevent the other
+                // Custom error boundary ensuring errors from the page doesn't prevent the other
                 // modules of the application from rendering.
                 errorElement: <LocalErrorBoundary />,
                 children: [
                     {
                         index: true,
-                        element: <LoginPage />
+                        element: <Page />
                     }
                 ]
             }

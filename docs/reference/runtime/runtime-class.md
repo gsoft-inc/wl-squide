@@ -17,7 +17,7 @@ const runtime = new FireflyRuntime(options?: { mode?, useMsw?, loggers?, plugins
 ### Parameters
 
 - `options`: An optional object literal of options:
-    - `mode`: An optional mode to optimize Squide for `production`. Values are `"development"` (default) and `"production"`.
+    - `mode`: An optional mode to optimize Squide for production. Values are `"development"` (default) and `"production"`.
     - `useMsw`: An optional `boolean` value indicating whether or not to create the runtime with [Mock Service Work](https://mswjs.io/) (MSW) support.
     - `loggers`: An optional array of `Logger` instances.
     - `plugins`: An optional array of `Plugin` factory functions.
@@ -155,7 +155,7 @@ runtime.registerRoute({
 
 ### Register a public route
 
-When registering a route, a hint can be provided, indicating if the route is intended to be displayed as a `public` or `protected` route. This is especially useful when dealing with code that conditionally fetch data for protected routes (e.g. a session).
+When registering a route, a hint can be provided, indicating if the route is intended to be displayed as a `"public"` or `"protected"` route. This is especially useful when dealing with code that conditionally fetch data for protected routes (e.g. a session).
 
 ```tsx !#4,8
 import { Page } from "./Page.tsx";

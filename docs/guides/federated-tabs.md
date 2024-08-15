@@ -18,7 +18,7 @@ For this guide, we'll take as an example a page for which the parts that are own
 
 ## Define a nested layout
 
-To construct this page while adhering to Squide constraint of exclusively permitting route and navigation items exports from modules, let's begin by defining a React Router [nested layout](https://reactrouter.com/en/main/start/tutorial#nested-routes). This nested layout will be responsible for rendering all the tab headers and the content of the active tab:
+To build this page while adhering to Squide's constraint of avoiding hard references to elements from other modules, let's start by defining a React Router [nested layout](https://reactrouter.com/en/main/start/tutorial#nested-routes). This nested layout will handle rendering all the tab headers and the content of the active tab:
 
 ```tsx !#9-11,15 remote-module-3/src/federated-tabs-layout.tsx
 import { Suspense } from "react";
@@ -43,7 +43,7 @@ export function FederatedTabsLayout() {
 }
 ```
 
-In the previous code sample, the `FederatedTabsLayout` is similar to the `RootLayout` introduced in previous guides. However, the key distinction is that this layout is nested under the `/federated-tabs` URL segment. By nesting the layout under a specific path, it will only render when the user navigates to one of the federated tab pages (e.g. `/federated-tabs/tab-1`, `/federated-tabs/tab-2`, `/federated-tabs/tab-3`).
+In the previous code sample, the `FederatedTabsLayout` is similar to the `RootLayout` introduced in previous guides. However, the key distinction is that this layout will be bound to the `/federated-tabs` URL path. By nesting the layout under a specific path, it will only render when the user navigates to one of the federated tab pages (e.g. `/federated-tabs/tab-1`, `/federated-tabs/tab-2`, `/federated-tabs/tab-3`).
 
 To register the newly created layout as a nested layout, use the [registerRoute](../reference/runtime/runtime-class.md#register-routes) function:
 
@@ -53,19 +53,20 @@ import { FederatedTabsLayout } from "./FederatedTabsLayout.tsx";
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        // Register the layout as a nested layout under the "/federated-tabs" URL segment.
+        // Register the layout as a nested layout under the "/federated-tabs" URL path.
         path: "/federated-tabs",
         element: <FederatedTabsLayout />
     });
 
     runtime.registerNavigationItem({
+        $key: "federated-tabs",
         $label: "Federated tabs",
         to: "/federated-tabs"
     });
 }
 ```
 
-With this nested layout in place, thanks to the React Router [Outlet](https://reactrouter.com/en/main/components/outlet) component, the content of the tabs can now reside in **distinct pages** (registered by different modules) while still delivering a **cohesive user experience**. Whenever a user navigates between the tabs, the URL will be updated, and the tab content will change, but the shared portion of the layout will remain consistent.
+With this nested layout in place, thanks to the React Router [Outlet](https://reactrouter.com/en/main/components/outlet) component, the content of the tabs can now reside in **distinct routes** (registered by different modules) while still delivering a **cohesive user experience**. Whenever a user navigates between the tabs, the URL will be updated, and the tab content will change, but the shared portion of the layout will remain consistent.
 
 As a bonus, each individual tab will have its own dedicated URL! :partying_face:
 
@@ -75,7 +76,7 @@ It is recommended to define the shared layouts in a standalone package as it's d
 
 ## Create the tab routes
 
-Next, let's add the actual tab pages to the modules. To do so, we'll use the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) option of the [registerRoute](../reference/runtime/runtime-class.md#register-routes) function to register the routes under the `FederatedTabsLayout`:
+Next, let's add the actual tabs to the modules. To do so, we'll use the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) option of the [registerRoute](../reference/runtime/runtime-class.md#register-routes) function to register the routes under the `FederatedTabsLayout`:
 
 ```tsx !#7,10 remote-module-1/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -154,11 +155,11 @@ Now that the tabs has been registered, ensure that all four modules (including `
 
 Althought it's functional, the modules are currently coupled by hardcoded URLs within the `FederatedTabsLayout`.
 
-To decouple the navigation items, similar to what is done for regular federated pages, we'll utilize the [registerNavigationItem](../reference/runtime/runtime-class.md#register-navigation-items) function. In this case, we'll also use the [menuId](../reference/runtime/runtime-class.md#register-navigation-items-for-a-specific-menu) option. Defining the `menuId` option will enable the `FederatedTabsLayout` to retrieve navigation items exclusively for the federated tab component.
+To decouple the navigation items, similar to what is done for regular federated routes, we'll use the [registerNavigationItem](../reference/runtime/runtime-class.md#register-navigation-items) function. In this case, we'll specify a [menuId](../reference/runtime/runtime-class.md#register-navigation-items-for-a-specific-menu) option. Defining the `menuId` option will instruct the `FederatedTabsLayout` to exclusively retrieve the navigation items that belongs to this layout.
 
 First, let's register the navigation items with the `menuId` option. For this example the `menuId` will be `/federated-tabs` (it can be anything):
 
-```tsx !#19 remote-module-1/src/register.tsx
+```tsx !#20 remote-module-1/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab1 } from "./Tab1.tsx";
 
@@ -172,6 +173,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
+        $key: "tab-1",
         $label: "Tab 1",
         to: "/federated-tabs"
     }, { 
@@ -182,7 +184,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 }
 ```
 
-```tsx !#20 remote-module-2/src/register.tsx
+```tsx !#21 remote-module-2/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab2 } from "./Tab2.tsx";
 
@@ -197,6 +199,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
+        $key: "tab-2",
         $label: "Tab 2",
         to: "/federated-tabs/tab-2"
     }, { 
@@ -207,7 +210,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 }
 ```
 
-```tsx !#20 local-module/src/register.tsx
+```tsx !#21 local-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab3 } from "./Tab3.tsx";
 
@@ -222,6 +225,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
+        $key: "tab-3",
         $label: "Tab 3",
         to: "/federated-tabs/tab-3"
     }, {
@@ -245,11 +249,11 @@ import {
 import { Suspense } from "react";
 import { Link, Outlet } from "react-router-dom";
 
-const renderItem: RenderItemFunction = (item, index, level) => {
+const renderItem: RenderItemFunction = (item, key) => {
     const { label, linkProps } = item as NavigationLinkRenderProps;
 
     return (
-        <li key={`${level}-${index}`}>
+        <li key={key}>
             <Link {...linkProps}>
                 {label}
             </Link>
@@ -289,7 +293,7 @@ Similarly to how the display order of regular navigation items can be configured
 
 To force `Tab 3` to be positioned first, we'll give him a priority of `999`: 
 
-```tsx !#15 local-module/src/register.tsx
+```tsx !#16 local-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Tab3 } from "./Tab3.tsx";
 
@@ -302,6 +306,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
+        $key: "tab-3",
         $label: "Tab 3",
         // Highest priority goes first.
         $priority: 999,

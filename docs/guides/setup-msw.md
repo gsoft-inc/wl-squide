@@ -235,10 +235,6 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
 }
 ```
 
-!!!info
-Don't forget to mark the registration function as `async` since there's a dynamic import.
-!!!
-
 ## Setup a local module
 
 Follow the same steps as for a [remote module](#setup-a-remote-module).

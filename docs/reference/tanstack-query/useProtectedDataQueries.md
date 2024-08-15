@@ -37,38 +37,6 @@ If an unmanaged error occur while performing any of the fetch requests, a [Globa
 
 A `BootstrappingRoute` component is introduced in the following example because this hook must be rendered as a child of `rootRoute`.
 
-```ts shared/src/apiError.ts
-export class ApiError extends Error {
-    readonly #status: number;
-    readonly #statusText: string;
-    readonly #stack?: string;
-
-    constructor(status: number, statusText: string, innerStack?: string) {
-        super(`${status} ${statusText}`);
-
-        this.#status = status;
-        this.#statusText = statusText;
-        this.#stack = innerStack;
-    }
-
-    get status() {
-        return this.#status;
-    }
-
-    get statusText() {
-        return this.#statusText;
-    }
-
-    get stack() {
-        return this.#stack;
-    }
-}
-
-export function isApiError(error?: unknown): error is ApiError {
-    return error !== undefined && error !== null && error instanceof ApiError;
-}
-```
-
 ```tsx !#6-41,43-45,60,70 host/src/App.tsx
 import { useProtectedDataQueries, useIsBootstrapping, AppRouter } from "@squide/firefly";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -151,6 +119,38 @@ export function App() {
             }}
         </AppRouter>
     );
+}
+```
+
+```ts shared/src/apiError.ts
+export class ApiError extends Error {
+    readonly #status: number;
+    readonly #statusText: string;
+    readonly #stack?: string;
+
+    constructor(status: number, statusText: string, innerStack?: string) {
+        super(`${status} ${statusText}`);
+
+        this.#status = status;
+        this.#statusText = statusText;
+        this.#stack = innerStack;
+    }
+
+    get status() {
+        return this.#status;
+    }
+
+    get statusText() {
+        return this.#statusText;
+    }
+
+    get stack() {
+        return this.#stack;
+    }
+}
+
+export function isApiError(error?: unknown): error is ApiError {
+    return error !== undefined && error !== null && error instanceof ApiError;
 }
 ```
 

@@ -66,10 +66,6 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
 }
 ```
 
-!!!info
-Don't forget to mark the registration function as `async` since there's a dynamic import.
-!!!
-
 ### Create a shared context
 
 Then, in a shared project, create a React context named `FetchCountContext`:
@@ -174,7 +170,12 @@ export function App() {
                         router={createBrowserRouter([
                             {
                                 element: rootRoute,
-                                children: registeredRoutes
+                                children: [
+                                    {
+                                        element: <BootstrappingRoute />,
+                                        children: registeredRoutes
+                                    }
+                                ]
                             }
                         ])}
                         {...routerProviderProps}
@@ -403,7 +404,12 @@ export function App() {
                         router={createBrowserRouter([
                             {
                                 element: rootRoute,
-                                children: registeredRoutes
+                                children: [
+                                    {
+                                        element: <BootstrappingRoute />,
+                                        children: registeredRoutes
+                                    }
+                                ]
                             }
                         ])}
                         {...routerProviderProps}

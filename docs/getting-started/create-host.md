@@ -310,7 +310,7 @@ export function NotFoundPage() {
 
 Then, register the newly created component as the `*` route:
 
-```tsx !#19-24 host/src/register.tsx
+```tsx !#8,19-24 host/src/register.tsx
 import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { HomePage } from "./HomePage.tsx";
 import { NotFoundPage } from "./NotFoundPage.tsx";
@@ -318,7 +318,7 @@ import { RootLayout } from "./RootLayout.tsx";
 
 export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        // Pathless route to declare a root layout.
+        $name: "root-layout",
         element: <RootLayout />,
         children: [
             // Placeholder to indicate where managed routes (routes that are not hoisted or nested)
@@ -333,7 +333,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
         path: "*",
         element: <NotFoundPage />
     }, {
-        hoist: true
+        parentName: "root-layout"
     });
 
     runtime.registerRoute({

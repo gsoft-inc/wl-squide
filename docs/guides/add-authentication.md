@@ -8,9 +8,7 @@ order: 920
 Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) and [Fetch initial data](./fetch-initial-data.md) guides.
 !!!
 
-Most of our applications (if not all) will eventually requires the user to authenticate. To facilitate this process, the Squide [FireflyRuntime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/localStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the application registration flow is completed, the function will be made accessible to every module of the application.
-
-When combined with a [React Router](https://reactrouter.com/en/main) authentication boundary and a login page, the shared `sessionAccessor` function is of great help to manage authentication concerns.
+Most of Workleap's applications, if not all, will eventually require user authentication. While Squide doesn't offer built-in primitives for this process, it can assist by providing a **well-established recipe** to integrate an authentication flow with Squide.
 
 ## Add a login page
 
@@ -111,10 +109,9 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = async runtim
 
 Then, create a login page:
 
-```tsx !#14-23,27 host/src/Login.tsx
+```tsx !#13-22,26 host/src/Login.tsx
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { useIsAuthenticated } from "@squide/firefly";
 
 export function Login() {
     const [username, setUserName] = useState("");
@@ -150,12 +147,6 @@ export function Login() {
         setPassword(event.target.value);
     }, []);
 
-    const isAuthenticated = useIsAuthenticated();
-
-    if (isAuthenticated) {
-        return <Navigate to="/" />;
-    }
-
     return (
         <main>
             <h1>Login</h1>
@@ -179,9 +170,9 @@ export function Login() {
 }
 ```
 
-After the user logs in, the application is reloaded. This is a requirement of the [AppRouter](../reference/routing/appRouter.md) component's [onLoadPublicData](../reference/routing/appRouter.md#load-public-data) and [onLoadProtectedData](../reference/routing/appRouter.md#load-protected-data) handlers. Nevertheless, it's not a significant concern because Workleap's applications utilize a third-party service for authentication which requires a full refresh of the application.
+After the user logs in, the application is reloaded, this is a requirement of the [AppRouter](../reference/routing/appRouter.md) component. Nevertheless, it's not a concern because Workleap's applications use a third-party service for authentication which requires a full refresh of the application.
 
-## Create a session accessor function
+## Create a session manager context
 
 Next, create a shared type for the session and the session manager:
 
@@ -193,55 +184,36 @@ export interface Session {
 }
 
 export interface SessionManager {
-    setSession: (session: Session) => void;
     getSession: () => Session | undefined;
     clearSession: () => void;
 }
 ```
 
-Then, define a `sessionAccessor` function wrapping an `InMemorySessionManager` instance:
+Finally, create a shared `SessionManagerContext` along with some utility hooks. This React context will be used to share the `SessionManager` instance down the components tree:
 
-```tsx host/src/session.ts
-import type { SessionAccessorFunction } from "@squide/firefly";
-import type { Session, SessionManager } from "@sample/shared";
+```ts shared/src/session.ts
+export const SessionManagerContext = createContext<SessionManager | undefined>(undefined);
 
-export class InMemorySessionManager implements SessionManager {
-    #session?: Session;
-
-    setSession(session: Session) {
-        this.#session = session;
-    }
-
-    getSession() {
-        return this.#session;
-    }
-
-    clearSession() {
-        this.#session = undefined;
-    }
+export function useSessionManager() {
+    return useContext(SessionManagerContext);
 }
 
-export const sessionManager = new InMemorySessionManager();
+export function useSession() {
+    const sessionManager = useSessionManager();
 
-export const sessionAccessor: SessionAccessorFunction = () => {
-    return sessionManager.getSession();
-};
-```
+    return sessionManager?.getSession();
+}
 
-Finally, create the [FireflyRuntime](/reference/runtime/runtime-class.md) instance with the new `sessionAccessor` function:
+export function useIsAuthenticated() {
+    const sessionManager = useSessionManager();
 
-```ts #5 host/src/bootstrap.tsx
-import { FireflyRuntime } from "@squide/firefly";
-import { sessionAccessor } from "./session.ts";
-
-const runtime = new FireflyRuntime({
-    sessionAccessor
-});
+    return !!sessionManager?.getSession();
+}
 ```
 
 ## Fetch the session
 
-Now, let's create an MSW request handler that returns a session object if a user is authenticated:
+Now, let's go back to the host application and create an MSW request handler that returns a session object if a user is authenticated:
 
 ```ts !#49-60 host/mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
@@ -307,77 +279,137 @@ export const requestHandlers: HttpHandler[] = [
 ];
 ```
 
-Then, update the host application `App` component to load the session when a user navigate to a protected page for the first time:
+Then, create a [Tanstack Query](https://tanstack.com/query/latest) implementation of the shared `SessionManager` interface created earlier:
 
-```tsx !#19,21,25,27-29,33-34 host/src/App.tsx
-import { AppRouter } from "@squide/firefly";
-import type { Session } from "@sample/shared";
-import { sessionManager } from "./session.ts";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+```ts host/src/sessionManager.ts
+import type { SessionManager, Session } from "@sample/shared";
+import { useQueryClient, type QueryClient } from "@tanstack/react-query";
 
-async function fetchProtectedData(setIsSessionLoaded: (isLoaded: boolean) => void,signal: AbortSignal) {
-    const response = await fetch("/api/session", {
-        signal
-    });
+class TanstackQuerySessionManager implements SessionManager {
+    #session: Session | undefined;
+    readonly #queryClient: QueryClient;
 
-    const data = await response.json();
+    constructor(session: Session, queryClient: QueryClient) {
+        this.#session = session;
+        this.#queryClient = queryClient;
+    }
 
-    const session: Session = {
-        user: {
-            name: data.username
+    getSession() {
+        return this.#session;
+    }
+
+    clearSession() {
+        this.#session = undefined;
+
+        this.#queryClient.invalidateQueries({ queryKey: ["/api/session"], refetchType: "inactive" });
+    }
+}
+
+export function useSessionManagerInstance(session: Session) {
+    const queryClient = useQueryClient();
+
+    return useMemo(() => new TanstackQuerySessionManager(session, queryClient), [session, queryClient]);
+}
+```
+
+Then, update the host application `App` component to load the session with the [useProtectedDataQueries](../reference/tanstack-query/useProtectedDataQueries.md) hook whenever a user navigates to a protected page for the first time.
+
+Finally, create an instance of `TanstackQuerySessionManager` with the retrieved session data and share this instance via the `SessionManagerContext`:
+
+```tsx !#7-28,30,37,47,57 host/src/App.tsx
+import { AppRouter, useProtectedDataQueries, useIsBootstrapping } from "@squide/firefly";
+import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
+import { SessionManagerContext, isApiError, type Session } from "@sample/shared";
+import { useSessionManagerInstance } from "./sessionManager.ts";
+
+function BootstrappingRoute() {
+    const [session] = useProtectedDataQueries([
+        {
+            queryKey: ["/api/session"],
+            queryFn: async () => {
+                const response = await fetch("/api/session");
+
+                if (!response.ok) {
+                    throw new ApiError(response.status, response.statusText);
+                }
+
+                const data = await response.json();
+
+                const result: Session = {
+                    user: {
+                        name: data.username,
+                    }
+                };
+
+                return result;
+            }
         }
-    };
+    ], error => isApiError(error) && error.status === 401);
 
-    sessionManager.setSession(session);
+    const sessionManager = useSessionManagerInstance(session!);
 
-    setIsSessionLoaded(true);
+    if (useIsBootstrapping()) {
+        return <div>Loading...</div>;
+    }
+
+    return (
+        <SessionManagerContext.Provider value={sessionManager}>
+            <Outlet />
+        </SessionManagerContext.Provider>
+    );
 }
 
 export function App() {
-    const [isSessionLoaded, setIsSessionLoaded] = useState(false);
-
-    const handleLoadProtectedData = useCallback((signal: AbortSignal) => {
-        return fetchProtectedData(setIsSessionLoaded, signal);
-    }, []);
-
     return (
-        <AppRouter
-            onLoadProtectedData={handleLoadProtectedData}
-            isProtectedDataLoaded={isSessionLoaded}
-            fallbackElement={<div>Loading...</div>}
-            errorElement={<div>An error occured!</div>}
-            waitForMsw={true}
+        <AppRouter 
+            waitForMsw
+            waitForProtectedData
         >
-            {(routes, providerProps) => (
-                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
-            )}
+            {({ rootRoute, registeredRoutes, routerProviderProps }) => {
+                return (
+                    <RouterProvider
+                        router={createBrowserRouter([
+                            {
+                                element: rootRoute,
+                                children: [
+                                    {
+                                        element: <BootstrappingRoute />,
+                                        children: registeredRoutes
+                                    }
+                                ]
+                            }
+                        ])}
+                        {...routerProviderProps}
+                    />
+                );
+            }}
         </AppRouter>
     );
 }
 ```
 
-!!!info
-Since the `sessionManager` doesn't trigger a re-render, a `isSessionLoaded` state value is added to trigger a re-render when the session has been loadded.
-!!!
-
 ## Add an authentication boundary
 
-Next, create a new React Router authentication boundary component using the [useIsAuthenticated](../reference/session/useIsAuthenticated.md) hook:
+Next, create an authentication boundary component using the shared `useIsAuthenticated` hook created earlier to redirect unauthenticated user to the login page:
 
-> Internally, the `useIsAuthenticated` hook utilize the `sessionAccessor` function that we created previously to determine whether or not the user is authenticated.
-
-```tsx !#5 host/src/AuthenticationBoundary.tsx
+```tsx host/src/AuthenticationBoundary.tsx
 import { Navigate, Outlet } from "react-router-dom";
-import { useIsAuthenticated } from "@squide/firefly";
+import { useIsAuthenticated } from "@sample/shared";
 
 export function AuthenticationBoundary() {
-    return useIsAuthenticated() ? <Outlet /> : <Navigate to="/login" />;
+    const isAuthenticated = useIsAuthenticated();
+
+    if (isAuthenticated) {
+        return <Outlet />;
+    }
+
+    return <Navigate to="/login" />;
 }
 ```
 
 ## Define an authenticated layout
 
-Now that authentication is in place, thanks to the `AuthenticationBoundary`, we can expect to render the navigation items exclusively for authenticated users.
+Now, let's add a specific layout for authenticated users that passes through the `AuthenticationBoundary` component.
 
 First, add a MSW request handler to log out a user:
 
@@ -454,9 +486,9 @@ export const requestHandlers: HttpHandler[] = [
 ];
 ```
 
-Then, introduce a new `AuthenticatedLayout` displaying the name of the logged-in user along with a logout button:
+Then, introduce a new `AuthenticatedLayout` component displaying the name of the logged-in user along with a logout button. This layout will retrieve the active user session from the shared `useSessionManager` hook introduced earlier:
 
-```tsx !#41,43-60,72,75 host/src/AuthenticatedLayout.tsx
+```tsx !#40-41,43-60,72,75 host/src/AuthenticatedLayout.tsx
 import { useCallback, type ReactNode, type MouseEvent, type HTMLButtonElement } from "react";
 import { Link, Outlet, navigate } from "react-router-dom";
 import { 
@@ -466,9 +498,9 @@ import {
     type RenderItemFunction,
     type RenderSectionFunction
 } from "@squide/react-router";
-import type { Session } from "@sample/shared";
+import { useSessionManager } from "@sample/shared";
 
-const renderItem: RenderItemFunction = (item, index, level) => {
+const renderItem: RenderItemFunction = (item, key) => {
     // To keep things simple, this sample doesn't support nested navigation items.
     // For an example including support for nested navigation items, have a look at
     // https://gsoft-inc.github.io/wl-squide/reference/routing/userenderednavigationitems/
@@ -479,7 +511,7 @@ const renderItem: RenderItemFunction = (item, index, level) => {
     const { label, linkProps, additionalProps } = item;
 
     return (
-        <li key={`${level}-${index}`}>
+        <li key={key}>
             <Link {...linkProps} {...additionalProps}>
                 {label}
             </Link>
@@ -487,17 +519,17 @@ const renderItem: RenderItemFunction = (item, index, level) => {
     );
 };
 
-const renderSection: RenderSectionFunction = (elements, index, level) => {
+const renderSection: RenderSectionFunction = (elements, key) => {
     return (
-        <ul key={`${level}-${index}`}>
+        <ul key={key}>
             {elements}
         </ul>
     );
 };
 
 export function AuthenticatedLayout() {
-    // Retrieve the current user session.
-    const session = useSession() as Session;
+    const sessionManager = useSessionManager();
+    const session = sessionManager?.getSession();
 
     const handleLogout = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -511,7 +543,7 @@ export function AuthenticatedLayout() {
 
         if (response.ok) {
             // Clear the in-memory session to ensure the authentication boundary can do his job.
-            sessionManager.clearSession();
+            sessionManager?.clearSession();
 
             // Redirect the user to the login page.
             navigate("/login");
@@ -528,7 +560,7 @@ export function AuthenticatedLayout() {
                     {renderedNavigationItems}
                 </nav>
                 <div style={{ whiteSpace: "nowrap", marginRight: "20px" }}>
-                    (User: <span style={{ fontWeight: "bold" }}>{session.user.name}</span>)
+                    (User: <span style={{ fontWeight: "bold" }}>{session?.user.name}</span>)
                 </div>
                 <div>
                     <button type="button" onClick={handleLogout}>Log out</button>
@@ -558,58 +590,39 @@ export function RootLayout() {
 
 Finally, assemble everything:
 
-```tsx !#17,22,25,46-52 host/src/register.tsx
+```tsx !#15,19,27-33 host/src/register.tsx
 import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { RootLayout } from "./Rootlayout.tsx";
-import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
-import { ModuleErrorBoundary } from "./ModuleErrorBoundary.tsx";
 import { LoginPage } from "./LoginPage.tsx";
 import { HomePage } from "./Homepage.tsx";
 import { NotFoundPage } from "./NotFoundPage.tsx";
 
 export const registerHost: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
     runtime.registerRoute({
+        $name: "root-layout",
         element: <RootLayout />,
         children: [
             {
-                // The root error boundary is a named route, allowing the logging and logout pages 
-                // to be nested under it using a "parentName" option.
-                $name: "root-error-boundary",
-                errorElement: <RootErrorBoundary />,
+                // Every page beyond the authenticated boundary are protected.
+                element: <AuthenticationBoundary />,
                 children: [
                     {
-                        // Every page beyond the authenticated boundary are protected.
-                        element: <AuthenticationBoundary />,
-                        children: [
-                            {
-                                element: <AuthenticatedLayout />,
-                                children: [
-                                    {
-                                        // By having the error boundary under the authenticated layout, modules unmanaged errors
-                                        // will be displayed inside the layout rather than replacing the whole page.
-                                        errorElement: <ModuleErrorBoundary />,
-                                        children: [
-                                            ManagedRoutes
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
+                        // All the managed routes will render the authenticated layout.
+                        element: <AuthenticatedLayout />,
+                        children: ManagedRoutes
                     }
                 ]
             }
         ]
     });
 
-    // The login page is nested under the root error boundary to be defined before the
-    // authentication boundary and be publicly accessible.
     runtime.registerRoute({
         $visibility: "public",
         path: "/login",
         element: <LoginPage />
     }, {
-        parentName: "root-error-boundary"
+        parentName: "root-layout"
     });
 
     runtime.registerRoute({
@@ -617,7 +630,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = async runtim
         path: "*",
         element: <NotFoundPage />
     }, {
-        parentName: "root-error-boundary"
+        parentName: "root-layout"
     });
 
     runtime.registerRoute({

@@ -489,7 +489,7 @@ export const requestHandlers: HttpHandler[] = [
 Then, introduce a new `AuthenticatedLayout` component displaying the name of the logged-in user along with a logout button. This layout will retrieve the active user session from the shared `useSessionManager` hook introduced earlier:
 
 ```tsx !#40-41,43-60,72,75 host/src/AuthenticatedLayout.tsx
-import { useCallback, type ReactNode, type MouseEvent, type HTMLButtonElement } from "react";
+import { Suspense, useCallback, type ReactNode, type MouseEvent, type HTMLButtonElement } from "react";
 import { Link, Outlet, navigate } from "react-router-dom";
 import { 
     useNavigationItems,
@@ -566,7 +566,9 @@ export function AuthenticatedLayout() {
                     <button type="button" onClick={handleLogout}>Log out</button>
                 </div>
             </div>
-            <Outlet />
+            <Suspense fallback={<div>Loading...</div>}>
+                <Outlet />
+            </Suspense>
         </>
     );
 }
@@ -575,12 +577,15 @@ export function AuthenticatedLayout() {
 By creating a new `AuthenticatedLayout`, much of the layout code has been transferred from the `RootLayout` to the `AuthenticatedLayout`, leaving the root layout responsible only for styling the outer wrapper of the application for now:
 
 ```tsx host/src/RootLayout.tsx
+import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 
 export function RootLayout() {
     return (
         <div style={{ margin: "20px" }}>
-            <Outlet />
+            <Suspense fallback={<div>Loading...</div>}>
+                <Outlet />
+            </Suspense>
         </div>
     );
 }

@@ -4,11 +4,11 @@ order: 880
 
 # Override the host layout
 
-The `RootLayout` component defined in the [create an host application](../getting-started/create-host.md#navigation-items) starting guide serves as the default layout for the homepage route as well as for every [managed routes](../reference/routing/managedRoutes.md).
+The `RootLayout` component defined in the [Create an host application](../getting-started/create-host.md#navigation-items) starting guide serves as the default layout for the homepage and all the [managed routes](../reference/routing/managedRoutes.md).
 
-For most routes, this is the behavior expected by the author. However, for routes such as a login page, the default `RootLayout` isn't suitable because the page is not bound to a user session (the user is not even authenticated yet).
+For most routes, this behavior is what the author expects. However, as an application introduces [authentication](./add-authentication.md) and adds many session-related features to the default layout, this default layout may no longer be suitable for every route. For example, a login page doesn't require session-related features, as the user isn't authenticated yet. In such cases, the default layout isn't appropriate.
 
-To accomodate pages that require a different layout, a mechanism is needed to move their route declaration at the root of the React Router [instance](https://reactrouter.com/en/main/routers/create-browser-router) before the `RootLayout` is declared.
+To accomodate pages requiring a different layout, a mechanism is needed to move their route declaration to the root of the React Router [instance](https://reactrouter.com/en/main/routers/create-browser-router) before the `RootLayout` is declared.
 
 ``` !#2
 root

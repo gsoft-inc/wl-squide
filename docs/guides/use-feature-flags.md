@@ -229,11 +229,11 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
 
 Finally, update the host application's `App` component to use the [useDeferredRegistrations](../reference/registration/useDeferredRegistrations.md) hook. By passing the feature flags data to `useDeferredRegistrations`, this data will be available to the module's deferred registration functions:
 
-```tsx !#26 host/src/App.tsx
+```tsx !#26-28,30 host/src/App.tsx
 import { AppRouter, usePublicDataQueries, useIsBootstrapping, useDeferredRegistrations } from "@squide/firefly";
 import { useMemo } from "react";
 import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
-import { FeatureFlagsContext, type FeatureFlags } from "@sample/shared";
+import { FeatureFlagsContext, type FeatureFlags, type DeferredRegistrationData } from "@sample/shared";
 
 function BootstrappingRoute() {
     const [featureFlags] = usePublicDataQueries([
@@ -253,9 +253,13 @@ function BootstrappingRoute() {
         }
     ]);
 
-    // The useMemo is super important otherwise the hook will believe the feature flags
+    // The useMemo is super important otherwise the hook will consider that the feature flags
     // changed everytime the hook is rendered.
-    useDeferredRegistrations(useMemo(() => ({ featureFlags }), [featureFlags]));
+    const data: DeferredRegistrationData = useMemo(() => ({ 
+        featureFlags 
+    }), [featureFlags]);
+
+    useDeferredRegistrations(data);
 
     if (useIsBootstrapping()) {
         return <div>Loading...</div>

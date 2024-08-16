@@ -112,7 +112,7 @@ root.render(
 );
 ```
 
-```tsx !#10-14 host/src/AppRouter.tsx
+```tsx !#12-16 host/src/AppRouter.tsx
 import { usePublicDataQueries, useDeferredRegistrations, useIsBootstrapping, AppRouter as FireflyAppRouter } from "@squide/firefly";
 import { useMemo } from "react";
 import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
@@ -122,9 +122,11 @@ import { getFeatureFlagsQuery } from "./getFeatureFlagsQuery.ts";
 function BootstrappingRoute() {
     const [featureFlags] = usePublicDataQueries([getFeatureFlagsQuery]);
 
+    // The useMemo is super important otherwise the hook will consider that the feature flags
+    // changed everytime the hook is rendered.
     const data: DeferredRegistrationData = useMemo(() => ({ 
         featureFlags 
-    }), [featureFlags])
+    }), [featureFlags]);
 
     useDeferredRegistrations(data);
 
@@ -205,6 +207,49 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
 ```
 
 [!ref useDeferredRegistrations](./useDeferredRegistrations.md)
+
+### Use the deferred registration operation argument
+
+```tsx !#28,33 local-module/src/register.tsx
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
+import type { DeferredRegistrationData } from "@sample/shared";
+import { AboutPage } from "./AboutPage.tsx";
+import { FeatureAPage } from "./FeatureAPage.tsx";
+
+export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = runtime => {
+    runtime.registerRoute({
+        path: "/about",
+        element: <AboutPage />
+    });
+
+    runtime.registerNavigationItem({
+        $key: "about",
+        $label: "About",
+        to: "/about"
+    });
+
+    // Routes are always registered. If a route may not be available for a group of users, conditionally register
+    // its navigation item with a deferred registration.
+    // To manage direct hits to a conditional route, render an error boundary whenever the route's endpoint returns a 401 status code.
+    runtime.registerRoute({
+        path: "/feature-a",
+        element: <FeatureAPage />
+    });
+
+    // Once the feature flags has been loaded by the host application, by completing the module registrations process,
+    // the deferred registration function will be called with the feature flags data.
+    return ({ featureFlags }, operation) => {
+        // Only register the "feature-a" route and navigation item if the feature is active.
+        if (featureFlags.featureA) {
+            runtime.registerNavigationItem({
+                $key: "feature-a",
+                $label: operation === "register" ? "Feature A" : "Feature A updated",
+                to: "/feature-a"
+            });
+        }
+    };
+}
+```
 
 ### Handle registration errors
 

@@ -279,7 +279,7 @@ export const requestHandlers: HttpHandler[] = [
 ];
 ```
 
-Then, create a [Tanstack Query](https://tanstack.com/query/latest) implementation of the shared `SessionManager` interface created earlier:
+Then, create a [TanStack Query](https://tanstack.com/query/latest) implementation of the shared `SessionManager` interface created earlier:
 
 ```ts host/src/sessionManager.ts
 import type { SessionManager, Session } from "@sample/shared";

@@ -8,11 +8,11 @@ order: 975
 Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) guide.
 !!!
 
-There are various approaches to fetching data for pages. At Workleap, our preference is usually to develop a backend for frontend (BFF) with a **dedicated endpoint per page**, returning a **data** structure specifically **tailored** for that **page**. We rely on **server state** as our single **source of truth** and leverage [Tanstack Query](https://tanstack.com/query/latest/) to manage data fetching.
+There are various approaches to fetching data for pages. At Workleap, our preference is usually to develop a backend for frontend (BFF) with a **dedicated endpoint per page**, returning a **data** structure specifically **tailored** for that **page**. We rely on **server state** as our single **source of truth** and leverage [TanStack Query](https://tanstack.com/query/latest/) to manage data fetching.
 
 Although this approach works well, a few adjustments are necessary when transitioning from a monolithic application to a federated application. Let's explore these changes!
 
-## Install Tanstack Query
+## Install TanStack Query
 
 First, open a terminal at the root of the module and install the following packages:
 
@@ -65,7 +65,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 ```
 
 !!!info
-To minimize unexpected situations and faciliate maintenance, the Tanstack Query cache shouldn't be shared between the host application and the modules. As the Tanstack Query cache is located in the `QueryClient`, both the host application and the modules should instantiate their own `QueryClient` instance.
+To minimize unexpected situations and faciliate maintenance, the TanStack Query cache shouldn't be shared between the host application and the modules. As the TanStack Query cache is located in the `QueryClient`, both the host application and the modules should instantiate their own `QueryClient` instance.
 !!!
 
 ## Create a component for providers
@@ -105,9 +105,9 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 ## Setup the development tools
 
-To faciliate development, Tanstack Query provides [devtools](https://tanstack.com/query/latest/docs/react/devtools) to help visualize all of the inner workings of Tanstack Query.
+To faciliate development, TanStack Query provides [devtools](https://tanstack.com/query/latest/docs/react/devtools) to help visualize all of the inner workings of TanStack Query.
 
-However, the Tanstack Query devtools has not been developed to handle a federated application with multiple `QueryClient` instances. To use the devtools, you must define a `ReactQueryDevtools` component for each `QueryClient` instance:
+However, the TanStack Query devtools has not been developed to handle a federated application with multiple `QueryClient` instances. To use the devtools, you must define a `ReactQueryDevtools` component for each `QueryClient` instance:
 
 ```tsx !#14 remote/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -142,7 +142,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 }
 ```
 
-Then, depending on which page of the application has been rendered, a distinct devtools instance will be accessible. For a better experience, we **recommend activating** the Tanstack Query **devtools** exclusively when **developing** a **module** [in isolation](./develop-a-module-in-isolation.md):
+Then, depending on which page of the application has been rendered, a distinct devtools instance will be accessible. For a better experience, we **recommend activating** the TanStack Query **devtools** exclusively when **developing** a **module** [in isolation](./develop-a-module-in-isolation.md):
 
 ```tsx !#14-16 remote/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -273,9 +273,9 @@ export function RootLayout() {
 
 ## Try it :rocket:
 
-Start the local module in a development environment using the `dev-isolated` script. If you haven't completed the [develop a module in isolation](./develop-a-module-in-isolation.md) guide, use the `dev` script instead and skip the part about Tanstack Query devtools. Then, navigate to the `/page` page. 
+Start the local module in a development environment using the `dev-isolated` script. If you haven't completed the [develop a module in isolation](./develop-a-module-in-isolation.md) guide, use the `dev` script instead and skip the part about TanStack Query devtools. Then, navigate to the `/page` page. 
 
-You should notice that the character's data is being fetch from the MSW request handler and rendered on the page. Additionally, you should notice that the Tanstack Query devtools are available (a ribbon at the bottom right corner).
+You should notice that the character's data is being fetch from the MSW request handler and rendered on the page. Additionally, you should notice that the TanStack Query devtools are available (a ribbon at the bottom right corner).
 
 #### Troubleshoot issues
 

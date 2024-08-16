@@ -8,13 +8,13 @@ order: 840
 Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) and [Fetch initial data](./fetch-initial-data.md) guides.
 !!!
 
-To continuously deliver value to our customers, Workleap has adopted a feature flags system that allows to activate or deactivate functionalities without requiring code deployment. While "in-page" feature flags are straightforward to implement for a Squide application, feature flags that conditionally register pages or navigation items requires a more advanced [deferred registration](../reference/registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) mechanism.
+To continuously deliver value to our customers, Workleap has adopted a feature flag system that enables functionalities to be activated or deactivated without requiring a code deployment. While implementing "in-page" feature flags in a Squide application is straightforward, feature flags that conditionally register navigation items require a more advanced [deferred registration](../reference/registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) mechanism.
 
 ## Add an endpoint
 
 First, define a MSW request handler that returns the feature flags:
 
-```ts mocks/handlers.ts
+```ts host/mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
 
 export const requestHandlers: HttpHandler[] = [
@@ -27,23 +27,12 @@ export const requestHandlers: HttpHandler[] = [
 ];
 ```
 
-Then, register the request handler using the module registration function:
+Finally, register the request handler using the module registration function:
 
-```tsx !#18,20 src/register.tsx
+```tsx host/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
-import { Page } from "./Page.tsx";
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
-    runtime.registerRoute({
-        path: "/page",
-        element: <Page />
-    });
-
-    runtime.registerNavigationItem({
-        $label: "Page",
-        to: "/page"
-    });
-
     if (runtime.isMswEnabled) {
         // Files that includes an import to the "msw" package are included dynamically to prevent adding
         // unused MSW stuff to the application bundles.
@@ -56,7 +45,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
 
 ### Create a shared context
 
-Then, in a shared project, create a `FeatureFlagsContext`:
+Now, in a shared project, create a `FeatureFlagsContext`:
 
 ```ts shared/src/featureFlagsContext.ts
 import { createContext, useContext } from "react";
@@ -79,59 +68,76 @@ Ensure that the shared project is configured as a [shared dependency](./add-a-sh
 
 ## Fetch the feature flags
 
-Finally, open the host application code and update the `App` component to utilize the `AppRouter` component's `onLoadPublicData` handler to fetch the feature flags data:
+Finally, open the host application code and update the `App` component to fetch the feature flags data with the [usePublicDataQueries](../reference/tanstack-query/usePublicDataQueries.md) hook:
 
-```tsx !#24-26,29,31-32 host/src/App.tsx
-import { useState, useCallback } from "react";
-import { AppRouter } from "@squide/firefly";
+```tsx !#6-21,28 host/src/App.tsx
+import { AppRouter, usePublicDataQueries, useIsBootstrapping } from "@squide/firefly";
+import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
 import { FeatureFlagsContext, type FeatureFlags } from "@sample/shared";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void, signal: AbortSignal) {
-    const response = await fetch("/api/feature-flags", {
-        signal
-    });
+function BootstrappingRoute() {
+    const [featureFlags] = usePublicDataQueries([
+        {
+            queryKey: ["/api/feature-flags"],
+            queryFn: async () => {
+                const response = await fetch("/api/feature-flags");
+                const data = await response.json();
 
-    const data = await response.json();
+                const flags: FeatureFlags = {
+                    featureA: data.featureA,
+                    featureB: data.featureB
+                };
 
-    const featureFlags: FeatureFlags = {
-        featureA: data.featureA,
-        featureB: data.featureB
-    };
+                return flags;
+            }
+        }
+    ]);
 
-    setFeatureFlags(featureFlags);
-}
-
-export function App() {
-    const [featureFlags, setFeatureFlags] = useState<FeatureFlags>();
-
-    const handleLoadPublicData = useCallback((signal: AbortSignal) => {
-        return fetchPublicData(setFeatureFlags, signal);
-    }, []);
+    if (useIsBootstrapping()) {
+        return <div>Loading...</div>
+    }
 
     return (
         <FeatureFlagsContext.Provider value={featureFlags}>
-            <AppRouter
-                onLoadPublicData={handleLoadPublicData}
-                isPublicDataLoaded={!!featureFlags}
-                fallbackElement={<div>Loading...</div>}
-                errorElement={<div>An error occured!</div>}
-                waitForMsw={true}
-            >
-                {(routes, providerProps) => (
-                    <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
-                )}
-            </AppRouter>
-        <FeatureFlagsContext.Provider />
+            <Outlet />
+        </FeatureFlagsContext.Provider>
+    )
+}
+
+export function App() {
+    return (
+        <AppRouter
+            waitForMsw
+            waitForPublicData
+        >
+            {({ rootRoute, registeredRoutes, routerProviderProps }) => {
+                return (
+                    <RouterProvider
+                        router={createBrowserRouter([
+                            {
+                                element: rootRoute,
+                                children: [
+                                    {
+                                        element: <BootstrappingRoute />,
+                                        children: registeredRoutes
+                                    }
+                                ]
+                            }
+                        ])}
+                        {...routerProviderProps}
+                    />
+                );
+            }}
+        </AppRouter>
     );
 }
 ```
 
 ## Conditionally render a page section
 
-Now, let's use the `featureA` flag from `FeatureFlagsContext` to conditionally render a section of the `Page` component:
+Now, let's use the `featureA` flag from `FeatureFlagsContext` to conditionally render a section of a new `Page` component. In this example, a section of the `Page` component will only be rendered if `featureA` is activated:
 
-```tsx src/Page.tsx
+```tsx remote/src/Page.tsx
 import { useFeatureFlags } from "@sample/shared";
 
 export function Page() {
@@ -146,21 +152,43 @@ export function Page() {
 }
 ```
 
-In the previous code sample, the section of the `Page` component will only be rendered if `featureA` is activated.
+Then, register the `Page` component using the module registration function:
 
-## Conditionally register a route
+```tsx remote/src/register.tsx
+import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
+import { Page } from "./Page.tsx";
 
-Now, conditionally registering a route and it's navigation items based on a feature flag is more complex since the default registration mechanism is executed before the application has bootstrapped, meaning that the feature flags has not been fetched yet from the server.
+export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
+    runtime.registerRoute({
+        path: "/page",
+        element: <Page />
+    });
+
+    runtime.registerNavigationItem({
+        $key: "page",
+        $label: "Page",
+        to: "/page"
+    });
+}
+```
+
+!!!info
+If you've already registered a `Page` component in a previous guide, use a different name for this component.
+!!!
+
+## Conditionally register a navigation item
+
+Conditionally registering navigation items based on a feature flag is more complex because Squide's default registration mechanism runs before the application has bootstrapped, meaning that the feature flags have not yet been fetched from the server.
 
 To address this, Squide offers an alternate [deferred registration](../reference/registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) mechanism in two-phases:
 
-1. The first phase allows modules to register their routes and navigation items that are not dependent on initial data.
+1. The first phase allows modules to register their _static_ navigation items that are not dependent on initial data.
 
-2. The second phase enables modules to register routes and navigation items that are dependent on initial data. We refer to this second phase as **deferred registrations**.
+2. The second phase enables modules to register _deferred_ navigation items that are dependent on initial data. We refer to this second phase as **deferred registrations**.
 
-To defer a registration to the second phase, a module registration function can **return an anonymous function**. Once the modules are registered and the [TBD](../reference/registration/completeRemoteModuleRegistrations.md) function is called, the deferred registration functions will be executed.
+To defer a registration to the second phase, a module's registration function can **return an anonymous function**. Once the modules are registered and the [useDeferredRegistrations](../reference/registration/useDeferredRegistrations.md) hook is rendered, the deferred registration functions will be executed.
 
-First, let's update the module registration function to return an anonymous function that will receive the feature flags:
+First, let's add a `DeferredRegistrationData` interface to a shared project, defining the initial data that module's deferred registration functions can expect:
 
 ```ts shared/src/deferredData.ts
 import { FeatureFlags } from "./featureFlagsContext.ts";
@@ -170,30 +198,25 @@ export interface DeferredRegistrationData {
 }
 ```
 
-```tsx !#15-28 src/register.tsx
+Then, update the module `register` function to defer the registration of the `Page` component navigation item:
+
+```tsx !#12-21 src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import type { DeferredRegistrationData } from "@sample/shared";
 import { Page } from "./Page.tsx";
 
-export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = async runtime => {
-    if (runtime.isMswEnabled) {
-        // Files that includes an import to the "msw" package are included dynamically to prevent adding
-        // unused MSW stuff to the application bundles.
-        const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
-
-        runtime.registerRequestHandlers(requestHandlers);
-    }
+export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredRegistrationData> = runtime => {
+    runtime.registerRoute({
+        path: "/page",
+        element: <Page />
+    });
 
     // Return a deferred registration function.
-    return ({ featureFlags } = {}) => {
-        // Only register the "Page" route and navigation items if "featureB" is activated.
+    return ({ featureFlags }) => {
+        // Only register the "Page" navigation items if "featureB" is activated.
         if (featureFlags?.featureB) {
-            runtime.registerRoute({
-                path: "/page",
-                element: <Page />
-            });
-
             runtime.registerNavigationItem({
+                $key: "page",
                 $label: "Page",
                 to: "/page"
             });
@@ -202,64 +225,85 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
 }
 ```
 
-Finally, open the host application code again and update the `App` component to utilize the `AppRouter` component's `onCompleteRegistrations` handler to [TBD](../reference/registration/completeRemoteModuleRegistrations.md) with the feature flags:
+Finally, update the host application's `App` component to use the [useDeferredRegistrations](../reference/registration/useDeferredRegistrations.md) hook. By passing the feature flags data to `useDeferredRegistrations`, this data will be available to the module's deferred registration functions:
 
-```tsx !#27-32,39 host/src/App.tsx
-import { useState, useCallback } from "react";
-import { AppRouter, useRuntime, completeModuleRegistrations } from "@squide/firefly";
+```tsx !#26 host/src/App.tsx
+import { AppRouter, usePublicDataQueries, useIsBootstrapping, useDeferredRegistrations } from "@squide/firefly";
+import { useMemo } from "react";
+import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
 import { FeatureFlagsContext, type FeatureFlags } from "@sample/shared";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void, signal: AbortSignal) {
-    const response = await fetch("/api/feature-flags");
-    const data = await response.json();
+function BootstrappingRoute() {
+    const [featureFlags] = usePublicDataQueries([
+        {
+            queryKey: ["/api/feature-flags"],
+            queryFn: async () => {
+                const response = await fetch("/api/feature-flags");
+                const data = await response.json();
 
-    const featureFlags: FeatureFlags = {
-        featureA: data.featureA,
-        featureB: data.featureB
-    };
+                const flags: FeatureFlags = {
+                    featureA: data.featureA,
+                    featureB: data.featureB
+                };
 
-    setFeatureFlags(featureFlags);
-}
+                return flags;
+            }
+        }
+    ]);
 
-export function App() {
-    const [featureFlags, setFeatureFlags] = useState<FeatureFlags>();
+    // The useMemo is super important otherwise the hook will believe the feature flags
+    // changed everytime the hook is rendered.
+    useDeferredRegistrations(useMemo(() => ({ featureFlags }), [featureFlags]));
 
-    const runtime = useRuntime();
-
-    const handleLoadPublicData = useCallback((signal: AbortSignal) => {
-        return fetchPublicData(setFeatureFlags, signal);
-    }, []);
-
-    const handleCompleteRegistrations = useCallback(() => {
-        // Provide the retrieved feature flags when completing the registration of the deferred registration.
-        return completeModuleRegistrations(runtime, {
-            featureFlags
-        });
-    }, [runtime, featureFlags]);
+    if (useIsBootstrapping()) {
+        return <div>Loading...</div>
+    }
 
     return (
         <FeatureFlagsContext.Provider value={featureFlags}>
-            <AppRouter
-                onLoadPublicData={handleLoadPublicData}
-                isPublicDataLoaded={!!featureFlags}
-                onCompleteRegistrations={handleCompleteRegistrations}
-                fallbackElement={<div>Loading...</div>}
-                errorElement={<div>An error occured!</div>}
-                waitForMsw={true}
-            >
-                {(routes, providerProps) => (
-                    <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
-                )}
-            </AppRouter>
-        <FeatureFlagsContext.Provider />
+            <Outlet />
+        </FeatureFlagsContext.Provider>
+    )
+}
+
+export function App() {
+    return (
+        <AppRouter
+            waitForMsw
+            waitForPublicData
+        >
+            {({ rootRoute, registeredRoutes, routerProviderProps }) => {
+                return (
+                    <RouterProvider
+                        router={createBrowserRouter([
+                            {
+                                element: rootRoute,
+                                children: [
+                                    {
+                                        element: <BootstrappingRoute />,
+                                        children: registeredRoutes
+                                    }
+                                ]
+                            }
+                        ])}
+                        {...routerProviderProps}
+                    />
+                );
+            }}
+        </AppRouter>
     );
 }
 ```
 
+!!!info
+A key feature of [TanStack Query](https://tanstack.com/query/latest) is its ability to keep the frontend state synchronized with the server state. To fully leverage this, whenever the data passed to `useDeferredRegistrations` changes, all deferred registration functions are re-executed.
+
+Remember to use [useMemo](https://react.dev/reference/react/useMemo) for your deferred registration data and to specify the `$key` option for your navigation items!
+!!!
+
 ## Try it :rocket:
 
-Start the application using the `dev` and navigate to the `/page` page. The page should render with the conditonal section. Now, disable the `featureA` flag in the endpoint and refresh the page. You shouldn't see the conditonal section anymore. Finally, disable the `featureB` flag in the endpoint and refresh the page. The page shouldn't be available anymore.
+Start the application using the `dev` and navigate to the `/page` page. The page should render with the conditonal section. Now, disable the `featureA` flag in the endpoint and refresh the page. You shouldn't see the conditonal section anymore. Finally, disable the `featureB` flag in the endpoint and refresh the page. The menu link labelled "Page" shouldn't be available anymore.
 
 If you are experiencing issues with this section of the guide:
 

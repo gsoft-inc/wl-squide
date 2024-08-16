@@ -30,7 +30,7 @@ npm create @workleap/project@latest <output-directory>
 
 We have built this shell to facilitate the adoption of federated applications at Workleap by **enforcing patterns** that we believe will help feature teams successfully implement a distributed architecture.
 
-The shell itself is a lightweight [API layer](/reference) built on top of [Module Federation](https://module-federation.io/), [React Router](https://reactrouter.com) and [Tanstack Query](https://tanstack.com/query/latest), with the goal of maximizing the strength of both libraries while interfering as little as possible with their functionality.
+The shell itself is a lightweight [API layer](/reference) built on top of [Module Federation](https://module-federation.io/), [React Router](https://reactrouter.com) and [TanStack Query](https://tanstack.com/query/latest), with the goal of maximizing the strength of both libraries while interfering as little as possible with their functionality.
 
 ### Module Federation
 
@@ -50,11 +50,11 @@ With Module Federation, we hope to develop federated applications that provide t
 
 React Router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) feature is ideal for federated applications as it enables highly **composable** and **decoupled** UI. For a more in-depth explanation, refer to this [article](https://www.infoxicator.com/why-react-router-is-excellent-for-micro-frontends).
 
-### Tanstack Query
+### TanStack Query
 
-Tanstack Query simplifies server state management with an innovative approach to data fetching, caching, and synchronization, enhancing both the perceived performance and the user experience.
+TanStack Query simplifies server state management with an innovative approach to data fetching, caching, and synchronization, enhancing both the perceived performance and the user experience.
 
-Tanstack Query is particularly well-suited for federated applications due to its ability to **manage** server **state across** multiple **independent** React **components**. It’s an effective solution for applications that require **isolating data** and **state** between their independent parts.
+TanStack Query is particularly well-suited for federated applications due to its ability to **manage** server **state across** multiple **independent** React **components**. It’s an effective solution for applications that require **isolating data** and **state** between their independent parts.
 
 ## Module registration
 

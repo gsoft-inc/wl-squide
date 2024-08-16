@@ -24,7 +24,7 @@ export function RootErrorBoundary() {
 
 ## Register the error boundary
 
-Then, update the host application `registerHost` function to declare the `RootErrorBoundary` component below the `RootLayout` but above the routes of the modules. By doing so, if a module encounters an unhandled error, the error boundary will only replace the section rendered by the `Outlet` component within the `RootLayout` rather than the entire page.
+Then, update the host application `registerHost` function to declare the `RootErrorBoundary` component below the `RootLayout` component but above the routes of the modules. By doing so, if a module encounters an unhandled error, the error boundary will only replace the section rendered by the `Outlet` component within the root layout rather than the entire page.
 
 A React Router's error boundary is declared with the [errorElement](https://reactrouter.com/en/main/route/error-element) of a route:
 

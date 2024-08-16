@@ -43,7 +43,7 @@ export function FederatedTabsLayout() {
 }
 ```
 
-In the previous code sample, the `FederatedTabsLayout` is similar to the `RootLayout` introduced in previous guides. However, the key distinction is that this layout will be bound to the `/federated-tabs` URL path. By nesting the layout under a specific path, it will only render when the user navigates to one of the federated tab pages (e.g. `/federated-tabs/tab-1`, `/federated-tabs/tab-2`, `/federated-tabs/tab-3`).
+In the previous code sample, the `FederatedTabsLayout` component is similar to the `RootLayout` component introduced in previous guides. However, the key distinction is that this layout will be bound to the `/federated-tabs` URL path. By nesting the layout under a specific path, it will only render when the user navigates to one of the federated tab pages (e.g. `/federated-tabs/tab-1`, `/federated-tabs/tab-2`, `/federated-tabs/tab-3`).
 
 To register the newly created layout as a nested layout, use the [registerRoute](../reference/runtime/runtime-class.md#register-routes) function:
 
@@ -76,7 +76,7 @@ It is recommended to define the shared layouts in a standalone package as it's d
 
 ## Create the tab routes
 
-Next, let's add the actual tabs to the modules. To do so, we'll use the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) option of the [registerRoute](../reference/runtime/runtime-class.md#register-routes) function to register the routes under the `FederatedTabsLayout`:
+Next, let's add the actual tabs to the modules. To do so, we'll use the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) option of the [registerRoute](../reference/runtime/runtime-class.md#register-routes) function to register the routes under the `FederatedTabsLayout` component:
 
 ```tsx !#7,10 remote-module-1/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -153,9 +153,9 @@ Now that the tabs has been registered, ensure that all four modules (including `
 
 ## Decouple the navigation items
 
-Althought it's functional, the modules are currently coupled by hardcoded URLs within the `FederatedTabsLayout`.
+Althought it's functional, the modules are currently coupled by hardcoded URLs within the `FederatedTabsLayout` component.
 
-To decouple the navigation items, similar to what is done for regular federated routes, we'll use the [registerNavigationItem](../reference/runtime/runtime-class.md#register-navigation-items) function. In this case, we'll specify a [menuId](../reference/runtime/runtime-class.md#register-navigation-items-for-a-specific-menu) option. Defining the `menuId` option will instruct the `FederatedTabsLayout` to exclusively retrieve the navigation items that belongs to this layout.
+To decouple the navigation items, similar to what is done for regular federated routes, we'll use the [registerNavigationItem](../reference/runtime/runtime-class.md#register-navigation-items) function. In this case, we'll specify a [menuId](../reference/runtime/runtime-class.md#register-navigation-items-for-a-specific-menu) option. Defining the `menuId` option will instruct the `FederatedTabsLayout` component to exclusively retrieve the navigation items that belongs to this layout.
 
 First, let's register the navigation items with the `menuId` option. For this example the `menuId` will be `/federated-tabs` (it can be anything):
 
@@ -236,7 +236,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 }
 ```
 
-Then, update the `FederatedTabsLayout` to render the registered navigation items instead of the hardcoded URLs:
+Then, update the `FederatedTabsLayout` component to render the registered navigation items instead of the hardcoded URLs:
 
 ```tsx !#32 remote-module-3/src/federated-tabs-layout.tsx
 import { 

@@ -94,14 +94,14 @@ function BootstrappingRoute() {
     ]);
 
     if (useIsBootstrapping()) {
-        return <div>Loading...</div>
+        return <div>Loading...</div>;
     }
 
     return (
         <FeatureFlagsContext.Provider value={featureFlags}>
             <Outlet />
         </FeatureFlagsContext.Provider>
-    )
+    );
 }
 
 export function App() {
@@ -262,14 +262,14 @@ function BootstrappingRoute() {
     useDeferredRegistrations(data);
 
     if (useIsBootstrapping()) {
-        return <div>Loading...</div>
+        return <div>Loading...</div>;
     }
 
     return (
         <FeatureFlagsContext.Provider value={featureFlags}>
             <Outlet />
         </FeatureFlagsContext.Provider>
-    )
+    );
 }
 
 export function App() {

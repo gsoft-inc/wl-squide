@@ -312,14 +312,12 @@ export function useSessionManagerInstance(session: Session) {
 }
 ```
 
-Then, update the host application `App` component to load the session with the [useProtectedDataQueries](../reference/tanstack-query/useProtectedDataQueries.md) hook whenever a user navigates to a protected page for the first time.
-
-Finally, create an instance of `TanstackQuerySessionManager` with the retrieved session data and share this instance via the `SessionManagerContext`:
+Finally, update the host application `App` component to load the session with the [useProtectedDataQueries](../reference/tanstack-query/useProtectedDataQueries.md) hook and create an instance of `TanstackQuerySessionManager` with the retrieved session to share the sessuib via the `SessionManagerContext`:
 
 ```tsx !#7-28,30,37,47,57 host/src/App.tsx
 import { AppRouter, useProtectedDataQueries, useIsBootstrapping } from "@squide/firefly";
 import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
-import { SessionManagerContext, isApiError, type Session } from "@sample/shared";
+import { SessionManagerContext, ApiError, isApiError, type Session } from "@sample/shared";
 import { useSessionManagerInstance } from "./sessionManager.ts";
 
 function BootstrappingRoute() {
@@ -385,6 +383,40 @@ export function App() {
             }}
         </AppRouter>
     );
+}
+```
+
+The previous example uses the following implementation of the `ApiError` class:
+
+```ts shared/src/apiError.ts
+export class ApiError extends Error {
+    readonly #status: number;
+    readonly #statusText: string;
+    readonly #stack?: string;
+
+    constructor(status: number, statusText: string, innerStack?: string) {
+        super(`${status} ${statusText}`);
+
+        this.#status = status;
+        this.#statusText = statusText;
+        this.#stack = innerStack;
+    }
+
+    get status() {
+        return this.#status;
+    }
+
+    get statusText() {
+        return this.#statusText;
+    }
+
+    get stack() {
+        return this.#stack;
+    }
+}
+
+export function isApiError(error?: unknown): error is ApiError {
+    return error !== undefined && error !== null && error instanceof ApiError;
 }
 ```
 
@@ -574,7 +606,7 @@ export function AuthenticatedLayout() {
 }
 ```
 
-By creating a new `AuthenticatedLayout`, much of the layout code has been transferred from the `RootLayout` to the `AuthenticatedLayout`, leaving the root layout responsible only for styling the outer wrapper of the application for now:
+By creating a new `AuthenticatedLayout` component, much of the layout code has been transferred from the `RootLayout` to the `AuthenticatedLayout`, leaving the root layout responsible only for styling the outer wrapper of the application for now:
 
 ```tsx host/src/RootLayout.tsx
 import { Suspense } from "react";

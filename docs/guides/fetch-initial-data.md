@@ -148,14 +148,14 @@ function BootstrappingRoute() {
     ]);
 
     if (useIsBootstrapping()) {
-        return <div>Loading...</div>
+        return <div>Loading...</div>;
     }
 
     return (
         <FetchCountContext.Provider value={fetchCount}>
             <Outlet />
         </FetchCountContext.Provider>
-    )
+    );
 }
 
 export function App() {
@@ -379,7 +379,7 @@ function BootstrappingRoute() {
     ], error => isApiError(error) && error.status === 401);
 
     if (useIsBootstrapping()) {
-        return <div>Loading...</div>
+        return <div>Loading...</div>;
     }
 
     return (
@@ -388,7 +388,7 @@ function BootstrappingRoute() {
                 <Outlet />
             </SubscriptionContext.Provider>
         </FetchCountContext.Provider>
-    )
+    );
 }
 
 export function App() {

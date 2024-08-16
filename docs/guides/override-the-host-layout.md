@@ -8,7 +8,7 @@ The `RootLayout` component defined in the [Create an host application](../gettin
 
 For most routes, this behavior is what the author expects. However, as an application introduces [authentication](./add-authentication.md) and adds many session-related features to the default layout, this default layout may no longer be suitable for every route. For example, a login page doesn't require session-related features, as the user isn't authenticated yet. In such cases, the default layout isn't appropriate.
 
-To accomodate pages requiring a different layout, a mechanism is needed to move their route declaration to the root of the React Router [instance](https://reactrouter.com/en/main/routers/create-browser-router) before the `RootLayout` is declared.
+To accomodate pages requiring a different layout, a mechanism is needed to move their route declaration to the root of the React Router [instance](https://reactrouter.com/en/main/routers/create-browser-router) before `RootLayout` is declared.
 
 ``` !#2
 root
@@ -22,7 +22,7 @@ root
 
 Package managers supporting workspaces such as Yarn and NPM call this mechanism "hoisting", which means "raise (something) by means of ropes and pulleys". This is exactly what we are trying to achieve here.
 
-Squide has a built-in [hoist](../reference/runtime/runtime-class.md#register-an-hoisted-route) functionality capable of raising module routes marked as `hoist` at the root of the routes array, before the `RootLayout` declaration. Thus, an hoisted route will not be wrapped by the `RootLayout` (or any authentication boundaries) and will have full control over its rendering.
+Squide has a built-in [hoist](../reference/runtime/runtime-class.md#register-an-hoisted-route) functionality capable of raising module routes marked as `hoist` at the root of the routes array, before the `RootLayout` declaration. Thus, an hoisted route will not be wrapped by the `RootLayout` component (or any authentication boundaries) and will have full control over its rendering.
 
 To hoist module routes, add the [hoist](../reference/runtime/runtime-class.md#register-an-hoisted-route) option to the route registration options and optionally use a different layout:
 

@@ -8,7 +8,7 @@ order: 840
 Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) and [Fetch initial data](./fetch-initial-data.md) guides.
 !!!
 
-To continuously deliver value to our customers, Workleap has adopted a feature flag system that enables functionalities to be activated or deactivated without requiring a code deployment. While implementing "in-page" feature flags in a Squide application is straightforward, feature flags that conditionally register navigation items require a more advanced [deferred registration](../reference/registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) mechanism.
+To continuously deliver value to our customers, Workleap has adopted a feature flag system that enables functionalities to be activated or deactivated without requiring a code deployment. While implementing "in-page" feature flags in a Squide application is straightforward, feature flags that conditionally register navigation items require a more advanced [deferred registration](../reference/registration/registerLocalModules.md#defer-the-registration-of-navigation-items) mechanism.
 
 ## Add an endpoint
 
@@ -180,15 +180,17 @@ If you've already registered a `Page` component in a previous guide, use a diffe
 
 Conditionally registering navigation items based on a feature flag is more complex because Squide's default registration mechanism runs before the application has bootstrapped, meaning that the feature flags have not yet been fetched from the server.
 
-To address this, Squide offers an alternate [deferred registration](../reference/registration/registerRemoteModules.md#defer-the-registration-of-routes-or-navigation-items) mechanism in two-phases:
+To address this, Squide offers an alternate [deferred registration](../reference/registration/registerLocalModules.md#defer-the-registration-of-navigation-items) mechanism in two-phases:
 
 1. The first phase allows modules to register their _static_ navigation items that are not dependent on initial data.
 
 2. The second phase enables modules to register _deferred_ navigation items that are dependent on initial data. We refer to this second phase as **deferred registrations**.
 
-To defer a registration to the second phase, a module's registration function can **return an anonymous function**. Once the modules are registered and the [useDeferredRegistrations](../reference/registration/useDeferredRegistrations.md) hook is rendered, the deferred registration functions will be executed.
+To defer a registration to the second phase, a module's registration function can **return an anonymous function** matching the `DeferredRegistrationFunction` type: `(data, operation: "register" | "update") => Promise | void`.
 
-First, let's add a `DeferredRegistrationData` interface to a shared project, defining the initial data that module's deferred registration functions can expect:
+Once the modules are registered and the [useDeferredRegistrations](../reference/registration/useDeferredRegistrations.md) hook is rendered, the deferred registration functions will be executed.
+
+First, let's define a `DeferredRegistrationData` interface to a shared project, defining the initial data that module's deferred registration functions can expect:
 
 ```ts shared/src/deferredData.ts
 import { FeatureFlags } from "./featureFlagsContext.ts";
@@ -198,9 +200,9 @@ export interface DeferredRegistrationData {
 }
 ```
 
-Then, update the module `register` function to defer the registration of the `Page` component navigation item:
+Then, add `DeferredRegistrationData` to the `ModuleRegisterFunction` type definition and update the module `register` function to defer the registration of the `Page` component navigation item:
 
-```tsx !#12-21 src/register.tsx
+```tsx !#5,12-21 src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import type { DeferredRegistrationData } from "@sample/shared";
 import { Page } from "./Page.tsx";

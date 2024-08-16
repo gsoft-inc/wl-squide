@@ -85,7 +85,9 @@ Sometimes, data must be fetched to determine which navigation items should be re
 
 2. The second phase enables modules to register navigation items that are dependent on initial data. Such a use case would be determining whether a navigation item should be registered based on a feature flag. We refer to this second phase as **deferred registrations**.
 
-To defer a registration to the second phase, a module registration function can **return an anonymous function**. Once the modules are registered, the deferred registration functions will be executed.
+To defer a registration to the second phase, a module registration function can **return an anonymous function** matching the `DeferredRegistrationFunction` type: `(data, operation: "register" | "update") => Promise | void`.
+
+Once the modules are registered, the deferred registration functions will be executed.
 
 ```tsx !#12 host/src/bootstrap.tsx
 import { FireflyRuntime, registerRemoteModules, RuntimeContext, type RemoteDefinition } from "@squide/firefly";
@@ -159,6 +161,8 @@ export function AppRouter() {
 }
 ```
 
+Routes are always registered, but navigation items can be conditionally registered using a deferred registration function.
+
 ```tsx !#20-23,28-37 local-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import type { DeferredRegistrationData } from "@sample/shared";
@@ -177,9 +181,9 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
         to: "/about"
     });
 
-    // Routes are always registered. If a route may not be available for a group of user, conditionally register
-    // it's navigation item with a deferred registration.
-    // To manage direct hits to a conditional route, render an error boundary whenever the endpoint returns a 401 status code.
+    // Routes are always registered. If a route may not be available for a group of users, conditionally register
+    // its navigation item with a deferred registration.
+    // To manage direct hits to a conditional route, render an error boundary whenever the route's endpoint returns a 401 status code.
     runtime.registerRoute({
         path: "/feature-a",
         element: <FeatureAPage />
@@ -202,7 +206,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
 
 [!ref useDeferredRegistrations](./useDeferredRegistrations.md)
 
-### Handle the registration errors
+### Handle registration errors
 
 ```tsx !#9-11 host/src/bootstrap.tsx
 import { FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";

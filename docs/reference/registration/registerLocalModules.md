@@ -72,7 +72,7 @@ Sometimes, data must be fetched to determine which navigation items should be re
 
 To defer a registration to the second phase, a module registration function can **return an anonymous function** matching the `DeferredRegistrationFunction` type: `(data, operation: "register" | "update") => Promise | void`.
 
-Once the modules are registered, the deferred registration functions will be executed.
+Once the modules are registered, the deferred registration functions will be executed with the deferred data and `"register"` as the value for the `operation` argument. Afterward, whenever the deferred data changes, the deferred registration functions will be re-executed with the updated deferred data and `"update"` as the value for the `operation` argument.
 
 ```tsx !#8 host/src/bootstrap.tsx
 import { FireflyRuntime, registerLocalModules, RuntimeContext } from "@squide/firefly";

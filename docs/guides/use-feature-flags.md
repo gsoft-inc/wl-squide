@@ -190,7 +190,7 @@ To defer a registration to the second phase, a module's registration function ca
 
 Once the modules are registered and the [useDeferredRegistrations](../reference/registration/useDeferredRegistrations.md) hook is rendered, the deferred registration functions will be executed with either `"register"` or `"update"` as the value for the `operation` argument, depending on whether this is the initial or subsequent execution of the functions.
 
-First, let's define a `DeferredRegistrationData` interface to a shared project, defining the initial data that module's deferred registration functions can expect:
+First, let's define a `DeferredRegistrationData` interface to a shared project, specifiying the initial data that module's deferred registration functions can expect:
 
 ```ts shared/src/deferredData.ts
 import { FeatureFlags } from "./featureFlagsContext.ts";

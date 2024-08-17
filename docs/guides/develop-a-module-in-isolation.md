@@ -4,9 +4,9 @@ order: 800
 
 # Develop a module in isolation
 
-To develop their own independent module, a team **shouldn't be required to install the host application** or any **other modules** of the application **that they do not own**. However, they should have a means to integrate their module with the application shell (`RootLayout`, `RootErrorBoundary`, etc..) while working on their module in isolation.
+To develop their own independent module, a team **should not need to install the host application** or any **other modules** of the application **they do not own**. However, they should have a way to integrate their module with the application shell (e.g., `RootLayout`, `RootErrorBoundary`, etc..) while working in isolation.
 
-To achieve this, the first step is to extract the application shell from the host application. There are several approaches to accomplish this, but in this guide, we'll transform the host application into a monorepo and introduce a new local package named `@sample/shell` for this purpose:
+To achieve this, the first step is to extract the application shell from the host application. There are various ways to accomplish this, but in this guide, we'll transform the host application into a monorepo and introduce a new local package named `@sample/shell` specifically for this purpose:
 
 ``` !#4
 host
@@ -26,7 +26,9 @@ host
 
 ## Create a shell package
 
-> The implementation details of the `RootLayout` and `RootErrorBoundary` won't be covered by this guide as it already has been covered many times by other guides.
+!!!info
+The implementation details of the `RootLayout` and `RootErrorBoundary` components won't be covered by this guide as it already has been covered many times by other guides.
+!!!
 
 First, create a new package (we'll refer to ours as `shell`) and add the following fields to the `package.json` file:
 
@@ -47,23 +49,34 @@ First, create a new package (we'll refer to ours as `shell`) and add the followi
 
 Then, install the package dependencies and configure the new package with [tsup](https://gsoft-inc.github.io/wl-web-configs/tsup/).
 
-Then, create a `AppRouter` component in the shell package to provide a **reusable router configuration** that can be utilized by both the host application and the isolated modules. The new `AppRouter` component should be based on the `@squide/firefly` [AppRouter](../reference/routing/appRouter.md) component:
+Then, create an `AppRouter` component in the shell package to provide a **reusable router configuration** that can be shared between the host application and the isolated modules. This new `AppRouter` component should wrap the `@squide/firefly` [AppRouter](../reference/routing/appRouter.md) component:
 
 ```tsx shell/src/AppRouter.tsx
 import { AppRouter as FireflyAppRouter } from "@squide/firefly";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-export function AppRouter() {
+export function FireflyAppRouter() {
     return (
-        <FireflyAppRouter
-            fallbackElement={<div>Loading...</div>}
-            errorElement={<div>An error occured!</div>}
-            waitForMsw={false}
-        />
+        <AppRouter waitForMsw={false}>
+            {({ rootRoute, registeredRoutes, routerProviderProps }) => {
+                return (
+                    <RouterProvider
+                        router={createBrowserRouter([
+                            {
+                                element: rootRoute,
+                                children: registeredRoutes
+                            }
+                        ])}
+                        {...routerProviderProps}
+                    />
+                );
+            }}
+        </AppRouter>
     );
 }
 ```
 
-Finally, create a local module to register the **application shell** that will also be utilized by the host application and the isolated modules:
+Finally, create a local module to register the **application shell**. This module will be used by both the host application and the isolated modules:
 
 ```tsx shell/src/register.tsx
 import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
@@ -88,12 +101,12 @@ export const registerShell: ModuleRegisterFunction<FireflyRuntime> = runtime => 
 ```
 
 !!!info
-This guide only covers the `RootLayout` and `RootErrorBoundary` but the same goes for other shell assets such as an `AuthenticationBoundary`.
+This guide only covers the `RootLayout` and `RootErrorBoundary` components but the same goes for other shell assets such as an `AuthenticationBoundary` component.
 !!!
 
 ## Update the host application
 
-Now, let's revisit the host application by first adding a dependency to the new `@sample/shell` package:
+Now, let's revisit the host application by adding the new `@sample/shell` package as a dependency:
 
 ```json host/package.json
 {
@@ -103,7 +116,7 @@ Now, let's revisit the host application by first adding a dependency to the new 
 }
 ```
 
-Then, incorporate the newly introduced `AppRouter` component:
+Then, integrate the `AppRouter` component from the `@sample/shell` package into the application:
 
 ```tsx host/src/App.tsx
 import { AppRouter } from "@sample/shell";
@@ -115,7 +128,7 @@ export function App() {
 }
 ```
 
-And the `registerShell` function to setup the `RootLayout`, the `RootErrorBoundary` and any other shell assets:
+And finally include the `registerShell` function to setup the `RootLayout` and `RootErrorBoundary` components as well as any other shell assets:
 
 ```tsx !#16 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
@@ -211,7 +224,7 @@ root.render(
 
 ### App.tsx
 
-The `App.tsx` file uses the newly created `AppRouter` component to setup [React Router](https://reactrouter.com/):
+The `App.tsx` file uses the newly created `AppRouter` component to setup Squide's primitives with a [React Router](https://reactrouter.com/) instance:
 
 ```tsx remote-module/src/App.tsx
 import { AppRouter } from "@sample/shell";
@@ -225,7 +238,7 @@ export function App() {
 
 ### DevHome.tsx
 
-The `DevHome` component purpose is strictly to serve as an `index` page when developing the remote module in isolation.
+The `DevHome` component is the homepage when the remote module is developed in isolation:
 
 ```tsx remote-module/src/dev/DevHome.tsx
 function DevHome() {
@@ -238,7 +251,7 @@ function DevHome() {
 }
 ```
 
-To register the development homepage, let's create a new local module specifically for registering what is needed to develop the module in isolation:
+To register the development homepage, create a new local module specifically for configuring the remote during isolated development:
 
 ```tsx remote-module/src/dev/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -254,7 +267,7 @@ export const registerDev: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 ### Add a new CLI script
 
-Next, add a new `dev-isolated` script to the `package.json` file to start the local development server in **"isolation"**:
+Next, add a new `dev-isolated` script to the `package.json` file to start the local development server in **isolation**:
 
 ```json !#3 remote-module/package.json
 {
@@ -267,13 +280,9 @@ Next, add a new `dev-isolated` script to the `package.json` file to start the lo
 If your project's `package.json` file does not already include the [cross-env](https://www.npmjs.com/package/cross-env) dependency, be sure to install `cross-env` as a development dependency.
 !!!
 
-The `dev-isolated` script is similar to the `dev` script but introduces a `ISOLATED` environment variable. This new environment variable will be utilized by the `webpack.dev.js` file to conditionally setup the development server for development in **isolation** or to be consumed by a host application through the `/remoteEntry.js` entry point:
+The `dev-isolated` script is similar to the `dev` script but introduces an `ISOLATED` environment variable. This variable will be used by the `webpack.dev.js` file to conditionally configure the development server to either serve the module as an application for isolated development or as a remote endpoint by the host application through the `/remoteEntry.js` entry point.
 
 ### Configure webpack
-
-!!!info
-If you are having issues configuring webpack, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/) documentation website.
-!!!
 
 First, open the `public/index.html` file created at the beginning of this guide and copy/paste the following [HtmlWebpackPlugin](https://webpack.js.org/plugins/html-webpack-plugin/) template:
 
@@ -315,6 +324,10 @@ if (!process.env.ISOLATED) {
 export default config;
 ```
 
+!!!info
+If you encounter issues configuring webpack, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/) documentation.
+!!!
+
 ### Try it :rocket:
 
 Start the remote module in isolation by running the `dev-isolated` script. The application shell should wrap the pages of the module and the default page should be `DevHome`.
@@ -329,9 +342,9 @@ If you are experiencing issues with this section of the guide:
 
 ## Setup a local module
 
-Similarly to remote modules, the same isolated setup can be achieved for local modules. The main difference is that the `webpack.config.js` file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on webpack and [Module Federation](https://module-federation.io/).
+Similarly to remote modules, local modules can also be set up for isolated development. The key difference is that the `webpack.config.js` file for a local module strictly serves the purpose of starting a development server for isolated development. Typically, local modules do not depend on webpack or [Module Federation](https://module-federation.io/).
 
-First, open a terminal at the root of the local module application and install the `@squide/firefly-webpack-configs` package and its dependencies:
+First, open a terminal at the root of the local module project and install the `@squide/firefly-webpack-configs` package and its dependencies:
 
 +++ pnpm
 ```bash
@@ -398,10 +411,6 @@ These files are similar to the `dev/DevHome.tsx` and `dev/register.tsx` files of
 
 ### Configure webpack
 
-!!!info
-If you are having issues configuring webpack, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/) documentation website.
-!!!
-
 First, open the `public/index.html` file and copy/paste the following [HtmlWebpackPlugin](https://webpack.js.org/plugins/html-webpack-plugin/) template:
 
 ```html local-module/public/index.html
@@ -443,6 +452,10 @@ import { swcConfig } from "./swc.config.js";
 
 export default defineDevHostConfig(swcConfig, "local1", 8080, []);
 ```
+
+!!!info
+If you encounter issues configuring webpack, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/) documentation.
+!!!
 
 ### Add a new CLI script
 

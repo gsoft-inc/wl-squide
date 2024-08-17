@@ -2,7 +2,7 @@
 order: 860
 ---
 
-# Federated tabs
+# Use federated tabs
 
 While it's typically recommended for a Squide application to maintain the boundary of a page within a single domain, there are situations where **enhancing** the **user experience** necessitates rendering a page with parts from **multiple domains**, or at the very least, simulating it 😊.
 

@@ -491,7 +491,7 @@ export function App() {
 ```
 
 !!!info
-The previous example assumes that your `@sample/shared` project includes the primitives created in the [Add authentication](./add-authentication.md) guide as well as the session Mock Server Worker request handlers.
+The previous code sample assumes that your `@sample/shared` project includes the primitives created in the [Add authentication](./add-authentication.md) guide as well as the session Mock Server Worker request handlers.
 !!!
 
 ## Use the Trans component

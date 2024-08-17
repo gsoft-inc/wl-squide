@@ -415,17 +415,17 @@ Hence, the strategy to select the displayed language should be as follow:
 
 This strategy can be implemented with the help of the [useChangeLanguage](../reference/i18next/useChangeLanguage.md) and [useProtectedDataQueries](../reference/tanstack-query/useProtectedDataQueries.md) hooks:
 
-```tsx host/src/App.tsx
-import { AppRouter, useProtectedDataQueries, useIsBootstrapping } from "@squide/firefly";
+```tsx !#6-27,29,35 host/src/App.tsx
+import { AppRouter, useProtectedDataQueries, useIsBootstrapping, useChangeLanguage } from "@squide/firefly";
 import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
-import { ApiError, isApiError } from "@sample/shared";
+import { ApiError, isApiError, type Session } from "@sample/shared";
 
 function BootstrappingRoute() {
     const [session] = useProtectedDataQueries([
         {
-            queryKey: ["/api/subscription"],
+            queryKey: ["/api/session"],
             queryFn: async () => {
-                const response = await fetch("/api/subscription");
+                const response = await fetch("/api/session");
 
                 if (!response.ok) {
                     throw new ApiError(response.status, response.statusText);
@@ -433,14 +433,26 @@ function BootstrappingRoute() {
 
                 const data = await response.json();
 
-                const subscription: Subscription = {
-                    status: data.status
+                const result: Session = {
+                    user: {
+                        name: data.username,
+                    }
                 };
 
-                return subscription;
+                return result;
             }
         }
     ], error => isApiError(error) && error.status === 401);
+
+    const changeLanguage = useChangeLanguage();
+
+    useEffect(() => {
+        if (session) {
+            // When the session has been retrieved, update the language to match the user
+            // preferred language.
+            changeLanguage(session.user.preferredLanguage);
+        }
+    }, [session, changeLanguage]);
 
     if (useIsBootstrapping()) {
         return <div>Loading...</div>;
@@ -451,9 +463,8 @@ function BootstrappingRoute() {
 
 export function App() {
     return (
-        <AppRouter
+        <AppRouter 
             waitForMsw
-            waitForPublicData
             waitForProtectedData
         >
             {({ rootRoute, registeredRoutes, routerProviderProps }) => {
@@ -480,65 +491,12 @@ export function App() {
 ```
 
 !!!info
-The previous example assumes that your `@sample/shared` project includes the primitives created in the [Add authentication](./add-authentication.md) guide.
+The previous example assumes that your `@sample/shared` project includes the primitives created in the [Add authentication](./add-authentication.md) guide as well as the session Mock Server Worker request handlers.
 !!!
-
-To implement this strategy, use the [useChangeLanguage](../reference/i18next/useChangeLanguage.md) hook and the [onLoadProtectedData](../reference/routing/appRouter.md#load-protected-data) handler of the [AppRouter](../reference/routing/appRouter.md) component:
-
-```tsx !#17,29,31-33,40-41 host/src/App.tsx
-import { AppRouter } from "@squide/firefly";
-import { useChangeLanguage, useI18nextInstance } from "@squide/i18next";
-import { useCallback } from "react";
-import { useTranslation } from "react-i18next";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-
-async function fetchProtectedData(changeLanguage: (language: string) => void, setIsSessionLoaded: (isLoaded: boolean) => void, signal: AbortSignal) {
-    const response = await fetch("/api/session", {
-        signal
-    });
-    
-    if (response.ok) {
-        const session = await response.json();
-
-        // When the session has been retrieved, change the displayed language to match
-        // the preferred language setting.
-        changeLanguage(session.preferredLanguage);
-
-        setIsSessionLoaded(true);
-    }
-}
-
-export function App() {
-    const [isSessionLoaded, setIsSessionLoaded] = useState(false);
-
-    const i18nextInstance = useI18nextInstance("host");
-    const { t } = useTranslation("App", { i18n: useI18nextInstance });
-
-    const changeLanguage = useChangeLanguage();
-
-    const handleLoadProtectedData = useCallback((signal: AbortSignal) => {
-        return fetchProtectedData(changeLanguage, setIsSessionLoaded, signal);
-    }, [changeLanguage]);
-
-    return (
-        <AppRouter
-            fallbackElement={<div>{t("loadingMessage")}</div>}
-            errorElement={<div>{t("errorMessage")}</div>}
-            waitForMsw={false}
-            onLoadProtectedData={handleLoadProtectedData}
-            isProtectedDataLoaded={isSessionLoaded}
-        >
-            {(routes, providerProps) => (
-                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
-            )}
-        </AppRouter>
-    );
-}
-```
 
 ## Use the Trans component
 
-The [Trans](https://react.i18next.com/latest/trans-component) component is valuable for scenarios that involve interpolation to render a localized resource. To use the `Trans` component with Squide, pair the component with an `i18next` instance retrieved from [useI18nextInstance](../reference/i18next/useI18nextInstance.md) hook:
+The [Trans](https://react.i18next.com/latest/trans-component) component is useful for scenarios involving interpolation to render a localized resources. To use the `Trans` component with Squide, pair it with an `i18next` instance retrieved from [useI18nextInstance](../reference/i18next/useI18nextInstance.md) hook:
 
 ```tsx !#5,9,11
 import { useI18nextInstance } from "@squide/i18next";
@@ -581,7 +539,7 @@ Start the development servers using the `dev` script. The homepage and the navig
 If you are experiencing issues with this guide:
 
 - Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each `i18next` instance that is being registered and another log everytime the language is changed:
-    - `[squide] Registered a new i18next instance with key "remote-module": ...`
+    - `[squide] Registered a new i18next instance with key "remote-module".`
     - `[squide] The language has been changed to "fr-CA".`
 - Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/endpoints).
 - Refer to the [troubleshooting](../troubleshooting.md) page.

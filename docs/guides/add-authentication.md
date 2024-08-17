@@ -34,7 +34,7 @@ While you can use any package manager to develop an application with Squide, it 
 
 Then, add a [Mock Service Worker](https://mswjs.io/) (MSW) request handler to authenticate a user:
 
-```ts !#28-30,40-42 host/mocks/handlers.ts
+```ts !#29-31,41-44 host/mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
 import { LocalStorageSessionManager } from "@squide/fakes";
 
@@ -52,6 +52,7 @@ const Users = [
 
 export interface Session {
     username: string;
+    preferredLanguage: string;
 }
 
 // For simplicity, we are using a local storage session manager for this guide.
@@ -75,7 +76,8 @@ export const requestHandlers: HttpHandler[] = [
 
         // Login the user by storing the session to the local storage.
         sessionManager.setSession({
-            username: user.username
+            username: user.username,
+            preferredLanguage: user.preferredLanguage
         });
 
         return new HttpResponse(null, {
@@ -215,7 +217,7 @@ export function useIsAuthenticated() {
 
 Now, let's go back to the host application and create an MSW request handler that returns a session object if a user is authenticated:
 
-```ts !#49-60 host/mocks/handlers.ts
+```ts !#50-61 host/mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
 import { LocalStorageSessionManager } from "@squide/fakes";
 
@@ -233,6 +235,7 @@ const Users = [
 
 export interface Session {
     username: string;
+    preferredLanguage: string;
 }
 
 // For simplicity, we are using a local storage session manager for this guide.
@@ -445,7 +448,7 @@ Now, let's add a specific layout for authenticated users that passes through the
 
 First, add a MSW request handler to log out a user:
 
-```ts !#49-56 host/mocks/handlers.ts
+```ts !#50-57 host/mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
 import { LocalStorageSessionManager } from "@squide/fakes";
 
@@ -463,6 +466,7 @@ const Users = [
 
 export interface Session {
     username: string;
+    preferredLanguage: string;
 }
 
 // For simplicity, we are using a local storage session manager for this guide.

@@ -6,9 +6,9 @@ toc:
 
 # AppRouter
 
-A component that sets up Squide federated primitives with a [React Router](https://reactrouter.com/en/main) instance.
+A component that sets up Squide's primitives with a [React Router](https://reactrouter.com/en/main) instance.
 
-!!!info
+!!!warning
 The `AppRouter` component is required for any Squide application.
 !!!
 

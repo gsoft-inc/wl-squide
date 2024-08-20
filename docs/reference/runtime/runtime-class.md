@@ -230,7 +230,7 @@ runtime.registerRoute({
 
 ### Register nested routes under an existing route
 
-React router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) enable applications to render nested layouts at various points within the router tree. This is quite helpful for federated applications as it enables composable and decoupled UI.
+React router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) enable applications to render nested layouts at various points within the router tree. This is quite helpful for modular applications as it enables composable and decoupled UI.
 
 To fully harness the power of nested routes, the `registerRoute` function allows a route to be registered **under any** previously **registered route**, even if that route was registered by another module. The only requirement is that the **parent route** must have been registered with the `registerRoute` function.
 
@@ -260,7 +260,7 @@ runtime.registerRoute({
 });
 ```
 
-[!ref text="Learn more about using nested routes for federated tabs"](../../guides/federated-tabs.md)
+[!ref text="Learn more about using nested routes for federated tabs"](../../guides/use-federated-tabs.md)
 
 !!!info
 Likewise any other React Router routes, the `path` property of a route rendered under an existing parent route must be an absolute path. For example, if a parent route `path` is `/layout`, the `path` property of a route rendered under that parent route and responding to the `/page-1` url, should be `/layout/page-1`.
@@ -268,7 +268,7 @@ Likewise any other React Router routes, the `path` property of a route rendered 
 
 ### Retrieve routes
 
-A federated application routes are accessible from a `FireflyRuntime` instance, but keep in mind that the preferred way to retrieve the routes is with the [useRoutes](./useRoutes) hook.
+The registered routes are accessible from a `FireflyRuntime` instance, but keep in mind that the preferred way to retrieve the routes is with the [useRoutes](./useRoutes) hook.
 
 ```tsx
 const routes = runtime.routes;
@@ -463,7 +463,7 @@ runtime.registerNavigationItem({
 
 ### Retrieve navigation items
 
-A federated application navigation items are accessible from a `FireflyRuntime` instance, but keep in mind that the preferred way to retrieve the navigation items is with the [useNavigationItems](./useNavigationItems) hook.
+The registered navigation items are accessible from a `FireflyRuntime` instance, but keep in mind that the preferred way to retrieve the navigation items is with the [useNavigationItems](./useNavigationItems) hook.
 
 By default, the `getNavigationItems` will return the navigation items for the `root` menu:
 

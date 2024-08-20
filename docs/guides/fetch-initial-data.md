@@ -26,7 +26,7 @@ At first glance, one might wonder what could be so complicated about fetching th
 
 - A **unique loading spinner** should be displayed to the user during this process, ensuring there's **no flickering** due to different spinners being rendered.
 
-To help manage those concerns, Squide offer an `AppRouter` component that takes care of setuping Squide federated primitive and orchestrating the different states.
+To help manage those concerns, Squide offer an `AppRouter` component that takes care of setuping Squide's primitive and orchestrating the different states.
 
 ## Fetch public data
 

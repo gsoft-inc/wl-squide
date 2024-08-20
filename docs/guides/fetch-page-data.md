@@ -8,9 +8,9 @@ order: 975
 Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) guide.
 !!!
 
-There are various approaches to fetching data for pages. At Workleap, our preference is usually to develop a backend for frontend (BFF) with a **dedicated endpoint per page**, returning a **data** structure specifically **tailored** for that **page**. We rely on **server state** as our single **source of truth** and leverage [TanStack Query](https://tanstack.com/query/latest/) to manage data fetching.
+There are various approaches to fetching data for pages. At Workleap, our preference is to develop a backend for frontend (BFF) with a **dedicated endpoint per page**, returning a **data** structure specifically **tailored** for that **page**. We rely on **server state** as our single **source of truth** and leverage [TanStack Query](https://tanstack.com/query/latest/) to manage data fetching.
 
-Although this approach works well, a few adjustments are necessary when transitioning from a monolithic application to a federated application. Let's explore these changes!
+Although this approach works well, a few adjustments are necessary for modular applications.
 
 ## Install TanStack Query
 

@@ -4,7 +4,7 @@ order: 780
 
 # Override a React context
 
-In a federated application using [Module Federation](https://module-federation.io/), it's typical to configure various global [React context](https://legacy.reactjs.org/docs/context.html) at the root of the host application. These contexts are then used by the layouts and pages of the modules.
+In a modular application, it's typical to configure various global [React context](https://legacy.reactjs.org/docs/context.html) at the root of the host application. These contexts are then used by the layouts and pages of the modules.
 
 Let's explore a simple example using a `BackgroundColorContext`:
 
@@ -113,6 +113,10 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 ## Update a singleton dependency version
 
+!!!warning
+This section applies only to applications with [remote modules](../reference/registration/registerRemoteModules.md).
+!!!
+
 Let's consider a more specific use case where the host application declares a `ThemeContext` from Workleap's new design system, [Hopper](https://hopper.workleap.design/):
 
 ```tsx !#7 host/src/App.tsx
@@ -143,7 +147,7 @@ export function App() {
 }
 ```
 
-In this scenario, Hopper's components are used throughout the entire federated application, including the modules. Moreover, `@hopper/components` is defined as a [singleton](https://module-federation.io/configure/shared.html#singleton) shared dependency:
+In this scenario, Hopper's components are used throughout the entire application, including the modules. Moreover, `@hopper/components` is defined as a [singleton](https://module-federation.io/configure/shared.html#singleton) shared dependency:
 
 ```js !#8-10 host/webpack.dev.js
 // @ts-check

@@ -15,7 +15,7 @@ npx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
 
 Local modules are regular modules that are part of the **host application build**. They are independent modules that expose a `registration` function to the host application's bootstrapping code. A local module can be a standalone package, a sibling project (in a monorepo setup), or even a local folder within the host application.
 
-Local modules have many uses but are especially useful when **migrating** from a **monolithic application** to a distributed application or when **launching** a **new product** with an unrefined business domain.
+Local modules have many uses but are especially useful when **launching** a **new product** with an unrefined business domain or **migrating** from a **monolithic application** to a distributed application.
 
 Let's add a local module to demonstrate how it's done!
 

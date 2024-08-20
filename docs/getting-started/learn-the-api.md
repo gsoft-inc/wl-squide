@@ -34,7 +34,7 @@ const runtime = new FireflyRuntime({
 });
 ```
 
-Then, log entries from any parts of your federated application with the `useLogger` hook:
+Then, log entries from any parts of your modular application with the `useLogger` hook:
 
 ```ts
 import { useLogger } from "@squide/firefly";
@@ -48,7 +48,7 @@ The logger is also available from the [FireflyRuntime](/reference/runtime/runtim
 
 ## Messaging
 
-It's crucial that the parts of a federated application remains loosely coupled. To help with that, Squide offers a built-in [Event Bus](/reference/messaging/EventBus.md).
+It's crucial that the parts of a modular application remains loosely coupled. To help with that, Squide offers a built-in [Event Bus](/reference/messaging/EventBus.md).
 
 First, listen to an event with the [useEventBusListener](/reference/messaging/useEventBusListener.md) hook:
 

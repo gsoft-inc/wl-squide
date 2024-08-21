@@ -7,7 +7,7 @@ label: Migrate to firefly v9
 
 This major version of `@squide/firefly` introduces [TanStack Query](https://tanstack.com/query/latest) as the official library for fetching the global data of a Squide's application and features a complete rewrite of the [AppRouter](../reference/routing/appRouter.md) component, which now uses a state machine to manage the application's bootstrapping flow.
 
-Prior to `v9`, Squide applications couldn't use TanStack Query to fetch global data, making it **challenging** for Workleap's applications to **keep** their **global data** in **sync** with the **server state**. With `v9`, applications can now leverage [custom wrappers](./fetch-global-data.md) of the [useQueries](https://tanstack.com/query/latest/docs/framework/react/reference/useQueries) hook to fetch and keep their global data up-to-date with the server state. Additionally, the new [deferred registrations update](../reference/registration/useDeferredRegistrations.md#register-or-update-deferred-registrations) update feature allows applications to also **keep** their conditional **navigation items in sync** with the server state.
+Prior to `v9`, Squide applications couldn't use TanStack Query to fetch global data, making it **challenging** for Workleap's applications to **keep** their **global data** in **sync** with the **server state**. With `v9`, applications can now leverage [custom wrappers](./fetch-global-data.md) of the [useQueries](https://tanstack.com/query/latest/docs/framework/react/reference/useQueries) hook to fetch and keep their global data up-to-date with the server state. Additionally, the new [deferred registrations](../reference/registration/useDeferredRegistrations.md#register-or-update-deferred-registrations) update feature allows applications to also **keep** their conditional **navigation items in sync** with the server state.
 
 These changes have significantly impacted the API surface of Squide.
 
@@ -35,11 +35,11 @@ These changes have significantly impacted the API surface of Squide.
 
 ### Removed support for deferred routes
 
-[Deferred registration](../reference/registration/registerLocalModules.md#defer-the-registration-of-navigation-items) functions no longer support route registration; they are now **exclusively** used for **registering navigation items**. Since deferred registration functions can now be re-executed whenever global data changes, registering routes in deferred registration functions no longer makes sense as updating the routes registry after the application has bootstrapped could lead to issues.
+[Deferred registration](../reference/registration/registerLocalModules.md#defer-the-registration-of-navigation-items) functions no longer support route registration; they are now **exclusively** used for **registering navigation items**. Since deferred registration functions can now be re-executed whenever the global data changes, registering routes in deferred registration functions no longer makes sense as updating the routes registry after the application has bootstrapped could lead to issues.
 
 This change is a significant improvement for Squide's internals, allowing us to eliminate quirks like:
 
-- Treating unknown routes as `protected`: When a user session initially requested a deferred route, Squide couldn't determine if the route was `public` or `protected` because it wasn't registered yet. As a result, for that initial request, the route was considered `protected`, even if the deferred registration later marked it as `public`.
+- Treating unknown routes as `protected`: When a user initially requested a deferred route, Squide couldn't determine if the route was `public` or `protected` because it wasn't registered yet. As a result, for that initial request, the route was considered `protected`, even if the deferred registration later registered it as `public`.
 
 - Mandatory wildcard `*` route registration: Previously, Squide's bootstrapping would fail if the application didn't include a wildcard route.
 
@@ -85,15 +85,59 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
 }
 ```
 
-To handle direct access to a conditional route, each conditional route's endpoint should return a `403` status code if the user is not authorized to view the route. The corresponding pages for these conditional routes should then rethrow `403` errors, allowing the nearest error boundary to manage the unauthorized access.
+To handle direct access to a conditional route, each conditional route's endpoint should return a `403` status code if the user is not authorized to view the route. Those `403` errors should then be handled by the nearest error boundary.
 
-### The plugin abstract class constructor now requires a runtime instance
+### Plugin's constructors now requires a runtime instance
 
-TBD
+Prior to this release, plugin instances received the current runtime instance through a `_setRuntime` function. This approach caused issues because some plugins required a reference to the runtime at instantiation. To address this, plugins now receive the runtime instance directly as a constructor argument.
+
+Before:
+
+```tsx
+export class MyPlugin extends Plugin {
+    readonly #runtime: Runtime;
+
+    constructor() {
+        super(MyPlugin.name);
+    }
+
+    _setRuntime(runtime: Runtime) {
+        this.#runtime = runtime;
+    }
+}
+```
+
+Now:
+
+```tsx
+export class MyPlugin extends Plugin {
+    constructor(runtime: Runtime) {
+        super(MyPlugin.name, runtime);
+    }
+}
+```
 
 ### Plugins now registers with a factory function
 
-Plugins must now be registered with a factory receive a runtime instance as an argument
+Prior to this release, the [FireflyRuntime](../reference/runtime/runtime-class.md) accepted plugin instances as options. Now, `FireflyRuntime` accepts factory functions instead of plugin instances. This change allows plugins to receive the runtime instance as a constructor argument.
+
+Before:
+
+```tsx
+const runtime = new FireflyRuntime({
+    plugins: [new MyPlugin()]
+});
+```
+
+Now:
+
+```tsx
+const runtime = new FireflyRuntime({
+    plugins: [x => new MyPlugin(x)]
+});
+```
+
+### AppRouter component rewrite
 
 - AppRouter
 - Include change for the 401 redirection -> now done by the authentication boundary

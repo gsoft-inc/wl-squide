@@ -5,7 +5,7 @@ order: 840
 # Use feature flags
 
 !!!warning
-Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) and [Fetch initial data](./fetch-initial-data.md) guides.
+Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) and [Fetch global data](./fetch-global-data.md) guides.
 !!!
 
 To continuously deliver value to our customers, Workleap has adopted a feature flag system that enables functionalities to be activated or deactivated without requiring a code deployment. While implementing "in-page" feature flags in a Squide application is straightforward, feature flags that conditionally register navigation items require a more advanced [deferred registration](../reference/registration/registerLocalModules.md#defer-the-registration-of-navigation-items) mechanism.

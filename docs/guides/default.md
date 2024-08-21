@@ -7,7 +7,7 @@ expanded: true
 # Guides
 
 - [Setup Mock Service Worker](./setup-msw.md)
-- [Fetch initial data](./fetch-initial-data.md)
+- [Fetch global data](./fetch-global-data.md)
 - [Fetch page data](./fetch-page-data.md)
 - [Manage shared state](./manage-shared-state.md)
 - [Isolate module failures](./isolate-module-failures.md)
@@ -21,4 +21,4 @@ expanded: true
 - [Override a React context](./override-a-react-context.md)
 - [Add a shared dependency](./add-a-shared-dependency.md)
 - [Implement a custom logger](./implement-a-custom-logger.md)
-- [Migrate from a monolithic application](./migrate-from-a-monolith.md)
+- [Migrate to firefly v9](./migrate-to-firefly-v9.md)

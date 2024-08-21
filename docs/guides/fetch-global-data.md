@@ -2,27 +2,27 @@
 order: 980
 ---
 
-# Fetch initial data
+# Fetch global data
 
 !!!warning
 Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) guide.
 !!!
 
-Retrieving the initial data of an application is a crucial aspect that isn't always straightforward to implement. That's why we encourage feature teams to build their initial data fetching strategy on top of the Squide [AppRouter](../reference/routing/appRouter.md) component.
+Retrieving the global data of an application is a crucial aspect that isn't always straightforward to implement. That's why we encourage feature teams to build their global data fetching strategy on top of the Squide [AppRouter](../reference/routing/appRouter.md) component.
 
-## Challenges with initial data
+## Challenges with global data
 
-At first glance, one might wonder what could be so complicated about fetching the initial data of an application. It's only fetches ...right? Well, there are several concerns to take into account for a Squide application:
+At first glance, one might wonder what could be so complicated about fetching the global data of an application. It's only fetches ...right? Well, there are several concerns to take into account for a Squide application:
 
-- When in development, the initial data cannot be fetched until the Mock Service Worker (MSW) **request handlers** are **registered** and **MSW is ready**.
+- When in development, the global data cannot be fetched until the Mock Service Worker (MSW) **request handlers** are **registered** and **MSW is ready**.
 
 - To register the MSW request handlers, the **modules** (including the remote modules) must be **registered** first.
 
-- If the requested page is _public_, only the initial public data should be fetched.
+- If the requested page is _public_, only the global public data should be fetched.
 
-- If the requested page is _protected_, **both** the initial **public** and **protected data** should be **fetched**.
+- If the requested page is _protected_, **both** the global **public** and **protected data** should be **fetched**.
 
-- The requested page rendering must be delayed until the initial data has been fetched.
+- The requested page rendering must be delayed until the global data has been fetched.
 
 - A **unique loading spinner** should be displayed to the user during this process, ensuring there's **no flickering** due to different spinners being rendered.
 
@@ -199,13 +199,13 @@ Combine the `usePublicDataQueries` with the [useIsBootstrapping](../reference/ro
 
 ### Use the endpoint data
 
-Now, create a `InitialDataLayout` component that uses the count retrieved from `FetchCountContext` and render pages with a green background color if the value is odd:
+Now, create a `GlobalDataLayout` component that uses the count retrieved from `FetchCountContext` and render pages with a green background color if the value is odd:
 
-```tsx !#5,10 host/src/InitialDataLayout.tsx
+```tsx !#5,10 host/src/GlobalDataLayout.tsx
 import { useFetchCount } from "@sample/shared";
 import { Outlet } from "react-router-dom";
 
-export function InitialDataLayout() {
+export function GlobalDataLayout() {
     const fetchCount = useFetchCount();
 
     const isOdd = fetchCount % 2 === 0;
@@ -232,13 +232,13 @@ Finally, register both components, either in the host application or within any 
 
 ```tsx !#8,12 host/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
-import { InitialDataLayout } from "./InitialDataLayout.tsx";
+import { GlobalDataLayout } from "./GlobalDataLayout.tsx";
 import { Page } from "./Page.tsx";
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
     runtime.registerRoute({
-        path: "/initial-data",
-        element: <InitialDataLayout />,
+        path: "/global-data",
+        element: <GlobalDataLayout />,
         children: [
             {
                 index: true,
@@ -248,9 +248,9 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
     });
 
     runtime.registerNavigationItem({
-        $key: "initial-data",
-        $label: "Initial data Page",
-        to: "/initial-data"
+        $key: "global-data",
+        $label: "Global data Page",
+        to: "/global-data"
     });
 
     // Files that includes an import to the "msw" package are included dynamically to prevent adding
@@ -263,7 +263,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
 
 ### Try it :rocket:
 
-Start the application in a development environment using the `dev` script and navigate to the `/initial-data` page. Refresh the page a few times, the background color should alternate between transparent and green.
+Start the application in a development environment using the `dev` script and navigate to the `/global-data` page. Refresh the page a few times, the background color should alternate between transparent and green.
 
 #### Troubleshoot issues
 
@@ -431,13 +431,13 @@ To ensure the `AppRouter` component wait for the protected data to be ready befo
 
 ### Use the endpoint data
 
-Now, update the `InitialDataLayout` component that was previously created for the [public data example](#use-the-endpoint-data) to render the user tenant subscription status:
+Now, update the `GlobalDataLayout` component that was previously created for the [public data example](#use-the-endpoint-data) to render the user tenant subscription status:
 
-```tsx !#6,11 host/src/InitialDataLayout.tsx
+```tsx !#6,11 host/src/GlobalDataLayout.tsx
 import { useFetchCount, useSubscription } from "@sample/shared";
 import { Outlet } from "react-router-dom";
 
-export function InitialDataLayout() {
+export function GlobalDataLayout() {
     const fetchCount = useFetchCount();
     const subscription = useSubscription();
 
@@ -454,7 +454,7 @@ export function InitialDataLayout() {
 
 ### Try it :rocket:
 
-Start the application in a development environment using the `dev` script and navigate to the `/initial-data` page. You should notice the subscription status.
+Start the application in a development environment using the `dev` script and navigate to the `/global-data` page. You should notice the subscription status.
 
 #### Troubleshoot issues
 

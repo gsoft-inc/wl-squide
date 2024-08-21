@@ -6,11 +6,7 @@ expanded: true
 
 # Getting started
 
-<!-- Welcome to Squide (yes :squid: with an **"e"**), a shell for [Workleap](https://workleap.com/) applications built on top of [Module Federation](https://module-federation.io/), [React Router](https://reactrouter.com) and [TanStack Query](https://tanstack.com/query/latest), with the goal of maximizing the strength of each library while interfering as little as possible with their functionality. -->
-
 Welcome to Squide (yes :squid: with an **"e"**), a shell for [Workleap](https://workleap.com/) web applications built on top of [Module Federation](https://module-federation.io/), [React Router](https://reactrouter.com) and [TanStack Query](https://tanstack.com/query/latest). In this getting started section, you'll find an overview of the shell and a [quick start](create-host.md) guide to create a new application from scratch.
-
-<!-- Squide is a modular and lightweight [API layer](/reference) built on top of [Module Federation](https://module-federation.io/), [React Router](https://reactrouter.com) and [TanStack Query](https://tanstack.com/query/latest), with the goal of maximizing the strength of both libraries while interfering as little as possible with their functionality. -->
 
 <!-- !!!warning Foundry CLI
 
@@ -36,7 +32,7 @@ We originally built this shell to facilitate the adoption of federated applicati
 
 While Squide remains a great shell for federated applications, as we experimented with new products, we discovered that Squide also **offers** significant **value** for **non-federated** web applications:
 
-- With the power of [local modules](../reference/registration/registerLocalModules.md) and the [Runtime API](../reference/runtime/runtime-class.md), Squide addresses a long-lasting challenge at Workleap: _How can we effectively enforce the boundaries of a business subdomain in the frontend?_
+- With the power of [local modules](../reference/registration/registerLocalModules.md) and the [Runtime API](../reference/runtime/runtime-class.md), Squide addresses a long-lasting challenge at Workleap: _How can we effectively enforce the boundaries of a business subdomain in the frontend?_ Squide's modular design naturally upholds these boundaries.
 
 - With Squide, teams can confidently start new products with a simple **monorepo** architecture, knowing that as new members are onboarded, their development **velocity** can **scale** seamlessly by gradually migrating local modules to remote modules without refactoring the core application architecture.
 
@@ -76,7 +72,7 @@ The most distinctive aspect of this shell is the conventions it enforces for loa
 
 3. Once all the modules are registered, the host application will create a React Router [instance](https://reactrouter.com/en/main/routers/create-browser-router) with the registered routes and [renders a navigation menu](/reference/routing/useRenderedNavigationItems.md) with the registered navigation items.
 
-That's a nutshell overview. Of course, there is more to it, but these are the main ideas.
+This is a high-level overview. Of course, there is more to it, but these are the main ideas.
 
 ## Guiding principles
 
@@ -88,13 +84,13 @@ While developing the [API](/reference) of Squide, we kept a few guiding principl
 
 - A module should not directly reference the other modules of the application. To coordinate with other modules, including the host application, a module should always use Squide's [Runtime API](../reference/runtime/runtime-class.md).
 
-- A modular application should feel cohesive. Different parts of the application should have the ability to communicate with each others and react to changes happening outside of their boundaries.
+- A modular application should feel cohesive. Different parts of the application should have the ability to communicate with each others and react to changes happening outside of their boundaries (without taking an hard reference on other parts of the application).
 
-- Data and state should never be shared between modules. Even if two modules require the same data or the same state values, they should load, store and manage them independently.
+- Data and state should never be shared between modules. Even if two modules require the same data or the same state values, they should load, store and manage those independently.
 
 ## Limitations
 
-Module Federation comes with a few manageable limitations that are important to consider when architecting a distributed application:
+If you choose to include remote modules to your application, Module Federation comes with a few manageable limitations that are important to consider when architecting a distributed application:
 
 - A [shared dependency](https://module-federation.io/configure/shared.html) cannot be tree-shaken. Since remote modules are loaded at runtime, module federation cannot infer which parts of a shared dependency will be used by the application modules. Therefore, tree-shaking is disabled for shared dependencies.
 
@@ -102,4 +98,4 @@ Module Federation comes with a few manageable limitations that are important to 
 
 ## Create your project
 
-To get started, follow the [quick start](create-host.md) guide to create a new federated application from scratch.
+To get started, follow the [quick start](create-host.md) guide to create a new Squide's application from scratch.

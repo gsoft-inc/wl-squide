@@ -270,7 +270,7 @@ runtime.registerNavigationItem({
 
 The configured `$key` option is then passed as an argument to the [useRenderedNavigationItems](../reference/routing/useRenderedNavigationItems.md) rendering functions:
 
-```tsx !#1,5
+```tsx !#1,5,15-16
 const renderItem: RenderItemFunction = (item, key) => {
     const { label, linkProps, additionalProps } = item;
 
@@ -300,7 +300,7 @@ The `v9` release introduces several breaking changes affecting the host applicat
 
 1. Add a dependency to `@tanstack/react-query`. [View example](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file)
 
-2. Transition to the new `AppRouter` component. [View example](#approuter-component-rewrite)
+2. Transition to the new `AppRouter` component. [View example](#rewrite-of-the-approuter-component)
 
 3. Create a `TanStackSessionManager` class and the `SessionManagerContext`. Replace the session's deprecated hooks by creating the customs `useSession` and `useIsAuthenticated` hooks. [View example](./add-authentication.md#create-a-session-manager)
 

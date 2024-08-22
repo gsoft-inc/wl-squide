@@ -318,7 +318,7 @@ The `v9` release introduces several breaking changes affecting the host applicat
 
 ### Root error boundary
 
-When migrating the `AppRouter` component, don't forget to nest the `RootErrorBoundary` component under the `AppRouter` component's render function.
+When transitioning to the new `AppRouter` component, make sure to nest the `RootErrorBoundary` component within the `AppRouter` component's render function.
 
 Before:
 
@@ -369,3 +369,9 @@ export function App() {
 ```
 
 ## Migrate a module
+
+The changes in `v9` have minimal impact on module code. To migrate an existing module, follow these steps:
+
+1. Convert all deferred routes into static routes. [View example](#removed-support-for-deferred-routes)
+
+2. Add a `$key` option to the navigation item registrations. [View example](#new-key-option-for-navigation-items)

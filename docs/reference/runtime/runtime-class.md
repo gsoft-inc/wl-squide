@@ -449,9 +449,7 @@ runtime.registerNavigationItem({
 });
 ```
 
-!!!info
-It's the responsibility of the code rendering the menu to execute the navigation items `$canRender` function and conditionally render the items based on the return value.
-!!!
+> It's the responsibility of the code rendering the menu to execute the navigation items `$canRender` function and conditionally render the items based on the return value.
 
 ### Render additional props on a navigation item
 

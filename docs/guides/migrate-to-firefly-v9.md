@@ -139,9 +139,9 @@ const runtime = new FireflyRuntime({
 });
 ```
 
-### `AppRouter` component rewrite
+### Rewrite of the `AppRouter` component
 
-This release features a complete rewrite of the [AppRouter](../reference/routing/appRouter.md) component. The `AppRouter` component used to handle many concerns like global data fetching, deferred registrations, error handling and a loading state. Those concerns have been delegated to the consumer code, supported by the new [useIsBootstrapping](../reference/routing/useIsBootstrapping.md), [usePublicDataQueries](../reference/tanstack-query/usePublicDataQueries.md), [useProtectedDataQueries](../reference/tanstack-query/useProtectedDataQueries.md) and [useDeferredRegistrations](../reference/registration/useDeferredRegistrations.md) hooks.
+This release features a full rewrite of the [AppRouter](../reference/routing/appRouter.md) component. The `AppRouter` component used to handle many concerns like global data fetching, deferred registrations, error handling and a loading state. Those concerns have been delegated to the consumer code, supported by the new [useIsBootstrapping](../reference/routing/useIsBootstrapping.md), [usePublicDataQueries](../reference/tanstack-query/usePublicDataQueries.md), [useProtectedDataQueries](../reference/tanstack-query/useProtectedDataQueries.md) and [useDeferredRegistrations](../reference/registration/useDeferredRegistrations.md) hooks.
 
 Before:
 
@@ -236,11 +236,6 @@ export function App() {
 }
 ```
 
-Those will most likely be included in a migration guide down this page, like a section on how to migrate the application shell:
-
-- Include change for the 401 redirection -> now done by the authentication boundary
-- Root error boundary is now defined in the render function of the AppRouter
-
 ## New hooks and functions
 
 - A new [useIsBoostrapping](../reference/routing/useIsBootstrapping.md) hook is now available.
@@ -301,6 +296,76 @@ const navigationElements = useRenderedNavigationItems(navigationItems, renderIte
 
 ## Migrate an host application
 
-Most of the breaking changes of the `v9` release affects the host application code.
+The `v9` release introduces several breaking changes affecting the host application code. Follow these steps to migrate an existing host application:
+
+1. Add a dependency to `@tanstack/react-query`. [View example](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file)
+
+2. Transition to the new `AppRouter` component. [View example](#approuter-component-rewrite)
+
+3. Create a `TanStackSessionManager` class and the `SessionManagerContext`. Replace the session's deprecated hooks by creating the customs `useSession` and `useIsAuthenticated` hooks. [View example](./add-authentication.md#create-a-session-manager)
+
+4. Remove the `sessionAccessor` option from the `FireflyRuntime` instance. Update the `BootstrappingRoute` component to create a `TanStackSessionManager` instance and share it down the component tree using a `SessionManagedContext` provider. [View example](./add-authentication.md#fetch-the-session)
+
+5. Update the `AuthenticationBoundary` component to use the new `useIsAuthenticated` hook. [View example](./add-authentication.md#add-an-authentication-boundary)
+
+6. Update the `AuthenticatedLayout` component to use the session manager instance to clear the session. Retrieve the session manager instance from the context defined in the `BootstrappingRoute` component using the `useSessionManager` hook. [View example](./add-authentication.md#define-an-authenticated-layout)
+
+7. Update the `AuthenticatedLayout` component to use the new `$key` option of the navigation item. [View example](#new-key-option-for-navigation-items)
+
+8. Convert all deferred routes into static routes. [View example](#removed-support-for-deferred-routes)
+
+9. Add a `$key` option to the navigation item registrations. [View example](#new-key-option-for-navigation-items)
+
+### Root error boundary
+
+When migrating the `AppRouter` component, don't forget to nest the `RootErrorBoundary` component under the `AppRouter` component's render function.
+
+Before:
+
+```tsx !#6-7
+export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
+    runtime.registerRoute({
+        element: <RootLayout />,
+        children: [
+            {
+                $name: "root-error-boundary",
+                errorElement: <RootErrorBoundary />,
+                children: [
+                    ManagedRoutes
+                ]
+            }
+        ]
+    });
+});
+```
+
+Now:
+
+```tsx !#12
+export function App() {
+    return (
+        <AppRouter waitForMsw>
+            {({ rootRoute, registeredRoutes, routerProviderProps }) => {
+                return (
+                    <RouterProvider
+                        router={createBrowserRouter([
+                            {
+                                element: rootRoute,
+                                children: [
+                                    {
+                                        errorElement: <RootErrorBoundary />,
+                                        children: registeredRoutes
+                                    }
+                                ]
+                            }
+                        ])}
+                        {...routerProviderProps}
+                    />
+                );
+            }}
+        </AppRouter>
+    );
+}
+```
 
 ## Migrate a module

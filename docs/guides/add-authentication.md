@@ -174,7 +174,7 @@ export function Login() {
 
 After the user logs in, the application is reloaded, this is a requirement of the [AppRouter](../reference/routing/appRouter.md) component. Nevertheless, it's not a concern because Workleap's applications use a third-party service for authentication which requires a full refresh of the application.
 
-## Create a session manager context
+## Create a session manager
 
 Next, create a shared type for the session and the session manager:
 
@@ -191,7 +191,7 @@ export interface SessionManager {
 }
 ```
 
-Finally, create a shared `SessionManagerContext` along with some utility hooks. This React context will be used to share the `SessionManager` instance down the components tree:
+Then, create a shared `SessionManagerContext` along with some utility hooks. This React context will be used to share the `SessionManager` instance down the components tree:
 
 ```ts shared/src/session.ts
 export const SessionManagerContext = createContext<SessionManager | undefined>(undefined);
@@ -213,9 +213,42 @@ export function useIsAuthenticated() {
 }
 ```
 
+Finally, let's go back to the host application and create a [TanStack Query](https://tanstack.com/query/latest) implementation of the shared `SessionManager` interface created previously:
+
+```ts host/src/sessionManager.ts
+import type { SessionManager, Session } from "@sample/shared";
+import { useQueryClient, type QueryClient } from "@tanstack/react-query";
+
+class TanstackQuerySessionManager implements SessionManager {
+    #session: Session | undefined;
+    readonly #queryClient: QueryClient;
+
+    constructor(session: Session, queryClient: QueryClient) {
+        this.#session = session;
+        this.#queryClient = queryClient;
+    }
+
+    getSession() {
+        return this.#session;
+    }
+
+    clearSession() {
+        this.#session = undefined;
+
+        this.#queryClient.invalidateQueries({ queryKey: ["/api/session"], refetchType: "inactive" });
+    }
+}
+
+export function useSessionManagerInstance(session: Session) {
+    const queryClient = useQueryClient();
+
+    return useMemo(() => new TanstackQuerySessionManager(session, queryClient), [session, queryClient]);
+}
+```
+
 ## Fetch the session
 
-Now, let's go back to the host application and create an MSW request handler that returns a session object if a user is authenticated:
+Next, create an MSW request handler that returns a session object if a user is authenticated:
 
 ```ts !#50-61 host/mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
@@ -282,40 +315,7 @@ export const requestHandlers: HttpHandler[] = [
 ];
 ```
 
-Then, create a [TanStack Query](https://tanstack.com/query/latest) implementation of the shared `SessionManager` interface created earlier:
-
-```ts host/src/sessionManager.ts
-import type { SessionManager, Session } from "@sample/shared";
-import { useQueryClient, type QueryClient } from "@tanstack/react-query";
-
-class TanstackQuerySessionManager implements SessionManager {
-    #session: Session | undefined;
-    readonly #queryClient: QueryClient;
-
-    constructor(session: Session, queryClient: QueryClient) {
-        this.#session = session;
-        this.#queryClient = queryClient;
-    }
-
-    getSession() {
-        return this.#session;
-    }
-
-    clearSession() {
-        this.#session = undefined;
-
-        this.#queryClient.invalidateQueries({ queryKey: ["/api/session"], refetchType: "inactive" });
-    }
-}
-
-export function useSessionManagerInstance(session: Session) {
-    const queryClient = useQueryClient();
-
-    return useMemo(() => new TanstackQuerySessionManager(session, queryClient), [session, queryClient]);
-}
-```
-
-Finally, update the host application `App` component to load the session with the [useProtectedDataQueries](../reference/tanstack-query/useProtectedDataQueries.md) hook and create an instance of `TanstackQuerySessionManager` with the retrieved session to share the sessuib via the `SessionManagerContext`:
+Then, update the host application `App` component to load the session with the [useProtectedDataQueries](../reference/tanstack-query/useProtectedDataQueries.md) hook and create an instance of `TanstackQuerySessionManager` with the retrieved session to share the sessuib via the `SessionManagerContext`:
 
 ```tsx !#7-28,30,37,47,57 host/src/App.tsx
 import { AppRouter, useProtectedDataQueries, useIsBootstrapping } from "@squide/firefly";

@@ -27,7 +27,7 @@ export function LoginPage({ host }: LoginPageProps) {
             .then(() => {
                 setIsBusy(false);
 
-                // Reloading the whole application so the "RootRoute" component states are reinitialize.
+                // Reloading the whole application so the "RootRoute" component states are re-initialize.
                 // If we use navigate("/") instead, since "isProtectedDataLoaded" might already be true in the case
                 // of Logout -> Login, the rendering will bypass the loading of the protected data (including the session)
                 // which will result in an incoherent state.

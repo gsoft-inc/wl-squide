@@ -119,8 +119,8 @@ runtime.registerRoute({
 !!!warning
 By declaring a route as hoisted, other parts of the application will not be isolated anymore from this route's failures and the route will not be protected anymore by the application authenticated boundary.
 
-- To **avoid breaking the entire application** when an hoisted route encounters unhandled errors, it is highly recommended to declare a React Router's [errorElement](https://reactrouter.com/en/main/route/error-element) property for each hoisted route.
-- If the hoisted route requires an authentication, make sure to **wrap the route with an authentication boundary** or to handle the authentication within the route.
+- To **avoid breaking** the entire **application** when an hoisted route encounters unhandled errors, it is highly recommended to declare a React Router's [errorElement](https://reactrouter.com/en/main/route/error-element) property for each hoisted route.
+- If the hoisted route requires an authentication, make sure to **wrap** the route **with** an **authentication boundary** or to handle the authentication within the route.
 !!!
 
 ### Register a route with a different layout
@@ -291,6 +291,7 @@ A Squide navigation item can either be a `NavigationLink` or a `NavigationSectio
 Accept any properties of a React Router [Link](https://reactrouter.com/en/main/components/link) component with the addition of:
 - `$key`: An optional key identifying the link. Usually used as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
 - `$label`: The link text.
+- `$canRender`: An optional function accepting an object and returning a `boolean` indicating whether or not the link should be rendered.
 - `$priority`: An order priority affecting the position of the item in the menu (higher first)
 - `$additionalProps`: Additional properties to be forwarded to the link renderer.
 
@@ -298,6 +299,7 @@ Accept any properties of a React Router [Link](https://reactrouter.com/en/main/c
 
 - `$key`: An optional key identifying the section. Usually used as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
 - `$label`: The section text.
+- `$canRender`: An optional function accepting an object and returning a `boolean` indicating whether or not the section should be rendered.
 - `$priority`: An order priority affecting the position of the item in the menu (higher first)
 - `$additionalProps`: Additional properties to be forwarded to the section renderer.
 - `children`: The section content.
@@ -433,6 +435,23 @@ runtime.registerNavigationItem({
     to: "/about"
 });
 ```
+
+### Conditionally render a navigation item
+
+```ts !#4-6
+runtime.registerNavigationItem({
+    $key: "about",
+    $label: "About",
+    $canRender: (index: number) => {
+        return index % 2 == 0;
+    },
+    to: "/about"
+});
+```
+
+!!!info
+It's the responsibility of the code rendering the menu to execute the navigation items `$canRender` function and conditionally render the items based on the return value.
+!!!
 
 ### Render additional props on a navigation item
 

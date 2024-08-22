@@ -97,10 +97,10 @@ const renderSectionItem: RenderSectionItemFunction = ({ label, section }, key) =
 };
 
 const renderItem: RenderItemFunction = (item, key) => {
-    return isNavigationLink(item) ? renderLinkItem(item, key) : renderSectionItem(item, key;
+    return isNavigationLink(item) ? renderLinkItem(item, key) : renderSectionItem(item, key);
 };
 
-const renderSection: RenderSectionFunction = (elements, key, index, level) => {
+const renderSection: RenderSectionFunction = (elements, key) => {
     return (
         <ul key={key}>
             {elements}

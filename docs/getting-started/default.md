@@ -4,6 +4,10 @@ icon: rocket
 expanded: true
 ---
 
+!!!warning
+The documentation for Squide firefly v8 is available [here](https://squide-firefly-v8.netlify.app/getting-started/).
+!!!
+
 # Getting started
 
 Welcome to Squide (yes :squid: with an **"e"**), a shell for [Workleap](https://workleap.com/) web applications built on top of [Module Federation](https://module-federation.io/), [React Router](https://reactrouter.com) and [TanStack Query](https://tanstack.com/query/latest). In this getting started section, you'll find an overview of the shell and a [quick start](create-host.md) guide to create a new application from scratch.

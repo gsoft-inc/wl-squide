@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774628731664">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.777755952640">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Override a React context</title>
     <meta name="title" content="Override a React context">
-    <meta name="description" content="In a federated application using Module Federation, it's typical to configure various global React context">
+    <meta name="description" content="In a modular application, it's typical to configure various global React context at the root of the host application.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/guides/override-a-react-context/">
@@ -21,23 +21,23 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/guides/override-a-react-context/">
     <meta property="og:title" content="Override a React context">
-    <meta property="og:description" content="In a federated application using Module Federation, it's typical to configure various global React context">
+    <meta property="og:description" content="In a modular application, it's typical to configure various global React context at the root of the host application.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/guides/override-a-react-context/">
     <meta property="twitter:title" content="Override a React context">
-    <meta property="twitter:description" content="In a federated application using Module Federation, it's typical to configure various global React context">
+    <meta property="twitter:description" content="In a modular application, it's typical to configure various global React context at the root of the host application.">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.774628731664" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.777755952640" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.774628731664" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.777755952640" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -305,25 +305,31 @@
         <span>Override a React context</span>
     </h1>
 </doc-anchor-target>
-<p>In a federated application using <a href="https://module-federation.io/" class="outbound" target="_blank">Module Federation</a>, it&#x27;s typical to configure various global <a href="https://legacy.reactjs.org/docs/context.html" class="outbound" target="_blank">React context</a> at the root of the host application. These contexts are usually consumed down the line by the layouts and pages of the remote modules.</p>
+<p>In a modular application, it&#x27;s typical to configure various global <a href="https://legacy.reactjs.org/docs/context.html" class="outbound" target="_blank">React context</a> at the root of the host application. These contexts are then used by the layouts and pages of the modules.</p>
 <p>Let&#x27;s explore a simple example using a <code v-pre>BackgroundColorContext</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
 <pre class="language-tsx" data-line="7"><code v-pre class="language-tsx">import { AppRouter } from &quot;@squide/firefly&quot;;
-import { BackgroundColorContext } from &quot;@sample/shared&quot;;
 import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
+import { BackgroundColorContext } from &quot;@sample/shared&quot;;
 
 export function App() {
     return (
         &lt;BackgroundColorContext.Provider value=&quot;blue&quot;&gt;
-            &lt;AppRouter
-                fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
-                errorElement={&lt;div&gt;An error occured!&lt;/div&gt;}
-                waitForMsw={false}
-            &gt;
-                {(routes, providerProps) =&gt; (
-                    &lt;RouterProvider router={createBrowserRouter(routes)} {...providerProps} /&gt;
-                )}
+            &lt;AppRouter waitForMsw={false}&gt;
+                {({ rootRoute, registeredRoutes, routerProviderProps }) =&gt; {
+                    return (
+                        &lt;RouterProvider
+                            router={createBrowserRouter([
+                                {
+                                    element: rootRoute,
+                                    children: registeredRoutes
+                                }
+                            ])}
+                            {...routerProviderProps}
+                        /&gt;
+                    );
+                }}
             &lt;/AppRouter&gt;
         &lt;/BackgroundColorContext.Provider&gt;
     );
@@ -355,7 +361,7 @@ export function ColoredPage() {
     );
 }</code></pre>
 </doc-codeblock></div>
-<p>In the previous code samples, the host application provides a value for the <code v-pre>BackgroundColorContext</code>, and the <code v-pre>ColoredPage</code> component of the remote module utilizes this value to set its background color (in this example, the background color is set to <code v-pre>blue</code>).</p>
+<p>In the previous code samples, the host application provides a value for the <code v-pre>BackgroundColorContext</code>, and the <code v-pre>ColoredPage</code> component of the remote module uses this value to set its background color (to <code v-pre>blue</code> for this example).</p>
 <doc-anchor-target id="override-the-context-for-the-remote-module">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#override-the-context-for-the-remote-module">#</doc-anchor-trigger>
@@ -415,30 +421,52 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&
         <span>Update a singleton dependency version</span>
     </h2>
 </doc-anchor-target>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-yellow-500"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-yellow-500" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M22.48 15.59L14.01 1.45A2.968 2.968 0 0012.16.09c-.78-.19-1.58-.07-2.27.35-.41.25-.76.6-1.01 1.01v.01L.4 15.6c-.83 1.43-.33 3.27 1.1 4.1.45.26.95.4 1.48.4h16.95c.8-.01 1.55-.33 2.11-.9.56-.57.87-1.33.86-2.13a3.04 3.04 0 00-.42-1.48zm-1.87 2.21c-.19.19-.44.3-.69.3H2.99c-.17 0-.34-.05-.49-.13a.992.992 0 01-.37-1.35L10.6 2.48c.08-.14.2-.25.34-.33a.992.992 0 011.37.33l8.46 14.13c.09.15.13.32.13.49 0 .26-.1.51-.29.7z"></path>
+                    <path d="M11.45 12.1c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1s-1 .45-1 1v4c0 .56.45 1 1 1zM11.46 14.1c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>This section applies only to applications with <a href="../../reference/registration/registerremotemodules/">remote modules</a>.</p>
+        </div>
+    </div>
+</div>
 <p>Let&#x27;s consider a more specific use case where the host application declares a <code v-pre>ThemeContext</code> from Workleap&#x27;s new design system, <a href="https://hopper.workleap.design/" class="outbound" target="_blank">Hopper</a>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
 <pre class="language-tsx" data-line="7"><code v-pre class="language-tsx">import { AppRouter } from &quot;@squide/firefly&quot;;
-import { ThemeContext } from &quot;@hopper/components&quot;;
 import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
+import { ThemeContext } from &quot;@hopper/components&quot;;
 
 export function App() {
     return (
         &lt;ThemeContext.Provider value=&quot;dark&quot;&gt;
-            &lt;AppRouter
-                fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
-                errorElement={&lt;div&gt;An error occured!&lt;/div&gt;}
-                waitForMsw={false}
-            &gt;
-                {(routes, providerProps) =&gt; (
-                    &lt;RouterProvider router={createBrowserRouter(routes)} {...providerProps} /&gt;
-                )}
+            &lt;AppRouter waitForMsw={false}&gt;
+                {({ rootRoute, registeredRoutes, routerProviderProps }) =&gt; {
+                    return (
+                        &lt;RouterProvider
+                            router={createBrowserRouter([
+                                {
+                                    element: rootRoute,
+                                    children: registeredRoutes
+                                }
+                            ])}
+                            {...routerProviderProps}
+                        /&gt;
+                    );
+                }}
             &lt;/AppRouter&gt;
         &lt;/ThemeContext.Provider&gt;
     );
 }</code></pre>
 </doc-codeblock></div>
-<p>In this scenario, Hopper&#x27;s components are used throughout the entire federated application, including the remote modules. Moreover, <code v-pre>@hopper/components</code> is defined as a <a href="https://module-federation.io/configure/shared.html#singleton" class="outbound" target="_blank">singleton</a> shared dependency:</p>
+<p>In this scenario, Hopper&#x27;s components are used throughout the entire application, including the modules. Moreover, <code v-pre>@hopper/components</code> is defined as a <a href="https://module-federation.io/configure/shared.html#singleton" class="outbound" target="_blank">singleton</a> shared dependency:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/webpack.dev.js</div>
 <pre class="language-javascript" data-line="8-10"><code v-pre class="language-javascript">// @ts-check
@@ -455,8 +483,8 @@ export default defineDevHostConfig(swcConfig, 8080, [], {
 });</code></pre>
 </doc-codeblock></div>
 <p>Now, consider a situation where Hopper releases a new version of the package that includes breaking changes, without a &quot;compatibility&quot; package to ensure backward compatility with the previous version.</p>
-<p>To update the host application without breaking the remote modules, the recommended approach is to temporary &quot;break&quot; the singleton shared dependency by loading two versions of the dependency in parallel (one for the host application and one for the remote modules that have not been updated yet).</p>
-<p>As <code v-pre>@hopper/components</code> expose the <code v-pre>ThemeContext</code>, the context must be re-declared in each remote module until every part of the federated application has been updated to the latest version of Hopper:</p>
+<p>To update the host application without breaking the modules, we recommend to temporary &quot;break&quot; the singleton shared dependency by loading two versions of the <code v-pre>@hopper/components</code> dependency in parallel (one for the host application and one for the modules that have not been updated yet).</p>
+<p>As <code v-pre>@hopper/components</code> expose the <code v-pre>ThemeContext</code>, the context must be re-declared in each module until every part of the federated application has been updated to the latest version of <code v-pre>@hopper/components</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
 <pre class="language-tsx" data-line="6-12,17"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
@@ -479,7 +507,7 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&
     });
 }</code></pre>
 </doc-codeblock></div>
-<p>Thankfully, <a href="https://reactrouter.com/en/main" class="outbound" target="_blank">React Router</a> makes it very easy to declare contexts in a remote module.</p>
+<p>Thankfully, <a href="https://reactrouter.com/en/main" class="outbound" target="_blank">React Router</a> makes it very easy to declare contexts in a module.</p>
 
                                 
                                 <!-- Required only on API pages -->

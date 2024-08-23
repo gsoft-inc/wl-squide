@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774628731664">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.777755952640">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Setup i18next</title>
     <meta name="title" content="Setup i18next">
-    <meta name="description" content="Most of the applications that forms the Workleap platform are either already bilingual or will be in the future.">
+    <meta name="description" content="Most Workleap's platform application are either already bilingual or will be in the future.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/guides/setup-i18next/">
@@ -21,23 +21,23 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/guides/setup-i18next/">
     <meta property="og:title" content="Setup i18next">
-    <meta property="og:description" content="Most of the applications that forms the Workleap platform are either already bilingual or will be in the future.">
+    <meta property="og:description" content="Most Workleap's platform application are either already bilingual or will be in the future.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/guides/setup-i18next/">
     <meta property="twitter:title" content="Setup i18next">
-    <meta property="twitter:description" content="Most of the applications that forms the Workleap platform are either already bilingual or will be in the future.">
+    <meta property="twitter:description" content="Most Workleap's platform application are either already bilingual or will be in the future.">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.774628731664" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.777755952640" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.774628731664" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.777755952640" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -305,7 +305,7 @@
         <span>Setup i18next</span>
     </h1>
 </doc-anchor-target>
-<p>Most of the applications that forms the Workleap platform are either already bilingual or will be in the future. To help feature teams with localized resources, Squide provides a native <a href="../../reference/i18next/i18nextplugin/">plugin</a> designed to adapt the <a href="https://www.i18next.com/" class="outbound" target="_blank">i18next</a> library for federated applications.</p>
+<p>Most Workleap&#x27;s platform application are either already bilingual or will be in the future. To help feature teams deal with localized resources, Squide provides a native <a href="../../reference/i18next/i18nextplugin/">plugin</a> designed to adapt the <a href="https://www.i18next.com/" class="outbound" target="_blank">i18next</a> library for federated applications.</p>
 <div class="flex mb-6">
     <div class="shrink-0 w-1 rounded-tl rounded-bl bg-yellow-500"></div>
     <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
@@ -374,7 +374,7 @@
 <p>Then, update the host application boostrapping code to register an instance of the <a href="../../reference/i18next/i18nextplugin/">i18nextplugin</a> with the <a href="../../reference/runtime/runtime-class/">FireflyRuntime</a> instance:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
-<pre class="language-tsx" data-line="16,19,22"><code v-pre class="language-tsx">import { createRoot } from &quot;react-dom/client&quot;;
+<pre class="language-tsx" data-line="13-22"><code v-pre class="language-tsx">import { createRoot } from &quot;react-dom/client&quot;;
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from &quot;@squide/firefly&quot;;
 import { App } from &quot;./App.tsx&quot;;
 import { registerHost } from &quot;./register.tsx&quot;;
@@ -385,17 +385,17 @@ const Remotes: RemoteDefinition[] = [
     { url: name: &quot;remote1&quot; }
 ];
 
-// In this example:
-// - The supported languages are &quot;en-US&quot; and &quot;fr-CA&quot;
-// - The fallback language is &quot;en-US&quot;
-// - The URL querystring parameter to detect the current language is &quot;language&quot;
-const i18nextPlugin = new i18nextPlugin([&quot;en-US&quot;, &quot;fr-CA&quot;], &quot;en-US&quot;, &quot;language&quot;);
-
-// Always detect the user language early on.
-i18nextPlugin.detectUserLanguage();
-
 const runtime = new FireflyRuntime({
-    plugins: [i18nextPlugin]
+    plugins: [x =&gt; {
+        // In this example:
+        // - The supported languages are &quot;en-US&quot; and &quot;fr-CA&quot;
+        // - The fallback language is &quot;en-US&quot;
+        // - The URL querystring parameter to detect the current language is &quot;language&quot;
+        const i18nextPlugin = new i18nextPlugin([&quot;en-US&quot;, &quot;fr-CA&quot;], &quot;en-US&quot;, &quot;language&quot;, undefined, x);
+
+        // Always detect the user language early on.
+        i18nextPlugin.detectUserLanguage();
+    }],
     loggers: [new ConsoleLogger()]
 });
 
@@ -441,7 +441,7 @@ root.render(
         <span>Register an i18next instance</span>
     </h3>
 </doc-anchor-target>
-<p>Then, update the <a href="../../reference/registration/registerlocalmodules/">local module</a> register function to create and register an instance of <code v-pre>i18next</code> with the <code v-pre>i18nextPlugin</code> plugin instance:</p>
+<p>Then, update the host application local module&#x27;s <a href="../../reference/registration/registerlocalmodules/">register</a> function to create and register an <code v-pre>i18next</code> instance with the retrieved <code v-pre>i18nextPlugin</code> instance. Due to how the internals of <code v-pre>i18next</code> works, each module (including the host application) must create its own instance of the third-party library. <code v-pre>i18nextPlugin</code> will handle synchronizing the language changes across all <code v-pre>i18next</code> instances:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/register.tsx</div>
 <pre class="language-tsx" data-line="12-14,16-23,26"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
@@ -479,7 +479,7 @@ export const registerHost: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtim
     });
 };</code></pre>
 </doc-codeblock></div>
-<p>In the previous code sample, notice that the <code v-pre>i18next</code> instance has been initialized with the current language of the <code v-pre>i18nextPlugin</code> instance by providing the <code v-pre>lng</code> option. If the user language has been detected during bootstrapping, the <code v-pre>i18next</code> instance will be initialized with the user language which has been deduced from either a <code v-pre>?language</code> querystring parameter or the user navigator language settings. Otherwise, the application instance will be initialized with the fallback language.</p>
+<p>In the previous code sample, notice that the <code v-pre>i18next</code> instance has been initialized with the current language of the <code v-pre>i18nextPlugin</code> instance by providing the <code v-pre>lng</code> option. If the user language has been detected during bootstrapping, the <code v-pre>i18next</code> instance will then be initialized with the user language which has been deduced from either a <code v-pre>?language</code> querystring parameter or the user navigator language settings. Otherwise, the application instance will be initialized with the fallback language, which is <code v-pre>en-US</code> for this guide.</p>
 <doc-anchor-target id="localize-the-home-page-resources">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#localize-the-home-page-resources">#</doc-anchor-trigger>
@@ -508,7 +508,7 @@ export function HomePage() {
         <span>Update the webpack configurations</span>
     </h3>
 </doc-anchor-target>
-<p>Finally, update the webpack development and build configurations to activate the <code v-pre>i18next</code> feature:</p>
+<p>Finally, update the webpack development and build configurations to activate the <code v-pre>i18next</code> feature. Enabling this feature will configure the <code v-pre>i18next</code> libraries as <a href="../add-a-shared-dependency/">shared dependencies</a>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/webpack.dev.js</div>
 <pre class="language-javascript" data-line="7-9"><code v-pre class="language-javascript">// @ts-check
@@ -610,7 +610,7 @@ export default defineBuildHostConfig(swcConfig, [], {
         <span>Register an i18next instance</span>
     </h3>
 </doc-anchor-target>
-<p>Then, update the <a href="../../reference/registration/registerlocalmodules/">local module</a> register function to create and register an instance of <code v-pre>i18next</code> with the <code v-pre>i18nextPlugin</code> plugin instance:</p>
+<p>Then, update the remote module&#x27;s <a href="../../reference/registration/registerlocalmodules/">register</a> function to create and register an instance of <code v-pre>i18next</code> with the <code v-pre>i18nextPlugin</code> plugin instance. Similarly to the <doc-anchor-trigger to="#register-an-i18next-instance">host application</doc-anchor-trigger>, due to how the internals of <code v-pre>i18next</code> works, this local module requires to register its own instance of the third-party library:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
 <pre class="language-tsx" data-line="10,12-14,16-23,26"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
@@ -659,7 +659,7 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&
         <span>Localize the navigation item labels</span>
     </h3>
 </doc-anchor-target>
-<p>Then, localize the navigation items labels using the <a href="../../reference/i18next/i18nextnavigationitemlabel/">I18nextNavigationItemLabel</a> component. Since for this example, the resources are in the <code v-pre>navigationItems</code> namespace, there&#x27;s no need to specify a <code v-pre>namespace</code> property on the components as it will be inferred:</p>
+<p>Then, localize the navigation items labels using the <a href="../../reference/i18next/i18nextnavigationitemlabel/">I18nextNavigationItemLabel</a> component. Since this example resources are in the <code v-pre>navigationItems</code> namespace, there&#x27;s no need to specify a <code v-pre>namespace</code> property on the components as it will be inferred:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
 <pre class="language-tsx" data-line="37"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
@@ -709,7 +709,7 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&
         <span>Localize the page resources</span>
     </h3>
 </doc-anchor-target>
-<p>Then, update the <code v-pre>HomePage</code> component to use the newly created localized resource:</p>
+<p>Then, update the <code v-pre>Page</code> component to use the newly created localized resource:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/Page.tsx</div>
 <pre class="language-tsx" data-line="6,7,10"><code v-pre class="language-tsx">import { useI18nextInstance } from &quot;@squide/i18next&quot;;
@@ -731,7 +731,7 @@ export function Page() {
         <span>Update the webpack configurations</span>
     </h3>
 </doc-anchor-target>
-<p>Finally, update the webpack development and build configurations to activate the <code v-pre>i18next</code> feature:</p>
+<p>Finally, update the webpack development and build configurations to activate the <code v-pre>i18next</code> feature. Enabling this feature will configure the <code v-pre>i18next</code> libraries as <a href="../add-a-shared-dependency/">shared dependencies</a>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/webpack.dev.js</div>
 <pre class="language-javascript" data-line="7-9"><code v-pre class="language-javascript">// @ts-check
@@ -781,73 +781,114 @@ export default defineBuildRemoteModuleConfig(swcConfig, &quot;remote1&quot;, {
         <span>Integrate a backend language setting</span>
     </h2>
 </doc-anchor-target>
-<p>For many applications, the displayed language is expected to be derived from an application specific user &quot;preferred language&quot; setting stored in a database on the backend. Therefore, the frontend remains unaware of this setting value until the user session is loaded.</p>
+<p>For many applications, the displayed language is expected to be derived from an application specific user &quot;preferred language&quot; setting stored in a remote database. Therefore, the frontend remains unaware of this setting value until the user session is loaded.</p>
 <p>Hence, the strategy to select the displayed language should be as follow:</p>
 <ol>
-<li><p>Utilize the language detected at bootstrapping for anonymous users (with the <code v-pre>detectUserLanguage</code> function).</p>
+<li><p>Use the language detected at bootstrapping for anonymous users (with the <a href="../../reference/i18next/i18nextplugin/#detect-the-user-language">detectUserLanguage</a> function).</p>
 </li>
 <li><p>Upon user authentication and session loading, if a &quot;preferred language&quot; setting is available from the session data, update the displayed language to reflect this preference.</p>
 </li>
 </ol>
-<p>To implement this strategy, use the <a href="../../reference/i18next/usechangelanguage/">useChangeLanguage</a> hook and the <a href="../../reference/routing/approuter/#load-protected-data">onLoadProtectedData</a> handler of the <a href="../../reference/routing/approuter/">AppRouter</a> component:</p>
+<p>This strategy can be implemented with the help of the <a href="../../reference/i18next/usechangelanguage/">useChangeLanguage</a> and <a href="../../reference/tanstack-query/useprotecteddataqueries/">useProtectedDataQueries</a> hooks:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="17,29,31-33,40-41"><code v-pre class="language-tsx">import { AppRouter } from &quot;@squide/firefly&quot;;
-import { useChangeLanguage, useI18nextInstance } from &quot;@squide/i18next&quot;;
-import { useCallback } from &quot;react&quot;;
-import { useTranslation } from &quot;react-i18next&quot;;
-import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
+<pre class="language-tsx" data-line="6-27,29,35"><code v-pre class="language-tsx">import { AppRouter, useProtectedDataQueries, useIsBootstrapping, useChangeLanguage } from &quot;@squide/firefly&quot;;
+import { RouterProvider, createBrowserRouter, Outlet } from &quot;react-router-dom&quot;;
+import { ApiError, isApiError, type Session } from &quot;@sample/shared&quot;;
 
-async function fetchProtectedData(changeLanguage: (language: string) =&gt; void, setIsSessionLoaded: (isLoaded: boolean) =&gt; void, signal: AbortSignal) {
-    const response = await fetch(&quot;/api/session&quot;, {
-        signal
-    });
-    
-    if (response.ok) {
-        const session = await response.json();
+function BootstrappingRoute() {
+    const [session] = useProtectedDataQueries([
+        {
+            queryKey: [&quot;/api/session&quot;],
+            queryFn: async () =&gt; {
+                const response = await fetch(&quot;/api/session&quot;);
 
-        // When the session has been retrieved, change the displayed language to match
-        // the preferred language setting.
-        changeLanguage(session.preferredLanguage);
+                if (!response.ok) {
+                    throw new ApiError(response.status, response.statusText);
+                }
 
-        setIsSessionLoaded(true);
-    }
-}
+                const data = await response.json();
 
-export function App() {
-    const [isSessionLoaded, setIsSessionLoaded] = useState(false);
+                const result: Session = {
+                    user: {
+                        name: data.username,
+                    }
+                };
 
-    const i18nextInstance = useI18nextInstance(&quot;host&quot;);
-    const { t } = useTranslation(&quot;App&quot;, { i18n: useI18nextInstance });
+                return result;
+            }
+        }
+    ], error =&gt; isApiError(error) &amp;&amp; error.status === 401);
 
     const changeLanguage = useChangeLanguage();
 
-    const handleLoadProtectedData = useCallback((signal: AbortSignal) =&gt; {
-        return fetchProtectedData(changeLanguage, setIsSessionLoaded, signal);
-    }, [changeLanguage]);
+    useEffect(() =&gt; {
+        if (session) {
+            // When the session has been retrieved, update the language to match the user
+            // preferred language.
+            changeLanguage(session.user.preferredLanguage);
+        }
+    }, [session, changeLanguage]);
 
+    if (useIsBootstrapping()) {
+        return &lt;div&gt;Loading...&lt;/div&gt;;
+    }
+
+    return &lt;Outlet /&gt;;
+}
+
+export function App() {
     return (
-        &lt;AppRouter
-            fallbackElement={&lt;div&gt;{t(&quot;loadingMessage&quot;)}&lt;/div&gt;}
-            errorElement={&lt;div&gt;{t(&quot;errorMessage&quot;)}&lt;/div&gt;}
-            waitForMsw={false}
-            onLoadProtectedData={handleLoadProtectedData}
-            isProtectedDataLoaded={isSessionLoaded}
+        &lt;AppRouter 
+            waitForMsw
+            waitForProtectedData
         &gt;
-            {(routes, providerProps) =&gt; (
-                &lt;RouterProvider router={createBrowserRouter(routes)} {...providerProps} /&gt;
-            )}
+            {({ rootRoute, registeredRoutes, routerProviderProps }) =&gt; {
+                return (
+                    &lt;RouterProvider
+                        router={createBrowserRouter([
+                            {
+                                element: rootRoute,
+                                children: [
+                                    {
+                                        element: &lt;BootstrappingRoute /&gt;,
+                                        children: registeredRoutes
+                                    }
+                                ]
+                            }
+                        ])}
+                        {...routerProviderProps}
+                    /&gt;
+                );
+            }}
         &lt;/AppRouter&gt;
     );
 }</code></pre>
 </doc-codeblock></div>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>The previous code sample assumes that your <code v-pre>@sample/shared</code> project includes the primitives created in the <a href="../add-authentication/">Add authentication</a> guide as well as the session Mock Server Worker request handlers.</p>
+        </div>
+    </div>
+</div>
 <doc-anchor-target id="use-the-trans-component">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#use-the-trans-component">#</doc-anchor-trigger>
         <span>Use the Trans component</span>
     </h2>
 </doc-anchor-target>
-<p>The <a href="https://react.i18next.com/latest/trans-component" class="outbound" target="_blank">Trans</a> component is valuable for scenarios that involve interpolation to render a localized resource. To use the <code v-pre>Trans</code> component with Squide, pair the component with an <code v-pre>i18next</code> instance retrieved from <a href="../../reference/i18next/usei18nextinstance/">useI18nextInstance</a> hook:</p>
+<p>The <a href="https://react.i18next.com/latest/trans-component" class="outbound" target="_blank">Trans</a> component is useful for scenarios involving interpolation to render a localized resources. To use the <code v-pre>Trans</code> component with Squide, pair it with an <code v-pre>i18next</code> instance retrieved from <a href="../../reference/i18next/usei18nextinstance/">useI18nextInstance</a> hook:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-tsx" data-line="5,9,11"><code v-pre class="language-tsx">import { useI18nextInstance } from &quot;@squide/i18next&quot;;
 import { Trans, useTranslation } from &quot;react-i18next&quot;;
@@ -894,7 +935,7 @@ return (
 <ul>
 <li>Open the <a href="https://developer.chrome.com/docs/devtools/" class="outbound" target="_blank">DevTools</a> console. You&#x27;ll find a log entry for each <code v-pre>i18next</code> instance that is being registered and another log everytime the language is changed:
 <ul>
-<li><code v-pre>[squide] Registered a new i18next instance with key &quot;remote-module&quot;: ...</code></li>
+<li><code v-pre>[squide] Registered a new i18next instance with key &quot;remote-module&quot;.</code></li>
 <li><code v-pre>[squide] The language has been changed to &quot;fr-CA&quot;.</code></li>
 </ul>
 </li>

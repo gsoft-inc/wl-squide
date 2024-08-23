@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774628731664">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.777755952640">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.774628731664" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.777755952640" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.774628731664" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.777755952640" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -317,11 +317,11 @@
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>Before going forward with this guide, make sure that you completed the <a href="../setup-msw/">Setup Mock Service Worker</a> and <a href="../fetch-initial-data/">Fetch initial data</a> guides.</p>
+<p>Before going forward with this guide, make sure that you completed the <a href="../setup-msw/">Setup Mock Service Worker</a> and <a href="../fetch-global-data/">Fetch global data</a> guides.</p>
         </div>
     </div>
 </div>
-<p>To continuously deliver value to our customers, Workleap has adopted a feature flags system that allows to activate or deactivate functionalities without requiring code deployment. While &quot;in-page&quot; feature flags are straightforward to implement for a Squide application, feature flags that conditionally register pages or navigation items requires a more advanced <a href="../../reference/registration/registerremotemodules/#defer-the-registration-of-routes-or-navigation-items">deferred registration</a> mechanism.</p>
+<p>To continuously deliver value to our customers, Workleap has adopted a feature flag system that enables functionalities to be activated or deactivated without requiring a code deployment. While implementing &quot;in-page&quot; feature flags in a Squide application is straightforward, feature flags that conditionally register navigation items require a more advanced <a href="../../reference/registration/registerlocalmodules/#defer-the-registration-of-navigation-items">deferred registration</a> mechanism.</p>
 <doc-anchor-target id="add-an-endpoint">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#add-an-endpoint">#</doc-anchor-trigger>
@@ -330,7 +330,7 @@
 </doc-anchor-target>
 <p>First, define a MSW request handler that returns the feature flags:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">mocks/handlers.ts</div>
+<div class="codeblock-title">host/mocks/handlers.ts</div>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { HttpResponse, http, type HttpHandler } from &quot;msw&quot;;
 
 export const requestHandlers: HttpHandler[] = [
@@ -342,23 +342,12 @@ export const requestHandlers: HttpHandler[] = [
     })
 ];</code></pre>
 </doc-codeblock></div>
-<p>Then, register the request handler using the module registration function:</p>
+<p>Finally, register the request handler using the module registration function:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">src/register.tsx</div>
-<pre class="language-tsx" data-line="18,20"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
-import { Page } from &quot;./Page.tsx&quot;;
+<div class="codeblock-title">host/src/register.tsx</div>
+<pre class="language-tsx"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 
 export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = async runtime =&gt; {
-    runtime.registerRoute({
-        path: &quot;/page&quot;,
-        element: &lt;Page /&gt;
-    });
-
-    runtime.registerNavigationItem({
-        $label: &quot;Page&quot;,
-        to: &quot;/page&quot;
-    });
-
     if (runtime.isMswEnabled) {
         // Files that includes an import to the &quot;msw&quot; package are included dynamically to prevent adding
         // unused MSW stuff to the application bundles.
@@ -374,7 +363,7 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = async runt
         <span>Create a shared context</span>
     </h3>
 </doc-anchor-target>
-<p>Then, in a shared project, create a <code v-pre>FeatureFlagsContext</code>:</p>
+<p>Now, in a shared project, create a <code v-pre>FeatureFlagsContext</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">shared/src/featureFlagsContext.ts</div>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { createContext, useContext } from &quot;react&quot;;
@@ -413,50 +402,67 @@ export function useFeatureFlags() {
         <span>Fetch the feature flags</span>
     </h2>
 </doc-anchor-target>
-<p>Finally, open the host application code and update the <code v-pre>App</code> component to utilize the <code v-pre>AppRouter</code> component&#x27;s <code v-pre>onLoadPublicData</code> handler to fetch the feature flags data:</p>
+<p>Finally, open the host application code and update the <code v-pre>App</code> component to fetch the feature flags data with the <a href="../../reference/tanstack-query/usepublicdataqueries/">usePublicDataQueries</a> hook:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="24-26,29,31-32"><code v-pre class="language-tsx">import { useState, useCallback } from &quot;react&quot;;
-import { AppRouter } from &quot;@squide/firefly&quot;;
+<pre class="language-tsx" data-line="6-21,28"><code v-pre class="language-tsx">import { AppRouter, usePublicDataQueries, useIsBootstrapping } from &quot;@squide/firefly&quot;;
+import { RouterProvider, createBrowserRouter, Outlet } from &quot;react-router-dom&quot;;
 import { FeatureFlagsContext, type FeatureFlags } from &quot;@sample/shared&quot;;
-import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
 
-async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) =&gt; void, signal: AbortSignal) {
-    const response = await fetch(&quot;/api/feature-flags&quot;, {
-        signal
-    });
+function BootstrappingRoute() {
+    const [featureFlags] = usePublicDataQueries([
+        {
+            queryKey: [&quot;/api/feature-flags&quot;],
+            queryFn: async () =&gt; {
+                const response = await fetch(&quot;/api/feature-flags&quot;);
+                const data = await response.json();
 
-    const data = await response.json();
+                const flags: FeatureFlags = {
+                    featureA: data.featureA,
+                    featureB: data.featureB
+                };
 
-    const featureFlags: FeatureFlags = {
-        featureA: data.featureA,
-        featureB: data.featureB
-    };
+                return flags;
+            }
+        }
+    ]);
 
-    setFeatureFlags(featureFlags);
-}
-
-export function App() {
-    const [featureFlags, setFeatureFlags] = useState&lt;FeatureFlags&gt;();
-
-    const handleLoadPublicData = useCallback((signal: AbortSignal) =&gt; {
-        return fetchPublicData(setFeatureFlags, signal);
-    }, []);
+    if (useIsBootstrapping()) {
+        return &lt;div&gt;Loading...&lt;/div&gt;;
+    }
 
     return (
         &lt;FeatureFlagsContext.Provider value={featureFlags}&gt;
-            &lt;AppRouter
-                onLoadPublicData={handleLoadPublicData}
-                isPublicDataLoaded={!!featureFlags}
-                fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
-                errorElement={&lt;div&gt;An error occured!&lt;/div&gt;}
-                waitForMsw={true}
-            &gt;
-                {(routes, providerProps) =&gt; (
-                    &lt;RouterProvider router={createBrowserRouter(routes)} {...providerProps} /&gt;
-                )}
-            &lt;/AppRouter&gt;
-        &lt;FeatureFlagsContext.Provider /&gt;
+            &lt;Outlet /&gt;
+        &lt;/FeatureFlagsContext.Provider&gt;
+    );
+}
+
+export function App() {
+    return (
+        &lt;AppRouter
+            waitForMsw
+            waitForPublicData
+        &gt;
+            {({ rootRoute, registeredRoutes, routerProviderProps }) =&gt; {
+                return (
+                    &lt;RouterProvider
+                        router={createBrowserRouter([
+                            {
+                                element: rootRoute,
+                                children: [
+                                    {
+                                        element: &lt;BootstrappingRoute /&gt;,
+                                        children: registeredRoutes
+                                    }
+                                ]
+                            }
+                        ])}
+                        {...routerProviderProps}
+                    /&gt;
+                );
+            }}
+        &lt;/AppRouter&gt;
     );
 }</code></pre>
 </doc-codeblock></div>
@@ -466,9 +472,9 @@ export function App() {
         <span>Conditionally render a page section</span>
     </h2>
 </doc-anchor-target>
-<p>Now, let&#x27;s use the <code v-pre>featureA</code> flag from <code v-pre>FeatureFlagsContext</code> to conditionally render a section of the <code v-pre>Page</code> component:</p>
+<p>Now, let&#x27;s use the <code v-pre>featureA</code> flag from <code v-pre>FeatureFlagsContext</code> to conditionally render a section of a new <code v-pre>Page</code> component. In this example, a section of the <code v-pre>Page</code> component will only be rendered if <code v-pre>featureA</code> is activated:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">src/Page.tsx</div>
+<div class="codeblock-title">remote/src/Page.tsx</div>
 <pre class="language-tsx"><code v-pre class="language-tsx">import { useFeatureFlags } from &quot;@sample/shared&quot;;
 
 export function Page() {
@@ -482,23 +488,59 @@ export function Page() {
     );
 }</code></pre>
 </doc-codeblock></div>
-<p>In the previous code sample, the section of the <code v-pre>Page</code> component will only be rendered if <code v-pre>featureA</code> is activated.</p>
-<doc-anchor-target id="conditionally-register-a-route">
+<p>Then, register the <code v-pre>Page</code> component using the module registration function:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">remote/src/register.tsx</div>
+<pre class="language-tsx"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
+import { Page } from &quot;./Page.tsx&quot;;
+
+export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&gt; {
+    runtime.registerRoute({
+        path: &quot;/page&quot;,
+        element: &lt;Page /&gt;
+    });
+
+    runtime.registerNavigationItem({
+        $key: &quot;page&quot;,
+        $label: &quot;Page&quot;,
+        to: &quot;/page&quot;
+    });
+}</code></pre>
+</doc-codeblock></div>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>If you&#x27;ve already registered a <code v-pre>Page</code> component in a previous guide, use a different name for this component.</p>
+        </div>
+    </div>
+</div>
+<doc-anchor-target id="conditionally-register-a-navigation-item">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#conditionally-register-a-route">#</doc-anchor-trigger>
-        <span>Conditionally register a route</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#conditionally-register-a-navigation-item">#</doc-anchor-trigger>
+        <span>Conditionally register a navigation item</span>
     </h2>
 </doc-anchor-target>
-<p>Now, conditionally registering a route and it&#x27;s navigation items based on a feature flag is more complex since the default registration mechanism is executed before the application has bootstrapped, meaning that the feature flags has not been fetched yet from the server.</p>
-<p>To address this, Squide offers an alternate <a href="../../reference/registration/registerremotemodules/#defer-the-registration-of-routes-or-navigation-items">deferred registration</a> mechanism in two-phases:</p>
+<p>Conditionally registering navigation items based on a feature flag is more complex because Squide&#x27;s default registration mechanism runs before the application has bootstrapped, meaning that the feature flags have not yet been fetched from the server.</p>
+<p>To address this, Squide offers an alternate <a href="../../reference/registration/registerlocalmodules/#defer-the-registration-of-navigation-items">deferred registration</a> mechanism in two-phases:</p>
 <ol>
-<li><p>The first phase allows modules to register their routes and navigation items that are not dependent on initial data.</p>
+<li><p>The first phase allows modules to register their <em>static</em> navigation items that are not dependent on initial data.</p>
 </li>
-<li><p>The second phase enables modules to register routes and navigation items that are dependent on initial data. We refer to this second phase as <strong>deferred registrations</strong>.</p>
+<li><p>The second phase enables modules to register <em>deferred</em> navigation items that are dependent on initial data. We refer to this second phase as <strong>deferred registrations</strong>.</p>
 </li>
 </ol>
-<p>To defer a registration to the second phase, a module registration function can <strong>return an anonymous function</strong>. Once the modules are registered and the <a href="../../reference/registration/completeremotemoduleregistrations/">completeLocalModuleRegistrations</a> function is called, the deferred registration functions will be executed.</p>
-<p>First, let&#x27;s update the module registration function to return an anonymous function that will receive the feature flags:</p>
+<p>To defer a registration to the second phase, a module&#x27;s registration function can <strong>return an anonymous function</strong> matching the <code v-pre>DeferredRegistrationFunction</code> type: <code v-pre>(data, operation: &quot;register&quot; | &quot;update&quot;) =&gt; Promise | void</code>.</p>
+<p>Once the modules are registered and the <a href="../../reference/registration/usedeferredregistrations/">useDeferredRegistrations</a> hook is rendered, the deferred registration functions will be executed with either <code v-pre>&quot;register&quot;</code> or <code v-pre>&quot;update&quot;</code> as the value for the <code v-pre>operation</code> argument, depending on whether this is the initial or subsequent execution of the functions.</p>
+<p>First, let&#x27;s define a <code v-pre>DeferredRegistrationData</code> interface to a shared project, specifiying the initial data that module&#x27;s deferred registration functions can expect:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">shared/src/deferredData.ts</div>
 <pre class="language-typescript"><code v-pre class="language-typescript">import { FeatureFlags } from &quot;./featureFlagsContext.ts&quot;;
@@ -507,31 +549,25 @@ export interface DeferredRegistrationData {
     featureFlags?: FeatureFlags;
 }</code></pre>
 </doc-codeblock></div>
+<p>Then, add <code v-pre>DeferredRegistrationData</code> to the <code v-pre>ModuleRegisterFunction</code> type definition and update the module <code v-pre>register</code> function to defer the registration of the <code v-pre>Page</code> component navigation item:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">src/register.tsx</div>
-<pre class="language-tsx" data-line="15-28"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
+<pre class="language-tsx" data-line="5,12-21"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import type { DeferredRegistrationData } from &quot;@sample/shared&quot;;
 import { Page } from &quot;./Page.tsx&quot;;
 
-export const register: ModuleRegisterFunction&lt;FireflyRuntime, unknown, DeferredRegistrationData&gt; = async runtime =&gt; {
-    if (runtime.isMswEnabled) {
-        // Files that includes an import to the &quot;msw&quot; package are included dynamically to prevent adding
-        // unused MSW stuff to the application bundles.
-        const requestHandlers = (await import(&quot;../mocks/handlers.ts&quot;)).requestHandlers;
-
-        runtime.registerRequestHandlers(requestHandlers);
-    }
+export const register: ModuleRegisterFunction&lt;FireflyRuntime, unknown, DeferredRegistrationData&gt; = runtime =&gt; {
+    runtime.registerRoute({
+        path: &quot;/page&quot;,
+        element: &lt;Page /&gt;
+    });
 
     // Return a deferred registration function.
-    return ({ featureFlags } = {}) =&gt; {
-        // Only register the &quot;Page&quot; route and navigation items if &quot;featureB&quot; is activated.
+    return ({ featureFlags }) =&gt; {
+        // Only register the &quot;Page&quot; navigation items if &quot;featureB&quot; is activated.
         if (featureFlags?.featureB) {
-            runtime.registerRoute({
-                path: &quot;/page&quot;,
-                element: &lt;Page /&gt;
-            });
-
             runtime.registerNavigationItem({
+                $key: &quot;page&quot;,
                 $label: &quot;Page&quot;,
                 to: &quot;/page&quot;
             });
@@ -539,67 +575,104 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime, unknown, Deferr
     };
 }</code></pre>
 </doc-codeblock></div>
-<p>Finally, open the host application code again and update the <code v-pre>App</code> component to utilize the <code v-pre>AppRouter</code> component&#x27;s <code v-pre>onCompleteRegistrations</code> handler to <a href="../../reference/registration/completeremotemoduleregistrations/">complete the module registrations</a> with the feature flags:</p>
+<p>Finally, update the host application&#x27;s <code v-pre>App</code> component to use the <a href="../../reference/registration/usedeferredregistrations/">useDeferredRegistrations</a> hook. By passing the feature flags data to <code v-pre>useDeferredRegistrations</code>, this data will be available to the module&#x27;s deferred registration functions:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
-<pre class="language-tsx" data-line="27-32,39"><code v-pre class="language-tsx">import { useState, useCallback } from &quot;react&quot;;
-import { AppRouter, useRuntime, completeModuleRegistrations } from &quot;@squide/firefly&quot;;
-import { FeatureFlagsContext, type FeatureFlags } from &quot;@sample/shared&quot;;
-import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
+<pre class="language-tsx" data-line="26-28,30"><code v-pre class="language-tsx">import { AppRouter, usePublicDataQueries, useIsBootstrapping, useDeferredRegistrations } from &quot;@squide/firefly&quot;;
+import { useMemo } from &quot;react&quot;;
+import { RouterProvider, createBrowserRouter, Outlet } from &quot;react-router-dom&quot;;
+import { FeatureFlagsContext, type FeatureFlags, type DeferredRegistrationData } from &quot;@sample/shared&quot;;
 
-async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) =&gt; void, signal: AbortSignal) {
-    const response = await fetch(&quot;/api/feature-flags&quot;);
-    const data = await response.json();
+function BootstrappingRoute() {
+    const [featureFlags] = usePublicDataQueries([
+        {
+            queryKey: [&quot;/api/feature-flags&quot;],
+            queryFn: async () =&gt; {
+                const response = await fetch(&quot;/api/feature-flags&quot;);
+                const data = await response.json();
 
-    const featureFlags: FeatureFlags = {
-        featureA: data.featureA,
-        featureB: data.featureB
-    };
+                const flags: FeatureFlags = {
+                    featureA: data.featureA,
+                    featureB: data.featureB
+                };
 
-    setFeatureFlags(featureFlags);
-}
+                return flags;
+            }
+        }
+    ]);
 
-export function App() {
-    const [featureFlags, setFeatureFlags] = useState&lt;FeatureFlags&gt;();
+    // The useMemo is super important otherwise the hook will consider that the feature flags
+    // changed everytime the hook is rendered.
+    const data: DeferredRegistrationData = useMemo(() =&gt; ({ 
+        featureFlags 
+    }), [featureFlags]);
 
-    const runtime = useRuntime();
+    useDeferredRegistrations(data);
 
-    const handleLoadPublicData = useCallback((signal: AbortSignal) =&gt; {
-        return fetchPublicData(setFeatureFlags, signal);
-    }, []);
-
-    const handleCompleteRegistrations = useCallback(() =&gt; {
-        // Provide the retrieved feature flags when completing the registration of the deferred registration.
-        return completeModuleRegistrations(runtime, {
-            featureFlags
-        });
-    }, [runtime, featureFlags]);
+    if (useIsBootstrapping()) {
+        return &lt;div&gt;Loading...&lt;/div&gt;;
+    }
 
     return (
         &lt;FeatureFlagsContext.Provider value={featureFlags}&gt;
-            &lt;AppRouter
-                onLoadPublicData={handleLoadPublicData}
-                isPublicDataLoaded={!!featureFlags}
-                onCompleteRegistrations={handleCompleteRegistrations}
-                fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
-                errorElement={&lt;div&gt;An error occured!&lt;/div&gt;}
-                waitForMsw={true}
-            &gt;
-                {(routes, providerProps) =&gt; (
-                    &lt;RouterProvider router={createBrowserRouter(routes)} {...providerProps} /&gt;
-                )}
-            &lt;/AppRouter&gt;
-        &lt;FeatureFlagsContext.Provider /&gt;
+            &lt;Outlet /&gt;
+        &lt;/FeatureFlagsContext.Provider&gt;
+    );
+}
+
+export function App() {
+    return (
+        &lt;AppRouter
+            waitForMsw
+            waitForPublicData
+        &gt;
+            {({ rootRoute, registeredRoutes, routerProviderProps }) =&gt; {
+                return (
+                    &lt;RouterProvider
+                        router={createBrowserRouter([
+                            {
+                                element: rootRoute,
+                                children: [
+                                    {
+                                        element: &lt;BootstrappingRoute /&gt;,
+                                        children: registeredRoutes
+                                    }
+                                ]
+                            }
+                        ])}
+                        {...routerProviderProps}
+                    /&gt;
+                );
+            }}
+        &lt;/AppRouter&gt;
     );
 }</code></pre>
 </doc-codeblock></div>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>A key feature of <a href="https://tanstack.com/query/latest" class="outbound" target="_blank">TanStack Query</a> is its ability to keep the frontend state synchronized with the server state. To fully leverage this, whenever the data passed to <code v-pre>useDeferredRegistrations</code> changes, all deferred registration functions are re-executed.</p>
+<p>Remember to use <a href="https://react.dev/reference/react/useMemo" class="outbound" target="_blank">useMemo</a> for your deferred registration data and to specify the <code v-pre>$key</code> option for your navigation items!</p>
+        </div>
+    </div>
+</div>
 <doc-anchor-target id="try-it">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#try-it">#</doc-anchor-trigger>
         <span>Try it <span class="docs-emoji">&#x1F680;</span></span>
     </h2>
 </doc-anchor-target>
-<p>Start the application using the <code v-pre>dev</code> and navigate to the <code v-pre>/page</code> page. The page should render with the conditonal section. Now, disable the <code v-pre>featureA</code> flag in the endpoint and refresh the page. You shouldn&#x27;t see the conditonal section anymore. Finally, disable the <code v-pre>featureB</code> flag in the endpoint and refresh the page. The page shouldn&#x27;t be available anymore.</p>
+<p>Start the application using the <code v-pre>dev</code> and navigate to the <code v-pre>/page</code> page. The page should render with the conditonal section. Now, disable the <code v-pre>featureA</code> flag in the endpoint and refresh the page. You shouldn&#x27;t see the conditonal section anymore. Finally, disable the <code v-pre>featureB</code> flag in the endpoint and refresh the page. The menu link labelled &quot;Page&quot; shouldn&#x27;t be available anymore.</p>
 <p>If you are experiencing issues with this section of the guide:</p>
 <ul>
 <li>Open the <a href="https://developer.chrome.com/docs/devtools/" class="outbound" target="_blank">DevTools</a> console. You&#x27;ll find a log entry for each registration that occurs (including MSW request handlers) and error messages if something went wrong.</li>
@@ -621,11 +694,11 @@ export function App() {
                             
                                 <nav class="flex mt-14">
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../guides/federated-tabs/">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../guides/use-federated-tabs/">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                             <span>
                                                 <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
-                                                <span class="block mt-1">Federated tabs</span>
+                                                <span class="block mt-1">Use federated tabs</span>
                                             </span>
                                         </a>
                                     </div>

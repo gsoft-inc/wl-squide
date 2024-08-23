@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774628731664">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.777755952640">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Manage shared state</title>
     <meta name="title" content="Manage shared state">
-    <meta name="description" content="Effective management of the shared state is a crucial aspect of a federated application and can become problematic if not handled carefully.">
+    <meta name="description" content="Proper management of shared state is crucial in a modular application and can become problematic if not handled carefully.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/guides/manage-shared-state/">
@@ -21,22 +21,22 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/guides/manage-shared-state/">
     <meta property="og:title" content="Manage shared state">
-    <meta property="og:description" content="Effective management of the shared state is a crucial aspect of a federated application and can become problematic if not handled carefully.">
+    <meta property="og:description" content="Proper management of shared state is crucial in a modular application and can become problematic if not handled carefully.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/guides/manage-shared-state/">
     <meta property="twitter:title" content="Manage shared state">
-    <meta property="twitter:description" content="Effective management of the shared state is a crucial aspect of a federated application and can become problematic if not handled carefully.">
+    <meta property="twitter:description" content="Proper management of shared state is crucial in a modular application and can become problematic if not handled carefully.">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.774628731664" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.777755952640" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -304,27 +304,22 @@
         <span>Manage shared state</span>
     </h1>
 </doc-anchor-target>
-<p>Effective management of the shared state is a crucial aspect of a federated application and can become problematic if not handled carefully. As a general rule, a host application and its modules should never share state.</p>
-<doc-anchor-target id="forward-the-initial-data">
+<p>Proper management of shared state is crucial in a modular application and can become problematic if not handled carefully. As a general rule, a host application and its modules should never share state.</p>
+<doc-anchor-target id="forward-the-global-data">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#forward-the-initial-data">#</doc-anchor-trigger>
-        <span>Forward the initial data</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#forward-the-global-data">#</doc-anchor-trigger>
+        <span>Forward the global data</span>
     </h2>
 </doc-anchor-target>
-<p>However, at certain points in the lifecycle of a federated application, the host will fetch initial data that should be fordwarded to the modules. Such examples include a user session and a user tenant subscription status:</p>
-<ul>
-<li><p>To forward a user session object, a built-in <a href="../../reference/runtime/runtime-class/#parameters">sessionAccessor</a> function is available.</p>
-</li>
-<li><p>To forward other types of initial data, such as a user tenant subscription, as shown in the <a href="../fetch-initial-data/#fetch-the-data-1">Fetch initial data</a> guide, the data can be forwarded to modules through a React context.</p>
-</li>
-</ul>
-<doc-anchor-target id="react-query">
+<p>However, in the lifecycle of a modular application, the host will fetch the global data that should be fordwarded to the modules. Such examples include a user session or a user tenant subscription status.</p>
+<p>As shown in the <a href="../fetch-global-data/#fetch-the-data-1">Fetch global data</a> guide, the global data can be forwarded to modules through a React context.</p>
+<doc-anchor-target id="tanstack-query">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#react-query">#</doc-anchor-trigger>
-        <span>React Query</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#tanstack-query">#</doc-anchor-trigger>
+        <span>TanStack Query</span>
     </h2>
 </doc-anchor-target>
-<p>Lastly, as detailed in the <a href="../fetch-page-data/#setup-the-query-client">fetch page data</a> guide, the React Query cache should not be shared between the host and its modules. To do so, both the host application and the modules should instantiate their own <code v-pre>QueryClient</code> instance.</p>
+<p>Lastly, as detailed in the <a href="../fetch-page-data/#setup-the-query-client">fetch page data</a> guide, the TanStack Query cache should not be shared between the host and its modules. To do so, both the host application and the modules should instantiate their own <code v-pre>QueryClient</code> instance.</p>
 
                                 
                                 <!-- Required only on API pages -->

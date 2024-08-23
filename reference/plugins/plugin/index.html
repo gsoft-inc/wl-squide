@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774628731664">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.777755952640">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.774628731664" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.777755952640" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.774628731664" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.777755952640" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -314,6 +314,24 @@
     </h1>
 </doc-anchor-target>
 <p>An abstract base class to define a plugin.</p>
+<doc-anchor-target id="protected-members">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#protected-members">#</doc-anchor-trigger>
+        <span>Protected members</span>
+    </h2>
+</doc-anchor-target>
+<ul>
+<li><code v-pre>_runtime</code>: Access the plugin <code v-pre>Runtime</code> instance.</li>
+</ul>
+<doc-anchor-target id="getters">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#getters">#</doc-anchor-trigger>
+        <span>Getters</span>
+    </h2>
+</doc-anchor-target>
+<ul>
+<li><code v-pre>name</code>: Return the name of the plugin.</li>
+</ul>
 <doc-anchor-target id="usage">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#usage">#</doc-anchor-trigger>
@@ -328,18 +346,11 @@
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">my-plugin/src/myPlugin.ts</div>
-<pre class="language-typescript" data-line="3"><code v-pre class="language-typescript">import { Plugin, type FireflyRuntime } from &quot;@squide/firefly&quot;;
+<pre class="language-typescript"><code v-pre class="language-typescript">import { Plugin, type Runtime } from &quot;@squide/firefly&quot;;
 
 export class MyPlugin extends Plugin {
-    #runtime: FireflyRuntime;
-
-    constructor() {
-        super(MyPlugin.name);
-    }
-
-    // An optional method that can be implemented to get an hold on the current runtime instance.
-    _setRuntime(runtime: FireflyRuntime) {
-        this.#runtime = runtime;
+    constructor(runtime: Runtime) {
+        super(MyPlugin.name, runtime);
     }
 }</code></pre>
 </doc-codeblock></div>
@@ -354,8 +365,28 @@ export class MyPlugin extends Plugin {
 import { MyPlugin } from &quot;@sample/my-plugin&quot;;
 
 const runtime = new FireflyRuntime({
-    plugins: [new MyPlugin()]
+    plugins: [x =&gt; new MyPlugin(x)]
 });</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="use-a-plugin-runtime-instance">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#use-a-plugin-runtime-instance">#</doc-anchor-trigger>
+        <span>Use a plugin runtime instance</span>
+    </h3>
+</doc-anchor-target>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">my-plugin/src/myPlugin.ts</div>
+<pre class="language-typescript" data-line="9"><code v-pre class="language-typescript">import { Plugin, type Runtime } from &quot;@squide/firefly&quot;;
+
+export class MyPlugin extends Plugin {
+    constructor(runtime: Runtime) {
+        super(MyPlugin.name, runtime);
+    }
+
+    sayHello() {
+        this._runtime.logger.debug(&quot;Hello!&quot;);
+    }
+}</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="retrieve-a-plugin-from-a-runtime-instance">
     <h3>
@@ -377,11 +408,11 @@ const myPlugin = runtime.getPlugin(MyPlugin.name) as MyPlugin;</code></pre>
 <p>We recommend pairing a plugin definition with a custom function to retrieve the plugin from a runtime instance.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">my-plugin/src/myPlugin.ts</div>
-<pre class="language-typescript" data-line="9-11"><code v-pre class="language-typescript">import { Plugin, type FireflyRuntime } from &quot;@squide/firefly&quot;;
+<pre class="language-typescript" data-line="9-11"><code v-pre class="language-typescript">import { Plugin, type Runtime } from &quot;@squide/firefly&quot;;
 
-export class MyPlugin extends FireflyRuntime {
-    constructor() {
-        super(MyPlugin.name);
+export class MyPlugin extends Plugin {
+    constructor(runtime: Runtime) {
+        super(MyPlugin.name, runtime);
     }
 }
 
@@ -410,11 +441,11 @@ const myPlugin = getMyPlugin(runtime);</code></pre>
                             
                                 <nav class="flex mt-14">
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../reference/session/useisauthenticated/">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../reference/messaging/useeventbuslistener/">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                             <span>
                                                 <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
-                                                <span class="block mt-1">use​Is​Authenticated</span>
+                                                <span class="block mt-1">use​Event​Bus​Listener</span>
                                             </span>
                                         </a>
                                     </div>

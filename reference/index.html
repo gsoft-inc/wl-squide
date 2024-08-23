@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774628731664">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.777755952640">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,11 +32,11 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../static/favicon.png" rel="icon">
-    <link href="../resources/css/retype.css?v=3.5.0.774628731664" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=3.5.0.777755952640" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -309,14 +309,13 @@
 </doc-anchor-target>
 <ul>
 <li><a href="runtime/runtime-class/">FireflyRuntime class</a></li>
-<li><a href="runtime/runtime-context/">RuntimeContext</a></li>
+<li><a href="runtime/runtimecontext/">RuntimeContext</a></li>
 <li><a href="runtime/useruntime/">useRuntime</a></li>
 <li><a href="runtime/useruntimemode/">useRuntimeMode</a></li>
 <li><a href="runtime/useroutes/">useRoutes</a></li>
 <li><a href="runtime/usenavigationitems/">useNavigationItems</a></li>
 <li><a href="runtime/uselogger/">useLogger</a></li>
 <li><a href="runtime/useplugin/">usePlugin</a></li>
-<li><a href="runtime/usesession/">useSession</a></li>
 </ul>
 <doc-anchor-target id="registration">
     <h3>
@@ -327,11 +326,8 @@
 <ul>
 <li><a href="registration/registerlocalmodules/">registerLocalModules</a></li>
 <li><a href="registration/registerremotemodules/">registerRemoteModules</a></li>
-<li><a href="registration/completemoduleregistrations/">completeModuleRegistrations</a></li>
-<li><a href="registration/completelocalmoduleregistrations/">completeLocalModuleRegistrations</a></li>
-<li><a href="registration/completeremotemoduleregistrations/">completeRemoteModuleRegistrations</a></li>
-<li><a href="registration/usearemodulesregistered/">useAreModulesRegistered</a></li>
-<li><a href="registration/usearemodulesready/">useAreModulesReady</a></li>
+<li><a href="registration/usedeferredregistrations/">useDeferredRegistrations</a></li>
+<li><a href="registration/mergedeferredregistrations/">mergeDeferredRegistrations</a></li>
 </ul>
 <doc-anchor-target id="routing">
     <h3>
@@ -343,6 +339,7 @@
 <li><a href="routing/approuter/">AppRouter</a></li>
 <li><a href="routing/managedroutes/">ManagedRoutes</a></li>
 <li><a href="routing/userenderednavigationitems/">useRenderedNavigationItems</a></li>
+<li><a href="routing/useisbootstrapping/">useIsBoostrapping</a></li>
 <li><a href="routing/useroutematch/">useRouteMatch</a></li>
 <li><a href="routing/useisrouteprotected/">useIsRouteProtected</a></li>
 <li><a href="routing/resolveroutesegments/">resolveRouteSegments</a></li>
@@ -369,15 +366,6 @@
 <li><a href="messaging/useeventbusdispatcher/">useEventBusDispatcher</a></li>
 <li><a href="messaging/useeventbuslistener/">useEventBusListener</a></li>
 </ul>
-<doc-anchor-target id="session">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#session">#</doc-anchor-trigger>
-        <span>Session</span>
-    </h3>
-</doc-anchor-target>
-<ul>
-<li><a href="session/useisauthenticated/">useIsAuthenticated</a></li>
-</ul>
 <doc-anchor-target id="plugins">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#plugins">#</doc-anchor-trigger>
@@ -399,6 +387,17 @@
 <li><a href="webpack/definebuildhostconfig/">defineBuildHostConfig</a></li>
 <li><a href="webpack/definebuildremotemoduleconfig/">defineBuildRemoteModuleConfig</a></li>
 </ul>
+<doc-anchor-target id="tanstack-query">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#tanstack-query">#</doc-anchor-trigger>
+        <span>TanStack Query</span>
+    </h3>
+</doc-anchor-target>
+<ul>
+<li><a href="tanstack-query/usepublicdataqueries/">usePublicDataQueries</a></li>
+<li><a href="tanstack-query/useprotecteddataqueries/">useProtectedDataQueries</a></li>
+<li><a href="tanstack-query/isglobaldataquerieserror/">isGlobalDataQueriesError</a></li>
+</ul>
 <doc-anchor-target id="mock-service-worker">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#mock-service-worker">#</doc-anchor-trigger>
@@ -406,8 +405,7 @@
     </h3>
 </doc-anchor-target>
 <ul>
-<li><a href="msw/useismswready/">useIsMswReady</a></li>
-<li><a href="msw/setmswasstarted/">setMswAsStarted</a></li>
+<li><a href="msw/setmswasready/">setMswAsReady</a></li>
 </ul>
 <doc-anchor-target id="i18next">
     <h3>
@@ -449,11 +447,11 @@
                             
                                 <nav class="flex mt-14">
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../guides/migrate-from-a-monolith/">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../guides/migrate-to-firefly-v9/">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                             <span>
                                                 <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
-                                                <span class="block mt-1">Migrate from a monolith</span>
+                                                <span class="block mt-1">Migrate to firefly v​9</span>
                                             </span>
                                         </a>
                                     </div>

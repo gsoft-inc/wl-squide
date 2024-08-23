@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774628731664">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.777755952640">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Deploy</title>
     <meta name="title" content="Deploy">
-    <meta name="description" content="The deployment process for a federated application can vary depending on various factors, including the chosen hosting provider.">
+    <meta name="description" content="The deployment process for a modular application can vary depending on various factors, including the chosen hosting provider.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/getting-started/deploy/">
@@ -21,23 +21,23 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/getting-started/deploy/">
     <meta property="og:title" content="Deploy">
-    <meta property="og:description" content="The deployment process for a federated application can vary depending on various factors, including the chosen hosting provider.">
+    <meta property="og:description" content="The deployment process for a modular application can vary depending on various factors, including the chosen hosting provider.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/getting-started/deploy/">
     <meta property="twitter:title" content="Deploy">
-    <meta property="twitter:description" content="The deployment process for a federated application can vary depending on various factors, including the chosen hosting provider.">
+    <meta property="twitter:description" content="The deployment process for a modular application can vary depending on various factors, including the chosen hosting provider.">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.774628731664" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.777755952640" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.774628731664" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.777755952640" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -305,8 +305,8 @@
         <span>Deploy</span>
     </h1>
 </doc-anchor-target>
-<p>The deployment process for a federated application can vary depending on various factors, including the chosen hosting provider. Therefore, we do not recommend any specific deployment setup.</p>
-<p>However, there are a few essential configurations that need to be made regardless of your deployment choices.</p>
+<p>The deployment process for a modular application can vary depending on various factors, including the chosen hosting provider. Therefore, we do not recommend any specific deployment setup.</p>
+<p>However, there are a few essential configurations that need to be made regardless of your architectural and deployment choices.</p>
 <doc-anchor-target id="add-a-default-redirect">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#add-a-default-redirect">#</doc-anchor-trigger>
@@ -336,10 +336,13 @@
         <span>Set the remote URL</span>
     </h2>
 </doc-anchor-target>
-<p>Configure the remote modules production URL:</p>
+<p>If your modular applications includes <a href="../../reference/registration/registerremotemodules/">remote modules</a>, configure the remote modules production URL:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript"><code v-pre class="language-typescript">import { RemoteDefinition } from &quot;@squide/firefly-webpack-configs&quot;;
+<pre class="language-javascript"><code v-pre class="language-javascript">// @ts-check
 
+/**
+ * @typedef {import(&quot;@squide/firefly-webpack-configs&quot;).RemoteDefinition[]}
+ */
 const Remotes: RemoteDefinition[] = [
     {
         name: &quot;remote1&quot;,

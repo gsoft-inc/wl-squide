@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774628731664">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.777755952640">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.774628731664" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.777755952640" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.774628731664" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.777755952640" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -321,7 +321,7 @@
     </h2>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript"><code v-pre class="language-typescript">const navigationItems = useNavigationItems()</code></pre>
+<pre class="language-typescript"><code v-pre class="language-typescript">const navigationItems = useNavigationItems(options?: { menuId? })</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="parameters">
     <h3>
@@ -342,7 +342,33 @@
         <span>Returns</span>
     </h3>
 </doc-anchor-target>
-<p>An array of <code v-pre>NavigationItem</code>.</p>
+<p>An array of <code v-pre>NavigationLink | NavigationSection</code>.</p>
+<doc-anchor-target id="navigationlink">
+    <h4>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#navigationlink">#</doc-anchor-trigger>
+        <span><code v-pre>NavigationLink</code></span>
+    </h4>
+</doc-anchor-target>
+<p>Accept any properties of a React Router <a href="https://reactrouter.com/en/main/components/link" class="outbound" target="_blank">Link</a> component with the addition of:</p>
+<ul>
+<li><code v-pre>$key</code>: An optional key identifying the link. Usually used as the React element <a href="https://legacy.reactjs.org/docs/lists-and-keys.html#keys" class="outbound" target="_blank">key</a> property.</li>
+<li><code v-pre>$label</code>: The link label. Could either by a <code v-pre>string</code> or a <code v-pre>ReactNode</code>.</li>
+<li><code v-pre>$canRender</code>: An optional function accepting an object and returning a <code v-pre>boolean</code> indicating whether or not the link should be rendered.</li>
+<li><code v-pre>$additionalProps</code>: An optional object literal of additional props to apply to the link component.</li>
+</ul>
+<doc-anchor-target id="navigationsection">
+    <h4>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#navigationsection">#</doc-anchor-trigger>
+        <span><code v-pre>NavigationSection</code></span>
+    </h4>
+</doc-anchor-target>
+<ul>
+<li><code v-pre>$key</code>: An optional key identifying the section. Usually used as the React element <a href="https://legacy.reactjs.org/docs/lists-and-keys.html#keys" class="outbound" target="_blank">key</a> property.</li>
+<li><code v-pre>$label</code>: The section label. Could either by a <code v-pre>string</code> or a <code v-pre>ReactNode</code>.</li>
+<li><code v-pre>$canRender</code>: An optional function accepting an object and returning a <code v-pre>boolean</code> indicating whether or not the section should be rendered.</li>
+<li><code v-pre>$additionalProps</code>: An optional object literal of additional props to apply to the section component.</li>
+<li><code v-pre>children</code>: The section items.</li>
+</ul>
 <doc-anchor-target id="usage">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#usage">#</doc-anchor-trigger>

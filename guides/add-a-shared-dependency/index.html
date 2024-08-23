@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774628731664">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.777755952640">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Add a shared dependency</title>
     <meta name="title" content="Add a shared dependency">
-    <meta name="description" content="Shared dependencies represent one of the most powerful concepts of Module Federation. However, mastering its configuration can be quite challenging. ">
+    <meta name="description" content="Shared dependencies is one of the most powerful concepts of Module Federation. However, mastering its configuration can be quite challenging. ">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/guides/add-a-shared-dependency/">
@@ -21,23 +21,23 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/guides/add-a-shared-dependency/">
     <meta property="og:title" content="Add a shared dependency">
-    <meta property="og:description" content="Shared dependencies represent one of the most powerful concepts of Module Federation. However, mastering its configuration can be quite challenging. ">
+    <meta property="og:description" content="Shared dependencies is one of the most powerful concepts of Module Federation. However, mastering its configuration can be quite challenging. ">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/guides/add-a-shared-dependency/">
     <meta property="twitter:title" content="Add a shared dependency">
-    <meta property="twitter:description" content="Shared dependencies represent one of the most powerful concepts of Module Federation. However, mastering its configuration can be quite challenging. ">
+    <meta property="twitter:description" content="Shared dependencies is one of the most powerful concepts of Module Federation. However, mastering its configuration can be quite challenging. ">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.774628731664" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.777755952640" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.774628731664" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.777755952640" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -305,8 +305,8 @@
         <span>Add a shared dependency</span>
     </h1>
 </doc-anchor-target>
-<p><a href="https://module-federation.io/configure/shared.html" class="outbound" target="_blank">Shared dependencies</a> represent one of the most powerful concepts of Module Federation. However, mastering its configuration can be quite challenging. <strong>Failure</strong> to configure shared dependencies properly in a federated application using Module Federation can significantly <strong>impact</strong> both <strong>user</strong> and <strong>developer experiences</strong>.</p>
-<p>Squide aims to simplify the configuration of shared dependencies by abstracting the shared dependencies necessary for building an application with React, React Router, and optionally MSW and i18next. Nevertheless, every federated application will inevitably have to configure additional custom shared dependencies.</p>
+<p><a href="https://module-federation.io/configure/shared.html" class="outbound" target="_blank">Shared dependencies</a> is one of the most powerful concepts of Module Federation. However, mastering its configuration can be quite challenging. <strong>Failure</strong> to configure shared dependencies properly in a federated application using Module Federation can significantly <strong>impact</strong> both <strong>user</strong> and <strong>developer experiences</strong>.</p>
+<p>Squide aims to <strong>simplify</strong> the configuration of shared dependencies by abstracting the shared dependencies necessary for building an application with React, React Router, and optionally MSW and i18next. Nevertheless, every federated application will inevitably have to configure additional custom shared dependencies.</p>
 <p>For a more comprehensive documentation of the Module Federation APIs, their functionality, and their benefits, please refer to this <a href="https://www.infoxicator.com/en/module-federation-shared-api" class="outbound" target="_blank">article</a>.</p>
 <doc-anchor-target id="understanding-singleton-dependencies">
     <h2>
@@ -314,7 +314,7 @@
         <span>Understanding singleton dependencies</span>
     </h2>
 </doc-anchor-target>
-<p>A <a href="https://module-federation.io/configure/shared.html#singleton" class="outbound" target="_blank">singleton</a> shared dependency does exactly what its name suggests: it loads only a single instance of a dependency. This means that a dependency will be included in just one bundle file of the federated application.</p>
+<p>A <a href="https://module-federation.io/configure/shared.html#singleton" class="outbound" target="_blank">singleton</a> shared dependency does exactly what its name suggests: it loads a single instance of a dependency. This means that a dependency will be included in just one bundle file of the federated application.</p>
 <doc-anchor-target id="strict-versioning">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#strict-versioning">#</doc-anchor-trigger>

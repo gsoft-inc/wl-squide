@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774628731664">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.777755952640">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Override the host layout</title>
     <meta name="title" content="Override the host layout">
-    <meta name="description" content="The RootLayout component that as been defined in the create an host application starting guide serves as the default layout for the homepage as well...">
+    <meta name="description" content="The RootLayout component defined in the Create an host application starting guide serves as the default layout for the homepage and all the ">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/guides/override-the-host-layout/">
@@ -21,23 +21,23 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/guides/override-the-host-layout/">
     <meta property="og:title" content="Override the host layout">
-    <meta property="og:description" content="The RootLayout component that as been defined in the create an host application starting guide serves as the default layout for the homepage as well...">
+    <meta property="og:description" content="The RootLayout component defined in the Create an host application starting guide serves as the default layout for the homepage and all the ">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/guides/override-the-host-layout/">
     <meta property="twitter:title" content="Override the host layout">
-    <meta property="twitter:description" content="The RootLayout component that as been defined in the create an host application starting guide serves as the default layout for the homepage as well...">
+    <meta property="twitter:description" content="The RootLayout component defined in the Create an host application starting guide serves as the default layout for the homepage and all the ">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.774628731664" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.777755952640" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.774628731664" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.777755952640" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -305,9 +305,9 @@
         <span>Override the host layout</span>
     </h1>
 </doc-anchor-target>
-<p>The <code v-pre>RootLayout</code> component that as been defined in the <a href="../../getting-started/create-host/#navigation-items">create an host application</a> starting guide serves as the default layout for the homepage as well as for every page registered by a module that are not nested under a parent route with either the <a href="../../reference/runtime/runtime-class/#register-nested-routes-under-an-existing-route">parentPath</a> or the <a href="../../reference/runtime/runtime-class/#register-a-named-route">parentName</a> option.</p>
-<p>For most pages, this is the behavior expected by the author. However, for pages such as a login, the default <code v-pre>RootLayout</code> isn&#x27;t suitable because the page is not bound to a user session (the user is not even authenticated yet).</p>
-<p>To accomodate pages that require a different layout, a mechanism is needed to move their route declaration at the root of the React Router <a href="https://reactrouter.com/en/main/routers/create-browser-router" class="outbound" target="_blank">instance</a> before the <code v-pre>RootLayout</code> is declared.</p>
+<p>The <code v-pre>RootLayout</code> component defined in the <a href="../../getting-started/create-host/#navigation-items">Create an host application</a> starting guide serves as the default layout for the homepage and all the <a href="../../reference/routing/managedroutes/">managed routes</a>.</p>
+<p>For most routes, this behavior is what the author expects. However, as an application introduces <a href="../add-authentication/">authentication</a> and adds many session-related features to the default layout, this default layout may no longer be suitable for every route. For example, a login page doesn&#x27;t require session-related features, as the user isn&#x27;t authenticated yet. In such cases, the default layout isn&#x27;t appropriate.</p>
+<p>To accomodate pages requiring a different layout, a mechanism is needed to move their route declaration to the root of the React Router <a href="https://reactrouter.com/en/main/routers/create-browser-router" class="outbound" target="_blank">instance</a> before <code v-pre>RootLayout</code> is declared.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-none" data-line="2"><code v-pre class="language-none">root
 ├── Login page   &lt;---------------- Raise the page here
@@ -315,21 +315,21 @@
 ├──────── Root layout
 ├───────────  Homepage</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="hoist-a-module-pages">
+<doc-anchor-target id="hoist-a-module-routes">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#hoist-a-module-pages">#</doc-anchor-trigger>
-        <span>Hoist a module pages</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#hoist-a-module-routes">#</doc-anchor-trigger>
+        <span>Hoist a module routes</span>
     </h2>
 </doc-anchor-target>
 <p>Package managers supporting workspaces such as Yarn and NPM call this mechanism &quot;hoisting&quot;, which means &quot;raise (something) by means of ropes and pulleys&quot;. This is exactly what we are trying to achieve here.</p>
-<p>Squide has a built-in <a href="../../reference/runtime/runtime-class/#register-an-hoisted-route">hoist</a> functionality capable of raising module routes marked as <code v-pre>hoist</code> at the root of the routes array, before the <code v-pre>RootLayout</code> declaration. Thus, an hoisted page will not be wrapped by the <code v-pre>RootLayout</code> (or the <code v-pre>AuthenticationBoundary</code>) and will have full control over its rendering.</p>
-<p>To hoist module pages, add the <a href="../../reference/runtime/runtime-class/#register-an-hoisted-route">hoist</a> option to the route registration options and optionally use a different layout:</p>
+<p>Squide has a built-in <a href="../../reference/runtime/runtime-class/#register-an-hoisted-route">hoist</a> functionality capable of raising module routes marked as <code v-pre>hoist</code> at the root of the routes array, before the <code v-pre>RootLayout</code> declaration. Thus, an hoisted route will not be wrapped by the <code v-pre>RootLayout</code> component (or any authentication boundaries) and will have full control over its rendering.</p>
+<p>To hoist module routes, add the <a href="../../reference/runtime/runtime-class/#register-an-hoisted-route">hoist</a> option to the route registration options and optionally use a different layout:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/src/register.tsx</div>
 <pre class="language-tsx" data-line="9,14,24"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import { LocalLayout } from &quot;./LocalLayout.tsx&quot;;
 import { LocalErrorBoundary } from &quot;./LocalErrorBoundary.tsx&quot;;
-import { LoginPage } from &quot;./LoginPage.tsx&quot;;
+import { Page } from &quot;./Page.tsx&quot;;
 
 export function register: ModuleRegisterFunction&lt;FireflyRuntime&gt;(runtime) {
     runtime.registerRoute({
@@ -337,13 +337,13 @@ export function register: ModuleRegisterFunction&lt;FireflyRuntime&gt;(runtime) 
         element: &lt;LocalLayout /&gt;,
         children: [
             {
-                // Custom error boundary ensuring errors from the login page doesn't prevent the other
+                // Custom error boundary ensuring errors from the route doesn't prevent the other
                 // modules of the application from rendering.
                 errorElement: &lt;LocalErrorBoundary /&gt;,
                 children: [
                     {
                         index: true,
-                        element: &lt;LoginPage /&gt;
+                        element: &lt;Page /&gt;
                     }
                 ]
             }
@@ -365,7 +365,7 @@ export function register: ModuleRegisterFunction&lt;FireflyRuntime&gt;(runtime) 
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>By declaring a page as hoisted, other parts of the application will not be isolated anymore from this page&#x27;s failures as the page will be rendered outside of the host application&#x27;s root error boundary. To <strong>avoid breaking the entire application</strong> when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router&#x27;s <a href="https://reactrouter.com/en/main/route/error-element" class="outbound" target="_blank">errorElement</a> property for each hoisted page.</p>
+<p>By declaring a route as hoisted, other parts of the application will not be isolated anymore from this route&#x27;s failures as the route will most likely be rendered outside of the host application&#x27;s root error boundary. To <strong>avoid breaking the entire application</strong> when an hoisted route encounters unhandled errors, it is highly recommended to declare a React Router&#x27;s <a href="https://reactrouter.com/en/main/route/error-element" class="outbound" target="_blank">errorElement</a> property for each hoisted routes.</p>
         </div>
     </div>
 </div>
@@ -381,7 +381,7 @@ export function register: ModuleRegisterFunction&lt;FireflyRuntime&gt;(runtime) 
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>By declaring a page as hoisted, the page will be rendered at the root of the router, therefore, most certainly outside the authenticated boundary of the application. If the hoisted page requires an authentication, make sure to <strong>wrap the page with an authentication boundary</strong> or to handle the authentication within the page.</p>
+<p>By declaring a route as hoisted, the route will be rendered at the root of the router, therefore, most certainly outside the authenticated boundary of the application. If the hoisted route requires an authentication, make sure to <strong>wrap the route with an authentication boundary</strong> or to handle the authentication within the route&#x27;s page.</p>
         </div>
     </div>
 </div>
@@ -419,20 +419,20 @@ export function register: ModuleRegisterFunction&lt;FireflyRuntime&gt;(runtime) 
                             
                                 <nav class="flex mt-14">
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../guides/add-a-public-page/">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../guides/add-a-public-route/">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                             <span>
                                                 <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
-                                                <span class="block mt-1">Add a public page</span>
+                                                <span class="block mt-1">Add a public route</span>
                                             </span>
                                         </a>
                                     </div>
                             
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../guides/federated-tabs/">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../guides/use-federated-tabs/">
                                             <span>
                                                 <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                                                <span class="block mt-1">Federated tabs</span>
+                                                <span class="block mt-1">Use federated tabs</span>
                                             </span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                         </a>

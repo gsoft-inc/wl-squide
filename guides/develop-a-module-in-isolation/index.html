@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774628731664">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.777755952640">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Develop a module in isolation</title>
     <meta name="title" content="Develop a module in isolation">
-    <meta name="description" content="To develop their own independent module, a team shouldn't be required to install the host application">
+    <meta name="description" content="To develop their own independent module, a team should not need to install the host application or any ">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/guides/develop-a-module-in-isolation/">
@@ -21,23 +21,23 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/guides/develop-a-module-in-isolation/">
     <meta property="og:title" content="Develop a module in isolation">
-    <meta property="og:description" content="To develop their own independent module, a team shouldn't be required to install the host application">
+    <meta property="og:description" content="To develop their own independent module, a team should not need to install the host application or any ">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/guides/develop-a-module-in-isolation/">
     <meta property="twitter:title" content="Develop a module in isolation">
-    <meta property="twitter:description" content="To develop their own independent module, a team shouldn't be required to install the host application">
+    <meta property="twitter:description" content="To develop their own independent module, a team should not need to install the host application or any ">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.774628731664" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.777755952640" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.774628731664" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.774628731664" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.777755952640" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.777755952640" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -305,8 +305,8 @@
         <span>Develop a module in isolation</span>
     </h1>
 </doc-anchor-target>
-<p>To develop their own independent module, a team <strong>shouldn&#x27;t be required to install the host application</strong> or any <strong>other modules</strong> of the application <strong>that they do not own</strong>. However, they should have a means to integrate their module with the application shell (<code v-pre>RootLayout</code>, <code v-pre>RootErrorBoundary</code>, etc..) while working on their module in isolation.</p>
-<p>To achieve this, the first step is to extract the application shell from the host application. There are several approaches to accomplish this, but in this guide, we&#x27;ll transform the host application into a monorepo and introduce a new local package named <code v-pre>@sample/shell</code> for this purpose:</p>
+<p>To develop their own independent module, a team <strong>should not need to install the host application</strong> or any <strong>other modules</strong> of the application <strong>they do not own</strong>. However, they should have a way to integrate their module with the application shell (e.g., <code v-pre>RootLayout</code>, <code v-pre>RootErrorBoundary</code>, etc..) while working in isolation.</p>
+<p>To achieve this, the first step is to extract the application shell from the host application. There are various ways to accomplish this, but in this guide, we&#x27;ll transform the host application into a monorepo and introduce a new local package named <code v-pre>@sample/shell</code> specifically for this purpose:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-none" data-line="4"><code v-pre class="language-none">host
 ├── app
@@ -328,9 +328,23 @@
         <span>Create a shell package</span>
     </h2>
 </doc-anchor-target>
-<blockquote>
-<p>The implementation details of the <code v-pre>RootLayout</code> and <code v-pre>RootErrorBoundary</code> won&#x27;t be covered by this guide as it already has been covered many times by other guides.</p>
-</blockquote>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>The implementation details of the <code v-pre>RootLayout</code> and <code v-pre>RootErrorBoundary</code> components won&#x27;t be covered by this guide as it already has been covered many times by other guides.</p>
+        </div>
+    </div>
+</div>
 <p>First, create a new package (we&#x27;ll refer to ours as <code v-pre>shell</code>) and add the following fields to the <code v-pre>package.json</code> file:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">shell/package.json</div>
@@ -348,22 +362,33 @@
 }</code></pre>
 </doc-codeblock></div>
 <p>Then, install the package dependencies and configure the new package with <a href="https://gsoft-inc.github.io/wl-web-configs/tsup/" class="outbound" target="_blank">tsup</a>.</p>
-<p>Then, create a <code v-pre>AppRouter</code> component in the shell package to provide a <strong>reusable router configuration</strong> that can be utilized by both the host application and the isolated modules. The new <code v-pre>AppRouter</code> component should be based on the <code v-pre>@squide/firefly</code> <a href="../../reference/routing/approuter/">AppRouter</a> component:</p>
+<p>Then, create an <code v-pre>AppRouter</code> component in the shell package to provide a <strong>reusable router configuration</strong> that can be shared between the host application and the isolated modules. This new <code v-pre>AppRouter</code> component should wrap the <code v-pre>@squide/firefly</code> <a href="../../reference/routing/approuter/">AppRouter</a> component:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">shell/src/AppRouter.tsx</div>
 <pre class="language-tsx"><code v-pre class="language-tsx">import { AppRouter as FireflyAppRouter } from &quot;@squide/firefly&quot;;
+import { RouterProvider, createBrowserRouter } from &quot;react-router-dom&quot;;
 
-export function AppRouter() {
+export function FireflyAppRouter() {
     return (
-        &lt;FireflyAppRouter
-            fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
-            errorElement={&lt;div&gt;An error occured!&lt;/div&gt;}
-            waitForMsw={false}
-        /&gt;
+        &lt;AppRouter waitForMsw={false}&gt;
+            {({ rootRoute, registeredRoutes, routerProviderProps }) =&gt; {
+                return (
+                    &lt;RouterProvider
+                        router={createBrowserRouter([
+                            {
+                                element: rootRoute,
+                                children: registeredRoutes
+                            }
+                        ])}
+                        {...routerProviderProps}
+                    /&gt;
+                );
+            }}
+        &lt;/AppRouter&gt;
     );
 }</code></pre>
 </doc-codeblock></div>
-<p>Finally, create a local module to register the <strong>application shell</strong> that will also be utilized by the host application and the isolated modules:</p>
+<p>Finally, create a local module to register the <strong>application shell</strong>. This module will be used by both the host application and the isolated modules:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">shell/src/register.tsx</div>
 <pre class="language-tsx"><code v-pre class="language-tsx">import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from &quot;@squide/firefly&quot;;
@@ -399,7 +424,7 @@ export const registerShell: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runti
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>This guide only covers the <code v-pre>RootLayout</code> and <code v-pre>RootErrorBoundary</code> but the same goes for other shell assets such as an <code v-pre>AuthenticationBoundary</code>.</p>
+<p>This guide only covers the <code v-pre>RootLayout</code> and <code v-pre>RootErrorBoundary</code> components but the same goes for other shell assets such as an <code v-pre>AuthenticationBoundary</code> component.</p>
         </div>
     </div>
 </div>
@@ -409,7 +434,7 @@ export const registerShell: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runti
         <span>Update the host application</span>
     </h2>
 </doc-anchor-target>
-<p>Now, let&#x27;s revisit the host application by first adding a dependency to the new <code v-pre>@sample/shell</code> package:</p>
+<p>Now, let&#x27;s revisit the host application by adding the new <code v-pre>@sample/shell</code> package as a dependency:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/package.json</div>
 <pre class="language-json"><code v-pre class="language-json">{
@@ -418,7 +443,7 @@ export const registerShell: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runti
     }
 }</code></pre>
 </doc-codeblock></div>
-<p>Then, incorporate the newly introduced <code v-pre>AppRouter</code> component:</p>
+<p>Then, integrate the <code v-pre>AppRouter</code> component from the <code v-pre>@sample/shell</code> package into the application:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/App.tsx</div>
 <pre class="language-tsx"><code v-pre class="language-tsx">import { AppRouter } from &quot;@sample/shell&quot;;
@@ -429,7 +454,7 @@ export function App() {
     );
 }</code></pre>
 </doc-codeblock></div>
-<p>And the <code v-pre>registerShell</code> function to setup the <code v-pre>RootLayout</code>, the <code v-pre>RootErrorBoundary</code> and any other shell assets:</p>
+<p>And finally include the <code v-pre>registerShell</code> function to setup the <code v-pre>RootLayout</code> and <code v-pre>RootErrorBoundary</code> components as well as any other shell assets:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
 <pre class="language-tsx" data-line="16"><code v-pre class="language-tsx">import { createRoot } from &quot;react-dom/client&quot;;
@@ -507,7 +532,7 @@ import { register as registerModule } from &quot;./register.tsx&quot;;
 import { registerDev } from &quot;./dev/register.tsx&quot;;
 import { registerShell } from &quot;@sample/shell&quot;;
 
-// Services, loggers, sessionAccessor, etc... could be reuse through a
+// Services, loggers, etc... could be reuse through a
 // shared packages or faked when in isolation.
 const runtime = new FireflyRuntime({
     loggers: [new ConsoleLogger()]
@@ -531,7 +556,7 @@ root.render(
         <span>App.tsx</span>
     </h3>
 </doc-anchor-target>
-<p>The <code v-pre>App.tsx</code> file uses the newly created <code v-pre>AppRouter</code> component to setup <a href="https://reactrouter.com/" class="outbound" target="_blank">React Router</a>:</p>
+<p>The <code v-pre>App.tsx</code> file uses the newly created <code v-pre>AppRouter</code> component to setup Squide&#x27;s primitives with a <a href="https://reactrouter.com/" class="outbound" target="_blank">React Router</a> instance:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/App.tsx</div>
 <pre class="language-tsx"><code v-pre class="language-tsx">import { AppRouter } from &quot;@sample/shell&quot;;
@@ -548,7 +573,7 @@ export function App() {
         <span>DevHome.tsx</span>
     </h3>
 </doc-anchor-target>
-<p>The <code v-pre>DevHome</code> component purpose is strictly to serve as an <code v-pre>index</code> page when developing the remote module in isolation.</p>
+<p>The <code v-pre>DevHome</code> component is the homepage when the remote module is developed in isolation:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/dev/DevHome.tsx</div>
 <pre class="language-tsx"><code v-pre class="language-tsx">function DevHome() {
@@ -560,7 +585,7 @@ export function App() {
     );
 }</code></pre>
 </doc-codeblock></div>
-<p>To register the development homepage, let&#x27;s create a new local module specifically for registering what is needed to develop the module in isolation:</p>
+<p>To register the development homepage, create a new local module specifically for configuring the remote during isolated development:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/dev/register.tsx</div>
 <pre class="language-tsx"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
@@ -579,7 +604,7 @@ export const registerDev: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime
         <span>Add a new CLI script</span>
     </h3>
 </doc-anchor-target>
-<p>Next, add a new <code v-pre>dev-isolated</code> script to the <code v-pre>package.json</code> file to start the local development server in <strong>&quot;isolation&quot;</strong>:</p>
+<p>Next, add a new <code v-pre>dev-isolated</code> script to the <code v-pre>package.json</code> file to start the local development server in <strong>isolation</strong>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/package.json</div>
 <pre class="language-json" data-line="3"><code v-pre class="language-json">{
@@ -604,30 +629,13 @@ export const registerDev: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime
         </div>
     </div>
 </div>
-<p>The <code v-pre>dev-isolated</code> script is similar to the <code v-pre>dev</code> script but introduces a <code v-pre>ISOLATED</code> environment variable. This new environment variable will be utilized by the <code v-pre>webpack.dev.js</code> file to conditionally setup the development server for development in <strong>isolation</strong> or to be consumed by a host application through the <code v-pre>/remoteEntry.js</code> entry point:</p>
+<p>The <code v-pre>dev-isolated</code> script is similar to the <code v-pre>dev</code> script but introduces an <code v-pre>ISOLATED</code> environment variable. This variable will be used by the <code v-pre>webpack.dev.js</code> file to conditionally configure the development server to either serve the module as an application for isolated development or as a remote endpoint by the host application through the <code v-pre>/remoteEntry.js</code> entry point.</p>
 <doc-anchor-target id="configure-webpack">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#configure-webpack">#</doc-anchor-trigger>
         <span>Configure webpack</span>
     </h3>
 </doc-anchor-target>
-<div class="flex mb-6">
-    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
-    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
-        <div class="flex items-center ml-4 h-7">
-            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
-                <g fill="currentColor"><g>
-                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
-                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                </g></g>
-            </svg>
-        </div>
-        <div class="pr-5 ml-3 w-full">
-<p>If you are having issues configuring webpack, refer to the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/" class="outbound" target="_blank">@workleap/webpack-configs</a> documentation website.</p>
-        </div>
-    </div>
-</div>
 <p>First, open the <code v-pre>public/index.html</code> file created at the beginning of this guide and copy/paste the following <a href="https://webpack.js.org/plugins/html-webpack-plugin/" class="outbound" target="_blank">HtmlWebpackPlugin</a> template:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/public/index.html</div>
@@ -669,6 +677,23 @@ if (!process.env.ISOLATED) {
 
 export default config;</code></pre>
 </doc-codeblock></div>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>If you encounter issues configuring webpack, refer to the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/" class="outbound" target="_blank">@workleap/webpack-configs</a> documentation.</p>
+        </div>
+    </div>
+</div>
 <doc-anchor-target id="try-it">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#try-it">#</doc-anchor-trigger>
@@ -694,8 +719,8 @@ export default config;</code></pre>
         <span>Setup a local module</span>
     </h2>
 </doc-anchor-target>
-<p>Similarly to remote modules, the same isolated setup can be achieved for local modules. The main difference is that the <code v-pre>webpack.config.js</code> file of a local module serves the sole purpose of starting a development server for isolated development. Typically, local modules do not rely on webpack and <a href="https://module-federation.io/" class="outbound" target="_blank">Module Federation</a>.</p>
-<p>First, open a terminal at the root of the local module application and install the <code v-pre>@squide/firefly-webpack-configs</code> package and its dependencies:</p>
+<p>Similarly to remote modules, local modules can also be set up for isolated development. The key difference is that the <code v-pre>webpack.config.js</code> file for a local module strictly serves the purpose of starting a development server for isolated development. Typically, local modules do not depend on webpack or <a href="https://module-federation.io/" class="outbound" target="_blank">Module Federation</a>.</p>
+<p>First, open a terminal at the root of the local module project and install the <code v-pre>@squide/firefly-webpack-configs</code> package and its dependencies:</p>
 <doc-tabs>
 <doc-tab v-cloak id="pnpm">
 <template #title>pnpm</template>
@@ -789,23 +814,6 @@ export default config;</code></pre>
         <span>Configure webpack</span>
     </h3>
 </doc-anchor-target>
-<div class="flex mb-6">
-    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
-    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
-        <div class="flex items-center ml-4 h-7">
-            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
-                <g fill="currentColor"><g>
-                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
-                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                </g></g>
-            </svg>
-        </div>
-        <div class="pr-5 ml-3 w-full">
-<p>If you are having issues configuring webpack, refer to the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/" class="outbound" target="_blank">@workleap/webpack-configs</a> documentation website.</p>
-        </div>
-    </div>
-</div>
 <p>First, open the <code v-pre>public/index.html</code> file and copy/paste the following <a href="https://webpack.js.org/plugins/html-webpack-plugin/" class="outbound" target="_blank">HtmlWebpackPlugin</a> template:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/public/index.html</div>
@@ -844,6 +852,23 @@ import { swcConfig } from &quot;./swc.config.js&quot;;
 
 export default defineDevHostConfig(swcConfig, &quot;local1&quot;, 8080, []);</code></pre>
 </doc-codeblock></div>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>If you encounter issues configuring webpack, refer to the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/" class="outbound" target="_blank">@workleap/webpack-configs</a> documentation.</p>
+        </div>
+    </div>
+</div>
 <doc-anchor-target id="add-a-new-cli-script-1">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#add-a-new-cli-script-1">#</doc-anchor-trigger>

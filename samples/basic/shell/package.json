@@ -26,7 +26,6 @@
         "@squide/firefly": "*",
         "react": "*",
         "react-dom": "*",
-        "react-error-boundary": "*",
         "react-router-dom": "*"
     },
     "devDependencies": {

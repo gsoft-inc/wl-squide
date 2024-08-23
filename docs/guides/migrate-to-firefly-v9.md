@@ -32,6 +32,7 @@ Finally, with `v9`, Squide's philosophy has evolved. We used to describe Squide 
 ### Others
 
 - The `@squide/firefly` package now takes a dependency on `@tanstack/react-query`.
+- The `@squide/firefly` package doesn't takes a dependency on `react-error-boundary` anymore.
 
 ### Removed support for deferred routes
 

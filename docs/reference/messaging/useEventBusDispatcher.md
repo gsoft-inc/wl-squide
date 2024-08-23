@@ -19,7 +19,7 @@ None
 
 ### Returns
 
-A dispatch function.
+A dispatch function: `(eventName: string, payload?: {}) => void`.
 
 ## Usage
 

@@ -1,24 +1,22 @@
 import { createI18NextPlugin } from "@endpoints/i18next";
 import { registerLocalModule } from "@endpoints/local-module";
 import { registerShell } from "@endpoints/shell";
-import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, registerRemoteModules, setMswAsStarted } from "@squide/firefly";
+import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, registerRemoteModules, setMswAsReady } from "@squide/firefly";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Remotes } from "../remotes.js";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
-import { sessionAccessor, sessionManager } from "./session.ts";
 
 const consoleLogger = new ConsoleLogger();
 
 const runtime = new FireflyRuntime({
     useMsw: !!process.env.USE_MSW,
-    plugins: [createI18NextPlugin()],
-    loggers: [consoleLogger],
-    sessionAccessor
+    plugins: [x => createI18NextPlugin(x)],
+    loggers: [consoleLogger]
 });
 
-await registerLocalModules([registerShell(sessionManager, { host: "@endpoints/host" }), registerHost, registerLocalModule], runtime);
+await registerLocalModules([registerShell({ host: "@endpoints/host" }), registerHost, registerLocalModule], runtime);
 
 await registerRemoteModules(Remotes, runtime);
 
@@ -31,7 +29,7 @@ if (runtime.isMswEnabled) {
     startMsw(runtime.requestHandlers)
         .then(() => {
             // Indicate to resources that are dependent on MSW that the service has been started.
-            setMswAsStarted();
+            setMswAsReady();
         })
         .catch((error: unknown) => {
             consoleLogger.debug("[host-app] An error occured while starting MSW.", error);

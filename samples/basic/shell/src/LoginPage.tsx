@@ -1,14 +1,14 @@
-import type { SessionManager } from "@basic/shared";
-import { useIsAuthenticated } from "@squide/firefly";
+import { useIsAuthenticated, useSessionManager } from "@basic/shared";
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
 export interface LoginProps {
-    sessionManager: SessionManager;
     host?: string;
 }
 
-export function LoginPage({ sessionManager, host }: LoginProps) {
+export function LoginPage({ host }: LoginProps) {
+    const sessionManager = useSessionManager();
+
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
 
@@ -18,7 +18,7 @@ export function LoginPage({ sessionManager, host }: LoginProps) {
         event.preventDefault();
 
         if (username === "temp" && password === "temp") {
-            sessionManager.setSession({
+            sessionManager?.setSession({
                 user: {
                     name: username
                 }

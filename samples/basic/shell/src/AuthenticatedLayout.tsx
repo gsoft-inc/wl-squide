@@ -1,15 +1,16 @@
-import { useApplicationEventBusListener, type Session, type SessionManager } from "@basic/shared";
-import { isNavigationLink, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
+import { useApplicationEventBusListener, useSessionManager } from "@basic/shared";
+import { isNavigationLink, useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Loading } from "./Loading.tsx";
 
-type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
+type RenderLinkItemFunction = (item: NavigationLinkRenderProps, key: string) => ReactNode;
 
-type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactNode;
+type RenderSectionItemFunction = (item: NavigationSectionRenderProps, key: string) => ReactNode;
 
-const renderLinkItem: RenderLinkItemFunction = ({ label, linkProps, additionalProps: { highlight, ...additionalProps } }, index, level) => {
+const renderLinkItem: RenderLinkItemFunction = ({ label, linkProps, additionalProps: { highlight, ...additionalProps } }, key) => {
     return (
-        <li key={`${level}-${index}`} style={{ fontWeight: highlight ? "bold" : "normal" }}>
+        <li key={key} style={{ fontWeight: highlight ? "bold" : "normal" }}>
             <Link {...linkProps} {...additionalProps}>
                 {label}
             </Link>
@@ -17,9 +18,9 @@ const renderLinkItem: RenderLinkItemFunction = ({ label, linkProps, additionalPr
     );
 };
 
-const renderSectionItem: RenderSectionItemFunction = ({ label, section }, index, level) => {
+const renderSectionItem: RenderSectionItemFunction = ({ label, section }, key) => {
     return (
-        <li key={`${level}-${index}`} style={{ display: "flex", gap: "5px" }}>
+        <li key={key} style={{ display: "flex", gap: "5px" }}>
             {label}
             <div style={{ display: "flex", alignItems: "center", fontSize: "12px" }}>
                 ({section})
@@ -28,24 +29,21 @@ const renderSectionItem: RenderSectionItemFunction = ({ label, section }, index,
     );
 };
 
-const renderItem: RenderItemFunction = (item, index, level) => {
-    return isNavigationLink(item) ? renderLinkItem(item, index, level) : renderSectionItem(item, index, level);
+const renderItem: RenderItemFunction = (item, key) => {
+    return isNavigationLink(item) ? renderLinkItem(item, key) : renderSectionItem(item, key);
 };
 
-const renderSection: RenderSectionFunction = (elements, index, level) => {
+const renderSection: RenderSectionFunction = (elements, key) => {
     return (
-        <ul key={`${level}-${index}`} style={{ display: "flex", gap: "10px", padding: 0, listStyleType: "none" }}>
+        <ul key={key} style={{ display: "flex", gap: "10px", padding: 0, listStyleType: "none" }}>
             {elements}
         </ul>
     );
 };
 
-export interface AuthenticatedLayoutProps {
-    sessionManager: SessionManager;
-}
-
-export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps) {
-    const session = useSession() as Session;
+export function AuthenticatedLayout() {
+    const sessionManager = useSessionManager();
+    const session = sessionManager?.getSession();
 
     const navigate = useNavigate();
 
@@ -58,7 +56,7 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
     const handleDisconnect = useCallback((event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
-        sessionManager.clearSession();
+        sessionManager?.clearSession();
 
         navigate("/logout");
     }, [navigate, sessionManager]);
@@ -79,7 +77,7 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
                     <button type="button" onClick={handleDisconnect}>Disconnect</button>
                 </div>
             </div>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loading />}>
                 <Outlet />
             </Suspense>
         </>

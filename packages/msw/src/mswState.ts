@@ -1,7 +1,7 @@
 export type MswStateChangedListener = () => void;
 
 export class MswState {
-    #isStarted = false;
+    #isReady = false;
 
     readonly #stateChangedListeners = new Set<MswStateChangedListener>();
 
@@ -13,9 +13,9 @@ export class MswState {
         this.#stateChangedListeners.delete(callback);
     }
 
-    setAsStarted() {
-        if (!this.#isStarted) {
-            this.#isStarted = true;
+    setAsReady() {
+        if (!this.#isReady) {
+            this.#isReady = true;
 
             this.#stateChangedListeners.forEach(x => {
                 x();
@@ -23,35 +23,38 @@ export class MswState {
         }
     }
 
-    get isStarted() {
-        return this.#isStarted;
-    }
-
-    // Strictly for Jest tests, this is NOT ideal.
-    _reset() {
-        this.#isStarted = false;
+    get isReady() {
+        return this.#isReady;
     }
 }
 
-const mswState = new MswState();
+let mswState: MswState;
 
-export function setMswAsStarted() {
-    mswState.setAsStarted();
+function getMswState() {
+    if (!mswState) {
+        mswState = new MswState();
+    }
+
+    return mswState;
 }
 
-export function isMswStarted() {
-    return mswState.isStarted;
+// This function should only be used by tests.
+export function __setMswState(state: MswState) {
+    mswState = state;
+}
+
+export function setMswAsReady() {
+    getMswState().setAsReady();
+}
+
+export function isMswReady() {
+    return getMswState().isReady;
 }
 
 export function addMswStateChangedListener(callback: MswStateChangedListener) {
-    mswState.addStateChangedListener(callback);
+    getMswState().addStateChangedListener(callback);
 }
 
 export function removeMswStateChangedListener(callback: MswStateChangedListener) {
-    mswState.removeStateChangedListener(callback);
-}
-
-// Strictly for Jest tests, this is NOT ideal.
-export function __resetMswStatus() {
-    mswState._reset();
+    getMswState().removeStateChangedListener(callback);
 }

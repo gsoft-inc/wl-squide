@@ -1,9 +1,7 @@
 import { isApiError, postJson } from "@endpoints/shared";
-import { useIsAuthenticated } from "@squide/firefly";
 import { useI18nextInstance } from "@squide/i18next";
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Navigate } from "react-router-dom";
 import { i18NextInstanceKey } from "./i18next.ts";
 
 export interface LoginPageProps {
@@ -29,7 +27,7 @@ export function LoginPage({ host }: LoginPageProps) {
             .then(() => {
                 setIsBusy(false);
 
-                // Reloading the whole application so the "RootRoute" component states are reinitialize.
+                // Reloading the whole application so the "RootRoute" component states are re-initialize.
                 // If we use navigate("/") instead, since "isProtectedDataLoaded" might already be true in the case
                 // of Logout -> Login, the rendering will bypass the loading of the protected data (including the session)
                 // which will result in an incoherent state.
@@ -55,12 +53,6 @@ export function LoginPage({ host }: LoginPageProps) {
     const handlePasswordChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setPassword(event.target.value);
     }, []);
-
-    const isAuthenticated = useIsAuthenticated();
-
-    if (isAuthenticated) {
-        return <Navigate to="/" />;
-    }
 
     return (
         <>

@@ -1,4 +1,4 @@
-import { isNil, isNilOrEmpty } from "@squide/core";
+import { LocalStorageManager } from "./localStorageManager.ts";
 import { SessionLocalStorageKey } from "./sessionKey.ts";
 
 export interface LocalStorageSessionManagerOptions {
@@ -6,42 +6,21 @@ export interface LocalStorageSessionManagerOptions {
 }
 
 export class LocalStorageSessionManager<T = unknown> {
-    readonly #key: string;
-    #cache?: T = undefined;
+    readonly #localStorageManager: LocalStorageManager<T>;
 
     constructor({ key = SessionLocalStorageKey }: LocalStorageSessionManagerOptions = {}) {
-        this.#key = key;
+        this.#localStorageManager = new LocalStorageManager(key);
     }
 
     setSession(session: T) {
-        if (isNil(session)) {
-            window.localStorage.removeItem(this.#key);
-        } else {
-            window.localStorage.setItem(this.#key, JSON.stringify(session));
-        }
-
-        this.#cache = undefined;
+        this.#localStorageManager.setObjectValue(session);
     }
 
     getSession() {
-        if (!isNil(this.#cache)) {
-            return this.#cache;
-        }
-
-        const rawSession = window.localStorage.getItem(this.#key);
-
-        if (!isNilOrEmpty(rawSession)) {
-            this.#cache = JSON.parse(rawSession);
-
-            return this.#cache;
-        }
-
-        return undefined;
+        return this.#localStorageManager.getObjectValue();
     }
 
     clearSession() {
-        this.#cache = undefined;
-
-        window.localStorage.removeItem(this.#key);
+        this.#localStorageManager.clearStorage();
     }
 }

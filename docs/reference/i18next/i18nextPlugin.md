@@ -6,12 +6,12 @@ toc:
 
 # i18nextPlugin
 
-A plugin to faciliate the integration of [i18next](https://www.i18next.com/) in a federated application.
+A plugin to faciliate the integration of [i18next](https://www.i18next.com/) in a modular application.
 
 ## Reference
 
 ```ts
-const plugin = new i18nextPlugin(supportedLanguages: [], fallbackLanguage, queryStringKey, options?: { detection?: {} })
+const plugin = new i18nextPlugin(supportedLanguages: [], fallbackLanguage, queryStringKey, options?: { detection? })
 ```
 
 ### Parameters

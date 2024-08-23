@@ -34,7 +34,7 @@ const runtime = new FireflyRuntime({
 });
 ```
 
-Then, log entries from any parts of your federated application with the `useLogger` hook:
+Then, log entries from any parts of your modular application with the `useLogger` hook:
 
 ```ts
 import { useLogger } from "@squide/firefly";
@@ -48,7 +48,7 @@ The logger is also available from the [FireflyRuntime](/reference/runtime/runtim
 
 ## Messaging
 
-It's crucial that the parts of a federated application remains loosely coupled. To help with that, Squide offers a built-in [Event Bus](/reference/messaging/EventBus.md).
+It's crucial that the parts of a modular application remains loosely coupled. To help with that, Squide offers a built-in [Event Bus](/reference/messaging/EventBus.md).
 
 First, listen to an event with the [useEventBusListener](/reference/messaging/useEventBusListener.md) hook:
 
@@ -77,56 +77,6 @@ You can use the event bus to enable various communication scenarios, such as not
 
 The event bus is also available from the [FireflyRuntime](/reference/runtime/runtime-class.md#use-the-event-bus) instance.
 
-## Session
-
-Most of our applications (if not all) will eventually require the user to authenticate. To facilitate this process, the Squide [FireflyRuntime](/reference/runtime/runtime-class.md) class accepts a [sessionAccessor](/reference/fakes/localStorageSessionManager.md#integrate-with-a-runtime-instance) function. Once the shell registration flow is completed, the function will be made accessible to every module of the application.
-
-First, define a `sessionAccessor` function:
-
-```ts host/src/session.ts
-import type { SessionAccessorFunction } from "@squide/firefly";
-import { LocalStorageSessionManager } from "@squide/fakes";
-
-export const sessionManager = new LocalStorageSessionManager<Session>();
-
-const sessionAccessor: SessionAccessorFunction = () => {
-    return sessionManager.getSession();
-};
-```
-
-!!!warning
-Our security department reminds you to refrain from using a fake `LocalStorageSessionManager` in a production application :blush:
-!!!
-
-Then register the accessor function:
-
-```ts host/src/boostrap.tsx
-import { FireflyRuntime } from "@squide/firefly";
-import { sessionAccessor } from "./session.ts";
-
-const runtime = new FireflyRuntime({
-    sessionAccessor
-});
-```
-
-Finally, access the session from any parts of the application with the [useSession](/reference/runtime/useSession.md) hook:
-
-```ts
-import { useSession } from "@squide/firefly";
-
-const session = useSession();
-```
-
-Or determine whether or not the user is authenticated with the [useIsAuthenticated](/reference/session/useIsAuthenticated.md) hook:
-
-```ts
-import { useIsAuthenticated } from "@squide/firefly";
-
-const isAuthenticated = useIsAuthenticated();
-```
-
-The session is also available from the [FireflyRuntime](/reference/runtime/runtime-class.md#retrieve-the-current-session) instance.
-
 ## Plugins
 
 To keep Squide lightweight, not all functionalities should be integrated as a core functionality. However, to accommodate a broad range of technologies, a [plugin system](../reference/plugins/plugin.md) has been implemented to fill the gap.
@@ -138,7 +88,7 @@ import { FireflyRuntime } from "@squide/firefly";
 import { MyPlugin } from "@sample/my-plugin";
 
 const runtime = new FireflyRuntime({
-    plugins: [new MyPlugin()]
+    plugins: [x => new MyPlugin(x)]
 });
 ```
 
@@ -164,7 +114,7 @@ Explore the [guides](../guides/default.md) section to learn about Squide advance
 Be sure to read, at a minimum, the following guides:
 
 - [Setup Mock Service Worker](../guides/setup-msw.md)
-- [Fetch initial data](../guides/fetch-initial-data.md)
+- [Fetch global data](../guides/fetch-global-data.md)
 - [Fetch page data](../guides/fetch-page-data.md)
 - [Manage shared state](../guides/manage-shared-state.md)
 - [Isolate module failures](../guides/isolate-module-failures.md)

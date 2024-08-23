@@ -1,4 +1,7 @@
+import { createContext, useContext } from "react";
 import type { LanguageKey } from "./i18next.ts";
+
+export const FakeSessionStorageKey = "squide-endpoints-msw-session-v2";
 
 export interface Session {
     user: {
@@ -9,9 +12,25 @@ export interface Session {
 }
 
 export interface SessionManager {
-    setSession: (session: Session) => void;
     getSession: () => Session | undefined;
     clearSession: () => void;
 }
 
-export const FakeSessionKey = "squide-endpoints-msw-session-v2";
+export const SessionManagerContext = createContext<SessionManager | undefined>(undefined);
+
+export function useSessionManager() {
+    return useContext(SessionManagerContext);
+}
+
+export function useSession() {
+    const sessionManager = useSessionManager();
+
+    return sessionManager?.getSession();
+}
+
+export function useIsAuthenticated() {
+    const sessionManager = useSessionManager();
+
+    return !!sessionManager?.getSession();
+}
+

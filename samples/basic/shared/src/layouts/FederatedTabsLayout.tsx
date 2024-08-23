@@ -1,4 +1,4 @@
-import { useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
+import { useRenderedNavigationItems, useRuntimeNavigationItems, type NavigationLinkRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { Suspense } from "react";
 import { Link, Outlet } from "react-router-dom";
 
@@ -27,7 +27,7 @@ const renderSection: RenderSectionFunction = elements => {
 };
 
 export function FederatedTabsLayout({ host }: FederatedTabsLayoutProps) {
-    const navigationItems = useNavigationItems({ menuId: "/federated-tabs" });
+    const navigationItems = useRuntimeNavigationItems({ menuId: "/federated-tabs" });
     const renderedTabs = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (

@@ -23,17 +23,17 @@ Create a new application (we'll refer to ours as `host`), then open a terminal a
 +++ pnpm
 ```bash
 pnpm add -D @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
-pnpm add @squide/firefly react react-dom react-router-dom react-error-boundary
+pnpm add @squide/firefly react react-dom react-router-dom @tanstack/react-query
 ```
 +++ yarn
 ```bash
 yarn add -D @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
-yarn add @squide/firefly react react-dom react-router-dom react-error-boundary
+yarn add @squide/firefly react react-dom react-router-dom @tanstack/react-query
 ```
 +++ npm
 ```bash
 npm install -D @workleap/swc-configs @workleap/browserslist-config @squide/firefly-webpack-configs webpack webpack-dev-server webpack-cli @swc/core @swc/helpers browserslist postcss typescript @types/react @types/react-dom
-npm install @squide/firefly react react-dom react-router-dom react-error-boundary
+npm install @squide/firefly react react-dom react-router-dom @tanstack/react-query
 ```
 +++
 
@@ -53,7 +53,6 @@ host
 ├──── App.tsx
 ├──── RootLayout.tsx
 ├──── HomePage.tsx
-├──── NotFoundPage.tsx
 ├──── bootstrap.tsx
 ├──── index.ts
 ├──── register.tsx
@@ -126,14 +125,20 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 export function App() {
     return (
-        <AppRouter
-            fallbackElement={<div>Loading...</div>}
-            errorElement={<div>An error occured!</div>}
-            waitForMsw={false}
-        >
-            {(routes, providerProps) => (
-                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
-            )}
+        <AppRouter waitForMsw={false}>
+            {({ rootRoute, registeredRoutes, routerProviderProps }) => {
+                return (
+                    <RouterProvider
+                        router={createBrowserRouter([
+                            {
+                                element: rootRoute,
+                                children: registeredRoutes
+                            }
+                        ])}
+                        {...routerProviderProps}
+                    />
+                );
+            }}
         </AppRouter>
     );
 }
@@ -154,7 +159,7 @@ import {
     type RenderSectionFunction
 } from "@squide/firefly";
 
-const renderItem: RenderItemFunction = (item, index, level) => {
+const renderItem: RenderItemFunction = (item, key) => {
     // To keep thing simple, this sample doesn't support nested navigation items.
     // For an example including support for nested navigation items, have a look at
     // https://gsoft-inc.github.io/wl-squide/reference/routing/userenderednavigationitems/
@@ -165,7 +170,7 @@ const renderItem: RenderItemFunction = (item, index, level) => {
     const { label, linkProps, additionalProps } = item;
 
     return (
-        <li key={`${level}-${index}`}>
+        <li key={key}>
             <Link {...linkProps} {...additionalProps}>
                 {label}
             </Link>
@@ -173,9 +178,9 @@ const renderItem: RenderItemFunction = (item, index, level) => {
     );
 };
 
-const renderSection: RenderSectionFunction = (elements, index, level) => {
+const renderSection: RenderSectionFunction = (elements, key) => {
     return (
-        <ul key={`${level}-${index}`}>
+        <ul key={key}>
             {elements}
         </ul>
     );
@@ -227,7 +232,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 };
 ```
 
-And an [hoisted route](../reference/runtime/runtime-class.md#register-an-hoisted-route) to render the `RootLayout` and the [ManagedRoutes](../reference/routing/ManagedRoutes.md) placeholder:
+And an [hoisted route](../reference/runtime/runtime-class.md#register-an-hoisted-route) to render the `RootLayout` and the [ManagedRoutes](../reference/routing/managedRoutes.md) placeholder:
 
 ```tsx !#8,12,15 host/src/register.tsx
 import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
@@ -255,7 +260,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 ```
 
 !!!info
-The [ManagedRoutes](../reference/routing/ManagedRoutes.md) placeholder indicates where routes that are neither hoisted or nested with a [parentPath](../reference/runtime/runtime-class.md#register-nested-navigation-items) or [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option will be rendered. In this example, the homepage route is considered as a managed route and will be rendered under the `ManagedRoutes` placeholder.
+The [ManagedRoutes](../reference/routing/managedRoutes.md) placeholder indicates where routes that are neither hoisted or nested with a [parentPath](../reference/runtime/runtime-class.md#register-nested-navigation-items) or [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option will be rendered. In this example, the homepage route is considered as a managed route and will be rendered under the `ManagedRoutes` placeholder.
 !!!
 
 Finally, update the bootstrapping code to [register](../reference/registration/registerLocalModules.md) the newly created local module:
@@ -305,7 +310,7 @@ export function NotFoundPage() {
 
 Then, register the newly created component as the `*` route:
 
-```tsx !#19-24 host/src/register.tsx
+```tsx !#8,19-24 host/src/register.tsx
 import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { HomePage } from "./HomePage.tsx";
 import { NotFoundPage } from "./NotFoundPage.tsx";
@@ -313,7 +318,7 @@ import { RootLayout } from "./RootLayout.tsx";
 
 export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        // Pathless route to declare a root layout.
+        $name: "root-layout",
         element: <RootLayout />,
         children: [
             // Placeholder to indicate where managed routes (routes that are not hoisted or nested)
@@ -328,7 +333,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
         path: "*",
         element: <NotFoundPage />
     }, {
-        hoist: true
+        parentName: "root-layout"
     });
 
     runtime.registerRoute({
@@ -462,8 +467,9 @@ If you are experiencing issues with this guide:
     - `[squide] 1/4 Registering local module.`
     - `[squide] 1/4 Local module registration completed.`
     - `[squide] Found 1 remote module to register.`
-    - `[squide] 1/1 Loading module "./register" from container "remote1" of remote "http://localhost:8081/remoteEntry.js".`
-    - `[squide] 1/1 Container "remote1" of remote "http://localhost:8081/remoteEntry.js" registration completed.`
+    - `[squide] 1/1 Loading module "register" of "remote1".`
+    - `[squide] 1/1 Registering module "register" of remote "remote1".`
+    - `[squide] 1/1 The registration of the remote "remote1" is completed.`
 - Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/host).
 - Refer to the [troubleshooting](../troubleshooting.md) page.
 

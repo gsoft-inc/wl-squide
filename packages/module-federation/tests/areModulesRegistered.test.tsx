@@ -1,10 +1,6 @@
-// The areModulesRegistered function is tested instead of the useAreModulesRegistered hook because it requires less mocking and
-// kind of provide the same coverage as the only important logic to test for that hook is the check to validate whether
-// or not the module registrations is considered as registered or not.
-
 import { LocalModuleRegistry, Runtime } from "@squide/core";
+import { areModulesRegistered } from "../src/areModulesRegistered.ts";
 import { RemoteModuleRegistry } from "../src/registerRemoteModules.ts";
-import { areModulesRegistered } from "../src/useAreModulesRegistered.ts";
 
 class DummyRuntime extends Runtime<unknown, unknown> {
     registerRoute() {
@@ -21,6 +17,14 @@ class DummyRuntime extends Runtime<unknown, unknown> {
 
     getNavigationItems() {
         return [];
+    }
+
+    startDeferredRegistrationScope(): void {
+        throw new Error("Method not implemented.");
+    }
+
+    completeDeferredRegistrationScope(): void {
+        throw new Error("Method not implemented.");
     }
 }
 

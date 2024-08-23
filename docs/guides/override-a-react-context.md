@@ -4,26 +4,32 @@ order: 780
 
 # Override a React context
 
-In a federated application using [Module Federation](https://module-federation.io/), it's typical to configure various global [React context](https://legacy.reactjs.org/docs/context.html) at the root of the host application. These contexts are usually consumed down the line by the layouts and pages of the remote modules.
+In a modular application, it's typical to configure various global [React context](https://legacy.reactjs.org/docs/context.html) at the root of the host application. These contexts are then used by the layouts and pages of the modules.
 
 Let's explore a simple example using a `BackgroundColorContext`:
 
 ```tsx !#7 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
-import { BackgroundColorContext } from "@sample/shared";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { BackgroundColorContext } from "@sample/shared";
 
 export function App() {
     return (
         <BackgroundColorContext.Provider value="blue">
-            <AppRouter
-                fallbackElement={<div>Loading...</div>}
-                errorElement={<div>An error occured!</div>}
-                waitForMsw={false}
-            >
-                {(routes, providerProps) => (
-                    <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
-                )}
+            <AppRouter waitForMsw={false}>
+                {({ rootRoute, registeredRoutes, routerProviderProps }) => {
+                    return (
+                        <RouterProvider
+                            router={createBrowserRouter([
+                                {
+                                    element: rootRoute,
+                                    children: registeredRoutes
+                                }
+                            ])}
+                            {...routerProviderProps}
+                        />
+                    );
+                }}
             </AppRouter>
         </BackgroundColorContext.Provider>
     );
@@ -56,7 +62,7 @@ export function ColoredPage() {
 }
 ```
 
-In the previous code samples, the host application provides a value for the `BackgroundColorContext`, and the `ColoredPage` component of the remote module utilizes this value to set its background color (in this example, the background color is set to `blue`).
+In the previous code samples, the host application provides a value for the `BackgroundColorContext`, and the `ColoredPage` component of the remote module uses this value to set its background color (to `blue` for this example).
 
 ## Override the context for the remote module
 
@@ -107,31 +113,41 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 ## Update a singleton dependency version
 
+!!!warning
+This section applies only to applications with [remote modules](../reference/registration/registerRemoteModules.md).
+!!!
+
 Let's consider a more specific use case where the host application declares a `ThemeContext` from Workleap's new design system, [Hopper](https://hopper.workleap.design/):
 
 ```tsx !#7 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
-import { ThemeContext } from "@hopper/components";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { ThemeContext } from "@hopper/components";
 
 export function App() {
     return (
         <ThemeContext.Provider value="dark">
-            <AppRouter
-                fallbackElement={<div>Loading...</div>}
-                errorElement={<div>An error occured!</div>}
-                waitForMsw={false}
-            >
-                {(routes, providerProps) => (
-                    <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
-                )}
+            <AppRouter waitForMsw={false}>
+                {({ rootRoute, registeredRoutes, routerProviderProps }) => {
+                    return (
+                        <RouterProvider
+                            router={createBrowserRouter([
+                                {
+                                    element: rootRoute,
+                                    children: registeredRoutes
+                                }
+                            ])}
+                            {...routerProviderProps}
+                        />
+                    );
+                }}
             </AppRouter>
         </ThemeContext.Provider>
     );
 }
 ```
 
-In this scenario, Hopper's components are used throughout the entire federated application, including the remote modules. Moreover, `@hopper/components` is defined as a [singleton](https://module-federation.io/configure/shared.html#singleton) shared dependency:
+In this scenario, Hopper's components are used throughout the entire application, including the modules. Moreover, `@hopper/components` is defined as a [singleton](https://module-federation.io/configure/shared.html#singleton) shared dependency:
 
 ```js !#8-10 host/webpack.dev.js
 // @ts-check
@@ -150,9 +166,9 @@ export default defineDevHostConfig(swcConfig, 8080, [], {
 
 Now, consider a situation where Hopper releases a new version of the package that includes breaking changes, without a "compatibility" package to ensure backward compatility with the previous version.
 
-To update the host application without breaking the remote modules, the recommended approach is to temporary "break" the singleton shared dependency by loading two versions of the dependency in parallel (one for the host application and one for the remote modules that have not been updated yet).
+To update the host application without breaking the modules, we recommend to temporary "break" the singleton shared dependency by loading two versions of the `@hopper/components` dependency in parallel (one for the host application and one for the modules that have not been updated yet).
 
-As `@hopper/components` expose the `ThemeContext`, the context must be re-declared in each remote module until every part of the federated application has been updated to the latest version of Hopper:
+As `@hopper/components` expose the `ThemeContext`, the context must be re-declared in each module until every part of the federated application has been updated to the latest version of `@hopper/components`:
 
 ```tsx !#6-12,17 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -176,4 +192,4 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 }
 ```
 
-Thankfully, [React Router](https://reactrouter.com/en/main) makes it very easy to declare contexts in a remote module.
+Thankfully, [React Router](https://reactrouter.com/en/main) makes it very easy to declare contexts in a module.

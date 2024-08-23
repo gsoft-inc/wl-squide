@@ -201,7 +201,7 @@ describe("registerRoute", () => {
             expect(routes[0].$visibility).toBe("protected");
         });
 
-        test("when a root route has no visibility property, it is considered as an \"protected\" route", () => {
+        test("when a root route has no visibility property, it is considered as a \"protected\" route", () => {
             const runtime = new ReactRouterRuntime();
 
             registerManagedRoutesOutlet(runtime);
@@ -1131,7 +1131,103 @@ describe("getNavigationItems", () => {
     });
 });
 
-describe("_completeRegistration", () => {
+describe("startDeferredRegistrationScope & completeDeferredRegistrationScope", () => {
+    test("can start and complete a scope", () => {
+        const runtime = new ReactRouterRuntime();
+
+        expect(() => {
+            runtime.startDeferredRegistrationScope();
+            runtime.completeDeferredRegistrationScope();
+        }).not.toThrow();
+    });
+
+    test("when a scope is started, can register a navigation item", () => {
+        const runtime = new ReactRouterRuntime();
+
+        runtime.startDeferredRegistrationScope();
+
+        runtime.registerNavigationItem({
+            $label: "Foo",
+            to: "foo"
+        });
+
+        expect(runtime.getNavigationItems().length).toBe(1);
+
+        runtime.completeDeferredRegistrationScope();
+
+        expect(runtime.getNavigationItems().length).toBe(1);
+    });
+
+    test("when a scope is started, can register a route", () => {
+        const runtime = new ReactRouterRuntime();
+
+        runtime.startDeferredRegistrationScope();
+
+        runtime.registerRoute({
+            path: "/foo",
+            element: <div>Hello!</div>
+        }, {
+            hoist: true
+        });
+
+        expect(runtime.routes.length).toBe(1);
+
+        runtime.completeDeferredRegistrationScope();
+
+        expect(runtime.routes.length).toBe(1);
+    });
+
+    test("when a scope is completed, can register a navigation item", () => {
+        const runtime = new ReactRouterRuntime();
+
+        runtime.startDeferredRegistrationScope();
+
+        runtime.registerNavigationItem({
+            $label: "Foo",
+            to: "foo"
+        });
+
+        expect(runtime.getNavigationItems().length).toBe(1);
+
+        runtime.completeDeferredRegistrationScope();
+
+        runtime.registerNavigationItem({
+            $label: "Bar",
+            to: "bar"
+        });
+
+        expect(runtime.getNavigationItems().length).toBe(2);
+    });
+
+    test("when a scope is completed, can register a route", () => {
+        const runtime = new ReactRouterRuntime();
+
+        runtime.startDeferredRegistrationScope();
+
+        runtime.registerRoute({
+            path: "/foo",
+            element: <div>Hello!</div>
+        }, {
+            hoist: true
+        });
+
+        expect(runtime.routes.length).toBe(1);
+
+        runtime.completeDeferredRegistrationScope();
+
+        runtime.registerRoute({
+            path: "/bar",
+            element: <div>Hello!</div>
+        }, {
+            hoist: true
+        });
+
+
+        expect(runtime.routes.length).toBe(2);
+    });
+});
+
+describe("_validateRegistrations", () => {
     describe("managed routes", () => {
         test("when the outlet is missing, the error message mentions the ManagedRoutes outlet", () => {
             const runtime = new ReactRouterRuntime();
@@ -1143,7 +1239,7 @@ describe("_completeRegistration", () => {
             });
 
             try {
-                runtime._completeRegistration();
+                runtime._validateRegistrations();
             } catch (error: unknown) {
                 errorMessage = (error as Error).message;
             }
@@ -1153,7 +1249,7 @@ describe("_completeRegistration", () => {
     });
 
     describe("parentPath", () => {
-        test("when the registration is completed and there are no pending registrations, do nothing", () => {
+        test("when there are no pending registrations, do nothing", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -1170,10 +1266,10 @@ describe("_completeRegistration", () => {
                 hoist: true
             });
 
-            expect(() => runtime._completeRegistration()).not.toThrow();
+            expect(() => runtime._validateRegistrations()).not.toThrow();
         });
 
-        test("when the registration is completed and there are pending registrations, throw an error", () => {
+        test("when there are pending registrations, throw an error", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -1183,12 +1279,12 @@ describe("_completeRegistration", () => {
                 parentPath: "/layout"
             });
 
-            expect(() => runtime._completeRegistration()).toThrow();
+            expect(() => runtime._validateRegistrations()).toThrow();
         });
     });
 
     describe("parentName", () => {
-        test("when the registration is completed and there are no pending registrations, do nothing", () => {
+        test("when there are no pending registrations, do nothing", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -1205,10 +1301,10 @@ describe("_completeRegistration", () => {
                 hoist: true
             });
 
-            expect(() => runtime._completeRegistration()).not.toThrow();
+            expect(() => runtime._validateRegistrations()).not.toThrow();
         });
 
-        test("when the registration is completed and there are pending registrations, throw an error", () => {
+        test("when there are pending registrations, throw an error", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -1218,7 +1314,7 @@ describe("_completeRegistration", () => {
                 parentName: "layout"
             });
 
-            expect(() => runtime._completeRegistration()).toThrow();
+            expect(() => runtime._validateRegistrations()).toThrow();
         });
     });
 });

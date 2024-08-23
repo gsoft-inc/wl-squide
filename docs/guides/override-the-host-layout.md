@@ -4,11 +4,11 @@ order: 880
 
 # Override the host layout
 
-The `RootLayout` component that as been defined in the [create an host application](../getting-started/create-host.md#navigation-items) starting guide serves as the default layout for the homepage as well as for every page registered by a module that are not nested under a parent route with either the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) or the [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option.
+The `RootLayout` component defined in the [Create an host application](../getting-started/create-host.md#navigation-items) starting guide serves as the default layout for the homepage and all the [managed routes](../reference/routing/managedRoutes.md).
 
-For most pages, this is the behavior expected by the author. However, for pages such as a login, the default `RootLayout` isn't suitable because the page is not bound to a user session (the user is not even authenticated yet).
+For most routes, this behavior is what the author expects. However, as an application introduces [authentication](./add-authentication.md) and adds many session-related features to the default layout, this default layout may no longer be suitable for every route. For example, a login page doesn't require session-related features, as the user isn't authenticated yet. In such cases, the default layout isn't appropriate.
 
-To accomodate pages that require a different layout, a mechanism is needed to move their route declaration at the root of the React Router [instance](https://reactrouter.com/en/main/routers/create-browser-router) before the `RootLayout` is declared.
+To accomodate pages requiring a different layout, a mechanism is needed to move their route declaration to the root of the React Router [instance](https://reactrouter.com/en/main/routers/create-browser-router) before `RootLayout` is declared.
 
 ``` !#2
 root
@@ -18,19 +18,19 @@ root
 ├───────────  Homepage
 ```
 
-## Hoist a module pages
+## Hoist a module routes
 
 Package managers supporting workspaces such as Yarn and NPM call this mechanism "hoisting", which means "raise (something) by means of ropes and pulleys". This is exactly what we are trying to achieve here.
 
-Squide has a built-in [hoist](../reference/runtime/runtime-class.md#register-an-hoisted-route) functionality capable of raising module routes marked as `hoist` at the root of the routes array, before the `RootLayout` declaration. Thus, an hoisted page will not be wrapped by the `RootLayout` (or the `AuthenticationBoundary`) and will have full control over its rendering.
+Squide has a built-in [hoist](../reference/runtime/runtime-class.md#register-an-hoisted-route) functionality capable of raising module routes marked as `hoist` at the root of the routes array, before the `RootLayout` declaration. Thus, an hoisted route will not be wrapped by the `RootLayout` component (or any authentication boundaries) and will have full control over its rendering.
 
-To hoist module pages, add the [hoist](../reference/runtime/runtime-class.md#register-an-hoisted-route) option to the route registration options and optionally use a different layout:
+To hoist module routes, add the [hoist](../reference/runtime/runtime-class.md#register-an-hoisted-route) option to the route registration options and optionally use a different layout:
 
 ```tsx !#9,14,24 local-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { LocalLayout } from "./LocalLayout.tsx";
 import { LocalErrorBoundary } from "./LocalErrorBoundary.tsx";
-import { LoginPage } from "./LoginPage.tsx";
+import { Page } from "./Page.tsx";
 
 export function register: ModuleRegisterFunction<FireflyRuntime>(runtime) {
     runtime.registerRoute({
@@ -38,13 +38,13 @@ export function register: ModuleRegisterFunction<FireflyRuntime>(runtime) {
         element: <LocalLayout />,
         children: [
             {
-                // Custom error boundary ensuring errors from the login page doesn't prevent the other
+                // Custom error boundary ensuring errors from the route doesn't prevent the other
                 // modules of the application from rendering.
                 errorElement: <LocalErrorBoundary />,
                 children: [
                     {
                         index: true,
-                        element: <LoginPage />
+                        element: <Page />
                     }
                 ]
             }
@@ -56,11 +56,11 @@ export function register: ModuleRegisterFunction<FireflyRuntime>(runtime) {
 ```
 
 !!!warning
-By declaring a page as hoisted, other parts of the application will not be isolated anymore from this page's failures as the page will be rendered outside of the host application's root error boundary. To **avoid breaking the entire application** when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router's [errorElement](https://reactrouter.com/en/main/route/error-element) property for each hoisted page.
+By declaring a route as hoisted, other parts of the application will not be isolated anymore from this route's failures as the route will most likely be rendered outside of the host application's root error boundary. To **avoid breaking the entire application** when an hoisted route encounters unhandled errors, it is highly recommended to declare a React Router's [errorElement](https://reactrouter.com/en/main/route/error-element) property for each hoisted routes.
 !!!
 
 !!!warning
-By declaring a page as hoisted, the page will be rendered at the root of the router, therefore, most certainly outside the authenticated boundary of the application. If the hoisted page requires an authentication, make sure to **wrap the page with an authentication boundary** or to handle the authentication within the page.
+By declaring a route as hoisted, the route will be rendered at the root of the router, therefore, most certainly outside the authenticated boundary of the application. If the hoisted route requires an authentication, make sure to **wrap the route with an authentication boundary** or to handle the authentication within the route's page.
 !!!
 
 ## Try it :rocket:

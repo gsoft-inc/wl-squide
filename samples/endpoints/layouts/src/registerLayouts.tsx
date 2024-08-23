@@ -20,6 +20,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n, host?: s
     });
 
     runtime.registerNavigationItem({
+        $key: "federated-tabs",
         $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="tabsPage" />,
         to: "/federated-tabs"
     });

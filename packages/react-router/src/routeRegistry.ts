@@ -1,6 +1,6 @@
 import type { RegisterRouteOptions } from "@squide/core";
 import type { IndexRouteObject, NonIndexRouteObject } from "react-router-dom";
-import { ManagedRoutesOutletName, isManagedRoutesOutletRoute } from "./outlets.ts";
+import { ManagedRoutes, ManagedRoutesOutletName, isManagedRoutesOutletRoute } from "./outlets.ts";
 
 export type RouteVisibility = "public" | "protected";
 
@@ -45,21 +45,16 @@ export function createIndexKey(route: Route) {
     return undefined;
 }
 
-
 export class RouteRegistry {
-    #routes: Route[];
+    #routes: Route[] = [];
 
-    // Using an index to speed up the look up of parent routes.
+    // An index to speed up the look up of parent routes.
     // <indexKey, Route>
     readonly #routesIndex: Map<string, Route> = new Map();
 
-    // A collection of pending routes to registered once their layout is registered.
+    // An index of pending routes to registered once their parent is registered.
     // <parentPath | parentName, Route[]>
-    readonly #pendingRegistrations: Map<string, Route[]> = new Map();
-
-    constructor() {
-        this.#routes = [];
-    }
+    readonly #pendingRegistrationsIndex: Map<string, Route[]> = new Map();
 
     #addIndex(route: Route) {
         const key = createIndexKey(route);
@@ -91,7 +86,6 @@ export class RouteRegistry {
                 const result = this.#recursivelyAddRoutes(route.children);
 
                 route.children = result.newRoutes;
-
                 completedPendingRegistrations.push(...result.completedPendingRegistrations);
             }
 
@@ -103,7 +97,6 @@ export class RouteRegistry {
             // of the route).
             if (indexKey) {
                 const pendingRegistrations = this.#tryRegisterPendingRoutes(indexKey);
-
                 completedPendingRegistrations.unshift(...pendingRegistrations);
             }
 
@@ -117,7 +110,7 @@ export class RouteRegistry {
     }
 
     #tryRegisterPendingRoutes(parentId: string) {
-        const pendingRegistrations = this.#pendingRegistrations.get(parentId);
+        const pendingRegistrations = this.#pendingRegistrationsIndex.get(parentId);
 
         if (pendingRegistrations) {
             // Try to register the pending routes.
@@ -125,7 +118,7 @@ export class RouteRegistry {
 
             if (registrationStatus === "registered") {
                 // Remove the pending registrations.
-                this.#pendingRegistrations.delete(parentId);
+                this.#pendingRegistrationsIndex.delete(parentId);
 
                 return pendingRegistrations;
             }
@@ -191,12 +184,12 @@ export class RouteRegistry {
         const layoutRoute = this.#routesIndex.get(parentId);
 
         if (!layoutRoute) {
-            const pendingRegistration = this.#pendingRegistrations.get(parentId);
+            const pendingRegistration = this.#pendingRegistrationsIndex.get(parentId);
 
             if (pendingRegistration) {
                 pendingRegistration.push(...routes);
             } else {
-                this.#pendingRegistrations.set(parentId, [...routes]);
+                this.#pendingRegistrationsIndex.set(parentId, [...routes]);
             }
 
             return {
@@ -229,7 +222,27 @@ export class RouteRegistry {
         return this.#routes;
     }
 
-    get pendingRegistrations() {
-        return this.#pendingRegistrations;
+    getPendingRegistrations() {
+        return new PendingRegistrations(this.#pendingRegistrationsIndex);
+    }
+}
+
+export class PendingRegistrations {
+    readonly #pendingRegistrationsIndex: Map<string, Route[]> = new Map();
+
+    constructor(pendingRegistrationsIndex: Map<string, Route[]> = new Map()) {
+        this.#pendingRegistrationsIndex = pendingRegistrationsIndex;
+    }
+
+    getPendingRouteIds() {
+        return Array.from(this.#pendingRegistrationsIndex.keys());
+    }
+
+    getPendingRegistrationsForRoute(parentId: string) {
+        return this.#pendingRegistrationsIndex.get(parentId) ?? [];
+    }
+
+    isManagedRoutesOutletPending() {
+        return this.#pendingRegistrationsIndex.has(ManagedRoutes.$name!);
     }
 }

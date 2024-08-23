@@ -18,6 +18,12 @@ const eventBus = new EventBus(options?: { logger? })
 - `options`: An optional object literal of options:
     - `logger`: An optional logger to facilitate debugging.
 
+### Methods
+
+- `addListener(eventName, callback, options?)`: Register the `callback` event listener for `eventName`.
+- `removeListener(eventName, callback, options?)`: Remove the `callback` event listener for `eventName`.
+- `dispatch(eventName, payload?)`: Dispatch an event to the listeners of `eventName`. 
+
 ## Usage
 
 ### Create an event bus instance

@@ -7,7 +7,6 @@ import { createRoot } from "react-dom/client";
 import { Remotes } from "../remotes.js";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
-import { sessionAccessor, sessionManager } from "./session.ts";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -16,15 +15,14 @@ import { version } from "useless-lib";
 console.log("[basic-sample] host:", version);
 
 const runtime = new FireflyRuntime({
-    loggers: [new ConsoleLogger()],
-    sessionAccessor
+    loggers: [new ConsoleLogger()]
 });
 
 const context: AppContext = {
     name: "Test app"
 };
 
-await registerLocalModules([registerShell(sessionManager, { host: "@basic/host" }), registerLayouts({ host: "@basic/host" }), registerHost, registerLocalModule], runtime, { context });
+await registerLocalModules([registerShell({ host: "@basic/host" }), registerLayouts({ host: "@basic/host" }), registerHost, registerLocalModule], runtime, { context });
 
 await registerRemoteModules(Remotes, runtime, { context });
 

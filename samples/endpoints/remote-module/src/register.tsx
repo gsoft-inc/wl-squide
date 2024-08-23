@@ -1,22 +1,10 @@
 import type { DeferredRegistrationData } from "@endpoints/shared";
 import type { DeferredRegistrationFunction, FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
 import { I18nextNavigationItemLabel } from "@squide/i18next";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { i18n } from "i18next";
 import type { ReactNode } from "react";
+import { QueryProvider } from "./QueryProvider.tsx";
 import { initI18next } from "./i18next.ts";
-
-export const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            refetchOnWindowFocus: false,
-            retry: failureCount => {
-                return failureCount <= 2;
-            }
-        }
-    }
-});
 
 interface ProvidersProps {
     children: ReactNode;
@@ -24,12 +12,9 @@ interface ProvidersProps {
 
 function Providers({ children }: ProvidersProps) {
     return (
-        <QueryClientProvider client={queryClient}>
+        <QueryProvider>
             {children}
-            {process.env.ISOLATED && (
-                <ReactQueryDevtools initialIsOpen={false} />
-            )}
-        </QueryClientProvider>
+        </QueryProvider>
     );
 }
 
@@ -45,7 +30,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
             };
         }
     }, {
-        parentName: "root-error-boundary"
+        parentName: "root-layout"
     });
 
     runtime.registerRoute({
@@ -87,7 +72,30 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
         parentPath: "/federated-tabs"
     });
 
+    runtime.registerRoute({
+        path: "/feature-b",
+        lazy: async () => {
+            const { FeatureBPage } = await import("./FeatureBPage.tsx");
+
+            return {
+                element: <Providers><FeatureBPage /></Providers>
+            };
+        }
+    });
+
+    runtime.registerRoute({
+        path: "/feature-c",
+        lazy: async () => {
+            const { FeatureCPage } = await import("./FeatureCPage.tsx");
+
+            return {
+                element: <Providers><FeatureCPage /></Providers>
+            };
+        }
+    });
+
     runtime.registerNavigationItem({
+        $key: "episodes-tab",
         $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="episodesTab" />,
         to: "/federated-tabs/episodes"
     }, {
@@ -95,6 +103,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
     });
 
     runtime.registerNavigationItem({
+        $key: "locations-tab",
         $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="locationsTab" />,
         to: "/federated-tabs/locations"
     }, {
@@ -102,36 +111,25 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
     });
 
     runtime.registerNavigationItem({
+        $key: "failing-tab",
         $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="failingTab" />,
         to: "/federated-tabs/failing"
     }, {
         menuId: "/federated-tabs"
     });
 
-    return ({ featureFlags } = {}) => {
-        if (!runtime.getSession()) {
-            throw new Error("The deferred registratons are broken again as they are executed before the protected data has been loaded.");
-        }
-
+    return ({ featureFlags }) => {
         if (featureFlags?.featureB) {
-            runtime.registerRoute({
-                path: "/feature-b",
-                lazy: () => import("./FeatureBPage.tsx")
-            });
-
             runtime.registerNavigationItem({
+                $key: "feature-b",
                 $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="featureBPage" />,
                 to: "/feature-b"
             });
         }
 
         if (featureFlags?.featureC) {
-            runtime.registerRoute({
-                path: "/feature-c",
-                lazy: () => import("./FeatureCPage.tsx")
-            });
-
             runtime.registerNavigationItem({
+                $key: "feature-c",
                 $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="featureCPage" />,
                 to: "/feature-c"
             });

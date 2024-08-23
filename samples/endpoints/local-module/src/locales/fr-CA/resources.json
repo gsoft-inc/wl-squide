@@ -16,8 +16,7 @@
     },
     "FeatureAPage": {
         "title": "Fonctionnalité A",
-        "servedBy": "Cette page est servi par <code>@endpoints/local-module</code>",
-        "message": "Cette page est uniquement disponible si la fonctionnalité <code>featureA</code> est activé."
+        "servedBy": "Cette page est servi par <code>@endpoints/local-module</code>"
     },
     "CharactersTab": {
         "title": "Personnages",

@@ -11,17 +11,34 @@ A runtime instance give modules access to functionalities such as routing, navig
 ## Reference
 
 ```ts
-const runtime = new FireflyRuntime(options?: { loggers?: [], plugins?: [], sessionAccessor?: () => {} })
+const runtime = new FireflyRuntime(options?: { mode?, useMsw?, loggers?, plugins? })
 ```
 
 ### Parameters
 
 - `options`: An optional object literal of options:
-    - `mode`: An optional mode to optimize Squide for `production`. Values are `"development"` (default) and `"production"`.
-    - `useMsw`: An optional boolean value indicating whether or not to create the runtime with MSW support.
+    - `mode`: An optional mode to optimize Squide for production. Values are `"development"` (default) and `"production"`.
+    - `useMsw`: An optional `boolean` value indicating whether or not to create the runtime with [Mock Service Work](https://mswjs.io/) (MSW) support.
     - `loggers`: An optional array of `Logger` instances.
-    - `plugins`: An optional array of custom plugin instances.
-    - `sessionAccessor`: An optional function returning the current session.
+    - `plugins`: An optional array of `Plugin` factory functions.
+
+### Methods
+
+- `registerRoute(route, options?)`: Register a route.
+- `registerNavigationItem(navigationItem, options?)`: Register a navigation item.
+- `getNavigationItems(menuId?)`: Retrieve the registered navigation items.
+- `registerRequestHandlers(handlers)`: Register the MSW request handlers.
+- `getPlugin(name)`: Retrieve the registered plugin by the specified `name`.
+
+### Getters
+
+- `mode`: Retrieve the runtime mode.
+- `routes`: Retrieve the registered routes.
+- `requestHandlers`: Retrieve the registered MSW request handlers.
+- `plugins`: Retrieve the registered plugins.
+- `logger`: Retrieve the runtime logger.
+- `eventBus`: Retrieve the runtime event bus.
+- `isMswEnabled`: Indicate whether or not MSW is enabled.
 
 ## Usage
 
@@ -29,16 +46,9 @@ const runtime = new FireflyRuntime(options?: { loggers?: [], plugins?: [], sessi
 
 ```ts
 import { ConsoleLogger, FireflyRuntime } from "@squide/firefly";
-import { LocalStorageSessionManager } from "@squide/fakes";
-import { type AppSession } from "@sample/shared";
-
-const sessionManager = new LocalStorageSessionManager();
 
 const runtime = new FireflyRuntime({
-    loggers: [new ConsoleLogger()],
-    sessionAccessor: () => {
-        return sessionManager.getSession();
-    };
+    loggers: [new ConsoleLogger()]
 });
 ```
 
@@ -70,14 +80,14 @@ if (runtime.isMswEnabled) {
 ### Register routes
 
 ```ts
-runtime.registerRoute(route, options?: {})
+runtime.registerRoute(route, options?: { hoist?, parentPath?, parentName? })
 ```
 
 - `route`: accept any properties of a React Router [Route](https://reactrouter.com/en/main/components/route) component with the addition of:
     - `$name`: An optional name for the route.
     - `$visibility`: An optional visibility indicator for the route. Accepted values are `"public"` or `"protected"`.
 - `options`: An optional object literal of options:
-    - `hoist`: An optional boolean value to register the route at the root of the router. The default value is `false`.
+    - `hoist`: An optional `boolean` value to register the route at the root of the router. The default value is `false`.
     - `parentPath`: An optional path of a parent route to register this new route under.
     - `parentName`: An optional name of a parent route to register this new route under.
 
@@ -93,7 +103,7 @@ runtime.registerRoute({
 
 ### Register an hoisted route
 
-Unlike a regular page, a hoisted page is added at the root of the router, outside of the host application's root layout, root error boundary and even root authentication boundary. This means that a hoisted page has full control over its rendering. To mark a route as hoisted, provide an `hoist` property to the route options.
+Unlike a regular route, a hoisted route is added at the root of the router, outside of the host application's root layout, root error boundary and even root authentication boundary. This means that a hoisted route has full control over its rendering. To mark a route as hoisted, provide an `hoist` property to the route options.
 
 ```tsx !#7
 import { Page } from "./Page.tsx";
@@ -107,10 +117,10 @@ runtime.registerRoute({
 ```
 
 !!!warning
-By declaring a page as hoisted, other parts of the application will not be isolated anymore from this page's failures and the page will not be protected anymore by the application authenticated boundary.
+By declaring a route as hoisted, other parts of the application will not be isolated anymore from this route's failures and the route will not be protected anymore by the application authenticated boundary.
 
-- To **avoid breaking the entire application** when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router's [errorElement](https://reactrouter.com/en/main/route/error-element) property for each hoisted page.
-- If the hoisted page requires an authentication, make sure to **wrap the page with an authentication boundary** or to handle the authentication within the page.
+- To **avoid breaking** the entire **application** when an hoisted route encounters unhandled errors, it is highly recommended to declare a React Router's [errorElement](https://reactrouter.com/en/main/route/error-element) property for each hoisted route.
+- If the hoisted route requires an authentication, make sure to **wrap** the route **with** an **authentication boundary** or to handle the authentication within the route.
 !!!
 
 ### Register a route with a different layout
@@ -122,7 +132,7 @@ import { RemoteErrorBoundary } from "./RemoteErrorBoundary.tsx";
 
 runtime.registerRoute({
     path: "/page-1",
-    // Will render the page inside the "RemoteLayout" rather than the "RootLayout".
+    // Will render the route inside the "RemoteLayout" rather than the "RootLayout".
     // For more information about React Router's nested routes, view https://reactrouter.com/en/main/start/tutorial#nested-routes.
     element: <RemoteLayout />,
     children: [
@@ -145,7 +155,7 @@ runtime.registerRoute({
 
 ### Register a public route
 
-When registering a route, a hint can be provided, indicating if the route is intended to be displayed as a `public` or `protected` route. This is especially useful when dealing with code that conditionally fetch data for protected routes (e.g. a session).
+When registering a route, a hint can be provided, indicating if the route is intended to be displayed as a `"public"` or `"protected"` route. This is especially useful when dealing with code that conditionally fetch data for protected routes (e.g. a session).
 
 ```tsx !#4,8
 import { Page } from "./Page.tsx";
@@ -220,7 +230,7 @@ runtime.registerRoute({
 
 ### Register nested routes under an existing route
 
-React router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) enable applications to render nested layouts at various points within the router tree. This is quite helpful for federated applications as it enables composable and decoupled UI.
+React router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) enable applications to render nested layouts at various points within the router tree. This is quite helpful for modular applications as it enables composable and decoupled UI.
 
 To fully harness the power of nested routes, the `registerRoute` function allows a route to be registered **under any** previously **registered route**, even if that route was registered by another module. The only requirement is that the **parent route** must have been registered with the `registerRoute` function.
 
@@ -233,7 +243,7 @@ runtime.registerRoute({
     path: "/layout/page-1",
     element: <Page />
 }, { 
-    parentPath: "/layout" // Register the page under an existing route having "/layout" as its "path".
+    parentPath: "/layout" // Register the route under an existing route having "/layout" as its "path".
 });
 ```
 
@@ -246,19 +256,19 @@ runtime.registerRoute({
     path: "/page-1",
     element: <Page />
 }, { 
-    parentName: "error-boundary" // Register the page under an existing route having "error-boundary" as its "name".
+    parentName: "error-boundary" // Register the route under an existing route having "error-boundary" as its "name".
 });
 ```
 
-[!ref text="Learn more about using nested routes for federated tabs"](../../guides/federated-tabs.md)
+[!ref text="Learn more about using nested routes for federated tabs"](../../guides/use-federated-tabs.md)
 
 !!!info
-Likewise any other React Router routes, the `path` property of a page rendered under an existing parent route must be an absolute path. For example, if a parent route `path` is `/layout`, the `path` property of a page rendered under that parent route and responding to the `/page-1` url, should be `/layout/page-1`.
+Likewise any other React Router routes, the `path` property of a route rendered under an existing parent route must be an absolute path. For example, if a parent route `path` is `/layout`, the `path` property of a route rendered under that parent route and responding to the `/page-1` url, should be `/layout/page-1`.
 !!!
 
 ### Retrieve routes
 
-A federated application routes are accessible from a `FireflyRuntime` instance, but keep in mind that the preferred way to retrieve the routes is with the [useRoutes](./useRoutes) hook.
+The registered routes are accessible from a `FireflyRuntime` instance, but keep in mind that the preferred way to retrieve the routes is with the [useRoutes](./useRoutes) hook.
 
 ```tsx
 const routes = runtime.routes;
@@ -267,7 +277,7 @@ const routes = runtime.routes;
 ### Register navigation items
 
 ```ts
-runtime.registerNavigationItem(item, options?: {})
+runtime.registerNavigationItem(item, options?: { menuId? })
 ```
 
 - `item`: `NavigationSection | NavigationLink`.
@@ -276,19 +286,32 @@ runtime.registerNavigationItem(item, options?: {})
 
 A Squide navigation item can either be a `NavigationLink` or a `NavigationSection`. Both types can be intertwined to create a multi-level menu hierarchy. A `NavigationSection` item is used to setup a new level while a `NavigationLink` define a link.
 
-- `NavigationSection` accept the following properties:
-    - `$label`: The section text.
-    - `$priority`: An order priority affecting the position of the item in the menu (higher first)
-    - `$additionalProps`: Additional properties to be forwarded to the section renderer.
-    - `children`: The section content.
-- `NavigationLink` accept any properties of a React Router [Link](https://reactrouter.com/en/main/components/link) component with the addition of:
-    - `$label`: The link text.
-    - `$priority`: An order priority affecting the position of the item in the menu (higher first)
-    - `$additionalProps`: Additional properties to be forwarded to the link renderer.
+#### `NavigationLink`
+
+Accept any properties of a React Router [Link](https://reactrouter.com/en/main/components/link) component with the addition of:
+- `$key`: An optional key identifying the link. Usually used as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
+- `$label`: The link text.
+- `$canRender`: An optional function accepting an object and returning a `boolean` indicating whether or not the link should be rendered.
+- `$priority`: An order priority affecting the position of the item in the menu (higher first)
+- `$additionalProps`: Additional properties to be forwarded to the link renderer.
+
+#### `NavigationSection`
+
+- `$key`: An optional key identifying the section. Usually used as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
+- `$label`: The section text.
+- `$canRender`: An optional function accepting an object and returning a `boolean` indicating whether or not the section should be rendered.
+- `$priority`: An order priority affecting the position of the item in the menu (higher first)
+- `$additionalProps`: Additional properties to be forwarded to the section renderer.
+- `children`: The section content.
+
+!!!info
+We recommend always providing a `$key` property for a navigation item, as it ensures the menus doesn't flicker when [deferred registrations](../registration/registerLocalModules.md#defer-the-registration-of-navigation-items) are updated. Be sure to use a unique key.
+!!!
 
 ```ts
 // Register a new navigation item from a local or remote module.
 runtime.registerNavigationItem({
+    $key: "page-1",
     $label: "Page 1",
     to: "/page-1"
 });
@@ -307,24 +330,29 @@ runtime.registerNavigationItem({
 //  --- Nested Link
 //  Link
 runtime.registerNavigationItem({
+    $ley: "section",
     $label: "Section",
     children: [
         {
-            label: "Nested Section",
+            $key: "nested-section",
+            $label: "Nested Section",
             children: [
                 {
+                    $key: "nested-nested-link",
                     $label: "Nested Nested Link",
                     to: "#"
                 }
             ]
         },
         {
+            $key: "nested-link",
             $label: "Nested Link",
             to: "#"
         }
     ]
 },
 {
+    $key: "link",
     $label: "Link",
     to: "#"
 });
@@ -339,14 +367,16 @@ A `$priority` property can be added to a navigation item to affect it's position
 - If an item have a priority `> 0`, the item will be positioned before any other items with a lower priority (or without an explicit priority value).
 - If an item have a priority `< 0`, the item will be positioned after any other items with a higher priority (or without an explicit priority value).
 
-```ts !#3,11
+```ts !#4,13
 runtime.registerNavigationItem({
+    $key: "about",
     $label: "About",
     $priority: 10,
     to: "/about"
 });
 
 runtime.registerNavigationItem({
+    $key: "home",
     $label: "Home",
     // Because the "Home" navigation item has an higher priority, it will be rendered
     // before the "About" navigation item.
@@ -357,8 +387,9 @@ runtime.registerNavigationItem({
 
 ### Use dynamic segments
 
-```ts !#3
+```ts !#4
 runtime.registerNavigationItem({
+    $key: "user-profile",
     $label: "User profile",
     to: "/user-profile/:userId"
 });
@@ -368,10 +399,11 @@ runtime.registerNavigationItem({
 
 ### Use a React element as navigation item label
 
-```tsx !#4-7
+```tsx !#5-8
 import { QuestionMarkIcon } from "@sample/icons";
 
 runtime.registerNavigationItem({
+    $key: "about",
     $label: (
         <QuestionMarkIcon />
         <span>About</span>
@@ -382,8 +414,9 @@ runtime.registerNavigationItem({
 
 ### Style a navigation item
 
-```ts !#3-5
+```ts !#4-6
 runtime.registerNavigationItem({
+    $key: "about",
     $label: "About",
     style: {
         backgroundColor: "#000"
@@ -394,32 +427,50 @@ runtime.registerNavigationItem({
 
 ### Open a navigation link in a new tab
 
-```ts !#3
+```ts !#4
 runtime.registerNavigationItem({
+    $key: "about",
     $label: "About",
     target: "_blank",
     to: "/about"
 });
 ```
 
+### Conditionally render a navigation item
+
+```ts !#4-6
+runtime.registerNavigationItem({
+    $key: "about",
+    $label: "About",
+    $canRender: (index: number) => {
+        return index % 2 == 0;
+    },
+    to: "/about"
+});
+```
+
+> It's the responsibility of the code rendering the menu to execute the navigation items `$canRender` function and conditionally render the items based on the return value.
+
 ### Render additional props on a navigation item
 
-```ts !#3-5
+```ts !#4-6
 runtime.registerNavigationItem({
-        $label: "About",
-        $additionalProps: {
-            highlight: true
-        },
-        to: "/about"
-    });
+    $key: "about",
+    $label: "About",
+    $additionalProps: {
+        highlight: true
+    },
+    to: "/about"
+});
 ```
 
 ### Register navigation items for a specific menu
 
 By default, every navigation item registered with the `registerNavigationItem` function is registered as part of the `root` navigation menu. To register a navigation item for a different navigation menu, specify a `menuId` property when registering the items.
 
-```tsx !#5
+```tsx !#6
 runtime.registerNavigationItem({
+    $key: "page-1",
     $label: "Page 1",
     to: "/layout/page-1"
 }, { 
@@ -429,7 +480,7 @@ runtime.registerNavigationItem({
 
 ### Retrieve navigation items
 
-A federated application navigation items are accessible from a `FireflyRuntime` instance, but keep in mind that the preferred way to retrieve the navigation items is with the [useNavigationItems](./useNavigationItems) hook.
+The registered navigation items are accessible from a `FireflyRuntime` instance, but keep in mind that the preferred way to retrieve the navigation items is with the [useNavigationItems](./useNavigationItems) hook.
 
 By default, the `getNavigationItems` will return the navigation items for the `root` menu:
 
@@ -481,12 +532,14 @@ runtime.eventBus.dispatch("write-to-host", "Hello host!");
 
 ### Register a plugin
 
+The plugin factory function receives the `Runtime` instance as parameter.
+
 ```ts !#5
 import { FireflyRuntime } from "@squide/firefly";
 import { MyPlugin } from "@sample/my-plugin";
 
 const runtime = new FireflyRuntime({
-    plugins: [new MyPlugin()]
+    plugins: [x => new MyPlugin(x)]
 });
 ```
 
@@ -502,12 +555,3 @@ const plugin = runtime.getPlugin(MyPlugin.name) as MyPlugin;
 ```
 
 [!ref Learn more about plugins](../plugins/plugin.md)
-
-### Retrieve the current session
-
-```ts
-import type { AppSession } from "@sample/shared";
-
-// If no sessionAccessor has been provided, an error is thrown.
-const session = runtime.getSession() as AppSession;
-```

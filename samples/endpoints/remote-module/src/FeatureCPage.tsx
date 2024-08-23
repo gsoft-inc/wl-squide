@@ -1,5 +1,6 @@
-import { useTelemetryService } from "@endpoints/shared";
+import { fetchJson, useTelemetryService } from "@endpoints/shared";
 import { useI18nextInstance } from "@squide/i18next";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { i18NextInstanceKey } from "./i18next.ts";
@@ -11,8 +12,12 @@ export function FeatureCPage() {
     const telemetryService = useTelemetryService();
 
     useEffect(() => {
-        telemetryService?.track("Mounting FeatureBPage from remote-1.");
+        telemetryService?.track("Mounting FeatureCPage from remote-1.");
     }, [telemetryService]);
+
+    const { data } = useSuspenseQuery({ queryKey: ["/api/feature-c"], queryFn: () => {
+        return fetchJson("/api/feature-c");
+    } });
 
     return (
         <>
@@ -25,14 +30,7 @@ export function FeatureCPage() {
                     components={{ code: <code /> }}
                 />
             </p>
-            <p>
-                <Trans
-                    i18n={i18nextInstance}
-                    i18nKey="message"
-                    t={t}
-                    components={{ code: <code /> }}
-                />
-            </p>
+            <p dangerouslySetInnerHTML={{ __html: data.message }}></p>
         </>
     );
 }

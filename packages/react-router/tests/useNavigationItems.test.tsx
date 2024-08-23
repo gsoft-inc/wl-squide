@@ -2,10 +2,10 @@ import { RuntimeContext } from "@squide/core";
 import { renderHook } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { ReactRouterRuntime } from "../src/reactRouterRuntime.ts";
-import { useNavigationItems } from "../src/useNavigationItems.ts";
+import { useRuntimeNavigationItems } from "../src/useRuntimeNavigationItems.ts";
 
-function renderWithRuntime(runtime: ReactRouterRuntime, menuId?: string) {
-    return renderHook(() => useNavigationItems({ menuId }), {
+function renderUseNavigationItemsHook(runtime: ReactRouterRuntime, menuId?: string) {
+    return renderHook(() => useRuntimeNavigationItems({ menuId }), {
         wrapper: ({ children }: { children?: ReactNode }) => (
             <RuntimeContext.Provider value={runtime}>
                 {children}
@@ -46,7 +46,7 @@ test("when no menu id is specified, returns all the registered navigation items 
         menuId: "menu-2"
     });
 
-    const { result } = renderWithRuntime(runtime);
+    const { result } = renderUseNavigationItemsHook(runtime);
 
     expect(result.current.length).toBe(3);
 });
@@ -83,7 +83,7 @@ test("when a menu id is specified, returns all the registered navigation items f
         menuId: "menu-2"
     });
 
-    const { result } = renderWithRuntime(runtime, "menu-1");
+    const { result } = renderUseNavigationItemsHook(runtime, "menu-1");
 
     expect(result.current.length).toBe(1);
 });
@@ -96,7 +96,7 @@ test("returned array is immutable", () => {
         to: "/foo"
     });
 
-    const { result, rerender } = renderWithRuntime(runtime);
+    const { result, rerender } = renderUseNavigationItemsHook(runtime);
 
     const array1 = result.current;
 

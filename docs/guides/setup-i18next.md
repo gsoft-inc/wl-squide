@@ -4,7 +4,7 @@ order: 820
 
 # Setup i18next
 
-Most of the applications that forms the Workleap platform are either already bilingual or will be in the future. To help feature teams with localized resources, Squide provides a native [plugin](../reference/i18next/i18nextPlugin.md) designed to adapt the [i18next](https://www.i18next.com/) library for federated applications.
+Most Workleap's platform application are either already bilingual or will be in the future. To help feature teams deal with localized resources, Squide provides a native [plugin](../reference/i18next/i18nextPlugin.md) designed to adapt the [i18next](https://www.i18next.com/) library for federated applications.
 
 !!!warning
 The examples in this guide load all the resources from single localized resources files. For a real Workleap application, you probably want to spread the resources into multiple files and load the files with a i18next [backend plugin](https://www.i18next.com/overview/plugins-and-utils#backends).
@@ -36,7 +36,7 @@ While you can use any package manager to develop an application with Squide, it 
 
 Then, update the host application boostrapping code to register an instance of the [i18nextplugin](../reference/i18next/i18nextPlugin.md) with the [FireflyRuntime](../reference/runtime/runtime-class.md) instance:
 
-```tsx !#16,19,22 host/src/bootstrap.tsx
+```tsx !#13-22 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { App } from "./App.tsx";
@@ -48,17 +48,17 @@ const Remotes: RemoteDefinition[] = [
     { url: name: "remote1" }
 ];
 
-// In this example:
-// - The supported languages are "en-US" and "fr-CA"
-// - The fallback language is "en-US"
-// - The URL querystring parameter to detect the current language is "language"
-const i18nextPlugin = new i18nextPlugin(["en-US", "fr-CA"], "en-US", "language");
-
-// Always detect the user language early on.
-i18nextPlugin.detectUserLanguage();
-
 const runtime = new FireflyRuntime({
-    plugins: [i18nextPlugin]
+    plugins: [x => {
+        // In this example:
+        // - The supported languages are "en-US" and "fr-CA"
+        // - The fallback language is "en-US"
+        // - The URL querystring parameter to detect the current language is "language"
+        const i18nextPlugin = new i18nextPlugin(["en-US", "fr-CA"], "en-US", "language", undefined, x);
+
+        // Always detect the user language early on.
+        i18nextPlugin.detectUserLanguage();
+    }],
     loggers: [new ConsoleLogger()]
 });
 
@@ -99,7 +99,7 @@ Next, create the localized resource files for the `en-US` and `fr-CA` locales:
 
 ### Register an i18next instance
 
-Then, update the [local module](../reference/registration/registerLocalModules.md) register function to create and register an instance of `i18next` with the `i18nextPlugin` plugin instance:
+Then, update the host application local module's [register](../reference/registration/registerLocalModules.md) function to create and register an `i18next` instance with the retrieved `i18nextPlugin` instance. Due to how the internals of `i18next` works, each module (including the host application) must create its own instance of the third-party library. `i18nextPlugin` will handle synchronizing the language changes across all `i18next` instances:
 
 ```tsx !#12-14,16-23,26 host/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -138,7 +138,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 };
 ```
 
-In the previous code sample, notice that the `i18next` instance has been initialized with the current language of the `i18nextPlugin` instance by providing the `lng` option. If the user language has been detected during bootstrapping, the `i18next` instance will be initialized with the user language which has been deduced from either a `?language` querystring parameter or the user navigator language settings. Otherwise, the application instance will be initialized with the fallback language.
+In the previous code sample, notice that the `i18next` instance has been initialized with the current language of the `i18nextPlugin` instance by providing the `lng` option. If the user language has been detected during bootstrapping, the `i18next` instance will then be initialized with the user language which has been deduced from either a `?language` querystring parameter or the user navigator language settings. Otherwise, the application instance will be initialized with the fallback language, which is `en-US` for this guide.
 
 ### Localize the home page resources
 
@@ -161,7 +161,7 @@ export function HomePage() {
 
 ### Update the webpack configurations
 
-Finally, update the webpack development and build configurations to activate the `i18next` feature:
+Finally, update the webpack development and build configurations to activate the `i18next` feature. Enabling this feature will configure the `i18next` libraries as [shared dependencies](./add-a-shared-dependency.md):
 
 ```js !#7-9 host/webpack.dev.js
 // @ts-check
@@ -249,7 +249,7 @@ Notice that this time, a standard `navigationItems` namespace has been added to 
 
 ### Register an i18next instance
 
-Then, update the [local module](../reference/registration/registerLocalModules.md) register function to create and register an instance of `i18next` with the `i18nextPlugin` plugin instance:
+Then, update the remote module's [register](../reference/registration/registerLocalModules.md) function to create and register an instance of `i18next` with the `i18nextPlugin` plugin instance. Similarly to the [host application](#register-an-i18next-instance), due to how the internals of `i18next` works, this local module requires to register its own instance of the third-party library:
 
 ```tsx !#10,12-14,16-23,26 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -295,7 +295,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 ### Localize the navigation item labels
 
-Then, localize the navigation items labels using the [I18nextNavigationItemLabel](../reference/i18next/I18nextNavigationItemLabel.md) component. Since for this example, the resources are in the `navigationItems` namespace, there's no need to specify a `namespace` property on the components as it will be inferred:
+Then, localize the navigation items labels using the [I18nextNavigationItemLabel](../reference/i18next/I18nextNavigationItemLabel.md) component. Since this example resources are in the `navigationItems` namespace, there's no need to specify a `namespace` property on the components as it will be inferred:
 
 ```tsx !#37 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -342,7 +342,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 ### Localize the page resources
 
-Then, update the `HomePage` component to use the newly created localized resource:
+Then, update the `Page` component to use the newly created localized resource:
 
 ```tsx !#6,7,10 remote-module/src/Page.tsx
 import { useI18nextInstance } from "@squide/i18next";
@@ -361,7 +361,7 @@ export function Page() {
 
 ### Update the webpack configurations
 
-Finally, update the webpack development and build configurations to activate the `i18next` feature:
+Finally, update the webpack development and build configurations to activate the `i18next` feature. Enabling this feature will configure the `i18next` libraries as [shared dependencies](./add-a-shared-dependency.md):
 
 ```js !#7-9 remote-module/webpack.dev.js
 // @ts-check
@@ -405,70 +405,98 @@ Follow the same steps as for a [remote module](#setup-a-remote-module).
 
 ## Integrate a backend language setting
 
-For many applications, the displayed language is expected to be derived from an application specific user "preferred language" setting stored in a database on the backend. Therefore, the frontend remains unaware of this setting value until the user session is loaded.
+For many applications, the displayed language is expected to be derived from an application specific user "preferred language" setting stored in a remote database. Therefore, the frontend remains unaware of this setting value until the user session is loaded.
 
 Hence, the strategy to select the displayed language should be as follow:
 
-1. Utilize the language detected at bootstrapping for anonymous users (with the `detectUserLanguage` function).
+1. Use the language detected at bootstrapping for anonymous users (with the [detectUserLanguage](../reference/i18next/i18nextPlugin.md#detect-the-user-language) function).
 
 2. Upon user authentication and session loading, if a "preferred language" setting is available from the session data, update the displayed language to reflect this preference.
 
-To implement this strategy, use the [useChangeLanguage](../reference/i18next/useChangeLanguage.md) hook and the [onLoadProtectedData](../reference/routing/appRouter.md#load-protected-data) handler of the [AppRouter](../reference/routing/appRouter.md) component:
+This strategy can be implemented with the help of the [useChangeLanguage](../reference/i18next/useChangeLanguage.md) and [useProtectedDataQueries](../reference/tanstack-query/useProtectedDataQueries.md) hooks:
 
-```tsx !#17,29,31-33,40-41 host/src/App.tsx
-import { AppRouter } from "@squide/firefly";
-import { useChangeLanguage, useI18nextInstance } from "@squide/i18next";
-import { useCallback } from "react";
-import { useTranslation } from "react-i18next";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+```tsx !#6-27,29,35 host/src/App.tsx
+import { AppRouter, useProtectedDataQueries, useIsBootstrapping, useChangeLanguage } from "@squide/firefly";
+import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
+import { ApiError, isApiError, type Session } from "@sample/shared";
 
-async function fetchProtectedData(changeLanguage: (language: string) => void, setIsSessionLoaded: (isLoaded: boolean) => void, signal: AbortSignal) {
-    const response = await fetch("/api/session", {
-        signal
-    });
-    
-    if (response.ok) {
-        const session = await response.json();
+function BootstrappingRoute() {
+    const [session] = useProtectedDataQueries([
+        {
+            queryKey: ["/api/session"],
+            queryFn: async () => {
+                const response = await fetch("/api/session");
 
-        // When the session has been retrieved, change the displayed language to match
-        // the preferred language setting.
-        changeLanguage(session.preferredLanguage);
+                if (!response.ok) {
+                    throw new ApiError(response.status, response.statusText);
+                }
 
-        setIsSessionLoaded(true);
-    }
-}
+                const data = await response.json();
 
-export function App() {
-    const [isSessionLoaded, setIsSessionLoaded] = useState(false);
+                const result: Session = {
+                    user: {
+                        name: data.username,
+                    }
+                };
 
-    const i18nextInstance = useI18nextInstance("host");
-    const { t } = useTranslation("App", { i18n: useI18nextInstance });
+                return result;
+            }
+        }
+    ], error => isApiError(error) && error.status === 401);
 
     const changeLanguage = useChangeLanguage();
 
-    const handleLoadProtectedData = useCallback((signal: AbortSignal) => {
-        return fetchProtectedData(changeLanguage, setIsSessionLoaded, signal);
-    }, [changeLanguage]);
+    useEffect(() => {
+        if (session) {
+            // When the session has been retrieved, update the language to match the user
+            // preferred language.
+            changeLanguage(session.user.preferredLanguage);
+        }
+    }, [session, changeLanguage]);
 
+    if (useIsBootstrapping()) {
+        return <div>Loading...</div>;
+    }
+
+    return <Outlet />;
+}
+
+export function App() {
     return (
-        <AppRouter
-            fallbackElement={<div>{t("loadingMessage")}</div>}
-            errorElement={<div>{t("errorMessage")}</div>}
-            waitForMsw={false}
-            onLoadProtectedData={handleLoadProtectedData}
-            isProtectedDataLoaded={isSessionLoaded}
+        <AppRouter 
+            waitForMsw
+            waitForProtectedData
         >
-            {(routes, providerProps) => (
-                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
-            )}
+            {({ rootRoute, registeredRoutes, routerProviderProps }) => {
+                return (
+                    <RouterProvider
+                        router={createBrowserRouter([
+                            {
+                                element: rootRoute,
+                                children: [
+                                    {
+                                        element: <BootstrappingRoute />,
+                                        children: registeredRoutes
+                                    }
+                                ]
+                            }
+                        ])}
+                        {...routerProviderProps}
+                    />
+                );
+            }}
         </AppRouter>
     );
 }
 ```
 
+!!!info
+The previous code sample assumes that your `@sample/shared` project includes the primitives created in the [Add authentication](./add-authentication.md) guide as well as the session Mock Server Worker request handlers.
+!!!
+
 ## Use the Trans component
 
-The [Trans](https://react.i18next.com/latest/trans-component) component is valuable for scenarios that involve interpolation to render a localized resource. To use the `Trans` component with Squide, pair the component with an `i18next` instance retrieved from [useI18nextInstance](../reference/i18next/useI18nextInstance.md) hook:
+The [Trans](https://react.i18next.com/latest/trans-component) component is useful for scenarios involving interpolation to render a localized resources. To use the `Trans` component with Squide, pair it with an `i18next` instance retrieved from [useI18nextInstance](../reference/i18next/useI18nextInstance.md) hook:
 
 ```tsx !#5,9,11
 import { useI18nextInstance } from "@squide/i18next";
@@ -511,7 +539,7 @@ Start the development servers using the `dev` script. The homepage and the navig
 If you are experiencing issues with this guide:
 
 - Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each `i18next` instance that is being registered and another log everytime the language is changed:
-    - `[squide] Registered a new i18next instance with key "remote-module": ...`
+    - `[squide] Registered a new i18next instance with key "remote-module".`
     - `[squide] The language has been changed to "fr-CA".`
 - Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/endpoints).
 - Refer to the [troubleshooting](../troubleshooting.md) page.

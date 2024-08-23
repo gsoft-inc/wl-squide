@@ -12,9 +12,9 @@ export function mergeDeferredRegistrations<TData>(candidates: (DeferredRegistrat
         return deferredRegistrations[0];
     }
 
-    const mergeFunction: DeferredRegistrationFunction<TData> = async data => {
+    const mergeFunction: DeferredRegistrationFunction<TData> = async (data, state) => {
         for (const x of deferredRegistrations) {
-            await x(data);
+            await x(data, state);
         }
     };
 

@@ -10,8 +10,10 @@
         "paidLabel": "Payé",
         "notPaidLabel": "Non payé",
         "userLabel": "Utilisateur",
-        "disconnectButtonLabel": "Se déconnecter",
-        "loadingMessage": "Chargement..."
+        "updateSessionButtonLabel": "Modifier la session",
+        "shuffleFeatureFlagsLabel": "Brasser les feature flags",
+        "deactivateFeatureBLabel": "Désactiver la feature B",
+        "disconnectButtonLabel": "Se déconnecter"
     },
     "ModuleErrorBoundary": {
         "title": "Erreur non gérée",

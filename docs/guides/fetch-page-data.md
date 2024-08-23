@@ -8,11 +8,11 @@ order: 975
 Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) guide.
 !!!
 
-There are various approaches to fetching data for pages. At Workleap, our preference is usually to develop a dedicated endpoint per page, returning a denormalized document specifically tailored for that page. We rely on server state as our singular source of truth and leverage [React Query](https://tanstack.com/query/latest/) to manage data fetching and ensure our data remains up-to-date.
+There are various approaches to fetching data for pages. At Workleap, our preference is to develop a backend for frontend (BFF) with a **dedicated endpoint per page**, returning a **data** structure specifically **tailored** for that **page**. We rely on **server state** as our single **source of truth** and leverage [TanStack Query](https://tanstack.com/query/latest/) to manage data fetching.
 
-Although this approach works well, a few adjustments are necessary when transitioning from a monolithic application to a federated application.
+Although this approach works well, a few adjustments are necessary for modular applications.
 
-## Install React Query
+## Install TanStack Query
 
 First, open a terminal at the root of the module and install the following packages:
 
@@ -41,7 +41,7 @@ While you can use any package manager to develop an application with Squide, it 
 
 Then, instanciate a [QueryClient](https://tanstack.com/query/latest/docs/react/reference/QueryClient) instance in the module registration function and wrap the routes element with a [QueryClientProvider](https://tanstack.com/query/latest/docs/react/reference/QueryClientProvider):
 
-```tsx !#7,12 src/register.tsx
+```tsx !#7,12 remote/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Page } from "./Page.tsx";
@@ -57,6 +57,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
+        $key: "page",
         $label: "Page",
         to: "/page"
     });
@@ -64,14 +65,14 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 ```
 
 !!!info
-To minimize unexpected situations and faciliate maintenance, the React Query cache shouldn't be shared between the host application and the modules. As the React Query cache is located in the `QueryClient`, both the host application and the modules should instantiate their own `QueryClient` instance.
+To minimize unexpected situations and faciliate maintenance, the TanStack Query cache shouldn't be shared between the host application and the modules. As the TanStack Query cache is located in the `QueryClient`, both the host application and the modules should instantiate their own `QueryClient` instance.
 !!!
 
 ## Create a component for providers
 
 If the module register multiple routes, to prevent duplicating registration code, you can create a `Providers` component:
 
-```tsx !#9-15,20 src/register.tsx
+```tsx !#9-15,20 remote/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Page } from "./Page.tsx";
@@ -95,6 +96,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
+        $key: "page",
         $label: "Page",
         to: "/page"
     });
@@ -103,11 +105,11 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 ## Setup the development tools
 
-To faciliate development, React Query provides [devtools](https://tanstack.com/query/latest/docs/react/devtools) to help visualize all of the inner workings of React Query.
+To faciliate development, TanStack Query provides [devtools](https://tanstack.com/query/latest/docs/react/devtools) to help visualize all of the inner workings of TanStack Query.
 
-However, the React Query devtools has not been developed to handle a federated application with multiple `QueryClient` instances. To use the devtools, you must define a `ReactQueryDevtools` component for each `QueryClient` instance:
+However, the TanStack Query devtools has not been developed to handle a federated application with multiple `QueryClient` instances. To use the devtools, you must define a `ReactQueryDevtools` component for each `QueryClient` instance:
 
-```tsx !#14 src/register.tsx
+```tsx !#14 remote/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -133,15 +135,16 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
+        $key: "page",
         $label: "Page",
         to: "/page"
     });
 }
 ```
 
-Then, depending on which page of the application has been rendered, a distinct devtools instance will be accessible. For a better experience, we recommend activating the React Query devtools exclusively when developing a module [in isolation](./develop-a-module-in-isolation.md):
+Then, depending on which page of the application has been rendered, a distinct devtools instance will be accessible. For a better experience, we **recommend activating** the TanStack Query **devtools** exclusively when **developing** a **module** [in isolation](./develop-a-module-in-isolation.md):
 
-```tsx !#14-16 src/register.tsx
+```tsx !#14-16 remote/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -169,6 +172,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
+        $key: "page",
         $label: "Page",
         to: "/page"
     });
@@ -179,7 +183,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 Now, let's fetch some data. First, add a [Mock Service Worker](https://mswjs.io/) (MSW) request handler to the local module:
 
-```ts mocks/handlers.ts
+```ts remote/mocks/handlers.ts
 import { HttpResponse, http, type HttpHandler } from "msw";
 
 export const requestHandlers: HttpHandler[] = [
@@ -199,7 +203,7 @@ export const requestHandlers: HttpHandler[] = [
 
 Then, register the request handler using the module registration function:
 
-```tsx !#7 src/register.tsx
+```tsx !#7 remote/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly"; 
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
@@ -215,7 +219,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
 
 Then, update the `Page` component to fetch and render the data with `useSuspenseQuery`:
 
-```tsx !#10-15 src/Page.tsx
+```tsx !#10-14 remote/src/Page.tsx
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 interface Character {
@@ -227,10 +231,9 @@ interface Character {
 export function Page() {
     const { data: characters } = useSuspenseQuery({ queryKey: ["/api/characters"], queryFn: () => {
         const response = await fetch("/api/characters");
-        const data = await response.json();
-
-        return data;
-    } });
+        
+        return await response.json();
+    }});
 
     return (
         <div>
@@ -270,9 +273,9 @@ export function RootLayout() {
 
 ## Try it :rocket:
 
-Start the local module in a development environment using the `dev-isolated` script. If you haven't completed the [develop a module in isolation](./develop-a-module-in-isolation.md) guide, use the `dev` script instead and skip the part about React Query devtools. Then, navigate to the `/page` page. 
+Start the local module in a development environment using the `dev-isolated` script. If you haven't completed the [develop a module in isolation](./develop-a-module-in-isolation.md) guide, use the `dev` script instead and skip the part about TanStack Query devtools. Then, navigate to the `/page` page. 
 
-You should notice that the character's data is being fetch from the MSW request handler and rendered on the page. Additionally, you should notice that the React Query devtools are available (a ribbon at the bottom right corner).
+You should notice that the character's data is being fetch from the MSW request handler and rendered on the page. Additionally, you should notice that the TanStack Query devtools are available (a ribbon at the bottom right corner).
 
 #### Troubleshoot issues
 

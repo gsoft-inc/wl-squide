@@ -4,7 +4,7 @@ order: 1000
 
 # Setup Mock Service Worker
 
-To speed up frontend development and encourage an [API first](https://swagger.io/resources/articles/adopting-an-api-first-approach/) approach, Squide has built-in support for [Mock Service Worker](https://mswjs.io/) (MSW). MSW offers an API to host fake endpoints directly in the browser. This means that unlike alternative solutions, it doesn't require running an additional process to host fake endpoints.
+To speed up frontend development and encourage an [API first](https://swagger.io/resources/articles/adopting-an-api-first-approach/) approach, Squide has built-in support for [Mock Service Worker](https://mswjs.io/) (MSW). MSW offers an API to host fake endpoints directly in the browser. This means that unlike alternative solutions, it doesn't require running an additional process.
 
 ## Setup the host application
 
@@ -51,7 +51,7 @@ While you can use any package manager to develop an application with Squide, it 
 
 Then, update the `dev` PNPM script to define with [cross-env](https://www.npmjs.com/package/cross-env) an `USE_MSW` environment variable that will [conditionally include MSW code](https://mswjs.io/docs/integrations/browser#conditionally-enable-mocking) into the application bundles:
 
-```json package.json
+```json host/package.json
 {
     "scripts": {
         "dev": "cross-env USE_MSW=true webpack serve --config webpack.dev.js"
@@ -61,7 +61,7 @@ Then, update the `dev` PNPM script to define with [cross-env](https://www.npmjs.
 
 Then, update the development [webpack](https://webpack.js.org/) configuration file to include the `USE_MSW` environment variable into the application bundles:
 
-```js !#14 webpack.dev.js
+```js !#14 host/webpack.dev.js
 // @ts-check
 
 import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
@@ -99,13 +99,15 @@ import { setupWorker } from "msw/browser";
 export function startMsw(moduleRequestHandlers: RequestHandler[]) {
     const worker = setupWorker(...moduleRequestHandlers);
 
-    return worker.start();
+    return worker.start({
+        onUnhandledRequest: "bypass"
+    });
 }
 ```
 
-Then, update the bootstrapping code to [start the service](https://mswjs.io/docs/integrations/browser#setup) and [mark MSW as started](../reference/msw/setMswAsStarted.md) if MSW is enabled:
+Then, update the bootstrapping code to [start the service](https://mswjs.io/docs/integrations/browser#setup) and [set MSW as ready](../reference/msw/setMswAsReady.md) if MSW is enabled:
 
-```tsx !#20-30 host/src/bootstrap.tsx
+```tsx !#20-34 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { App } from "./App.tsx";
@@ -131,10 +133,14 @@ if (runtime.isMswEnabled) {
     const startMsw = (await import("../mocks/browser.ts")).startMsw;
 
     // Will start MSW with the modules request handlers.
-    startMsw(runtime.requestHandlers).then(() => {
-        // Indicate that MSW has been started and the routes can now be safely rendered.
-        setMswAsStarted();
-    });
+    startMsw(runtime.requestHandlers)
+        .then(() => {
+            // Indicate that MSW is ready and the routes can now be safely rendered.
+            setMswAsReady();
+        })
+        .catch((error: unknown) => {
+            consoleLogger.debug("[host-app] An error occured while starting MSW.", error);
+        });
 }
 
 const root = createRoot(document.getElementById("root")!);
@@ -146,24 +152,34 @@ root.render(
 );
 ```
 
+!!!info
+Be sure to `await` the `registerLocalModules` and `registerRemoteModules` functions; otherwise, MSW could be set as ready before all modules registered their request handlers.
+!!!
+
 ### Delay routes rendering until the service is started
 
 Finally, update the host application code to delay the rendering of the routes until MSW is started. This is done by setting the `waitForMsw` property of the [AppRouter](../reference/routing/appRouter.md) component to `true`:
 
-```tsx !#9 host/src/App.tsx
+```tsx !#6 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 export function App() {
     return (
-        <AppRouter
-            fallbackElement={<div>Loading...</div>}
-            errorElement={<div>An error occured!</div>}
-            waitForMsw={!!process.env.USE_MSW}
-        >
-            {(routes, providerProps) => (
-                <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
-            )}
+        <AppRouter waitForMsw>
+            {({ rootRoute, registeredRoutes, routerProviderProps }) => {
+                return (
+                    <RouterProvider
+                        router={createBrowserRouter([
+                            {
+                                element: rootRoute,
+                                children: registeredRoutes
+                            }
+                        ])}
+                        {...routerProviderProps}
+                    />
+                );
+            }}
         </AppRouter>
     );
 }
@@ -219,10 +235,6 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
 }
 ```
 
-!!!info
-Don't forget to mark the registration function as `async` since there's a dynamic import.
-!!!
-
 ## Setup a local module
 
 Follow the same steps as for a [remote module](#setup-a-remote-module).
@@ -238,6 +250,7 @@ Update a page component code to fetch the `/api/character/1` fake API endpoint, 
 If you are experiencing issues with this guide:
 
 - Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each request handlers registration that occurs and error messages if something went wrong:
-    - `[squide] The following MSW request handlers has been registered: ...`
+    - `[squide] The following MSW request handlers has been registered: [...]`
+    - `[squide] MSW is ready.`
 - Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/endpoints).
 - Refer to the [troubleshooting](../troubleshooting.md) page.

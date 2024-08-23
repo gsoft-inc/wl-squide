@@ -1,8 +1,68 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Link item additionalProps are rendered 1`] = `
-<ul>
+exports[`highest priority goes first 1`] = `
+<ul
+  data-index="0"
+  data-key="root"
+  data-level="0"
+>
   <li
+    data-index="0"
+    data-key="0-0"
+    data-level="0"
+  >
+    <div
+      to="/toto"
+    >
+      Toto
+    </div>
+  </li>
+  <li
+    data-index="1"
+    data-key="1-0"
+    data-level="0"
+  >
+    <div
+      to="/bar"
+    >
+      Bar
+    </div>
+  </li>
+  <li
+    data-index="2"
+    data-key="2-0"
+    data-level="0"
+  >
+    <div
+      to="/foo"
+    >
+      Foo
+    </div>
+  </li>
+  <li
+    data-index="3"
+    data-key="3-0"
+    data-level="0"
+  >
+    <div
+      to="/tutu"
+    >
+      Tutu
+    </div>
+  </li>
+</ul>
+`;
+
+exports[`link item additionalProps are rendered 1`] = `
+<ul
+  data-index="0"
+  data-key="root"
+  data-level="0"
+>
+  <li
+    data-index="0"
+    data-key="0-0"
+    data-level="0"
     style={
       {
         "color": "red",
@@ -15,7 +75,11 @@ exports[`Link item additionalProps are rendered 1`] = `
       Foo
     </div>
   </li>
-  <li>
+  <li
+    data-index="1"
+    data-key="1-0"
+    data-level="0"
+  >
     <div
       to="/bar"
     >
@@ -25,9 +89,105 @@ exports[`Link item additionalProps are rendered 1`] = `
 </ul>
 `;
 
-exports[`Section item additionalProps are rendered 1`] = `
-<ul>
+exports[`link item custom keys are rendered 1`] = `
+<ul
+  data-index="0"
+  data-key="root"
+  data-level="0"
+>
   <li
+    data-index="0"
+    data-key="foo"
+    data-level="0"
+    style={
+      {
+        "color": "red",
+      }
+    }
+  >
+    <div
+      to="/foo"
+    >
+      Foo
+    </div>
+  </li>
+  <li
+    data-index="1"
+    data-key="bar"
+    data-level="0"
+  >
+    <div
+      to="/bar"
+    >
+      Bar
+    </div>
+  </li>
+</ul>
+`;
+
+exports[`negative priority goes last 1`] = `
+<ul
+  data-index="0"
+  data-key="root"
+  data-level="0"
+>
+  <li
+    data-index="0"
+    data-key="0-0"
+    data-level="0"
+  >
+    <div
+      to="/foo"
+    >
+      Foo
+    </div>
+  </li>
+  <li
+    data-index="1"
+    data-key="1-0"
+    data-level="0"
+  >
+    <div
+      to="/bar"
+    >
+      Bar
+    </div>
+  </li>
+  <li
+    data-index="2"
+    data-key="2-0"
+    data-level="0"
+  >
+    <div
+      to="/tutu"
+    >
+      Tutu
+    </div>
+  </li>
+  <li
+    data-index="3"
+    data-key="3-0"
+    data-level="0"
+  >
+    <div
+      to="/toto"
+    >
+      Toto
+    </div>
+  </li>
+</ul>
+`;
+
+exports[`nested item custom keys are rendered 1`] = `
+<ul
+  data-index="0"
+  data-key="root"
+  data-level="0"
+>
+  <li
+    data-index="0"
+    data-key="0-0"
+    data-level="0"
     style={
       {
         "color": "red",
@@ -35,8 +195,16 @@ exports[`Section item additionalProps are rendered 1`] = `
     }
   >
     Foo
-    <ul>
-      <li>
+    <ul
+      data-index="0"
+      data-key="0-1"
+      data-level="1"
+    >
+      <li
+        data-index="0"
+        data-key="bar"
+        data-level="1"
+      >
         <div
           to="/bar"
         >
@@ -48,92 +216,126 @@ exports[`Section item additionalProps are rendered 1`] = `
 </ul>
 `;
 
-exports[`highest priority goes first 1`] = `
-<ul>
-  <li>
-    <div
-      to="/toto"
+exports[`section item additionalProps are rendered 1`] = `
+<ul
+  data-index="0"
+  data-key="root"
+  data-level="0"
+>
+  <li
+    data-index="0"
+    data-key="0-0"
+    data-level="0"
+    style={
+      {
+        "color": "red",
+      }
+    }
+  >
+    Foo
+    <ul
+      data-index="0"
+      data-key="0-1"
+      data-level="1"
     >
-      Toto
-    </div>
-  </li>
-  <li>
-    <div
-      to="/bar"
-    >
-      Bar
-    </div>
-  </li>
-  <li>
-    <div
-      to="/foo"
-    >
-      Foo
-    </div>
-  </li>
-  <li>
-    <div
-      to="/tutu"
-    >
-      Tutu
-    </div>
+      <li
+        data-index="0"
+        data-key="0-1"
+        data-level="1"
+      >
+        <div
+          to="/bar"
+        >
+          Bar
+        </div>
+      </li>
+    </ul>
   </li>
 </ul>
 `;
 
-exports[`negative priority goes last 1`] = `
-<ul>
-  <li>
-    <div
-      to="/foo"
+exports[`section item custom keys are rendered 1`] = `
+<ul
+  data-index="0"
+  data-key="root"
+  data-level="0"
+>
+  <li
+    data-index="0"
+    data-key="foo"
+    data-level="0"
+    style={
+      {
+        "color": "red",
+      }
+    }
+  >
+    Foo
+    <ul
+      data-index="0"
+      data-key="foo"
+      data-level="1"
     >
-      Foo
-    </div>
-  </li>
-  <li>
-    <div
-      to="/bar"
-    >
-      Bar
-    </div>
-  </li>
-  <li>
-    <div
-      to="/tutu"
-    >
-      Tutu
-    </div>
-  </li>
-  <li>
-    <div
-      to="/toto"
-    >
-      Toto
-    </div>
+      <li
+        data-index="0"
+        data-key="0-1"
+        data-level="1"
+      >
+        <div
+          to="/bar"
+        >
+          Bar
+        </div>
+      </li>
+    </ul>
   </li>
 </ul>
 `;
 
 exports[`support 2 section levels 1`] = `
-<ul>
-  <li>
+<ul
+  data-index="0"
+  data-key="root"
+  data-level="0"
+>
+  <li
+    data-index="0"
+    data-key="0-0"
+    data-level="0"
+  >
     <div
       to="/foo"
     >
       Foo
     </div>
   </li>
-  <li>
+  <li
+    data-index="1"
+    data-key="1-0"
+    data-level="0"
+  >
     Bar
-    <ul>
-      <li>
+    <ul
+      data-index="0"
+      data-key="0-1"
+      data-level="1"
+    >
+      <li
+        data-index="0"
+        data-key="0-1"
+        data-level="1"
+      >
         <div
           to="/toto"
         >
           Toto
         </div>
       </li>
-      <li>
+      <li
+        data-index="1"
+        data-key="1-1"
+        data-level="1"
+      >
         <div
           to="/tutu"
         >
@@ -146,28 +348,60 @@ exports[`support 2 section levels 1`] = `
 `;
 
 exports[`support 3 section levels 1`] = `
-<ul>
-  <li>
+<ul
+  data-index="0"
+  data-key="root"
+  data-level="0"
+>
+  <li
+    data-index="0"
+    data-key="0-0"
+    data-level="0"
+  >
     <div
       to="/foo"
     >
       Foo
     </div>
   </li>
-  <li>
+  <li
+    data-index="1"
+    data-key="1-0"
+    data-level="0"
+  >
     Bar
-    <ul>
-      <li>
+    <ul
+      data-index="0"
+      data-key="0-1"
+      data-level="1"
+    >
+      <li
+        data-index="0"
+        data-key="0-1"
+        data-level="1"
+      >
         <div
           to="/toto"
         >
           Toto
         </div>
       </li>
-      <li>
+      <li
+        data-index="1"
+        data-key="1-1"
+        data-level="1"
+      >
         Tutu
-        <ul>
-          <li>
+        <ul
+          data-index="0"
+          data-key="0-2"
+          data-level="2"
+        >
+          <li
+            data-index="0"
+            data-key="0-2"
+            data-level="2"
+          >
             <div
               to="/titi"
             >
@@ -180,3 +414,81 @@ exports[`support 3 section levels 1`] = `
   </li>
 </ul>
 `;
+
+exports[`when a link item canRender prop return false, the item is not rendered 1`] = `
+<ul
+  data-index="0"
+  data-key="root"
+  data-level="0"
+>
+  <li
+    data-index="1"
+    data-key="1-0"
+    data-level="0"
+  >
+    <div
+      to="/bar"
+    >
+      Bar
+    </div>
+  </li>
+</ul>
+`;
+
+exports[`when a section item canRender prop return false, the item is not rendered 1`] = `
+<ul
+  data-index="0"
+  data-key="root"
+  data-level="0"
+>
+  <li
+    data-index="1"
+    data-key="1-0"
+    data-level="0"
+  >
+    <div
+      to="/acme"
+    >
+      acme
+    </div>
+  </li>
+</ul>
+`;
+
+exports[`when the canRender prop of all the items of a nested section return false, do not render the section 1`] = `
+<ul
+  data-index="0"
+  data-key="root"
+  data-level="0"
+>
+  <li
+    data-index="0"
+    data-key="0-0"
+    data-level="0"
+  >
+    Foo
+  </li>
+  <li
+    data-index="1"
+    data-key="1-0"
+    data-level="0"
+  >
+    John
+    <ul
+      data-index="0"
+      data-key="0-1"
+      data-level="1"
+    >
+      <li
+        data-index="0"
+        data-key="0-1"
+        data-level="1"
+      >
+        Doe
+      </li>
+    </ul>
+  </li>
+</ul>
+`;
+
+exports[`when the canRender prop of all the root items return false, do not render the root section 1`] = `null`;

@@ -1,10 +1,6 @@
-// The areModulesReady function is tested instead of the useAreModulesReady hook because it requires less mocking and
-// kind of provide the same coverage as the only important logic to test for that hook is the check to validate whether
-// or not the module registrations is considered as ready or not.
-
 import { LocalModuleRegistry, Runtime } from "@squide/core";
+import { areModulesReady } from "../src/areModulesReady.ts";
 import { RemoteModuleRegistry } from "../src/registerRemoteModules.ts";
-import { areModulesReady } from "../src/useAreModulesReady.ts";
 
 class DummyRuntime extends Runtime<unknown, unknown> {
     registerRoute() {
@@ -21,6 +17,14 @@ class DummyRuntime extends Runtime<unknown, unknown> {
 
     getNavigationItems() {
         return [];
+    }
+
+    startDeferredRegistrationScope(): void {
+        throw new Error("Method not implemented.");
+    }
+
+    completeDeferredRegistrationScope(): void {
+        throw new Error("Method not implemented.");
     }
 }
 
@@ -49,7 +53,7 @@ test("when only local modules are registered and they are ready, return true", a
         () => {}
     ], runtime);
 
-    await localModuleRegistry.completeModuleRegistrations(runtime, {});
+    await localModuleRegistry.registerDeferredRegistrations({}, runtime);
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeTruthy();
 });
@@ -67,7 +71,7 @@ test("when only remote modules are registered and they are ready, return true", 
         { name: "Dummy-3" }
     ], runtime);
 
-    await remoteModuleRegistry.completeModuleRegistrations(runtime, {});
+    await remoteModuleRegistry.registerDeferredRegistrations({}, runtime);
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeTruthy();
 });
@@ -85,7 +89,7 @@ test("when only local module deferred registrations are registered and they are 
         () => () => {}
     ], runtime);
 
-    await localModuleRegistry.completeModuleRegistrations(runtime, {});
+    await localModuleRegistry.registerDeferredRegistrations({}, runtime);
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeTruthy();
 });
@@ -104,7 +108,7 @@ test("when only remote module deferred registrations are registered and they are
     ], runtime);
 
 
-    await remoteModuleRegistry.completeModuleRegistrations(runtime, {});
+    await remoteModuleRegistry.registerDeferredRegistrations({}, runtime);
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeTruthy();
 });
@@ -128,8 +132,8 @@ test("when local module deferred registrations and remote module deferred regist
         { name: "Dummy-3" }
     ], runtime);
 
-    await localModuleRegistry.completeModuleRegistrations(runtime, {});
-    await remoteModuleRegistry.completeModuleRegistrations(runtime, {});
+    await localModuleRegistry.registerDeferredRegistrations({}, runtime);
+    await remoteModuleRegistry.registerDeferredRegistrations({}, runtime);
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeTruthy();
 });
@@ -153,8 +157,8 @@ test("when local module deferred registrations and remote modules are registered
         { name: "Dummy-3" }
     ], runtime);
 
-    await localModuleRegistry.completeModuleRegistrations(runtime, {});
-    await remoteModuleRegistry.completeModuleRegistrations(runtime, {});
+    await localModuleRegistry.registerDeferredRegistrations({}, runtime);
+    await remoteModuleRegistry.registerDeferredRegistrations({}, runtime);
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeTruthy();
 });
@@ -178,8 +182,8 @@ test("when local modules and remote module deferred registrations are registered
         { name: "Dummy-3" }
     ], runtime);
 
-    await localModuleRegistry.completeModuleRegistrations(runtime, {});
-    await remoteModuleRegistry.completeModuleRegistrations(runtime, {});
+    await localModuleRegistry.registerDeferredRegistrations({}, runtime);
+    await remoteModuleRegistry.registerDeferredRegistrations({}, runtime);
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeTruthy();
 });
@@ -257,7 +261,7 @@ test("when local module deferred registrations and remote module deferred regist
         { name: "Dummy-3" }
     ], runtime);
 
-    await localModuleRegistry.completeModuleRegistrations(runtime, {});
+    await localModuleRegistry.registerDeferredRegistrations({}, runtime);
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeFalsy();
 });
@@ -281,7 +285,7 @@ test("when local module deferred registrations and remote module deferred regist
         { name: "Dummy-3" }
     ], runtime);
 
-    await remoteModuleRegistry.completeModuleRegistrations(runtime, {});
+    await remoteModuleRegistry.registerDeferredRegistrations({}, runtime);
 
     expect(areModulesReady(localModuleRegistry.registrationStatus, remoteModuleRegistry.registrationStatus)).toBeFalsy();
 });

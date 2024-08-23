@@ -1,8 +1,9 @@
 import type { LanguageKey } from "@endpoints/shared";
+import type { Runtime } from "@squide/core";
 import { i18nextPlugin, type i18nextPluginOptions } from "@squide/i18next";
 
-export function createI18NextPlugin(options?: i18nextPluginOptions) {
-    const plugin = new i18nextPlugin<LanguageKey>(["en-US", "fr-CA"], "en-US", "language", options);
+export function createI18NextPlugin(runtime: Runtime, options?: i18nextPluginOptions) {
+    const plugin = new i18nextPlugin<LanguageKey>(["en-US", "fr-CA"], "en-US", "language", options, runtime);
 
     // By default, detect user default language for anonymous pages.
     // If the user is authenticated, the language will be changed for the persisted user

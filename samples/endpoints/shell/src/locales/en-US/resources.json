@@ -10,8 +10,10 @@
         "paidLabel": "Paid",
         "notPaidLabel": "Not paid",
         "userLabel": "User",
-        "disconnectButtonLabel": "Disconnect",
-        "loadingMessage": "Loading..."
+        "updateSessionButtonLabel": "Update session",
+        "shuffleFeatureFlagsLabel": "Shuffle feature flags",
+        "deactivateFeatureBLabel": "Deactivate feature B",
+        "disconnectButtonLabel": "Disconnect"
     },
     "ModuleErrorBoundary": {
         "title": "Unmanaged error",

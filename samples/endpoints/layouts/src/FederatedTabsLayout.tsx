@@ -1,4 +1,4 @@
-import { useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
+import { useRenderedNavigationItems, useRuntimeNavigationItems, type NavigationLinkRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { useI18nextInstance } from "@squide/i18next";
 import { Suspense, useCallback, type MouseEvent } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -59,7 +59,7 @@ export function FederatedTabsLayout({ host }: FederatedTabsLayoutProps) {
     const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
     const { t } = useTranslation("FederatedTabsLayout", { i18n: i18nextInstance });
 
-    const navigationItems = useNavigationItems({ menuId: "/federated-tabs" });
+    const navigationItems = useRuntimeNavigationItems({ menuId: "/federated-tabs" });
     const renderedTabs = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (

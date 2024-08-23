@@ -13,8 +13,7 @@
     },
     "FeatureBPage": {
         "title": "Feature B",
-        "servedBy": "This page is served by <code>@endpoints/remote-module</code>",
-        "message": "This page is only available if the <code>featureB</code> flag is active."
+        "servedBy": "This page is served by <code>@endpoints/remote-module</code>"
     },
     "FeatureCPage": {
         "title": "Feature C",

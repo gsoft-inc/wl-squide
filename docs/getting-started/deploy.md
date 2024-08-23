@@ -4,9 +4,9 @@ order: 10
 
 # Deploy
 
-The deployment process for a federated application can vary depending on various factors, including the chosen hosting provider. Therefore, we do not recommend any specific deployment setup.
+The deployment process for a modular application can vary depending on various factors, including the chosen hosting provider. Therefore, we do not recommend any specific deployment setup.
 
-However, there are a few essential configurations that need to be made regardless of your deployment choices.
+However, there are a few essential configurations that need to be made regardless of your architectural and deployment choices.
 
 ## Add a default redirect
 
@@ -33,11 +33,14 @@ Or by adding a `_redirects` file into the Netlify publish directory:
 
 ## Set the remote URL
 
-Configure the remote modules production URL:
+If your modular applications includes [remote modules](../reference/registration/registerRemoteModules.md), configure the remote modules production URL:
 
-```ts
-import { RemoteDefinition } from "@squide/firefly-webpack-configs";
+```js
+// @ts-check
 
+/**
+ * @typedef {import("@squide/firefly-webpack-configs").RemoteDefinition[]}
+ */
 const Remotes: RemoteDefinition[] = [
     {
         name: "remote1",

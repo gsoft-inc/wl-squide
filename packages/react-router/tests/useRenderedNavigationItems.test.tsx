@@ -4,16 +4,16 @@ import renderer from "react-test-renderer";
 import type { NavigationItem, RootNavigationItem } from "../src/navigationItemRegistry.ts";
 import { isNavigationLink, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "../src/useRenderedNavigationItems.tsx";
 
-type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
+type RenderLinkItemFunction = (item: NavigationLinkRenderProps, key: string, index: number, level: number) => ReactNode;
 
-type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactNode;
+type RenderSectionItemFunction = (item: NavigationSectionRenderProps, key: string, index: number, level: number) => ReactNode;
 
 interface TestComponentProps {
     navigationItems: RootNavigationItem[];
 }
 
 // Not the prettiest mock but it's simpler than using createMemoryRouter and
-// it provides an adequate testing when combined with snapshot tests.
+// it provides an adequate testing experience when combined with snapshot tests.
 function Link(props: Record<string, unknown>) {
     return (
         <div {...props} />
@@ -21,9 +21,9 @@ function Link(props: Record<string, unknown>) {
 }
 
 function TestComponent({ navigationItems }: TestComponentProps) {
-    const renderLinkItem: RenderLinkItemFunction = useCallback(({ label, linkProps, additionalProps }, index, level) => {
+    const renderLinkItem: RenderLinkItemFunction = useCallback(({ label, linkProps, additionalProps }, key, index, level) => {
         return (
-            <li key={`${level}-${index}`} {...additionalProps}>
+            <li key={key} {...additionalProps} data-key={key} data-index={index.toString()} data-level={level.toString()}>
                 <Link {...linkProps}>
                     {label}
                 </Link>
@@ -31,22 +31,24 @@ function TestComponent({ navigationItems }: TestComponentProps) {
         );
     }, []);
 
-    const renderLinkSection: RenderSectionItemFunction = useCallback(({ label, section, additionalProps }, index, level) => {
+    const renderLinkSection: RenderSectionItemFunction = useCallback(({ label, section, additionalProps }, key, index, level) => {
         return (
-            <li key={`${level}-${index}`} {...additionalProps}>
+            <li key={key} {...additionalProps} data-key={key} data-index={index.toString()} data-level={level.toString()}>
                 {label}
                 {section}
             </li>
         );
     }, []);
 
-    const renderItem: RenderItemFunction = useCallback((item, index, level) => {
-        return isNavigationLink(item) ? renderLinkItem(item, index, level) : renderLinkSection(item, index, level);
+    const renderItem: RenderItemFunction = useCallback((item, key, index, level) => {
+        if (!item.canRender || (item.canRender && item.canRender())) {
+            return isNavigationLink(item) ? renderLinkItem(item, key, index, level) : renderLinkSection(item, key, index, level);
+        }
     }, [renderLinkItem, renderLinkSection]);
 
-    const renderSection: RenderSectionFunction = useCallback((elements, index, level) => {
+    const renderSection: RenderSectionFunction = useCallback((elements, key, index, level) => {
         return (
-            <ul key={`${level}-${index}`}>
+            <ul key={key} data-key={key} data-index={index.toString()} data-level={level.toString()}>
                 {elements}
             </ul>
         );
@@ -178,7 +180,7 @@ test("support 3 section levels", () => {
     expect(tree).toMatchSnapshot();
 });
 
-test("Link item additionalProps are rendered", () => {
+test("link item additionalProps are rendered", () => {
     const navigationItems: RootNavigationItem[] = [
         {
             $label: "Foo",
@@ -200,7 +202,7 @@ test("Link item additionalProps are rendered", () => {
     expect(tree).toMatchSnapshot();
 });
 
-test("Section item additionalProps are rendered", () => {
+test("section item additionalProps are rendered", () => {
     const navigationItems: RootNavigationItem[] = [
         {
             $label: "Foo",
@@ -213,6 +215,180 @@ test("Section item additionalProps are rendered", () => {
             $additionalProps: {
                 style: { color: "red" }
             }
+        }
+    ];
+
+    const tree = renderer
+        .create(<TestComponent navigationItems={navigationItems} />)
+        .toJSON();
+
+    expect(tree).toMatchSnapshot();
+});
+
+test("link item custom keys are rendered", () => {
+    const navigationItems: RootNavigationItem[] = [
+        {
+            $key: "foo",
+            $label: "Foo",
+            $additionalProps: {
+                style: { color: "red" }
+            },
+            to: "/foo"
+        },
+        {
+            $key: "bar",
+            $label: "Bar",
+            to: "/bar"
+        }
+    ];
+
+    const tree = renderer
+        .create(<TestComponent navigationItems={navigationItems} />)
+        .toJSON();
+
+    expect(tree).toMatchSnapshot();
+});
+
+test("section item custom keys are rendered", () => {
+    const navigationItems: RootNavigationItem[] = [
+        {
+            $key: "foo",
+            $label: "Foo",
+            children: [
+                {
+                    $label: "Bar",
+                    to: "/bar"
+                }
+            ],
+            $additionalProps: {
+                style: { color: "red" }
+            }
+        }
+    ];
+
+    const tree = renderer
+        .create(<TestComponent navigationItems={navigationItems} />)
+        .toJSON();
+
+    expect(tree).toMatchSnapshot();
+});
+
+test("nested item custom keys are rendered", () => {
+    const navigationItems: RootNavigationItem[] = [
+        {
+            $label: "Foo",
+            children: [
+                {
+                    $key: "bar",
+                    $label: "Bar",
+                    to: "/bar"
+                }
+            ],
+            $additionalProps: {
+                style: { color: "red" }
+            }
+        }
+    ];
+
+    const tree = renderer
+        .create(<TestComponent navigationItems={navigationItems} />)
+        .toJSON();
+
+    expect(tree).toMatchSnapshot();
+});
+
+test("when a link item canRender prop return false, the item is not rendered", () => {
+    const navigationItems: RootNavigationItem[] = [
+        {
+            $canRender: () => false,
+            $label: "Foo",
+            to: "/foo"
+        },
+        {
+            $label: "Bar",
+            to: "/bar"
+        }
+    ];
+
+    const tree = renderer
+        .create(<TestComponent navigationItems={navigationItems} />)
+        .toJSON();
+
+    expect(tree).toMatchSnapshot();
+});
+
+test("when a section item canRender prop return false, the item is not rendered", () => {
+    const navigationItems: RootNavigationItem[] = [
+        {
+            $canRender: () => false,
+            $label: "Foo",
+            children: [
+                {
+                    $label: "Bar",
+                    to: "/bar"
+                }
+            ]
+        },
+        {
+            $label: "acme",
+            to: "/acme"
+        }
+    ];
+
+    const tree = renderer
+        .create(<TestComponent navigationItems={navigationItems} />)
+        .toJSON();
+
+    expect(tree).toMatchSnapshot();
+});
+
+test("when the canRender prop of all the root items return false, do not render the root section", () => {
+    const navigationItems: RootNavigationItem[] = [
+        {
+            $canRender: () => false,
+            $label: "Foo",
+            to: "/foo"
+        },
+        {
+            $canRender: () => false,
+            $label: "Bar",
+            to: "/bar"
+        }
+    ];
+
+    const tree = renderer
+        .create(<TestComponent navigationItems={navigationItems} />)
+        .toJSON();
+
+    expect(tree).toMatchSnapshot();
+});
+
+test("when the canRender prop of all the items of a nested section return false, do not render the section", () => {
+    const navigationItems: RootNavigationItem[] = [
+        {
+            $label: "Foo",
+            children: [
+                {
+                    $canRender: () => false,
+                    $label: "Bar",
+                    to: "/bar"
+                }
+            ]
+        },
+        {
+            $label: "John",
+            children: [
+                {
+                    $label: "Doe",
+                    children: [
+                        {
+                            $canRender: () => false,
+                            $label: "Acme",
+                            to: "/acme"
+                        }
+                    ]
+                }
+            ]
         }
     ];
 

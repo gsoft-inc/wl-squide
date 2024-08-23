@@ -15,7 +15,7 @@ npx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
 
 Local modules are regular modules that are part of the **host application build**. They are independent modules that expose a `registration` function to the host application's bootstrapping code. A local module can be a standalone package, a sibling project (in a monorepo setup), or even a local folder within the host application.
 
-Local modules have many uses but are especially useful when **migrating** from a **monolithic application** to a distributed application or when **launching** a **new product** with an unrefined business domain.
+Local modules have many uses but are especially useful when **launching** a **new product** with an unrefined business domain or **migrating** from a **monolithic application** to a distributed application.
 
 Let's add a local module to demonstrate how it's done!
 
@@ -26,17 +26,17 @@ Create a new application (we'll refer to ours as `local-module`), then open a te
 +++ pnpm
 ```bash
 pnpm add -D @workleap/tsup-configs tsup typescript @types/react @types/react-dom
-pnpm add @squide/firefly react react-dom react-router-dom react-error-boundary
+pnpm add @squide/firefly react react-dom react-router-dom @tanstack/react-query
 ```
 +++ yarn
 ```bash
 yarn add -D @workleap/tsup-configs tsup typescript @types/react @types/react-dom
-yarn add @squide/firefly react @squide/firefly react-dom react-router-dom react-error-boundary
+yarn add @squide/firefly react @squide/firefly react-dom react-router-dom @tanstack/react-query
 ```
 +++ npm
 ```bash
 npm add -D @workleap/tsup-configs tsup typescript @types/react @types/react-dom
-npm install @squide/firefly react react-dom react-router-dom react-error-boundary
+npm install @squide/firefly react react-dom react-router-dom @tanstack/react-query
 ```
 +++
 
@@ -86,7 +86,7 @@ Finally, configure the package to be shareable by adding the `name`, `version`, 
 
 Next, register the local module routes and navigation items with [registerRoute](/reference/runtime/runtime-class.md#register-routes) and [registerNavigationItem](/reference/runtime/runtime-class.md#register-navigation-items) functions:
 
-```tsx !#5-8,10-13 local-module/src/register.tsx
+```tsx !#5-8,10-14 local-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Page } from "./Page.tsx";
 
@@ -97,6 +97,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
+        $key: "local-page",
         $label: "Local/Page",
         to: "/local/page"
     });
@@ -124,6 +125,10 @@ Go back to the `host` application and add a dependency to the `@getting-started/
     }
 }
 ```
+
+!!!info
+If your project is set up as a monorepo, use `workspace:*` for the version instead of `0.0.1`.
+!!!
 
 Then, register the local module with the [registerLocalModules](/reference/registration/registerLocalModules.md) function:
 
@@ -212,7 +217,7 @@ Start the `host`, `remote-module` and `local-module` applications in development
 If you are experiencing issues with this guide:
 
 - Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong:
-    - `[squide] The following route has been registered. Newly registered item: ...`
-    - `[squide] The following navigation item has been registered to the "root" menu for a total of 2 items. Newly registered item: ...`
+    - `[squide] The following route has been registered.`
+    - `[squide] The following static navigation item has been registered to the "root" menu for a total of 2 static items.`
 - Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/local-module).
 - Refer to the [troubleshooting](../troubleshooting.md) page.

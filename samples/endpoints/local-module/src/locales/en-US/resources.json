@@ -16,8 +16,7 @@
     },
     "FeatureAPage": {
         "title": "Feature A",
-        "servedBy": "This page is served by <code>@endpoints/local-module</code>",
-        "message": "This page is only available if the <code>featureA</code> flag is active."
+        "servedBy": "This page is served by <code>@endpoints/local-module</code>"
     },
     "CharactersTab": {
         "title": "Characters",

@@ -1,7 +1,7 @@
 import { LoggerTelemetryService } from "@endpoints/shared";
 import { AppRouter } from "@endpoints/shell";
 import { useLogger } from "@squide/firefly";
-import { sessionManager } from "./session.ts";
+import { QueryProvider } from "./QueryProvider.tsx";
 
 export function App() {
     const logger = useLogger();
@@ -9,10 +9,11 @@ export function App() {
     const telemetryService = new LoggerTelemetryService(logger);
 
     return (
-        <AppRouter
-            waitForMsw={!!process.env.USE_MSW}
-            sessionManager={sessionManager}
-            telemetryService={telemetryService}
-        />
+        <QueryProvider>
+            <AppRouter
+                waitForMsw={!!process.env.USE_MSW}
+                telemetryService={telemetryService}
+            />
+        </QueryProvider>
     );
 }

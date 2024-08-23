@@ -1,6 +1,4 @@
-import type { SessionManager } from "@basic/shared";
 import { ManagedRoutes, type FireflyRuntime, type ModuleRegisterFunction } from "@squide/firefly";
-import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 
 export interface RegisterShellOptions {
@@ -8,50 +6,43 @@ export interface RegisterShellOptions {
     host?: string;
 }
 
-function registerRoutes(runtime: FireflyRuntime, sessionManager: SessionManager, host?: string) {
+function registerRoutes(runtime: FireflyRuntime, host?: string) {
     runtime.registerRoute({
-        // Pathless route to declare a root layout.
+        // Pathless route to declare a root layout and a root error boundary.
         $visibility: "public",
-        element: <RootLayout />,
+        $name: "root-layout",
+        element: <RootLayout />
+    }, {
+        hoist: true
+    });
+
+    runtime.registerRoute({
+        // Pathless route to declare an authenticated boundary.
+        lazy: () => import("./AuthenticationBoundary.tsx"),
         children: [
             {
-                // Pathless route to declare a root error boundary.
-                // Public pages like the login and logout pages will be rendered under this pathless route.
-                $visibility: "public",
-                $name: "root-error-boundary",
-                errorElement: <RootErrorBoundary />,
+                // Pathless route to declare an authenticated layout.
+                lazy: async () => {
+                    const { AuthenticatedLayout } = await import("./AuthenticatedLayout.tsx");
+
+                    return {
+                        element: <AuthenticatedLayout />
+                    };
+                },
                 children: [
                     {
-                        // Pathless route to declare an authenticated boundary.
-                        lazy: () => import("./AuthenticationBoundary.tsx"),
+                        // Pathless route to declare an error boundary inside the layout instead of outside.
+                        // It's quite useful to prevent losing the layout when an unmanaged error occurs.
+                        lazy: () => import("./ModuleErrorBoundary.tsx"),
                         children: [
-                            {
-                                // Pathless route to declare an authenticated layout.
-                                lazy: async () => {
-                                    const { AuthenticatedLayout } = await import("./AuthenticatedLayout.tsx");
-
-                                    return {
-                                        element: <AuthenticatedLayout sessionManager={sessionManager} />
-                                    };
-                                },
-                                children: [
-                                    {
-                                        // Pathless route to declare an error boundary inside the layout instead of outside.
-                                        // It's quite useful to prevent losing the layout when an unmanaged error occurs.
-                                        lazy: () => import("./ModuleErrorBoundary.tsx"),
-                                        children: [
-                                            ManagedRoutes
-                                        ]
-                                    }
-                                ]
-                            }
+                            ManagedRoutes
                         ]
                     }
                 ]
             }
         ]
     }, {
-        hoist: true
+        parentName: "root-layout"
     });
 
     runtime.registerRoute({
@@ -61,11 +52,11 @@ function registerRoutes(runtime: FireflyRuntime, sessionManager: SessionManager,
             const { LoginPage } = await import("./LoginPage.tsx");
 
             return {
-                element: <LoginPage sessionManager={sessionManager} host={host} />
+                element: <LoginPage host={host} />
             };
         }
     }, {
-        parentName: "root-error-boundary"
+        parentName: "root-layout"
     });
 
     runtime.registerRoute({
@@ -79,7 +70,7 @@ function registerRoutes(runtime: FireflyRuntime, sessionManager: SessionManager,
             };
         }
     }, {
-        parentName: "root-error-boundary"
+        parentName: "root-layout"
     });
 
     runtime.registerRoute({
@@ -93,13 +84,13 @@ function registerRoutes(runtime: FireflyRuntime, sessionManager: SessionManager,
             };
         }
     }, {
-        parentName: "root-error-boundary"
+        parentName: "root-layout"
     });
 }
 
-export function registerShell(sessionManager: SessionManager, { host }: RegisterShellOptions = {}) {
+export function registerShell({ host }: RegisterShellOptions = {}) {
     const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
-        return registerRoutes(runtime, sessionManager, host);
+        return registerRoutes(runtime, host);
     };
 
     return register;

@@ -1,14 +1,8 @@
-import {
-    isNavigationLink,
-    useNavigationItems,
-    useRenderedNavigationItems,
-    type RenderItemFunction,
-    type RenderSectionFunction
-} from "@squide/firefly";
+import { isNavigationLink, useFireflyNavigationItems, useRenderedNavigationItems, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { Suspense } from "react";
 import { Link, Outlet } from "react-router-dom";
 
-const renderItem: RenderItemFunction = (item, index, level) => {
+const renderItem: RenderItemFunction = (item, key) => {
     // To keep thing simple, this sample doesn't support nested navigation items.
     // For an example including support for nested navigation items, have a look at
     // https://gsoft-inc.github.io/wl-squide/reference/routing/userenderednavigationitems/
@@ -19,7 +13,7 @@ const renderItem: RenderItemFunction = (item, index, level) => {
     const { label, linkProps, additionalProps } = item;
 
     return (
-        <li key={`${level}-${index}`}>
+        <li key={key}>
             <Link {...linkProps} {...additionalProps}>
                 {label}
             </Link>
@@ -27,9 +21,9 @@ const renderItem: RenderItemFunction = (item, index, level) => {
     );
 };
 
-const renderSection: RenderSectionFunction = (elements, index, level) => {
+const renderSection: RenderSectionFunction = (elements, key) => {
     return (
-        <ul key={`${level}-${index}`}>
+        <ul key={key}>
             {elements}
         </ul>
     );
@@ -37,7 +31,7 @@ const renderSection: RenderSectionFunction = (elements, index, level) => {
 
 export function RootLayout() {
     // Retrieve the navigation items registered by the remote modules.
-    const navigationItems = useNavigationItems();
+    const navigationItems = useFireflyNavigationItems();
 
     // Transform the navigation items into React elements.
     const navigationElements = useRenderedNavigationItems(navigationItems, renderItem, renderSection);

@@ -1,18 +1,19 @@
-import { postJson, toSubscriptionStatusLabel, useSubscription, type Session, type SessionManager } from "@endpoints/shared";
-import { isNavigationLink, useLogger, useNavigationItems, useRenderedNavigationItems, useSession, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
+import { postJson, toSubscriptionStatusLabel, useSessionManager, useSubscription } from "@endpoints/shared";
+import { isNavigationLink, useLogger, useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { useI18nextInstance } from "@squide/i18next";
 import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Loading } from "./Loading.tsx";
 import { i18NextInstanceKey } from "./i18next.ts";
 
-type RenderLinkItemFunction = (item: NavigationLinkRenderProps, index: number, level: number) => ReactNode;
+type RenderLinkItemFunction = (item: NavigationLinkRenderProps, key: string) => ReactNode;
 
-type RenderSectionItemFunction = (item: NavigationSectionRenderProps, index: number, level: number) => ReactNode;
+type RenderSectionItemFunction = (item: NavigationSectionRenderProps, key: string) => ReactNode;
 
-const renderLinkItem: RenderLinkItemFunction = ({ label, linkProps, additionalProps: { highlight, ...additionalProps } }, index, level) => {
+const renderLinkItem: RenderLinkItemFunction = ({ label, linkProps, additionalProps: { highlight, ...additionalProps } }, key) => {
     return (
-        <li key={`${level}-${index}`} style={{ fontWeight: highlight ? "bold" : "normal" }}>
+        <li key={key} style={{ fontWeight: highlight ? "bold" : "normal" }}>
             <Link {...linkProps} {...additionalProps}>
                 {label}
             </Link>
@@ -20,9 +21,9 @@ const renderLinkItem: RenderLinkItemFunction = ({ label, linkProps, additionalPr
     );
 };
 
-const renderSectionItem: RenderSectionItemFunction = ({ label, section }, index, level) => {
+const renderSectionItem: RenderSectionItemFunction = ({ label, section }, key) => {
     return (
-        <li key={`${level}-${index}`} style={{ display: "flex", gap: "5px" }}>
+        <li key={key} style={{ display: "flex", gap: "5px" }}>
             {label}
             <div style={{ display: "flex", alignItems: "center", fontSize: "12px" }}>
                 ({section})
@@ -31,28 +32,25 @@ const renderSectionItem: RenderSectionItemFunction = ({ label, section }, index,
     );
 };
 
-const renderItem: RenderItemFunction = (item, index, level) => {
-    return isNavigationLink(item) ? renderLinkItem(item, index, level) : renderSectionItem(item, index, level);
+const renderItem: RenderItemFunction = (item, key) => {
+    return isNavigationLink(item) ? renderLinkItem(item, key) : renderSectionItem(item, key);
 };
 
-const renderSection: RenderSectionFunction = (elements, index, level) => {
+const renderSection: RenderSectionFunction = (elements, key) => {
     return (
-        <ul key={`${level}-${index}`} style={{ display: "flex", gap: "10px", padding: 0, listStyleType: "none" }}>
+        <ul key={key} style={{ display: "flex", gap: "10px", padding: 0, listStyleType: "none" }}>
             {elements}
         </ul>
     );
 };
 
-export interface AuthenticatedLayoutProps {
-    sessionManager: SessionManager;
-}
-
-export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps) {
+export function AuthenticatedLayout() {
     const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
     const { t } = useTranslation("AuthenticatedLayout", { i18n: i18nextInstance });
 
     const logger = useLogger();
-    const session = useSession() as Session;
+    const sessionManager = useSessionManager();
+    const session = sessionManager?.getSession();
     const subscription = useSubscription();
 
     const subscriptionStatusLabel = toSubscriptionStatusLabel(subscription!.status, {
@@ -63,12 +61,12 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
 
     const navigate = useNavigate();
 
-    const handleDisconnect = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
+    const handleDisconnect = useCallback((event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
-        await postJson("/api/logout")
+        postJson("/api/logout")
             .then(() => {
-                sessionManager.clearSession();
+                sessionManager?.clearSession();
 
                 logger.debug("[shell] The user session has been cleared.");
 
@@ -78,6 +76,33 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
                 throw new Error("An unknown error happened while disconnecting the user.");
             });
     }, [logger, navigate, sessionManager]);
+
+    const handleUpdateSession = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+
+        postJson("/api/update-session")
+            .then(() => {
+                logger.debug("[shell] Updated the user session.");
+            });
+    }, [logger]);
+
+    const handleShuffleFeatureFlags = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+
+        postJson("/api/shuffle-feature-flags")
+            .then(() => {
+                logger.debug("[shell] Shuffled the feature flags.");
+            });
+    }, [logger]);
+
+    const handleDeactivateFeatureB = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+
+        postJson("/api/deactivate-feature-b")
+            .then(() => {
+                logger.debug("[shell] Deactivated feature B.");
+            });
+    }, [logger]);
 
     const navigationItems = useNavigationItems();
     const renderedNavigationItems = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
@@ -94,12 +119,27 @@ export function AuthenticatedLayout({ sessionManager }: AuthenticatedLayoutProps
                     ({t("subscriptionLabel")}: <span style={{ fontWeight: "bold" }}>{subscriptionStatusLabel}</span><span style={{ marginLeft: "10px", marginRight: "10px" }}>-</span>{t("userLabel")}: <span style={{ fontWeight: "bold" }}>{session?.user?.name}/{session?.user?.preferredLanguage}</span>)
                 </div>
                 <div>
+                    <button type="button" onClick={handleUpdateSession} style={{ whiteSpace: "nowrap", marginRight: "10px" }}>
+                        {t("updateSessionButtonLabel")}
+                    </button>
+                </div>
+                <div>
+                    <button type="button" onClick={handleShuffleFeatureFlags} style={{ whiteSpace: "nowrap", marginRight: "10px" }}>
+                        {t("shuffleFeatureFlagsLabel")}
+                    </button>
+                </div>
+                <div>
+                    <button type="button" onClick={handleDeactivateFeatureB} style={{ whiteSpace: "nowrap", marginRight: "10px" }}>
+                        {t("deactivateFeatureBLabel")}
+                    </button>
+                </div>
+                <div>
                     <button type="button" onClick={handleDisconnect} style={{ whiteSpace: "nowrap" }}>
                         {t("disconnectButtonLabel")}
                     </button>
                 </div>
             </div>
-            <Suspense fallback={<div>{t("loadingMessage")}</div>}>
+            <Suspense fallback={<Loading />}>
                 <Outlet />
             </Suspense>
         </>

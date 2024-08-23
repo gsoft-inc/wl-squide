@@ -1,149 +1,137 @@
-import { FeatureFlagsContext, SubscriptionContext, TelemetryServiceContext, fetchJson, isApiError, type FeatureFlags, type Session, type SessionManager, type Subscription, type TelemetryService } from "@endpoints/shared";
-import { AppRouter as FireflyAppRouter, completeModuleRegistrations, useLogger, useRuntime, type Logger } from "@squide/firefly";
-import { useChangeLanguage, useI18nextInstance } from "@squide/i18next";
-import { useCallback, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { AppRouterErrorBoundary } from "./AppRouterErrorBoundary.tsx";
-import { i18NextInstanceKey } from "./i18next.ts";
-import { useRefState } from "./useRefState.tsx";
+import { FeatureFlagsContext, SessionManagerContext, SubscriptionContext, TelemetryServiceContext, fetchJson, isApiError, type FeatureFlags, type Session, type Subscription, type TelemetryService } from "@endpoints/shared";
+import { AppRouter as FireflyAppRouter, useDeferredRegistrations, useIsBootstrapping, useLogger, useProtectedDataQueries, usePublicDataQueries } from "@squide/firefly";
+import { useChangeLanguage } from "@squide/i18next";
+import { useEffect, useMemo } from "react";
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Loading } from "./Loading.tsx";
+import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
+import { useSessionManagerInstance } from "./useSessionManagerInstance.ts";
 
-export interface AppRouterProps {
-    waitForMsw: boolean;
-    sessionManager: SessionManager;
+interface BootstrappingRouteProps {
     telemetryService: TelemetryService;
 }
 
-async function fetchPublicData(setFeatureFlags: (featureFlags: FeatureFlags) => void, signal: AbortSignal, logger: Logger) {
-    const data = await fetchJson("/api/feature-flags", {
-        signal
-    });
-
-    logger.debug("[shell] %cFeature flags are ready%c:", "color: white; background-color: green;", "", data);
-
-    setFeatureFlags(data);
-}
-
-async function fetchSession(signal: AbortSignal) {
-    const data = await fetchJson("/api/session", {
-        signal
-    });
-
-    const session: Session = {
-        user: {
-            id: data.userId,
-            name: data.username,
-            preferredLanguage: data.preferredLanguage
-        }
-    };
-
-    return session;
-}
-
-async function fetchSubscription(signal: AbortSignal) {
-    const data = await fetchJson("/api/subscription", {
-        signal
-    });
-
-    return data as Subscription;
-}
-
-function fetchProtectedData(
-    setSession: (session: Session) => void,
-    setSubscription: (subscription: Subscription) => void,
-    setIsProtectedDataLoaded: (isProtectedDataLoaded: boolean) => void,
-    signal: AbortSignal,
-    logger: Logger
-) {
-    const sessionPromise = fetchSession(signal);
-    const subscriptionPromise = fetchSubscription(signal);
-
-    return Promise.all([sessionPromise, subscriptionPromise])
-        .then(([session, subscription]) => {
-            logger.debug("[shell] %cSession is ready%c:", "color: white; background-color: green;", "", session);
-
-            setSession(session);
-
-            logger.debug("[shell] %cSubscription is ready%c:", "color: white; background-color: green;", "", subscription);
-
-            setSubscription(subscription);
-            setIsProtectedDataLoaded(true);
-        })
-        .catch((error: unknown) => {
-            if (isApiError(error) && error.status === 401) {
-                setIsProtectedDataLoaded(true);
-
-                // The authentication boundary will redirect to the login page.
-                return;
-            }
-
-            throw error;
-        });
-}
-
-function Loading() {
-    const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
-    const { t } = useTranslation("AppRouter", { i18n: i18nextInstance });
-
-    return (
-        <div>{t("loadingMessage")}</div>
-    );
-}
-
-export function AppRouter({ waitForMsw, sessionManager, telemetryService }: AppRouterProps) {
-    const [featureFlags, setFeatureFlags] = useState<FeatureFlags>();
-
-    const [subscriptionRef, setSubscription] = useRefState<Subscription>();
-    const [isProtectedDataLoaded, setIsProtectedDataLoaded] = useState(false);
-
+function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
     const logger = useLogger();
-    const runtime = useRuntime();
+
+    const [featureFlags] = usePublicDataQueries([
+        {
+            queryKey: ["/api/feature-flags"],
+            queryFn: async () => {
+                const data = await fetchJson("/api/feature-flags");
+
+                return data as FeatureFlags;
+            }
+        }
+    ]);
+
+    useEffect(() => {
+        if (featureFlags) {
+            logger.debug("[shell] %cFeature flags has been fetched%c:", "color: white; background-color: green;", "", featureFlags);
+        }
+    }, [featureFlags, logger]);
+
+    const [session, subscription] = useProtectedDataQueries([
+        {
+            queryKey: ["/api/session"],
+            queryFn: async () => {
+                const data = await fetchJson("/api/session");
+
+                const result: Session = {
+                    user: {
+                        id: data.userId,
+                        name: data.username,
+                        preferredLanguage: data.preferredLanguage
+                    }
+                };
+
+                return result;
+            }
+        },
+        {
+            queryKey: ["/api/subscription"],
+            queryFn: async () => {
+                const data = await fetchJson("/api/subscription");
+
+                return data as Subscription;
+            }
+        }
+    ], error => isApiError(error) && error.status === 401);
 
     const changeLanguage = useChangeLanguage();
 
-    const handleLoadPublicData = useCallback((signal: AbortSignal) => {
-        return fetchPublicData(setFeatureFlags, signal, logger);
-    }, [logger]);
-
-    const handleLoadProtectedData = useCallback((signal: AbortSignal) => {
-        const setSession = (session: Session) => {
-            sessionManager.setSession(session);
+    useEffect(() => {
+        if (session) {
+            logger.debug("[shell] %cSession has been fetched%c:", "color: white; background-color: green;", "", session);
 
             // When the session has been retrieved, update the language to match the user
             // preferred language.
             changeLanguage(session.user.preferredLanguage);
-        };
+        }
+    }, [session, changeLanguage, logger]);
 
-        return fetchProtectedData(setSession, setSubscription, setIsProtectedDataLoaded, signal, logger);
-    }, [logger, sessionManager, changeLanguage, setSubscription]);
+    useEffect(() => {
+        if (subscription) {
+            logger.debug("[shell] %cSubscription has been fetched%c:", "color: white; background-color: green;", "", subscription);
+        }
+    }, [subscription, logger]);
 
-    const handleCompleteRegistrations = useCallback(() => {
-        return completeModuleRegistrations(runtime, {
-            featureFlags,
-            session: sessionManager.getSession()
-        });
-    }, [runtime, featureFlags, sessionManager]);
+    useDeferredRegistrations(useMemo(() => ({
+        featureFlags,
+        session
+    }), [featureFlags, session]));
+
+    const sessionManager = useSessionManagerInstance(session!);
+
+    if (useIsBootstrapping()) {
+        return <Loading />;
+    }
 
     return (
         <FeatureFlagsContext.Provider value={featureFlags}>
-            <SubscriptionContext.Provider value={subscriptionRef.current!}>
-                <TelemetryServiceContext.Provider value={telemetryService}>
-                    <FireflyAppRouter
-                        fallbackElement={<Loading />}
-                        errorElement={<AppRouterErrorBoundary />}
-                        waitForMsw={waitForMsw}
-                        onLoadPublicData={handleLoadPublicData}
-                        onLoadProtectedData={handleLoadProtectedData}
-                        isPublicDataLoaded={!!featureFlags}
-                        isProtectedDataLoaded={isProtectedDataLoaded}
-                        onCompleteRegistrations={handleCompleteRegistrations}
-                    >
-                        {(routes, providerProps) => (
-                            <RouterProvider router={createBrowserRouter(routes)} {...providerProps} />
-                        )}
-                    </FireflyAppRouter>
-                </TelemetryServiceContext.Provider>
-            </SubscriptionContext.Provider>
+            <SessionManagerContext.Provider value={sessionManager}>
+                <SubscriptionContext.Provider value={subscription}>
+                    <TelemetryServiceContext.Provider value={telemetryService}>
+                        <Outlet />
+                    </TelemetryServiceContext.Provider>
+                </SubscriptionContext.Provider>
+            </SessionManagerContext.Provider>
         </FeatureFlagsContext.Provider>
+    );
+}
+
+export interface AppRouterProps {
+    waitForMsw: boolean;
+    telemetryService: TelemetryService;
+}
+
+export function AppRouter(props: AppRouterProps) {
+    const {
+        waitForMsw,
+        telemetryService
+    } = props;
+
+    return (
+        <FireflyAppRouter waitForMsw={waitForMsw} waitForPublicData waitForProtectedData>
+            {({ rootRoute, registeredRoutes, routerProviderProps }) => {
+                return (
+                    <RouterProvider
+                        router={createBrowserRouter([
+                            {
+                                element: rootRoute,
+                                children: [
+                                    {
+                                        element: <BootstrappingRoute telemetryService={telemetryService} />,
+                                        errorElement: <RootErrorBoundary />,
+                                        children: registeredRoutes
+                                    }
+                                ]
+                            }
+                        ])}
+                        {...routerProviderProps}
+                    />
+                );
+            }}
+        </FireflyAppRouter>
     );
 }

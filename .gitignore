@@ -3,6 +3,7 @@ dist
 .pnpm-debug.log*
 .netlify
 .turbo
+.retype
 
 # Mac
 .DS_Store

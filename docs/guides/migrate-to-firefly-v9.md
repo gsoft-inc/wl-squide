@@ -270,7 +270,7 @@ runtime.registerNavigationItem({
 
 The configured `$key` option is then passed as an argument to the [useRenderedNavigationItems](../reference/routing/useRenderedNavigationItems.md) rendering functions:
 
-```tsx !#1,5,15-16
+```tsx !#1,5,13,15
 const renderItem: RenderItemFunction = (item, key) => {
     const { label, linkProps, additionalProps } = item;
 
@@ -299,21 +299,18 @@ const navigationElements = useRenderedNavigationItems(navigationItems, renderIte
 The `v9` release introduces several breaking changes affecting the host application code. Follow these steps to migrate an existing host application:
 
 1. Add a dependency to `@tanstack/react-query`. [View example](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file)
-
 2. Transition to the new `AppRouter` component. [View example](#rewrite-of-the-approuter-component)
-
+    - `onLoadPublicData` + `isPublicDataLoaded` becomes [usePublicDataQueries](../reference/tanstack-query/usePublicDataQueries.md)
+    - `onLoadProtectedData` + `isProtectedDataLoaded` becomes [useProtectedDataQueries](../reference/tanstack-query/useProtectedDataQueries.md)
+    - `onCompleteRegistrations` becomes [useDeferredRegistrations](../reference/registration/useDeferredRegistrations.md)
+    - `fallbackElement` becomes [useIsBootstrapping](../reference/routing/useIsBootstrapping.md)
+    - `errorElement` is removed and somewhat replaced by a [root error boundary](#root-error-boundary)
 3. Create a `TanStackSessionManager` class and the `SessionManagerContext`. Replace the session's deprecated hooks by creating the customs `useSession` and `useIsAuthenticated` hooks. [View example](./add-authentication.md#create-a-session-manager)
-
 4. Remove the `sessionAccessor` option from the `FireflyRuntime` instance. Update the `BootstrappingRoute` component to create a `TanStackSessionManager` instance and share it down the component tree using a `SessionManagedContext` provider. [View example](./add-authentication.md#fetch-the-session)
-
 5. Update the `AuthenticationBoundary` component to use the new `useIsAuthenticated` hook. [View example](./add-authentication.md#add-an-authentication-boundary)
-
 6. Update the `AuthenticatedLayout` component to use the session manager instance to clear the session. Retrieve the session manager instance from the context defined in the `BootstrappingRoute` component using the `useSessionManager` hook. [View example](./add-authentication.md#define-an-authenticated-layout)
-
 7. Update the `AuthenticatedLayout` component to use the new `$key` option of the navigation item. [View example](#new-key-option-for-navigation-items)
-
 8. Convert all deferred routes into static routes. [View example](#removed-support-for-deferred-routes)
-
 9. Add a `$key` option to the navigation item registrations. [View example](#new-key-option-for-navigation-items)
 
 ### Root error boundary
@@ -373,5 +370,4 @@ export function App() {
 The changes in `v9` have minimal impact on module code. To migrate an existing module, follow these steps:
 
 1. Convert all deferred routes into static routes. [View example](#removed-support-for-deferred-routes)
-
 2. Add a `$key` option to the navigation item registrations. [View example](#new-key-option-for-navigation-items)

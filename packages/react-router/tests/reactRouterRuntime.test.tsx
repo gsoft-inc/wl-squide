@@ -1227,7 +1227,7 @@ describe("startDeferredRegistrationScope & completeDeferredRegistrationScope", (
     });
 });
 
-describe("_completeRegistration", () => {
+describe("_validateRegistrations", () => {
     describe("managed routes", () => {
         test("when the outlet is missing, the error message mentions the ManagedRoutes outlet", () => {
             const runtime = new ReactRouterRuntime();
@@ -1239,7 +1239,7 @@ describe("_completeRegistration", () => {
             });
 
             try {
-                runtime._completeRegistration();
+                runtime._validateRegistrations();
             } catch (error: unknown) {
                 errorMessage = (error as Error).message;
             }
@@ -1249,7 +1249,7 @@ describe("_completeRegistration", () => {
     });
 
     describe("parentPath", () => {
-        test("when the registration is completed and there are no pending registrations, do nothing", () => {
+        test("when there are no pending registrations, do nothing", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -1266,10 +1266,10 @@ describe("_completeRegistration", () => {
                 hoist: true
             });
 
-            expect(() => runtime._completeRegistration()).not.toThrow();
+            expect(() => runtime._validateRegistrations()).not.toThrow();
         });
 
-        test("when the registration is completed and there are pending registrations, throw an error", () => {
+        test("when there are pending registrations, throw an error", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -1279,12 +1279,12 @@ describe("_completeRegistration", () => {
                 parentPath: "/layout"
             });
 
-            expect(() => runtime._completeRegistration()).toThrow();
+            expect(() => runtime._validateRegistrations()).toThrow();
         });
     });
 
     describe("parentName", () => {
-        test("when the registration is completed and there are no pending registrations, do nothing", () => {
+        test("when there are no pending registrations, do nothing", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -1301,10 +1301,10 @@ describe("_completeRegistration", () => {
                 hoist: true
             });
 
-            expect(() => runtime._completeRegistration()).not.toThrow();
+            expect(() => runtime._validateRegistrations()).not.toThrow();
         });
 
-        test("when the registration is completed and there are pending registrations, throw an error", () => {
+        test("when there are pending registrations, throw an error", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -1314,7 +1314,7 @@ describe("_completeRegistration", () => {
                 parentName: "layout"
             });
 
-            expect(() => runtime._completeRegistration()).toThrow();
+            expect(() => runtime._validateRegistrations()).toThrow();
         });
     });
 });

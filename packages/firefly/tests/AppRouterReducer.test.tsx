@@ -4,7 +4,7 @@ import { __setMswState, MswState, type MswStateChangedListener } from "@squide/m
 import type { ReactRouterRuntime } from "@squide/react-router";
 import { act, renderHook, type RenderHookOptions } from "@testing-library/react";
 import type { ReactNode } from "react";
-import { useAppRouterReducer, useModuleRegistrationStatusDispatcher, useMswStatusDispatcher } from "../src/AppRouterReducer.ts";
+import { useAppRouterReducer, useModuleRegistrationStatusDispatcher, useMswStatusDispatcher, type AppRouterDispatch } from "../src/AppRouterReducer.ts";
 import { FireflyRuntime } from "../src/FireflyRuntime.tsx";
 
 class DummyModuleRegistry implements ModuleRegistry {
@@ -452,6 +452,19 @@ describe("useAppRouterReducer", () => {
 });
 
 describe("useModuleRegistrationStatusDispatcher", () => {
+    function renderUseModuleRegistrationStatusDispatcherHook<TProps>(areModulesRegistered: boolean, areModulesReady: boolean, dispatch: AppRouterDispatch, additionalProps: RenderHookOptions<TProps> = {}) {
+        const runtime = new FireflyRuntime();
+
+        return renderHook(() => useModuleRegistrationStatusDispatcher(areModulesRegistered, areModulesReady, dispatch), {
+            wrapper: ({ children }: { children?: ReactNode }) => (
+                <RuntimeContext.Provider value={runtime}>
+                    {children}
+                </RuntimeContext.Provider>
+            ),
+            ...additionalProps
+        });
+    }
+
     test("when local modules and remote modules are not registered, do not dispatch the \"modules-registered\" action", () => {
         const localModuleRegistry = new DummyModuleRegistry("registering-modules");
         const remoteModuleRegistry = new DummyModuleRegistry("registering-modules");
@@ -461,7 +474,7 @@ describe("useModuleRegistrationStatusDispatcher", () => {
 
         const dispatch = jest.fn();
 
-        renderHook(() => useModuleRegistrationStatusDispatcher(false, false, dispatch));
+        renderUseModuleRegistrationStatusDispatcherHook(false, false, dispatch);
 
         localModuleRegistry.invokeEventListeners();
         remoteModuleRegistry.invokeEventListeners();
@@ -478,7 +491,7 @@ describe("useModuleRegistrationStatusDispatcher", () => {
 
         const dispatch = jest.fn();
 
-        renderHook(() => useModuleRegistrationStatusDispatcher(false, false, dispatch));
+        renderUseModuleRegistrationStatusDispatcherHook(false, false, dispatch);
 
         localModuleRegistry.invokeEventListeners();
         remoteModuleRegistry.invokeEventListeners();
@@ -495,7 +508,7 @@ describe("useModuleRegistrationStatusDispatcher", () => {
 
         const dispatch = jest.fn();
 
-        renderHook(() => useModuleRegistrationStatusDispatcher(false, false, dispatch));
+        renderUseModuleRegistrationStatusDispatcherHook(false, false, dispatch);
 
         localModuleRegistry.invokeEventListeners();
         remoteModuleRegistry.invokeEventListeners();
@@ -512,7 +525,7 @@ describe("useModuleRegistrationStatusDispatcher", () => {
 
         const dispatch = jest.fn();
 
-        renderHook(() => useModuleRegistrationStatusDispatcher(false, false, dispatch));
+        renderUseModuleRegistrationStatusDispatcherHook(false, false, dispatch);
 
         localModuleRegistry.invokeEventListeners();
         remoteModuleRegistry.invokeEventListeners();
@@ -529,7 +542,7 @@ describe("useModuleRegistrationStatusDispatcher", () => {
 
         const dispatch = jest.fn();
 
-        renderHook(() => useModuleRegistrationStatusDispatcher(true, false, dispatch));
+        renderUseModuleRegistrationStatusDispatcherHook(true, false, dispatch);
 
         localModuleRegistry.invokeEventListeners();
         remoteModuleRegistry.invokeEventListeners();
@@ -546,7 +559,7 @@ describe("useModuleRegistrationStatusDispatcher", () => {
 
         const dispatch = jest.fn();
 
-        renderHook(() => useModuleRegistrationStatusDispatcher(true, false, dispatch));
+        renderUseModuleRegistrationStatusDispatcherHook(true, false, dispatch);
 
         localModuleRegistry.invokeEventListeners();
         remoteModuleRegistry.invokeEventListeners();
@@ -563,7 +576,7 @@ describe("useModuleRegistrationStatusDispatcher", () => {
 
         const dispatch = jest.fn();
 
-        renderHook(() => useModuleRegistrationStatusDispatcher(true, false, dispatch));
+        renderUseModuleRegistrationStatusDispatcherHook(true, false, dispatch);
 
         localModuleRegistry.invokeEventListeners();
         remoteModuleRegistry.invokeEventListeners();
@@ -580,7 +593,7 @@ describe("useModuleRegistrationStatusDispatcher", () => {
 
         const dispatch = jest.fn();
 
-        renderHook(() => useModuleRegistrationStatusDispatcher(true, false, dispatch));
+        renderUseModuleRegistrationStatusDispatcherHook(true, false, dispatch);
 
         localModuleRegistry.invokeEventListeners();
         remoteModuleRegistry.invokeEventListeners();
@@ -597,7 +610,7 @@ describe("useModuleRegistrationStatusDispatcher", () => {
 
         const dispatch = jest.fn();
 
-        renderHook(() => useModuleRegistrationStatusDispatcher(true, false, dispatch));
+        renderUseModuleRegistrationStatusDispatcherHook(true, false, dispatch);
 
         localModuleRegistry.invokeEventListeners();
         remoteModuleRegistry.invokeEventListeners();
@@ -614,7 +627,7 @@ describe("useModuleRegistrationStatusDispatcher", () => {
 
         const dispatch = jest.fn();
 
-        renderHook(() => useModuleRegistrationStatusDispatcher(true, true, dispatch));
+        renderUseModuleRegistrationStatusDispatcherHook(true, true, dispatch);
 
         localModuleRegistry.invokeEventListeners();
         remoteModuleRegistry.invokeEventListeners();
@@ -624,6 +637,19 @@ describe("useModuleRegistrationStatusDispatcher", () => {
 });
 
 describe("useMswStatusDispatcher", () => {
+    function renderUseMswStatusDispatcherHook<TProps>(isMswReady: boolean, dispatch: AppRouterDispatch, additionalProps: RenderHookOptions<TProps> = {}) {
+        const runtime = new FireflyRuntime();
+
+        return renderHook(() => useMswStatusDispatcher(isMswReady, dispatch), {
+            wrapper: ({ children }: { children?: ReactNode }) => (
+                <RuntimeContext.Provider value={runtime}>
+                    {children}
+                </RuntimeContext.Provider>
+            ),
+            ...additionalProps
+        });
+    }
+
     test("when msw is not ready, do not dispatch the \"msw-ready\" action", () => {
         const mswState = new DummyMswState(false);
 
@@ -631,7 +657,7 @@ describe("useMswStatusDispatcher", () => {
 
         const dispatch = jest.fn();
 
-        renderHook(() => useMswStatusDispatcher(false, dispatch));
+        renderUseMswStatusDispatcherHook(false, dispatch);
 
         mswState.invokeEventListeners();
 
@@ -645,7 +671,7 @@ describe("useMswStatusDispatcher", () => {
 
         const dispatch = jest.fn();
 
-        renderHook(() => useMswStatusDispatcher(false, dispatch));
+        renderUseMswStatusDispatcherHook(false, dispatch);
 
         mswState.invokeEventListeners();
 
@@ -659,7 +685,7 @@ describe("useMswStatusDispatcher", () => {
 
         const dispatch = jest.fn();
 
-        renderHook(() => useMswStatusDispatcher(true, dispatch));
+        renderUseMswStatusDispatcherHook(true, dispatch);
 
         mswState.invokeEventListeners();
 

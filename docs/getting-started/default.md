@@ -4,7 +4,7 @@ icon: rocket
 expanded: true
 ---
 
-!!!warning
+!!!contrast
 The documentation for Squide firefly v8 is available [here](https://squide-firefly-v8.netlify.app/getting-started/).
 !!!
 

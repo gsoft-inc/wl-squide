@@ -2,7 +2,7 @@
     "name": "@squide/core",
     "author": "Workleap",
     "version": "5.0.0",
-    "description": "The core package of @squide federated application shell.",
+    "description": "The core package of @squide application shell.",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",

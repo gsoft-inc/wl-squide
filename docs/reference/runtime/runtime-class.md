@@ -260,7 +260,7 @@ runtime.registerRoute({
 });
 ```
 
-[!ref text="Learn more about using nested routes for federated tabs"](../../guides/use-federated-tabs.md)
+[!ref text="Learn more about using nested routes for modular tabs"](../../guides/use-modular-tabs.md)
 
 !!!info
 Likewise any other React Router routes, the `path` property of a route rendered under an existing parent route must be an absolute path. For example, if a parent route `path` is `/layout`, the `path` property of a route rendered under that parent route and responding to the `/page-1` url, should be `/layout/page-1`.

@@ -14,7 +14,7 @@ expanded: true
 - [Add authentication](./add-authentication.md)
 - [Add a public route](./add-a-public-route.md)
 - [Override the host layout](./override-the-host-layout.md)
-- [Use federated tabs](./use-federated-tabs.md)
+- [Use modular tabs](./use-modular-tabs.md)
 - [Use feature flags](./use-feature-flags.md)
 - [Setup i18next](./setup-i18next.md)
 - [Develop a module in isolation](./develop-a-module-in-isolation.md)

@@ -2,36 +2,36 @@
 order: 860
 ---
 
-# Use federated tabs
+# Use modular tabs
 
 While it's typically recommended for a Squide application to maintain the boundary of a page within a single domain, there are situations where **enhancing** the **user experience** necessitates rendering a page with parts from **multiple domains**, or at the very least, simulating it 😊.
 
-For this guide, we'll take as an example a page for which the parts that are owned by different domains are organized by tabs (federated tabs):
+For this guide, we'll take as an example a page for which the parts that are owned by different domains are organized by tabs (modular tabs) and registered by different modules:
 
 - `Tab 1`: Registered by `Remote Module 1`
 - `Tab 2`: Registered by `Remote Module 2`
 - `Tab 3`: Registered by `Local Module`
 
 :::align-image-left
-![Anatomy of a page rendering federated tabs](../static/federated-tabs-anatomy.svg)
+![Anatomy of a page rendering modular tabs](../static/modular-tabs-anatomy.svg)
 :::
 
 ## Define a nested layout
 
 To build this page while adhering to Squide's constraint of avoiding hard references to elements from other modules, let's start by defining a React Router [nested layout](https://reactrouter.com/en/main/start/tutorial#nested-routes). This nested layout will handle rendering all the tab headers and the content of the active tab:
 
-```tsx !#9-11,15 remote-module-3/src/federated-tabs-layout.tsx
+```tsx !#9-11,15 remote-module-3/src/tabs-layout.tsx
 import { Suspense } from "react";
 import { Link, Outlet } from "react-router-dom";
 
-export function FederatedTabsLayout() {
+export function TabsLayout() {
     return (
         <div>
             <p>Every tab is registered by a different module.</p>
             <ul style={{ listStyleType: "none", margin: 0, padding: 0, display: "flex", gap: "20px" }}>
-                <li><Link to="federated-tabs/tab-1">Tab 1</Link></li>
-                <li><Link to="federated-tabs/tab-2">Tab 2</Link></li>
-                <li><Link to="federated-tabs/tab-3">Tab 3</Link></li>
+                <li><Link to="tabs/tab-1">Tab 1</Link></li>
+                <li><Link to="tabs/tab-2">Tab 2</Link></li>
+                <li><Link to="tabs/tab-3">Tab 3</Link></li>
             </ul>
             <div style={{ padding: "20px" }}>
                 <Suspense fallback={<div>Loading...</div>}>
@@ -43,25 +43,25 @@ export function FederatedTabsLayout() {
 }
 ```
 
-In the previous code sample, the `FederatedTabsLayout` component is similar to the `RootLayout` component introduced in previous guides. However, the key distinction is that this layout will be bound to the `/federated-tabs` URL path. By nesting the layout under a specific path, it will only render when the user navigates to one of the federated tab pages (e.g. `/federated-tabs/tab-1`, `/federated-tabs/tab-2`, `/federated-tabs/tab-3`).
+In the previous code sample, the `TabsLayout` component is similar to the `RootLayout` component introduced in previous guides. However, the key distinction is that this layout will be bound to the `/tabs` URL path. By nesting the layout under a specific path, it will only render when the user navigates to one of the modular tab pages (e.g. `/tabs`, `/tabs/tab-1`, `/tabs/tab-2`, `/tabs/tab-3`).
 
 To register the newly created layout as a nested layout, use the [registerRoute](../reference/runtime/runtime-class.md#register-routes) function:
 
 ```tsx !#7-8 remote-module-3/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
-import { FederatedTabsLayout } from "./FederatedTabsLayout.tsx";
+import { TabsLayout } from "./TabsLayout.tsx";
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        // Register the layout as a nested layout under the "/federated-tabs" URL path.
-        path: "/federated-tabs",
-        element: <FederatedTabsLayout />
+        // Register the layout as a nested layout under the "/tabs" URL path.
+        path: "/tabs",
+        element: <TabsLayout />
     });
 
     runtime.registerNavigationItem({
-        $key: "federated-tabs",
-        $label: "Federated tabs",
-        to: "/federated-tabs"
+        $key: "tabs",
+        $label: "tabs",
+        to: "/tabs"
     });
 }
 ```
@@ -76,7 +76,7 @@ It is recommended to define the shared layouts in a standalone package as it's d
 
 ## Create the tab routes
 
-Next, let's add the actual tabs to the modules. To do so, we'll use the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) option of the [registerRoute](../reference/runtime/runtime-class.md#register-routes) function to register the routes under the `FederatedTabsLayout` component:
+Next, let's add the actual tabs to the modules. To do so, we'll use the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) option of the [registerRoute](../reference/runtime/runtime-class.md#register-routes) function to register the routes under the `TabsLayout` component:
 
 ```tsx !#7,10 remote-module-1/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -88,7 +88,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
         index: true
         element: <Tab1 />
     }, { 
-        parentPath: "/federated-tabs"
+        parentPath: "/tabs"
     });
 }
 ```
@@ -108,11 +108,11 @@ import { Tab2 } from "./Tab2.tsx";
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         // React Router nested routes requires the first part of the "path" to be the same 
-        // as the nested layout path (FederatedTabsLayout).
-        path: "/federated-tabs/tab-2"
+        // as the nested layout path (TabsLayout).
+        path: "/tabs/tab-2"
         element: <Tab2 />
     }, { 
-        parentPath: "/federated-tabs"
+        parentPath: "/tabs"
     });
 }
 ```
@@ -132,11 +132,11 @@ import { Tab3 } from "./Tab3.tsx";
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         // React Router nested routes requires the first part of the "path" to be the same 
-        // as the nested layout path (FederatedTabsLayout).
-        path: "/federated-tabs/tab-3"
+        // as the nested layout path (TabsLayout).
+        path: "/tabs/tab-3"
         element: <Tab3 />
     }, {
-        parentPath: "/federated-tabs"
+        parentPath: "/tabs"
     });
 }
 ```
@@ -149,15 +149,15 @@ export function Tab3() {
 }
 ```
 
-Now that the tabs has been registered, ensure that all four modules (including `remote-module-3`) are registered in the host application. Start the development servers using the `dev` script. Navigate to the `/federated-tabs` page, you should see the tab headers. Click on each tab header to confirm that the content renders correctly.
+Now that the tabs has been registered, ensure that all four modules (including `remote-modules-3`) are registered in the host application. Start the development servers using the `dev` script. Navigate to the `/tabs` page, you should see the tab headers. Click on each tab header to confirm that the content renders correctly.
 
 ## Decouple the navigation items
 
-Althought it's functional, the modules are currently coupled by hardcoded URLs within the `FederatedTabsLayout` component.
+Althought it's functional, the modules are currently coupled by hardcoded URLs within the `TabsLayout` component.
 
-To decouple the navigation items, similar to what is done for regular federated routes, we'll use the [registerNavigationItem](../reference/runtime/runtime-class.md#register-navigation-items) function. In this case, we'll specify a [menuId](../reference/runtime/runtime-class.md#register-navigation-items-for-a-specific-menu) option. Defining the `menuId` option will instruct the `FederatedTabsLayout` component to exclusively retrieve the navigation items that belongs to this layout.
+To decouple the navigation items, similar to what is done for regular module's routes, we'll use the [registerNavigationItem](../reference/runtime/runtime-class.md#register-navigation-items) function. In this case, we'll specify a [menuId](../reference/runtime/runtime-class.md#register-navigation-items-for-a-specific-menu) option. Defining the `menuId` option will allow the `TabsLayout` component to exclusively retrieve the navigation items that belongs to him.
 
-First, let's register the navigation items with the `menuId` option. For this example the `menuId` will be `/federated-tabs` (it can be anything):
+First, let's register the navigation items with the `menuId` option. For this example the `menuId` will be `/tabs` (it can be anything):
 
 ```tsx !#20 remote-module-1/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -169,17 +169,17 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
         index: true
         element: <Tab1 />
     }, { 
-        parentPath: "/federated-tabs" 
+        parentPath: "/tabs" 
     });
 
     runtime.registerNavigationItem({
         $key: "tab-1",
         $label: "Tab 1",
-        to: "/federated-tabs"
+        to: "/tabs"
     }, { 
         // The menu id could be anything, in this example we are using the same path as the nested layout
         // path for convenience.
-        menuId: "/federated-tabs"
+        menuId: "/tabs"
     });
 }
 ```
@@ -191,21 +191,21 @@ import { Tab2 } from "./Tab2.tsx";
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         // React Router nested routes requires the first part of the "path" to be the same 
-        // as the nested layout path (FederatedTabsLayout).
-        path: "/federated-tabs/tab-2"
+        // as the nested layout path (TabsLayout).
+        path: "/tabs/tab-2"
         element: <Tab2 />
     }, { 
-        parentPath: "/federated-tabs"
+        parentPath: "/tabs"
     });
 
     runtime.registerNavigationItem({
         $key: "tab-2",
         $label: "Tab 2",
-        to: "/federated-tabs/tab-2"
+        to: "/tabs/tab-2"
     }, { 
         // The menu id could be anything, in this example we are using the same path as the nested layout
         // path for convenience.
-        menuId: "/federated-tabs"
+        menuId: "/tabs"
     });
 }
 ```
@@ -217,28 +217,28 @@ import { Tab3 } from "./Tab3.tsx";
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         // React Router nested routes requires the first part of the "path" to be the same 
-        // as the nested layout path (FederatedTabsLayout).
-        path: "/federated-tabs/tab-3"
+        // as the nested layout path (TabsLayout).
+        path: "/tabs/tab-3"
         element: <Tab3 />
     }, { 
-        parentPath: "/federated-tabs"
+        parentPath: "/tabs"
     });
 
     runtime.registerNavigationItem({
         $key: "tab-3",
         $label: "Tab 3",
-        to: "/federated-tabs/tab-3"
+        to: "/tabs/tab-3"
     }, {
         // The menu id could be anything, in this example we are using the same path as the nested layout
         // path for convenience. 
-        menuId: "/federated-tabs" 
+        menuId: "/tabs" 
     });
 }
 ```
 
-Then, update the `FederatedTabsLayout` component to render the registered navigation items instead of the hardcoded URLs:
+Then, update the `TabsLayout` component to render the registered navigation items instead of the hardcoded URLs:
 
-```tsx !#32 remote-module-3/src/federated-tabs-layout.tsx
+```tsx !#32 remote-module-3/src/tabs-layout.tsx
 import { 
     useNavigationItems,
     useRenderedNavigationItems,
@@ -269,8 +269,8 @@ const renderSection: RenderSectionFunction = elements => {
     );
 };
 
-export function FederatedTabsLayout() {
-    const navigationItems = useNavigationItems({ menuId: "/federated-tabs" });
+export function TabsLayout() {
+    const navigationItems = useNavigationItems({ menuId: "/tabs" });
     const renderedTabs = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
     return (
@@ -289,7 +289,7 @@ export function FederatedTabsLayout() {
 
 ## Change the display order of the tabs
 
-Similarly to how the display order of regular navigation items can be configured, a federated tab position can be affected with the [priority](http://localhost:5000/wl-squide/reference/runtime/runtime-class/#sort-registered-navigation-items) property.
+Similarly to how the display order of regular navigation items can be configured, a modular tab position can be affected with the [priority](http://localhost:5000/wl-squide/reference/runtime/runtime-class/#sort-registered-navigation-items) property.
 
 To force `Tab 3` to be positioned first, we'll give him a priority of `999`: 
 
@@ -299,10 +299,10 @@ import { Tab3 } from "./Tab3.tsx";
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        path: "/federated-tabs/tab-3"
+        path: "/tabs/tab-3"
         element: <Tab3 />
     }, { 
-        parentPath: "/federated-tabs"
+        parentPath: "/tabs"
     });
 
     runtime.registerNavigationItem({
@@ -310,23 +310,23 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
         $label: "Tab 3",
         // Highest priority goes first.
         $priority: 999,
-        to: "/federated-tabs/tab-3"
+        to: "/tabs/tab-3"
     }, { 
-        menuId: "/federated-tabs" 
+        menuId: "/tabs" 
     });
 }
 ```
 
 ## Try it :rocket:
 
-To ensure everything is still working correctly, start the development servers using the `dev` script and navigate to the `/federated-tabs` page. You should see all three tabs, and you should be able to switch between them by clicking on the tab headers.
+To ensure everything is still working correctly, start the development servers using the `dev` script and navigate to the `/tabs` page. You should see all three tabs, and you should be able to switch between them by clicking on the tab headers.
 
 ### Troubleshoot issues
 
 If you are experiencing issues with this guide:
 
 - Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong:
-    - `[squide] The following route has been registered as a children of the "/federated-tabs" route.`
-    - `[squide] The following static navigation item has been registered to the "/federated-tabs" menu for a total of 1 item.`
+    - `[squide] The following route has been registered as a children of the "/tabs" route.`
+    - `[squide] The following static navigation item has been registered to the "/tabs" menu for a total of 1 item.`
 - Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic).
 - Refer to the [troubleshooting](../troubleshooting.md) page.

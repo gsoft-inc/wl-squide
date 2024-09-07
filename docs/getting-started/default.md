@@ -14,7 +14,7 @@ Welcome to Squide (yes :squid: with an **"e"**), a shell for [Workleap](https://
 
 <!-- !!!warning Foundry CLI
 
-The prefered way for creating a new federated application for the Workleap's platform is with the [foundry-cli](https://github.com/gsoft-inc/wl-foundry-cli).
+The prefered way for creating a new modular application for the Workleap's platform is with the [foundry-cli](https://github.com/gsoft-inc/wl-foundry-cli).
 +++ pnpm
 ```bash
 pnpm create @workleap/project@latest <output-directory>
@@ -72,7 +72,7 @@ The most distinctive aspect of this shell is the conventions it enforces for loa
 
 1. During bootstrap, the host application attempts to [load predefined modules](/reference/registration/registerLocalModules.md) and calls a registration function with a specific name and signature for each successfully loaded module.
 
-2. During registration, a module receives the [runtime](/reference/runtime/runtime-class.md) of the federated application and use the instance to dynamically register its [routes](/reference/runtime/runtime-class.md#register-routes) and [navigation items](/reference/runtime/runtime-class.md#register-navigation-items).
+2. During registration, a module receives the [runtime](/reference/runtime/runtime-class.md) of the application and use the instance to dynamically register its [routes](/reference/runtime/runtime-class.md#register-routes) and [navigation items](/reference/runtime/runtime-class.md#register-navigation-items).
 
 3. Once all the modules are registered, the host application will create a React Router [instance](https://reactrouter.com/en/main/routers/create-browser-router) with the registered routes and [renders a navigation menu](/reference/routing/useRenderedNavigationItems.md) with the registered navigation items.
 

@@ -1,7 +1,7 @@
 {
     "name": "wl-squide",
     "author": "Workleap",
-    "description": "A federated web application shell.",
+    "description": "A modular web application shell.",
     "private": true,
     "type": "module",
     "license": "Apache-2.0",

@@ -66,7 +66,7 @@ In the previous code samples, the host application provides a value for the `Bac
 
 ## Override the context for the remote module
 
-Now, suppose the requirements change, and one remote module pages need to have a `red` background. The context can be overriden for the remote module by declaring a new provider directly in the routes registration:
+Now, suppose the requirements change, and a page of the remote module must have a `red` background. The context can be overriden for that page by declaring a new provider directly in the routes registration:
 
 ```tsx !#9 remote-module/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -114,7 +114,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 ## Update a singleton dependency version
 
 !!!warning
-This section applies only to applications with [remote modules](../reference/registration/registerRemoteModules.md).
+This section applies only to federated applications (applications having [remote modules](../reference/registration/registerRemoteModules.md)).
 !!!
 
 Let's consider a more specific use case where the host application declares a `ThemeContext` from Workleap's new design system, [Hopper](https://hopper.workleap.design/):
@@ -155,7 +155,22 @@ In this scenario, Hopper's components are used throughout the entire application
 import { defineDevHostConfig } from "@squide/firefly-webpack-configs";
 import { swcConfig } from "./swc.dev.js";
 
-export default defineDevHostConfig(swcConfig, 8080, [], {
+export default defineDevHostConfig(swcConfig, 8080, [...], {
+    sharedDependencies: {
+        "@hopper/components": {
+            singleton: true
+        }
+    }
+});
+```
+
+```js !#8-10 remote-module/webpack.dev.js
+// @ts-check
+
+import { defineDevRemoteModuleConfig } from "@squide/firefly-webpack-configs";
+import { swcConfig } from "./swc.dev.js";
+
+export default defineDevRemoteModuleConfig(swcConfig, "remote-module", 8080, {
     sharedDependencies: {
         "@hopper/components": {
             singleton: true
@@ -166,7 +181,22 @@ export default defineDevHostConfig(swcConfig, 8080, [], {
 
 Now, consider a situation where Hopper releases a new version of the package that includes breaking changes, without a "compatibility" package to ensure backward compatility with the previous version.
 
-To update the host application without breaking the modules, we recommend to temporary "break" the singleton shared dependency by loading two versions of the `@hopper/components` dependency in parallel (one for the host application and one for the modules that have not been updated yet).
+To update the host application without breaking the modules, we recommend to temporary "break" the singleton shared dependency by loading two versions of the `@hopper/components` dependency in parallel (one for the host application and one for the modules that have not been updated yet):
+
+```js !#8-10 remote-module/webpack.dev.js
+// @ts-check
+
+import { defineDevRemoteModuleConfig } from "@squide/firefly-webpack-configs";
+import { swcConfig } from "./swc.dev.js";
+
+export default defineDevRemoteModuleConfig(swcConfig, "remote-module", 8080, {
+    sharedDependencies: {
+        "@hopper/components": {
+            singleton: false
+        }
+    }
+});
+```
 
 As `@hopper/components` expose the `ThemeContext`, the context must be re-declared in each module until every part of the federated application has been updated to the latest version of `@hopper/components`:
 

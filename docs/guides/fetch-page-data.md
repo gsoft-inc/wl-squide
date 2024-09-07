@@ -107,7 +107,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 To faciliate development, TanStack Query provides [devtools](https://tanstack.com/query/latest/docs/react/devtools) to help visualize all of the inner workings of TanStack Query.
 
-However, the TanStack Query devtools has not been developed to handle a federated application with multiple `QueryClient` instances. To use the devtools, you must define a `ReactQueryDevtools` component for each `QueryClient` instance:
+However, the TanStack Query devtools has not been developed to handle a modular application with multiple `QueryClient` instances. To use the devtools, you must define a `ReactQueryDevtools` component for each `QueryClient` instance:
 
 ```tsx !#14 remote/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";

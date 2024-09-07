@@ -1,6 +1,6 @@
 # wl-squide
 
-A federated web application shell built on top of [Module Federation](https://module-federation.io/), [React Router](https://reactrouter.com/en/main) and [TanStack Query](https://tanstack.com/query/latest).
+A  modular web application shell built on top of [Module Federation](https://module-federation.io/), [React Router](https://reactrouter.com/en/main) and [TanStack Query](https://tanstack.com/query/latest).
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
 [![CI](https://github.com/gsoft-inc/wl-squide/actions/workflows/ci.yml/badge.svg)](https://github.com/gsoft-inc/wl-squide/actions/workflows/ci.yml)
@@ -36,6 +36,6 @@ View the [contributor's documentation](./CONTRIBUTING.md).
 
 ## License
 
-Copyright © 2023, Workleap This code is licensed under the Apache License, Version 2.0. You may obtain a copy of this license at https://github.com/gsoft-inc/workleap-license/blob/master/LICENSE.
+Copyright © 2024, Workleap This code is licensed under the Apache License, Version 2.0. You may obtain a copy of this license at https://github.com/gsoft-inc/workleap-license/blob/master/LICENSE.
 
 

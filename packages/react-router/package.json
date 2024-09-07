@@ -2,7 +2,7 @@
     "name": "@squide/react-router",
     "author": "Workleap",
     "version": "6.0.0",
-    "description": "Add support for React Router to @squide federated application shell.",
+    "description": "Add support for React Router to @squide application shell.",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.778993928956">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.779052342673">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,11 +32,11 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../static/favicon.png" rel="icon">
-    <link href="../resources/css/retype.css?v=3.5.0.778993928956" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=3.5.0.779052342673" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=3.5.0.778993928956" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=3.5.0.779052342673" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.5.0.778993928956" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.5.0.779052342673" data-turbo-eval="false" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -306,7 +306,7 @@
 <p>Welcome to Squide (yes <span class="docs-emoji">&#x1F991;</span> with an <strong>&quot;e&quot;</strong>), a shell for <a href="https://workleap.com/" class="outbound" target="_blank">Workleap</a> web applications built on top of <a href="https://module-federation.io/" class="outbound" target="_blank">Module Federation</a>, <a href="https://reactrouter.com" class="outbound" target="_blank">React Router</a> and <a href="https://tanstack.com/query/latest" class="outbound" target="_blank">TanStack Query</a>. In this getting started section, you&#x27;ll find an overview of the shell and a <a href="create-host/">quick start</a> guide to create a new application from scratch.</p>
 <!-- !!!warning Foundry CLI
 
-The prefered way for creating a new federated application for the Workleap's platform is with the [foundry-cli](https://github.com/gsoft-inc/wl-foundry-cli).
+The prefered way for creating a new modular application for the Workleap's platform is with the [foundry-cli](https://github.com/gsoft-inc/wl-foundry-cli).
 +++ pnpm
 ```bash
 pnpm create @workleap/project@latest <output-directory>
@@ -376,7 +376,7 @@ npm create @workleap/project@latest <output-directory>
 <ol>
 <li><p>During bootstrap, the host application attempts to <a href="../reference/registration/registerlocalmodules/">load predefined modules</a> and calls a registration function with a specific name and signature for each successfully loaded module.</p>
 </li>
-<li><p>During registration, a module receives the <a href="../reference/runtime/runtime-class/">runtime</a> of the federated application and use the instance to dynamically register its <a href="../reference/runtime/runtime-class/#register-routes">routes</a> and <a href="../reference/runtime/runtime-class/#register-navigation-items">navigation items</a>.</p>
+<li><p>During registration, a module receives the <a href="../reference/runtime/runtime-class/">runtime</a> of the application and use the instance to dynamically register its <a href="../reference/runtime/runtime-class/#register-routes">routes</a> and <a href="../reference/runtime/runtime-class/#register-navigation-items">navigation items</a>.</p>
 </li>
 <li><p>Once all the modules are registered, the host application will create a React Router <a href="https://reactrouter.com/en/main/routers/create-browser-router" class="outbound" target="_blank">instance</a> with the registered routes and <a href="../reference/routing/userenderednavigationitems/">renders a navigation menu</a> with the registered navigation items.</p>
 </li>

@@ -19,6 +19,7 @@
     },
     "peerDependencies": {
         "@endpoints/shared": "*",
+        "@squide/firefly": "*",
         "@squide/i18next": "*",
         "i18next": "*",
         "i18next-browser-languagedetector": "*",
@@ -28,6 +29,7 @@
     },
     "devDependencies": {
         "@endpoints/shared": "workspace:*",
+        "@squide/firefly": "workspace:*",
         "@squide/i18next": "workspace:*",
         "@workleap/eslint-plugin": "3.2.2",
         "@workleap/tsup-configs": "3.0.6",

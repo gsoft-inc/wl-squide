@@ -18,7 +18,7 @@ const runtime = new FireflyRuntime({
 await registerRemoteModules(Remotes, runtime);
 
 // Register the local module.
-registerLocalModules([registerHost, registerMyLocalModule], runtime);
+await registerLocalModules([registerHost, registerMyLocalModule], runtime);
 
 const root = createRoot(document.getElementById("root")!);
 

@@ -1,5 +1,5 @@
 import type { LanguageKey } from "@endpoints/shared";
-import type { Runtime } from "@squide/core";
+import type { Runtime } from "@squide/firefly";
 import { i18nextPlugin, type i18nextPluginOptions } from "@squide/i18next";
 
 export function createI18NextPlugin(runtime: Runtime, options?: i18nextPluginOptions) {

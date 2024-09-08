@@ -11,12 +11,12 @@
         "ci-build": "turbo run build --filter=./packages/* --cache-dir=node_modules/.cache/turbo",
         "pretest": "turbo run build --filter=./packages/*",
         "test": "jest",
-        "prelint": "turbo run --filter=!@getting-started/* build",
+        "prelint": "turbo run build",
         "lint": "pnpm run \"/^lint:.*/\"",
         "lint:eslint": "eslint . --max-warnings=-0 --cache --cache-location node_modules/.cache/eslint",
         "lint:knip": "knip --cache --cache-location node_modules/.cache/knip",
         "lint:installed-check": "installed-check --engine-check --version-check",
-        "lint:types": "pnpm -r --parallel --include-workspace-root --filter=!@getting-started/* exec tsc",
+        "lint:types": "pnpm -r --parallel --include-workspace-root exec tsc",
         "changeset": "changeset",
         "publish-pkg": "changeset publish",
         "clean": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf dist .turbo .netlify node_modules/.cache",
@@ -55,7 +55,7 @@
         "typescript": "5.5.3"
     },
     "engines": {
-        "node": ">=20.0.0",
+        "node": ">=21.1.0",
         "pnpm": ">=9"
     },
     "packageManager": "pnpm@9.5.0+sha512.140036830124618d624a2187b50d04289d5a087f326c9edfc0ccd733d76c4f52c3a313d4fc148794a2a9d81553016004e6742e8cf850670268a7387fc220c903"

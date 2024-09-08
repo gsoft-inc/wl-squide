@@ -64,7 +64,7 @@ export function ColoredPage() {
 
 In the previous code samples, the host application provides a value for the `BackgroundColorContext`, and the `ColoredPage` component of the remote module uses this value to set its background color (to `blue` for this example).
 
-## Override the context for the remote module
+## Override the context for the module
 
 Now, suppose the requirements change, and a page of the remote module must have a `red` background. The context can be overriden for that page by declaring a new provider directly in the routes registration:
 
@@ -114,7 +114,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 ## Update a singleton dependency version
 
 !!!warning
-This section applies only to federated applications (applications having [remote modules](../reference/registration/registerRemoteModules.md)).
+This section only applies to federated applications (applications including [remote modules](../reference/registration/registerRemoteModules.md)).
 !!!
 
 Let's consider a more specific use case where the host application declares a `ThemeContext` from Workleap's new design system, [Hopper](https://hopper.workleap.design/):

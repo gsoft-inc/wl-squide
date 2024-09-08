@@ -15,14 +15,14 @@
         "update-outdated-deps": "pnpm update -r --latest !eslint"
     },
     "devDependencies": {
-        "@typescript-eslint/parser": "7.16.1",
+        "@typescript-eslint/parser": "8.4.0",
         "@workleap/eslint-plugin": "3.2.2",
         "@workleap/typescript-configs": "3.0.2",
         "eslint": "8.57.0",
-        "typescript": "5.5.3"
+        "typescript": "5.5.4"
     },
     "engines": {
-        "node": ">=20.0.0",
+        "node": ">=21.1.0",
         "pnpm": ">=9"
     }
 }

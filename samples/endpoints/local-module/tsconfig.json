@@ -9,6 +9,8 @@
             "@squide/msw": ["../../../packages/msw/src/index.ts"],
             "@squide/i18next": ["../../../packages/i18next/src/index.ts"],
             "@squide/fakes": ["../../../packages/fakes/src/index.ts"],
+            "@squide/firefly": ["../../../packages/firefly/src/index.ts"],
+            "@squide/firefly-webpack-configs": ["../../../packages/firefly-webpack-configs/src/index.ts"],
             "@endpoints/layouts": ["../layouts/src/index.ts"],
             "@endpoints/shell": ["../shell/src/index.ts"],
             "@endpoints/shared": ["../shared/src/index.ts"],

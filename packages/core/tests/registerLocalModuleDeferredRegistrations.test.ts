@@ -1,4 +1,4 @@
-import { LocalModuleRegistry } from "../src/federation/registerLocalModules.ts";
+import { LocalModuleRegistry } from "../src/registration/registerLocalModules.ts";
 import { Runtime } from "../src/runtime/runtime.ts";
 
 function simulateDelay(delay: number) {

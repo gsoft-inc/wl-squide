@@ -1,5 +1,5 @@
-import { mergeDeferredRegistrations } from "../src/federation/mergeDeferredRegistrations.ts";
 import type { DeferredRegistrationFunction } from "../src/index.ts";
+import { mergeDeferredRegistrations } from "../src/registration/mergeDeferredRegistrations.ts";
 
 function noop() {}
 

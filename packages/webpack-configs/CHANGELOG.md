@@ -1,5 +1,11 @@
 # @squide/webpack-configs
 
+## 4.0.1
+
+### Patch Changes
+
+- [#191](https://github.com/gsoft-inc/wl-squide/pull/191) [`2b62c53`](https://github.com/gsoft-inc/wl-squide/commit/2b62c539b0f3123cb47475566181e0b446ea6b40) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Updated packages description.
+
 ## 4.0.0
 
 ### Major Changes

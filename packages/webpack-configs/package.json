@@ -1,7 +1,7 @@
 {
     "name": "@squide/webpack-configs",
     "author": "Workleap",
-    "version": "4.0.0",
+    "version": "4.0.1",
     "description": "Utilities to configure webpack with a @squide application shell.",
     "license": "Apache-2.0",
     "repository": {

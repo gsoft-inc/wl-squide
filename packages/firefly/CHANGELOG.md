@@ -1,5 +1,17 @@
 # @squide/firefly
 
+## 9.0.1
+
+### Patch Changes
+
+- [#191](https://github.com/gsoft-inc/wl-squide/pull/191) [`2b62c53`](https://github.com/gsoft-inc/wl-squide/commit/2b62c539b0f3123cb47475566181e0b446ea6b40) Thanks [@patricklafrance](https://github.com/patricklafrance)! - `useNavigationItems` now accepts `useRuntimeNavigationItems` options.
+
+- Updated dependencies [[`2b62c53`](https://github.com/gsoft-inc/wl-squide/commit/2b62c539b0f3123cb47475566181e0b446ea6b40)]:
+  - @squide/react-router@6.0.1
+  - @squide/core@5.0.1
+  - @squide/module-federation@6.0.1
+  - @squide/msw@3.0.1
+
 ## 9.0.0
 
 ### Major Changes

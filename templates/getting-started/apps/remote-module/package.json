@@ -10,7 +10,7 @@
         "build": "webpack --config webpack.build.js"
     },
     "devDependencies": {
-        "@squide/firefly-webpack-configs": "4.0.0",
+        "@squide/firefly-webpack-configs": "4.0.1",
         "@swc/core": "1.7.23",
         "@swc/helpers": "0.5.13",
         "@types/react": "18.3.5",
@@ -28,7 +28,7 @@
         "webpack-dev-server": "5.1.0"
     },
     "dependencies": {
-        "@squide/firefly": "9.0.0",
+        "@squide/firefly": "9.0.1",
         "react": "18.3.1",
         "react-dom": "18.3.1",
         "react-router-dom": "6.26.1"

@@ -38,9 +38,9 @@ While Squide remains a great shell for federated applications, as we experimente
 
 - With the power of [local modules](../reference/registration/registerLocalModules.md) and the [Runtime API](../reference/runtime/runtime-class.md), Squide addresses a long-lasting challenge at Workleap: _How can we effectively enforce the boundaries of a business subdomain in the frontend?_ Squide's modular design naturally upholds these boundaries.
 
-- With Squide, teams can confidently start new products with a simple **monorepo** architecture, knowing that as new members are onboarded, their development **velocity** can **scale** seamlessly by gradually migrating local modules to remote modules without refactoring the core application architecture.
+- With Squide, teams can confidently develop new products as a simple **monorepo** application, knowing that as new members are onboarded, their development **velocity** will **scale** seamlessly. Over time, local modules can be migrated to [remote modules](../reference/registration/registerRemoteModules.md) without the need to refactor the core application architecture.
 
-For both, federated and non-federated web applications, Squide offers a lightweight [API layer](/reference) combining the strengths of industry-leading third-party libraries:
+For both federated and non-federated web applications, Squide's **modular architecture** and lightweight [API layer](/reference) provide a significant upside, combining the strengths of industry-leading third-party libraries:
 
 ### Module Federation
 
@@ -64,7 +64,7 @@ React Router [nested routes](https://reactrouter.com/en/main/start/tutorial#nest
 
 TanStack Query simplifies server state management with an innovative approach to data fetching, caching, and synchronization, enhancing both the perceived performance and the user experience.
 
-TanStack Query is particularly well-suited for modular applications due to its ability to **manage** server **state across** multiple **independent** React **components**. It’s an effective solution for modular applications that require **isolating data** and **state** between independent parts.
+TanStack Query is particularly well-suited for modular applications due to its ability to **manage** server **state across** multiple **independent** React **components**. It’s an effective solution for modular applications that requires **isolating data** and **state** between independent parts.
 
 ## Module registration
 

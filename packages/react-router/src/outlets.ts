@@ -1,11 +1,21 @@
 import type { NonIndexRoute, Route } from "./routeRegistry.ts";
 
-export const ManagedRoutesOutletName = "__squide-managed-routes-outlet__";
+export const PublicRoutesOutletName = "__squide-public-routes-outlet__";
 
-export const ManagedRoutes: NonIndexRoute = {
-    $name: ManagedRoutesOutletName
+export const PublicRoutes: NonIndexRoute = {
+    $name: PublicRoutesOutletName
 };
 
-export function isManagedRoutesOutletRoute(route: Route) {
-    return route.$name === ManagedRoutesOutletName;
+export function isPublicRoutesOutletRoute(route: Route) {
+    return route.$name === PublicRoutesOutletName;
+}
+
+export const ProtectedRoutesOutletName = "__squide-protected-routes-outlet__";
+
+export const ProtectedRoutes: NonIndexRoute = {
+    $name: ProtectedRoutesOutletName
+};
+
+export function isProtectedRoutesOutletRoute(route: Route) {
+    return route.$name === ProtectedRoutesOutletName;
 }

@@ -79,7 +79,7 @@ export function FireflyAppRouter() {
 Finally, create a local module to register the **application shell**. This module will be used by both the host application and the isolated modules:
 
 ```tsx shell/src/register.tsx
-import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
+import { PublicRoutes, ProtectedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { RootLayout } from "./RootLayout.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
@@ -90,7 +90,8 @@ export const registerShell: ModuleRegisterFunction<FireflyRuntime> = runtime => 
             {
                 errorElement: <RootErrorBoundary />,
                 children: [
-                    ManagedRoutes
+                    PublicRoutes,
+                    ProtectedRoutes
                 ]
             }
         ]

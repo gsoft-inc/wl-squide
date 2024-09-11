@@ -631,8 +631,8 @@ export function RootLayout() {
 
 Finally, assemble everything:
 
-```tsx !#15,19,27-33 host/src/register.tsx
-import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
+```tsx !#15,19,30-36 host/src/register.tsx
+import { PublicRoutes, ProtectedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { RootLayout } from "./Rootlayout.tsx";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { LoginPage } from "./LoginPage.tsx";
@@ -651,7 +651,10 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = async runtim
                     {
                         // All the managed routes will render the authenticated layout.
                         element: <AuthenticatedLayout />,
-                        children: ManagedRoutes
+                        children: [
+                            PublicRoutes,
+                            ProtectedRoutes
+                        ]
                     }
                 ]
             }

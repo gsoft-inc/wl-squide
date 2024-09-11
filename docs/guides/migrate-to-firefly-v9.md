@@ -24,6 +24,7 @@ Finally, with `v9`, Squide's philosophy has evolved. We used to describe Squide 
 - The `useSession` hook has been removed, define your own React context instead.
 - The `useIsAuthenticated` hook has been removed, define your own React context instead.
 - The `sessionAccessor` option has been removed from the [FireflyRuntime](../reference/runtime/runtime-class.md) options, define your own React context instead.
+- The `ManagedRoutes`placeholder has been removed, use [PublicRoutes](../reference/routing/publicRoutes.md) and [ProtectedRoutes](../reference/routing/protectedRoutes.md) instead.
 
 ### Renamed
 
@@ -308,11 +309,12 @@ The `v9` release introduces several breaking changes affecting the host applicat
     - `errorElement` is removed and somewhat replaced by a [root error boundary](#root-error-boundary)
 3. Create a `TanStackSessionManager` class and the `SessionManagerContext`. Replace the session's deprecated hooks by creating the customs `useSession` and `useIsAuthenticated` hooks. [View example](./add-authentication.md#create-a-session-manager)
 4. Remove the `sessionAccessor` option from the `FireflyRuntime` instance. Update the `BootstrappingRoute` component to create a `TanStackSessionManager` instance and share it down the component tree using a `SessionManagedContext` provider. [View example](./add-authentication.md#fetch-the-session)
-5. Update the `AuthenticationBoundary` component to use the new `useIsAuthenticated` hook. [View example](./add-authentication.md#add-an-authentication-boundary)
+5. Add or update the `AuthenticationBoundary` component to use the new `useIsAuthenticated` hook. Global data fetch request shouldn't be throwing 401 error anymore when the user is not authenticated. [View example](./add-authentication.md#add-an-authentication-boundary)
 6. Update the `AuthenticatedLayout` component to use the session manager instance to clear the session. Retrieve the session manager instance from the context defined in the `BootstrappingRoute` component using the `useSessionManager` hook. [View example](./add-authentication.md#define-an-authenticated-layout)
 7. Update the `AuthenticatedLayout` component to use the new `$key` option of the navigation item. [View example](#new-key-option-for-navigation-items)
-8. Convert all deferred routes into static routes. [View example](#removed-support-for-deferred-routes)
-9. Add a `$key` option to the navigation item registrations. [View example](#new-key-option-for-navigation-items)
+8. Replace the `ManagedRoutes` placeholder with the new [PublicRoutes](../reference/routing/publicRoutes.md) and [ProtectedRoutes](../reference/routing/protectedRoutes.md) placeholders. [View example](../getting-started/create-host.md#homepage)
+9. Convert all deferred routes into static routes. [View example](#removed-support-for-deferred-routes)
+10. Add a `$key` option to the navigation item registrations. [View example](#new-key-option-for-navigation-items)
 
 ### Root error boundary
 

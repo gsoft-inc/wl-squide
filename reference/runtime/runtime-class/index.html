@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.779215423440">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.779421279028">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.779215423440" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.5.0.779421279028" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.779215423440" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.779421279028" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.779215423440" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.779215423440" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.779421279028" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.779421279028" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -538,25 +538,21 @@ runtime.registerRoute({
         <span>Register a public route</span>
     </h3>
 </doc-anchor-target>
-<p>When registering a route, a hint can be provided, indicating if the route is intended to be displayed as a <code v-pre>&quot;public&quot;</code> or <code v-pre>&quot;protected&quot;</code> route. This is especially useful when dealing with code that conditionally fetch data for protected routes (e.g. a session).</p>
+<p>When registering a route, a value can be provided indicating whether the route is <code v-pre>&quot;public&quot;</code> or <code v-pre>&quot;protected&quot;</code>. This is especially useful when dealing with code that <strong>fetches global data for protected routes</strong> (e.g. a session). Although a route definition accepts a <code v-pre>$visibility</code> value, we recommended using the runtime <code v-pre>registerPublicRoute</code> function to register a <strong>root</strong> public route instead.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-tsx" data-line="4,8"><code v-pre class="language-tsx">import { Page } from &quot;./Page.tsx&quot;;
+<pre class="language-tsx"><code v-pre class="language-tsx">import { Page } from &quot;./Page.tsx&quot;;
 
-runtime.registerRoute({
-    $visibility: &quot;public&quot;
+runtime.registerPublicRoute({
     path: &quot;/page-1&quot;,
     element: &lt;Page /&gt;
-}, {
-    hoist: true
 });</code></pre>
 </doc-codeblock></div>
-<p>A nested route can also have a visibility hint:</p>
+<p>A nested route can also be public:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-tsx" data-line="10"><code v-pre class="language-tsx">import { Layout } from &quot;./Layout.tsx&quot;;
+<pre class="language-tsx" data-line="9"><code v-pre class="language-tsx">import { Layout } from &quot;./Layout.tsx&quot;;
 import { Page } from &quot;./Page.tsx&quot;;
 
-runtime.registerRoute({
-    $visibility: &quot;public&quot;
+runtime.registerPublicRoute({
     path: &quot;/layout&quot;,
     element: &lt;Layout /&gt;,
     children: [
@@ -566,11 +562,8 @@ runtime.registerRoute({
             element: &lt;Page /&gt;,
         }
     ]
-}, {
-    hoist: true
 });</code></pre>
 </doc-codeblock></div>
-<p>If the route is nested under an authentication boundary, don&#x27;t forget to either mark the route as <doc-anchor-trigger to="#register-an-hoisted-route">hoisted</doc-anchor-trigger> or to <doc-anchor-trigger to="#register-nested-routes-under-an-existing-route">nest the route</doc-anchor-trigger> under a public parent.</p>
 <div class="flex mb-6">
     <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
     <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
@@ -584,7 +577,7 @@ runtime.registerRoute({
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>A <code v-pre>$visibility</code> hint only takes effect if your application is using the <a href="../../routing/useisrouteprotected/">useIsRouteProtected</a> hook. When no <code v-pre>$visibility</code> hint is provided, a route is considered <code v-pre>protected</code>.</p>
+<p>When no <code v-pre>$visibility</code> indicator is provided, a route is considered <code v-pre>protected</code>.</p>
         </div>
     </div>
 </div>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.779215423440">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.779421279028">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.779215423440" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.779421279028" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.779215423440" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.779421279028" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.779215423440" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.779215423440" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.779421279028" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.779421279028" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -330,6 +330,7 @@
 <li>The <code v-pre>useSession</code> hook has been removed, define your own React context instead.</li>
 <li>The <code v-pre>useIsAuthenticated</code> hook has been removed, define your own React context instead.</li>
 <li>The <code v-pre>sessionAccessor</code> option has been removed from the <a href="../../reference/runtime/runtime-class/">FireflyRuntime</a> options, define your own React context instead.</li>
+<li>The <code v-pre>ManagedRoutes</code>placeholder has been removed, use <a href="../../reference/routing/publicroutes/">PublicRoutes</a> and <a href="../../reference/routing/protectedroutes/">ProtectedRoutes</a> instead.</li>
 </ul>
 <doc-anchor-target id="renamed">
     <h3>
@@ -565,6 +566,7 @@ export function App() {
 <li>A new <a href="../../reference/tanstack-query/usepublicdataqueries/">usePublicDataQueries</a> hook is now available.</li>
 <li>A new <a href="../../reference/tanstack-query/useprotecteddataqueries/">useProtectedDataQueries</a> hook is now available.</li>
 <li>A new <a href="../../reference/tanstack-query/isglobaldataquerieserror/">isGlobalDataQueriesError</a> function is now available.</li>
+<li>A new <a href="../../reference/runtime/runtime-class/#register-a-public-route">registerPublicRoute</a> function is now available.</li>
 </ul>
 <doc-anchor-target id="improvements">
     <h2>
@@ -639,9 +641,10 @@ const navigationElements = useRenderedNavigationItems(navigationItems, renderIte
 </li>
 <li>Create a <code v-pre>TanStackSessionManager</code> class and the <code v-pre>SessionManagerContext</code>. Replace the session&#x27;s deprecated hooks by creating the customs <code v-pre>useSession</code> and <code v-pre>useIsAuthenticated</code> hooks. <a href="../add-authentication/#create-a-session-manager">View example</a></li>
 <li>Remove the <code v-pre>sessionAccessor</code> option from the <code v-pre>FireflyRuntime</code> instance. Update the <code v-pre>BootstrappingRoute</code> component to create a <code v-pre>TanStackSessionManager</code> instance and share it down the component tree using a <code v-pre>SessionManagedContext</code> provider. <a href="../add-authentication/#fetch-the-session">View example</a></li>
-<li>Update the <code v-pre>AuthenticationBoundary</code> component to use the new <code v-pre>useIsAuthenticated</code> hook. <a href="../add-authentication/#add-an-authentication-boundary">View example</a></li>
+<li>Add or update the <code v-pre>AuthenticationBoundary</code> component to use the new <code v-pre>useIsAuthenticated</code> hook. Global data fetch request shouldn&#x27;t be throwing 401 error anymore when the user is not authenticated. <a href="../add-authentication/#add-an-authentication-boundary">View example</a></li>
 <li>Update the <code v-pre>AuthenticatedLayout</code> component to use the session manager instance to clear the session. Retrieve the session manager instance from the context defined in the <code v-pre>BootstrappingRoute</code> component using the <code v-pre>useSessionManager</code> hook. <a href="../add-authentication/#define-an-authenticated-layout">View example</a></li>
 <li>Update the <code v-pre>AuthenticatedLayout</code> component to use the new <code v-pre>$key</code> option of the navigation item. <doc-anchor-trigger to="#new-key-option-for-navigation-items">View example</doc-anchor-trigger></li>
+<li>Replace the <code v-pre>ManagedRoutes</code> placeholder with the new <a href="../../reference/routing/publicroutes/">PublicRoutes</a> and <a href="../../reference/routing/protectedroutes/">ProtectedRoutes</a> placeholders. <a href="../../getting-started/create-host/#homepage">View example</a></li>
 <li>Convert all deferred routes into static routes. <doc-anchor-trigger to="#removed-support-for-deferred-routes">View example</doc-anchor-trigger></li>
 <li>Add a <code v-pre>$key</code> option to the navigation item registrations. <doc-anchor-trigger to="#new-key-option-for-navigation-items">View example</doc-anchor-trigger></li>
 </ol>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.779215423440">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.779421279028">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Add a public route</title>
     <meta name="title" content="Add a public route">
-    <meta name="description" content="A route can have one of two visibility values: public or protected.">
+    <meta name="description" content="A route can be registered as either public or protected.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/guides/add-a-public-route/">
@@ -21,23 +21,23 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/guides/add-a-public-route/">
     <meta property="og:title" content="Add a public route">
-    <meta property="og:description" content="A route can have one of two visibility values: public or protected.">
+    <meta property="og:description" content="A route can be registered as either public or protected.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/guides/add-a-public-route/">
     <meta property="twitter:title" content="Add a public route">
-    <meta property="twitter:description" content="A route can have one of two visibility values: public or protected.">
+    <meta property="twitter:description" content="A route can be registered as either public or protected.">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.779215423440" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.779421279028" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.779215423440" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.779421279028" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.779215423440" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.779215423440" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.779421279028" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.779421279028" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -305,21 +305,39 @@
         <span>Add a public route</span>
     </h1>
 </doc-anchor-target>
-<p>A route can have one of two visibility values: <code v-pre>&quot;public&quot;</code> or <code v-pre>&quot;protected&quot;</code>. However, these visibility values do not determine whether a route is accessible to everyone or restricted to authenticated users. That protection is typically enforced by an <a href="../add-authentication/#add-an-authentication-boundary">authentication boundary</a>.</p>
-<p>In a Squide application, if both the <a href="../../reference/tanstack-query/usepublicdataqueries/">usePublicDataQueries</a> and <a href="../../reference/tanstack-query/useprotecteddataqueries/">useProtectedDataQueries</a> hooks are defined, the following will occur: if the initially requested route is hinted as <code v-pre>&quot;protected&quot;</code>, both hooks will execute their respective requests. However, if the requested route is hinted as <code v-pre>&quot;public&quot;</code>, only the <code v-pre>usePublicDataQueries</code> hook will execute its requests.</p>
-<p>By default, when a route is registered with the <a href="../../reference/runtime/runtime-class/#register-routes">registerRoute</a> function, the route is considered as <code v-pre>&quot;protected&quot;</code>. Therefore, if a route and its layout do not rely on the initial protected data of the application, the route should be explicitly declared as <code v-pre>&quot;public&quot;</code> using the <code v-pre>$visibility</code> option:</p>
+<p>A route can be registered as either <code v-pre>public</code> or <code v-pre>protected</code>. This visibility indicator does not determine whether a route is accessible to everyone or restricted to authenticated users; that protection is typically enforced by an <a href="../add-authentication/#add-an-authentication-boundary">authentication boundary</a>.</p>
+<p>In a Squide application, the visibility indicator determines whether routes will be rendered as children of either the <a href="../../reference/routing/publicroutes/">PublicRoutes</a> or <a href="../../reference/routing/protectedroutes/">ProtectedRoutes</a> placeholders and whether the <a href="../../reference/tanstack-query/usepublicdataqueries/">usePublicDataQueries</a> or <a href="../../reference/tanstack-query/useprotecteddataqueries/">useProtectedDataQueries</a> hooks should execute their requests. If the initially requested route is marked as <code v-pre>protected</code> and both hooks are defined, each query hook will execute its respective requests. However, if the route is marked as <code v-pre>public</code>, only the <code v-pre>usePublicDataQueries</code> hook will execute its requests.</p>
+<p>When a route is registered with the <a href="../../reference/runtime/runtime-class/#register-routes">registerRoute</a> function, it is considered <code v-pre>protected</code> by default. Therefore, if a route does not rely on the application&#x27;s global protected data, it should be explicitly registered as <code v-pre>public</code> using the <a href="../../reference/runtime/runtime-class/#register-a-public-route">registerPublicRoute</a> function:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote/src/register.tsx</div>
 <pre class="language-tsx" data-line="6"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
 import { Page } from &quot;./Page.tsx&quot;;
 
 export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&gt; {
-    runtime.registerRoute({
-        $visibility: &quot;public&quot;,
+    runtime.registerPublicRoute({
         path: &quot;/page&quot;,
         element: &lt;Page /&gt;
     });
 }</code></pre>
+</doc-codeblock></div>
+<p>Don&#x27;t forget to register the <code v-pre>PublicRoutes</code> placeholder in the host application:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">host/src/register.tsx</div>
+<pre class="language-tsx" data-line="9"><code v-pre class="language-tsx">import { PublicRoutes, ProtectedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from &quot;@squide/firefly&quot;;
+import { RootLayout } from &quot;./RootLayout.tsx&quot;;
+
+export const registerHost: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&gt; {
+    runtime.registerRoute({
+        element: &lt;RootLayout /&gt;,
+        children: [
+            // Placeholders indicating where non hoisted or nested public and protected routes will be rendered.
+            PublicRoutes,
+            ProtectedRoutes
+        ]
+    }, {
+        hoist: true
+    });
+};</code></pre>
 </doc-codeblock></div>
 
                                 

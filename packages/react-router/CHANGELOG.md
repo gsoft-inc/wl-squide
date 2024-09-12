@@ -1,5 +1,106 @@
 # @squide/react-router
 
+## 6.1.0
+
+### Minor Changes
+
+- [#195](https://github.com/gsoft-inc/wl-squide/pull/195) [`98e4839`](https://github.com/gsoft-inc/wl-squide/commit/98e48393fda27ebb2974ecc1e2f71b09f4e84953) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Replaced the `ManagedRoutes` placeholder by the `PublicRoutes` and `ProtectedRoutes` placeholder.
+
+  Before:
+
+  ```tsx
+  import {
+    ManagedRoutes,
+    type ModuleRegisterFunction,
+    type FireflyRuntime,
+  } from "@squide/firefly";
+  import { RootLayout } from "./RootLayout.tsx";
+
+  export const registerHost: ModuleRegisterFunction<FireflyRuntime> = (
+    runtime
+  ) => {
+    runtime.registerRoute(
+      {
+        element: <RootLayout />,
+        children: [ManagedRoutes],
+      },
+      {
+        hoist: true,
+      }
+    );
+  };
+  ```
+
+  Now:
+
+  ```tsx
+  import {
+    PublicRoutes,
+    ProtectedRoutes,
+    type ModuleRegisterFunction,
+    type FireflyRuntime,
+  } from "@squide/firefly";
+  import { RootLayout } from "./RootLayout.tsx";
+
+  export const registerHost: ModuleRegisterFunction<FireflyRuntime> = (
+    runtime
+  ) => {
+    runtime.registerRoute(
+      {
+        element: <RootLayout />,
+        children: [PublicRoutes, ProtectedRoutes],
+      },
+      {
+        hoist: true,
+      }
+    );
+  };
+  ```
+
+  Or:
+
+  ```tsx
+  import {
+    PublicRoutes,
+    ProtectedRoutes,
+    type ModuleRegisterFunction,
+    type FireflyRuntime,
+  } from "@squide/firefly";
+  import { RootLayout } from "./RootLayout.tsx";
+
+  export const registerHost: ModuleRegisterFunction<FireflyRuntime> = (
+    runtime
+  ) => {
+    runtime.registerRoute(
+      {
+        element: <RootLayout />,
+        children: [
+          PublicRoutes,
+          {
+            element: <AuthenticationBoundary />,
+            children: [
+              {
+                element: <AuthenticatedLayout />,
+                children: [ProtectedRoutes],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        hoist: true,
+      }
+    );
+  };
+  ```
+
+  This release also includes a new `runtime.registerPublicRoute()` function.
+
+### Patch Changes
+
+- Updated dependencies [[`98e4839`](https://github.com/gsoft-inc/wl-squide/commit/98e48393fda27ebb2974ecc1e2f71b09f4e84953)]:
+  - @squide/core@5.1.0
+
 ## 6.0.1
 
 ### Patch Changes

@@ -4,19 +4,18 @@ order: 900
 
 # Add a public route
 
-A route can have one of two visibility values: `"public"` or `"protected"`. However, these visibility values do not determine whether a route is accessible to everyone or restricted to authenticated users. That protection is typically enforced by an [authentication boundary](./add-authentication.md#add-an-authentication-boundary).
+A route can be registered as either `public` or `protected`. This visibility indicator does not determine whether a route is accessible to everyone or restricted to authenticated users; that protection is typically enforced by an [authentication boundary](./add-authentication.md#add-an-authentication-boundary).
 
-In a Squide application, if both the [usePublicDataQueries](../reference/tanstack-query/usePublicDataQueries.md) and [useProtectedDataQueries](../reference/tanstack-query/useProtectedDataQueries.md) hooks are defined, the following will occur: if the initially requested route is hinted as `"protected"`, both hooks will execute their respective requests. However, if the requested route is hinted as `"public"`, only the `usePublicDataQueries` hook will execute its requests.
+In a Squide application, the visibility indicator determines whether routes will be rendered as children of either the [PublicRoutes](../reference/routing/publicRoutes.md) or [ProtectedRoutes](../reference/routing/protectedRoutes.md) placeholders and whether the [usePublicDataQueries](../reference/tanstack-query/usePublicDataQueries.md) or [useProtectedDataQueries](../reference/tanstack-query/useProtectedDataQueries.md) hooks should execute their requests. If the initially requested route is marked as `protected` and both hooks are defined, each query hook will execute its respective requests. However, if the route is marked as `public`, only the `usePublicDataQueries` hook will execute its requests.
 
-By default, when a route is registered with the [registerRoute](../reference/runtime/runtime-class.md#register-routes) function, the route is considered as `"protected"`. Therefore, if a route and its layout do not rely on the initial protected data of the application, the route should be explicitly declared as `"public"` using the `$visibility` option:
+When a route is registered with the [registerRoute](../reference/runtime/runtime-class.md#register-routes) function, it is considered `protected` by default. Therefore, if a route does not rely on the application's global protected data, it should be explicitly registered as `public` using the [registerPublicRoute](../reference/runtime/runtime-class.md#register-a-public-route) function.
 
 ```tsx !#6 remote/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 import { Page } from "./Page.tsx";
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
-    runtime.registerRoute({
-        $visibility: "public",
+    runtime.registerPublicRoute({
         path: "/page",
         element: <Page />
     });

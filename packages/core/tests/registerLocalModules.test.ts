@@ -14,6 +14,10 @@ class DummyRuntime extends Runtime<unknown, unknown> {
         throw new Error("Method not implemented.");
     }
 
+    registerPublicRoute() {
+        throw new Error("Method not implemented.");
+    }
+
     get routes() {
         return [];
     }

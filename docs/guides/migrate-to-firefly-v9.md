@@ -245,6 +245,7 @@ export function App() {
 - A new [usePublicDataQueries](../reference/tanstack-query/usePublicDataQueries.md) hook is now available.
 - A new [useProtectedDataQueries](../reference/tanstack-query/useProtectedDataQueries.md) hook is now available.
 - A new [isGlobalDataQueriesError](../reference/tanstack-query/isGlobalDataQueriesError.md) function is now available.
+- A new [registerPublicRoute]() function is now available.
 
 ## Improvements
 

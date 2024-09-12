@@ -631,8 +631,8 @@ export function RootLayout() {
 
 Finally, assemble everything:
 
-```tsx !#15,19,27-33 host/src/register.tsx
-import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
+```tsx !#16,20,30-33 host/src/register.tsx
+import { PublicRoutes, ProtectedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { RootLayout } from "./Rootlayout.tsx";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 import { LoginPage } from "./LoginPage.tsx";
@@ -641,37 +641,34 @@ import { NotFoundPage } from "./NotFoundPage.tsx";
 
 export const registerHost: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
     runtime.registerRoute({
-        $name: "root-layout",
         element: <RootLayout />,
         children: [
+            // All the public routes will render before the authenticated layout.
+            PublicRoutes,
             {
                 // Every page beyond the authenticated boundary are protected.
                 element: <AuthenticationBoundary />,
                 children: [
                     {
-                        // All the managed routes will render the authenticated layout.
+                        // All the protected routes will render the authenticated layout.
                         element: <AuthenticatedLayout />,
-                        children: ManagedRoutes
+                        children: [
+                            ProtectedRoutes
+                        ]
                     }
                 ]
             }
         ]
     });
 
-    runtime.registerRoute({
-        $visibility: "public",
+    runtime.registerPublicRoute({
         path: "/login",
         element: <LoginPage />
-    }, {
-        parentName: "root-layout"
     });
 
-    runtime.registerRoute({
-        $visibility: "public",
+    runtime.registerPublicRoute({
         path: "*",
         element: <NotFoundPage />
-    }, {
-        parentName: "root-layout"
     });
 
     runtime.registerRoute({

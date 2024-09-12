@@ -42,6 +42,8 @@ export abstract class Runtime<TRoute = unknown, TNavigationItem = unknown> {
 
     abstract registerRoute(route: TRoute, options?: RegisterRouteOptions): void;
 
+    abstract registerPublicRoute(route: Omit<TRoute, "visibility">, options?: RegisterRouteOptions): void;
+
     abstract get routes(): TRoute[];
 
     abstract registerNavigationItem(navigationItem: TNavigationItem, options?: RegisterNavigationItemOptions): void;

@@ -1,4 +1,4 @@
-import { ManagedRoutes, type FireflyRuntime, type ModuleRegisterFunction } from "@squide/firefly";
+import { ProtectedRoutes, PublicRoutes, type FireflyRuntime, type ModuleRegisterFunction } from "@squide/firefly";
 import { HomePage } from "./HomePage.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 
@@ -9,7 +9,8 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
         children: [
             // Placeholder to indicate where managed routes (routes that are not hoisted or nested)
             // will be rendered.
-            ManagedRoutes
+            PublicRoutes,
+            ProtectedRoutes
         ]
     }, {
         hoist: true

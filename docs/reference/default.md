@@ -35,7 +35,8 @@ toc:
 ### Routing
 
 - [AppRouter](./routing/AppRouter.md)
-- [ManagedRoutes](./routing/managedRoutes.md)
+- [PublicRoutes](./routing/publicRoutes.md)
+- [ProtectedRoutes](./routing/protectedRoutes.md)
 - [useRenderedNavigationItems](./routing/useRenderedNavigationItems.md)
 - [useIsBoostrapping](./routing/useIsBootstrapping.md)
 - [useRouteMatch](./routing/useRouteMatch.md)

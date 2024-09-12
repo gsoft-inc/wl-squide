@@ -232,10 +232,10 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 };
 ```
 
-And an [hoisted route](../reference/runtime/runtime-class.md#register-an-hoisted-route) to render the `RootLayout` and the [ManagedRoutes](../reference/routing/managedRoutes.md) placeholder:
+And an [hoisted route](../reference/runtime/runtime-class.md#register-an-hoisted-route) to render the `RootLayout` with the [PublicRoutes](../reference/routing/publicRoutes.md) and [ProtectedRoutes](../reference/routing/protectedRoutes.md) placeholders:
 
-```tsx !#8,12,15 host/src/register.tsx
-import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
+```tsx !#8,11,12,15 host/src/register.tsx
+import { PublicRoutes, ProtectedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { HomePage } from "./HomePage.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 
@@ -244,9 +244,9 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
         // Pathless route to declare a root layout.
         element: <RootLayout />,
         children: [
-            // Placeholder to indicate where managed routes (routes that are not hoisted or nested)
-            // will be rendered.
-            ManagedRoutes
+            // Placeholders indicating where non hoisted or nested public and protected routes will be rendered.
+            PublicRoutes,
+            ProtectedRoutes
         ]
     }, {
         hoist: true
@@ -260,7 +260,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 ```
 
 !!!info
-The [ManagedRoutes](../reference/routing/managedRoutes.md) placeholder indicates where routes that are neither hoisted or nested with a [parentPath](../reference/runtime/runtime-class.md#register-nested-navigation-items) or [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option will be rendered. In this example, the homepage route is considered as a managed route and will be rendered under the `ManagedRoutes` placeholder.
+The [PublicRoutes](../reference/routing/publicRoutes.md) and [ProtectedRoutes](../reference/routing/protectedRoutes.md) placeholders indicates where routes that are neither hoisted or nested with a [parentPath](../reference/runtime/runtime-class.md#register-nested-navigation-items) or [parentName](../reference/runtime/runtime-class.md#register-a-named-route) option will be rendered. In this example, the homepage route is considered as a protected route and will be rendered under the `ProtectedRoutes` placeholder.
 !!!
 
 Finally, update the bootstrapping code to [register](../reference/registration/registerLocalModules.md) the newly created local module:
@@ -310,30 +310,27 @@ export function NotFoundPage() {
 
 Then, register the newly created component as the `*` route:
 
-```tsx !#8,19-24 host/src/register.tsx
-import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
+```tsx !#18-21 host/src/register.tsx
+import { PublicRoutes, ProtectedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { HomePage } from "./HomePage.tsx";
 import { NotFoundPage } from "./NotFoundPage.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 
 export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
-        $name: "root-layout",
         element: <RootLayout />,
         children: [
-            // Placeholder to indicate where managed routes (routes that are not hoisted or nested)
-            // will be rendered.
-            ManagedRoutes
+            // Placeholders indicating where non hoisted or nested public and protected routes will be rendered.
+            PublicRoutes,
+            ProtectedRoutes
         ]
     }, {
         hoist: true
     });
 
-    runtime.registerRoute({
+    runtime.registerPublicRoute({
         path: "*",
         element: <NotFoundPage />
-    }, {
-        parentName: "root-layout"
     });
 
     runtime.registerRoute({

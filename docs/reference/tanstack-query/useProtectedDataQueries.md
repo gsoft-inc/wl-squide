@@ -290,7 +290,7 @@ The `registerHost` function is registered as a [local module](../registration/re
 !!!
 
 ```tsx !#8 host/src/registerHost.tsx
-import { ManagedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
+import { PublicRoutes, ProtectedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";
 
 export function registerHost() {
@@ -299,7 +299,8 @@ export function registerHost() {
             // Pathless route to declare an authenticated boundary.
             element: <AuthenticationBoundary />,
             children: [
-                ManagedRoutes
+                PublicRoutes,
+                ProtectedRoutes
             ]
         }, {
             hoist: true

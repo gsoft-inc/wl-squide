@@ -1,6 +1,6 @@
 import type { RegisterRouteOptions } from "@squide/core";
 import type { IndexRouteObject, NonIndexRouteObject } from "react-router-dom";
-import { ManagedRoutes, ManagedRoutesOutletName, isManagedRoutesOutletRoute } from "./outlets.ts";
+import { ProtectedRoutes, ProtectedRoutesOutletName, PublicRoutes, PublicRoutesOutletName, isProtectedRoutesOutletRoute, isPublicRoutesOutletRoute } from "./outlets.ts";
 
 export type RouteVisibility = "public" | "protected";
 
@@ -141,9 +141,9 @@ export class RouteRegistry {
         let parentName = options.parentName;
 
         // By default, a route that is not hoisted nor nested under a known
-        // parent will be rendered under the ManagedRoutes outlet.
-        if (!options.hoist && !parentName && !isManagedRoutesOutletRoute(route)) {
-            parentName = ManagedRoutesOutletName;
+        // parent will be rendered under the PublicRoutes or ProtectedRoutes outlet depending on the route visibility..
+        if (!options.hoist && !parentName && !isPublicRoutesOutletRoute(route) && !isProtectedRoutesOutletRoute(route)) {
+            parentName = route.$visibility === "public" ? PublicRoutesOutletName : ProtectedRoutesOutletName;
         }
 
         this.#validateRouteRegistrationOptions(route, options);
@@ -242,7 +242,11 @@ export class PendingRegistrations {
         return this.#pendingRegistrationsIndex.get(parentId) ?? [];
     }
 
-    isManagedRoutesOutletPending() {
-        return this.#pendingRegistrationsIndex.has(ManagedRoutes.$name!);
+    isPublicRoutesOutletPending() {
+        return this.#pendingRegistrationsIndex.has(PublicRoutes.$name!);
+    }
+
+    isProtectedRoutesOutletPending() {
+        return this.#pendingRegistrationsIndex.has(ProtectedRoutes.$name!);
     }
 }

@@ -1,5 +1,5 @@
 import { registerLayouts } from "@endpoints/layouts";
-import { ManagedRoutes, mergeDeferredRegistrations, type FireflyRuntime, type ModuleRegisterFunction } from "@squide/firefly";
+import { mergeDeferredRegistrations, ProtectedRoutes, PublicRoutes, type FireflyRuntime, type ModuleRegisterFunction } from "@squide/firefly";
 import { RootLayout } from "./RootLayout.tsx";
 import { initI18next } from "./i18next.ts";
 
@@ -9,11 +9,13 @@ export interface RegisterShellOptions {
 }
 
 function registerRoutes(runtime: FireflyRuntime, host?: string) {
-    runtime.registerRoute({
+    runtime.registerPublicRoute({
         // Pathless route to declare a root layout and a root error boundary.
-        $visibility: "public",
         $name: "root-layout",
-        element: <RootLayout />
+        element: <RootLayout />,
+        children: [
+            PublicRoutes
+        ]
     }, {
         hoist: true
     });
@@ -43,7 +45,7 @@ function registerRoutes(runtime: FireflyRuntime, host?: string) {
                             };
                         },
                         children: [
-                            ManagedRoutes
+                            ProtectedRoutes
                         ]
                     }
                 ]
@@ -53,8 +55,7 @@ function registerRoutes(runtime: FireflyRuntime, host?: string) {
         parentName: "root-layout"
     });
 
-    runtime.registerRoute({
-        $visibility: "public",
+    runtime.registerPublicRoute({
         path: "/login",
         lazy: async () => {
             const { LoginPage } = await import("./LoginPage.tsx");
@@ -63,12 +64,9 @@ function registerRoutes(runtime: FireflyRuntime, host?: string) {
                 element: <LoginPage host={host} />
             };
         }
-    }, {
-        parentName: "root-layout"
     });
 
-    runtime.registerRoute({
-        $visibility: "public",
+    runtime.registerPublicRoute({
         path: "/logout",
         lazy: async () => {
             const { LogoutPage } = await import("./LogoutPage.tsx");
@@ -77,12 +75,9 @@ function registerRoutes(runtime: FireflyRuntime, host?: string) {
                 element: <LogoutPage host={host} />
             };
         }
-    }, {
-        parentName: "root-layout"
     });
 
-    runtime.registerRoute({
-        $visibility: "public",
+    runtime.registerPublicRoute({
         path: "*",
         lazy: async () => {
             const { NoMatchPage } = await import("./NoMatchPage.tsx");
@@ -91,8 +86,6 @@ function registerRoutes(runtime: FireflyRuntime, host?: string) {
                 element: <NoMatchPage path={location.pathname} host={host} />
             };
         }
-    }, {
-        parentName: "root-layout"
     });
 }
 

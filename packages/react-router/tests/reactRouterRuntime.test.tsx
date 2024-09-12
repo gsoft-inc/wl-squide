@@ -1,326 +1,270 @@
-import { ManagedRoutes, isManagedRoutesOutletRoute } from "../src/outlets.ts";
+import { isProtectedRoutesOutletRoute, isPublicRoutesOutletRoute, ProtectedRoutes, ProtectedRoutesOutletName, PublicRoutes, PublicRoutesOutletName } from "../src/outlets.ts";
 import { ReactRouterRuntime } from "../src/reactRouterRuntime.ts";
 import type { Route } from "../src/routeRegistry.ts";
 
 describe("registerRoute", () => {
-    describe("managed routes", () => {
-        function registerManagedRoutesOutlet(runtime: ReactRouterRuntime) {
-            runtime.registerRoute(ManagedRoutes);
-        }
+    describe("outlets", () => {
+        describe("PublicRoutes", () => {
+            function registerPublicRoutesOutlet(runtime: ReactRouterRuntime) {
+                runtime.registerRoute(PublicRoutes);
+            }
 
-        function getManagedRoutes(routes: Route[]): Route[] | undefined {
-            for (const route of routes) {
-                if (isManagedRoutesOutletRoute(route)) {
-                    return route.children as Route[];
-                }
+            function getPublicRoutes(routes: Route[]): Route[] | undefined {
+                for (const route of routes) {
+                    if (isPublicRoutesOutletRoute(route)) {
+                        return route.children as Route[];
+                    }
 
-                if (route.children) {
-                    const managedRoutes = getManagedRoutes(route.children);
+                    if (route.children) {
+                        const publicRoutes = getPublicRoutes(route.children);
 
-                    if (managedRoutes) {
-                        return managedRoutes as Route[];
+                        if (publicRoutes) {
+                            return publicRoutes as Route[];
+                        }
                     }
                 }
             }
-        }
 
-        test("when the outlet is not registered, route registrations are pending", () => {
-            const runtime = new ReactRouterRuntime();
+            test("can register an index route", () => {
+                const runtime = new ReactRouterRuntime();
 
-            runtime.registerRoute({
-                path: "/foo",
-                element: <div>Hello!</div>
+                registerPublicRoutesOutlet(runtime);
+
+                runtime.registerRoute({
+                    $visibility: "public",
+                    index: true,
+                    element: <div>Hello!</div>
+                });
+
+                const routes = getPublicRoutes(runtime.routes)!;
+
+                expect(routes.length).toBe(1);
+                expect(routes[0].index).toBeTruthy();
             });
 
-            expect(runtime.routes.length).toBe(0);
+            test("can register a pathless route", () => {
+                const runtime = new ReactRouterRuntime();
+
+                registerPublicRoutesOutlet(runtime);
+
+                runtime.registerRoute({
+                    $visibility: "public",
+                    element: <div>Hello!</div>
+                });
+
+                const routes = getPublicRoutes(runtime.routes)!;
+
+                expect(routes.length).toBe(1);
+                expect(routes[0].index).toBeUndefined();
+                expect(routes[0].path).toBeUndefined();
+            });
+
+            test("can register multiple pathless routes", () => {
+                const runtime = new ReactRouterRuntime();
+
+                registerPublicRoutesOutlet(runtime);
+
+                runtime.registerRoute({
+                    $visibility: "public",
+                    element: <div>Hello!</div>
+                });
+
+                runtime.registerRoute({
+                    $visibility: "public",
+                    element: <div>How</div>
+                });
+
+                runtime.registerRoute({
+                    $visibility: "public",
+                    element: <div>Are</div>
+                });
+
+                runtime.registerRoute({
+                    $visibility: "public",
+                    element: <div>You?</div>
+                });
+
+                const routes = getPublicRoutes(runtime.routes)!;
+
+                expect(routes.length).toBe(4);
+            });
+
+            test("when the public outlet is not registered, public route registrations are pending", () => {
+                const runtime = new ReactRouterRuntime();
+
+                runtime.registerRoute({
+                    $visibility: "public",
+                    path: "/foo",
+                    element: <div>Hello!</div>
+                });
+
+                expect(runtime.routes.length).toBe(0);
+            });
+
+            test("when the public outlet is registered, pending public route registrations are completed", () => {
+                const runtime = new ReactRouterRuntime();
+
+                runtime.registerRoute({
+                    $visibility: "public",
+                    path: "/foo",
+                    element: <div>Hello!</div>
+                });
+
+                expect(runtime.routes.length).toBe(0);
+
+                registerPublicRoutesOutlet(runtime);
+
+                expect(runtime.routes.length).toBe(1);
+
+                const routes = getPublicRoutes(runtime.routes)!;
+
+                expect(routes.length).toBe(1);
+                expect(routes[0].path).toBe("/foo");
+            });
+
+            test("when the public outlet is registered, protected route registrations are still pending", () => {
+                const runtime = new ReactRouterRuntime();
+
+                runtime.registerRoute({
+                    path: "/foo",
+                    element: <div>Hello!</div>
+                });
+
+                expect(runtime.routes.length).toBe(0);
+
+                registerPublicRoutesOutlet(runtime);
+
+                expect(runtime.routes.length).toBe(1);
+                expect(runtime.routes[0].$name).toBe(PublicRoutesOutletName);
+            });
         });
 
-        test("when the outlet is registered, pending route registrations are completed", () => {
-            const runtime = new ReactRouterRuntime();
+        describe("ProtectedRoutes", () => {
+            function registerProtectedRoutesOutlet(runtime: ReactRouterRuntime) {
+                runtime.registerRoute(ProtectedRoutes);
+            }
 
-            runtime.registerRoute({
-                path: "/foo",
-                element: <div>Hello!</div>
-            });
-
-            expect(runtime.routes.length).toBe(0);
-
-            registerManagedRoutesOutlet(runtime);
-
-            expect(runtime.routes.length).toBe(1);
-
-            const routes = getManagedRoutes(runtime.routes)!;
-
-            expect(routes.length).toBe(1);
-            expect(routes[0].path).toBe("/foo");
-        });
-
-        test("can register an index route", () => {
-            const runtime = new ReactRouterRuntime();
-
-            registerManagedRoutesOutlet(runtime);
-
-            runtime.registerRoute({
-                index: true,
-                element: <div>Hello!</div>
-            });
-
-            const routes = getManagedRoutes(runtime.routes)!;
-
-            expect(routes.length).toBe(1);
-            expect(routes[0].index).toBeTruthy();
-        });
-
-        test("can register a pathless route", () => {
-            const runtime = new ReactRouterRuntime();
-
-            registerManagedRoutesOutlet(runtime);
-
-            runtime.registerRoute({
-                element: <div>Hello!</div>
-            });
-
-            const routes = getManagedRoutes(runtime.routes)!;
-
-            expect(routes.length).toBe(1);
-            expect(routes[0].index).toBeUndefined();
-            expect(routes[0].path).toBeUndefined();
-        });
-
-        test("can register multiple pathless routes", () => {
-            const runtime = new ReactRouterRuntime();
-
-            registerManagedRoutesOutlet(runtime);
-
-            runtime.registerRoute({
-                element: <div>Hello!</div>
-            });
-
-            runtime.registerRoute({
-                element: <div>How</div>
-            });
-
-            runtime.registerRoute({
-                element: <div>Are</div>
-            });
-
-            runtime.registerRoute({
-                element: <div>You?</div>
-            });
-
-            const routes = getManagedRoutes(runtime.routes)!;
-
-            expect(routes.length).toBe(4);
-        });
-
-        test("can register a deeply nested route with pathless parent routes", () => {
-            const runtime = new ReactRouterRuntime();
-
-            registerManagedRoutesOutlet(runtime);
-
-            runtime.registerRoute({
-                element: <div>Hello</div>,
-                children: [
-                    {
-                        element: <div>You!</div>,
-                        children: [
-                            {
-                                path: "/deeply-nested-route",
-                                element: <div>Hello from nested!</div>
-                            }
-                        ]
+            function getProtectedRoutes(routes: Route[]): Route[] | undefined {
+                for (const route of routes) {
+                    if (isProtectedRoutesOutletRoute(route)) {
+                        return route.children as Route[];
                     }
-                ]
-            });
 
-            const routes = getManagedRoutes(runtime.routes)!;
+                    if (route.children) {
+                        const protectedRoutes = getProtectedRoutes(route.children);
 
-            expect(routes.length).toBe(1);
-            expect(routes[0].children![0].children![0].path).toBe("/deeply-nested-route");
-        });
-
-        test("can register a deeply nested index route with pathless parent routes", () => {
-            const runtime = new ReactRouterRuntime();
-
-            registerManagedRoutesOutlet(runtime);
-
-            runtime.registerRoute({
-                element: <div>Hello</div>,
-                children: [
-                    {
-                        element: <div>You!</div>,
-                        children: [
-                            {
-                                index: true,
-                                element: <div>Hello from nested!</div>
-                            }
-                        ]
+                        if (protectedRoutes) {
+                            return protectedRoutes as Route[];
+                        }
                     }
-                ]
+                }
+            }
+
+            test("can register an index route", () => {
+                const runtime = new ReactRouterRuntime();
+
+                registerProtectedRoutesOutlet(runtime);
+
+                runtime.registerRoute({
+                    index: true,
+                    element: <div>Hello!</div>
+                });
+
+                const routes = getProtectedRoutes(runtime.routes)!;
+
+                expect(routes.length).toBe(1);
+                expect(routes[0].index).toBeTruthy();
             });
 
-            const routes = getManagedRoutes(runtime.routes)!;
+            test("can register a pathless route", () => {
+                const runtime = new ReactRouterRuntime();
 
-            expect(routes.length).toBe(1);
-            expect(routes[0].children![0].children![0].index).toBeTruthy();
-        });
+                registerProtectedRoutesOutlet(runtime);
 
-        test("can register a root route with a \"public\" visibility", () => {
-            const runtime = new ReactRouterRuntime();
+                runtime.registerRoute({
+                    element: <div>Hello!</div>
+                });
 
-            registerManagedRoutesOutlet(runtime);
+                const routes = getProtectedRoutes(runtime.routes)!;
 
-            runtime.registerRoute({
-                $visibility: "public",
-                path: "/public",
-                element: <div>Hello!</div>
+                expect(routes.length).toBe(1);
+                expect(routes[0].index).toBeUndefined();
+                expect(routes[0].path).toBeUndefined();
             });
 
-            const routes = getManagedRoutes(runtime.routes)!;
+            test("can register multiple pathless routes", () => {
+                const runtime = new ReactRouterRuntime();
 
-            expect(routes.length).toBe(1);
-            expect(routes[0].path).toBe("/public");
-            expect(routes[0].$visibility).toBe("public");
-        });
+                registerProtectedRoutesOutlet(runtime);
 
-        test("can register a root route with a \"protected\" visibility", () => {
-            const runtime = new ReactRouterRuntime();
+                runtime.registerRoute({
+                    element: <div>Hello!</div>
+                });
 
-            registerManagedRoutesOutlet(runtime);
+                runtime.registerRoute({
+                    element: <div>How</div>
+                });
 
-            runtime.registerRoute({
-                $visibility: "protected",
-                path: "/protected",
-                element: <div>Hello!</div>
+                runtime.registerRoute({
+                    element: <div>Are</div>
+                });
+
+                runtime.registerRoute({
+                    element: <div>You?</div>
+                });
+
+                const routes = getProtectedRoutes(runtime.routes)!;
+
+                expect(routes.length).toBe(4);
             });
 
-            const routes = getManagedRoutes(runtime.routes)!;
+            test("when the protected outlet is not registered, protected route registrations are pending", () => {
+                const runtime = new ReactRouterRuntime();
 
-            expect(routes.length).toBe(1);
-            expect(routes[0].path).toBe("/protected");
-            expect(routes[0].$visibility).toBe("protected");
-        });
+                runtime.registerRoute({
+                    path: "/foo",
+                    element: <div>Hello!</div>
+                });
 
-        test("when a root route has no visibility property, it is considered as a \"protected\" route", () => {
-            const runtime = new ReactRouterRuntime();
-
-            registerManagedRoutesOutlet(runtime);
-
-            runtime.registerRoute({
-                path: "/foo",
-                element: <div>Hello!</div>
+                expect(runtime.routes.length).toBe(0);
             });
 
-            const routes = getManagedRoutes(runtime.routes)!;
+            test("when the protected outlet is registered, pending protected route registrations are completed", () => {
+                const runtime = new ReactRouterRuntime();
 
-            expect(routes.length).toBe(1);
-            expect(routes[0].path).toBe("/foo");
-            expect(routes[0].$visibility).toBe("protected");
-        });
+                runtime.registerRoute({
+                    path: "/foo",
+                    element: <div>Hello!</div>
+                });
 
-        test("can register a nested route with a \"public\" visibility", () => {
-            const runtime = new ReactRouterRuntime();
+                expect(runtime.routes.length).toBe(0);
 
-            registerManagedRoutesOutlet(runtime);
+                registerProtectedRoutesOutlet(runtime);
 
-            runtime.registerRoute({
-                path: "/layout",
-                element: <div>Hello!</div>,
-                children: [
-                    {
-                        $visibility: "public",
-                        path: "/layout/nested",
-                        element: <div>Hello!</div>
-                    }
-                ]
+                expect(runtime.routes.length).toBe(1);
+
+                const routes = getProtectedRoutes(runtime.routes)!;
+
+                expect(routes.length).toBe(1);
+                expect(routes[0].path).toBe("/foo");
             });
 
-            const routes = getManagedRoutes(runtime.routes)!;
+            test("when the protected outlet is registered, public route registrations are still pending", () => {
+                const runtime = new ReactRouterRuntime();
 
-            expect(routes[0].children![0].path).toBe("/layout/nested");
-            expect(routes[0].children![0].$visibility).toBe("public");
-        });
+                runtime.registerRoute({
+                    $visibility: "public",
+                    path: "/foo",
+                    element: <div>Hello!</div>
+                });
 
-        test("can register a nested route with a \"protected\" visibility", () => {
-            const runtime = new ReactRouterRuntime();
+                expect(runtime.routes.length).toBe(0);
 
-            registerManagedRoutesOutlet(runtime);
+                registerProtectedRoutesOutlet(runtime);
 
-            runtime.registerRoute({
-                path: "/layout",
-                element: <div>Hello!</div>,
-                children: [
-                    {
-                        $visibility: "protected",
-                        path: "/layout/nested",
-                        element: <div>Hello!</div>
-                    }
-                ]
+                expect(runtime.routes.length).toBe(1);
+                expect(runtime.routes[0].$name).toBe(ProtectedRoutesOutletName);
             });
-
-            const routes = getManagedRoutes(runtime.routes)!;
-
-            expect(routes[0].children![0].path).toBe("/layout/nested");
-            expect(routes[0].children![0].$visibility).toBe("protected");
-        });
-
-        test("when a nested route has no visibility property, it is considered as a \"protected\" route", () => {
-            const runtime = new ReactRouterRuntime();
-
-            registerManagedRoutesOutlet(runtime);
-
-            runtime.registerRoute({
-                path: "/layout",
-                element: <div>Hello!</div>,
-                children: [
-                    {
-                        path: "/layout/nested",
-                        element: <div>Hello!</div>
-                    }
-                ]
-            });
-
-            const routes = getManagedRoutes(runtime.routes)!;
-
-            expect(routes[0].children![0].path).toBe("/layout/nested");
-            expect(routes[0].children![0].$visibility).toBe("protected");
-        });
-
-        test("can register a root route with a name", () => {
-            const runtime = new ReactRouterRuntime();
-
-            registerManagedRoutesOutlet(runtime);
-
-            runtime.registerRoute({
-                $name: "foo",
-                element: <div>Hello!</div>
-            });
-
-            const routes = getManagedRoutes(runtime.routes)!;
-
-            expect(routes.length).toBe(1);
-            expect(routes[0].$name).toBe("foo");
-        });
-
-        test("can register a nested route with a name", () => {
-            const runtime = new ReactRouterRuntime();
-
-            registerManagedRoutesOutlet(runtime);
-
-            runtime.registerRoute({
-                element: <div>Hello</div>,
-                children: [
-                    {
-                        $name: "foo",
-                        element: <div>You!</div>
-                    }
-                ]
-            });
-
-            const routes = getManagedRoutes(runtime.routes)!;
-
-            expect(routes.length).toBe(1);
-            expect(routes[0].children![0].$name).toBe("foo");
         });
     });
 
@@ -995,6 +939,161 @@ describe("registerRoute", () => {
             })).toThrow();
         });
     });
+
+    describe("nested routes", () => {
+        test("can register a deeply nested route with pathless parent routes", () => {
+            const runtime = new ReactRouterRuntime();
+
+            runtime.registerRoute({
+                element: <div>Hello</div>,
+                children: [
+                    {
+                        element: <div>You!</div>,
+                        children: [
+                            {
+                                path: "/deeply-nested-route",
+                                element: <div>Hello from nested!</div>
+                            }
+                        ]
+                    }
+                ]
+            }, {
+                hoist: true
+            });
+
+            expect(runtime.routes.length).toBe(1);
+            expect(runtime.routes[0].children![0].children![0].path).toBe("/deeply-nested-route");
+        });
+
+        test("can register a deeply nested index route with pathless parent routes", () => {
+            const runtime = new ReactRouterRuntime();
+
+            runtime.registerRoute({
+                element: <div>Hello</div>,
+                children: [
+                    {
+                        element: <div>You!</div>,
+                        children: [
+                            {
+                                index: true,
+                                element: <div>Hello from nested!</div>
+                            }
+                        ]
+                    }
+                ]
+            }, {
+                hoist: true
+            });
+
+            expect(runtime.routes.length).toBe(1);
+            expect(runtime.routes[0].children![0].children![0].index).toBeTruthy();
+        });
+
+        test("can register a nested route with a visibility hint", () => {
+            const runtime = new ReactRouterRuntime();
+
+            runtime.registerRoute({
+                path: "/layout",
+                element: <div>Hello!</div>,
+                children: [
+                    {
+                        $visibility: "public",
+                        path: "/layout/nested",
+                        element: <div>Hello!</div>
+                    }
+                ]
+            }, {
+                hoist: true
+            });
+
+            expect(runtime.routes[0].children![0].path).toBe("/layout/nested");
+            expect(runtime.routes[0].children![0].$visibility).toBe("public");
+        });
+
+        test("when a nested route has no visibility property, the visibility is defaulted to \"protected\"", () => {
+            const runtime = new ReactRouterRuntime();
+
+            runtime.registerRoute({
+                path: "/layout",
+                element: <div>Hello!</div>,
+                children: [
+                    {
+                        path: "/layout/nested",
+                        element: <div>Hello!</div>
+                    }
+                ]
+            }, {
+                hoist: true
+            });
+
+            expect(runtime.routes[0].children![0].path).toBe("/layout/nested");
+            expect(runtime.routes[0].children![0].$visibility).toBe("protected");
+        });
+
+        test("can register a nested route with a name", () => {
+            const runtime = new ReactRouterRuntime();
+
+            runtime.registerRoute({
+                element: <div>Hello</div>,
+                children: [
+                    {
+                        $name: "foo",
+                        element: <div>You!</div>
+                    }
+                ]
+            }, {
+                hoist: true
+            });
+
+            expect(runtime.routes.length).toBe(1);
+            expect(runtime.routes[0].children![0].$name).toBe("foo");
+        });
+    });
+
+    test("can register a route with a visibility hint", () => {
+        const runtime = new ReactRouterRuntime();
+
+        runtime.registerRoute({
+            $visibility: "public",
+            path: "/public",
+            element: <div>Hello!</div>
+        }, {
+            hoist: true
+        });
+
+        expect(runtime.routes.length).toBe(1);
+        expect(runtime.routes[0].path).toBe("/public");
+        expect(runtime.routes[0].$visibility).toBe("public");
+    });
+
+    test("when a route has no visibility property, the visibility is defaulted to \"protected\"", () => {
+        const runtime = new ReactRouterRuntime();
+
+        runtime.registerRoute({
+            path: "/foo",
+            element: <div>Hello!</div>
+        }, {
+            hoist: true
+        });
+
+        expect(runtime.routes.length).toBe(1);
+        expect(runtime.routes[0].path).toBe("/foo");
+        expect(runtime.routes[0].$visibility).toBe("protected");
+    });
+
+    test("can register a route with a name", () => {
+        const runtime = new ReactRouterRuntime();
+
+        runtime.registerRoute({
+            $name: "foo",
+            element: <div>Hello!</div>
+        }, {
+            hoist: true
+        });
+
+        expect(runtime.routes.length).toBe(1);
+        expect(runtime.routes[0].$name).toBe("foo");
+    });
 });
 
 describe("registerNavigationItem", () => {
@@ -1229,12 +1328,20 @@ describe("startDeferredRegistrationScope & completeDeferredRegistrationScope", (
 
 describe("_validateRegistrations", () => {
     describe("managed routes", () => {
-        test("when the outlet is missing, the error message mentions the ManagedRoutes outlet", () => {
+        test("when public routes are registered but the public routes outlet is missing, the error message mentions the PublicRoutes outlet", () => {
             const runtime = new ReactRouterRuntime();
             let errorMessage;
 
             runtime.registerRoute({
-                path: "/layout",
+                children: [
+                    ProtectedRoutes
+                ]
+            }, {
+                hoist: true
+            });
+
+            runtime.registerPublicRoute({
+                path: "/public",
                 element: <div>Hello!</div>
             });
 
@@ -1244,7 +1351,57 @@ describe("_validateRegistrations", () => {
                 errorMessage = (error as Error).message;
             }
 
-            expect(errorMessage).toContain("ManagedRoutes");
+            expect(errorMessage).toContain("PublicRoutes");
+        });
+
+        test("when protected routes are registered but the protected routes outlet is missing, the error message mentions the ProtectedRoutes outlet", () => {
+            const runtime = new ReactRouterRuntime();
+            let errorMessage;
+
+            runtime.registerRoute({
+                children: [
+                    PublicRoutes
+                ]
+            }, {
+                hoist: true
+            });
+
+            runtime.registerRoute({
+                path: "/protected",
+                element: <div>Hello!</div>
+            });
+
+            try {
+                runtime._validateRegistrations();
+            } catch (error: unknown) {
+                errorMessage = (error as Error).message;
+            }
+
+            expect(errorMessage).toContain("ProtectedRoutes");
+        });
+
+        test("when routes are registered and both the public and protected routes outlet are missing, the error message mentions the PublicRoutes and ProtectedRoutes outlets", () => {
+            const runtime = new ReactRouterRuntime();
+            let errorMessage;
+
+            runtime.registerPublicRoute({
+                path: "/public",
+                element: <div>Hello!</div>
+            });
+
+            runtime.registerRoute({
+                path: "/protected",
+                element: <div>Hello!</div>
+            });
+
+            try {
+                runtime._validateRegistrations();
+            } catch (error: unknown) {
+                errorMessage = (error as Error).message;
+            }
+
+            expect(errorMessage).toContain("PublicRoutes");
+            expect(errorMessage).toContain("ProtectedRoutes");
         });
     });
 

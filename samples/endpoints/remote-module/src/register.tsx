@@ -19,8 +19,7 @@ function Providers({ children }: ProvidersProps) {
 }
 
 function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): DeferredRegistrationFunction<DeferredRegistrationData> {
-    runtime.registerRoute({
-        $visibility: "public",
+    runtime.registerPublicRoute({
         path: "/anonymous",
         lazy: async () => {
             const { AnonymousPage } = await import("./AnonymousPage.tsx");
@@ -29,8 +28,6 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
                 element: <Providers><AnonymousPage /></Providers>
             };
         }
-    }, {
-        parentName: "root-layout"
     });
 
     runtime.registerRoute({

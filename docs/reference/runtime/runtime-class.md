@@ -155,28 +155,24 @@ runtime.registerRoute({
 
 ### Register a public route
 
-When registering a route, a hint can be provided, indicating if the route is intended to be displayed as a `"public"` or `"protected"` route. This is especially useful when dealing with code that conditionally fetch data for protected routes (e.g. a session).
+When registering a route, a value can be provided indicating whether the route is `"public"` or `"protected"`. This is especially useful when dealing with code that **fetches global data for protected routes** (e.g. a session). Although a route definition accepts a `$visibility` value, we recommended using the runtime `registerPublicRoute` function to register a **root** public route instead.
 
-```tsx !#4,8
+```tsx
 import { Page } from "./Page.tsx";
 
-runtime.registerRoute({
-    $visibility: "public"
+runtime.registerPublicRoute({
     path: "/page-1",
     element: <Page />
-}, {
-    hoist: true
 });
 ```
 
-A nested route can also have a visibility hint:
+A nested route can also be public:
 
-```tsx !#10
+```tsx !#9
 import { Layout } from "./Layout.tsx";
 import { Page } from "./Page.tsx";
 
-runtime.registerRoute({
-    $visibility: "public"
+runtime.registerPublicRoute({
     path: "/layout",
     element: <Layout />,
     children: [
@@ -186,15 +182,11 @@ runtime.registerRoute({
             element: <Page />,
         }
     ]
-}, {
-    hoist: true
 });
 ```
 
-If the route is nested under an authentication boundary, don't forget to either mark the route as [hoisted](#register-an-hoisted-route) or to [nest the route](#register-nested-routes-under-an-existing-route) under a public parent.
-
 !!!info
-A `$visibility` hint only takes effect if your application is using the [useIsRouteProtected](../routing/useIsRouteProtected.md) hook. When no `$visibility` hint is provided, a route is considered `protected`.
+When no `$visibility` indicator is provided, a route is considered `protected`.
 !!!
 
 ### Register a named route

@@ -155,7 +155,7 @@ runtime.registerRoute({
 
 ### Register a public route
 
-When registering a route, a value can be provided indicating whether the route is `"public"` or `"protected"`. This is especially useful when dealing with code that **fetches global data for protected routes** (e.g. a session). Although a route definition accepts a `$visibility` value, we recommended using the runtime `registerPublicRoute` function to register a root public route instead.
+When registering a route, a value can be provided indicating whether the route is `"public"` or `"protected"`. This is especially useful when dealing with code that **fetches global data for protected routes** (e.g. a session). Although a route definition accepts a `$visibility` value, we recommended using the runtime `registerPublicRoute` function to register a **root** public route instead.
 
 ```tsx
 import { Page } from "./Page.tsx";

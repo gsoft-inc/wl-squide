@@ -1,5 +1,6 @@
 import { ProtectedRoutes, PublicRoutes, type FireflyRuntime, type ModuleRegisterFunction } from "@squide/firefly";
 import { HomePage } from "./HomePage.tsx";
+import { NotFoundPage } from "./NotFoundPage.tsx";
 import { RootLayout } from "./RootLayout.tsx";
 
 export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
@@ -14,6 +15,11 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
         ]
     }, {
         hoist: true
+    });
+
+    runtime.registerPublicRoute({
+        path: "*",
+        element: <NotFoundPage />
     });
 
     runtime.registerRoute({

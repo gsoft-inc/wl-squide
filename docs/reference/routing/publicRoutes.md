@@ -24,22 +24,15 @@ None
 
 The route defining the `PublicRoutes` placeholder must be [hoisted](../runtime/runtime-class.md#register-an-hoisted-route); otherwise, there will be an infinite loop as the `PublicRoutes` placeholder will render within itself.
 
-```tsx !#13,18 shell/src/register.tsx
+```tsx !#8,11 shell/src/register.tsx
 import { PublicRoutes } from "@squide/firefly";
 import { RootLayout } from "./RootLayout.tsx";
-import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
 runtime.registerRoute({
     // Pathless route to declare a root layout.
     element: <RootLayout />,
     children: [
-        {
-            // Pathless route to declare a root error boundary.
-            errorElement: <RootErrorBoundary />,
-            children: [
-                PublicRoutes
-            ]
-        }
+        PublicRoutes
     ]
 }, {
     hoist: true

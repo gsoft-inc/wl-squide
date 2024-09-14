@@ -106,6 +106,8 @@ export interface AppRouterProps {
 }
 
 export function AppRouter(props: AppRouterProps) {
+    const logger = useLogger();
+
     const {
         waitForMsw,
         telemetryService
@@ -114,15 +116,17 @@ export function AppRouter(props: AppRouterProps) {
     return (
         <FireflyAppRouter waitForMsw={waitForMsw} waitForPublicData waitForProtectedData>
             {({ rootRoute, registeredRoutes, routerProviderProps }) => {
+                logger.debug("[shell] React Router will be rendered with the following route definitions: ", registeredRoutes);
+
                 return (
                     <RouterProvider
                         router={createBrowserRouter([
                             {
                                 element: rootRoute,
+                                errorElement: <RootErrorBoundary />,
                                 children: [
                                     {
                                         element: <BootstrappingRoute telemetryService={telemetryService} />,
-                                        errorElement: <RootErrorBoundary />,
                                         children: registeredRoutes
                                     }
                                 ]

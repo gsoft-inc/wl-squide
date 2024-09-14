@@ -23,9 +23,9 @@ export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOp
             data: results.map(x => x.data) as MapUseQueryResultToData<QueriesResults<T>>,
             errors,
             hasErrors: errors.length > 0,
-            isReady: results.length === queries.length && results.every(x => x.data)
+            isReady: !results.some(x => x.isPending)
         };
-    }, [queries.length]);
+    }, []);
 
     const { data, errors: queriesErrors, hasErrors, isReady } = useQueries({
         queries: queries.map(x => ({

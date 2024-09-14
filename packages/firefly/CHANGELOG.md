@@ -1,5 +1,11 @@
 # @squide/firefly
 
+## 9.1.1
+
+### Patch Changes
+
+- [#197](https://github.com/gsoft-inc/wl-squide/pull/197) [`0c43a84`](https://github.com/gsoft-inc/wl-squide/commit/0c43a8441d3079e0206c9c0ebbc11c6401de82ae) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Fix useProtectedDataQueries isReady result value.
+
 ## 9.1.0
 
 ### Minor Changes

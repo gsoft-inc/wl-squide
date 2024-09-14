@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.779421540347">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.779592588153">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.779421540347" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.779592588153" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.779421540347" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.779592588153" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.779421540347" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.779421540347" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.779592588153" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.779592588153" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -533,15 +533,11 @@ export function App() {
                         router={createBrowserRouter([
                             {
                                 element: rootRoute,
+                                errorElement: &lt;RootErrorBoundary /&gt;,
                                 children: [
                                     {
-                                        errorElement: &lt;RootErrorBoundary /&gt;,
-                                        children: [
-                                            {
-                                                element: &lt;BootstrappingRoute /&gt;,
-                                                children: registeredRoutes
-                                            }
-                                        ]
+                                        element: &lt;BootstrappingRoute /&gt;,
+                                        children: registeredRoutes
                                     }
                                 ]
                             }
@@ -674,7 +670,7 @@ const navigationElements = useRenderedNavigationItems(navigationItems, renderIte
 </doc-codeblock></div>
 <p>Now:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-tsx" data-line="12"><code v-pre class="language-tsx">export function App() {
+<pre class="language-tsx" data-line="10"><code v-pre class="language-tsx">export function App() {
     return (
         &lt;AppRouter waitForMsw&gt;
             {({ rootRoute, registeredRoutes, routerProviderProps }) =&gt; {
@@ -683,12 +679,8 @@ const navigationElements = useRenderedNavigationItems(navigationItems, renderIte
                         router={createBrowserRouter([
                             {
                                 element: rootRoute,
-                                children: [
-                                    {
-                                        errorElement: &lt;RootErrorBoundary /&gt;,
-                                        children: registeredRoutes
-                                    }
-                                ]
+                                errorElement: &lt;RootErrorBoundary /&gt;,
+                                children: registeredRoutes
                             }
                         ])}
                         {...routerProviderProps}
@@ -710,6 +702,13 @@ const navigationElements = useRenderedNavigationItems(navigationItems, renderIte
 <li>Convert all deferred routes into static routes. <doc-anchor-trigger to="#removed-support-for-deferred-routes">View example</doc-anchor-trigger></li>
 <li>Add a <code v-pre>$key</code> option to the navigation item registrations. <doc-anchor-trigger to="#new-key-option-for-navigation-items">View example</doc-anchor-trigger></li>
 </ol>
+<doc-anchor-target id="isolated-development">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#isolated-development">#</doc-anchor-trigger>
+        <span>Isolated development</span>
+    </h3>
+</doc-anchor-target>
+<p>If your module is set up for <a href="../develop-a-module-in-isolation/">isolated development</a>, ensure that you also apply the <doc-anchor-trigger to="#migrate-an-host-application">host application migration steps</doc-anchor-trigger> to your isolated setup.</p>
 
                                 
                                 <!-- Required only on API pages -->

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.779421540347">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.779592588153">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.779421540347" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.779592588153" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.779421540347" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.779592588153" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.779421540347" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.779421540347" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.779592588153" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.779592588153" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -314,10 +314,10 @@
         <span>Create an error boundary</span>
     </h2>
 </doc-anchor-target>
-<p>First, define a React Router&#x27;s error boundary to catch module errors. For this example we&#x27;ll name it <code v-pre>RootErrorBoundary</code>:</p>
+<p>First, define a React Router&#x27;s error boundary to catch module errors. For this example we&#x27;ll name it <code v-pre>ModuleErrorBoundary</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">host/src/RootErrorBoundary.tsx</div>
-<pre class="language-tsx"><code v-pre class="language-tsx">export function RootErrorBoundary() {
+<div class="codeblock-title">host/src/ModuleErrorBoundary.tsx</div>
+<pre class="language-tsx"><code v-pre class="language-tsx">export function ModuleErrorBoundary() {
     return (
         &lt;div&gt;An error occured while rendering a page from a module!&lt;/div&gt;
     )
@@ -329,21 +329,21 @@
         <span>Register the error boundary</span>
     </h2>
 </doc-anchor-target>
-<p>Then, update the host application <code v-pre>registerHost</code> function to declare the <code v-pre>RootErrorBoundary</code> component below the <code v-pre>RootLayout</code> component but above the routes of the modules. By doing so, if a module encounters an unhandled error, the error boundary will only replace the section rendered by the <code v-pre>Outlet</code> component within the root layout rather than the entire page.</p>
+<p>Then, update the host application <code v-pre>registerHost</code> function to declare the <code v-pre>ModuleErrorBoundary</code> component below the <code v-pre>RootLayout</code> component but above the routes of the modules. By doing so, if a module encounters an unhandled error, the error boundary will only replace the section rendered by the <code v-pre>Outlet</code> component within the root layout rather than the entire page.</p>
 <p>A React Router&#x27;s error boundary is declared with the <a href="https://reactrouter.com/en/main/route/error-element" class="outbound" target="_blank">errorElement</a> of a route:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/register.tsx</div>
 <pre class="language-tsx" data-line="7,11"><code v-pre class="language-tsx">import { PublicRoutes, ProtectedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from &quot;@squide/firefly&quot;;
 import { RootLayout } from &quot;./RootLayout.tsx&quot;;
-import { RootErrorBoundary } from &quot;./RootErrorBoundary.tsx&quot;;
+import { ModuleErrorBoundary } from &quot;./ModuleErrorBoundary.tsx&quot;;
 
 export const registerHost: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&gt; {
     runtime.registerRoute({
         element: &lt;RootLayout /&gt;,
         children: [
             {
-                // Default error boundary.
-                errorElement: &lt;RootErrorBoundary /&gt;,
+                // Error boundary for modules.
+                errorElement: &lt;ModuleErrorBoundary /&gt;,
                 children: [
                     PublicRoutes,
                     ProtectedRoutes
@@ -362,7 +362,7 @@ export const registerHost: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtim
         <span>Hoisted pages</span>
     </h3>
 </doc-anchor-target>
-<p>If your application is <a href="../../reference/runtime/runtime-class/#register-an-hoisted-route">hoisting pages</a>, it&#x27;s important to note that they will be rendered outside of the host application&#x27;s <code v-pre>RootErrorBoundary</code> component. To prevent breaking the entire application when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router&#x27;s error boundary for each hoisted page as well, again using <a href="https://reactrouter.com/en/main/route/error-element" class="outbound" target="_blank">errorElement</a>:</p>
+<p>If your application is <a href="../../reference/runtime/runtime-class/#register-an-hoisted-route">hoisting pages</a>, it&#x27;s important to note that they will be rendered outside of the host application&#x27;s <code v-pre>ModuleErrorBoundary</code> component. To prevent breaking the entire application when an hoisted page encounters unhandled errors, it is highly recommended to declare a React Router&#x27;s error boundary for each hoisted page as well, again using <a href="https://reactrouter.com/en/main/route/error-element" class="outbound" target="_blank">errorElement</a>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module/src/register.tsx</div>
 <pre class="language-tsx" data-line="9,11"><code v-pre class="language-tsx">import { type ModuleRegisterFunction, type FireflyRuntime } from &quot;@squide/firefly&quot;;
@@ -385,7 +385,7 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&
         <span>Try it <span class="docs-emoji">&#x1F680;</span></span>
     </h2>
 </doc-anchor-target>
-<p>Start the application in a development environment using the <code v-pre>dev</code> script. Update any of your application routes that is rendered under the newly created error boundary (e.g. that is not hoisted) and throw an <code v-pre>Error</code>. The error should be handled by the <code v-pre>RootErrorBoundary</code> component instead of breaking the whole application.</p>
+<p>Start the application in a development environment using the <code v-pre>dev</code> script. Update any of your application routes that is rendered under the newly created error boundary (e.g. that is not hoisted) and throw an <code v-pre>Error</code>. The error should be handled by the <code v-pre>ModuleErrorBoundary</code> component instead of breaking the whole application.</p>
 <doc-anchor-target id="troubleshoot-issues">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#troubleshoot-issues">#</doc-anchor-trigger>

@@ -120,7 +120,7 @@ export function RootErrorBoundary() {
 }
 ```
 
-```tsx !#16 host/src/App.tsx
+```tsx !#14 host/src/App.tsx
 import { AppRouter } from "@squide/firefly";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
@@ -134,12 +134,8 @@ export function App() {
                         router={createBrowserRouter([
                             {
                                 element: rootRoute,
-                                children: [
-                                    {
-                                        errorElement: <RootErrorBoundary />,
-                                        children: registeredRoutes
-                                    }
-                                ]
+                                errorElement: <RootErrorBoundary />,
+                                children: registeredRoutes
                             }
                         ])}
                         {...routerProviderProps}

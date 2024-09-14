@@ -631,7 +631,7 @@ export function RootLayout() {
 
 Finally, assemble everything:
 
-```tsx !#16,20,30-33 host/src/register.tsx
+```tsx !#13,16,20,22,30-33 host/src/register.tsx
 import { PublicRoutes, ProtectedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { RootLayout } from "./Rootlayout.tsx";
 import { AuthenticationBoundary } from "./AuthenticationBoundary.tsx";

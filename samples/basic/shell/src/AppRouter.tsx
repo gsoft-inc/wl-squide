@@ -1,5 +1,5 @@
 import { SessionManagerContext, useToastListener } from "@basic/shared";
-import { AppRouter as FireflyAppRouter, useIsBootstrapping } from "@squide/firefly";
+import { AppRouter as FireflyAppRouter, useIsBootstrapping, useLogger } from "@squide/firefly";
 import { useCallback } from "react";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Loading } from "./Loading.tsx";
@@ -32,18 +32,22 @@ function BootstrappingRoute() {
 }
 
 export function AppRouter() {
+    const logger = useLogger();
+
     return (
         <FireflyAppRouter waitForMsw={false}>
             {({ rootRoute, registeredRoutes, routerProviderProps }) => {
+                logger.debug("[shell] React Router will be rendered with the following route definitions: ", registeredRoutes);
+
                 return (
                     <RouterProvider
                         router={createBrowserRouter([
                             {
                                 element: rootRoute,
+                                errorElement: <RootErrorBoundary />,
                                 children: [
                                     {
                                         element: <BootstrappingRoute />,
-                                        errorElement: <RootErrorBoundary />,
                                         children: registeredRoutes
                                     }
                                 ]

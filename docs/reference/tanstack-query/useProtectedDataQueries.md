@@ -188,7 +188,7 @@ export function RootErrorBoundary() {
 }
 ```
 
-```tsx !#58 host/src/App.tsx
+```tsx !#55 host/src/App.tsx
 import { useProtectedDataQueries, useIsBootstrapping, AppRouter } from "@squide/firefly";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ApiError, SessionContext, type Session } from "@sample/shared";
@@ -243,10 +243,10 @@ export function App() {
                         router={createBrowserRouter([
                             {
                                 element: rootRoute,
+                                errorElement: <RootErrorBoundary />,
                                 children: [
                                     {
                                         element: <BootstrappingRoute />,
-                                        errorElement: <RootErrorBoundary />
                                         children: registeredRoutes
                                     }
                                 ]

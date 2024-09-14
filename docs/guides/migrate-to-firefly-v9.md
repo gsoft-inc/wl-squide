@@ -216,15 +216,11 @@ export function App() {
                         router={createBrowserRouter([
                             {
                                 element: rootRoute,
+                                errorElement: <RootErrorBoundary />,
                                 children: [
                                     {
-                                        errorElement: <RootErrorBoundary />,
-                                        children: [
-                                            {
-                                                element: <BootstrappingRoute />,
-                                                children: registeredRoutes
-                                            }
-                                        ]
+                                        element: <BootstrappingRoute />,
+                                        children: registeredRoutes
                                     }
                                 ]
                             }
@@ -342,7 +338,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 Now:
 
-```tsx !#12
+```tsx !#10
 export function App() {
     return (
         <AppRouter waitForMsw>
@@ -352,12 +348,8 @@ export function App() {
                         router={createBrowserRouter([
                             {
                                 element: rootRoute,
-                                children: [
-                                    {
-                                        errorElement: <RootErrorBoundary />,
-                                        children: registeredRoutes
-                                    }
-                                ]
+                                errorElement: <RootErrorBoundary />,
+                                children: registeredRoutes
                             }
                         ])}
                         {...routerProviderProps}
@@ -375,3 +367,7 @@ The changes in `v9` have minimal impact on module code. To migrate an existing m
 
 1. Convert all deferred routes into static routes. [View example](#removed-support-for-deferred-routes)
 2. Add a `$key` option to the navigation item registrations. [View example](#new-key-option-for-navigation-items)
+
+### Isolated development
+
+If your module is set up for [isolated development](../guides/develop-a-module-in-isolation.md), ensure that you also apply the [host application migration steps](#migrate-an-host-application) to your isolated setup.

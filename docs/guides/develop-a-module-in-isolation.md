@@ -27,7 +27,7 @@ host
 ## Create a shell package
 
 !!!info
-The implementation details of the `RootLayout` and `RootErrorBoundary` components won't be covered by this guide as it already has been covered many times by other guides.
+The implementation details of the `RootLayout`, `RootErrorBoundary` and `ModuleErrorBoundary` components won't be covered by this guide as it already has been covered many times by other guides.
 !!!
 
 First, create a new package (we'll refer to ours as `shell`) and add the following fields to the `package.json` file:
@@ -54,6 +54,7 @@ Then, create an `AppRouter` component in the shell package to provide a **reusab
 ```tsx shell/src/AppRouter.tsx
 import { AppRouter as FireflyAppRouter } from "@squide/firefly";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
 export function FireflyAppRouter() {
     return (
@@ -64,6 +65,7 @@ export function FireflyAppRouter() {
                         router={createBrowserRouter([
                             {
                                 element: rootRoute,
+                                errorElement: <RootErrorBoundary />
                                 children: registeredRoutes
                             }
                         ])}
@@ -81,14 +83,14 @@ Finally, create a local module to register the **application shell**. This modul
 ```tsx shell/src/register.tsx
 import { PublicRoutes, ProtectedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
 import { RootLayout } from "./RootLayout.tsx";
-import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
+import { ModuleErrorBoundary } from "./ModuleErrorBoundary.tsx";
 
 export const registerShell: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     runtime.registerRoute({
         element: <RootLayout />,
         children: [
             {
-                errorElement: <RootErrorBoundary />,
+                errorElement: <ModuleErrorBoundary />,
                 children: [
                     PublicRoutes,
                     ProtectedRoutes
@@ -102,7 +104,7 @@ export const registerShell: ModuleRegisterFunction<FireflyRuntime> = runtime => 
 ```
 
 !!!info
-This guide only covers the `RootLayout` and `RootErrorBoundary` components but the same goes for other shell assets such as an `AuthenticationBoundary` component.
+This guide only covers the `RootLayout`, `RootErrorBoundary` and `ModuleErrorBoundary` components but the same goes for other shell assets such as an `AuthenticationBoundary` component.
 !!!
 
 ## Update the host application

@@ -1,5 +1,12 @@
 # @squide/firefly-webpack-configs
 
+## 4.0.2
+
+### Patch Changes
+
+- Updated dependencies [[`52d57fc`](https://github.com/gsoft-inc/wl-squide/commit/52d57fcc8fcff7b7f6e84d7621724bad8ed9f2a9)]:
+  - @squide/webpack-configs@4.1.0
+
 ## 4.0.1
 
 ### Patch Changes

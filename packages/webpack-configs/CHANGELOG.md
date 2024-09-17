@@ -1,5 +1,11 @@
 # @squide/webpack-configs
 
+## 4.1.0
+
+### Minor Changes
+
+- [#202](https://github.com/gsoft-inc/wl-squide/pull/202) [`52d57fc`](https://github.com/gsoft-inc/wl-squide/commit/52d57fcc8fcff7b7f6e84d7621724bad8ed9f2a9) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Webpack config now automatically whether the entry file should be index.ts or index.tsx.
+
 ## 4.0.1
 
 ### Patch Changes

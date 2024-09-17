@@ -3,12 +3,16 @@ import type { SwcConfig } from "@workleap/swc-configs";
 import { defineBuildConfig, defineBuildHtmlWebpackPluginConfig, defineDevConfig, defineDevHtmlWebpackPluginConfig, type DefineBuildConfigOptions, type DefineDevConfigOptions, type WebpackConfig, type WebpackConfigTransformer } from "@workleap/webpack-configs";
 import merge from "deepmerge";
 import type HtmlWebpackPlugin from "html-webpack-plugin";
-import path from "node:path";
-import url from "node:url";
+import fs from "node:fs";
+import path, { dirname } from "node:path";
+import url, { fileURLToPath } from "node:url";
 import type webpack from "webpack";
 import { HostApplicationName } from "./shared.ts";
 
-const directoryName = url.fileURLToPath(new URL(".", import.meta.url));
+// Using import.meta.url instead of import.meta.dirname because Jest is throwing the following error:
+// SyntaxError: Cannot use 'import.meta' outside a module
+const applicationDirectory = dirname(fileURLToPath(import.meta.url));
+const packageDirectory = url.fileURLToPath(new URL(".", import.meta.url));
 
 // Must be similar to the module name defined in @workleap/module-federation.
 const RemoteRegisterModuleName = "./register";
@@ -144,6 +148,16 @@ function createSetUniqueNameTransformer(uniqueName: string) {
     return transformer;
 }
 
+function resolveEntryFilePath(entryPaths: string[]) {
+    for (const entryPath in entryPaths) {
+        if (fs.existsSync(path.resolve(applicationDirectory, entryPath))) {
+            return entryPath;
+        }
+    }
+
+    return entryPaths[0];
+}
+
 ////////////////////////////  Host  /////////////////////////////
 
 export interface RemoteDefinition {
@@ -152,6 +166,11 @@ export interface RemoteDefinition {
     // The URL of the remote, ex: http://localhost:8081.
     url: string;
 }
+
+const HostEntryFilePaths = [
+    "./src/index.ts",
+    "./src/index.tsx"
+];
 
 export interface DefineHostModuleFederationPluginOptions extends ModuleFederationPluginOptions {
     features?: Features;
@@ -191,8 +210,8 @@ export function defineHostModuleFederationPluginOptions(remotes: RemoteDefinitio
             shared
         ]) as ModuleFederationShared,
         runtimePlugins: [
-            path.resolve(directoryName, "./sharedDependenciesResolutionPlugin.js"),
-            path.resolve(directoryName, "./nonCacheableRemoteEntryPlugin.js"),
+            path.resolve(packageDirectory, "./sharedDependenciesResolutionPlugin.js"),
+            path.resolve(packageDirectory, "./nonCacheableRemoteEntryPlugin.js"),
             ...runtimePlugins
         ],
         ...rest
@@ -220,7 +239,7 @@ export interface DefineDevHostConfigOptions extends Omit<DefineDevConfigOptions,
 // The function return type is mandatory, otherwise we got an error TS4058.
 export function defineDevHostConfig(swcConfig: SwcConfig, port: number, remotes: RemoteDefinition[], options: DefineDevHostConfigOptions = {}): webpack.Configuration {
     const {
-        entry = path.resolve("./src/index.ts"),
+        entry = resolveEntryFilePath(HostEntryFilePaths),
         publicPath = "auto",
         cache,
         plugins = [],
@@ -262,7 +281,7 @@ export interface DefineBuildHostConfigOptions extends Omit<DefineBuildConfigOpti
 // The function return type is mandatory, otherwise we got an error TS4058.
 export function defineBuildHostConfig(swcConfig: SwcConfig, remotes: RemoteDefinition[], options: DefineBuildHostConfigOptions = {}): webpack.Configuration {
     const {
-        entry = path.resolve("./src/index.ts"),
+        entry = resolveEntryFilePath(HostEntryFilePaths),
         publicPath = "auto",
         plugins = [],
         htmlWebpackPluginOptions,
@@ -292,6 +311,11 @@ export function defineBuildHostConfig(swcConfig: SwcConfig, remotes: RemoteDefin
 }
 
 ////////////////////////////  Remote  /////////////////////////////
+
+const RemoteEntryFilePaths = [
+    "./src/register.tsx",
+    "./src/register.ts"
+];
 
 export interface DefineRemoteModuleFederationPluginOptions extends ModuleFederationPluginOptions {
     features?: Features;
@@ -329,8 +353,8 @@ export function defineRemoteModuleFederationPluginOptions(applicationName: strin
             shared
         ]) as ModuleFederationShared,
         runtimePlugins: [
-            path.resolve(directoryName, "./sharedDependenciesResolutionPlugin.js"),
-            path.resolve(directoryName, "./nonCacheableRemoteEntryPlugin.js"),
+            path.resolve(packageDirectory, "./sharedDependenciesResolutionPlugin.js"),
+            path.resolve(packageDirectory, "./nonCacheableRemoteEntryPlugin.js"),
             ...runtimePlugins
         ],
         ...rest
@@ -363,7 +387,7 @@ export interface DefineDevRemoteModuleConfigOptions extends Omit<DefineDevConfig
 // The function return type is mandatory, otherwise we got an error TS4058.
 export function defineDevRemoteModuleConfig(swcConfig: SwcConfig, applicationName: string, port: number, options: DefineDevRemoteModuleConfigOptions = {}): webpack.Configuration {
     const {
-        entry = path.resolve("./src/register.tsx"),
+        entry = resolveEntryFilePath(RemoteEntryFilePaths),
         publicPath = "auto",
         cache,
         plugins = [],
@@ -408,7 +432,7 @@ export interface DefineBuildRemoteModuleConfigOptions extends DefineBuildConfigO
 // The function return type is mandatory, otherwise we got an error TS4058.
 export function defineBuildRemoteModuleConfig(swcConfig: SwcConfig, applicationName: string, options: DefineBuildRemoteModuleConfigOptions = {}): webpack.Configuration {
     const {
-        entry = path.resolve("./src/register.tsx"),
+        entry = resolveEntryFilePath(RemoteEntryFilePaths),
         publicPath = "auto",
         plugins = [],
         htmlWebpackPlugin = false,

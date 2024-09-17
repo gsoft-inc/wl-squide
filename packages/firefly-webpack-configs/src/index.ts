@@ -22,11 +22,9 @@ export * from "@workleap/webpack-configs";
 
 export {
     DefineHostModuleFederationPluginOptions,
-    DefineRemoteModuleFederationPluginOptions,
-    ModuleFederationPluginOptions,
+    DefineRemoteModuleFederationPluginOptions, defineRemoteModuleFederationPluginOptions, ModuleFederationPluginOptions,
     RemoteDefinition,
-    Router,
-    defineRemoteModuleFederationPluginOptions
+    Router
 };
 
 export type FireflyFeatures = Omit<Features, "router" | "msw">;

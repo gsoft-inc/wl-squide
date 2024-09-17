@@ -22,7 +22,9 @@ export * from "@workleap/webpack-configs";
 
 export {
     DefineHostModuleFederationPluginOptions,
-    DefineRemoteModuleFederationPluginOptions, defineRemoteModuleFederationPluginOptions, ModuleFederationPluginOptions,
+    DefineRemoteModuleFederationPluginOptions,
+    defineRemoteModuleFederationPluginOptions,
+    ModuleFederationPluginOptions,
     RemoteDefinition,
     Router
 };

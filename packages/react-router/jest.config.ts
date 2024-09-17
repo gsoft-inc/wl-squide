@@ -5,12 +5,12 @@ import { compilerOptions } from "./tsconfig.json";
 
 const config: Config = {
     testEnvironment: "jsdom",
-    transform: {
-        "^.+\\.(js|ts|tsx)$": ["@swc/jest", swcConfig as Record<string, unknown>]
-    },
     transformIgnorePatterns: [
         "node_modules/(?!.pnpm|memoize|mimic-function)"
     ],
+    transform: {
+        "^.+\\.(js|ts|tsx)$": ["@swc/jest", swcConfig as Record<string, unknown>]
+    },
     moduleNameMapper: {
         ...pathsToModuleNameMapper(compilerOptions.paths, {
             prefix: "<rootDir>"

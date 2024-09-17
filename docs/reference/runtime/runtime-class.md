@@ -322,7 +322,7 @@ runtime.registerNavigationItem({
 //  --- Nested Link
 //  Link
 runtime.registerNavigationItem({
-    $ley: "section",
+    $key: "section",
     $label: "Section",
     children: [
         {

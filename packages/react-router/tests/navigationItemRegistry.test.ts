@@ -1,28 +1,5 @@
 /*
 
-add:
-
-    - when a static item is nested under a deferred section, throw an error
-    - when a deferred item is neste under a static section, throw an error
-
-getItems:
-    - when a nested item is registered, a new instance of the array is returned
-    - when pending registrations are completed, a new instance of the array is returned
-        -> Might not test anything because it requires a call to "add" anyway?
-
-NavigationItemDeferredRegistrationScope:
-    - when an item is added, return the \"registered\" registration status
-    - when a nested item is pending, return the \"pending\" registration status
-    - when a nested item is added, return the \"registered\" registration status
-    - when a nested section is added and complete the pending registration of nested items, add the registered items to the returned \"completedPendingRegistrations\" array
-
-NavigationItemDeferredRegistrationTransactionalScope:
-    - when an item is added, return the \"registered\" registration status
-    - when a nested item that "should" be pending is added, return the \"registered\" registration status
-    - when a nested item is added, return the \"registered\" registration status
-    - when there "should" be pending registration, the scope can be completed
-
-
 TODO:
 
 - Don't forget to update the reactRouterRuntime tests
@@ -44,12 +21,12 @@ describe("add", () => {
 
         registry.add("foo", "deferred", {
             $label: "1",
-            to: "1"
+            to: "/1"
         });
 
         expect(registry.getItems("foo")[0]).toBeDefined();
         expect(registry.getItems("foo")[0].$label).toBe("1");
-        expect(registry.getItems("foo")[0].to).toBe("1");
+        expect(registry.getItems("foo")[0].to).toBe("/1");
     });
 
     test("can add a single static item", () => {
@@ -57,12 +34,12 @@ describe("add", () => {
 
         registry.add("foo", "static", {
             $label: "1",
-            to: "1"
+            to: "/1"
         });
 
         expect(registry.getItems("foo")[0]).toBeDefined();
         expect(registry.getItems("foo")[0].$label).toBe("1");
-        expect(registry.getItems("foo")[0].to).toBe("1");
+        expect(registry.getItems("foo")[0].to).toBe("/1");
     });
 
     test("can add multiple items", () => {
@@ -70,12 +47,12 @@ describe("add", () => {
 
         registry.add("foo", "deferred", {
             $label: "1",
-            to: "1"
+            to: "/1"
         });
 
         registry.add("foo", "static", {
             $label: "2",
-            to: "2"
+            to: "/2"
         });
 
         expect(registry.getItems("foo").length).toBe(2);
@@ -86,17 +63,17 @@ describe("add", () => {
 
         registry.add("foo", "deferred", {
             $label: "1",
-            to: "1"
+            to: "/1"
         });
 
         registry.add("foo", "static", {
             $label: "2",
-            to: "2"
+            to: "/2"
         });
 
         registry.add("bar", "deferred", {
             $label: "3",
-            to: "3"
+            to: "/3"
         });
 
         expect(registry.getItems("foo").length).toBe(2);
@@ -108,7 +85,7 @@ describe("add", () => {
 
         const result = registry.add("foo", "static", {
             $label: "1",
-            to: "1"
+            to: "/1"
         });
 
         expect(result.registrationStatus).toBe("registered");
@@ -142,7 +119,7 @@ describe("add", () => {
 
         const result = registry.add("foo", "static", {
             $label: "1",
-            to: "1"
+            to: "/1"
         }, {
             sectionId: "bar"
         });
@@ -192,7 +169,7 @@ describe("add", () => {
 
         const result2 = registry.add("foo", "static", {
             $label: "1",
-            to: "1"
+            to: "/1"
         }, {
             sectionId: "bar"
         });
@@ -247,14 +224,14 @@ describe("add", () => {
 
         const result1 = registry.add("foo", "static", {
             $label: "1",
-            to: "1"
+            to: "/1"
         }, {
             sectionId: "bar"
         });
 
         const result2 = registry.add("foo", "static", {
             $label: "2",
-            to: "2"
+            to: "/2"
         }, {
             sectionId: "bar"
         });
@@ -278,14 +255,14 @@ describe("add", () => {
 
         const result1 = registry.add("foo", "static", {
             $label: "1",
-            to: "1"
+            to: "/1"
         }, {
             sectionId: "bar"
         });
 
         const result2 = registry.add("foo", "static", {
             $label: "2",
-            to: "2"
+            to: "/2"
         }, {
             sectionId: "bar"
         });
@@ -307,14 +284,14 @@ describe("add", () => {
 
         const result1 = registry.add("foo", "static", {
             $label: "1",
-            to: "1"
+            to: "/1"
         }, {
             sectionId: "bar"
         });
 
         const result2 = registry.add("foo", "static", {
             $label: "2",
-            to: "2"
+            to: "/2"
         }, {
             sectionId: "bar"
         });
@@ -336,14 +313,14 @@ describe("add", () => {
 
         const result1 = registry.add("foo", "static", {
             $label: "1",
-            to: "1"
+            to: "/1"
         }, {
             sectionId: "bar"
         });
 
         const result2 = registry.add("foo", "static", {
             $label: "2",
-            to: "2"
+            to: "/2"
         }, {
             sectionId: "bar"
         });
@@ -364,7 +341,7 @@ describe("add", () => {
 
         const result = registry.add("foo", "static", {
             $label: "1",
-            to: "1"
+            to: "/1"
         });
 
         expect(result.registrationStatus).toBe("registered");
@@ -392,7 +369,7 @@ describe("add", () => {
 
         const result2 = registry.add("foo", "static", {
             $label: "1",
-            to: "1"
+            to: "/1"
         }, {
             sectionId: "bar"
         });
@@ -436,7 +413,7 @@ describe("add", () => {
 
         const result1 = registry.add("foo", "static", {
             $label: "1",
-            to: "1"
+            to: "/1"
         }, {
             sectionId: "bar"
         });
@@ -469,14 +446,14 @@ describe("add", () => {
 
         const result1 = registry.add("foo", "static", {
             $label: "1",
-            to: "1"
+            to: "/1"
         }, {
             sectionId: "bar"
         });
 
         const result2 = registry.add("foo", "static", {
             $label: "2",
-            to: "2"
+            to: "/2"
         }, {
             sectionId: "toto"
         });
@@ -512,7 +489,7 @@ describe("add", () => {
 
         const result1 = registry.add("foo", "static", {
             $label: "1",
-            to: "1"
+            to: "/1"
         }, {
             sectionId: "bar"
         });
@@ -563,7 +540,7 @@ describe("add", () => {
         expect(() => {
             registry.add("foo", "static", {
                 $label: "1",
-                to: "1"
+                to: "/1"
             }, {
                 sectionId: "bar"
             });
@@ -584,7 +561,7 @@ describe("add", () => {
         expect(() => {
             registry.add("foo", "deferred", {
                 $label: "1",
-                to: "1"
+                to: "/1"
             }, {
                 sectionId: "bar"
             });
@@ -605,7 +582,7 @@ describe("add", () => {
 
         const result2 = registry.add("foo", "static", {
             $label: "1",
-            to: "1"
+            to: "/1"
         }, {
             sectionId: "bar"
         });
@@ -621,17 +598,17 @@ describe("getItems", () => {
 
         registry.add("foo", "deferred", {
             $label: "1",
-            to: "1"
+            to: "/1"
         });
 
         registry.add("foo", "static", {
             $label: "2",
-            to: "2"
+            to: "/2"
         });
 
         registry.add("bar", "deferred", {
             $label: "3",
-            to: "3"
+            to: "/3"
         });
 
         expect(Array.isArray(registry.getItems("toto"))).toBeTruthy();
@@ -660,6 +637,29 @@ describe("getItems", () => {
 
         expect(result1).not.toBe(result3);
         expect(result2).not.toBe(result3);
+    });
+
+    test("when a nested item is registered, a new instance of the array is returned", () => {
+        const registry = new NavigationItemRegistry();
+
+        registry.add("foo", "static", {
+            $key: "bar",
+            $label: "bar",
+            children: []
+        });
+
+        const result1 = registry.getItems("foo");
+
+        registry.add("foo", "static", {
+            $label: "1",
+            to: "/1"
+        }, {
+            sectionId: "bar"
+        });
+
+        const result2 = registry.getItems("foo");
+
+        expect(result1).not.toBe(result2);
     });
 });
 
@@ -823,6 +823,74 @@ describe("NavigationItemDeferredRegistrationScope", () => {
         expect(registry.getItems("bar").length).toBe(1);
         expect(registry.getItems("foo")[0].$label).toBe("1");
     });
+
+    test("when an item is added, return the \"registered\" registration status", () => {
+        const registry = new NavigationItemRegistry();
+        const scope = new NavigationItemDeferredRegistrationScope(registry);
+
+        const result = scope.addItem("foo", {
+            $label: "1",
+            to: "/1"
+        });
+
+        expect(result.registrationStatus).toBe("registered");
+    });
+
+    test("when a nested item is pending, return the \"pending\" registration status", () => {
+        const registry = new NavigationItemRegistry();
+        const scope = new NavigationItemDeferredRegistrationScope(registry);
+
+        const result = scope.addItem("foo", {
+            $label: "1",
+            to: "/1"
+        }, {
+            sectionId: "bar"
+        });
+
+        expect(result.registrationStatus).toBe("pending");
+    });
+
+    test("when a nested item is added, return the \"registered\" registration status", () => {
+        const registry = new NavigationItemRegistry();
+        const scope = new NavigationItemDeferredRegistrationScope(registry);
+
+        scope.addItem("foo", {
+            $key: "bar",
+            $label: "bar",
+            children: []
+        });
+
+        const result = scope.addItem("foo", {
+            $label: "1",
+            to: "/1"
+        }, {
+            sectionId: "bar"
+        });
+
+        expect(result.registrationStatus).toBe("registered");
+    });
+
+    test("when a nested section is added and complete the pending registration of nested items, add the registered items to the returned \"completedPendingRegistrations\" array", () => {
+        const registry = new NavigationItemRegistry();
+        const scope = new NavigationItemDeferredRegistrationScope(registry);
+
+        const result1 = scope.addItem("foo", {
+            $label: "1",
+            to: "/1"
+        }, {
+            sectionId: "bar"
+        });
+
+        const result2 = scope.addItem("foo", {
+            $key: "bar",
+            $label: "bar",
+            children: []
+        });
+
+        expect(result2.registrationStatus).toBe("registered");
+        expect(result2.completedPendingRegistrations.length).toBe(1);
+        expect(result2.completedPendingRegistrations[0]).toBe(result1.item);
+    });
 });
 
 describe("NavigationItemDeferredRegistrationTransactionalScope", () => {
@@ -970,5 +1038,88 @@ describe("NavigationItemDeferredRegistrationTransactionalScope", () => {
 
         expect(scope.getItems("foo").length).toBe(0);
         expect(scope.getItems("bar").length).toBe(0);
+    });
+
+    test("when an item is added, return the \"registered\" registration status", () => {
+        const registry = new NavigationItemRegistry();
+        const scope = new NavigationItemDeferredRegistrationTransactionalScope(registry);
+
+        const result = scope.addItem("foo", {
+            $label: "1",
+            to: "/1"
+        });
+
+        expect(result.registrationStatus).toBe("registered");
+    });
+
+    test("when a nested item is added, return the \"registered\" registration status", () => {
+        const registry = new NavigationItemRegistry();
+        const scope = new NavigationItemDeferredRegistrationTransactionalScope(registry);
+
+        scope.addItem("foo", {
+            $key: "bar",
+            $label: "bar",
+            children: []
+        });
+
+        const result = scope.addItem("foo", {
+            $label: "1",
+            to: "/1"
+        }, {
+            sectionId: "bar"
+        });
+
+        expect(result.registrationStatus).toBe("registered");
+    });
+
+    test("when a nested item that \"should\" be pending is added, return the \"registered\" registration status", () => {
+        const registry = new NavigationItemRegistry();
+        const scope = new NavigationItemDeferredRegistrationTransactionalScope(registry);
+
+        const result = scope.addItem("foo", {
+            $label: "1",
+            to: "/1"
+        }, {
+            sectionId: "bar"
+        });
+
+        expect(result.registrationStatus).toBe("registered");
+    });
+
+    test("when there \"should\" be pending registrations, the scope can be completed", () => {
+        const registry = new NavigationItemRegistry();
+        const scope = new NavigationItemDeferredRegistrationTransactionalScope(registry);
+
+        scope.addItem("foo", {
+            $label: "1",
+            to: "/1"
+        }, {
+            sectionId: "bar"
+        });
+
+        scope.addItem("foo", {
+            $label: "2",
+            to: "/2"
+        }, {
+            sectionId: "bar"
+        });
+
+        scope.addItem("foo", {
+            $key: "bar",
+            $label: "bat",
+            children: []
+        }, {
+            sectionId: "toto"
+        });
+
+        scope.addItem("foo", {
+            $key: "toto",
+            $label: "toto",
+            children: []
+        });
+
+        scope.complete();
+
+        expect(registry.getPendingRegistrations().getPendingSectionIds().length).toBe(0);
     });
 });

@@ -123,36 +123,6 @@ By declaring a route as hoisted, other parts of the application will not be isol
 - If the hoisted route requires an authentication, make sure to **wrap** the route **with** an **authentication boundary** or to handle the authentication within the route.
 !!!
 
-### Register a route with a different layout
-
-```tsx !#9,12,22
-import { Page } from "./Page.tsx";
-import { RemoteLayout } from "./RemoteLayout.tsx";
-import { RemoteErrorBoundary } from "./RemoteErrorBoundary.tsx";
-
-runtime.registerRoute({
-    path: "/page-1",
-    // Will render the route inside the "RemoteLayout" rather than the "RootLayout".
-    // For more information about React Router's nested routes, view https://reactrouter.com/en/main/start/tutorial#nested-routes.
-    element: <RemoteLayout />,
-    children: [
-        {
-            errorElement: <RemoteErrorBoundary />,
-            children: [
-                {
-                    index: true,
-                    element: <Page />
-                }
-            ]
-        }
-    ]
-}, {
-    hoist: true
-});
-```
-
-[!ref text="Learn more about overriding the host application layout"](../../guides/override-the-host-layout.md)
-
 ### Register a public route
 
 When registering a route, a value can be provided indicating whether the route is `"public"` or `"protected"`. This is especially useful when dealing with code that **fetches global data for protected routes** (e.g. a session). Although a route definition accepts a `$visibility` value, we recommended using the runtime `registerPublicRoute` function to register a **root** public route instead.
@@ -320,7 +290,6 @@ runtime.registerNavigationItem({
 //  --- Nested Section
 //  ------- Nested Nested Link
 //  --- Nested Link
-//  Link
 runtime.registerNavigationItem({
     $key: "section",
     $label: "Section",
@@ -342,11 +311,6 @@ runtime.registerNavigationItem({
             to: "#"
         }
     ]
-},
-{
-    $key: "link",
-    $label: "Link",
-    to: "#"
 });
 ```
 
@@ -455,6 +419,8 @@ runtime.registerNavigationItem({
     to: "/about"
 });
 ```
+
+> It's the responsibility of the code rendering the menu to handle the additional properties.
 
 ### Register navigation items for a specific menu
 

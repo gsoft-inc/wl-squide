@@ -31,6 +31,22 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n) {
         $priority: 999,
         to: "/"
     });
+
+    // TEMP
+    runtime.registerNavigationItem({
+        $key: "best-section",
+        $label: "Best section",
+        children: []
+    });
+
+    // TEMP
+    runtime.registerNavigationItem({
+        $key: "pending-item-2",
+        $label: "Pending item 2",
+        to: "/"
+    }, {
+        sectionId: "pending-section"
+    });
 }
 
 async function registerMsw(runtime: FireflyRuntime) {

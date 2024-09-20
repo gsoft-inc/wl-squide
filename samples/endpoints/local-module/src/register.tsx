@@ -68,6 +68,24 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n): Deferre
         menuId: "/federated-tabs"
     });
 
+    // TEMP
+    runtime.registerNavigationItem({
+        $key: "best-item-1",
+        $label: "Best item 1",
+        to: "/"
+    }, {
+        sectionId: "best-section"
+    });
+
+    // TEMP
+    runtime.registerNavigationItem({
+        $key: "pending-item-1",
+        $label: "Pending item 1",
+        to: "/"
+    }, {
+        sectionId: "pending-section"
+    });
+
     return ({ featureFlags }) => {
         if (featureFlags?.featureA) {
             runtime.registerNavigationItem({

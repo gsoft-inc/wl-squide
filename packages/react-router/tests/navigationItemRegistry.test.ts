@@ -1,3 +1,42 @@
+/*
+
+add:
+    - when a root link is added, return the \"registered\" registration status
+    - when a root section is added, return the \"registered\" registration status
+    - when a root section is added and complete the pending registration of nested items, add the registered items to the returned \"completedPendingRegistrations\" array
+    - when a root section is added and do not complete any pending registration, return an empty \"completedPendingRegistrations\" array
+    - when a root link is added, return an empty \"completedPendingRegistrations\" array
+    - when a nested section is pending for registration, return the \"pending\" registration status
+    - when a nested link is pending for registration, return the \"pending\" registration status
+    - when a nested link is added, return the \"registered\" registration status
+    - when a nested section is added, return the \"registered\" registration status
+    - when a nested section is added and complete the pending registration of nested items, add the registered items to the returned \"completedPendingRegistrations\" array
+        -> make sure to test that the nested items are all returned with the completedPendingRegistrations array
+
+    - when an item is nested under a nested section, return the \"registered\" registration status
+    - when a static item is nested under a deferred section, throw an error
+    - when a deferred item is neste under a static section, throw an error
+
+getItems:
+    - when a nested item is registered, a new instance of the array is returned
+    - when pending registrations are completed, a new instance of the array is returned
+        -> Might not test anything because it requires a call to "add" anyway?
+
+NavigationItemDeferredRegistrationScope:
+    - when an item is added, return the \"registered\" registration status
+    - when a nested item is pending, return the \"pending\" registration status
+    - when a nested item is added, return the \"registered\" registration status
+    - when a nested section is added and complete the pending registration of nested items, add the registered items to the returned \"completedPendingRegistrations\" array
+
+NavigationItemDeferredRegistrationTransactionalScope:
+    - when an item is added, return the \"registered\" registration status
+    - when a nested item that "should" be pending is added, return the \"registered\" registration status
+    - when a nested item is added, return the \"registered\" registration status
+    - when there "should" be pending registration, the scope can be completed
+
+
+*/
+
 import { NavigationItemDeferredRegistrationScope, NavigationItemDeferredRegistrationTransactionalScope, NavigationItemRegistry } from "../src/navigationItemRegistry.ts";
 
 describe("add", () => {

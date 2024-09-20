@@ -447,11 +447,3 @@ export class PendingNavigationItemRegistrations {
         return this.#pendingRegistrationsIndex.get(indexKey) ?? [];
     }
 }
-
-/*
-Test cases:
-
-- clearDeferredItems
-    - Clear nested sections from the menus index
-    - Clear nested sections from the sections index
-*/

@@ -165,7 +165,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        $key: "page",
+        $id: "page",
         $label: "Page",
         to: "/page"
     });
@@ -218,7 +218,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
         // Only register the "Page" navigation items if "featureB" is activated.
         if (featureFlags?.featureB) {
             runtime.registerNavigationItem({
-                $key: "page",
+                $id: "page",
                 $label: "Page",
                 to: "/page"
             });
@@ -304,7 +304,7 @@ export function App() {
 !!!info
 A key feature of [TanStack Query](https://tanstack.com/query/latest) is its ability to keep the frontend state synchronized with the server state. To fully leverage this, whenever the data passed to `useDeferredRegistrations` changes, all deferred registration functions are re-executed.
 
-Remember to use [useMemo](https://react.dev/reference/react/useMemo) for your deferred registration data and to specify the `$key` option for your navigation items!
+Remember to use [useMemo](https://react.dev/reference/react/useMemo) for your deferred registration data and to specify the `$id` option for your navigation items!
 !!!
 
 ## Try it :rocket:

@@ -405,7 +405,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].$visibility).toBe("protected");
         });
 
-        test("when a root route has no visibility property, it is considered as an \"protected\" route", () => {
+        test("when a root route has no visibility option, it is considered as an \"protected\" route", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -461,7 +461,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].children![0].$visibility).toBe("protected");
         });
 
-        test("when a nested route has no visibility property, it is considered as an \"protected\" route", () => {
+        test("when a nested route has no visibility option, it is considered as an \"protected\" route", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -1010,7 +1010,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].children![0].$visibility).toBe("public");
         });
 
-        test("when a nested route has no visibility property, the visibility is defaulted to \"protected\"", () => {
+        test("when a nested route has no visibility option, the visibility is defaulted to \"protected\"", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -1066,7 +1066,7 @@ describe("registerRoute", () => {
         expect(runtime.routes[0].$visibility).toBe("public");
     });
 
-    test("when a route has no visibility property, the visibility is defaulted to \"protected\"", () => {
+    test("when a route has no visibility option, the visibility is defaulted to \"protected\"", () => {
         const runtime = new ReactRouterRuntime();
 
         runtime.registerRoute({
@@ -1159,24 +1159,24 @@ describe("registerNavigationItem", () => {
         const runtime = new ReactRouterRuntime();
 
         runtime.registerNavigationItem({
-            $key: "link",
+            $id: "link",
             $label: "Link",
             to: "/link"
         });
 
-        expect(runtime.getNavigationItems()[0].$key).toBe("link");
+        expect(runtime.getNavigationItems()[0].$id).toBe("link");
     });
 
     test("can register a navitation section with a key", () => {
         const runtime = new ReactRouterRuntime();
 
         runtime.registerNavigationItem({
-            $key: "section",
+            $id: "section",
             $label: "Section",
             children: []
         });
 
-        expect(runtime.getNavigationItems()[0].$key).toBe("section");
+        expect(runtime.getNavigationItems()[0].$id).toBe("section");
     });
 
     describe("sectionId", () => {
@@ -1184,7 +1184,7 @@ describe("registerNavigationItem", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerNavigationItem({
-                $key: "section",
+                $id: "section",
                 $label: "Section",
                 children: []
             });
@@ -1196,7 +1196,7 @@ describe("registerNavigationItem", () => {
                 sectionId: "section"
             });
 
-            expect(runtime.getNavigationItems()[0].$key).toBe("section");
+            expect(runtime.getNavigationItems()[0].$id).toBe("section");
             expect(runtime.getNavigationItems()[0].children![0].$label).toBe("Link");
         });
 
@@ -1226,12 +1226,12 @@ describe("registerNavigationItem", () => {
             expect(runtime.getNavigationItems().length).toBe(0);
 
             runtime.registerNavigationItem({
-                $key: "section",
+                $id: "section",
                 $label: "Section",
                 children: []
             });
 
-            expect(runtime.getNavigationItems()[0].$key).toBe("section");
+            expect(runtime.getNavigationItems()[0].$id).toBe("section");
             expect(runtime.getNavigationItems()[0].children![0].$label).toBe("Link");
         });
 
@@ -1245,7 +1245,7 @@ describe("registerNavigationItem", () => {
                         $label: "Nested section",
                         children: [
                             {
-                                $key: "deeply-nested",
+                                $id: "deeply-nested",
                                 $label: "Deeply nested",
                                 children: []
                             }
@@ -1278,14 +1278,14 @@ describe("registerNavigationItem", () => {
             expect(runtime.getNavigationItems().length).toBe(0);
 
             runtime.registerNavigationItem({
-                $key: "section",
+                $id: "section",
                 $label: "Section",
                 children: []
             }, {
                 menuId: "foo"
             });
 
-            expect(runtime.getNavigationItems("foo")[0].$key).toBe("section");
+            expect(runtime.getNavigationItems("foo")[0].$id).toBe("section");
             expect(runtime.getNavigationItems("foo")[0].children![0].$label).toBe("Link");
         });
 
@@ -1303,7 +1303,7 @@ describe("registerNavigationItem", () => {
             expect(runtime.getNavigationItems().length).toBe(0);
 
             runtime.registerNavigationItem({
-                $key: "section",
+                $id: "section",
                 $label: "Section",
                 children: []
             }, {
@@ -1312,11 +1312,11 @@ describe("registerNavigationItem", () => {
 
             expect(runtime.getNavigationItems("foo").length).toBe(0);
             expect(runtime.getNavigationItems("bar").length).toBe(1);
-            expect(runtime.getNavigationItems("bar")[0].$key).toBe("section");
+            expect(runtime.getNavigationItems("bar")[0].$id).toBe("section");
             expect(runtime.getNavigationItems("bar")[0].children!.length).toBe(0);
 
             // expect(runtime.getNavigationItems().length).toBe(1);
-            // expect(runtime.getNavigationItems()[0].$key).toBe("section");
+            // expect(runtime.getNavigationItems()[0].$id).toBe("section");
             // expect(runtime.getNavigationItems()[0].children!.length).toBe(0);
         });
     });
@@ -1653,7 +1653,7 @@ describe("_validateRegistrations", () => {
             });
 
             runtime.registerNavigationItem({
-                $key: "section",
+                $id: "section",
                 $label: "Section",
                 children: []
             });

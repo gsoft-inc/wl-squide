@@ -248,7 +248,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = async runtime =>
     });
 
     runtime.registerNavigationItem({
-        $key: "global-data",
+        $id: "global-data",
         $label: "Global data Page",
         to: "/global-data"
     });

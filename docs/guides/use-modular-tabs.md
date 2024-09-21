@@ -59,7 +59,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        $key: "tabs",
+        $id: "tabs",
         $label: "tabs",
         to: "/tabs"
     });
@@ -173,7 +173,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        $key: "tab-1",
+        $id: "tab-1",
         $label: "Tab 1",
         to: "/tabs"
     }, { 
@@ -199,7 +199,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        $key: "tab-2",
+        $id: "tab-2",
         $label: "Tab 2",
         to: "/tabs/tab-2"
     }, { 
@@ -225,7 +225,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        $key: "tab-3",
+        $id: "tab-3",
         $label: "Tab 3",
         to: "/tabs/tab-3"
     }, {
@@ -289,7 +289,7 @@ export function TabsLayout() {
 
 ## Change the display order of the tabs
 
-Similarly to how the display order of regular navigation items can be configured, a modular tab position can be affected with the [priority](http://localhost:5000/wl-squide/reference/runtime/runtime-class/#sort-registered-navigation-items) property.
+Similarly to how the display order of regular navigation items can be configured, a modular tab position can be affected with the [priority](http://localhost:5000/wl-squide/reference/runtime/runtime-class/#sort-registered-navigation-items) option.
 
 To force `Tab 3` to be positioned first, we'll give him a priority of `999`: 
 
@@ -306,7 +306,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        $key: "tab-3",
+        $id: "tab-3",
         $label: "Tab 3",
         // Highest priority goes first.
         $priority: 999,

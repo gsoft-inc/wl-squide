@@ -1,24 +1,10 @@
-/*
-STUFF FOR useNavigationItemsRenderer
-
-- Should still receive a key prop but it will be assigned the value of $id or $index
-
-
-STUFF FOR RouteRegistry:
-
-- name -> id
-- parentName -> parentId
-
-- deprecated both "name" and "parentName"
-*/
-
 import { isNil } from "@squide/core";
 import memoize, { memoizeClear } from "memoize";
 import type { ReactNode } from "react";
 import type { LinkProps } from "react-router-dom";
 
 export interface NavigationLink extends Omit<LinkProps, "children"> {
-    $key?: string;
+    $id?: string;
     $label: ReactNode;
     $additionalProps?: Record<string, unknown>;
     $canRender?: (obj?: unknown) => boolean;
@@ -26,7 +12,7 @@ export interface NavigationLink extends Omit<LinkProps, "children"> {
 }
 
 export interface NavigationSection {
-    $key?: string;
+    $id?: string;
     $label: ReactNode;
     $additionalProps?: Record<string, unknown>;
     $canRender?: (obj?: unknown) => boolean;
@@ -172,16 +158,16 @@ export class NavigationItemRegistry {
 
     #addSectionIndex(menuId: string, registrationType: NavigationItemRegistrationType, sectionItem: NavigationSection) {
         // Only add sections with an identifier.
-        if (sectionItem.$key) {
-            const indexKey = createSectionIndexKey(menuId, sectionItem.$key);
+        if (sectionItem.$id) {
+            const indexKey = createSectionIndexKey(menuId, sectionItem.$id);
 
             if (this.#sectionsIndex.has(indexKey)) {
-                throw new Error(`[squide] A navigation section index has already been registered for the menu: "${menuId}" and section: "${sectionItem.$key}". Did you register two navigation sections with the same "menuId" and "$key" property?`);
+                throw new Error(`[squide] A navigation section index has already been registered for the menu: "${menuId}" and section: "${sectionItem.$id}". Did you register two navigation sections with similar "$id" option for the same menu?`);
             }
 
             this.#sectionsIndex.set(indexKey, {
                 menuId,
-                sectionId: sectionItem.$key,
+                sectionId: sectionItem.$id,
                 registrationType,
                 item: sectionItem
             });
@@ -296,7 +282,7 @@ export class NavigationItemRegistry {
             registrationType,
             item,
             menuId,
-            sectionId: item.$key
+            sectionId: item.$id
         };
     }
 

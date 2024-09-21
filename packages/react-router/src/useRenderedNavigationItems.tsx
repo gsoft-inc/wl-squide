@@ -28,9 +28,9 @@ export type RenderItemFunction = (item: NavigationItemRenderProps, key: string, 
 export type RenderSectionFunction = (elements: ReactNode[], key: string, index: number, level: number) => ReactNode;
 
 function toLinkProps({
-    // Explicitly omitted because the "$key" prop shouldn't be used by the consumer.
+    // Explicitly omitted because the "$od" prop shouldn't be used by the consumer.
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    $key,
+    $id,
     $label,
     $additionalProps,
     $canRender,
@@ -59,13 +59,13 @@ function renderItems(items: NavigationItem[], renderItem: RenderItemFunction, re
         let itemElement: ReactNode;
 
         if (isLinkItem(x)) {
-            itemElement = renderItem(toLinkProps(x), x.$key ?? `${itemIndex}-${level}`, itemIndex, level);
+            itemElement = renderItem(toLinkProps(x), x.$id ?? `${itemIndex}-${level}`, itemIndex, level);
         } else {
             const sectionIndex = 0;
             const sectionLevel = level + 1;
-            const sectionElement = renderItems(x.children, renderItem, renderSection, x.$key ?? `${sectionIndex}-${sectionLevel}`, sectionIndex, sectionLevel);
+            const sectionElement = renderItems(x.children, renderItem, renderSection, x.$id ?? `${sectionIndex}-${sectionLevel}`, sectionIndex, sectionLevel);
 
-            itemElement = renderItem(toMenuProps(x, sectionElement), x.$key ?? `${itemIndex}-${level}`, itemIndex, level);
+            itemElement = renderItem(toMenuProps(x, sectionElement), x.$id ?? `${itemIndex}-${level}`, itemIndex, level);
         }
 
         return itemElement;

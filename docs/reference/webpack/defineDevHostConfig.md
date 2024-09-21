@@ -25,7 +25,7 @@ const webpackConfig = defineDevHostConfig(swcConfig: {}, port, remotes: [], opti
 - `remotes`: An array of `RemoteDefinition` (view the [Remote definition](#remote-definition) section).
 - `options`: An optional object literal of options:
     - Accepts most of webpack `definedDevConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/#3-set-predefined-options).
-    - `htmlWebpackPluginOptions`: An optional object literal accepting any property of the [HtmlWebpackPlugin](https://github.com/jantimon/html-webpack-plugin#options).
+    - `htmlWebpackPluginOptions`: An optional object literal accepting any options of the [HtmlWebpackPlugin](https://github.com/jantimon/html-webpack-plugin#options).
     - `features`: An optional object literal of feature switches to define additional shared dependencies.
         - `i18next`: Whether or not to add `@squide/i18next` as a shared dependency.
     - `sharedDependencies`: An optional object literal of additional (or updated) module federation shared dependencies.
@@ -224,7 +224,7 @@ export default defineDevHostConfig(swcConfig, 8080, Remotes, {
 
 ### `name`
 
-The `name` property of a remote definition **must match** the `name` property defined in the remote module [ModuleFederationPlugin](https://module-federation.io/configure/index.html) configuration.
+The `name` option of a remote definition **must match** the `name` option defined in the remote module [ModuleFederationPlugin](https://module-federation.io/configure/index.html) configuration.
 
 If you are relying on the Squide [defineDevRemoteModuleConfig](../webpack/defineDevRemoteModuleConfig.md) function to add the `ModuleFederationPlugin` to the remote module webpack [configuration object](https://module-federation.io/), then the remote module `name` is the second argument of the function.
 
@@ -250,7 +250,7 @@ export default defineDevRemoteModuleConfig(swcConfig, "remote1", 8081);
 
 ### `url`
 
-The `url` property of a remote definition **must match** the [publicPath](https://webpack.js.org/guides/public-path/) of the remote module webpack [configuration object](https://webpack.js.org/concepts/configuration/).
+The `url` option of a remote definition **must match** the [publicPath](https://webpack.js.org/guides/public-path/) of the remote module webpack [configuration object](https://webpack.js.org/concepts/configuration/).
 
 In the following exemple, the remote module `publicPath` is `http://localhost:8081`.
 

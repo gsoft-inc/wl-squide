@@ -47,7 +47,7 @@ function registerRoutes(runtime: FireflyRuntime) {
     });
 
     runtime.registerNavigationItem({
-        $key: "section",
+        $id: "section",
         $label: "Section",
         $priority: -30,
         children: [

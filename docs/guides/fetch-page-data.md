@@ -57,7 +57,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        $key: "page",
+        $id: "page",
         $label: "Page",
         to: "/page"
     });
@@ -96,7 +96,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        $key: "page",
+        $id: "page",
         $label: "Page",
         to: "/page"
     });
@@ -135,7 +135,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        $key: "page",
+        $id: "page",
         $label: "Page",
         to: "/page"
     });
@@ -172,7 +172,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        $key: "page",
+        $id: "page",
         $label: "Page",
         to: "/page"
     });

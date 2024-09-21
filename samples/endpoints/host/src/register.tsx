@@ -26,7 +26,7 @@ function registerRoutes(runtime: FireflyRuntime, i18nextInstance: i18n) {
     });
 
     runtime.registerNavigationItem({
-        $key: "home",
+        $id: "home",
         $label: <I18nextNavigationItemLabel i18next={i18nextInstance} resourceKey="homePage" />,
         $priority: 999,
         to: "/"

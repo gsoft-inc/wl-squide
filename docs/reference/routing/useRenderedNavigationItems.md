@@ -31,14 +31,14 @@ const elements = useRenderedNavigationItems(
 
 Accept any properties of a React Router [Link](https://reactrouter.com/en/main/components/link) component with the addition of:
 
-- `$key`: An optional key identifying the link. Usually used as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
+- `$id`: An optional identifier for the link. Usually used as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
 - `$label`: The link label. Could either by a `string` or a `ReactNode`.
 - `$canRender`: An optional function accepting an object and returning a `boolean` indicating whether or not the link should be rendered.
 - `$additionalProps`: An optional object literal of additional props to apply to the link component.
 
 #### `NavigationSection`
 
-- `$key`: An optional key identifying the section. Usually used as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
+- `$id`: An optional key identifying the section. Usually used to nest navigation items undern a specific section and as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
 - `$label`: The section label. Could either by a `string` or a `ReactNode`.
 - `$canRender`: An optional function accepting an object and returning a `boolean` indicating whether or not the section should be rendered.
 - `$additionalProps`: An optional object literal of additional props to apply to the section component.
@@ -53,9 +53,9 @@ An array of `ReactElement`.
 ### Render nested items
 
 !!!info
-We recommend always providing a `$key` property for a navigation item, as it ensures the menus doesn't flicker when [deferred registrations](../registration/registerLocalModules.md#defer-the-registration-of-navigation-items) are updated. Be sure to use a unique key.
+We recommend always providing an `$id` option for a navigation item, as it ensures the menus doesn't flicker when [deferred registrations](../registration/registerLocalModules.md#defer-the-registration-of-navigation-items) are updated. Be sure to use a unique key.
 
-When no `$key` property is provided, a default key value is computed based on the `index` and `level` properties. While this works in most cases, the default key cannot guarantee that the menu won't flicker during updates.
+When no `$id` option is provided, a default `key` argument is computed based on the `index` and `level` properties. While this works in most cases, the default key cannot guarantee that the menu won't flicker during updates.
 !!!
 
 ```tsx !#38-40,42-48,52 host/src/RootLayout.tsx
@@ -123,7 +123,7 @@ export function RootLayout() {
 
 ### Render dynamic segments
 
-The `to` property of a navigation item can include dynamic segments (`/user-profile/:userId`), enabling the rendering of dynamic routes based on contextual values. To resolve a route dynamic segments, use the [resolveRouteSegments](resolveRouteSegments.md) function.
+The `to` option of a navigation item can include dynamic segments (`/user-profile/:userId`), enabling the rendering of dynamic routes based on contextual values. To resolve a route dynamic segments, use the [resolveRouteSegments](resolveRouteSegments.md) function.
 
 ```tsx !#14,18,21,39-45,56,59 host/src/UserProfileLayout.tsx
 import type { ReactNode } from "react";
@@ -200,7 +200,7 @@ import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = (runtime) => {
     runtime.registerNavigationItem({
-        $key: "user-profile",
+        $id: "user-profile",
         $label: "User profile",
         to: "/user-profile/:userId"
     }, {

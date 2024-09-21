@@ -64,7 +64,7 @@ export class RouteRegistry {
 
         if (key) {
             if (this.#routesIndex.has(key)) {
-                throw new Error(`[squide] A route index has already been registered for the key: "${key}". Did you register two routes with the same "path" or "name" property?`);
+                throw new Error(`[squide] A route index has already been registered for the key: "${key}". Did you register two routes with the same "path" or "name" option?`);
             }
 
             this.#routesIndex.set(key, route);
@@ -132,11 +132,11 @@ export class RouteRegistry {
 
     #validateRouteRegistrationOptions(route: Route, { hoist, parentPath, parentName }: AddRouteOptions = {}) {
         if (hoist && parentPath) {
-            throw new Error(`[squide] A route cannot have the "hoist" property when a "publicPath" option is provided. Route id: "${route.path ?? route.$name ?? "(no identifier)"}".`);
+            throw new Error(`[squide] A route cannot have the "hoist" option when a "publicPath" option is provided. Route id: "${route.path ?? route.$name ?? "(no identifier)"}".`);
         }
 
         if (hoist && parentName) {
-            throw new Error(`[squide] A route cannot have the "hoist" property when a "parentName" option is provided. Route id: "${route.path ?? route.$name ?? "(no identifier)"}".`);
+            throw new Error(`[squide] A route cannot have the "hoist" option when a "parentName" option is provided. Route id: "${route.path ?? route.$name ?? "(no identifier)"}".`);
         }
     }
 

@@ -1,18 +1,3 @@
-/*
-
-TODO:
-
-- Don't forget to update the reactRouterRuntime tests
-    -> It should add tests to register nested navigation items with a section id
-    -> It should add tests to validate the registration of pending registrations (#validateNavigationItemRegistrations)
-
-Routes tests:
-
--> returned registration menuId and sectionId should match the parent
-        -> also add this for toutes
-
-*/
-
 import { NavigationItemDeferredRegistrationScope, NavigationItemDeferredRegistrationTransactionalScope, NavigationItemRegistry } from "../src/navigationItemRegistry.ts";
 
 describe("add", () => {
@@ -95,7 +80,7 @@ describe("add", () => {
         const registry = new NavigationItemRegistry();
 
         const result = registry.add("foo", "static", {
-            $key: "1",
+            $id: "1",
             $label: "1",
             children: []
         });
@@ -133,7 +118,7 @@ describe("add", () => {
         const registry = new NavigationItemRegistry();
 
         const result = registry.add("foo", "static", {
-            $key: "1",
+            $id: "1",
             $label: "1",
             children: []
         }, {
@@ -162,7 +147,7 @@ describe("add", () => {
         const registry = new NavigationItemRegistry();
 
         const result1 = registry.add("foo", "static", {
-            $key: "bar",
+            $id: "bar",
             $label: "bar",
             children: []
         });
@@ -182,13 +167,13 @@ describe("add", () => {
         const registry = new NavigationItemRegistry();
 
         const result1 = registry.add("foo", "static", {
-            $key: "bar",
+            $id: "bar",
             $label: "bar",
             children: []
         });
 
         const result2 = registry.add("foo", "static", {
-            $key: "toto",
+            $id: "toto",
             $label: "toto",
             children: []
         }, {
@@ -203,7 +188,7 @@ describe("add", () => {
         const registry = new NavigationItemRegistry();
 
         const result1 = registry.add("foo", "static", {
-            $key: "bar",
+            $id: "bar",
             $label: "bar",
             children: []
         });
@@ -237,7 +222,7 @@ describe("add", () => {
         });
 
         const result3 = registry.add("foo", "static", {
-            $key: "bar",
+            $id: "bar",
             $label: "bar",
             children: []
         });
@@ -268,7 +253,7 @@ describe("add", () => {
         });
 
         const result3 = registry.add("foo", "static", {
-            $key: "toto",
+            $id: "toto",
             $label: "toto",
             children: []
         });
@@ -297,7 +282,7 @@ describe("add", () => {
         });
 
         const result3 = registry.add("toto", "static", {
-            $key: "bar",
+            $id: "bar",
             $label: "bar",
             children: []
         });
@@ -358,7 +343,7 @@ describe("add", () => {
                     $label: "nested",
                     children: [
                         {
-                            $key: "bar",
+                            $id: "bar",
                             $label: "bar",
                             children: []
                         }
@@ -388,7 +373,7 @@ describe("add", () => {
                     $label: "nested",
                     children: [
                         {
-                            $key: "bar",
+                            $id: "bar",
                             $label: "bar",
                             children: []
                         }
@@ -425,7 +410,7 @@ describe("add", () => {
                     $label: "nested-1",
                     children: [
                         {
-                            $key: "bar",
+                            $id: "bar",
                             $label: "bar",
                             children: []
                         }
@@ -440,7 +425,6 @@ describe("add", () => {
         expect(result2.completedPendingRegistrations[0]).toBe(result1.item);
     });
 
-    // TODO: Add a similar test for routes
     test("when registering a multiple sections as a single block complete pending registrations at multiple nesting level, add all the registered items to the returned \"completedPendingRegistrations\" array", () => {
         const registry = new NavigationItemRegistry();
 
@@ -462,11 +446,11 @@ describe("add", () => {
             $label: "root",
             children: [
                 {
-                    $key: "toto",
+                    $id: "toto",
                     $label: "toto",
                     children: [
                         {
-                            $key: "bar",
+                            $id: "bar",
                             $label: "bar",
                             children: []
                         }
@@ -483,7 +467,6 @@ describe("add", () => {
         expect(result3.completedPendingRegistrations[1]).toBe(result1.item);
     });
 
-    // TODO: Add a similar test for routes
     test("when registering a root item trigger a chain reaction of pending registrations completion, add all the registered items to the returned \"completedPendingRegistrations\" array", () => {
         const registry = new NavigationItemRegistry();
 
@@ -495,7 +478,7 @@ describe("add", () => {
         });
 
         const result2 = registry.add("foo", "static", {
-            $key: "bar",
+            $id: "bar",
             $label: "2",
             children: []
         }, {
@@ -509,7 +492,7 @@ describe("add", () => {
                     $label: "nested",
                     children: [
                         {
-                            $key: "toto",
+                            $id: "toto",
                             $label: "toto",
                             children: []
                         }
@@ -530,7 +513,7 @@ describe("add", () => {
         const registry = new NavigationItemRegistry();
 
         const result = registry.add("foo", "deferred", {
-            $key: "bar",
+            $id: "bar",
             $label: "bar",
             children: []
         });
@@ -551,7 +534,7 @@ describe("add", () => {
         const registry = new NavigationItemRegistry();
 
         const result = registry.add("foo", "static", {
-            $key: "bar",
+            $id: "bar",
             $label: "bar",
             children: []
         });
@@ -572,7 +555,7 @@ describe("add", () => {
         const registry = new NavigationItemRegistry();
 
         const item = {
-            $key: "bar",
+            $id: "bar",
             $label: "bar"
         };
 
@@ -643,7 +626,7 @@ describe("getItems", () => {
         const registry = new NavigationItemRegistry();
 
         registry.add("foo", "static", {
-            $key: "bar",
+            $id: "bar",
             $label: "bar",
             children: []
         });
@@ -855,7 +838,7 @@ describe("NavigationItemDeferredRegistrationScope", () => {
         const scope = new NavigationItemDeferredRegistrationScope(registry);
 
         scope.addItem("foo", {
-            $key: "bar",
+            $id: "bar",
             $label: "bar",
             children: []
         });
@@ -882,7 +865,7 @@ describe("NavigationItemDeferredRegistrationScope", () => {
         });
 
         const result2 = scope.addItem("foo", {
-            $key: "bar",
+            $id: "bar",
             $label: "bar",
             children: []
         });
@@ -1057,7 +1040,7 @@ describe("NavigationItemDeferredRegistrationTransactionalScope", () => {
         const scope = new NavigationItemDeferredRegistrationTransactionalScope(registry);
 
         scope.addItem("foo", {
-            $key: "bar",
+            $id: "bar",
             $label: "bar",
             children: []
         });
@@ -1105,7 +1088,7 @@ describe("NavigationItemDeferredRegistrationTransactionalScope", () => {
         });
 
         scope.addItem("foo", {
-            $key: "bar",
+            $id: "bar",
             $label: "bat",
             children: []
         }, {
@@ -1113,7 +1096,7 @@ describe("NavigationItemDeferredRegistrationTransactionalScope", () => {
         });
 
         scope.addItem("foo", {
-            $key: "toto",
+            $id: "toto",
             $label: "toto",
             children: []
         });

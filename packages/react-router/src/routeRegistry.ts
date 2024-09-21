@@ -113,19 +113,21 @@ export class RouteRegistry {
     }
 
     #tryRegisterPendingRoutes(parentId: string) {
+        const completedPendingRegistrations: Route[] = [];
         const pendingRegistrations = this.#pendingRegistrationsIndex.get(parentId);
 
         if (pendingRegistrations) {
+            completedPendingRegistrations.push(...pendingRegistrations);
+
             // Register the pending routes.
-            this.#addNestedRoutes(pendingRegistrations, parentId);
+            const result = this.#addNestedRoutes(pendingRegistrations, parentId);
+            completedPendingRegistrations.push(...result.completedPendingRegistrations);
 
             // Delete the pending registrations.
             this.#pendingRegistrationsIndex.delete(parentId);
-
-            return pendingRegistrations;
         }
 
-        return [];
+        return completedPendingRegistrations;
     }
 
     #validateRouteRegistrationOptions(route: Route, { hoist, parentPath, parentName }: AddRouteOptions = {}) {

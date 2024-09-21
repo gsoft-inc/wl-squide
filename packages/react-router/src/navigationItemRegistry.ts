@@ -1,21 +1,4 @@
 /*
-THINGS TO EVALUATE:
-
-- When a pending registrations is processed, it can be a nested section. If this is a nested section, it must be added to the "sectionsIndex".
-    -> currently it's not - DONE
-
-- What if a pending registration is waiting for a nested section to be registered?
-    -> we must recursively parse registered section like it's done for the routes -> #recursivelyAddRoutes -> #recursivelyAddSections - DONE
-
-- When a pending registrations is processed, it could also trigger the registration of other pending registrations. If it happens, these completed
-    pending registrations should also be returned to be logged
-
-    -> currently it's not - DONE
-    -> same probably goes for the RouteRegistry - TODO
-
-- The recursive code that registers the sections index doesn't seem to be at the right place. - DONE
-
-
 STUFF FOR useNavigationItemsRenderer
 
 - Should still receive a key prop but it will be assigned the value of $id or $index
@@ -27,9 +10,6 @@ STUFF FOR RouteRegistry:
 - parentName -> parentId
 
 - deprecated both "name" and "parentName"
-
-- When a pending registrations is processed, it could also trigger the registration of other pending registrations. If it happens, these completed
-    pending registrations should also be returned to be logged
 */
 
 import { isNil } from "@squide/core";
@@ -240,6 +220,8 @@ export class NavigationItemRegistry {
         const pendingRegistrations = this.#pendingRegistrationsIndex.get(indexKey);
 
         if (pendingRegistrations) {
+            completedPendingRegistrations.push(...(pendingRegistrations.map(x => x.item)));
+
             pendingRegistrations.forEach(x => {
                 // Register the pending navigation items.
                 const result = this.#addNestedItem(x.menuId, x.sectionId, x.registrationType, x.item);
@@ -248,8 +230,6 @@ export class NavigationItemRegistry {
 
             // Delete the pending registrations for the section.
             this.#pendingRegistrationsIndex.delete(indexKey);
-
-            completedPendingRegistrations.unshift(...(pendingRegistrations.map(x => x.item)));
         }
 
         return completedPendingRegistrations;

@@ -1154,6 +1154,172 @@ describe("registerNavigationItem", () => {
 
         expect(runtime.getNavigationItems("section-menu")[0].$label).toBe("Section");
     });
+
+    test("can register a navitation link with a key", () => {
+        const runtime = new ReactRouterRuntime();
+
+        runtime.registerNavigationItem({
+            $key: "link",
+            $label: "Link",
+            to: "/link"
+        });
+
+        expect(runtime.getNavigationItems()[0].$key).toBe("link");
+    });
+
+    test("can register a navitation section with a key", () => {
+        const runtime = new ReactRouterRuntime();
+
+        runtime.registerNavigationItem({
+            $key: "section",
+            $label: "Section",
+            children: []
+        });
+
+        expect(runtime.getNavigationItems()[0].$key).toBe("section");
+    });
+
+    describe("sectionId", () => {
+        test("when the section has already been registered, register the nested item", () => {
+            const runtime = new ReactRouterRuntime();
+
+            runtime.registerNavigationItem({
+                $key: "section",
+                $label: "Section",
+                children: []
+            });
+
+            runtime.registerNavigationItem({
+                $label: "Link",
+                to: "/link"
+            }, {
+                sectionId: "section"
+            });
+
+            expect(runtime.getNavigationItems()[0].$key).toBe("section");
+            expect(runtime.getNavigationItems()[0].children![0].$label).toBe("Link");
+        });
+
+        test("when the section has not been registered, do not register the nested item", () => {
+            const runtime = new ReactRouterRuntime();
+
+            runtime.registerNavigationItem({
+                $label: "Link",
+                to: "/link"
+            }, {
+                sectionId: "section"
+            });
+
+            expect(runtime.getNavigationItems().length).toBe(0);
+        });
+
+        test("when the section has not been registered, register the pending item once the section is registered", () => {
+            const runtime = new ReactRouterRuntime();
+
+            runtime.registerNavigationItem({
+                $label: "Link",
+                to: "/link"
+            }, {
+                sectionId: "section"
+            });
+
+            expect(runtime.getNavigationItems().length).toBe(0);
+
+            runtime.registerNavigationItem({
+                $key: "section",
+                $label: "Section",
+                children: []
+            });
+
+            expect(runtime.getNavigationItems()[0].$key).toBe("section");
+            expect(runtime.getNavigationItems()[0].children![0].$label).toBe("Link");
+        });
+
+        test("can register an item under a deeply nested section", () => {
+            const runtime = new ReactRouterRuntime();
+
+            runtime.registerNavigationItem({
+                $label: "Root section",
+                children: [
+                    {
+                        $label: "Nested section",
+                        children: [
+                            {
+                                $key: "deeply-nested",
+                                $label: "Deeply nested",
+                                children: []
+                            }
+                        ]
+                    }
+                ]
+            });
+
+            runtime.registerNavigationItem({
+                $label: "Link",
+                to: "/link"
+            }, {
+                sectionId: "deeply-nested"
+            });
+
+            expect(runtime.getNavigationItems()[0].children![0].children![0].children![0].$label).toBe("Link");
+        });
+
+        test("can register a nested link under a section in a specific menu", () => {
+            const runtime = new ReactRouterRuntime();
+
+            runtime.registerNavigationItem({
+                $label: "Link",
+                to: "/link"
+            }, {
+                menuId: "foo",
+                sectionId: "section"
+            });
+
+            expect(runtime.getNavigationItems().length).toBe(0);
+
+            runtime.registerNavigationItem({
+                $key: "section",
+                $label: "Section",
+                children: []
+            }, {
+                menuId: "foo"
+            });
+
+            expect(runtime.getNavigationItems("foo")[0].$key).toBe("section");
+            expect(runtime.getNavigationItems("foo")[0].children![0].$label).toBe("Link");
+        });
+
+        test("when a section is registered with the same id but for a different menu, do not register the nested item", () => {
+            const runtime = new ReactRouterRuntime();
+
+            runtime.registerNavigationItem({
+                $label: "Link",
+                to: "/link"
+            }, {
+                menuId: "foo",
+                sectionId: "section"
+            });
+
+            expect(runtime.getNavigationItems().length).toBe(0);
+
+            runtime.registerNavigationItem({
+                $key: "section",
+                $label: "Section",
+                children: []
+            }, {
+                menuId: "bar"
+            });
+
+            expect(runtime.getNavigationItems("foo").length).toBe(0);
+            expect(runtime.getNavigationItems("bar").length).toBe(1);
+            expect(runtime.getNavigationItems("bar")[0].$key).toBe("section");
+            expect(runtime.getNavigationItems("bar")[0].children!.length).toBe(0);
+
+            // expect(runtime.getNavigationItems().length).toBe(1);
+            // expect(runtime.getNavigationItems()[0].$key).toBe("section");
+            // expect(runtime.getNavigationItems()[0].children!.length).toBe(0);
+        });
+    });
 });
 
 describe("getNavigationItems", () => {
@@ -1469,6 +1635,40 @@ describe("_validateRegistrations", () => {
                 element: <div>Hello!</div>
             }, {
                 parentName: "layout"
+            });
+
+            expect(() => runtime._validateRegistrations()).toThrow();
+        });
+    });
+
+    describe("sectionId", () => {
+        test("when there are no pending registrations, do nothing", () => {
+            const runtime = new ReactRouterRuntime();
+
+            runtime.registerNavigationItem({
+                $label: "Link",
+                to: "/link"
+            }, {
+                sectionId: "section"
+            });
+
+            runtime.registerNavigationItem({
+                $key: "section",
+                $label: "Section",
+                children: []
+            });
+
+            expect(() => runtime._validateRegistrations()).not.toThrow();
+        });
+
+        test("when there are pending registrations, throw an error", () => {
+            const runtime = new ReactRouterRuntime();
+
+            runtime.registerNavigationItem({
+                $label: "Link",
+                to: "/link"
+            }, {
+                sectionId: "section"
             });
 
             expect(() => runtime._validateRegistrations()).toThrow();

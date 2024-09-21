@@ -408,7 +408,7 @@ describe("add", () => {
         expect(result2.registrationStatus).toBe("registered");
     });
 
-    test("when a deeply nested section is added and complete the pending registration of nested items, add the registered items to the returned \"completedPendingRegistrations\" array", () => {
+    test("when a deeply nested section registered as a single block is added and complete the pending registration of nested items, add the registered items to the returned \"completedPendingRegistrations\" array", () => {
         const registry = new NavigationItemRegistry();
 
         const result1 = registry.add("foo", "static", {
@@ -441,7 +441,7 @@ describe("add", () => {
     });
 
     // TODO: Add a similar test for routes
-    test("when registering a root item complete pending registrations at multiple nesting level, add all the registered items to the returned \"completedPendingRegistrations\" array", () => {
+    test("when registering a multiple sections as a single block complete pending registrations at multiple nesting level, add all the registered items to the returned \"completedPendingRegistrations\" array", () => {
         const registry = new NavigationItemRegistry();
 
         const result1 = registry.add("foo", "static", {

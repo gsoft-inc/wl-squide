@@ -283,7 +283,7 @@ runtime.registerNavigationItem({
 
 ### Register nested navigation items
 
-Similarly to [nested routes](), a navigation item can be nested under an existing section be specifying a `sectionId` option that matches the section's `$id` option:
+Similarly to [nested routes](#register-nested-navigation-items), a navigation item can be nested under an existing section be specifying a `sectionId` option that matches the section's `$id` option:
 
 ```ts !#7
 runtime.registerNavigationItem({
@@ -295,6 +295,8 @@ runtime.registerNavigationItem({
     sectionId: "some-section"
 });
 ```
+
+Navigation items can also be nested by registering multipe items in a single registration block:
 
 ```ts
 // Register the following menu hierarchy:

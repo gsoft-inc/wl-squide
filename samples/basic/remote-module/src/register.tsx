@@ -57,7 +57,7 @@ function registerRoutes(runtime: FireflyRuntime) {
             },
             {
                 $label: "Child 2",
-                to: "#",
+                to: "#"
             }
         ]
     });

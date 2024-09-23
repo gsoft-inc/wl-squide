@@ -25,7 +25,7 @@ function registerRoutes(runtime: FireflyRuntime) {
 
     runtime.registerNavigationItem({
         $label: "Child 3",
-        to: "#",
+        to: "#"
     }, {
         sectionId: "section"
     });

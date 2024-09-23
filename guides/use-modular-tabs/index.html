@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.779862093759">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.780376747902">
 
     <!-- See retype.com -->
-    <meta name="generator" content="Retype 3.5.0">
+    <meta name="generator" content="Retype 3.6.0">
 
     <!-- Primary Meta Tags -->
     <title>Use modular tabs</title>
@@ -34,12 +34,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.779862093759" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.6.0.780376747902" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.779862093759" data-turbo-eval="false" defer></script>
-    <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.779862093759" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.779862093759" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.6.0.780376747902" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/retype.js?v=3.6.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.6.0.780376747902" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.6.0.780376747902" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -365,7 +365,7 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&
     });
 
     runtime.registerNavigationItem({
-        $key: &quot;tabs&quot;,
+        $id: &quot;tabs&quot;,
         $label: &quot;tabs&quot;,
         to: &quot;/tabs&quot;
     });
@@ -396,7 +396,7 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&
         <span>Create the tab routes</span>
     </h2>
 </doc-anchor-target>
-<p>Next, let&#x27;s add the actual tabs to the modules. To do so, we&#x27;ll use the <a href="../../reference/runtime/runtime-class/#register-nested-routes-under-an-existing-route">parentPath</a> option of the <a href="../../reference/runtime/runtime-class/#register-routes">registerRoute</a> function to register the routes under the <code v-pre>TabsLayout</code> component:</p>
+<p>Next, let&#x27;s add the actual tabs to the modules. To do so, we&#x27;ll use the <a href="../../reference/runtime/runtime-class/#register-nested-routes">parentPath</a> option of the <a href="../../reference/runtime/runtime-class/#register-routes">registerRoute</a> function to register the routes under the <code v-pre>TabsLayout</code> component:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">remote-module-1/src/register.tsx</div>
 <pre class="language-tsx" data-line="7,10"><code v-pre class="language-tsx">import type { ModuleRegisterFunction, FireflyRuntime } from &quot;@squide/firefly&quot;;
@@ -493,7 +493,7 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&
     });
 
     runtime.registerNavigationItem({
-        $key: &quot;tab-1&quot;,
+        $id: &quot;tab-1&quot;,
         $label: &quot;Tab 1&quot;,
         to: &quot;/tabs&quot;
     }, { 
@@ -519,7 +519,7 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&
     });
 
     runtime.registerNavigationItem({
-        $key: &quot;tab-2&quot;,
+        $id: &quot;tab-2&quot;,
         $label: &quot;Tab 2&quot;,
         to: &quot;/tabs/tab-2&quot;
     }, { 
@@ -545,7 +545,7 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&
     });
 
     runtime.registerNavigationItem({
-        $key: &quot;tab-3&quot;,
+        $id: &quot;tab-3&quot;,
         $label: &quot;Tab 3&quot;,
         to: &quot;/tabs/tab-3&quot;
     }, {
@@ -611,7 +611,7 @@ export function TabsLayout() {
         <span>Change the display order of the tabs</span>
     </h2>
 </doc-anchor-target>
-<p>Similarly to how the display order of regular navigation items can be configured, a modular tab position can be affected with the <a href="http://localhost:5000/wl-squide/reference/runtime/runtime-class/#sort-registered-navigation-items" class="outbound" target="_blank">priority</a> property.</p>
+<p>Similarly to how the display order of regular navigation items can be configured, a modular tab position can be affected with the <a href="http://localhost:5000/wl-squide/reference/runtime/runtime-class/#sort-registered-navigation-items" class="outbound" target="_blank">priority</a> option.</p>
 <p>To force <code v-pre>Tab 3</code> to be positioned first, we&#x27;ll give him a priority of <code v-pre>999</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">local-module/src/register.tsx</div>
@@ -627,7 +627,7 @@ export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&
     });
 
     runtime.registerNavigationItem({
-        $key: &quot;tab-3&quot;,
+        $id: &quot;tab-3&quot;,
         $label: &quot;Tab 3&quot;,
         // Highest priority goes first.
         $priority: 999,

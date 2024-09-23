@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.779862093759">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.780376747902">
 
     <!-- See retype.com -->
-    <meta name="generator" content="Retype 3.5.0">
+    <meta name="generator" content="Retype 3.6.0">
 
     <!-- Primary Meta Tags -->
     <title>useRenderedNavigationItems</title>
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.779862093759" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.6.0.780376747902" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.779862093759" data-turbo-eval="false" defer></script>
-    <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.779862093759" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.779862093759" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.6.0.780376747902" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.6.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.6.0.780376747902" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.6.0.780376747902" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -349,7 +349,7 @@
 </doc-anchor-target>
 <p>Accept any properties of a React Router <a href="https://reactrouter.com/en/main/components/link" class="outbound" target="_blank">Link</a> component with the addition of:</p>
 <ul>
-<li><code v-pre>$key</code>: An optional key identifying the link. Usually used as the React element <a href="https://legacy.reactjs.org/docs/lists-and-keys.html#keys" class="outbound" target="_blank">key</a> property.</li>
+<li><code v-pre>$id</code>: An optional identifier for the link. Usually used as the React element <a href="https://legacy.reactjs.org/docs/lists-and-keys.html#keys" class="outbound" target="_blank">key</a> property.</li>
 <li><code v-pre>$label</code>: The link label. Could either by a <code v-pre>string</code> or a <code v-pre>ReactNode</code>.</li>
 <li><code v-pre>$canRender</code>: An optional function accepting an object and returning a <code v-pre>boolean</code> indicating whether or not the link should be rendered.</li>
 <li><code v-pre>$additionalProps</code>: An optional object literal of additional props to apply to the link component.</li>
@@ -361,7 +361,7 @@
     </h4>
 </doc-anchor-target>
 <ul>
-<li><code v-pre>$key</code>: An optional key identifying the section. Usually used as the React element <a href="https://legacy.reactjs.org/docs/lists-and-keys.html#keys" class="outbound" target="_blank">key</a> property.</li>
+<li><code v-pre>$id</code>: An optional key identifying the section. Usually used to nest navigation items undern a specific section and as the React element <a href="https://legacy.reactjs.org/docs/lists-and-keys.html#keys" class="outbound" target="_blank">key</a> property.</li>
 <li><code v-pre>$label</code>: The section label. Could either by a <code v-pre>string</code> or a <code v-pre>ReactNode</code>.</li>
 <li><code v-pre>$canRender</code>: An optional function accepting an object and returning a <code v-pre>boolean</code> indicating whether or not the section should be rendered.</li>
 <li><code v-pre>$additionalProps</code>: An optional object literal of additional props to apply to the section component.</li>
@@ -399,8 +399,8 @@
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>We recommend always providing a <code v-pre>$key</code> property for a navigation item, as it ensures the menus doesn&#x27;t flicker when <a href="../../registration/registerlocalmodules/#defer-the-registration-of-navigation-items">deferred registrations</a> are updated. Be sure to use a unique key.</p>
-<p>When no <code v-pre>$key</code> property is provided, a default key value is computed based on the <code v-pre>index</code> and <code v-pre>level</code> properties. While this works in most cases, the default key cannot guarantee that the menu won&#x27;t flicker during updates.</p>
+<p>We recommend always providing an <code v-pre>$id</code> option for a navigation item, as it ensures the menus doesn&#x27;t flicker when <a href="../../registration/registerlocalmodules/#defer-the-registration-of-navigation-items">deferred registrations</a> are updated. Be sure to use a unique key.</p>
+<p>When no <code v-pre>$id</code> option is provided, a default <code v-pre>key</code> argument is computed based on the <code v-pre>index</code> and <code v-pre>level</code> properties. While this works in most cases, the default key cannot guarantee that the menu won&#x27;t flicker during updates.</p>
         </div>
     </div>
 </div>
@@ -473,7 +473,7 @@ export function RootLayout() {
         <span>Render dynamic segments</span>
     </h3>
 </doc-anchor-target>
-<p>The <code v-pre>to</code> property of a navigation item can include dynamic segments (<code v-pre>/user-profile/:userId</code>), enabling the rendering of dynamic routes based on contextual values. To resolve a route dynamic segments, use the <a href="../resolveroutesegments/">resolveRouteSegments</a> function.</p>
+<p>The <code v-pre>to</code> option of a navigation item can include dynamic segments (<code v-pre>/user-profile/:userId</code>), enabling the rendering of dynamic routes based on contextual values. To resolve a route dynamic segments, use the <a href="../resolveroutesegments/">resolveRouteSegments</a> function.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/UserProfileLayout.tsx</div>
 <pre class="language-tsx" data-line="14,18,21,39-45,56,59"><code v-pre class="language-tsx">import type { ReactNode } from &quot;react&quot;;
@@ -550,7 +550,7 @@ export function UserProfileLayout() {
 
 export const register: ModuleRegisterFunction&lt;FireflyRuntime&gt; = (runtime) =&gt; {
     runtime.registerNavigationItem({
-        $key: &quot;user-profile&quot;,
+        $id: &quot;user-profile&quot;,
         $label: &quot;User profile&quot;,
         to: &quot;/user-profile/:userId&quot;
     }, {

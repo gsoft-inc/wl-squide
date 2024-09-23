@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.779862093759">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.780376747902">
 
     <!-- See retype.com -->
-    <meta name="generator" content="Retype 3.5.0">
+    <meta name="generator" content="Retype 3.6.0">
 
     <!-- Primary Meta Tags -->
     <title>Learn the API</title>
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.5.0.779862093759" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.6.0.780376747902" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.779862093759" data-turbo-eval="false" defer></script>
-    <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.779862093759" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.779862093759" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.6.0.780376747902" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/retype.js?v=3.6.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.6.0.780376747902" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.6.0.780376747902" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -400,6 +400,55 @@ import { MyPlugin } from &quot;@sample/my-plugin&quot;;
 const myPlugin = usePlugin(MyPlugin.name) as MyPlugin;</code></pre>
 </doc-codeblock></div>
 <p>A plugin can also be retrieved from the <a href="../../reference/runtime/runtime-class/#retrieve-a-plugin">FireflyRuntime</a> instance.</p>
+<blockquote>
+<p>By default, the <code v-pre>FireflyRuntime</code> registers Squide&#x27;s <a href="../../guides/setup-msw/">MSW plugin</a>. An optional <a href="../../guides/setup-i18next/">i18next plugin</a> is available.</p>
+</blockquote>
+<doc-anchor-target id="tanstack-query">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#tanstack-query">#</doc-anchor-trigger>
+        <span>TanStack Query</span>
+    </h2>
+</doc-anchor-target>
+<p>Hooks are available to retrieve global application data using <a href="https://tanstack.com/query/latest" class="outbound" target="_blank">TanStack Query</a>. To fetch public data, use the <a href="../../reference/tanstack-query/usepublicdataqueries/">usePublicDataQueries</a> hook:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-tsx"><code v-pre class="language-tsx">import { usePublicDataQueries } from &quot;@squide/firefly&quot;;
+
+const [featureFlags] = usePublicDataQueries([
+{
+    queryKey: [&quot;/api/feature-flags&quot;],
+    queryFn: async () =&gt; {
+        const response = await fetch(&quot;/api/feature-flags&quot;);
+
+        return response.json();
+    }
+}
+]);</code></pre>
+</doc-codeblock></div>
+<p>To retrieve protected data, use the <a href="../../reference/tanstack-query/useprotecteddataqueries/">useProtectedDataQueries</a> hook instead:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-tsx"><code v-pre class="language-tsx">import { useProtectedDataQueries } from &quot;@squide/firefly&quot;;
+import { ApiError } from &quot;@sample/shared&quot;;
+
+const [session, subscription] = useProtectedDataQueries([
+    {
+        queryKey: [&quot;/api/session&quot;],
+        queryFn: async () =&gt; {
+            const response = await fetch(&quot;/api/session&quot;);
+
+            return response.json();
+        }
+    },
+    {
+        queryKey: [&quot;/api/subscription&quot;],
+        queryFn: async () =&gt; {
+            const response = await fetch(&quot;/api/subscription&quot;);
+
+            await response.json();
+        }
+    }
+], error =&gt; isApiError(error) &amp;&amp; error.status === 401);</code></pre>
+</doc-codeblock></div>
+<p>If an unmanaged error occur while retrieving the data, a <a href="../../reference/tanstack-query/isglobaldataquerieserror/">GlobalDataQueriesError</a> is thrown.</p>
 <doc-anchor-target id="fakes">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#fakes">#</doc-anchor-trigger>

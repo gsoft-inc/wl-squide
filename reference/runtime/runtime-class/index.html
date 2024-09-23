@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.779862093759">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.780376747902">
 
     <!-- See retype.com -->
-    <meta name="generator" content="Retype 3.5.0">
+    <meta name="generator" content="Retype 3.6.0">
 
     <!-- Primary Meta Tags -->
     <title>FireflyRuntime class</title>
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.5.0.779862093759" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.6.0.780376747902" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.779862093759" data-turbo-eval="false" defer></script>
-    <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.779862093759" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.779862093759" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.6.0.780376747902" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.6.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.6.0.780376747902" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.6.0.780376747902" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -456,7 +456,7 @@ runtime.registerRoute({
         <span>Register an hoisted route</span>
     </h3>
 </doc-anchor-target>
-<p>Unlike a regular route, a hoisted route is added at the root of the router, outside of the host application&#x27;s root layout, root error boundary and even root authentication boundary. This means that a hoisted route has full control over its rendering. To mark a route as hoisted, provide an <code v-pre>hoist</code> property to the route options.</p>
+<p>Unlike a regular route, a hoisted route is added at the root of the router, outside of the host application&#x27;s root layout, root error boundary and even root authentication boundary. This means that a hoisted route has full control over its rendering. To mark a route as hoisted, provide an <code v-pre>hoist</code> option to the route options.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-tsx" data-line="7"><code v-pre class="language-tsx">import { Page } from &quot;./Page.tsx&quot;;
 
@@ -487,51 +487,6 @@ runtime.registerRoute({
         </div>
     </div>
 </div>
-<doc-anchor-target id="register-a-route-with-a-different-layout">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#register-a-route-with-a-different-layout">#</doc-anchor-trigger>
-        <span>Register a route with a different layout</span>
-    </h3>
-</doc-anchor-target>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-tsx" data-line="9,12,22"><code v-pre class="language-tsx">import { Page } from &quot;./Page.tsx&quot;;
-import { RemoteLayout } from &quot;./RemoteLayout.tsx&quot;;
-import { RemoteErrorBoundary } from &quot;./RemoteErrorBoundary.tsx&quot;;
-
-runtime.registerRoute({
-    path: &quot;/page-1&quot;,
-    // Will render the route inside the &quot;RemoteLayout&quot; rather than the &quot;RootLayout&quot;.
-    // For more information about React Router's nested routes, view https://reactrouter.com/en/main/start/tutorial#nested-routes.
-    element: &lt;RemoteLayout /&gt;,
-    children: [
-        {
-            errorElement: &lt;RemoteErrorBoundary /&gt;,
-            children: [
-                {
-                    index: true,
-                    element: &lt;Page /&gt;
-                }
-            ]
-        }
-    ]
-}, {
-    hoist: true
-});</code></pre>
-</doc-codeblock></div>
-<p>
-<div class="mb-6 px-5 py-4 flex justify-between relative border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded transition-colors duration-150">
-    <div class="flex items-center text-blue-500 dark:text-blue-400">
-        <span class="inline-block mb-px">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" role="presentation" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z"/></svg>
-        </span>
-        <span class="inline-block font-medium ml-2">Learn more about overriding the host application layout</span>
-    </div>
-    <div class="flex items-center text-xs text-gray-400 dark:text-dark-400">
-        <span>../../../guides/override-the-host-layout/</span>
-    </div>
-    <a href="../../../guides/override-the-host-layout/" class="absolute block inset-0"></a>
-</div>
-</p>
 <doc-anchor-target id="register-a-public-route">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#register-a-public-route">#</doc-anchor-trigger>
@@ -587,9 +542,9 @@ runtime.registerPublicRoute({
         <span>Register a named route</span>
     </h3>
 </doc-anchor-target>
-<p>The <code v-pre>registerRoute</code> function accepts a <code v-pre>parentName</code> property, allowing a route to be <doc-anchor-trigger to="#register-nested-routes-under-an-existing-route">nested under an existing parent route</doc-anchor-trigger>. When searching for the parent route matching the <code v-pre>parentName</code> property, the <code v-pre>parentName</code> will be matched against the <code v-pre>$name</code> property of every route.</p>
+<p>The <code v-pre>registerRoute</code> function accepts a <code v-pre>parentName</code> option, allowing a route to be <doc-anchor-trigger to="#register-nested-routes">nested under an existing parent route</doc-anchor-trigger>. When searching for the parent route matching the <code v-pre>parentName</code> option, the <code v-pre>parentName</code> will be matched against the <code v-pre>$name</code> option of every route.</p>
 <blockquote>
-<p>A <code v-pre>$name</code> property should only be defined for routes that doesn&#x27;t have a path like an error boundary or an authentication boundary.</p>
+<p>A <code v-pre>$name</code> option should only be defined for routes that doesn&#x27;t have a path like an error boundary or an authentication boundary.</p>
 </blockquote>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-tsx" data-line="4"><code v-pre class="language-tsx">import { RootErrorBoundary } from &quot;./RootErrorBoundary.tsx&quot;;
@@ -599,29 +554,15 @@ runtime.registerRoute({
     element: &lt;RootErrorBoundary /&gt;
 });</code></pre>
 </doc-codeblock></div>
-<p>A nested route can also be named:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-tsx" data-line="8"><code v-pre class="language-tsx">import { RootErrorBoundary } from &quot;./RootErrorBoundary.tsx&quot;;
-import { RootLayout } from &quot;./RootLayout.tsx&quot;;
-
-runtime.registerRoute({
-    $name: &quot;error-boundary&quot;,
-    element: &lt;RootErrorBoundary /&gt;,
-    children: [
-        $name: &quot;root-layout&quot;,
-        element: &lt;RootLayout /&gt;
-    ]
-});</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="register-nested-routes-under-an-existing-route">
+<doc-anchor-target id="register-nested-routes">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#register-nested-routes-under-an-existing-route">#</doc-anchor-trigger>
-        <span>Register nested routes under an existing route</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#register-nested-routes">#</doc-anchor-trigger>
+        <span>Register nested routes</span>
     </h3>
 </doc-anchor-target>
 <p>React router <a href="https://reactrouter.com/en/main/start/tutorial#nested-routes" class="outbound" target="_blank">nested routes</a> enable applications to render nested layouts at various points within the router tree. This is quite helpful for modular applications as it enables composable and decoupled UI.</p>
 <p>To fully harness the power of nested routes, the <code v-pre>registerRoute</code> function allows a route to be registered <strong>under any</strong> previously <strong>registered route</strong>, even if that route was registered by another module. The only requirement is that the <strong>parent route</strong> must have been registered with the <code v-pre>registerRoute</code> function.</p>
-<p>When registering a new route with the <code v-pre>registerRoute</code> function, to render the route under a parent route, specify a <code v-pre>parentPath</code> property that matches the parent route&#x27;s <code v-pre>path</code> property:</p>
+<p>When registering a new route with the <code v-pre>registerRoute</code> function, to render the route under a parent route, specify a <code v-pre>parentPath</code> option that matches the parent route&#x27;s <code v-pre>path</code> option:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-tsx" data-line="7"><code v-pre class="language-tsx">import { Page } from &quot;./Page.tsx&quot;;
 
@@ -632,7 +573,7 @@ runtime.registerRoute({
     parentPath: &quot;/layout&quot; // Register the route under an existing route having &quot;/layout&quot; as its &quot;path&quot;.
 });</code></pre>
 </doc-codeblock></div>
-<p>Or a <code v-pre>parentName</code> property that matches the parent route&#x27;s <code v-pre>name</code> property:</p>
+<p>Or a <code v-pre>parentName</code> option that matches the parent route&#x27;s <code v-pre>name</code> option:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-tsx" data-line="7"><code v-pre class="language-tsx">import { Page } from &quot;./Page.tsx&quot;;
 
@@ -670,7 +611,7 @@ runtime.registerRoute({
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>Likewise any other React Router routes, the <code v-pre>path</code> property of a route rendered under an existing parent route must be an absolute path. For example, if a parent route <code v-pre>path</code> is <code v-pre>/layout</code>, the <code v-pre>path</code> property of a route rendered under that parent route and responding to the <code v-pre>/page-1</code> url, should be <code v-pre>/layout/page-1</code>.</p>
+<p>Likewise any other React Router routes, the <code v-pre>path</code> option of a route rendered under an existing parent route must be an absolute path. For example, if a parent route <code v-pre>path</code> is <code v-pre>/layout</code>, the <code v-pre>path</code> option of a route rendered under that parent route and responding to the <code v-pre>/page-1</code> url, should be <code v-pre>/layout/page-1</code>.</p>
         </div>
     </div>
 </div>
@@ -710,7 +651,7 @@ runtime.registerRoute({
 </doc-anchor-target>
 <p>Accept any properties of a React Router <a href="https://reactrouter.com/en/main/components/link" class="outbound" target="_blank">Link</a> component with the addition of:</p>
 <ul>
-<li><code v-pre>$key</code>: An optional key identifying the link. Usually used as the React element <a href="https://legacy.reactjs.org/docs/lists-and-keys.html#keys" class="outbound" target="_blank">key</a> property.</li>
+<li><code v-pre>$id</code>: An optional key identifying the link. Usually used as the React element <a href="https://legacy.reactjs.org/docs/lists-and-keys.html#keys" class="outbound" target="_blank">key</a> property.</li>
 <li><code v-pre>$label</code>: The link text.</li>
 <li><code v-pre>$canRender</code>: An optional function accepting an object and returning a <code v-pre>boolean</code> indicating whether or not the link should be rendered.</li>
 <li><code v-pre>$priority</code>: An order priority affecting the position of the item in the menu (higher first)</li>
@@ -723,7 +664,7 @@ runtime.registerRoute({
     </h4>
 </doc-anchor-target>
 <ul>
-<li><code v-pre>$key</code>: An optional key identifying the section. Usually used as the React element <a href="https://legacy.reactjs.org/docs/lists-and-keys.html#keys" class="outbound" target="_blank">key</a> property.</li>
+<li><code v-pre>$id</code>: An optional key identifying the section. Usually used to nest navigation items under a specific section and as the React element <a href="https://legacy.reactjs.org/docs/lists-and-keys.html#keys" class="outbound" target="_blank">key</a> property.</li>
 <li><code v-pre>$label</code>: The section text.</li>
 <li><code v-pre>$canRender</code>: An optional function accepting an object and returning a <code v-pre>boolean</code> indicating whether or not the section should be rendered.</li>
 <li><code v-pre>$priority</code>: An order priority affecting the position of the item in the menu (higher first)</li>
@@ -743,14 +684,14 @@ runtime.registerRoute({
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>We recommend always providing a <code v-pre>$key</code> property for a navigation item, as it ensures the menus doesn&#x27;t flicker when <a href="../../registration/registerlocalmodules/#defer-the-registration-of-navigation-items">deferred registrations</a> are updated. Be sure to use a unique key.</p>
+<p>We recommend always providing an <code v-pre>$id</code> option for a navigation item, as it ensures the menus doesn&#x27;t flicker when <a href="../../registration/registerlocalmodules/#defer-the-registration-of-navigation-items">deferred registrations</a> are updated. Be sure to use a unique identifier.</p>
         </div>
     </div>
 </div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript"><code v-pre class="language-typescript">// Register a new navigation item from a local or remote module.
 runtime.registerNavigationItem({
-    $key: &quot;page-1&quot;,
+    $id: &quot;page-1&quot;,
     $label: &quot;Page 1&quot;,
     to: &quot;/page-1&quot;
 });</code></pre>
@@ -775,6 +716,18 @@ runtime.registerNavigationItem({
         <span>Register nested navigation items</span>
     </h3>
 </doc-anchor-target>
+<p>Similarly to <doc-anchor-trigger to="#register-nested-navigation-items">nested routes</doc-anchor-trigger>, a navigation item can be nested under an existing section be specifying a <code v-pre>sectionId</code> option that matches the section&#x27;s <code v-pre>$id</code> option:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-typescript" data-line="7"><code v-pre class="language-typescript">runtime.registerNavigationItem({
+    $id: &quot;link&quot;,
+    $label: &quot;Link&quot;,
+    to: &quot;/link&quot;
+}, {
+    // The following example takes for granted that a section with the &quot;some-section&quot; $id is already registered or will be registered.
+    sectionId: &quot;some-section&quot;
+});</code></pre>
+</doc-codeblock></div>
+<p>Navigation items can also be nested by registering multipe items in a single registration block:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript"><code v-pre class="language-typescript">// Register the following menu hierarchy:
 //
@@ -782,42 +735,52 @@ runtime.registerNavigationItem({
 //  --- Nested Section
 //  ------- Nested Nested Link
 //  --- Nested Link
-//  Link
 runtime.registerNavigationItem({
-    $key: &quot;section&quot;,
+    $id: &quot;section&quot;,
     $label: &quot;Section&quot;,
     children: [
         {
-            $key: &quot;nested-section&quot;,
+            $id: &quot;nested-section&quot;,
             $label: &quot;Nested Section&quot;,
             children: [
                 {
-                    $key: &quot;nested-nested-link&quot;,
+                    $id: &quot;nested-nested-link&quot;,
                     $label: &quot;Nested Nested Link&quot;,
                     to: &quot;#&quot;
                 }
             ]
         },
         {
-            $key: &quot;nested-link&quot;,
+            $id: &quot;nested-link&quot;,
             $label: &quot;Nested Link&quot;,
             to: &quot;#&quot;
         }
     ]
-},
-{
-    $key: &quot;link&quot;,
-    $label: &quot;Link&quot;,
-    to: &quot;#&quot;
 });</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="sort-registered-navigation-items">
+<doc-anchor-target id="register-navigation-items-for-a-specific-menu">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#sort-registered-navigation-items">#</doc-anchor-trigger>
-        <span>Sort registered navigation items</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#register-navigation-items-for-a-specific-menu">#</doc-anchor-trigger>
+        <span>Register navigation items for a specific menu</span>
     </h3>
 </doc-anchor-target>
-<p>A <code v-pre>$priority</code> property can be added to a navigation item to affect it&#x27;s position in the menu. The sorting algorithm is as follow:</p>
+<p>By default, every navigation item registered with the <code v-pre>registerNavigationItem</code> function is registered as part of the <code v-pre>root</code> navigation menu. To register a navigation item for a different navigation menu, specify a <code v-pre>menuId</code> option when registering the items.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-tsx" data-line="6"><code v-pre class="language-tsx">runtime.registerNavigationItem({
+    $id: &quot;page-1&quot;,
+    $label: &quot;Page 1&quot;,
+    to: &quot;/layout/page-1&quot;
+}, { 
+    menuId: &quot;my-custom-layout&quot; 
+});</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="sort-navigation-items">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#sort-navigation-items">#</doc-anchor-trigger>
+        <span>Sort navigation items</span>
+    </h3>
+</doc-anchor-target>
+<p>A <code v-pre>$priority</code> option can be added to a navigation item to affect it&#x27;s position in the menu. The sorting algorithm is as follow:</p>
 <ul>
 <li>By default a navigation item have a priority of <code v-pre>0</code>.</li>
 <li>If no navigation item have a priority, the items are positioned according to their registration order.</li>
@@ -826,14 +789,14 @@ runtime.registerNavigationItem({
 </ul>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript" data-line="4,13"><code v-pre class="language-typescript">runtime.registerNavigationItem({
-    $key: &quot;about&quot;,
+    $id: &quot;about&quot;,
     $label: &quot;About&quot;,
     $priority: 10,
     to: &quot;/about&quot;
 });
 
 runtime.registerNavigationItem({
-    $key: &quot;home&quot;,
+    $id: &quot;home&quot;,
     $label: &quot;Home&quot;,
     // Because the &quot;Home&quot; navigation item has an higher priority, it will be rendered
     // before the &quot;About&quot; navigation item.
@@ -841,15 +804,15 @@ runtime.registerNavigationItem({
     to: &quot;/home&quot;
 });</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="use-dynamic-segments">
+<doc-anchor-target id="use-dynamic-segments-for-navigation-items">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#use-dynamic-segments">#</doc-anchor-trigger>
-        <span>Use dynamic segments</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#use-dynamic-segments-for-navigation-items">#</doc-anchor-trigger>
+        <span>Use dynamic segments for navigation items</span>
     </h3>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript" data-line="4"><code v-pre class="language-typescript">runtime.registerNavigationItem({
-    $key: &quot;user-profile&quot;,
+    $id: &quot;user-profile&quot;,
     $label: &quot;User profile&quot;,
     to: &quot;/user-profile/:userId&quot;
 });</code></pre>
@@ -878,7 +841,7 @@ runtime.registerNavigationItem({
 <pre class="language-tsx" data-line="5-8"><code v-pre class="language-tsx">import { QuestionMarkIcon } from &quot;@sample/icons&quot;;
 
 runtime.registerNavigationItem({
-    $key: &quot;about&quot;,
+    $id: &quot;about&quot;,
     $label: (
         &lt;QuestionMarkIcon /&gt;
         &lt;span&gt;About&lt;/span&gt;
@@ -894,7 +857,7 @@ runtime.registerNavigationItem({
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript" data-line="4-6"><code v-pre class="language-typescript">runtime.registerNavigationItem({
-    $key: &quot;about&quot;,
+    $id: &quot;about&quot;,
     $label: &quot;About&quot;,
     style: {
         backgroundColor: &quot;#000&quot;
@@ -910,7 +873,7 @@ runtime.registerNavigationItem({
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript" data-line="4"><code v-pre class="language-typescript">runtime.registerNavigationItem({
-    $key: &quot;about&quot;,
+    $id: &quot;about&quot;,
     $label: &quot;About&quot;,
     target: &quot;_blank&quot;,
     to: &quot;/about&quot;
@@ -924,7 +887,7 @@ runtime.registerNavigationItem({
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript" data-line="4-6"><code v-pre class="language-typescript">runtime.registerNavigationItem({
-    $key: &quot;about&quot;,
+    $id: &quot;about&quot;,
     $label: &quot;About&quot;,
     $canRender: (index: number) =&gt; {
         return index % 2 == 0;
@@ -943,7 +906,7 @@ runtime.registerNavigationItem({
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript" data-line="4-6"><code v-pre class="language-typescript">runtime.registerNavigationItem({
-    $key: &quot;about&quot;,
+    $id: &quot;about&quot;,
     $label: &quot;About&quot;,
     $additionalProps: {
         highlight: true
@@ -951,22 +914,9 @@ runtime.registerNavigationItem({
     to: &quot;/about&quot;
 });</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="register-navigation-items-for-a-specific-menu">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#register-navigation-items-for-a-specific-menu">#</doc-anchor-trigger>
-        <span>Register navigation items for a specific menu</span>
-    </h3>
-</doc-anchor-target>
-<p>By default, every navigation item registered with the <code v-pre>registerNavigationItem</code> function is registered as part of the <code v-pre>root</code> navigation menu. To register a navigation item for a different navigation menu, specify a <code v-pre>menuId</code> property when registering the items.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-tsx" data-line="6"><code v-pre class="language-tsx">runtime.registerNavigationItem({
-    $key: &quot;page-1&quot;,
-    $label: &quot;Page 1&quot;,
-    to: &quot;/layout/page-1&quot;
-}, { 
-    menuId: &quot;my-custom-layout&quot; 
-});</code></pre>
-</doc-codeblock></div>
+<blockquote>
+<p>It&#x27;s the responsibility of the code rendering the menu to handle the additional properties.</p>
+</blockquote>
 <doc-anchor-target id="retrieve-navigation-items">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#retrieve-navigation-items">#</doc-anchor-trigger>

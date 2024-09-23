@@ -38,7 +38,7 @@ Accept any properties of a React Router [Link](https://reactrouter.com/en/main/c
 
 #### `NavigationSection`
 
-- `$id`: An optional key identifying the section. Usually used to nest navigation items undern a specific section and as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
+- `$id`: An optional identifier the section. Usually used to nest navigation items undern a specific section and as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
 - `$label`: The section label. Could either by a `string` or a `ReactNode`.
 - `$canRender`: An optional function accepting an object and returning a `boolean` indicating whether or not the section should be rendered.
 - `$additionalProps`: An optional object literal of additional props to apply to the section component.

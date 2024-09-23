@@ -1,4 +1,4 @@
-import { isProtectedRoutesOutletRoute, isPublicRoutesOutletRoute, ProtectedRoutes, ProtectedRoutesOutletName, PublicRoutes, PublicRoutesOutletName } from "../src/outlets.ts";
+import { isProtectedRoutesOutletRoute, isPublicRoutesOutletRoute, ProtectedRoutes, ProtectedRoutesOutletId, PublicRoutes, PublicRoutesOutletId } from "../src/outlets.ts";
 import { ReactRouterRuntime } from "../src/reactRouterRuntime.ts";
 import type { Route } from "../src/routeRegistry.ts";
 
@@ -135,7 +135,7 @@ describe("registerRoute", () => {
                 registerPublicRoutesOutlet(runtime);
 
                 expect(runtime.routes.length).toBe(1);
-                expect(runtime.routes[0].$name).toBe(PublicRoutesOutletName);
+                expect(runtime.routes[0].$id).toBe(PublicRoutesOutletId);
             });
         });
 
@@ -263,7 +263,7 @@ describe("registerRoute", () => {
                 registerProtectedRoutesOutlet(runtime);
 
                 expect(runtime.routes.length).toBe(1);
-                expect(runtime.routes[0].$name).toBe(ProtectedRoutesOutletName);
+                expect(runtime.routes[0].$id).toBe(ProtectedRoutesOutletId);
             });
         });
     });
@@ -485,14 +485,14 @@ describe("registerRoute", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
-                $name: "foo",
+                $id: "foo",
                 element: <div>Hello!</div>
             }, {
                 hoist: true
             });
 
             expect(runtime.routes.length).toBe(1);
-            expect(runtime.routes[0].$name).toBe("foo");
+            expect(runtime.routes[0].$id).toBe("foo");
         });
 
         test("can register a nested route with a name", () => {
@@ -502,7 +502,7 @@ describe("registerRoute", () => {
                 element: <div>Hello</div>,
                 children: [
                     {
-                        $name: "foo",
+                        $id: "foo",
                         element: <div>You!</div>
                     }
                 ]
@@ -511,7 +511,7 @@ describe("registerRoute", () => {
             });
 
             expect(runtime.routes.length).toBe(1);
-            expect(runtime.routes[0].children![0].$name).toBe("foo");
+            expect(runtime.routes[0].children![0].$id).toBe("foo");
         });
     });
 
@@ -747,12 +747,12 @@ describe("registerRoute", () => {
         });
     });
 
-    describe("parentName", () => {
+    describe("parentId", () => {
         test("when the parent route has already been registered, register the nested route", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
-                $name: "layout",
+                $id: "layout",
                 element: <div>Hello!</div>
             }, {
                 hoist: true
@@ -764,7 +764,7 @@ describe("registerRoute", () => {
                 path: "/layout/nested",
                 element: <div>Hello!</div>
             }, {
-                parentName: "layout"
+                parentId: "layout"
             });
 
             expect(runtime.routes.length).toBe(1);
@@ -778,7 +778,7 @@ describe("registerRoute", () => {
                 path: "/layout/nested",
                 element: <div>Hello!</div>
             }, {
-                parentName: "layout"
+                parentId: "layout"
             });
 
             expect(runtime.routes.length).toBe(0);
@@ -791,14 +791,14 @@ describe("registerRoute", () => {
                 path: "/layout/nested",
                 element: <div>Hello!</div>
             }, {
-                parentName: "layout" });
+                parentId: "layout" });
 
             runtime.registerRoute({
                 path: "/layout/another-nested",
                 element: <div>Hello!</div>
             }
             , {
-                parentName: "layout"
+                parentId: "layout"
             });
 
             expect(runtime.routes.length).toBe(0);
@@ -814,7 +814,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].children).toBeUndefined();
 
             runtime.registerRoute({
-                $name: "layout",
+                $id: "layout",
                 element: <div>Hello!</div>
             }, {
                 hoist: true
@@ -831,7 +831,7 @@ describe("registerRoute", () => {
                 path: "/layout/nested",
                 element: <div>Hello!</div>
             }, {
-                parentName: "layout"
+                parentId: "layout"
             });
 
             expect(runtime.routes.length).toBe(0);
@@ -843,7 +843,7 @@ describe("registerRoute", () => {
                         element: <div>You!</div>,
                         children: [
                             {
-                                $name: "layout",
+                                $id: "layout",
                                 element: <div>Hello from nested!</div>
                             }
                         ]
@@ -862,25 +862,25 @@ describe("registerRoute", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
-                $name: "layout",
+                $id: "layout",
                 element: <div>Hello!</div>
             }, {
                 hoist: true
             });
 
             runtime.registerRoute({
-                $name: "layout-nested",
+                $id: "layout-nested",
                 element: <div>Hello!</div>
             }
             , {
-                parentName: "layout"
+                parentId: "layout"
             });
 
             runtime.registerRoute({
                 path: "/layout/nested/another-level",
                 element: <div>Hello!</div>
             }, {
-                parentName: "layout-nested"
+                parentId: "layout-nested"
             });
 
             expect(runtime.routes.length).toBe(1);
@@ -897,7 +897,7 @@ describe("registerRoute", () => {
                         element: <div>You!</div>,
                         children: [
                             {
-                                $name: "deeply-nested-layout",
+                                $id: "deeply-nested-layout",
                                 element: <div>Hello from nested!</div>
                             }
                         ]
@@ -908,20 +908,20 @@ describe("registerRoute", () => {
             });
 
             runtime.registerRoute({
-                $name: "deeply-nested-layout/another-level",
+                $id: "deeply-nested-layout/another-level",
                 element: <div>Hello!</div>
             }, {
-                parentName: "deeply-nested-layout"
+                parentId: "deeply-nested-layout"
             });
 
             expect(runtime.routes.length).toBe(1);
-            expect(runtime.routes[0].children![0].children![0].children![0].$name).toBe("deeply-nested-layout/another-level");
+            expect(runtime.routes[0].children![0].children![0].children![0].$id).toBe("deeply-nested-layout/another-level");
 
             runtime.registerRoute({
                 path: "/deeply-nested-layout/another-level/yet-another-level",
                 element: <div>Hello!</div>
             }, {
-                parentName: "deeply-nested-layout/another-level"
+                parentId: "deeply-nested-layout/another-level"
             });
 
             expect(runtime.routes.length).toBe(1);
@@ -935,7 +935,7 @@ describe("registerRoute", () => {
                 element: <div>Hello</div>
             }, {
                 hoist: true,
-                parentName: "foo"
+                parentId: "foo"
             })).toThrow();
         });
     });
@@ -1037,7 +1037,7 @@ describe("registerRoute", () => {
                 element: <div>Hello</div>,
                 children: [
                     {
-                        $name: "foo",
+                        $id: "foo",
                         element: <div>You!</div>
                     }
                 ]
@@ -1046,7 +1046,7 @@ describe("registerRoute", () => {
             });
 
             expect(runtime.routes.length).toBe(1);
-            expect(runtime.routes[0].children![0].$name).toBe("foo");
+            expect(runtime.routes[0].children![0].$id).toBe("foo");
         });
     });
 
@@ -1085,14 +1085,14 @@ describe("registerRoute", () => {
         const runtime = new ReactRouterRuntime();
 
         runtime.registerRoute({
-            $name: "foo",
+            $id: "foo",
             element: <div>Hello!</div>
         }, {
             hoist: true
         });
 
         expect(runtime.routes.length).toBe(1);
-        expect(runtime.routes[0].$name).toBe("foo");
+        expect(runtime.routes[0].$id).toBe("foo");
     });
 });
 
@@ -1314,10 +1314,6 @@ describe("registerNavigationItem", () => {
             expect(runtime.getNavigationItems("bar").length).toBe(1);
             expect(runtime.getNavigationItems("bar")[0].$id).toBe("section");
             expect(runtime.getNavigationItems("bar")[0].children!.length).toBe(0);
-
-            // expect(runtime.getNavigationItems().length).toBe(1);
-            // expect(runtime.getNavigationItems()[0].$id).toBe("section");
-            // expect(runtime.getNavigationItems()[0].children!.length).toBe(0);
         });
     });
 });
@@ -1606,7 +1602,7 @@ describe("_validateRegistrations", () => {
         });
     });
 
-    describe("parentName", () => {
+    describe("parentId", () => {
         test("when there are no pending registrations, do nothing", () => {
             const runtime = new ReactRouterRuntime();
 
@@ -1614,11 +1610,11 @@ describe("_validateRegistrations", () => {
                 path: "/layout/nested",
                 element: <div>Hello!</div>
             }, {
-                parentName: "layout"
+                parentId: "layout"
             });
 
             runtime.registerRoute({
-                $name: "layout",
+                $id: "layout",
                 element: <div>Hello!</div>
             }, {
                 hoist: true
@@ -1634,7 +1630,7 @@ describe("_validateRegistrations", () => {
                 path: "/layout/nested",
                 element: <div>Hello!</div>
             }, {
-                parentName: "layout"
+                parentId: "layout"
             });
 
             expect(() => runtime._validateRegistrations()).toThrow();

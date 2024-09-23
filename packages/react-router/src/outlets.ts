@@ -1,23 +1,23 @@
 import type { NonIndexRoute, Route } from "./routeRegistry.ts";
 
-export const PublicRoutesOutletName = "__squide-public-routes-outlet__";
+export const PublicRoutesOutletId = "__squide-public-routes-outlet__";
 
 export const PublicRoutes: NonIndexRoute = {
     $visibility: "public",
-    $name: PublicRoutesOutletName
+    $id: PublicRoutesOutletId
 };
 
 export function isPublicRoutesOutletRoute(route: Route) {
-    return route.$name === PublicRoutesOutletName;
+    return route.$id === PublicRoutesOutletId;
 }
 
-export const ProtectedRoutesOutletName = "__squide-protected-routes-outlet__";
+export const ProtectedRoutesOutletId = "__squide-protected-routes-outlet__";
 
 export const ProtectedRoutes: NonIndexRoute = {
     $visibility: "protected",
-    $name: ProtectedRoutesOutletName
+    $id: ProtectedRoutesOutletId
 };
 
 export function isProtectedRoutesOutletRoute(route: Route) {
-    return route.$name === ProtectedRoutesOutletName;
+    return route.$id === ProtectedRoutesOutletId;
 }

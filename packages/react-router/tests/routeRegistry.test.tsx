@@ -37,7 +37,7 @@ describe("createIndexKey", () => {
 
     test("when the route has a name, return the route name", () => {
         const result = createIndexKey({
-            $name: "foo",
+            $id: "foo",
             element: <div>Hello!</div>
         });
 

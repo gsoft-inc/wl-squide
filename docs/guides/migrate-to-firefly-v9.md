@@ -29,6 +29,8 @@ Finally, with `v9`, Squide's philosophy has evolved. We used to describe Squide 
 ### Renamed
 
 - The `setMswAsStarted` function has been renamed to [setMswIsReady](../reference/msw/setMswAsReady.md).
+- A route definition `$name` option has been renamed to [$id](../reference/runtime/runtime-class.md#register-a-route-with-an-id).
+- The [registerRoute](../reference/runtime/runtime-class.md#register-routes) `parentName` option has been renamed to [parentId](../reference/runtime/runtime-class.md#register-nested-routes).
 
 ### Others
 
@@ -331,7 +333,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
         element: <RootLayout />,
         children: [
             {
-                $name: "root-error-boundary",
+                $id: "root-error-boundary",
                 errorElement: <RootErrorBoundary />,
                 children: [
                     ManagedRoutes

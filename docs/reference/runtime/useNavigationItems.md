@@ -26,14 +26,14 @@ An array of `NavigationLink | NavigationSection`.
 #### `NavigationLink`
 
 Accept any properties of a React Router [Link](https://reactrouter.com/en/main/components/link) component with the addition of:
-- `$id`: An optional key identifying the link. Usually used as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
+- `$id`: An optional identifier for the link. Usually used as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
 - `$label`: The link label. Could either by a `string` or a `ReactNode`.
 - `$canRender`: An optional function accepting an object and returning a `boolean` indicating whether or not the link should be rendered.
 - `$additionalProps`: An optional object literal of additional props to apply to the link component.
 
 #### `NavigationSection`
 
-- `$id`: An optional key identifying the section. Usually used to nest navigation items under a specific section and as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
+- `$id`: An optional identifier for the section. Usually used to nest navigation items under a specific section and as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
 - `$label`: The section label. Could either by a `string` or a `ReactNode`.
 - `$canRender`: An optional function accepting an object and returning a `boolean` indicating whether or not the section should be rendered.
 - `$additionalProps`: An optional object literal of additional props to apply to the section component.

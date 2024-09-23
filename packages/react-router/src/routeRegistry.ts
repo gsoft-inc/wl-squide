@@ -1,15 +1,15 @@
 import type { IndexRouteObject, NonIndexRouteObject } from "react-router-dom";
-import { ProtectedRoutes, ProtectedRoutesOutletName, PublicRoutes, PublicRoutesOutletName, isProtectedRoutesOutletRoute, isPublicRoutesOutletRoute } from "./outlets.ts";
+import { ProtectedRoutes, ProtectedRoutesOutletId, PublicRoutes, PublicRoutesOutletId, isProtectedRoutesOutletRoute, isPublicRoutesOutletRoute } from "./outlets.ts";
 
 export type RouteVisibility = "public" | "protected";
 
 export interface IndexRoute extends IndexRouteObject {
-    $name?: string;
+    $id?: string;
     $visibility?: RouteVisibility;
 }
 
 export interface NonIndexRoute extends Omit<NonIndexRouteObject, "children"> {
-    $name?: string;
+    $id?: string;
     $visibility?: RouteVisibility;
     children?: Route[];
 }
@@ -19,7 +19,7 @@ export type Route = IndexRoute | NonIndexRoute;
 export interface AddRouteOptions {
     hoist?: true;
     parentPath?: string;
-    parentName?: string;
+    parentId?: string;
 }
 
 export type RouteRegistrationStatus = "pending" | "registered";
@@ -43,8 +43,8 @@ export function createIndexKey(route: Route) {
         return normalizePath(route.path);
     }
 
-    if (route.$name) {
-        return route.$name;
+    if (route.$id) {
+        return route.$id;
     }
 }
 
@@ -56,7 +56,7 @@ export class RouteRegistry {
     readonly #routesIndex: Map<string, Route> = new Map();
 
     // An index of pending routes to register once their parent is registered.
-    // <parentPath | parentName, Route[]>
+    // <parentPath | parentId, Route[]>
     readonly #pendingRegistrationsIndex: Map<string, Route[]> = new Map();
 
     #addIndex(route: Route) {
@@ -130,42 +130,42 @@ export class RouteRegistry {
         return completedPendingRegistrations;
     }
 
-    #validateRouteRegistrationOptions(route: Route, { hoist, parentPath, parentName }: AddRouteOptions = {}) {
+    #validateRouteRegistrationOptions(route: Route, { hoist, parentPath, parentId }: AddRouteOptions = {}) {
         if (hoist && parentPath) {
-            throw new Error(`[squide] A route cannot have the "hoist" option when a "publicPath" option is provided. Route id: "${route.path ?? route.$name ?? "(no identifier)"}".`);
+            throw new Error(`[squide] A route cannot have the "hoist" option when a "publicPath" option is provided. Route id: "${route.path ?? route.$id ?? "(no identifier)"}".`);
         }
 
-        if (hoist && parentName) {
-            throw new Error(`[squide] A route cannot have the "hoist" option when a "parentName" option is provided. Route id: "${route.path ?? route.$name ?? "(no identifier)"}".`);
+        if (hoist && parentId) {
+            throw new Error(`[squide] A route cannot have the "hoist" option when a "parentId" option is provided. Route id: "${route.path ?? route.$id ?? "(no identifier)"}".`);
         }
     }
 
     add(route: Route, options: AddRouteOptions = {}) {
-        let parentName = options.parentName;
+        let parentId = options.parentId;
 
         // By default, a route that is not hoisted nor nested under a known
         // parent will be rendered under the PublicRoutes or ProtectedRoutes outlet depending on the route visibility..
-        if (!options.hoist && !parentName && !isPublicRoutesOutletRoute(route) && !isProtectedRoutesOutletRoute(route)) {
-            parentName = route.$visibility === "public" ? PublicRoutesOutletName : ProtectedRoutesOutletName;
+        if (!options.hoist && !parentId && !isPublicRoutesOutletRoute(route) && !isProtectedRoutesOutletRoute(route)) {
+            parentId = route.$visibility === "public" ? PublicRoutesOutletId : ProtectedRoutesOutletId;
         }
 
         this.#validateRouteRegistrationOptions(route, options);
 
         return this.#addRoute(route, {
             ...options,
-            parentName
+            parentId
         });
     }
 
-    #addRoute(route: Route, { parentPath, parentName }: AddRouteOptions) {
+    #addRoute(route: Route, { parentPath, parentId }: AddRouteOptions) {
         if (parentPath) {
             // The normalized path cannot be undefined because it's been provided by the consumer
             // (e.g. it cannot be a pathless route).
             return this.#addNestedRoutes([route], normalizePath(parentPath)!);
         }
 
-        if (parentName) {
-            return this.#addNestedRoutes([route], parentName);
+        if (parentId) {
+            return this.#addNestedRoutes([route], parentId);
         }
 
         return this.#addRootRoute(route);
@@ -246,10 +246,10 @@ export class PendingRouteRegistrations {
     }
 
     isPublicRoutesOutletPending() {
-        return this.#pendingRegistrationsIndex.has(PublicRoutes.$name!);
+        return this.#pendingRegistrationsIndex.has(PublicRoutes.$id!);
     }
 
     isProtectedRoutesOutletPending() {
-        return this.#pendingRegistrationsIndex.has(ProtectedRoutes.$name!);
+        return this.#pendingRegistrationsIndex.has(ProtectedRoutes.$id!);
     }
 }

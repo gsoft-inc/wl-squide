@@ -11,7 +11,7 @@ export interface RegisterShellOptions {
 function registerRoutes(runtime: FireflyRuntime, host?: string) {
     runtime.registerPublicRoute({
         // Pathless route to declare a root layout and a root error boundary.
-        $name: "root-layout",
+        $id: "root-layout",
         element: <RootLayout />,
         children: [
             PublicRoutes
@@ -52,7 +52,7 @@ function registerRoutes(runtime: FireflyRuntime, host?: string) {
             }
         ]
     }, {
-        parentName: "root-layout"
+        parentId: "root-layout"
     });
 
     runtime.registerPublicRoute({

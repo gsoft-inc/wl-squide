@@ -1,14 +1,14 @@
 import { RootMenuId, Runtime, type RegisterNavigationItemOptions, type RegisterRouteOptions } from "@squide/core";
 import { NavigationItemDeferredRegistrationScope, NavigationItemDeferredRegistrationTransactionalScope, NavigationItemRegistry, parseSectionIndexKey, type NavigationItemRegistrationResult, type RootNavigationItem } from "./navigationItemRegistry.ts";
-import { ProtectedRoutesOutletName, PublicRoutesOutletName } from "./outlets.ts";
+import { ProtectedRoutesOutletId, PublicRoutesOutletId } from "./outlets.ts";
 import { RouteRegistry, type Route } from "./routeRegistry.ts";
 
 function translateOutletsParentId(parentId?: string) {
-    if (parentId === PublicRoutesOutletName) {
+    if (parentId === PublicRoutesOutletId) {
         return "PublicRoutes";
     }
 
-    if (parentId === ProtectedRoutesOutletName) {
+    if (parentId === ProtectedRoutesOutletId) {
         return "ProtectedRoutes";
     }
 
@@ -167,14 +167,14 @@ export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
                 const pendingRegistrationsForRoute = pendingRegistrations.getPendingRegistrationsForRoute(x);
 
                 pendingRegistrationsForRoute.forEach(y => {
-                    message += `        - "${y.path ?? y.$name ?? "(no identifier)"}"\r\n`;
+                    message += `        - "${y.path ?? y.$id ?? "(no identifier)"}"\r\n`;
                 });
 
                 message += "\r\n";
             });
 
             message += `If you are certain that the route${pendingRoutes.length !== 1 ? "s" : ""} has been registered, make sure that the following conditions are met:\r\n`;
-            message += "- The missing routes \"path\" or \"name\" option perfectly match the provided \"parentPath\" or \"parentName\" (make sure that there's no leading or trailing \"/\" that differs).\r\n";
+            message += "- The missing routes \"path\" or \"$id\" option perfectly match the provided \"parentPath\" or \"parentId\" (make sure that there's no leading or trailing \"/\" that differs).\r\n";
             message += "- The missing routes has been registered with the runtime.registerRoute function. A route cannot be registered under a parent route that has not be registered with the runtime.registerRoute function.\r\n";
             message += "For more information about nested routes, refers to https://gsoft-inc.github.io/wl-squide/reference/runtime/runtime-class/#register-nested-routes-under-an-existing-route.\r\n";
             message += "For more information about the PublicRoutes and ProtectedRoutes outlets, refers to https://gsoft-inc.github.io/wl-squide/reference/#routing.";

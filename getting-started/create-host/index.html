@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.780376833358">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.780426849165">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.6.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.6.0.780376833358" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.6.0.780426849165" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.6.0.780376833358" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.6.0.780426849165" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.6.0.780376833358" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.6.0.780376833358" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.6.0.780426849165" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.6.0.780426849165" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -542,7 +542,7 @@ export function RootLayout() {
     );
 }</code></pre>
 </doc-codeblock></div>
-<p>The <code v-pre>RootLayout</code> component created in the previous sample will serves as the default layout for the homepage as well as for every page (route) registered by a module that are not nested under a parent route with either the <a href="../../reference/runtime/runtime-class/#register-nested-routes">parentPath</a> or the <a href="../../reference/runtime/runtime-class/#register-a-named-route">parentName</a> option.</p>
+<p>The <code v-pre>RootLayout</code> component created in the previous sample will serves as the default layout for the homepage as well as for every page (route) registered by a module that are not nested under a parent route with either the <a href="../../reference/runtime/runtime-class/#register-nested-routes">parentPath</a> or the <a href="../../reference/runtime/runtime-class/#register-a-route-with-an-id">parentId</a> option.</p>
 <doc-anchor-target id="homepage">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#homepage">#</doc-anchor-trigger>
@@ -610,7 +610,7 @@ export const registerHost: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtim
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>The <a href="../../reference/routing/publicroutes/">PublicRoutes</a> and <a href="../../reference/routing/protectedroutes/">ProtectedRoutes</a> placeholders indicates where routes that are neither hoisted or nested with a <a href="../../reference/runtime/runtime-class/#register-nested-navigation-items">parentPath</a> or <a href="../../reference/runtime/runtime-class/#register-a-named-route">parentName</a> option will be rendered. In this example, the homepage route is considered as a protected route and will be rendered under the <code v-pre>ProtectedRoutes</code> placeholder.</p>
+<p>The <a href="../../reference/routing/publicroutes/">PublicRoutes</a> and <a href="../../reference/routing/protectedroutes/">ProtectedRoutes</a> placeholders indicates where routes that are neither hoisted or nested with a <a href="../../reference/runtime/runtime-class/#register-nested-navigation-items">parentPath</a> or <a href="../../reference/runtime/runtime-class/#register-a-route-with-an-id">parentId</a> option will be rendered. In this example, the homepage route is considered as a protected route and will be rendered under the <code v-pre>ProtectedRoutes</code> placeholder.</p>
         </div>
     </div>
 </div>

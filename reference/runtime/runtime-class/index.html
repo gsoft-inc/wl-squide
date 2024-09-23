@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.780376833358">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.780426849165">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.6.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.6.0.780376833358" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.6.0.780426849165" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.6.0.780376833358" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.6.0.780426849165" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.6.0.780376833358" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.6.0.780376833358" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.6.0.780426849165" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.6.0.780426849165" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -424,12 +424,12 @@ if (runtime.isMswEnabled) {
     </h3>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript"><code v-pre class="language-typescript">runtime.registerRoute(route, options?: { hoist?, parentPath?, parentName? })</code></pre>
+<pre class="language-typescript"><code v-pre class="language-typescript">runtime.registerRoute(route, options?: { hoist?, parentPath?, parentId? })</code></pre>
 </doc-codeblock></div>
 <ul>
 <li><code v-pre>route</code>: accept any properties of a React Router <a href="https://reactrouter.com/en/main/components/route" class="outbound" target="_blank">Route</a> component with the addition of:
 <ul>
-<li><code v-pre>$name</code>: An optional name for the route.</li>
+<li><code v-pre>$id</code>: An optional identifier for the route. Usually used to nest routes under a specific route.</li>
 <li><code v-pre>$visibility</code>: An optional visibility indicator for the route. Accepted values are <code v-pre>&quot;public&quot;</code> or <code v-pre>&quot;protected&quot;</code>.</li>
 </ul>
 </li>
@@ -437,7 +437,7 @@ if (runtime.isMswEnabled) {
 <ul>
 <li><code v-pre>hoist</code>: An optional <code v-pre>boolean</code> value to register the route at the root of the router. The default value is <code v-pre>false</code>.</li>
 <li><code v-pre>parentPath</code>: An optional path of a parent route to register this new route under.</li>
-<li><code v-pre>parentName</code>: An optional name of a parent route to register this new route under.</li>
+<li><code v-pre>parentId</code>: An optional id of a parent route to register this new route under.</li>
 </ul>
 </li>
 </ul>
@@ -536,21 +536,21 @@ runtime.registerPublicRoute({
         </div>
     </div>
 </div>
-<doc-anchor-target id="register-a-named-route">
+<doc-anchor-target id="register-a-route-with-an-id">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#register-a-named-route">#</doc-anchor-trigger>
-        <span>Register a named route</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#register-a-route-with-an-id">#</doc-anchor-trigger>
+        <span>Register a route with an id</span>
     </h3>
 </doc-anchor-target>
-<p>The <code v-pre>registerRoute</code> function accepts a <code v-pre>parentName</code> option, allowing a route to be <doc-anchor-trigger to="#register-nested-routes">nested under an existing parent route</doc-anchor-trigger>. When searching for the parent route matching the <code v-pre>parentName</code> option, the <code v-pre>parentName</code> will be matched against the <code v-pre>$name</code> option of every route.</p>
+<p>The <code v-pre>registerRoute</code> function accepts a <code v-pre>parentId</code> option, allowing a route to be <doc-anchor-trigger to="#register-nested-routes">nested under an existing parent route</doc-anchor-trigger>. When searching for the parent route matching the <code v-pre>parentId</code> option, the <code v-pre>parentId</code> will be matched against the <code v-pre>$id</code> option of every route.</p>
 <blockquote>
-<p>A <code v-pre>$name</code> option should only be defined for routes that doesn&#x27;t have a path like an error boundary or an authentication boundary.</p>
+<p>A <code v-pre>$id</code> option should only be defined for routes that doesn&#x27;t have a path like an error boundary or an authentication boundary.</p>
 </blockquote>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-tsx" data-line="4"><code v-pre class="language-tsx">import { RootErrorBoundary } from &quot;./RootErrorBoundary.tsx&quot;;
 
 runtime.registerRoute({
-    $name: &quot;error-boundary&quot;,
+    $id: &quot;error-boundary&quot;,
     element: &lt;RootErrorBoundary /&gt;
 });</code></pre>
 </doc-codeblock></div>
@@ -573,7 +573,7 @@ runtime.registerRoute({
     parentPath: &quot;/layout&quot; // Register the route under an existing route having &quot;/layout&quot; as its &quot;path&quot;.
 });</code></pre>
 </doc-codeblock></div>
-<p>Or a <code v-pre>parentName</code> option that matches the parent route&#x27;s <code v-pre>name</code> option:</p>
+<p>Or a <code v-pre>parentId</code> option that matches the parent route&#x27;s <code v-pre>$id</code> option:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-tsx" data-line="7"><code v-pre class="language-tsx">import { Page } from &quot;./Page.tsx&quot;;
 
@@ -581,7 +581,7 @@ runtime.registerRoute({
     path: &quot;/page-1&quot;,
     element: &lt;Page /&gt;
 }, { 
-    parentName: &quot;error-boundary&quot; // Register the route under an existing route having &quot;error-boundary&quot; as its &quot;name&quot;.
+    parentId: &quot;error-boundary&quot; // Register the route under an existing route having &quot;error-boundary&quot; as its &quot;$id&quot;.
 });</code></pre>
 </doc-codeblock></div>
 <p>
@@ -632,13 +632,14 @@ runtime.registerRoute({
     </h3>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript"><code v-pre class="language-typescript">runtime.registerNavigationItem(item, options?: { menuId? })</code></pre>
+<pre class="language-typescript"><code v-pre class="language-typescript">runtime.registerNavigationItem(item, options?: { menuId?, sectionId? })</code></pre>
 </doc-codeblock></div>
 <ul>
 <li><code v-pre>item</code>: <code v-pre>NavigationSection | NavigationLink</code>.</li>
 <li><code v-pre>options</code>: An optional object literal of options:
 <ul>
 <li><code v-pre>menuId</code>: An optional menu id to associate the item with.</li>
+<li><code v-pre>sectionId</code>: An optional section id of a parent navigation section to register this new item under.</li>
 </ul>
 </li>
 </ul>
@@ -651,7 +652,7 @@ runtime.registerRoute({
 </doc-anchor-target>
 <p>Accept any properties of a React Router <a href="https://reactrouter.com/en/main/components/link" class="outbound" target="_blank">Link</a> component with the addition of:</p>
 <ul>
-<li><code v-pre>$id</code>: An optional key identifying the link. Usually used as the React element <a href="https://legacy.reactjs.org/docs/lists-and-keys.html#keys" class="outbound" target="_blank">key</a> property.</li>
+<li><code v-pre>$id</code>: An optional identifier for the link. Usually used as the React element <a href="https://legacy.reactjs.org/docs/lists-and-keys.html#keys" class="outbound" target="_blank">key</a> property.</li>
 <li><code v-pre>$label</code>: The link text.</li>
 <li><code v-pre>$canRender</code>: An optional function accepting an object and returning a <code v-pre>boolean</code> indicating whether or not the link should be rendered.</li>
 <li><code v-pre>$priority</code>: An order priority affecting the position of the item in the menu (higher first)</li>
@@ -664,7 +665,7 @@ runtime.registerRoute({
     </h4>
 </doc-anchor-target>
 <ul>
-<li><code v-pre>$id</code>: An optional key identifying the section. Usually used to nest navigation items under a specific section and as the React element <a href="https://legacy.reactjs.org/docs/lists-and-keys.html#keys" class="outbound" target="_blank">key</a> property.</li>
+<li><code v-pre>$id</code>: An optional identifier for the section. Usually used to nest navigation items under a specific section and as the React element <a href="https://legacy.reactjs.org/docs/lists-and-keys.html#keys" class="outbound" target="_blank">key</a> property.</li>
 <li><code v-pre>$label</code>: The section text.</li>
 <li><code v-pre>$canRender</code>: An optional function accepting an object and returning a <code v-pre>boolean</code> indicating whether or not the section should be rendered.</li>
 <li><code v-pre>$priority</code>: An order priority affecting the position of the item in the menu (higher first)</li>
@@ -710,6 +711,21 @@ runtime.registerNavigationItem({
     <a href="../../routing/userenderednavigationitems/" class="absolute block inset-0"></a>
 </div>
 </p>
+<doc-anchor-target id="register-a-navigation-item-with-an-id">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#register-a-navigation-item-with-an-id">#</doc-anchor-trigger>
+        <span>Register a navigation item with an id</span>
+    </h3>
+</doc-anchor-target>
+<p>The <code v-pre>registerNavigationItem</code> function accepts a <code v-pre>sectionId</code> option, allowing a navigation item to be nested under an existing navigation section. When searching the parent navigation section matching the <code v-pre>sectionId</code> option, the <code v-pre>sectionId</code> will be match against the <code v-pre>$id</code> option of every navigation item.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-typescript"><code v-pre class="language-typescript">runtime.registerNavigationItem({
+    $id: &quot;page-1&quot;,
+    $label: &quot;Page 1&quot;,
+    to: &quot;/page-1&quot;
+});</code></pre>
+</doc-codeblock></div>
+<p>Additionally, when combined with the <a href="">useRenderedNavigationItems</a> function, the <code v-pre>$id</code> option will be used as the React element <code v-pre>key</code> property.</p>
 <doc-anchor-target id="register-nested-navigation-items">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#register-nested-navigation-items">#</doc-anchor-trigger>

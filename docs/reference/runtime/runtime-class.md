@@ -80,16 +80,16 @@ if (runtime.isMswEnabled) {
 ### Register routes
 
 ```ts
-runtime.registerRoute(route, options?: { hoist?, parentPath?, parentName? })
+runtime.registerRoute(route, options?: { hoist?, parentPath?, parentId? })
 ```
 
 - `route`: accept any properties of a React Router [Route](https://reactrouter.com/en/main/components/route) component with the addition of:
-    - `$name`: An optional name for the route.
+    - `$id`: An optional identifier for the route. Usually used to nest routes under a specific route.
     - `$visibility`: An optional visibility indicator for the route. Accepted values are `"public"` or `"protected"`.
 - `options`: An optional object literal of options:
     - `hoist`: An optional `boolean` value to register the route at the root of the router. The default value is `false`.
     - `parentPath`: An optional path of a parent route to register this new route under.
-    - `parentName`: An optional name of a parent route to register this new route under.
+    - `parentId`: An optional id of a parent route to register this new route under.
 
 ```tsx
 import { Page } from "./Page.tsx"
@@ -159,17 +159,17 @@ runtime.registerPublicRoute({
 When no `$visibility` indicator is provided, a route is considered `protected`.
 !!!
 
-### Register a named route
+### Register a route with an id
 
-The `registerRoute` function accepts a `parentName` option, allowing a route to be [nested under an existing parent route](#register-nested-routes). When searching for the parent route matching the `parentName` option, the `parentName` will be matched against the `$name` option of every route.
+The `registerRoute` function accepts a `parentId` option, allowing a route to be [nested under an existing parent route](#register-nested-routes). When searching for the parent route matching the `parentId` option, the `parentId` will be matched against the `$id` option of every route.
 
-> A `$name` option should only be defined for routes that doesn't have a path like an error boundary or an authentication boundary.
+> A `$id` option should only be defined for routes that doesn't have a path like an error boundary or an authentication boundary.
 
 ```tsx !#4
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 
 runtime.registerRoute({
-    $name: "error-boundary",
+    $id: "error-boundary",
     element: <RootErrorBoundary />
 });
 ```
@@ -193,7 +193,7 @@ runtime.registerRoute({
 });
 ```
 
-Or a `parentName` option that matches the parent route's `name` option:
+Or a `parentId` option that matches the parent route's `$id` option:
 
 ```tsx !#7
 import { Page } from "./Page.tsx";
@@ -202,7 +202,7 @@ runtime.registerRoute({
     path: "/page-1",
     element: <Page />
 }, { 
-    parentName: "error-boundary" // Register the route under an existing route having "error-boundary" as its "name".
+    parentId: "error-boundary" // Register the route under an existing route having "error-boundary" as its "$id".
 });
 ```
 
@@ -223,19 +223,20 @@ const routes = runtime.routes;
 ### Register navigation items
 
 ```ts
-runtime.registerNavigationItem(item, options?: { menuId? })
+runtime.registerNavigationItem(item, options?: { menuId?, sectionId? })
 ```
 
 - `item`: `NavigationSection | NavigationLink`.
 - `options`: An optional object literal of options:
     - `menuId`: An optional menu id to associate the item with.
+    - `sectionId`: An optional section id of a parent navigation section to register this new item under.
 
 A Squide navigation item can either be a `NavigationLink` or a `NavigationSection`. Both types can be intertwined to create a multi-level menu hierarchy. A `NavigationSection` item is used to setup a new level while a `NavigationLink` define a link.
 
 #### `NavigationLink`
 
 Accept any properties of a React Router [Link](https://reactrouter.com/en/main/components/link) component with the addition of:
-- `$id`: An optional key identifying the link. Usually used as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
+- `$id`: An optional identifier for the link. Usually used as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
 - `$label`: The link text.
 - `$canRender`: An optional function accepting an object and returning a `boolean` indicating whether or not the link should be rendered.
 - `$priority`: An order priority affecting the position of the item in the menu (higher first)
@@ -243,7 +244,7 @@ Accept any properties of a React Router [Link](https://reactrouter.com/en/main/c
 
 #### `NavigationSection`
 
-- `$id`: An optional key identifying the section. Usually used to nest navigation items under a specific section and as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
+- `$id`: An optional identifier for the section. Usually used to nest navigation items under a specific section and as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
 - `$label`: The section text.
 - `$canRender`: An optional function accepting an object and returning a `boolean` indicating whether or not the section should be rendered.
 - `$priority`: An order priority affecting the position of the item in the menu (higher first)
@@ -264,6 +265,20 @@ runtime.registerNavigationItem({
 ```
 
 [!ref text="Setup the host application to render navigation items"](../routing/useRenderedNavigationItems.md)
+
+### Register a navigation item with an id
+
+The `registerNavigationItem` function accepts a `sectionId` option, allowing a navigation item to be nested under an existing navigation section. When searching the parent navigation section matching the `sectionId` option, the `sectionId` will be match against the `$id` option of every navigation item.
+
+```ts
+runtime.registerNavigationItem({
+    $id: "page-1",
+    $label: "Page 1",
+    to: "/page-1"
+});
+```
+
+Additionally, when combined with the [useRenderedNavigationItems]() function, the `$id` option will be used as the React element `key` property.
 
 ### Register nested navigation items
 

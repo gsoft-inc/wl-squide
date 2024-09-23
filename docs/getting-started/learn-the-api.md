@@ -103,6 +103,55 @@ const myPlugin = usePlugin(MyPlugin.name) as MyPlugin;
 
 A plugin can also be retrieved from the [FireflyRuntime](/reference/runtime/runtime-class.md#retrieve-a-plugin) instance.
 
+> By default, the `FireflyRuntime` registers Squide's [MSW plugin](../guides/setup-msw.md). An optional [i18next plugin](../guides/setup-i18next.md) is available.
+
+## TanStack Query
+
+Hooks are available to retrieve global application data using [TanStack Query](https://tanstack.com/query/latest). To fetch public data, use the [usePublicDataQueries](../reference/tanstack-query/usePublicDataQueries.md) hook:
+
+```tsx
+import { usePublicDataQueries } from "@squide/firefly";
+
+const [featureFlags] = usePublicDataQueries([
+{
+    queryKey: ["/api/feature-flags"],
+    queryFn: async () => {
+        const response = await fetch("/api/feature-flags");
+
+        return response.json();
+    }
+}
+]);
+```
+
+To retrieve protected data, use the [useProtectedDataQueries](../reference/tanstack-query/useProtectedDataQueries.md) hook instead:
+
+```tsx
+import { useProtectedDataQueries } from "@squide/firefly";
+import { ApiError } from "@sample/shared";
+
+const [session, subscription] = useProtectedDataQueries([
+    {
+        queryKey: ["/api/session"],
+        queryFn: async () => {
+            const response = await fetch("/api/session");
+
+            return response.json();
+        }
+    },
+    {
+        queryKey: ["/api/subscription"],
+        queryFn: async () => {
+            const response = await fetch("/api/subscription");
+
+            await response.json();
+        }
+    }
+], error => isApiError(error) && error.status === 401);
+```
+
+If an unmanaged error occur while retrieving the data, a [GlobalDataQueriesError](../reference/tanstack-query/isGlobalDataQueriesError.md) is thrown.
+
 ## Fakes
 
 Take a look at the [fake implementations](../reference/default.md#fakes). These implementations are designed to facilitate the set up of a module isolated environment.

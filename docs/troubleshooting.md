@@ -71,6 +71,7 @@ To faciliate the debugging of a Squide application bootstrapping flow, a lot of 
 
 ### Navigation items registration
 
+- `[squide] The following static navigation item registration is pending until the "officevibe" section of the "root" menu is registered`
 - `[squide] The following static navigation item has been registered to the "/federated-tabs" menu for a total of 2 static items.`
 - `[squide] The following deferred navigation item has been registered to the "root" menu for a total of 4 deferred items.`
 

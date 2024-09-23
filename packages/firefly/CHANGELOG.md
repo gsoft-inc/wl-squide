@@ -1,5 +1,32 @@
 # @squide/firefly
 
+## 9.2.0
+
+### Minor Changes
+
+- [#204](https://github.com/gsoft-inc/wl-squide/pull/204) [`d3f7b9c`](https://github.com/gsoft-inc/wl-squide/commit/d3f7b9c6aa80249cd898916f6315ea27c4526812) Thanks [@patricklafrance](https://github.com/patricklafrance)! - The `registerNavigationItem` function now accepts a `sectionId` option to nest the item under a specific navigation section:
+
+  ```ts
+  runtime.registerNavigationItem(
+    {
+      $id: "link",
+      $label: "Link",
+      to: "/link",
+    },
+    {
+      sectionId: "some-section",
+    }
+  );
+  ```
+
+### Patch Changes
+
+- Updated dependencies [[`d3f7b9c`](https://github.com/gsoft-inc/wl-squide/commit/d3f7b9c6aa80249cd898916f6315ea27c4526812)]:
+  - @squide/module-federation@6.1.0
+  - @squide/react-router@6.2.0
+  - @squide/core@5.2.0
+  - @squide/msw@3.1.0
+
 ## 9.1.1
 
 ### Patch Changes

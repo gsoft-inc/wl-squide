@@ -70,7 +70,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        $key: "about",
+        $id: "about",
         $label: "About",
         to: "/about"
     });
@@ -178,7 +178,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
     });
 
     runtime.registerNavigationItem({
-        $key: "about",
+        $id: "about",
         $label: "About",
         to: "/about"
     });
@@ -197,7 +197,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
         // Only register the "feature-a" route and navigation item if the feature is active.
         if (featureFlags.featureA) {
             runtime.registerNavigationItem({
-                $key: "feature-a",
+                $id: "feature-a",
                 $label: "Feature A",
                 to: "/feature-a"
             });
@@ -223,7 +223,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
     });
 
     runtime.registerNavigationItem({
-        $key: "about",
+        $id: "about",
         $label: "About",
         to: "/about"
     });
@@ -242,7 +242,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
         // Only register the "feature-a" route and navigation item if the feature is active.
         if (featureFlags.featureA) {
             runtime.registerNavigationItem({
-                $key: "feature-a",
+                $id: "feature-a",
                 $label: operation === "register" ? "Feature A" : "Feature A updated",
                 to: "/feature-a"
             });
@@ -281,7 +281,7 @@ const Remotes: RemoteDefinition = [
 
 ### `name`
 
-The `name` property of a remote definition **must match** the `name` property defined in the remote module [ModuleFederationPlugin](https://module-federation.io/configure/index.html) configuration.
+The `name` option of a remote definition **must match** the `name` option defined in the remote module [ModuleFederationPlugin](https://module-federation.io/configure/index.html) configuration.
 
 If you are relying on either the Squide [defineDevRemoteModuleConfig](../webpack/defineDevRemoteModuleConfig.md) or [defineBuildRemoteModuleConfig](../webpack/defineBuildRemoteModuleConfig.md) functions to add the `ModuleFederationPlugin` to the remote module webpack [configuration object](https://module-federation.io/), then the remote module `name` is the second argument of the function.
 

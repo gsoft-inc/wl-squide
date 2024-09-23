@@ -55,7 +55,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        $key: "about",
+        $id: "about",
         $label: "About",
         to: "/about"
     });
@@ -159,7 +159,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
     });
 
     runtime.registerNavigationItem({
-        $key: "about",
+        $id: "about",
         $label: "About",
         to: "/about"
     });
@@ -178,7 +178,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
         // Only register the "feature-a" route and navigation item if the feature is active.
         if (featureFlags.featureA) {
             runtime.registerNavigationItem({
-                $key: "feature-a",
+                $id: "feature-a",
                 $label: "Feature A",
                 to: "/feature-a"
             });
@@ -204,7 +204,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
     });
 
     runtime.registerNavigationItem({
-        $key: "about",
+        $id: "about",
         $label: "About",
         to: "/about"
     });
@@ -223,7 +223,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime, unknown, DeferredR
         // Only register the "feature-a" route and navigation item if the feature is active.
         if (featureFlags.featureA) {
             runtime.registerNavigationItem({
-                $key: "feature-a",
+                $id: "feature-a",
                 $label: operation === "register" ? "Feature A" : "Feature A updated",
                 to: "/feature-a"
             });

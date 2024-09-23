@@ -20,6 +20,15 @@ function registerRoutes(runtime: FireflyRuntime) {
     }, {
         menuId: "/federated-tabs"
     });
+
+    // Register nested navigation link
+
+    runtime.registerNavigationItem({
+        $label: "Child 3",
+        to: "#"
+    }, {
+        sectionId: "section"
+    });
 }
 
 export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {

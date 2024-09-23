@@ -59,7 +59,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        $key: "tabs",
+        $id: "tabs",
         $label: "tabs",
         to: "/tabs"
     });
@@ -76,7 +76,7 @@ It is recommended to define the shared layouts in a standalone package as it's d
 
 ## Create the tab routes
 
-Next, let's add the actual tabs to the modules. To do so, we'll use the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) option of the [registerRoute](../reference/runtime/runtime-class.md#register-routes) function to register the routes under the `TabsLayout` component:
+Next, let's add the actual tabs to the modules. To do so, we'll use the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes) option of the [registerRoute](../reference/runtime/runtime-class.md#register-routes) function to register the routes under the `TabsLayout` component:
 
 ```tsx !#7,10 remote-module-1/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";
@@ -173,7 +173,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        $key: "tab-1",
+        $id: "tab-1",
         $label: "Tab 1",
         to: "/tabs"
     }, { 
@@ -199,7 +199,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        $key: "tab-2",
+        $id: "tab-2",
         $label: "Tab 2",
         to: "/tabs/tab-2"
     }, { 
@@ -225,7 +225,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        $key: "tab-3",
+        $id: "tab-3",
         $label: "Tab 3",
         to: "/tabs/tab-3"
     }, {
@@ -289,7 +289,7 @@ export function TabsLayout() {
 
 ## Change the display order of the tabs
 
-Similarly to how the display order of regular navigation items can be configured, a modular tab position can be affected with the [priority](http://localhost:5000/wl-squide/reference/runtime/runtime-class/#sort-registered-navigation-items) property.
+Similarly to how the display order of regular navigation items can be configured, a modular tab position can be affected with the [priority](http://localhost:5000/wl-squide/reference/runtime/runtime-class/#sort-registered-navigation-items) option.
 
 To force `Tab 3` to be positioned first, we'll give him a priority of `999`: 
 
@@ -306,7 +306,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        $key: "tab-3",
+        $id: "tab-3",
         $label: "Tab 3",
         // Highest priority goes first.
         $priority: 999,

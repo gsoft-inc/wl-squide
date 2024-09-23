@@ -1,15 +1,15 @@
 import { RootMenuId, Runtime, type RegisterNavigationItemOptions, type RegisterRouteOptions } from "@squide/core";
-import { NavigationItemDeferredRegistrationScope, NavigationItemDeferredRegistrationTransactionalScope, NavigationItemRegistry, type RootNavigationItem } from "./navigationItemRegistry.ts";
+import { NavigationItemDeferredRegistrationScope, NavigationItemDeferredRegistrationTransactionalScope, NavigationItemRegistry, parseSectionIndexKey, type NavigationItemRegistrationResult, type RootNavigationItem } from "./navigationItemRegistry.ts";
 import { ProtectedRoutesOutletName, PublicRoutesOutletName } from "./outlets.ts";
 import { RouteRegistry, type Route } from "./routeRegistry.ts";
 
 function translateOutletsParentId(parentId?: string) {
     if (parentId === PublicRoutesOutletName) {
-        return "public-routes-placeholder";
+        return "PublicRoutes";
     }
 
     if (parentId === ProtectedRoutesOutletName) {
-        return "protected-routes-placeholder";
+        return "ProtectedRoutes";
     }
 
     return parentId;
@@ -84,26 +84,51 @@ export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
         return this.#routeRegistry.routes;
     }
 
-    registerNavigationItem(navigationItem: RootNavigationItem, { menuId = RootMenuId }: RegisterNavigationItemOptions = {}) {
+    registerNavigationItem(navigationItem: RootNavigationItem, { menuId = RootMenuId, ...options }: RegisterNavigationItemOptions = {}) {
         if (this.#navigationItemScope) {
-            this.#navigationItemScope.addItem(menuId, navigationItem);
-
+            const result = this.#navigationItemScope.addItem(menuId, navigationItem, options);
             const items = this.#navigationItemScope.getItems(menuId)!;
 
-            this._logger.debug(
-                `[squide] The following deferred navigation item has been %cregistered%c to the "${menuId}" menu for a total of ${items.length} deferred item${items.length !== 1 ? "s" : ""}.`, "color: white; background-color: green;", "%s",
-                "Newly registered item:", navigationItem,
-                "All registered items:", items
-            );
+            this.#logNavigationItemRegistrationResult(result, items);
         } else {
-            this.#navigationItemRegistry.add(menuId, "static", navigationItem);
-
+            const result = this.#navigationItemRegistry.add(menuId, "static", navigationItem, options);
             const items = this.#navigationItemRegistry.getItems(menuId)!;
 
+            this.#logNavigationItemRegistrationResult(result, items);
+        }
+    }
+
+    #logNavigationItemRegistrationResult(result: NavigationItemRegistrationResult, registeredItems: RootNavigationItem[]) {
+        const {
+            registrationStatus,
+            completedPendingRegistrations,
+            registrationType,
+            item: newItem,
+            menuId,
+            sectionId
+        } = result;
+
+        if (registrationStatus === "registered") {
+            const sectionLog = sectionId ? `under the "${sectionId}" section of` : "to";
+
             this._logger.debug(
-                `[squide] The following static navigation item has been %cregistered%c to the "${menuId}" menu for a total of ${items.length} static item${items.length !== 1 ? "s" : ""}.`, "color: white; background-color: green;", "%s",
-                "Newly registered item:", navigationItem,
-                "All registered items:", items
+                `[squide] The following ${registrationType} navigation item has been %cregistered%c ${sectionLog} the "${menuId}" menu for a total of ${registeredItems.length} ${registrationType} item${registeredItems.length !== 1 ? "s" : ""}.`, "color: white; background-color: green;", "%s",
+                "Newly registered item:", newItem,
+                "All registered items:", registeredItems
+            );
+
+            if (completedPendingRegistrations.length > 0) {
+                this._logger.debug(
+                    `[squide] The pending registration of the following ${registrationType} navigation item${completedPendingRegistrations.length !== 1 ? "s" : ""} has been %ccompleted%c.`, "color: white; background-color: green;", "%s",
+                    "Newly registered items:", completedPendingRegistrations,
+                    "All registered items:", registeredItems
+                );
+            }
+        } else {
+            this._logger.debug(
+                `[squide] The following ${registrationType} navigation item registration is %cpending%c until the "${sectionId}" section of the "${menuId}" menu is registered.`, "color: black; background-color: yellow;", "%s",
+                "Pending registration:", newItem,
+                "All registered items:", registeredItems
             );
         }
     }
@@ -113,6 +138,13 @@ export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
     }
 
     _validateRegistrations() {
+        this.#validateRouteRegistrations();
+        this.#validateNavigationItemRegistrations();
+
+        super._validateRegistrations();
+    }
+
+    #validateRouteRegistrations() {
         const pendingRegistrations = this.#routeRegistry.getPendingRegistrations();
         const pendingRoutes = pendingRegistrations.getPendingRouteIds();
 
@@ -132,9 +164,9 @@ export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
                 message += `${index}/${pendingRoutes.length} Missing route with the following path or name: "${x}"\r\n`;
                 message += "    Pending registrations:\r\n";
 
-                const nestedPendingRegistrations = pendingRegistrations.getPendingRegistrationsForRoute(x);
+                const pendingRegistrationsForRoute = pendingRegistrations.getPendingRegistrationsForRoute(x);
 
-                nestedPendingRegistrations.forEach(y => {
+                pendingRegistrationsForRoute.forEach(y => {
                     message += `        - "${y.path ?? y.$name ?? "(no identifier)"}"\r\n`;
                 });
 
@@ -142,7 +174,7 @@ export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
             });
 
             message += `If you are certain that the route${pendingRoutes.length !== 1 ? "s" : ""} has been registered, make sure that the following conditions are met:\r\n`;
-            message += "- The missing routes \"path\" or \"name\" property perfectly match the provided \"parentPath\" or \"parentName\" (make sure that there's no leading or trailing \"/\" that differs).\r\n";
+            message += "- The missing routes \"path\" or \"name\" option perfectly match the provided \"parentPath\" or \"parentName\" (make sure that there's no leading or trailing \"/\" that differs).\r\n";
             message += "- The missing routes has been registered with the runtime.registerRoute function. A route cannot be registered under a parent route that has not be registered with the runtime.registerRoute function.\r\n";
             message += "For more information about nested routes, refers to https://gsoft-inc.github.io/wl-squide/reference/runtime/runtime-class/#register-nested-routes-under-an-existing-route.\r\n";
             message += "For more information about the PublicRoutes and ProtectedRoutes outlets, refers to https://gsoft-inc.github.io/wl-squide/reference/#routing.";
@@ -153,7 +185,39 @@ export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
                 this._logger.error(message);
             }
         }
+    }
 
-        super._validateRegistrations();
+    #validateNavigationItemRegistrations() {
+        const pendingRegistrations = this.#navigationItemRegistry.getPendingRegistrations();
+        const pendingSectionIds = pendingRegistrations.getPendingSectionIds();
+
+        if (pendingSectionIds.length > 0) {
+            let message = `[squide] ${pendingSectionIds.length} navigation item${pendingSectionIds.length !== 1 ? "s were" : " is"} expected to be registered but ${pendingSectionIds.length !== 1 ? "are" : "is"} missing:\r\n\r\n`;
+
+            pendingSectionIds.forEach((x, index) => {
+                const [menuId, sectionId] = parseSectionIndexKey(x);
+
+                message += `${index}/${pendingSectionIds.length} Missing navigation section "${sectionId}" of the "${menuId}" menu.\r\n`;
+                message += "    Pending registrations:\r\n";
+
+                const pendingItems = pendingRegistrations.getPendingRegistrationsForSection(x);
+
+                pendingItems.forEach(y => {
+                    message += `        - "${y.item.$id ?? y.item.$label ?? y.item.to ?? "(no identifier)"}"\r\n`;
+                });
+
+                message += "\r\n";
+            });
+
+            message += `If you are certain that the navigation section${pendingSectionIds.length !== 1 ? "s" : ""} has been registered, make sure that the following conditions are met:\r\n`;
+            message += "- The missing navigation section \"$id\" and \"menuId\" properties perfectly match the provided \"sectionId\" and \"menuId\".\r\n";
+            message += "For more information about nested navigation items, refers to [TODO: ADD LINK].\r\n";
+
+            if (this._mode === "development") {
+                throw new Error(message);
+            } else {
+                this._logger.error(message);
+            }
+        }
     }
 }

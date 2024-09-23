@@ -228,7 +228,7 @@ test("section item additionalProps are rendered", () => {
 test("link item custom keys are rendered", () => {
     const navigationItems: RootNavigationItem[] = [
         {
-            $key: "foo",
+            $id: "foo",
             $label: "Foo",
             $additionalProps: {
                 style: { color: "red" }
@@ -236,7 +236,7 @@ test("link item custom keys are rendered", () => {
             to: "/foo"
         },
         {
-            $key: "bar",
+            $id: "bar",
             $label: "Bar",
             to: "/bar"
         }
@@ -252,7 +252,7 @@ test("link item custom keys are rendered", () => {
 test("section item custom keys are rendered", () => {
     const navigationItems: RootNavigationItem[] = [
         {
-            $key: "foo",
+            $id: "foo",
             $label: "Foo",
             children: [
                 {
@@ -279,7 +279,7 @@ test("nested item custom keys are rendered", () => {
             $label: "Foo",
             children: [
                 {
-                    $key: "bar",
+                    $id: "bar",
                     $label: "Bar",
                     to: "/bar"
                 }

@@ -103,7 +103,7 @@ runtime.registerRoute({
 
 ### Register an hoisted route
 
-Unlike a regular route, a hoisted route is added at the root of the router, outside of the host application's root layout, root error boundary and even root authentication boundary. This means that a hoisted route has full control over its rendering. To mark a route as hoisted, provide an `hoist` property to the route options.
+Unlike a regular route, a hoisted route is added at the root of the router, outside of the host application's root layout, root error boundary and even root authentication boundary. This means that a hoisted route has full control over its rendering. To mark a route as hoisted, provide an `hoist` option to the route options.
 
 ```tsx !#7
 import { Page } from "./Page.tsx";
@@ -122,36 +122,6 @@ By declaring a route as hoisted, other parts of the application will not be isol
 - To **avoid breaking** the entire **application** when an hoisted route encounters unhandled errors, it is highly recommended to declare a React Router's [errorElement](https://reactrouter.com/en/main/route/error-element) property for each hoisted route.
 - If the hoisted route requires an authentication, make sure to **wrap** the route **with** an **authentication boundary** or to handle the authentication within the route.
 !!!
-
-### Register a route with a different layout
-
-```tsx !#9,12,22
-import { Page } from "./Page.tsx";
-import { RemoteLayout } from "./RemoteLayout.tsx";
-import { RemoteErrorBoundary } from "./RemoteErrorBoundary.tsx";
-
-runtime.registerRoute({
-    path: "/page-1",
-    // Will render the route inside the "RemoteLayout" rather than the "RootLayout".
-    // For more information about React Router's nested routes, view https://reactrouter.com/en/main/start/tutorial#nested-routes.
-    element: <RemoteLayout />,
-    children: [
-        {
-            errorElement: <RemoteErrorBoundary />,
-            children: [
-                {
-                    index: true,
-                    element: <Page />
-                }
-            ]
-        }
-    ]
-}, {
-    hoist: true
-});
-```
-
-[!ref text="Learn more about overriding the host application layout"](../../guides/override-the-host-layout.md)
 
 ### Register a public route
 
@@ -191,9 +161,9 @@ When no `$visibility` indicator is provided, a route is considered `protected`.
 
 ### Register a named route
 
-The `registerRoute` function accepts a `parentName` property, allowing a route to be [nested under an existing parent route](#register-nested-routes-under-an-existing-route). When searching for the parent route matching the `parentName` property, the `parentName` will be matched against the `$name` property of every route.
+The `registerRoute` function accepts a `parentName` option, allowing a route to be [nested under an existing parent route](#register-nested-routes). When searching for the parent route matching the `parentName` option, the `parentName` will be matched against the `$name` option of every route.
 
-> A `$name` property should only be defined for routes that doesn't have a path like an error boundary or an authentication boundary.
+> A `$name` option should only be defined for routes that doesn't have a path like an error boundary or an authentication boundary.
 
 ```tsx !#4
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
@@ -204,29 +174,13 @@ runtime.registerRoute({
 });
 ```
 
-A nested route can also be named:
-
-```tsx !#8
-import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
-import { RootLayout } from "./RootLayout.tsx";
-
-runtime.registerRoute({
-    $name: "error-boundary",
-    element: <RootErrorBoundary />,
-    children: [
-        $name: "root-layout",
-        element: <RootLayout />
-    ]
-});
-```
-
-### Register nested routes under an existing route
+### Register nested routes
 
 React router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) enable applications to render nested layouts at various points within the router tree. This is quite helpful for modular applications as it enables composable and decoupled UI.
 
 To fully harness the power of nested routes, the `registerRoute` function allows a route to be registered **under any** previously **registered route**, even if that route was registered by another module. The only requirement is that the **parent route** must have been registered with the `registerRoute` function.
 
-When registering a new route with the `registerRoute` function, to render the route under a parent route, specify a `parentPath` property that matches the parent route's `path` property:
+When registering a new route with the `registerRoute` function, to render the route under a parent route, specify a `parentPath` option that matches the parent route's `path` option:
 
 ```tsx !#7
 import { Page } from "./Page.tsx";
@@ -239,7 +193,7 @@ runtime.registerRoute({
 });
 ```
 
-Or a `parentName` property that matches the parent route's `name` property:
+Or a `parentName` option that matches the parent route's `name` option:
 
 ```tsx !#7
 import { Page } from "./Page.tsx";
@@ -255,7 +209,7 @@ runtime.registerRoute({
 [!ref text="Learn more about using nested routes for modular tabs"](../../guides/use-modular-tabs.md)
 
 !!!info
-Likewise any other React Router routes, the `path` property of a route rendered under an existing parent route must be an absolute path. For example, if a parent route `path` is `/layout`, the `path` property of a route rendered under that parent route and responding to the `/page-1` url, should be `/layout/page-1`.
+Likewise any other React Router routes, the `path` option of a route rendered under an existing parent route must be an absolute path. For example, if a parent route `path` is `/layout`, the `path` option of a route rendered under that parent route and responding to the `/page-1` url, should be `/layout/page-1`.
 !!!
 
 ### Retrieve routes
@@ -281,7 +235,7 @@ A Squide navigation item can either be a `NavigationLink` or a `NavigationSectio
 #### `NavigationLink`
 
 Accept any properties of a React Router [Link](https://reactrouter.com/en/main/components/link) component with the addition of:
-- `$key`: An optional key identifying the link. Usually used as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
+- `$id`: An optional key identifying the link. Usually used as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
 - `$label`: The link text.
 - `$canRender`: An optional function accepting an object and returning a `boolean` indicating whether or not the link should be rendered.
 - `$priority`: An order priority affecting the position of the item in the menu (higher first)
@@ -289,7 +243,7 @@ Accept any properties of a React Router [Link](https://reactrouter.com/en/main/c
 
 #### `NavigationSection`
 
-- `$key`: An optional key identifying the section. Usually used as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
+- `$id`: An optional key identifying the section. Usually used to nest navigation items under a specific section and as the React element [key](https://legacy.reactjs.org/docs/lists-and-keys.html#keys) property.
 - `$label`: The section text.
 - `$canRender`: An optional function accepting an object and returning a `boolean` indicating whether or not the section should be rendered.
 - `$priority`: An order priority affecting the position of the item in the menu (higher first)
@@ -297,13 +251,13 @@ Accept any properties of a React Router [Link](https://reactrouter.com/en/main/c
 - `children`: The section content.
 
 !!!info
-We recommend always providing a `$key` property for a navigation item, as it ensures the menus doesn't flicker when [deferred registrations](../registration/registerLocalModules.md#defer-the-registration-of-navigation-items) are updated. Be sure to use a unique key.
+We recommend always providing an `$id` option for a navigation item, as it ensures the menus doesn't flicker when [deferred registrations](../registration/registerLocalModules.md#defer-the-registration-of-navigation-items) are updated. Be sure to use a unique identifier.
 !!!
 
 ```ts
 // Register a new navigation item from a local or remote module.
 runtime.registerNavigationItem({
-    $key: "page-1",
+    $id: "page-1",
     $label: "Page 1",
     to: "/page-1"
 });
@@ -313,6 +267,21 @@ runtime.registerNavigationItem({
 
 ### Register nested navigation items
 
+Similarly to [nested routes](#register-nested-navigation-items), a navigation item can be nested under an existing section be specifying a `sectionId` option that matches the section's `$id` option:
+
+```ts !#7
+runtime.registerNavigationItem({
+    $id: "link",
+    $label: "Link",
+    to: "/link"
+}, {
+    // The following example takes for granted that a section with the "some-section" $id is already registered or will be registered.
+    sectionId: "some-section"
+});
+```
+
+Navigation items can also be nested by registering multipe items in a single registration block:
+
 ```ts
 // Register the following menu hierarchy:
 //
@@ -320,39 +289,47 @@ runtime.registerNavigationItem({
 //  --- Nested Section
 //  ------- Nested Nested Link
 //  --- Nested Link
-//  Link
 runtime.registerNavigationItem({
-    $key: "section",
+    $id: "section",
     $label: "Section",
     children: [
         {
-            $key: "nested-section",
+            $id: "nested-section",
             $label: "Nested Section",
             children: [
                 {
-                    $key: "nested-nested-link",
+                    $id: "nested-nested-link",
                     $label: "Nested Nested Link",
                     to: "#"
                 }
             ]
         },
         {
-            $key: "nested-link",
+            $id: "nested-link",
             $label: "Nested Link",
             to: "#"
         }
     ]
-},
-{
-    $key: "link",
-    $label: "Link",
-    to: "#"
 });
 ```
 
-### Sort registered navigation items
+### Register navigation items for a specific menu
 
-A `$priority` property can be added to a navigation item to affect it's position in the menu. The sorting algorithm is as follow:
+By default, every navigation item registered with the `registerNavigationItem` function is registered as part of the `root` navigation menu. To register a navigation item for a different navigation menu, specify a `menuId` option when registering the items.
+
+```tsx !#6
+runtime.registerNavigationItem({
+    $id: "page-1",
+    $label: "Page 1",
+    to: "/layout/page-1"
+}, { 
+    menuId: "my-custom-layout" 
+});
+```
+
+### Sort navigation items
+
+A `$priority` option can be added to a navigation item to affect it's position in the menu. The sorting algorithm is as follow:
 
 - By default a navigation item have a priority of `0`.
 - If no navigation item have a priority, the items are positioned according to their registration order.
@@ -361,14 +338,14 @@ A `$priority` property can be added to a navigation item to affect it's position
 
 ```ts !#4,13
 runtime.registerNavigationItem({
-    $key: "about",
+    $id: "about",
     $label: "About",
     $priority: 10,
     to: "/about"
 });
 
 runtime.registerNavigationItem({
-    $key: "home",
+    $id: "home",
     $label: "Home",
     // Because the "Home" navigation item has an higher priority, it will be rendered
     // before the "About" navigation item.
@@ -377,11 +354,11 @@ runtime.registerNavigationItem({
 });
 ```
 
-### Use dynamic segments
+### Use dynamic segments for navigation items
 
 ```ts !#4
 runtime.registerNavigationItem({
-    $key: "user-profile",
+    $id: "user-profile",
     $label: "User profile",
     to: "/user-profile/:userId"
 });
@@ -395,7 +372,7 @@ runtime.registerNavigationItem({
 import { QuestionMarkIcon } from "@sample/icons";
 
 runtime.registerNavigationItem({
-    $key: "about",
+    $id: "about",
     $label: (
         <QuestionMarkIcon />
         <span>About</span>
@@ -408,7 +385,7 @@ runtime.registerNavigationItem({
 
 ```ts !#4-6
 runtime.registerNavigationItem({
-    $key: "about",
+    $id: "about",
     $label: "About",
     style: {
         backgroundColor: "#000"
@@ -421,7 +398,7 @@ runtime.registerNavigationItem({
 
 ```ts !#4
 runtime.registerNavigationItem({
-    $key: "about",
+    $id: "about",
     $label: "About",
     target: "_blank",
     to: "/about"
@@ -432,7 +409,7 @@ runtime.registerNavigationItem({
 
 ```ts !#4-6
 runtime.registerNavigationItem({
-    $key: "about",
+    $id: "about",
     $label: "About",
     $canRender: (index: number) => {
         return index % 2 == 0;
@@ -447,7 +424,7 @@ runtime.registerNavigationItem({
 
 ```ts !#4-6
 runtime.registerNavigationItem({
-    $key: "about",
+    $id: "about",
     $label: "About",
     $additionalProps: {
         highlight: true
@@ -456,19 +433,7 @@ runtime.registerNavigationItem({
 });
 ```
 
-### Register navigation items for a specific menu
-
-By default, every navigation item registered with the `registerNavigationItem` function is registered as part of the `root` navigation menu. To register a navigation item for a different navigation menu, specify a `menuId` property when registering the items.
-
-```tsx !#6
-runtime.registerNavigationItem({
-    $key: "page-1",
-    $label: "Page 1",
-    to: "/layout/page-1"
-}, { 
-    menuId: "my-custom-layout" 
-});
-```
+> It's the responsibility of the code rendering the menu to handle the additional properties.
 
 ### Retrieve navigation items
 

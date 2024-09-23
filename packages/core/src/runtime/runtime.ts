@@ -21,6 +21,7 @@ export interface RegisterRouteOptions {
 
 export interface RegisterNavigationItemOptions {
     menuId?: string;
+    sectionId?: string;
 }
 
 export const RootMenuId = "root";

@@ -82,7 +82,7 @@ export const register: ModuleRegisterFunction<FireflyRuntime> = runtime => {
     });
 
     runtime.registerNavigationItem({
-        $key: "remote-page",
+        $id: "remote-page",
         $label: "Remote/Page",
         to: "/remote/page"
     });

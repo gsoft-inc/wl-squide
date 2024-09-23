@@ -135,7 +135,7 @@ describe("add", () => {
         expect(result.registrationStatus).toBe("pending");
     });
 
-    test("when a nested route is registred, return the \"registered\" registration status", () => {
+    test("when a nested route is added, return the \"registered\" registration status", () => {
         const registry = new RouteRegistry();
 
         registry.add({

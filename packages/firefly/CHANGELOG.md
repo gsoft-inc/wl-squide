@@ -1,5 +1,15 @@
 # @squide/firefly
 
+## 9.2.1
+
+### Patch Changes
+
+- Updated dependencies [[`8ee26fd`](https://github.com/gsoft-inc/wl-squide/commit/8ee26fd6ab7126bacf3dec900629fbd045dfd180)]:
+  - @squide/react-router@6.3.0
+  - @squide/core@5.3.0
+  - @squide/module-federation@6.1.1
+  - @squide/msw@3.1.1
+
 ## 9.2.0
 
 ### Minor Changes

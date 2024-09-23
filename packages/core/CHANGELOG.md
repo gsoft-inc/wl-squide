@@ -1,5 +1,15 @@
 # @squide/core
 
+## 5.3.0
+
+### Minor Changes
+
+- [#206](https://github.com/gsoft-inc/wl-squide/pull/206) [`8ee26fd`](https://github.com/gsoft-inc/wl-squide/commit/8ee26fd6ab7126bacf3dec900629fbd045dfd180) Thanks [@patricklafrance](https://github.com/patricklafrance)! - - Renamed a route definition `$name` option to `$id`.
+
+  - Renamed the `registerRoute` `$parentName` option to `$parentId`.
+
+  These changes should have been a major version but since Squide firefly v9 has been released a few days ago and no applications already migrated, it's include as part of v9 breaking changes.
+
 ## 5.2.0
 
 ### Minor Changes

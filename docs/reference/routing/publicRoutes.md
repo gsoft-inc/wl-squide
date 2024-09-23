@@ -8,7 +8,7 @@ toc:
 
 A placeholder indicating where in the routing tree should the public routes be rendered. The `PublicRoutes` placeholder concept is similar to React Router's [outlet](https://reactrouter.com/en/main/components/outlet), it's a pipeline to inject routes at a predetermined location.
 
-> A public route is a route with a `"public"` visibility that is not [hoisted](../runtime/runtime-class.md#register-an-hoisted-route) or nested with either a [parentPath](../runtime/runtime-class.md#register-nested-routes-under-an-existing-route) or [parentName](../runtime/runtime-class.md#register-a-named-route) option.
+> A public route is a route with a `"public"` visibility that is not [hoisted](../runtime/runtime-class.md#register-an-hoisted-route) or nested with either a [parentPath](../runtime/runtime-class.md#register-nested-routes) or [parentName](../runtime/runtime-class.md#register-a-named-route) option.
 
 ## Reference
 

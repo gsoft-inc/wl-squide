@@ -161,7 +161,7 @@ When no `$visibility` indicator is provided, a route is considered `protected`.
 
 ### Register a named route
 
-The `registerRoute` function accepts a `parentName` option, allowing a route to be [nested under an existing parent route](#register-nested-routes-under-an-existing-route). When searching for the parent route matching the `parentName` option, the `parentName` will be matched against the `$name` option of every route.
+The `registerRoute` function accepts a `parentName` option, allowing a route to be [nested under an existing parent route](#register-nested-routes). When searching for the parent route matching the `parentName` option, the `parentName` will be matched against the `$name` option of every route.
 
 > A `$name` option should only be defined for routes that doesn't have a path like an error boundary or an authentication boundary.
 
@@ -174,23 +174,7 @@ runtime.registerRoute({
 });
 ```
 
-A nested route can also be named:
-
-```tsx !#8
-import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
-import { RootLayout } from "./RootLayout.tsx";
-
-runtime.registerRoute({
-    $name: "error-boundary",
-    element: <RootErrorBoundary />,
-    children: [
-        $name: "root-layout",
-        element: <RootLayout />
-    ]
-});
-```
-
-### Register nested routes under an existing route
+### Register nested routes
 
 React router [nested routes](https://reactrouter.com/en/main/start/tutorial#nested-routes) enable applications to render nested layouts at various points within the router tree. This is quite helpful for modular applications as it enables composable and decoupled UI.
 
@@ -329,7 +313,21 @@ runtime.registerNavigationItem({
 });
 ```
 
-### Sort registered navigation items
+### Register navigation items for a specific menu
+
+By default, every navigation item registered with the `registerNavigationItem` function is registered as part of the `root` navigation menu. To register a navigation item for a different navigation menu, specify a `menuId` option when registering the items.
+
+```tsx !#6
+runtime.registerNavigationItem({
+    $id: "page-1",
+    $label: "Page 1",
+    to: "/layout/page-1"
+}, { 
+    menuId: "my-custom-layout" 
+});
+```
+
+### Sort navigation items
 
 A `$priority` option can be added to a navigation item to affect it's position in the menu. The sorting algorithm is as follow:
 
@@ -356,7 +354,7 @@ runtime.registerNavigationItem({
 });
 ```
 
-### Use dynamic segments
+### Use dynamic segments for navigation items
 
 ```ts !#4
 runtime.registerNavigationItem({
@@ -436,20 +434,6 @@ runtime.registerNavigationItem({
 ```
 
 > It's the responsibility of the code rendering the menu to handle the additional properties.
-
-### Register navigation items for a specific menu
-
-By default, every navigation item registered with the `registerNavigationItem` function is registered as part of the `root` navigation menu. To register a navigation item for a different navigation menu, specify a `menuId` option when registering the items.
-
-```tsx !#6
-runtime.registerNavigationItem({
-    $id: "page-1",
-    $label: "Page 1",
-    to: "/layout/page-1"
-}, { 
-    menuId: "my-custom-layout" 
-});
-```
 
 ### Retrieve navigation items
 

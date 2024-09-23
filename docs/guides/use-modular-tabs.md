@@ -76,7 +76,7 @@ It is recommended to define the shared layouts in a standalone package as it's d
 
 ## Create the tab routes
 
-Next, let's add the actual tabs to the modules. To do so, we'll use the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes-under-an-existing-route) option of the [registerRoute](../reference/runtime/runtime-class.md#register-routes) function to register the routes under the `TabsLayout` component:
+Next, let's add the actual tabs to the modules. To do so, we'll use the [parentPath](../reference/runtime/runtime-class.md#register-nested-routes) option of the [registerRoute](../reference/runtime/runtime-class.md#register-routes) function to register the routes under the `TabsLayout` component:
 
 ```tsx !#7,10 remote-module-1/src/register.tsx
 import type { ModuleRegisterFunction, FireflyRuntime } from "@squide/firefly";

@@ -23,6 +23,7 @@
     "peerDependencies": {
         "@endpoints/shared": "*",
         "@endpoints/shell": "*",
+        "@squide/env-vars": "*",
         "@squide/firefly": "*",
         "@tanstack/react-query": "5.32.0",
         "msw": "*",
@@ -59,6 +60,7 @@
         "@endpoints/layouts": "workspace:*",
         "@endpoints/shared": "workspace:*",
         "@endpoints/shell": "workspace:*",
+        "@squide/env-vars": "workspace:*",
         "@squide/fakes": "workspace:*",
         "@squide/firefly": "workspace:*",
         "@squide/i18next": "workspace:*",

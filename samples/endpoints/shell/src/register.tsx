@@ -1,5 +1,7 @@
 import { registerLayouts } from "@endpoints/layouts";
+import { getEnvironmentVariablesPlugin } from "@squide/env-vars";
 import { mergeDeferredRegistrations, ProtectedRoutes, PublicRoutes, type FireflyRuntime, type ModuleRegisterFunction } from "@squide/firefly";
+import { run } from "node:test";
 import { RootLayout } from "./RootLayout.tsx";
 import { initI18next } from "./i18next.ts";
 
@@ -91,16 +93,30 @@ function registerRoutes(runtime: FireflyRuntime, host?: string) {
 
 async function registerMsw(runtime: FireflyRuntime) {
     if (runtime.isMswEnabled) {
+        const environmentVariables = getEnvironmentVariablesPlugin(runtime).getVariables();
+
         // Files including an import to the "msw" package are included dynamically to prevent adding
         // MSW stuff to the bundled when it's not used.
-        const requestHandlers = (await import("../mocks/handlers.ts")).requestHandlers;
+        const requestHandlers = (await import("../mocks/handlers.ts")).getRequestHandlers(environmentVariables);
 
         runtime.registerRequestHandlers(requestHandlers);
     }
 }
 
+function registerEnvironmentVariables(runtime: FireflyRuntime) {
+    const plugin = getEnvironmentVariablesPlugin(runtime);
+
+    plugin.registerVariables({
+        authenticationApiBaseUrl: "/api/auth/",
+        featureFlagsApiBaseUrl: "/api/flags/",
+        sessionApiBaseUrl: "/api/session/",
+        subscriptionApiBaseUrl: "/api/subscription/"
+    });
+}
+
 export function registerShell({ host }: RegisterShellOptions = {}) {
     const register: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
+        registerEnvironmentVariables(runtime);
         initI18next(runtime);
 
         await registerMsw(runtime);

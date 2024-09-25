@@ -9,6 +9,7 @@
             "@squide/msw": ["../../../packages/msw/src/index.ts"],
             "@squide/i18next": ["../../../packages/i18next/src/index.ts"],
             "@squide/fakes": ["../../../packages/fakes/src/index.ts"],
+            "@squide/env-vars": ["../../../packages/env-vars/src/index.ts"],
             "@squide/firefly": ["../../../packages/firefly/src/index.ts"],
             "@squide/firefly-webpack-configs": ["../../../packages/firefly-webpack-configs/src/index.ts"],
             "@endpoints/layouts": ["../layouts/src/index.ts"],
@@ -17,5 +18,6 @@
             "@endpoints/i18next": ["../i18next/src/index.ts"]
         }
     },
+    "include": ["src", "types"],
     "exclude": ["dist", "node_modules"]
 }

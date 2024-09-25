@@ -85,6 +85,13 @@ toc:
 - [useI18nextInstance](./i18next/useI18nextInstance.md)
 - [I18nextNavigationItemLabel](./i18next/I18nextNavigationItemLabel.md)
 
+### Environment variables
+
+- [EnvironmentVariablesPlugin](./env-vars/EnvironmentVariablesPlugin.md)
+- [getEnvironmentVariablesPlugin](./env-vars/getEnvironmentVariablesPlugin.md)
+- [useEnvironmentVariable](./env-vars/useEnvironmentVariable.md)
+- [useEnvironmentVariables](./env-vars/useEnvironmentVariables.md)
+
 ### Fakes
 
 Squide offers a collection of fake implementations designed to facilitate the set up of a module isolated environment.

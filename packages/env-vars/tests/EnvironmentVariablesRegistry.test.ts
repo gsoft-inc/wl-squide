@@ -4,6 +4,7 @@ declare module "../src/EnvironmentVariablesRegistry.ts" {
     interface EnvironmentVariables {
         foo: string;
         bar: number;
+        john: string;
     }
 }
 
@@ -99,5 +100,13 @@ describe("getVariables", () => {
 
         expect(result1).not.toBe(result3);
         expect(result2).not.toBe(result3);
+
+        registry.addVariables({
+            john: "doe"
+        });
+
+        const result4 = registry.getVariables();
+
+        expect(result3).not.toBe(result4);
     });
 });

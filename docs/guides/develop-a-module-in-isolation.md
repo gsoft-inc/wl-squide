@@ -9,9 +9,9 @@ To develop their own independent module, a team **should not need to install the
 To achieve this, the first step is to extract the application shell from the host application. There are various ways to accomplish this, but in this guide, we'll transform the host application into a monorepo and introduce a new local package named `@sample/shell` specifically for this purpose:
 
 ``` !#4
-host
+monorepo
 ├── app
-├── packages
+├── libs
 ├────── shell
 ├───────── src
 ├─────────── RootLayout.tsx
@@ -22,6 +22,9 @@ host
 ├───────── package.json
 ├───────── tsup.dev.ts
 ├───────── tsup.build.ts
+├── modules
+├───────── local-module
+├───────── remote-module
 ```
 
 ## Create a shell package

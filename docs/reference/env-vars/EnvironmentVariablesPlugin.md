@@ -54,6 +54,10 @@ const plugin = runtime.getPlugin(EnvironmentVariablesPlugin.name) as Environment
 plugin.registerVariable("apiBaseUrl", "https://my-api.com");
 ```
 
+!!!info
+An environment variable with the same key can be registered multiple times (e.g. by multiple modules) as long as the value remains the same. If the value differs, an `Error` will be thrown.
+!!!
+
 ### Register multiple environment variables at once
 
 ```ts !#5-8

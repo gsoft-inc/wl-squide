@@ -39,10 +39,10 @@ Then, update the host application boostrapping code to register an instance of t
 ```tsx !#13-22 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
+import { i18nextPlugin } from "@squide/i18next";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
 import { registerShell } from "@sample/shell";
-import { i18nextPlugin } from "@sample/i18next";
 
 const Remotes: RemoteDefinition[] = [
     { url: name: "remote1" }

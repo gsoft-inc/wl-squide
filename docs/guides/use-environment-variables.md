@@ -4,15 +4,18 @@ order: 830
 
 # Use environment variables
 
+!!!warning
+Before going forward with this guide, make sure that you completed the [Setup Mock Service Worker](./setup-msw.md) guide.
+!!!
+
 Environment variables are incredibly useful when working with **multiple environments**, such as `dev`, `staging`, and `production`, by **decoupling configuration from** the **code**. This allows to change an application's behavior without modifying the code itself. A common example is the URLs of dedicated API services, where each environment uses a different URL.
 
 In webpack, environment variables are typically passed from the CLI to the application code using the [DefinePlugin](https://webpack.js.org/plugins/define-plugin/) and accessed through `process.env`, e.g. `process.env.BASE_API_URL`.
 
-While accessing environment variables from `process.env` works, dealing with JavaScript global scope has a few downsides:
+While accessing environment variables from `process.env` works, it has a few downsides:
 
-- **It's not ideal for testing**. Code under test that expects an environment variable to be accessible from `process.env` will fail if the value is not mocked or defined.
-- **It's not well-suited for Storybook**. Story code that expects an environment variable to be accessible from `process.env` will fail if the value is not defined.
-- **It complicates** [module development in isolation](./develop-a-module-in-isolation.md). A modular application [shell](./develop-a-module-in-isolation.md#create-a-shell-package) often makes requests to multiple endpoints, which vary depending on the environment. These endpoints require environment variables to define their URLs. When developing modules in isolation, modules should not provide these environment variables to the shell. Instead, the shell library should manage these environment variables.
+- **It's not ideal for testing**. Tests relying on global variables can inadvertently affect other tests, introducing potential issues that affect test reliability, maintainability, and isolation.
+- **It complicates** [module development in isolation](./develop-a-module-in-isolation.md). A modular application [shell](./develop-a-module-in-isolation.md#create-a-shell-package) often makes requests to multiple endpoints, which vary depending on the environment. These endpoints require environment variables to define their URLs. When developing modules in isolation, modules should not provide these environment variables to the shell. Instead, to **improve DX**, the shell library should **manage** these **environment variables internally**.
 
 To replace `process.env`, Squide provides the [EnvironmentVariablesPlugin](../reference/env-vars/getEnvironmentVariablesPlugin.md). This plugin acts as a registry and integrates with the [Runtime API](../reference/runtime/runtime-class.md), allowing modules to register and retrieve environment variables.
 
@@ -130,17 +133,16 @@ host
 
 Then create an `env-vars.d.ts` file:
 
-```ts !#5 host/types/env-vars.d.ts
+```ts !#6 host/types/env-vars.d.ts
 import "@squide/env-vars";
 
 declare module "@squide/env-vars" {
     interface EnvironmentVariables {
+        // In the example above, the module only intends to register the `baseApiUrl` environment variable.
         baseApiUrl: string;
     }
 }
 ```
-
-In the example above, the module only intends to register the `baseApiUrl` environment variable.
 
 Finally, update the module `tsconfig.json` to include the `types` folder:
 
@@ -166,7 +168,7 @@ import { RootLayout } from "./RootLayout.tsx";
 function registerEnvironmentVariables(runtime: FireflyRuntime) {
     const plugin = getEnvironmentVariablesPlugin(runtime);
 
-    plugin.registerVariable("baseApiUrl", "http://my-domain.com/api");
+    plugin.registerVariable("baseApiUrl", "https://my-domain.com/api");
 }
 
 export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
@@ -201,14 +203,14 @@ If multiple modules need to use the same environment variable, we recommend that
 
 ### Retrieve a variable in React code
 
-Then, retrieve the variables in React code using either [useEnvironmentVariable](../reference/env-vars/useEnvironmentVariable.md) or [useEnvironmentVariables](../reference/env-vars/useEnvironmentVariables.md):
+Then, retrieve the variables in a new `DataPage` component using either the [useEnvironmentVariable](../reference/env-vars/useEnvironmentVariable.md) or [useEnvironmentVariables](../reference/env-vars/useEnvironmentVariables.md) hook:
 
-```tsx !#6 host/src/Pages.tsx
+```tsx !#6,9 host/src/DataPage.tsx
 import { useEnvironmentVariable } from "@squide/env-vars";
 import { fetchJson } from "@sample/shared";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-export function Page() {
+export function DataPage() {
     const baseApiUrl = useEnvironmentVariable("baseApiUrl");
 
     const { data } = useSuspenseQuery({ queryKey: [`${baseApiUrl}/getData`], queryFn: () => {
@@ -221,25 +223,319 @@ export function Page() {
 }
 ```
 
+And register a route for the component:
+
+```tsx !#38-41 host/src/register.tsx
+import { PublicRoutes, ProtectedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
+import { getEnvironmentVariablesPlugin } from "@squide/env-vars";
+import { HomePage } from "./HomePage.tsx";
+import { NotFoundPage } from "./NotFoundPage.tsx";
+import { DataPage } from "./DataPage.tsx";
+import { RootLayout } from "./RootLayout.tsx";
+
+function registerEnvironmentVariables(runtime: FireflyRuntime) {
+    const plugin = getEnvironmentVariablesPlugin(runtime);
+
+    plugin.registerVariable("baseApiUrl", "https://my-domain.com/api");
+}
+
+export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
+    registerEnvironmentVariables(runtime);
+
+    runtime.registerRoute({
+        element: <RootLayout />,
+        children: [
+            // Placeholders indicating where non hoisted or nested public and protected routes will be rendered.
+            PublicRoutes,
+            ProtectedRoutes
+        ]
+    }, {
+        hoist: true
+    });
+
+    runtime.registerPublicRoute({
+        path: "*",
+        element: <NotFoundPage />
+    });
+
+    runtime.registerRoute({
+        index: true,
+        element: <HomePage />
+    });
+
+    runtime.registerRoute({
+        path: "data",
+        element: <DataPage />
+    });
+};
+```
+
 ### Retrieve a variable for MSW handlers
 
-## Use the plugin for tests
+Then, create an MSW handlers for the `DataPage` component that retrieves the variables using either the plugin's [getVariable](../reference/env-vars/EnvironmentVariablesPlugin.md#retrieve-a-single-environment-variable) or [getVariables](../reference/env-vars/EnvironmentVariablesPlugin.md#retrieve-all-the-environment-variables) function:
 
-## Use the plugin for stories
+```tsx !#8,11 host/src/mocks/api.ts
+import type { FireflyRuntime } from "@squide/firefly";
+import { getEnvironmentVariablesPlugin } from "@squide/env-vars";
+import { http, HttpResponse, type HttpHandler } from "msw";
 
-## Use the plugin for libraries
+// Must specify the return type, otherwise we get a TS2742: The inferred type cannot be named without a reference to X. This is likely not portable.
+// A type annotation is necessary.
+export function getApiHandlers(runtime: FireflyRuntime): HttpHandler[] {
+    const apiBaseUrl = getEnvironmentVariablesPlugin(runtime).getVariable("apiBaseUrl");
+
+    return [
+        http.get(`${apiBaseUrl}/getData`, () => {
+            return HttpResponse.json({
+                "foo": "bar"
+            });
+        });
+    ];
+}
+```
+
+Finally, register the new handler:
+
+```tsx !#14-22,27 host/src/register.tsx
+import { PublicRoutes, ProtectedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
+import { getEnvironmentVariablesPlugin } from "@squide/env-vars";
+import { HomePage } from "./HomePage.tsx";
+import { NotFoundPage } from "./NotFoundPage.tsx";
+import { DataPage } from "./DataPage.tsx";
+import { RootLayout } from "./RootLayout.tsx";
+
+function registerEnvironmentVariables(runtime: FireflyRuntime) {
+    const plugin = getEnvironmentVariablesPlugin(runtime);
+
+    plugin.registerVariable("baseApiUrl", "https://my-domain.com/api");
+}
+
+async function registerRequestHandlers(runtime: FireflyRuntime) {
+    if (runtime.isMswEnabled) {
+        // Files that includes an import to the "msw" package are included dynamically to prevent adding
+        // unused MSW stuff to the application bundles.
+        const requestHandlers = (await import("../mocks/api.ts")).getApiHandlers(runtime);
+
+        runtime.registerRequestHandlers(requestHandlers);
+    }
+}
+
+export const registerHost: ModuleRegisterFunction<FireflyRuntime> = async runtime => {
+    registerEnvironmentVariables(runtime);
+
+    await registerRequestHandlers(runtime);
+
+    runtime.registerRoute({
+        element: <RootLayout />,
+        children: [
+            // Placeholders indicating where non hoisted or nested public and protected routes will be rendered.
+            PublicRoutes,
+            ProtectedRoutes
+        ]
+    }, {
+        hoist: true
+    });
+
+    runtime.registerPublicRoute({
+        path: "*",
+        element: <NotFoundPage />
+    });
+
+    runtime.registerRoute({
+        index: true,
+        element: <HomePage />
+    });
+
+    runtime.registerRoute({
+        path: "data",
+        element: <DataPage />
+    });
+};
+```
 
 ## Try it :rocket:
 
+Start the development servers using the dev script and navigate to the `/data` page. The page should render `{ "foo": "bar" }`.
 
-- Setup
-    - register the plugin
-    - module augmentation
-    - register variables
-    - retrieve variable in React code
-    - retrieve variable for MSW handlers
+### Troubleshoot issues
+
+If you are experiencing issues with this section of the guide:
+
+- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs (including MSW request handlers) and error messages if something went wrong.
+- Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/endpoints).
+- Refer to the [troubleshooting](../troubleshooting.md) page.
+
+## Integrate with tests
+
+If the code under test uses environment variables, the `EnvironmentVariablesPlugin` can be used to mock these variables.
+
+Considering the following utility hook:
+
+```ts !#2 host/src/useAbsoluteUrl.ts
+export function useAbsoluteUrl(path: string) {
+    const apiBaseUrl = useEnvironmentVariable("apiBaseUrl");
+
+    return `${apiBaseUrl}/${path}`;
+}
+```
+
+You can write the following unit test to mock the value of `apiBaseUrl` and test the ouput of the `useAbsoluteUrl` hook:
+
+```tsx !#9,13 host/tests/useAbsoluteUrl.tsx
+import { RuntimeContext, FireflyRuntime } from "@squide/firefly";
+import { EnvironmentVariablesPlugin, getEnvironmentVariablesPlugin } from "@squide/env-vars";
+import { renderHook } from "@testing-library/react";
+import type { ReactNode } from "react";
+import { useAbsoluteUrl } from "../src/useAbsoluteUrl.ts";
+
+test("an absolute URL including the API base URL is returned", () => {
+    const runtime = new FireflyRuntime({
+        plugins: [x => new EnvironmentVariablesPlugin(x)]
+    });
+
+    const plugin = getEnvironmentVariablesPlugin(runtime);
+    plugin.registerVariable("apiBaseUrl", "https://foo.com");
+
+    const { result } = renderHook(() => useAbsoluteUrl("bar"), {
+        wrapper: ({ children }: { children?: ReactNode }) => (
+            <RuntimeContext.Provider value={runtime}>
+                {children}
+            </RuntimeContext.Provider>
+        )
+    })
+
+    expect(result).toBe("https://foo.com/bar");
+});
+```
+
+## Integrate with stories
+
+Components included in [Storybook](https://storybook.js.org/docs) stories often rely on environment variables. The `EnvironmentVariablesPlugin` can be used to mock these variables:
+
+```tsx .storybook/preview.tsx
+import { FireflyRuntime, RuntimeProvider } from "@squide/firefly";
+import { EnvironmentVariablesPlugin, getEnvironmentVariablesPlugin } from "@squide/env-vars";
+import type { Preview } from "@storybook/react";
+
+const runtime = new FireflyRuntime({
+    plugins: [x => new EnvironmentVariablesPlugin(x)]
+});
+
+const plugin = getEnvironmentVariablesPlugin(runtime);
+plugin.registerVariable("apiBaseUrl", "https://foo.com");
+
+const preview: Preview = {
+    decorators: [Story => {
+        return (
+            <RuntimeProvider runtime={runtime}>
+                <Story />
+            </RuntimeProvider>
+        );
+    }]
+};
+
+export default preview;
+```
+
+## Integrate with libraries
+
+Libraries, such as an application [Shell](./develop-a-module-in-isolation.md#create-a-shell-package), often need to manage environment variables internally to be portable.
 
 
-- How to use this for tests
-- How to use this with Storybook and Chromatic
-- How to use this for library code like the shell
+Assuming the host application registers the `EnvironmentVariablesPlugin` into the runtime, and given the following file structure:
+
+```
+shell
+├── src
+├────── register.tsx
+├── types
+├────── env-vars.d.ts
+```
+
+To setup such a library, first, create a `registerShell` function that accepts an argument indicating the current environment (e.g., `dev`, `staging` or `production`):
+
+```ts !#5-9 shell/src/register.tsx
+import type { ModuleRegisterFunction } from "@squide/firefly";
+
+export type Environment = "dev" | "staging" | "production";
+
+export function registerShell(env: Environment) {
+    const register: ModuleRegisterFunction = runtime => {
+        ...
+    }
+}
+```
+
+Then, update the `registerShell` function to register the `apiBaseUrl` environment variable based on the provided `env` argument:
+
+```ts !#41-44 shell/src/register.tsx
+import type { ModuleRegisterFunction } from "@squide/firefly";
+import { getEnvironmentVariablesPlugin } from "@squide/env-vars";
+
+export type Environment = "dev" | "staging" | "production";
+
+export interface ShellEnvironmentVariables {
+    apiBaseUrl: string;
+}
+
+const DevEnvironmentVariables: ShellEnvironmentVariables = {
+    apiBaseUrl: "https://dev.com"
+};
+
+const StagingEnvironmentVariables: ShellEnvironmentVariables = {
+    apiBaseUrl: "https://staging.com"
+};
+
+const ProductionEnvironmentVariables: ShellEnvironmentVariables = {
+    apiBaseUrl: "https://production.com"
+};
+
+function getEnvironmentVariables(env: Environment): ShellEnvironmentVariables {
+    switch (env) {
+        case "dev": {
+            return DevEnvironmentVariables;
+        }
+        case "staging": {
+            return StagingEnvironmentVariables;
+        }
+        case "production": {
+            return ProductionEnvironmentVariables;
+        }
+        default: {
+            throw new Error(`[shell] Unknown environment "${env}".`);
+        }
+    }
+}
+
+export function registerShell(env: Environment) {
+    const register: ModuleRegisterFunction = runtime => {
+        const variables = getEnvironmentVariables(env);
+
+        const plugin = getEnvironmentVariablesPlugin(runtime);
+        runtime.registerVariables(variables);
+    }
+}
+```
+
+Then, augment the `EnvironmentVariables` TypeScript interface to include the `apiBaseUrl` variable:
+
+```ts !#6 shell/types/env-vars.d.ts
+import "@squide/env-vars";
+
+declare module "@squide/env-vars" {
+    interface EnvironmentVariables {
+        // In the example above, the module only intends to register the `baseApiUrl` environment variable.
+        baseApiUrl: string;
+    }
+}
+```
+
+Finally, update the module `tsconfig.json` to include the `types` folder:
+
+```json !#3 shell/tsconfig.json
+{
+    "extends": "@workleap/typescript-configs/web-application.json",
+    "include": ["src", "types"],
+    "exclude": ["dist", "node_modules"]
+}
+```

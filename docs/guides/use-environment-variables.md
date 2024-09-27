@@ -15,11 +15,11 @@ In webpack, environment variables are typically passed from the CLI to the appli
 While accessing environment variables from `process.env` works, it has a few downsides:
 
 - **It's not ideal for testing**. Tests relying on global variables can inadvertently affect other tests, introducing potential issues that affect test reliability, maintainability, and isolation.
-- **It complicates** [module development in isolation](./develop-a-module-in-isolation.md). A modular application [shell](./develop-a-module-in-isolation.md#create-a-shell-package) often makes requests to multiple endpoints, which vary depending on the environment. These endpoints require environment variables to define their URLs. When developing modules in isolation, modules should not provide these environment variables to the shell. Instead, to **improve DX**, the shell library should **manage** these **environment variables internally**.
+- **It complicates** [module development in isolation](./develop-a-module-in-isolation.md). A modular application [shell](./develop-a-module-in-isolation.md#create-a-shell-package) often makes requests to multiple endpoints, which vary depending on the environment. These endpoints require environment variables to define their URLs. When developing modules in isolation, modules should not provide these environment variables to the shell. Instead, to **improve DX**, the shell library should **manage** these environment variables **internally**.
 
 To replace `process.env`, Squide provides the [EnvironmentVariablesPlugin](../reference/env-vars/getEnvironmentVariablesPlugin.md). This plugin acts as a registry and integrates with the [Runtime API](../reference/runtime/runtime-class.md), allowing modules to register and retrieve environment variables.
 
-Before this plugin, page code would directly rely on `process.env`:
+Before this plugin, page components would directly rely on `process.env`:
 
 ```tsx !#6
 import { fetchJson } from "@sample/shared";
@@ -36,7 +36,7 @@ export function Page() {
 }
 ```
 
-With the `EnvironmentVariablesPlugin`, a React page can now retrieve the `baseApiUrl` from Squide's runtime instance by using the [useEnvironmentVariable](../reference/env-vars/useEnvironmentVariable.md) hook:
+With the `EnvironmentVariablesPlugin`, a page component can now retrieve the `baseApiUrl` from Squide's runtime instance by using the [useEnvironmentVariable](../reference/env-vars/useEnvironmentVariable.md) hook:
 
 ```tsx !#6,9
 import { useEnvironmentVariable } from "@squide/env-vars";
@@ -56,7 +56,7 @@ export function Page() {
 }
 ```
 
-Let's go through the installation of the plugin and how to handle a few use cases.
+Let's go through the setup of the plugin and how to handle a few use cases.
 
 ## Install the package
 
@@ -156,7 +156,7 @@ Finally, update the module `tsconfig.json` to include the `types` folder:
 
 ### Register variables
 
-Now, let's register our first variable. We recommend registering environment variables in the module's `register` function as it's the most logical place to access the runtime instance:
+Now, let's register our first variable. We recommend registering environment variables in the module's [register function](../reference/registration/registerLocalModules.md#register-a-local-module) as it's the most logical place to access the runtime instance:
 
 ```tsx !#7-11 host/src/register.tsx
 import { PublicRoutes, ProtectedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
@@ -223,7 +223,7 @@ export function DataPage() {
 }
 ```
 
-And register a route for the component:
+Finally, register a route for the component:
 
 ```tsx !#38-41 host/src/register.tsx
 import { PublicRoutes, ProtectedRoutes, type ModuleRegisterFunction, type FireflyRuntime } from "@squide/firefly";
@@ -272,7 +272,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = runtime => {
 
 ### Retrieve a variable for MSW handlers
 
-Then, create an MSW handlers for the `DataPage` component that retrieves the variables using either the plugin's [getVariable](../reference/env-vars/EnvironmentVariablesPlugin.md#retrieve-a-single-environment-variable) or [getVariables](../reference/env-vars/EnvironmentVariablesPlugin.md#retrieve-all-the-environment-variables) function:
+Next, create an MSW handlers for the `DataPage` component. An handler can retrieve the variables using either the plugin's [getVariable](../reference/env-vars/EnvironmentVariablesPlugin.md#retrieve-a-single-environment-variable) or [getVariables](../reference/env-vars/EnvironmentVariablesPlugin.md#retrieve-all-the-environment-variables) function:
 
 ```tsx !#8,11 host/src/mocks/api.ts
 import type { FireflyRuntime } from "@squide/firefly";
@@ -355,7 +355,7 @@ export const registerHost: ModuleRegisterFunction<FireflyRuntime> = async runtim
 
 ## Try it :rocket:
 
-Start the development servers using the dev script and navigate to the `/data` page. The page should render `{ "foo": "bar" }`.
+Start the application in a development environment using the `dev` script and navigate to the `/data` page. The page should render `{ "foo": "bar" }`.
 
 ### Troubleshoot issues
 

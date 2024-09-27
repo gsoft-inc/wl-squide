@@ -532,7 +532,7 @@ return (
 
 ## Try it :rocket:
 
-Start the development servers using the `dev` script. The homepage and the navigation items should render the english (`en-US`) resources. Then append `?language=fr-CA` to the URL. The homepage and the navigation items should now render the french (`fr-CA`) resources.
+Start the application in a development environment using the `dev` script. The homepage and the navigation items should render the english (`en-US`) resources. Then append `?language=fr-CA` to the URL. The homepage and the navigation items should now render the french (`fr-CA`) resources.
 
 ### Troubleshoot issues
 

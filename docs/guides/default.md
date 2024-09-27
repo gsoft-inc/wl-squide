@@ -16,6 +16,7 @@ expanded: true
 - [Override the host layout](./override-the-host-layout.md)
 - [Use modular tabs](./use-modular-tabs.md)
 - [Use feature flags](./use-feature-flags.md)
+- [Use environment variables](./use-environment-variables.md)
 - [Setup i18next](./setup-i18next.md)
 - [Develop a module in isolation](./develop-a-module-in-isolation.md)
 - [Override a React context](./override-a-react-context.md)

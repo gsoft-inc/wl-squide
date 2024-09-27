@@ -1,6 +1,9 @@
+import type { EnvironmentVariables } from "@squide/env-vars";
 import type { HttpHandler } from "msw";
-import { characterHandlers } from "./characterHandlers.ts";
+import { getRickAndMortyHandlers } from "./rickAndMortyHandlers.ts";
 
 // Must specify the return type, otherwise we get a TS2742: The inferred type cannot be named without a reference to X. This is likely not portable.
 // A type annotation is necessary.
-export const requestHandlers: HttpHandler[] = characterHandlers;
+export function getRequestHandlers(environmentVariables: EnvironmentVariables): HttpHandler[] {
+    return getRickAndMortyHandlers(environmentVariables);
+}

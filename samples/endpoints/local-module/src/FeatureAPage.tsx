@@ -1,4 +1,5 @@
 import { fetchJson, useTelemetryService } from "@endpoints/shared";
+import { useEnvironmentVariable } from "@squide/env-vars";
 import { useI18nextInstance } from "@squide/i18next";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -9,6 +10,7 @@ export function FeatureAPage() {
     const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
     const { t } = useTranslation("FeatureAPage", { i18n: i18nextInstance });
 
+    const featureApiBaseUrl = useEnvironmentVariable("featureApiBaseUrl");
     const telemetryService = useTelemetryService();
 
     useEffect(() => {
@@ -16,8 +18,8 @@ export function FeatureAPage() {
     }, [telemetryService]);
 
 
-    const { data } = useSuspenseQuery({ queryKey: ["/api/feature-a"], queryFn: () => {
-        return fetchJson("/api/feature-a");
+    const { data } = useSuspenseQuery({ queryKey: [`${featureApiBaseUrl}getFeatureA`], queryFn: () => {
+        return fetchJson(`${featureApiBaseUrl}getFeatureA`);
     } });
 
     return (

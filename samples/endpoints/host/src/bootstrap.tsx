@@ -1,6 +1,7 @@
 import { createI18NextPlugin } from "@endpoints/i18next";
 import { registerLocalModule } from "@endpoints/local-module";
 import { registerShell } from "@endpoints/shell";
+import { EnvironmentVariablesPlugin } from "@squide/env-vars";
 import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, registerRemoteModules, setMswAsReady } from "@squide/firefly";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
@@ -12,7 +13,10 @@ const consoleLogger = new ConsoleLogger();
 
 const runtime = new FireflyRuntime({
     useMsw: !!process.env.USE_MSW,
-    plugins: [x => createI18NextPlugin(x)],
+    plugins: [
+        x => createI18NextPlugin(x),
+        x => new EnvironmentVariablesPlugin(x)
+    ],
     loggers: [consoleLogger]
 });
 

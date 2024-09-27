@@ -1,4 +1,5 @@
 import { FeatureFlagsContext, SessionManagerContext, SubscriptionContext, TelemetryServiceContext, fetchJson, isApiError, type FeatureFlags, type Session, type Subscription, type TelemetryService } from "@endpoints/shared";
+import { useEnvironmentVariables } from "@squide/env-vars";
 import { AppRouter as FireflyAppRouter, useDeferredRegistrations, useIsBootstrapping, useLogger, useProtectedDataQueries, usePublicDataQueries } from "@squide/firefly";
 import { useChangeLanguage } from "@squide/i18next";
 import { useEffect, useMemo } from "react";
@@ -13,12 +14,13 @@ interface BootstrappingRouteProps {
 
 function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
     const logger = useLogger();
+    const environmentVariables = useEnvironmentVariables();
 
     const [featureFlags] = usePublicDataQueries([
         {
-            queryKey: ["/api/feature-flags"],
+            queryKey: [`${environmentVariables.featureFlagsApiBaseUrl}getAll`],
             queryFn: async () => {
-                const data = await fetchJson("/api/feature-flags");
+                const data = await fetchJson(`${environmentVariables.featureFlagsApiBaseUrl}getAll`);
 
                 return data as FeatureFlags;
             }
@@ -33,9 +35,9 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
 
     const [session, subscription] = useProtectedDataQueries([
         {
-            queryKey: ["/api/session"],
+            queryKey: [`${environmentVariables.sessionApiBaseUrl}getSession`],
             queryFn: async () => {
-                const data = await fetchJson("/api/session");
+                const data = await fetchJson(`${environmentVariables.sessionApiBaseUrl}getSession`);
 
                 const result: Session = {
                     user: {
@@ -49,9 +51,9 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
             }
         },
         {
-            queryKey: ["/api/subscription"],
+            queryKey: [`${environmentVariables.subscriptionApiBaseUrl}getSubscription`],
             queryFn: async () => {
-                const data = await fetchJson("/api/subscription");
+                const data = await fetchJson(`${environmentVariables.subscriptionApiBaseUrl}getSubscription`);
 
                 return data as Subscription;
             }

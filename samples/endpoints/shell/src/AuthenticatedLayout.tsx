@@ -1,4 +1,5 @@
 import { postJson, toSubscriptionStatusLabel, useSessionManager, useSubscription } from "@endpoints/shared";
+import { useEnvironmentVariable } from "@squide/env-vars";
 import { isNavigationLink, useLogger, useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { useI18nextInstance } from "@squide/i18next";
 import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
@@ -48,6 +49,10 @@ export function AuthenticatedLayout() {
     const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
     const { t } = useTranslation("AuthenticatedLayout", { i18n: i18nextInstance });
 
+    const authenticationApiBaseUrl = useEnvironmentVariable("authenticationApiBaseUrl");
+    const sessionApiBaseUrl = useEnvironmentVariable("sessionApiBaseUrl");
+    const featureFlagsApiBaseUrl = useEnvironmentVariable("featureFlagsApiBaseUrl");
+
     const logger = useLogger();
     const sessionManager = useSessionManager();
     const session = sessionManager?.getSession();
@@ -64,7 +69,7 @@ export function AuthenticatedLayout() {
     const handleDisconnect = useCallback((event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
-        postJson("/api/logout")
+        postJson(`${authenticationApiBaseUrl}logout`)
             .then(() => {
                 sessionManager?.clearSession();
 
@@ -75,34 +80,34 @@ export function AuthenticatedLayout() {
             .catch(() => {
                 throw new Error("An unknown error happened while disconnecting the user.");
             });
-    }, [logger, navigate, sessionManager]);
+    }, [logger, navigate, sessionManager, authenticationApiBaseUrl]);
 
     const handleUpdateSession = useCallback((event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
-        postJson("/api/update-session")
+        postJson(`${sessionApiBaseUrl}updateSession`)
             .then(() => {
                 logger.debug("[shell] Updated the user session.");
             });
-    }, [logger]);
+    }, [logger, sessionApiBaseUrl]);
 
     const handleShuffleFeatureFlags = useCallback((event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
-        postJson("/api/shuffle-feature-flags")
+        postJson(`${featureFlagsApiBaseUrl}shuffle`)
             .then(() => {
                 logger.debug("[shell] Shuffled the feature flags.");
             });
-    }, [logger]);
+    }, [logger, featureFlagsApiBaseUrl]);
 
     const handleDeactivateFeatureB = useCallback((event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
-        postJson("/api/deactivate-feature-b")
+        postJson(`${featureFlagsApiBaseUrl}deactivateFeatureB`)
             .then(() => {
                 logger.debug("[shell] Deactivated feature B.");
             });
-    }, [logger]);
+    }, [logger, featureFlagsApiBaseUrl]);
 
     const navigationItems = useNavigationItems();
     const renderedNavigationItems = useRenderedNavigationItems(navigationItems, renderItem, renderSection);

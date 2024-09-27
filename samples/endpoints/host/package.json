@@ -43,6 +43,7 @@
         "@endpoints/local-module": "workspace:*",
         "@endpoints/shared": "workspace:*",
         "@endpoints/shell": "workspace:*",
+        "@squide/env-vars": "workspace:*",
         "@squide/fakes": "workspace:*",
         "@squide/firefly": "workspace:*",
         "@squide/i18next": "workspace:*",

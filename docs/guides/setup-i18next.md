@@ -39,10 +39,10 @@ Then, update the host application boostrapping code to register an instance of t
 ```tsx !#13-22 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
+import { i18nextPlugin } from "@squide/i18next";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
 import { registerShell } from "@sample/shell";
-import { i18nextPlugin } from "@sample/i18next";
 
 const Remotes: RemoteDefinition[] = [
     { url: name: "remote1" }
@@ -532,7 +532,7 @@ return (
 
 ## Try it :rocket:
 
-Start the development servers using the `dev` script. The homepage and the navigation items should render the english (`en-US`) resources. Then append `?language=fr-CA` to the URL. The homepage and the navigation items should now render the french (`fr-CA`) resources.
+Start the application in a development environment using the `dev` script. The homepage and the navigation items should render the english (`en-US`) resources. Then append `?language=fr-CA` to the URL. The homepage and the navigation items should now render the french (`fr-CA`) resources.
 
 ### Troubleshoot issues
 

@@ -1,4 +1,5 @@
 import { fetchJson, useTelemetryService } from "@endpoints/shared";
+import { useEnvironmentVariable } from "@squide/env-vars";
 import { useI18nextInstance } from "@squide/i18next";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -9,14 +10,15 @@ export function FeatureBPage() {
     const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
     const { t } = useTranslation("FeatureBPage", { i18n: i18nextInstance });
 
+    const featureApiBaseUrl = useEnvironmentVariable("featureApiBaseUrl");
     const telemetryService = useTelemetryService();
 
     useEffect(() => {
         telemetryService?.track("Mounting FeatureBPage from remote-1.");
     }, [telemetryService]);
 
-    const { data } = useSuspenseQuery({ queryKey: ["/api/feature-b"], queryFn: () => {
-        return fetchJson("/api/feature-b");
+    const { data } = useSuspenseQuery({ queryKey: [`${featureApiBaseUrl}getFeatureB`], queryFn: () => {
+        return fetchJson(`${featureApiBaseUrl}getFeatureB`);
     } });
 
     return (

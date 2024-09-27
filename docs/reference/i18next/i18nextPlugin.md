@@ -31,7 +31,7 @@ import { i18nextPlugin } from "@squide/i18next";
 import { FireflyRuntime } from "@squide/firefly";
 
 const runtime = new FireflyRuntime({
-    plugins: [new i18nextPlugin(["en-US", "fr-CA"], "en-US", "language")]
+    plugins: [x => new i18nextPlugin(["en-US", "fr-CA"], "en-US", "language", undefined, runtime)]
 });
 ```
 

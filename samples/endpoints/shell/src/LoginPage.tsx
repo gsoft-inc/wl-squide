@@ -1,4 +1,5 @@
 import { isApiError, postJson } from "@endpoints/shared";
+import { useEnvironmentVariable } from "@squide/env-vars";
 import { useI18nextInstance } from "@squide/i18next";
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -12,6 +13,8 @@ export function LoginPage({ host }: LoginPageProps) {
     const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
     const { t } = useTranslation("LoginPage", { i18n: i18nextInstance });
 
+    const authenticationApiBaseUrl = useEnvironmentVariable("authenticationApiBaseUrl");
+
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState<string>();
@@ -23,7 +26,7 @@ export function LoginPage({ host }: LoginPageProps) {
         setIsBusy(true);
         setErrorMessage(undefined);
 
-        postJson("/api/login", { username, password })
+        postJson(`${authenticationApiBaseUrl}login`, { username, password })
             .then(() => {
                 setIsBusy(false);
 
@@ -44,7 +47,7 @@ export function LoginPage({ host }: LoginPageProps) {
                     throw error;
                 }
             });
-    }, [username, password, t]);
+    }, [username, password, t, authenticationApiBaseUrl]);
 
     const handleUserNameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setUserName(event.target.value);

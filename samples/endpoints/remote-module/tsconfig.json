@@ -8,6 +8,7 @@
             "@squide/webpack-configs": ["../../../packages/webpack-configs/src/index.ts"],
             "@squide/msw": ["../../../packages/msw/src/index.ts"],
             "@squide/i18next": ["../../../packages/i18next/src/index.ts"],
+            "@squide/env-vars": ["../../../packages/env-vars/src/index.ts"],
             "@squide/fakes": ["../../../packages/fakes/src/index.ts"],
             "@squide/firefly": ["../../../packages/firefly/src/index.ts"],
             "@squide/firefly-webpack-configs": ["../../../packages/firefly-webpack-configs/src/index.ts"],
@@ -17,5 +18,15 @@
             "@endpoints/i18next": ["../i18next/src/index.ts"]
         }
     },
+    "include": [
+        "src",
+        "types",
+        /**
+         * Since we are using module augmentation in the packages, and we use tsconfig paths to resolve the packages
+         * from this repo, we need to include the types folder in the packages to make sure the types are included
+         * in the build.
+        */
+        "../shell/types"
+    ],
     "exclude": ["dist", "node_modules"]
 }

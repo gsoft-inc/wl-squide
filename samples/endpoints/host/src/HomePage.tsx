@@ -1,4 +1,5 @@
 import { fetchJson } from "@endpoints/shared";
+import { useEnvironmentVariable } from "@squide/env-vars";
 import { useI18nextInstance } from "@squide/i18next";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Trans, useTranslation } from "react-i18next";
@@ -14,8 +15,10 @@ export function HomePage() {
     const i18nextInstance = useI18nextInstance(i18NextInstanceKey);
     const { t } = useTranslation("HomePage", { i18n: i18nextInstance });
 
-    const { data: characters } = useSuspenseQuery({ queryKey: ["/api/character/1,2"], queryFn: () => {
-        return fetchJson("/api/character/1,2");
+    const rickAndMortyApiBaseUrl = useEnvironmentVariable("rickAndMortyApiBaseUrl");
+
+    const { data: characters } = useSuspenseQuery({ queryKey: [`${rickAndMortyApiBaseUrl}character/1,2`], queryFn: () => {
+        return fetchJson(`${rickAndMortyApiBaseUrl}character/1,2`);
     } });
 
     return (

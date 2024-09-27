@@ -530,12 +530,50 @@ declare module "@squide/env-vars" {
 }
 ```
 
-Finally, update the module `tsconfig.json` to include the `types` folder:
+Then, update the module `tsconfig.json` to include the `types` folder:
 
 ```json !#3 shell/tsconfig.json
 {
     "extends": "@workleap/typescript-configs/web-application.json",
     "include": ["src", "types"],
+    "exclude": ["dist", "node_modules"]
+}
+```
+
+Finally, when [tsc](https://www.typescriptlang.org/docs/handbook/compiler-options.html) is linting the codebase, it expects every code library that augments the `EnvironmentVariables` interface to include its typings. To do this, add each code library's `types` folder to every projects' tsconfig.json file that depends on code libraries:
+
+```json !#6 host/tsconfig.json
+{
+    "extends": "@workleap/typescript-configs/web-application.json",
+    "include": [
+        "src",
+        "types"
+        "../shell/types"
+    ],
+    "exclude": ["dist", "node_modules"]
+}
+```
+
+```json !#6 local-module/tsconfig.json
+{
+    "extends": "@workleap/typescript-configs/library.json",
+    "include": [
+        "src",
+        "types"
+        "../shell/types"
+    ],
+    "exclude": ["dist", "node_modules"]
+}
+```
+
+```json !#6 remote-module/tsconfig.json
+{
+    "extends": "@workleap/typescript-configs/web-application.json",
+    "include": [
+        "src",
+        "types"
+        "../shell/types"
+    ],
     "exclude": ["dist", "node_modules"]
 }
 ```

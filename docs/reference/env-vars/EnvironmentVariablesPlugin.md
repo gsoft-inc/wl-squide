@@ -4,9 +4,6 @@ toc:
     depth: 2-3
 ---
 
-TODO: Something about Module Augmentation
-    -> Should probably be in a guide but it should be linked to from somewhere in this page.
-
 # EnvironmentVariablesPlugin
 
 A plugin to faciliate the usage of environment variables in a modular application.
@@ -22,6 +19,10 @@ const plugin = new EnvironmentVariablesPlugin()
 None
 
 ## Usage
+
+!!!info
+Make sure to [augment](../../guides/use-environment-variables.md#module-augmentation) the `EnvironmentVariables` TypeScript interface with the variables of your module.
+!!!
 
 ### Register the plugin
 
@@ -54,9 +55,7 @@ const plugin = runtime.getPlugin(EnvironmentVariablesPlugin.name) as Environment
 plugin.registerVariable("apiBaseUrl", "https://my-api.com");
 ```
 
-!!!info
-An environment variable with the same key can be registered multiple times (e.g. by multiple modules) as long as the value remains the same. If the value differs, an `Error` will be thrown.
-!!!
+> An environment variable with the same key can be registered multiple times (e.g., by multiple modules) as long as the value remains the same. If the value differs, an `Error` will be thrown.
 
 ### Register multiple environment variables at once
 

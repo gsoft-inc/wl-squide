@@ -1,7 +1,6 @@
 import { registerLayouts } from "@endpoints/layouts";
 import { getEnvironmentVariablesPlugin } from "@squide/env-vars";
 import { mergeDeferredRegistrations, ProtectedRoutes, PublicRoutes, type FireflyRuntime, type ModuleRegisterFunction } from "@squide/firefly";
-import { run } from "node:test";
 import { RootLayout } from "./RootLayout.tsx";
 import { initI18next } from "./i18next.ts";
 

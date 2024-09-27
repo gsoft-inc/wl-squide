@@ -19,6 +19,16 @@
             "@endpoints/local-module": ["../local-module/src/register.tsx"]
         }
     },
-    // "include": ["src", "types"],
+    "include": [
+        "src",
+        "types",
+        /**
+         * Since we are using module augmentation in the packages, and we use tsconfig paths to resolve the packages
+         * from this repo, we need to include the types folder in the packages to make sure the types are included
+         * in the build.
+        */
+        "../shell/types",
+        "../local-module/types",
+    ],
     "exclude": ["dist", "node_modules"]
 }

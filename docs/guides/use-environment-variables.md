@@ -466,6 +466,8 @@ export function registerShell(env: Environment) {
 }
 ```
 
+### Register variables
+
 Then, update the `registerShell` function to register the `apiBaseUrl` environment variable based on the provided `env` argument:
 
 ```ts !#41-44 shell/src/register.tsx
@@ -516,6 +518,8 @@ export function registerShell(env: Environment) {
     }
 }
 ```
+
+### Module augmentation
 
 Then, augment the `EnvironmentVariables` TypeScript interface to include the `apiBaseUrl` variable:
 

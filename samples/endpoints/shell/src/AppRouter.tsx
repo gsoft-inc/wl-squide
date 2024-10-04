@@ -1,6 +1,6 @@
-import { FeatureFlagsContext, SessionManagerContext, SubscriptionContext, TelemetryServiceContext, fetchJson, isApiError, type FeatureFlags, type Session, type Subscription, type TelemetryService } from "@endpoints/shared";
+import { FeatureFlagsContext, SessionManagerContext, SubscriptionContext, TelemetryServiceContext, UserIdTelemetryAttribute, UserPreferredLanguageTelemetryAttribute, fetchJson, isApiError, type FeatureFlags, type Session, type Subscription, type TelemetryService } from "@endpoints/shared";
 import { useEnvironmentVariables } from "@squide/env-vars";
-import { AppRouter as FireflyAppRouter, useDeferredRegistrations, useIsBootstrapping, useLogger, useProtectedDataQueries, usePublicDataQueries } from "@squide/firefly";
+import { AppRouter as FireflyAppRouter, useDeferredRegistrations, useIsBootstrapping, useLogger, useProtectedDataQueries, usePublicDataQueries, useTracker } from "@squide/firefly";
 import { useChangeLanguage } from "@squide/i18next";
 import { useEffect, useMemo } from "react";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
@@ -60,17 +60,24 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
         }
     ], error => isApiError(error) && error.status === 401);
 
+    const tracker = useTracker();
     const changeLanguage = useChangeLanguage();
 
     useEffect(() => {
         if (session) {
             logger.debug("[shell] %cSession has been fetched%c:", "color: white; background-color: green;", "", session);
 
+            // Update telemetry global attributes.
+            tracker.addAttributes({
+                [UserIdTelemetryAttribute]: session.user.id,
+                [UserPreferredLanguageTelemetryAttribute]: session.user.preferredLanguage
+            });
+
             // When the session has been retrieved, update the language to match the user
             // preferred language.
             changeLanguage(session.user.preferredLanguage);
         }
-    }, [session, changeLanguage, logger]);
+    }, [session, tracker, changeLanguage, logger]);
 
     useEffect(() => {
         if (subscription) {

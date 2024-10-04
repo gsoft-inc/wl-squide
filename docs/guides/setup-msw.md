@@ -119,7 +119,7 @@ const Remotes: RemoteDefinition[] = [
 
 const runtime = new FireflyRuntime({
     useMsw: !!process.env.USE_MSW,
-    loggers: [new ConsoleLogger()]
+    loggers: [x => new ConsoleLogger(x)]
 });
 
 await registerLocalModules([registerHost], runtime);

@@ -5,7 +5,7 @@ toc:
 
 # useLogger
 
-Retrieve a `RuntimeLogger` instance from the `FireflyRuntime` instance.
+Retrieve a `RuntimeLogger` instance from the `FireflyRuntime` instance. The returned logger will log messages to all registered [Logger](../logging/Logger.md) instances.
 
 ## Reference
 

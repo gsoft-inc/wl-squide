@@ -148,7 +148,7 @@ const Remotes: RemoteDefinition[] = [
 ];
 
 const runtime = new FireflyRuntime({
-    loggers: [new ConsoleLogger()]
+    loggers: [x => new ConsoleLogger(x)]
 });
 
 // Register the newly created shell module.
@@ -209,10 +209,10 @@ import { register as registerModule } from "./register.tsx";
 import { registerDev } from "./dev/register.tsx";
 import { registerShell } from "@sample/shell";
 
-// Services, loggers, etc... could be reuse through a
+// Loggers, trackers, etc... could be reuse through a
 // shared packages or faked when in isolation.
 const runtime = new FireflyRuntime({
-    loggers: [new ConsoleLogger()]
+    loggers: [x => new ConsoleLogger(x)]
 });
 
 // Registering the remote module as a static module because the "register" function 

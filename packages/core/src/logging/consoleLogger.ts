@@ -1,9 +1,12 @@
-import { LogLevel, type Logger } from "./logger.ts";
+import type { Runtime } from "../runtime/runtime.ts";
+import { LogLevel, Logger } from "./logger.ts";
 
-export class ConsoleLogger implements Logger {
+export class ConsoleLogger extends Logger {
     readonly #logLevel: LogLevel;
 
-    constructor(logLevel: LogLevel = LogLevel.debug) {
+    constructor(runtime: Runtime, logLevel: LogLevel = LogLevel.debug) {
+        super(ConsoleLogger.name, runtime);
+
         this.#logLevel = logLevel;
     }
 

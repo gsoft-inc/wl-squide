@@ -1,15 +1,20 @@
 import type { Logger } from "../logging/logger.ts";
 import { EventBus } from "../messaging/eventBus.ts";
 import type { Plugin } from "../plugins/plugin.ts";
+import type { Tracker } from "../tracking/tracker.ts";
 import { RuntimeLogger } from "./RuntimeLogger.ts";
+import { RuntimeTracker } from "./RuntimeTracker.ts";
 
 export type RuntimeMode = "development" | "production";
 
+export type LoggerFactory = (runtime: Runtime) => Logger;
+export type TrackerFactory = (runtime: Runtime) => Tracker;
 export type PluginFactory = (runtime: Runtime) => Plugin;
 
 export interface RuntimeOptions {
     mode?: RuntimeMode;
-    loggers?: Logger[];
+    loggers?: LoggerFactory[];
+    trackers?: TrackerFactory[];
     plugins?: PluginFactory[];
 }
 
@@ -29,12 +34,14 @@ export const RootMenuId = "root";
 export abstract class Runtime<TRoute = unknown, TNavigationItem = unknown> {
     protected _mode: RuntimeMode;
     protected readonly _logger: RuntimeLogger;
+    protected readonly _tracker: RuntimeTracker;
     protected readonly _eventBus: EventBus;
     protected readonly _plugins: Plugin[];
 
-    constructor({ mode = "development", loggers, plugins = [] }: RuntimeOptions = {}) {
+    constructor({ mode = "development", loggers, trackers, plugins = [] }: RuntimeOptions = {}) {
         this._mode = mode;
-        this._logger = new RuntimeLogger(loggers);
+        this._logger = new RuntimeLogger(loggers?.map(x => x(this)));
+        this._tracker = new RuntimeTracker(trackers?.map(x => x(this)));
         this._eventBus = new EventBus({ logger: this._logger });
 
         // It's important to instanciate the plugins once all the properties are set.
@@ -75,6 +82,10 @@ export abstract class Runtime<TRoute = unknown, TNavigationItem = unknown> {
 
     get logger() {
         return this._logger;
+    }
+
+    get tracker() {
+        return this._tracker;
     }
 
     get eventBus() {

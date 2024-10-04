@@ -1,12 +1,12 @@
 import { EventEmitter } from "eventemitter3";
-import type { Logger } from "../logging/logger.ts";
+import type { RuntimeLogger } from "../runtime/RuntimeLogger.ts";
 
 export type EventName = string | symbol;
 
 export type EventCallbackFunction<TPayload = unknown> = (data?: TPayload) => void;
 
 export interface EventBusOptions {
-    logger?: Logger;
+    logger?: RuntimeLogger;
 }
 
 export interface AddListenerOptions {
@@ -19,7 +19,7 @@ export interface RemoveListenerOptions {
 
 export class EventBus<TEventNames extends EventName = EventName, TPayload = unknown> {
     readonly #eventEmitter: EventEmitter;
-    #logger?: Logger;
+    #logger?: RuntimeLogger;
 
     constructor({ logger }: EventBusOptions = {}) {
         this.#eventEmitter = new EventEmitter();

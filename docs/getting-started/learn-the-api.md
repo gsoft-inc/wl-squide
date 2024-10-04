@@ -22,19 +22,19 @@ By default, the Runtime [mode](../reference/runtime/runtime-class.md#change-the-
 
 ## Logging
 
-Squide includes a built-in logging feature that integrates with the [FireflyRuntime](/reference/runtime/runtime-class.md) class and the [useLogger](/reference/runtime/useLogger.md) hook.
+Squide includes a built-in logging feature that integrates with the [FireflyRuntime](../reference/runtime/runtime-class.md) class and the [useLogger](../reference/runtime/useLogger.md) hook.
 
-First, register your own custom logger by implementing the [Logger](/reference/logging/Logger.md) interface or register Squide built-in [ConsoleLogger](/reference/logging/ConsoleLogger):
+First, register your own custom logger by implementing the [Logger](../reference/logging/Logger.md) interface or register Squide built-in [ConsoleLogger](../reference/logging/ConsoleLogger):
 
 ```ts host/src/bootstrap.tsx
 import { FireflyRuntime, ConsoleLogger, type LogLevel } from "@squide/firefly";
 
 const runtime = new FireflyRuntime({
-    loggers: [new ConsoleLogger(LogLevel.debug)]
+    loggers: [x => new ConsoleLogger(x, LogLevel.debug)]
 });
 ```
 
-Then, log entries from any parts of your modular application with the `useLogger` hook:
+Then, log entries from any parts of your modular application with the [useLogger](../reference/runtime/useLogger.md) hook:
 
 ```ts
 import { useLogger } from "@squide/firefly";
@@ -44,13 +44,23 @@ const logger = useLogger();
 logger.debug("Hello", { world: "!" });
 ```
 
-The logger is also available from the [FireflyRuntime](/reference/runtime/runtime-class.md#use-the-logger) instance.
+Or the [useLoggers](../reference/runtime/useLoggers.md) hook to target specific logger instances:
+
+```ts
+import { useLoggers, ConsoleLogger } from "@squide/firefly";
+
+const logger = useLoggers([ConsoleLogger.name]);
+
+logger.debug("Hello", { world: "!" });
+```
+
+The logger is also available from the [FireflyRuntime](../reference/runtime/runtime-class.md#log-a-message) instance.
 
 ## Messaging
 
-It's crucial that the parts of a modular application remains loosely coupled. To help with that, Squide offers a built-in [Event Bus](/reference/messaging/EventBus.md).
+It's crucial that the parts of a modular application remains loosely coupled. To help with that, Squide offers a built-in [Event Bus](../reference/messaging/EventBus.md).
 
-First, listen to an event with the [useEventBusListener](/reference/messaging/useEventBusListener.md) hook:
+First, listen to an event with the [useEventBusListener](../reference/messaging/useEventBusListener.md) hook:
 
 ```ts
 import { useCallback } from "react";
@@ -63,7 +73,7 @@ const handleFoo = useCallback((data, context) => {
 useEventBusListener("foo", handleFoo);
 ```
 
-Then, dispatch an event from anywhere with the [useEventBusDispatcher](/reference/messaging/useEventBusDispatcher.md) hook:
+Then, dispatch an event from anywhere with the [useEventBusDispatcher](../reference/messaging/useEventBusDispatcher.md) hook:
 
 ```ts
 import { useEventDispatcher } from "@squide/firefly";
@@ -75,7 +85,7 @@ dispatch("foo", "bar");
 
 You can use the event bus to enable various communication scenarios, such as notifying components of state changes, broadcasting messages across modules, or triggering actions based on specific events.
 
-The event bus is also available from the [FireflyRuntime](/reference/runtime/runtime-class.md#use-the-event-bus) instance.
+The event bus is also available from the [FireflyRuntime](../reference/runtime/runtime-class.md#use-the-event-bus) instance.
 
 ## Plugins
 
@@ -101,7 +111,7 @@ import { MyPlugin } from "@sample/my-plugin";
 const myPlugin = usePlugin(MyPlugin.name) as MyPlugin;
 ```
 
-A plugin can also be retrieved from the [FireflyRuntime](/reference/runtime/runtime-class.md#retrieve-a-plugin) instance.
+A plugin can also be retrieved from the [FireflyRuntime](../reference/runtime/runtime-class.md#retrieve-a-plugin) instance.
 
 > By default, the `FireflyRuntime` registers Squide's [MSW plugin](../guides/setup-msw.md). An optional [i18next plugin](../guides/setup-i18next.md) is available.
 

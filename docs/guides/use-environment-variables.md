@@ -98,7 +98,7 @@ const Remotes: RemoteDefinition[] = [
 
 const runtime = new FireflyRuntime({
     plugins: [x => new EnvironmentVariablesPlugin(x)],
-    loggers: [new ConsoleLogger()]
+    loggers: [x => new ConsoleLogger(x)]
 });
 
 await registerLocalModules([registerShell, registerHost], runtime);

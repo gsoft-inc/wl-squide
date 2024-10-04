@@ -10,7 +10,7 @@ import { registerDev } from "./register.tsx";
 // Create the shell runtime.
 // Services and loggers could be reuse through a shared packages or faked when in isolation.
 const runtime = new FireflyRuntime({
-    loggers: [new ConsoleLogger()]
+    loggers: [x => new ConsoleLogger(x)]
 });
 
 await registerLocalModules([registerShell(), registerLayouts(), registerDev, registerLocalModule], runtime);

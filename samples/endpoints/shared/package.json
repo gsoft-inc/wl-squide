@@ -19,6 +19,10 @@
         "build": "tsup --config ./tsup.build.ts"
     },
     "peerDependencies": {
+        "@honeycombio/opentelemetry-web": "*",
+        "@opentelemetry/api": "*",
+        "@opentelemetry/auto-instrumentations-web": "*",
+        "@opentelemetry/sdk-trace-base": "*",
         "@squide/fakes": "*",
         "@squide/firefly": "*",
         "react": "*",

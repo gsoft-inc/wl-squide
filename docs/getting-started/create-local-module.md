@@ -146,7 +146,7 @@ const Remotes: RemoteDefinition[] = [
 
 // Create the shell runtime.
 const runtime = new FireflyRuntime({
-    loggers: [new ConsoleLogger()]
+    loggers: [x => new ConsoleLogger(x)]
 });
 
 // Register the remote module.

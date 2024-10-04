@@ -59,7 +59,7 @@ const runtime = new FireflyRuntime({
         // Always detect the user language early on.
         i18nextPlugin.detectUserLanguage();
     }],
-    loggers: [new ConsoleLogger()]
+    loggers: [x => new ConsoleLogger(x)]
 });
 
 await registerLocalModules([registerShell, registerHost], runtime);

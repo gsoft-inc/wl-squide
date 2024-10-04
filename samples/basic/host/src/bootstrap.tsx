@@ -15,7 +15,7 @@ import { version } from "useless-lib";
 console.log("[basic-sample] host:", version);
 
 const runtime = new FireflyRuntime({
-    loggers: [new ConsoleLogger()]
+    loggers: [x => new ConsoleLogger(x)]
 });
 
 const context: AppContext = {

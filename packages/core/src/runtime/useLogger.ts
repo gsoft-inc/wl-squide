@@ -5,3 +5,9 @@ export function useLogger() {
 
     return runtime.logger;
 }
+
+export function useLoggers(names: string[]) {
+    const runtime = useRuntime();
+
+    return runtime.logger.use(names);
+}

@@ -1,4 +1,4 @@
-import type { Logger } from "@squide/firefly";
+import type { RuntimeLogger } from "@squide/firefly";
 import { createContext, useContext } from "react";
 
 export interface TelemetryService {
@@ -6,9 +6,9 @@ export interface TelemetryService {
 }
 
 export class LoggerTelemetryService implements TelemetryService {
-    #logger: Logger;
+    #logger: RuntimeLogger;
 
-    constructor(logger: Logger) {
+    constructor(logger: RuntimeLogger) {
         this.#logger = logger;
     }
 

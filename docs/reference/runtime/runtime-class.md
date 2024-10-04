@@ -48,7 +48,7 @@ const runtime = new FireflyRuntime(options?: { mode?, useMsw?, loggers?, plugins
 import { ConsoleLogger, FireflyRuntime } from "@squide/firefly";
 
 const runtime = new FireflyRuntime({
-    loggers: [new ConsoleLogger()]
+    loggers: [x => new ConsoleLogger(x)]
 });
 ```
 
@@ -484,12 +484,21 @@ runtime.registerRequestHandlers(requestHandlers);
 const requestHandlers = runtime.requestHandlers;
 ```
 
-### Use the logger
+### Log a message
 
 ```ts
 // Write a debug log entry.
 // If the runtime has been instanciated with multiple logger instances, every logger instance will be invoked.
 runtime.logger.debug("Hello!");
+```
+
+### Log a message to specific logger instances
+
+```ts
+// Write a debug log entry to the specified loggers.
+const logger = runtime.logger.use([ConsoleLogger.name]);
+
+logger.debug("Hello!");
 ```
 
 ### Use the event bus

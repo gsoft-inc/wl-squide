@@ -31,4 +31,10 @@ export class RuntimeLogger {
     critical(log: string, ...rest: unknown[]) {
         return this.#log(x => x.critical(log, ...rest));
     }
+
+    use(names: string[]) {
+        const activeLoggers = this.#loggers.filter(x => names.includes(x.name));
+
+        return new RuntimeLogger(activeLoggers);
+    }
 }

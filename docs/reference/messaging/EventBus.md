@@ -29,10 +29,10 @@ const eventBus = new EventBus(options?: { logger? })
 ### Create an event bus instance
 
 ```ts
-import { EventBus, ConsoleLogger } from "@squide/firefly";
+import { EventBus, RuntimeLogger } from "@squide/firefly";
 
 const eventBus = new EventBus({
-    logger: new ConsoleLogger()
+    logger: new RuntimeLogger([])
 });
 ```
 

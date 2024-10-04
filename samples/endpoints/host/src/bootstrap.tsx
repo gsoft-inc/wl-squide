@@ -1,5 +1,6 @@
 import { createI18NextPlugin } from "@endpoints/i18next";
 import { registerLocalModule } from "@endpoints/local-module";
+import { HoneycombTracker } from "@endpoints/shared";
 import { registerShell } from "@endpoints/shell";
 import { EnvironmentVariablesPlugin } from "@squide/env-vars";
 import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, registerRemoteModules, setMswAsReady } from "@squide/firefly";
@@ -9,15 +10,13 @@ import { Remotes } from "../remotes.js";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
 
-const consoleLogger = new ConsoleLogger();
-
 const runtime = new FireflyRuntime({
     useMsw: !!process.env.USE_MSW,
-    plugins: [
-        x => createI18NextPlugin(x),
-        x => new EnvironmentVariablesPlugin(x)
-    ],
-    loggers: [consoleLogger]
+    plugins: [x => createI18NextPlugin(x), x => new EnvironmentVariablesPlugin(x)],
+    loggers: [x => new ConsoleLogger(x)],
+    trackers: [x => new HoneycombTracker(x, "endpoints-sample", [/.+/g], {
+        apiKey: ""
+    })]
 });
 
 await registerLocalModules([registerShell({ host: "@endpoints/host" }), registerHost, registerLocalModule], runtime);
@@ -36,7 +35,7 @@ if (runtime.isMswEnabled) {
             setMswAsReady();
         })
         .catch((error: unknown) => {
-            consoleLogger.debug("[host-app] An error occured while starting MSW.", error);
+            runtime.logger.debug("[host-app] An error occured while starting MSW.", error);
         });
 }
 

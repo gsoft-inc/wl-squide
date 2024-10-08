@@ -23,50 +23,50 @@ export function HomePage() {
         return fetchJson(`${rickAndMortyApiBaseUrl}character/1,2`);
     } });
 
-    const tracker = useTracker();
+    // const tracker = useTracker();
 
-    useEffect(() => {
-        async function execute() {
-            const parentSpan = await tracker.startSpan("render-homepage");
+    // useEffect(() => {
+    //     async function execute() {
+    //         const parentSpan = await tracker.startSpan("render-homepage");
 
-            setTimeout(() => {
-                parentSpan.addEvent("event-1", {
-                    startTime: Date.now()
-                });
-            });
+    //         setTimeout(() => {
+    //             parentSpan.addEvent("event-1", {
+    //                 startTime: Date.now()
+    //             });
+    //         });
 
-            setTimeout(() => {
-                parentSpan.addEvent("event-2", {
-                    startTime: Date.now()
-                });
-            }, 15);
+    //         setTimeout(() => {
+    //             parentSpan.addEvent("event-2", {
+    //                 startTime: Date.now()
+    //             });
+    //         }, 15);
 
-            setTimeout(() => {
-                parentSpan.addEvent("event-3", {
-                    startTime: Date.now()
-                });
-            }, 30);
+    //         setTimeout(() => {
+    //             parentSpan.addEvent("event-3", {
+    //                 startTime: Date.now()
+    //             });
+    //         }, 30);
 
-            setTimeout(async () => {
-                const childSpan = await tracker.startChildSpan("child-span", parentSpan);
+    //         setTimeout(async () => {
+    //             const childSpan = await tracker.startChildSpan("child-span", parentSpan);
 
-                childSpan.addEvent("event-4", {
-                    startTime: Date.now()
-                });
+    //             childSpan.addEvent("event-4", {
+    //                 startTime: Date.now()
+    //             });
 
-                setTimeout(() => {
-                    childSpan.addEvent("event-5", {
-                        startTime: Date.now()
-                    });
+    //             setTimeout(() => {
+    //                 childSpan.addEvent("event-5", {
+    //                     startTime: Date.now()
+    //                 });
 
-                    childSpan.end();
-                    parentSpan.end();
-                }, 15);
-            }, 45);
-        }
+    //                 childSpan.end();
+    //                 parentSpan.end();
+    //             }, 15);
+    //         }, 45);
+    //     }
 
-        execute();
-    }, [tracker]);
+    //     execute();
+    // }, [tracker]);
 
     return (
         <div>

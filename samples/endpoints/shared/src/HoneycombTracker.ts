@@ -34,11 +34,11 @@ export class HoneycombTrackerSpan implements TrackerSpan {
         });
     }
 
-    addAttribute(key: string, attribute: TrackerAttributeValue) {
+    setAttribute(key: string, attribute: TrackerAttributeValue) {
         this.#span.setAttribute(key, attribute);
     }
 
-    addAttributes(attributes: TrackerAttributes) {
+    setAttributes(attributes: TrackerAttributes) {
         this.#span.setAttributes(attributes);
     }
 
@@ -66,13 +66,11 @@ class TrackerAttributesSpanProcessor implements SpanProcessor {
         return Promise.resolve();
     }
 
-    // TODO: throw an error if already exist
-    addAttribute(key: string, value: TrackerAttributeValue) {
+    setAttribute(key: string, value: TrackerAttributeValue) {
         this.#attributes[key] = value;
     }
 
-    // TODO: throw an error if a value already exist
-    addAttributes(attributes: TrackerAttributes) {
+    setAttributes(attributes: TrackerAttributes) {
         this.#attributes = {
             ...this.#attributes,
             ...attributes
@@ -89,6 +87,7 @@ export interface HoneycombTrackerOptions {
 export class HoneycombTracker extends Tracker {
     #trackerAttributedSpanProcessor?: TrackerAttributesSpanProcessor;
 
+    // TODO: add a namespace attribute? https://workleap.slack.com/archives/C02E9KPRQ7P/p1727440515594139
     constructor(runtime: Runtime, serviceName: string, apiServiceUrls: RegExp[], options: HoneycombTrackerOptions = {}) {
         super(HoneycombTracker.name, runtime);
 
@@ -117,18 +116,10 @@ export class HoneycombTracker extends Tracker {
             debug,
             serviceName,
             instrumentations: [getWebAutoInstrumentations({
-                // "@opentelemetry/instrumentation-xml-http-request": instrumentationOptions,
                 "@opentelemetry/instrumentation-fetch": instrumentationOptions,
                 "@opentelemetry/instrumentation-document-load": instrumentationOptions
-                // "@opentelemetry/instrumentation-user-interaction": {
-                //     enabled: true,
-                //     eventNames: ["click", "submit"]
-                // }
             })],
             spanProcessors: [this.#trackerAttributedSpanProcessor]
-            // resourceAttributes: {
-            //     "app.wl.member_id": user.id
-            // }
         });
 
         instance.start();
@@ -161,15 +152,15 @@ export class HoneycombTracker extends Tracker {
         return Promise.resolve(new HoneycombTrackerSpan(span));
     }
 
-    addAttribute(key: string, value: TrackerAttributeValue) {
+    setAttribute(key: string, value: TrackerAttributeValue) {
         if (this.#trackerAttributedSpanProcessor) {
-            this.#trackerAttributedSpanProcessor.addAttribute(key, value);
+            this.#trackerAttributedSpanProcessor.setAttribute(key, value);
         }
     }
 
-    addAttributes(attributes: TrackerAttributes) {
+    setAttributes(attributes: TrackerAttributes) {
         if (this.#trackerAttributedSpanProcessor) {
-            this.#trackerAttributedSpanProcessor.addAttributes(attributes);
+            this.#trackerAttributedSpanProcessor.setAttributes(attributes);
         }
     }
 

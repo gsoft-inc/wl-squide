@@ -68,7 +68,7 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
             logger.debug("[shell] %cSession has been fetched%c:", "color: white; background-color: green;", "", session);
 
             // Update telemetry global attributes.
-            tracker.addAttributes({
+            tracker.setAttributes({
                 [UserIdTelemetryAttribute]: session.user.id,
                 [UserPreferredLanguageTelemetryAttribute]: session.user.preferredLanguage
             });

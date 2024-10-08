@@ -8,6 +8,7 @@ export * from "./FireflyRuntime.tsx";
 export * from "./AppRouter.tsx";
 export * from "./AppRouterContext.ts";
 export * from "./AppRouterReducer.ts";
+
 export * from "./GlobalDataQueriesError.ts";
 export * from "./useCanFetchProtectedData.ts";
 export * from "./useCanFetchPublicData.ts";
@@ -22,4 +23,6 @@ export * from "./usePublicDataQueries.ts";
 export * from "./useRegisterDeferredRegistrations.ts";
 export * from "./useStrictRegistrationMode.ts";
 export * from "./useUpdateDeferredRegistrations.ts";
+
+export * from "./boostrap.ts";
 

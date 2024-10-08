@@ -28,25 +28,25 @@ export function EpisodesTab() {
         return fetchJson(`${rickAndMortyApiBaseUrl}episode/1,2`);
     } });
 
-    const tracker = useTracker();
+    // const tracker = useTracker();
 
-    useEffect(() => {
-        async function execute() {
-            const span = await tracker.startSpan("episodes-tab", {
-                startTime: Date.now()
-            });
+    // useEffect(() => {
+    //     async function execute() {
+    //         const span = await tracker.startSpan("episodes-tab", {
+    //             startTime: Date.now()
+    //         });
 
-            setTimeout(() => {
-                span.addEvent("event-1", {
-                    startTime: Date.now()
-                });
+    //         setTimeout(() => {
+    //             span.addEvent("event-1", {
+    //                 startTime: Date.now()
+    //             });
 
-                span.end();
-            }, 15);
-        }
+    //             span.end();
+    //         }, 15);
+    //     }
 
-        execute();
-    }, [tracker]);
+    //     execute();
+    // }, [tracker]);
 
     return (
         <div>

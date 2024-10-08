@@ -42,8 +42,8 @@ export interface TrackerSpan {
     end: (endTime?: TrackerTimeInput) => void;
     addEvent: (name: string, options?: TrackerAddEventOptions) => void;
     addError: (error: TrackerError, options?: TrackerAddErrorOptions) => void;
-    addAttribute: (key: string, attribute: TrackerAttributeValue) => void;
-    addAttributes: (attributes: TrackerAttributes) => void;
+    setAttribute: (key: string, attribute: TrackerAttributeValue) => void;
+    setAttributes: (attributes: TrackerAttributes) => void;
 }
 
 export interface TrackerStartSpanOptions {
@@ -73,6 +73,6 @@ export abstract class Tracker {
 
     abstract startSpan(name: string, options?: TrackerStartSpanOptions): Promise<TrackerSpan>;
     abstract startChildSpan(name: string, parent: TrackerSpan, options?: TrackerStartChildSpanOptions): Promise<TrackerSpan>;
-    abstract addAttribute(key: string, value: TrackerAttributeValue): void;
-    abstract addAttributes(attributes: TrackerAttributes): void;
+    abstract setAttribute(key: string, value: TrackerAttributeValue): void;
+    abstract setAttributes(attributes: TrackerAttributes): void;
 }

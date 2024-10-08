@@ -40,7 +40,7 @@
         "webpack-dev-server": ">=5.0.0"
     },
     "devDependencies": {
-        "@module-federation/enhanced": "0.6.6",
+        "@module-federation/enhanced": "0.6.9",
         "@swc/core": "1.7.26",
         "@swc/jest": "0.2.36",
         "@types/jest": "29.5.13",
@@ -54,7 +54,7 @@
         "ts-jest": "29.2.5",
         "tsup": "8.3.0",
         "typescript": "5.5.4",
-        "webpack": "5.94.0"
+        "webpack": "5.95.0"
     },
     "dependencies": {
         "@squide/webpack-configs": "workspace:*",

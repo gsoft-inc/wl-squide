@@ -1,5 +1,5 @@
 import { loadRemote as loadModuleFederationRemote } from "@module-federation/enhanced/runtime";
-import { isFunction, isNil, registerModule, type DeferredRegistrationFunction, type ModuleRegistrationError, type ModuleRegistrationStatus, type ModuleRegistrationStatusChangedListener, type ModuleRegistry, type RegisterModulesOptions, type Runtime, type RuntimeLogger } from "@squide/core";
+import { isFunction, isNil, registerModule, type DeferredRegistrationFunction, type ModuleRegistrationError, type ModuleRegistrationStatus, type ModuleRegistrationStatusChangedListener, type RegisterModulesOptions, type Runtime, type RuntimeLogger } from "@squide/core";
 import type { RemoteDefinition } from "./remoteDefinition.ts";
 
 const RemoteRegisterModuleName = "register";
@@ -205,7 +205,7 @@ export class RemoteModuleRegistry {
     }
 }
 
-let remoteModuleRegistry: ModuleRegistry | undefined;
+let remoteModuleRegistry: RemoteModuleRegistry | undefined;
 
 function getRemoteModuleRegistry() {
     if (!remoteModuleRegistry) {
@@ -216,7 +216,7 @@ function getRemoteModuleRegistry() {
 }
 
 // This function should only be used by tests.
-export function __setRemoteModuleRegistry(registry: ModuleRegistry) {
+export function __setRemoteModuleRegistry(registry: RemoteModuleRegistry) {
     remoteModuleRegistry = registry;
 }
 

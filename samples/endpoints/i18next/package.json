@@ -35,7 +35,7 @@
         "@workleap/tsup-configs": "3.0.6",
         "@workleap/typescript-configs": "3.0.2",
         "eslint": "8.57.0",
-        "nodemon": "3.1.6",
+        "nodemon": "3.1.7",
         "tsup": "8.3.0",
         "typescript": "5.5.4"
     },

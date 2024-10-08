@@ -21,12 +21,12 @@ export class RuntimeTrackerSpan implements TrackerSpan {
         Object.values(this.#instances).forEach(x => x.addError(error, options));
     }
 
-    addAttribute(key: string, attribute: TrackerAttributeValue) {
-        Object.values(this.#instances).forEach(x => x.addAttribute(key, attribute));
+    setAttribute(key: string, attribute: TrackerAttributeValue) {
+        Object.values(this.#instances).forEach(x => x.setAttribute(key, attribute));
     }
 
-    addAttributes(attributes: TrackerAttributes) {
-        Object.values(this.#instances).forEach(x => x.addAttributes(attributes));
+    setAttributes(attributes: TrackerAttributes) {
+        Object.values(this.#instances).forEach(x => x.setAttributes(attributes));
     }
 
     getInstance(key: string) {
@@ -84,12 +84,12 @@ export class RuntimeTracker {
         return new RuntimeTrackerSpan(asObject);
     }
 
-    addAttribute(key: string, value: TrackerAttributeValue) {
-        this.#trackers.forEach(x => x.addAttribute(key, value));
+    setAttribute(key: string, value: TrackerAttributeValue) {
+        this.#trackers.forEach(x => x.setAttribute(key, value));
     }
 
-    addAttributes(attributes: TrackerAttributes) {
-        this.#trackers.forEach(x => x.addAttributes(attributes));
+    setAttributes(attributes: TrackerAttributes) {
+        this.#trackers.forEach(x => x.setAttributes(attributes));
     }
 
     use(names: string[]) {

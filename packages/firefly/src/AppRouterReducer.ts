@@ -1,7 +1,8 @@
-import { addLocalModuleRegistrationStatusChangedListener, getLocalModuleRegistrationStatus, removeLocalModuleRegistrationStatusChangedListener, useLogger } from "@squide/core";
+import { addLocalModuleRegistrationStatusChangedListener, getLocalModuleRegistrationStatus, removeLocalModuleRegistrationStatusChangedListener, useEventBus, useLogger } from "@squide/core";
 import { addRemoteModuleRegistrationStatusChangedListener, areModulesReady, areModulesRegistered, getRemoteModuleRegistrationStatus, removeRemoteModuleRegistrationStatusChangedListener } from "@squide/module-federation";
 import { addMswStateChangedListener, isMswReady, removeMswStateChangedListener } from "@squide/msw";
 import { useCallback, useEffect, useMemo, useReducer, type Dispatch } from "react";
+import { isApplicationBootstrapping } from "./useIsBootstrapping.ts";
 
 export interface AppRouterState {
     waitForMsw: boolean;
@@ -31,21 +32,21 @@ export type AppRouterActionType =
 | "active-route-is-protected"
 | "is-unauthorized";
 
+export const ModulesRegisteredEvent = "squide-modules-registered";
+export const ModulesReadyEvent = "squide-modules-ready";
+export const MswReadyEvent = "squide-msw-ready";
+export const PublicDataReadyEvent = "squide-public-data-ready";
+export const ProtectedDataReadyEvent = "squide-protected-data-ready";
+export const PublicDataUpdatedEvent = "squide-public-data-updated";
+export const ProtectedDataUpdatedEvent = "squide-protected-data-updated";
+export const DeferredRegistrationsUpdatedEvent = "squide-deferred-registrations-updated";
+export const ApplicationBoostrappedEvent = "squide-app-boostrapped";
+
 export interface AppRouterAction {
     type: AppRouterActionType;
 }
 
 export type AppRouterDispatch = Dispatch<AppRouterAction>;
-
-function useVerboseDispatch(dispatch: AppRouterDispatch) {
-    const logger = useLogger();
-
-    return useCallback((action: AppRouterAction) => {
-        logger.debug("[squide] The following action has been dispatched to the AppRouter reducer:", action);
-
-        dispatch(action);
-    }, [dispatch, logger]);
-}
 
 function reducer(state: AppRouterState, action: AppRouterAction) {
     let newState = state;
@@ -203,6 +204,19 @@ export function useMswStatusDispatcher(isMswReadyValue: boolean, dispatch: AppRo
     }, [isMswReadyValue, dispatch, logger]);
 }
 
+export function useBootstrappingCompletedDispatcher(state: AppRouterState) {
+    const eventBus = useEventBus();
+
+    const areModulesRegisteredValue = state.areModulesRegistered;
+    const isBoostrapping = isApplicationBootstrapping(state);
+
+    useEffect(() => {
+        if (areModulesRegisteredValue && !isBoostrapping) {
+            eventBus.dispatch(ApplicationBoostrappedEvent);
+        }
+    }, [areModulesRegisteredValue, isBoostrapping, eventBus]);
+}
+
 let dispatchProxyFactory: ((reactDispatch: AppRouterDispatch) => AppRouterDispatch) | undefined;
 
 // This function should only be used by tests.
@@ -219,6 +233,18 @@ function useDispatchProxy(reactDispatch: AppRouterDispatch) {
     return useMemo(() => {
         return dispatchProxyFactory ? dispatchProxyFactory(reactDispatch) : reactDispatch;
     }, [reactDispatch]);
+}
+
+function useElevatedDispatch(reducerDispatch: AppRouterDispatch) {
+    const logger = useLogger();
+    const eventBus = useEventBus();
+
+    return useCallback((action: AppRouterAction) => {
+        logger.debug("[squide] The following action has been dispatched to the AppRouter reducer:", action);
+        eventBus.dispatch(`squide-${action.type}`);
+
+        reducerDispatch(action);
+    }, [reducerDispatch, logger, eventBus]);
 }
 
 export function useAppRouterReducer(waitForMsw: boolean, waitForPublicData: boolean, waitForProtectedData: boolean): [AppRouterState, AppRouterDispatch] {
@@ -245,10 +271,11 @@ export function useAppRouterReducer(waitForMsw: boolean, waitForPublicData: bool
     // The dispatch proxy is strictly an utility allowing tests to mock the useReducer dispatch function. It's easier
     // than mocking the import from React.
     const dispatchProxy = useDispatchProxy(reactDispatch);
-    const dispatch = useVerboseDispatch(dispatchProxy);
+    const dispatch = useElevatedDispatch(dispatchProxy);
 
     useModuleRegistrationStatusDispatcher(areModulesRegisteredValue, areModulesReadyValue, dispatch);
     useMswStatusDispatcher(isMswReadyValue, dispatch);
+    useBootstrappingCompletedDispatcher(state);
 
     return [state, dispatch];
 }

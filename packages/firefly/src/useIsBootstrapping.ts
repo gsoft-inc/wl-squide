@@ -1,6 +1,13 @@
 import { useAppRouterState } from "./AppRouterContext.ts";
+import { AppRouterState } from "./AppRouterReducer.ts";
 
 export function useIsBootstrapping() {
+    const state = useAppRouterState();
+
+    return isApplicationBootstrapping(state);
+}
+
+export function isApplicationBootstrapping(state: AppRouterState) {
     const {
         waitForMsw,
         waitForPublicData,
@@ -11,7 +18,7 @@ export function useIsBootstrapping() {
         isProtectedDataReady,
         isActiveRouteProtected,
         isUnauthorized
-    } = useAppRouterState();
+    } = state;
 
     const isAppReady = (
         !isUnauthorized

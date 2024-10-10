@@ -42,46 +42,30 @@ export class RuntimeTracker {
         this.#trackers = trackers.map(x => x);
     }
 
-    async startSpan(name: string, options?: TrackerStartSpanOptions) {
-        // Resolve the promises first because Array.reduce and promises requires weird typings.
-        // View https://j5cookie.medium.com/async-array-reduce-in-typescript-e116ba1f3578.
-        const instances = await Promise.all(this.#trackers.map(async x => ({
-            name: x.name,
-            span: await x.startSpan(name, options)
-        })));
-
-        const asObject = instances.reduce((acc, x) => {
-            acc[x.name] = x.span;
+    startSpan(name: string, options?: TrackerStartSpanOptions) {
+        const instances = this.#trackers.reduce((acc, x) => {
+            acc[x.name] = x.startSpan(name, options);
 
             return acc;
         }, {} as TrackerSpanInstances);
 
-        return new RuntimeTrackerSpan(asObject);
+        return new RuntimeTrackerSpan(instances);
     }
 
-    async startChildSpan(name: string, parent: RuntimeTrackerSpan, options?: TrackerStartChildSpanOptions) {
-        // Resolve the promises first because Array.reduce and promises requires weird typings.
-        // View https://j5cookie.medium.com/async-array-reduce-in-typescript-e116ba1f3578.
-        const instances = await Promise.all(this.#trackers.map(async x => {
+    startChildSpan(name: string, parent: RuntimeTrackerSpan, options?: TrackerStartChildSpanOptions) {
+        const instances = this.#trackers.reduce((acc, x) => {
             const parentInstance = parent.getInstance(x.name);
 
             if (!parentInstance) {
                 throw new Error(`[squide] Cannot start child span "${name}" because no parent instance for tracker ${x.name} has been registered. Did you start the parent span for the same tracker?`);
             }
 
-            return {
-                name: x.name,
-                span: await x.startChildSpan(name, parentInstance, options)
-            };
-        }));
-
-        const asObject = instances.reduce((acc, x) => {
-            acc[x.name] = x.span;
+            acc[x.name] = x.startChildSpan(name, parentInstance, options);
 
             return acc;
         }, {} as TrackerSpanInstances);
 
-        return new RuntimeTrackerSpan(asObject);
+        return new RuntimeTrackerSpan(instances);
     }
 
     setAttribute(key: string, value: TrackerAttributeValue) {

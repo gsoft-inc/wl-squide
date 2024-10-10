@@ -1,8 +1,12 @@
+import { useEventBus } from "@squide/core";
 import { useQueries, type QueriesOptions, type QueriesResults, type UseQueryResult } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef } from "react";
 import { useAppRouterDispatcher, useAppRouterState } from "./AppRouterContext.ts";
 import { GlobalDataQueriesError } from "./GlobalDataQueriesError.ts";
 import { useCanFetchProtectedData } from "./useCanFetchProtectedData.ts";
+
+export const ProtectedDataFetchStartedEvent = "squide-protected-data-fetch-started";
+export const ProtectedDataFetchFailedEvent = "squide-protected-data-fetch-failed";
 
 export type IsUnauthorizedErrorCallback = (error: unknown) => boolean;
 
@@ -13,6 +17,7 @@ type MapUseQueryResultToData<T> = { [K in keyof T]: T[K] extends UseQueryResult<
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOptions<T>, isUnauthorizedError: IsUnauthorizedErrorCallback): MapUseQueryResultToData<QueriesResults<T>> {
     const canFetchProtectedData = useCanFetchProtectedData();
+    const eventBus = useEventBus();
 
     const dispatch = useAppRouterDispatcher();
 
@@ -35,6 +40,12 @@ export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOp
         combine: combineResults
     });
 
+    useEffect(() => {
+        if (canFetchProtectedData) {
+            eventBus.dispatch(ProtectedDataFetchStartedEvent);
+        }
+    }, [canFetchProtectedData, eventBus]);
+
     const {
         isProtectedDataReady,
         isUnauthorized
@@ -50,10 +61,14 @@ export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOp
 
             // Otherwise, when a user is logged off, a refetch might throws a 401.
             if (!queriesErrors.every(x => isUnauthorizedError(x))) {
+                queriesErrors.forEach(x => {
+                    eventBus.dispatch(ProtectedDataFetchFailedEvent, x);
+                });
+
                 throw new GlobalDataQueriesError("[squide] Global protected data queries failed.", queriesErrors);
             }
         }
-    }, [hasErrors, queriesErrors, isProtectedDataReady, isUnauthorized, isUnauthorizedError, dispatch]);
+    }, [hasErrors, queriesErrors, isProtectedDataReady, isUnauthorized, isUnauthorizedError, dispatch, eventBus]);
 
     const isReadyRef = useRef(false);
 

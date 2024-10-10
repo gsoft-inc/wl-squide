@@ -3,6 +3,22 @@ import { isFunction } from "../shared/assertions.ts";
 import type { ModuleRegistrationError, ModuleRegistrationStatus, ModuleRegistrationStatusChangedListener, ModuleRegistry, RegisterModulesOptions } from "./moduleRegistry.ts";
 import { registerModule, type DeferredRegistrationFunction, type ModuleRegisterFunction } from "./registerModule.ts";
 
+export const LocalModuleRegistrationStartedEvent = "squide-local-module-registration-started";
+export const LocalModuleRegistrationCompletedEvent = "squide-local-module-registration-completed";
+export const LocalModuleRegistrationFailedEvent = "squide-local-module-registration-failed";
+
+export const LocalModuleDeferredRegistrationStartedEvent = "squide-local-module-deferred-registration-started";
+export const LocalModuleDeferredRegistrationCompletedEvent = "squide-local-module-deferred-registration-completed";
+export const LocalModuleDeferredRegistrationFailedEvent = "squide-local-module-deferred-registration-failed";
+
+export interface LocalModuleRegistrationStartedEventPayload {
+    moduleCount: number;
+}
+
+export interface LocalModuleDeferredRegistrationStartedEventPayload {
+    registrationCount: number;
+}
+
 interface DeferredRegistration<TData = unknown> {
     index: string;
     fct: DeferredRegistrationFunction<TData>;
@@ -25,6 +41,8 @@ export class LocalModuleRegistry implements ModuleRegistry {
 
         this.#setRegistrationStatus("registering-modules");
 
+        runtime.eventBus.dispatch(LocalModuleRegistrationStartedEvent, { moduleCount: registrationFunctions.length } satisfies LocalModuleRegistrationStartedEventPayload);
+
         await Promise.allSettled(registrationFunctions.map(async (x, index) => {
             runtime.logger.debug(`[squide] ${index + 1}/${registrationFunctions.length} Registering local module.`);
 
@@ -44,14 +62,22 @@ export class LocalModuleRegistry implements ModuleRegistry {
                 );
 
                 errors.push({
-                    error
+                    error: error as Error
                 });
             }
 
             runtime.logger.debug(`[squide] ${index + 1}/${registrationFunctions.length} Local module registration completed.`);
         }));
 
+        if (errors.length > 0) {
+            errors.forEach(x => {
+                runtime.eventBus.dispatch(LocalModuleRegistrationFailedEvent, x);
+            });
+        }
+
         this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "modules-registered" : "ready");
+
+        runtime.eventBus.dispatch(LocalModuleRegistrationCompletedEvent);
 
         return errors;
     }
@@ -74,6 +100,8 @@ export class LocalModuleRegistry implements ModuleRegistry {
 
         this.#setRegistrationStatus("registering-deferred-registration");
 
+        runtime.eventBus.dispatch(LocalModuleDeferredRegistrationStartedEvent, { registrationCount: this.#deferredRegistrations.length } satisfies LocalModuleDeferredRegistrationStartedEventPayload);
+
         await Promise.allSettled(this.#deferredRegistrations.map(async ({ index, fct: deferredRegister }) => {
             runtime.logger.debug(`[squide] ${index} Registering local module deferred registration.`, "Data:", data);
 
@@ -86,14 +114,22 @@ export class LocalModuleRegistry implements ModuleRegistry {
                 );
 
                 errors.push({
-                    error
+                    error: error as Error
                 });
             }
 
             runtime.logger.debug(`[squide] ${index} Registered local module deferred registration.`);
         }));
 
+        if (errors.length > 0) {
+            errors.forEach(x => {
+                runtime.eventBus.dispatch(LocalModuleDeferredRegistrationFailedEvent, x);
+            });
+        }
+
         this.#setRegistrationStatus("ready");
+
+        runtime.eventBus.dispatch(LocalModuleDeferredRegistrationCompletedEvent);
 
         return errors;
     }
@@ -117,7 +153,7 @@ export class LocalModuleRegistry implements ModuleRegistry {
                 );
 
                 errors.push({
-                    error
+                    error: error as Error
                 });
             }
 

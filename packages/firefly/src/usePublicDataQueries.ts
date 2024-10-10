@@ -1,8 +1,12 @@
+import { useEventBus } from "@squide/core";
 import { useQueries, type QueriesOptions, type QueriesResults, type UseQueryResult } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef } from "react";
 import { useAppRouterDispatcher } from "./AppRouterContext.ts";
 import { GlobalDataQueriesError } from "./GlobalDataQueriesError.ts";
 import { useCanFetchPublicData } from "./useCanFetchPublicData.ts";
+
+export const PublicDataFetchStartedEvent = "squide-public-data-fetch-started";
+export const PublicDataFetchFailedEvent = "squide-public-data-fetch-failed";
 
 // This converts an array of UseQueryResult to an array of the data type of each query result.
 // For more information, view: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-1.html#mapped-types-on-tuples-and-arrays.
@@ -11,6 +15,7 @@ type MapUseQueryResultToData<T> = { [K in keyof T]: T[K] extends UseQueryResult<
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function usePublicDataQueries<T extends Array<any>>(queries: QueriesOptions<T>): MapUseQueryResultToData<QueriesResults<T>> {
     const canFetchPublicData = useCanFetchPublicData();
+    const eventBus = useEventBus();
 
     const dispatch = useAppRouterDispatcher();
 
@@ -34,10 +39,20 @@ export function usePublicDataQueries<T extends Array<any>>(queries: QueriesOptio
     });
 
     useEffect(() => {
+        if (canFetchPublicData) {
+            eventBus.dispatch(PublicDataFetchStartedEvent);
+        }
+    }, [canFetchPublicData, eventBus]);
+
+    useEffect(() => {
         if (hasErrors) {
+            queriesErrors.forEach(x => {
+                eventBus.dispatch(PublicDataFetchFailedEvent, x);
+            });
+
             throw new GlobalDataQueriesError("[squide] Global public data queries failed.", queriesErrors);
         }
-    }, [hasErrors, queriesErrors]);
+    }, [hasErrors, queriesErrors, eventBus]);
 
     const isReadyRef = useRef(false);
 

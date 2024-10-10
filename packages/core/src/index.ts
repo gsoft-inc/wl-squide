@@ -8,6 +8,7 @@ export * from "./tracking/tracker.ts";
 export * from "./runtime/runtime.ts";
 export * from "./runtime/RuntimeContext.ts";
 export * from "./runtime/RuntimeLogger.ts";
+export * from "./runtime/RuntimeTracker.ts";
 export * from "./runtime/useEventBus.ts";
 export * from "./runtime/useLogger.ts";
 export * from "./runtime/usePlugin.ts";

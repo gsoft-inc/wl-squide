@@ -235,7 +235,7 @@ function useDispatchProxy(reactDispatch: AppRouterDispatch) {
     }, [reactDispatch]);
 }
 
-function useElevatedDispatch(reducerDispatch: AppRouterDispatch) {
+function useEnhancedDispatch(reducerDispatch: AppRouterDispatch) {
     const logger = useLogger();
     const eventBus = useEventBus();
 
@@ -271,7 +271,7 @@ export function useAppRouterReducer(waitForMsw: boolean, waitForPublicData: bool
     // The dispatch proxy is strictly an utility allowing tests to mock the useReducer dispatch function. It's easier
     // than mocking the import from React.
     const dispatchProxy = useDispatchProxy(reactDispatch);
-    const dispatch = useElevatedDispatch(dispatchProxy);
+    const dispatch = useEnhancedDispatch(dispatchProxy);
 
     useModuleRegistrationStatusDispatcher(areModulesRegisteredValue, areModulesReadyValue, dispatch);
     useMswStatusDispatcher(isMswReadyValue, dispatch);

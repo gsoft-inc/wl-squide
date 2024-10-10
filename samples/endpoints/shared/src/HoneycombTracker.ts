@@ -1,8 +1,10 @@
 import { HoneycombWebSDK } from "@honeycombio/opentelemetry-web";
-import { context as otelContext, trace as otelTrace, type Span, SpanStatusCode } from "@opentelemetry/api";
+import { context as otelContext, trace as otelTrace, type Span, SpanKind, SpanStatusCode } from "@opentelemetry/api";
 import { getWebAutoInstrumentations } from "@opentelemetry/auto-instrumentations-web";
 import type { SpanProcessor } from "@opentelemetry/sdk-trace-base";
 import { type Runtime, Tracker, type TrackerAddErrorOptions, type TrackerAddEventOptions, type TrackerAttributes, type TrackerAttributeValue, type TrackerError, type TrackerSpan, type TrackerStartChildSpanOptions, type TrackerStartSpanOptions, type TrackerTimeInput } from "@squide/firefly";
+
+export const TracerName = "@squide/honeycomb";
 
 export const UserIdTelemetryAttribute = "app.user_id";
 export const UserPreferredLanguageTelemetryAttribute = "app.user_prefered_language";
@@ -91,6 +93,7 @@ export class HoneycombTracker extends Tracker {
     constructor(runtime: Runtime, serviceName: string, apiServiceUrls: RegExp[], options: HoneycombTrackerOptions = {}) {
         super(HoneycombTracker.name, runtime);
 
+        // Defaults to the runtime mode.
         options.debug = options.debug ?? runtime.mode === "development";
 
         this.#initialize(serviceName, apiServiceUrls, options);
@@ -114,6 +117,7 @@ export class HoneycombTracker extends Tracker {
             endpoint: endpoint,
             apiKey,
             debug,
+            localVisualizations: debug,
             serviceName,
             instrumentations: [getWebAutoInstrumentations({
                 "@opentelemetry/instrumentation-fetch": instrumentationOptions,
@@ -128,12 +132,14 @@ export class HoneycombTracker extends Tracker {
     startSpan(name: string, options: TrackerStartSpanOptions = {}) {
         const { startTime, attributes } = options;
 
-        const span = this.tracer.startSpan(name, {
+        const span = this.getTracer().startSpan(name, {
+            // root: true,
+            kind: SpanKind.CLIENT,
             startTime,
             attributes
         });
 
-        return Promise.resolve(new HoneycombTrackerSpan(span));
+        return new HoneycombTrackerSpan(span);
     }
 
     startChildSpan(name: string, parent: HoneycombTrackerSpan, options: TrackerStartChildSpanOptions = {}) {
@@ -144,12 +150,13 @@ export class HoneycombTracker extends Tracker {
             parent.originalSpan
         );
 
-        const span = this.tracer.startSpan(name, {
+        const span = this.getTracer().startSpan(name, {
+            kind: SpanKind.CLIENT,
             startTime,
             attributes
         }, context);
 
-        return Promise.resolve(new HoneycombTrackerSpan(span));
+        return new HoneycombTrackerSpan(span);
     }
 
     setAttribute(key: string, value: TrackerAttributeValue) {
@@ -164,8 +171,8 @@ export class HoneycombTracker extends Tracker {
         }
     }
 
-    get tracer() {
+    getTracer(name = TracerName) {
         // The tracer name is used as the "library.name" attribute.
-        return otelTrace.getTracer("endpoints-shared");
+        return otelTrace.getTracer(name);
     }
 }

@@ -49,8 +49,6 @@ export interface TrackerSpan {
 export interface TrackerStartSpanOptions {
     startTime?: TrackerTimeInput;
     attributes?: TrackerAttributes;
-    // TODO: Not sure about this one.
-    // active?: boolean;
 }
 
 export interface TrackerStartChildSpanOptions {
@@ -71,8 +69,8 @@ export abstract class Tracker {
         return this.#name;
     }
 
-    abstract startSpan(name: string, options?: TrackerStartSpanOptions): Promise<TrackerSpan>;
-    abstract startChildSpan(name: string, parent: TrackerSpan, options?: TrackerStartChildSpanOptions): Promise<TrackerSpan>;
+    abstract startSpan(name: string, options?: TrackerStartSpanOptions): TrackerSpan;
+    abstract startChildSpan(name: string, parent: TrackerSpan, options?: TrackerStartChildSpanOptions): TrackerSpan;
     abstract setAttribute(key: string, value: TrackerAttributeValue): void;
     abstract setAttributes(attributes: TrackerAttributes): void;
 }

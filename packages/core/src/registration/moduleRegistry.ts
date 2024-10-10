@@ -10,7 +10,7 @@ export type ModuleRegistrationStatusChangedListener = () => void;
 
 export interface ModuleRegistrationError {
     // The registration error.
-    error: unknown;
+    error: Error;
 }
 
 export abstract class ModuleRegistry {

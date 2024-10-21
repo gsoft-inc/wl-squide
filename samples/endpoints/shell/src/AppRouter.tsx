@@ -1,4 +1,19 @@
-import { FeatureFlagsContext, SessionManagerContext, SubscriptionContext, TelemetryServiceContext, UserIdTelemetryAttribute, UserPreferredLanguageTelemetryAttribute, fetchJson, isApiError, type FeatureFlags, type Session, type Subscription, type TelemetryService } from "@endpoints/shared";
+import {
+    FeatureFlagsContext,
+    SessionManagerContext,
+    SubscriptionContext,
+    TelemetryServiceContext,
+    UserIdTelemetryAttribute,
+    UserPreferredLanguageTelemetryAttribute,
+    fetchJson,
+    isApiError,
+    type FeatureFlags,
+    type OgFeatureFlags,
+    type OtherFeatureFlags,
+    type Session,
+    type Subscription,
+    type TelemetryService
+} from "@endpoints/shared";
 import { useEnvironmentVariables } from "@squide/env-vars";
 import { AppRouter as FireflyAppRouter, useDeferredRegistrations, useIsBootstrapping, useLogger, useProtectedDataQueries, usePublicDataQueries, useTracker } from "@squide/firefly";
 import { useChangeLanguage } from "@squide/i18next";
@@ -16,16 +31,45 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
     const logger = useLogger();
     const environmentVariables = useEnvironmentVariables();
 
-    const [featureFlags] = usePublicDataQueries([
+    const [ogFeatureFlags, otherFeatureFlags] = usePublicDataQueries([
         {
             queryKey: [`${environmentVariables.featureFlagsApiBaseUrl}getAll`],
             queryFn: async () => {
                 const data = await fetchJson(`${environmentVariables.featureFlagsApiBaseUrl}getAll`);
 
-                return data as FeatureFlags;
+                return data as OgFeatureFlags;
+            }
+        },
+        {
+            // TODO: use an environment variable
+            queryKey: ["otherFeatureFlags"],
+            queryFn: async () => {
+                let data: OtherFeatureFlags = {
+                    otherA: false,
+                    otherB: false
+                };
+
+                try {
+                    data = (await fetchJson("http://localhost:1234/api/otherFeatureFlags")) as OtherFeatureFlags;
+                } catch (error: unknown) {
+                    if (isApiError(error)) {
+                        if (error.status !== 404) {
+                            throw error;
+                        }
+                    }
+                }
+
+                return data;
             }
         }
     ]);
+
+    const featureFlags = useMemo(() => {
+        return {
+            ...ogFeatureFlags,
+            ...otherFeatureFlags
+        } satisfies FeatureFlags;
+    }, [ogFeatureFlags, otherFeatureFlags]);
 
     useEffect(() => {
         if (featureFlags) {

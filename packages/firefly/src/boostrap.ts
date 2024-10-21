@@ -12,6 +12,7 @@ import {
     type ModuleRegisterFunction,
     type ModuleRegistrationError,
     type RegisterModulesOptions,
+    type Runtime,
     type RuntimeTrackerSpan
 } from "@squide/core";
 import {
@@ -87,14 +88,60 @@ export async function bootstrap<TRuntime extends FireflyRuntime = FireflyRuntime
     };
 }
 
+type DataFetchState = "none" | "fetching-data" | "public-data-ready" | "protected-data-ready" | "data-ready";
+
+export const GlobalDataFetchingStartedEvent = "squide-global-data-fetching-started";
+export const GlobalDataReadyEvent = "squide-global-data-ready";
+
+function registerDataFetchEventsReducer(runtime: Runtime) {
+    let dataFetchState: DataFetchState = "none";
+
+    runtime.eventBus.addListener(PublicDataFetchStartedEvent, () => {
+        if (dataFetchState === "none") {
+            dataFetchState = "fetching-data";
+
+            runtime.eventBus.dispatch(GlobalDataFetchingStartedEvent);
+        }
+    });
+
+    runtime.eventBus.addListener(PublicDataReadyEvent, () => {
+        if (dataFetchState === "fetching-data") {
+            dataFetchState = "public-data-ready";
+        } else if (dataFetchState === "protected-data-ready") {
+            dataFetchState = "data-ready";
+
+            runtime.eventBus.dispatch(GlobalDataReadyEvent);
+        }
+    });
+
+    runtime.eventBus.addListener(ProtectedDataFetchStartedEvent, () => {
+        if (dataFetchState === "none") {
+            dataFetchState = "fetching-data";
+
+            runtime.eventBus.dispatch(GlobalDataFetchingStartedEvent);
+        }
+    });
+
+    runtime.eventBus.addListener(ProtectedDataReadyEvent, () => {
+        if (dataFetchState === "fetching-data") {
+            dataFetchState = "protected-data-ready";
+        } else if (dataFetchState === "public-data-ready") {
+            dataFetchState = "data-ready";
+
+            runtime.eventBus.dispatch(GlobalDataReadyEvent);
+        }
+    });
+}
+
 function registerTrackingListeners(runtime: FireflyRuntime) {
     let bootstrappingSpan: RuntimeTrackerSpan;
     let localModuleRegistrationSpan: RuntimeTrackerSpan;
     let localModuleDeferredRegistrationSpan: RuntimeTrackerSpan;
     let remoteModuleRegistrationSpan: RuntimeTrackerSpan;
     let remoteModuleDeferredRegistrationSpan: RuntimeTrackerSpan;
-    let publicDataFetchSpan: RuntimeTrackerSpan;
-    let protectedDataFetchSpan: RuntimeTrackerSpan;
+    let dataFetchSpan: RuntimeTrackerSpan;
+
+    registerDataFetchEventsReducer(runtime);
 
     runtime.eventBus.addListener(ApplicationBootstrappingStartedEvent, () => {
         bootstrappingSpan = runtime.tracker.startSpan("squide-boostrapping");
@@ -107,7 +154,7 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     });
 
     runtime.eventBus.addListener(LocalModuleRegistrationStartedEvent, (payload: unknown) => {
-        localModuleRegistrationSpan = runtime.tracker.startChildSpan("local-module-registration", bootstrappingSpan, {
+        localModuleRegistrationSpan = bootstrappingSpan.startChildSpan("local-module-registration", {
             attributes: {
                 "app.module_count": (payload as LocalModuleRegistrationStartedEventPayload).moduleCount
             }
@@ -127,7 +174,7 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     });
 
     runtime.eventBus.addListener(LocalModuleDeferredRegistrationStartedEvent, (payload: unknown) => {
-        localModuleDeferredRegistrationSpan = runtime.tracker.startChildSpan("local-module-deferred-registration", bootstrappingSpan, {
+        localModuleDeferredRegistrationSpan = bootstrappingSpan.startChildSpan("local-module-deferred-registration", {
             attributes: {
                 "app.registration_count": (payload as LocalModuleDeferredRegistrationStartedEventPayload).registrationCount
             }
@@ -147,7 +194,7 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     });
 
     runtime.eventBus.addListener(RemoteModuleRegistrationStartedEvent, (payload: unknown) => {
-        remoteModuleRegistrationSpan = runtime.tracker.startChildSpan("remote-module-registration", bootstrappingSpan, {
+        remoteModuleRegistrationSpan = bootstrappingSpan.startChildSpan("remote-module-registration", {
             attributes: {
                 "app.remote_count": (payload as RemoteModuleRegistrationStartedEventPayload).remoteCount
             }
@@ -167,7 +214,7 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     });
 
     runtime.eventBus.addListener(RemoteModuleDeferredRegistrationStartedEvent, (payload: unknown) => {
-        remoteModuleDeferredRegistrationSpan = runtime.tracker.startChildSpan("remote-module-deferred-registration", bootstrappingSpan, {
+        remoteModuleDeferredRegistrationSpan = bootstrappingSpan.startChildSpan("remote-module-deferred-registration", {
             attributes: {
                 "app.registration_count": (payload as RemoteModuleDeferredRegistrationStartedEventPayload).registrationCount
             }
@@ -186,6 +233,28 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
         }
     });
 
+    runtime.eventBus.addListener(GlobalDataFetchingStartedEvent, () => {
+        dataFetchSpan = bootstrappingSpan.startActiveChildSpan("data-fetch");
+    });
+
+    runtime.eventBus.addListener(GlobalDataReadyEvent, () => {
+        if (dataFetchSpan) {
+            dataFetchSpan.end();
+        }
+    });
+
+    runtime.eventBus.addListener(PublicDataReadyEvent, () => {
+        if (dataFetchSpan) {
+            dataFetchSpan.addEvent("public-data-ready");
+        }
+    });
+
+    runtime.eventBus.addListener(ProtectedDataReadyEvent, () => {
+        if (dataFetchSpan) {
+            dataFetchSpan.addEvent("protected-data-ready");
+        }
+    });
+
     runtime.eventBus.addListener(ModulesRegisteredEvent, () => {
         bootstrappingSpan.addEvent("modules-registered");
     });
@@ -196,25 +265,5 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
 
     runtime.eventBus.addListener(MswReadyEvent, () => {
         bootstrappingSpan.addEvent("msw-ready");
-    });
-
-    runtime.eventBus.addListener(PublicDataFetchStartedEvent, () => {
-        publicDataFetchSpan = runtime.tracker.startChildSpan("public-data-fetch", bootstrappingSpan);
-    });
-
-    runtime.eventBus.addListener(PublicDataReadyEvent, () => {
-        if (publicDataFetchSpan) {
-            publicDataFetchSpan.end();
-        }
-    });
-
-    runtime.eventBus.addListener(ProtectedDataFetchStartedEvent, () => {
-        protectedDataFetchSpan = runtime.tracker.startChildSpan("protected-data-fetch", bootstrappingSpan);
-    });
-
-    runtime.eventBus.addListener(ProtectedDataReadyEvent, () => {
-        if (protectedDataFetchSpan) {
-            protectedDataFetchSpan.end();
-        }
     });
 }

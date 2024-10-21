@@ -1,12 +1,18 @@
-import type { Tracker, TrackerAddErrorOptions, TrackerAddEventOptions, TrackerAttributes, TrackerAttributeValue, TrackerError, TrackerSpan, TrackerStartChildSpanOptions, TrackerStartSpanOptions, TrackerTimeInput } from "../tracking/tracker.ts";
+import type { Tracker, TrackerAddErrorOptions, TrackerAddEventOptions, TrackerAttributes, TrackerAttributeValue, TrackerError, TrackerSpan, TrackerStartSpanOptions, TrackerTimeInput } from "../tracking/tracker.ts";
 
 export type TrackerSpanInstances = Record<string, TrackerSpan>;
 
 export class RuntimeTrackerSpan implements TrackerSpan {
+    readonly #name: string;
     readonly #instances: TrackerSpanInstances;
 
-    constructor(instances: TrackerSpanInstances) {
+    constructor(name: string, instances: TrackerSpanInstances) {
+        this.#name = name;
         this.#instances = instances;
+    }
+
+    get name() {
+        return this.#name;
     }
 
     end(endTime?: TrackerTimeInput) {
@@ -29,6 +35,26 @@ export class RuntimeTrackerSpan implements TrackerSpan {
         Object.values(this.#instances).forEach(x => x.setAttributes(attributes));
     }
 
+    startChildSpan(name: string, options?: TrackerStartSpanOptions) {
+        const instances = Object.values(this.#instances).reduce((acc, x) => {
+            acc[x.name] = x.startChildSpan(name, options);
+
+            return acc;
+        }, {} as TrackerSpanInstances);
+
+        return new RuntimeTrackerSpan(name, instances);
+    }
+
+    startActiveChildSpan(name: string, options?: TrackerStartSpanOptions) {
+        const instances = Object.values(this.#instances).reduce((acc, x) => {
+            acc[x.name] = x.startActiveChildSpan(name, options);
+
+            return acc;
+        }, {} as TrackerSpanInstances);
+
+        return new RuntimeTrackerSpan(name, instances);
+    }
+
     getInstance(key: string) {
         return this.#instances[key];
     }
@@ -49,23 +75,17 @@ export class RuntimeTracker {
             return acc;
         }, {} as TrackerSpanInstances);
 
-        return new RuntimeTrackerSpan(instances);
+        return new RuntimeTrackerSpan(name, instances);
     }
 
-    startChildSpan(name: string, parent: RuntimeTrackerSpan, options?: TrackerStartChildSpanOptions) {
+    startActiveSpan(name: string, options?: TrackerStartSpanOptions) {
         const instances = this.#trackers.reduce((acc, x) => {
-            const parentInstance = parent.getInstance(x.name);
-
-            if (!parentInstance) {
-                throw new Error(`[squide] Cannot start child span "${name}" because no parent instance for tracker ${x.name} has been registered. Did you start the parent span for the same tracker?`);
-            }
-
-            acc[x.name] = x.startChildSpan(name, parentInstance, options);
+            acc[x.name] = x.startActiveSpan(name, options);
 
             return acc;
         }, {} as TrackerSpanInstances);
 
-        return new RuntimeTrackerSpan(instances);
+        return new RuntimeTrackerSpan(name, instances);
     }
 
     setAttribute(key: string, value: TrackerAttributeValue) {

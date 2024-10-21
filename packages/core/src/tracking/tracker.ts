@@ -39,19 +39,17 @@ export interface TrackerExceptionWithName {
 export type TrackerError = TrackerExceptionWithCode | TrackerExceptionWithMessage | TrackerExceptionWithName;
 
 export interface TrackerSpan {
+    name: string;
     end: (endTime?: TrackerTimeInput) => void;
     addEvent: (name: string, options?: TrackerAddEventOptions) => void;
     addError: (error: TrackerError, options?: TrackerAddErrorOptions) => void;
     setAttribute: (key: string, attribute: TrackerAttributeValue) => void;
     setAttributes: (attributes: TrackerAttributes) => void;
+    startChildSpan: (name: string, options?: TrackerStartSpanOptions) => TrackerSpan;
+    startActiveChildSpan: (name: string, options?: TrackerStartSpanOptions) => TrackerSpan;
 }
 
 export interface TrackerStartSpanOptions {
-    startTime?: TrackerTimeInput;
-    attributes?: TrackerAttributes;
-}
-
-export interface TrackerStartChildSpanOptions {
     startTime?: TrackerTimeInput;
     attributes?: TrackerAttributes;
 }
@@ -70,7 +68,7 @@ export abstract class Tracker {
     }
 
     abstract startSpan(name: string, options?: TrackerStartSpanOptions): TrackerSpan;
-    abstract startChildSpan(name: string, parent: TrackerSpan, options?: TrackerStartChildSpanOptions): TrackerSpan;
+    abstract startActiveSpan(name: string, options?: TrackerStartSpanOptions): TrackerSpan;
     abstract setAttribute(key: string, value: TrackerAttributeValue): void;
     abstract setAttributes(attributes: TrackerAttributes): void;
 }

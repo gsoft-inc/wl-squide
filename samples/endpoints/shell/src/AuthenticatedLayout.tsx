@@ -1,7 +1,8 @@
 import { postJson, toSubscriptionStatusLabel, useSessionManager, useSubscription } from "@endpoints/shared";
-import { useEnvironmentVariable } from "@squide/env-vars";
+import { useEnvironmentVariable, useEnvironmentVariables } from "@squide/env-vars";
 import { isNavigationLink, useLogger, useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { useI18nextInstance } from "@squide/i18next";
+import { useQueryClient } from "@tanstack/react-query";
 import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, Outlet, useNavigate } from "react-router-dom";
@@ -64,6 +65,9 @@ export function AuthenticatedLayout() {
         notPaidLabel: t("notPaidLabel")
     });
 
+    const queryClient = useQueryClient();
+    const environmentVariables = useEnvironmentVariables();
+
     const navigate = useNavigate();
 
     const handleDisconnect = useCallback((event: MouseEvent<HTMLButtonElement>) => {
@@ -82,32 +86,38 @@ export function AuthenticatedLayout() {
             });
     }, [logger, navigate, sessionManager, authenticationApiBaseUrl]);
 
-    const handleUpdateSession = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+    const handleUpdateSession = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
-        postJson(`${sessionApiBaseUrl}updateSession`)
+        await postJson(`${sessionApiBaseUrl}updateSession`)
             .then(() => {
                 logger.debug("[shell] Updated the user session.");
             });
-    }, [logger, sessionApiBaseUrl]);
 
-    const handleShuffleFeatureFlags = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+        queryClient.refetchQueries({ queryKey: [`${environmentVariables.sessionApiBaseUrl}getSession`] });
+    }, [logger, sessionApiBaseUrl, queryClient, environmentVariables]);
+
+    const handleShuffleFeatureFlags = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
-        postJson(`${featureFlagsApiBaseUrl}shuffle`)
+        await postJson(`${featureFlagsApiBaseUrl}shuffle`)
             .then(() => {
                 logger.debug("[shell] Shuffled the feature flags.");
             });
-    }, [logger, featureFlagsApiBaseUrl]);
 
-    const handleDeactivateFeatureB = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+        queryClient.refetchQueries({ queryKey: [`${environmentVariables.featureFlagsApiBaseUrl}getAll`] });
+    }, [logger, featureFlagsApiBaseUrl, queryClient, environmentVariables]);
+
+    const handleDeactivateFeatureB = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
-        postJson(`${featureFlagsApiBaseUrl}deactivateFeatureB`)
+        await postJson(`${featureFlagsApiBaseUrl}deactivateFeatureB`)
             .then(() => {
                 logger.debug("[shell] Deactivated feature B.");
             });
-    }, [logger, featureFlagsApiBaseUrl]);
+
+        queryClient.refetchQueries({ queryKey: [`${environmentVariables.featureFlagsApiBaseUrl}getAll`] });
+    }, [logger, featureFlagsApiBaseUrl, queryClient, environmentVariables]);
 
     const navigationItems = useNavigationItems();
     const renderedNavigationItems = useRenderedNavigationItems(navigationItems, renderItem, renderSection);

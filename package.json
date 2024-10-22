@@ -6,7 +6,7 @@
     "type": "module",
     "license": "Apache-2.0",
     "scripts": {
-        "dev": "turbo run dev --filter=./packages/* --concurrency 11",
+        "dev": "turbo run dev --filter=./packages/* --concurrency 12",
         "build": "turbo run build --filter=./packages/*",
         "ci-build": "turbo run build --filter=./packages/* --cache-dir=node_modules/.cache/turbo",
         "pretest": "turbo run build --filter=./packages/*",

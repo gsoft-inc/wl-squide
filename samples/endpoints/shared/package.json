@@ -40,7 +40,9 @@
         "eslint": "8.57.0",
         "nodemon": "3.1.7",
         "tsup": "8.3.0",
-        "typescript": "5.5.4",
+        "typescript": "5.5.4"
+    },
+    "dependencies": {
         "uuid": "10.0.0"
     },
     "engines": {

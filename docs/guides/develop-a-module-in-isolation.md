@@ -209,7 +209,7 @@ import { register as registerModule } from "./register.tsx";
 import { registerDev } from "./dev/register.tsx";
 import { registerShell } from "@sample/shell";
 
-// Loggers, trackers, etc... could be reuse through a
+// Loggers, etc... could be reuse through a
 // shared packages or faked when in isolation.
 const runtime = new FireflyRuntime({
     loggers: [x => new ConsoleLogger(x)]

@@ -1,6 +1,6 @@
 import { useEventBus } from "@squide/core";
 import { useQueries, type QueriesOptions, type QueriesResults, type UseQueryResult } from "@tanstack/react-query";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { useAppRouterDispatcher, useAppRouterState } from "./AppRouterContext.ts";
 import { GlobalDataQueriesError } from "./GlobalDataQueriesError.ts";
 import { useCanFetchProtectedData } from "./useCanFetchProtectedData.ts";
@@ -21,6 +21,13 @@ export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOp
 
     const dispatch = useAppRouterDispatcher();
 
+    // TODO: Add a comment explaining why useLayoutEffect
+    useLayoutEffect(() => {
+        if (canFetchProtectedData) {
+            eventBus.dispatch(ProtectedDataFetchStartedEvent);
+        }
+    }, [canFetchProtectedData, eventBus]);
+
     const combineResults = useCallback((results: UseQueryResult<unknown, Error>[]) => {
         const errors = results.filter(x => x.error).map(x => x.error) as Error[];
 
@@ -40,11 +47,11 @@ export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOp
         combine: combineResults
     });
 
-    useEffect(() => {
-        if (canFetchProtectedData) {
-            eventBus.dispatch(ProtectedDataFetchStartedEvent);
-        }
-    }, [canFetchProtectedData, eventBus]);
+    // useEffect(() => {
+    //     if (canFetchProtectedData) {
+    //         eventBus.dispatch(ProtectedDataFetchStartedEvent);
+    //     }
+    // }, [canFetchProtectedData, eventBus]);
 
     const {
         isProtectedDataReady,

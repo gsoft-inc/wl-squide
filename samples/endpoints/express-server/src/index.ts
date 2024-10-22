@@ -7,12 +7,11 @@ import cors from "cors";
 import express, { type Request, type Response } from "express";
 
 const sdk = new NodeSDK({
-    // serviceName: "endpoints-sample-express",
     serviceName: "endpoints-sample",
     traceExporter: new OTLPTraceExporter({
         url: "https://api.honeycomb.io/v1/traces",
         headers: {
-            "x-honeycomb-team": "Twfeq1Fp3t6Xti0goZexZY"
+            "x-honeycomb-team": ""
         }
     }),
     instrumentations: [
@@ -27,7 +26,7 @@ const sdk = new NodeSDK({
 
 sdk.start();
 
-const tracer = trace.getTracer("toto-library");
+const tracer = trace.getTracer("express-server");
 
 const app = express();
 const port = 1234;

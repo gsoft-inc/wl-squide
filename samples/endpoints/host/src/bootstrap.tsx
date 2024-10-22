@@ -1,9 +1,9 @@
 import { createI18NextPlugin } from "@endpoints/i18next";
 import { registerLocalModule } from "@endpoints/local-module";
-import { HoneycombTracker } from "@endpoints/shared";
 import { registerShell } from "@endpoints/shell";
 import { EnvironmentVariablesPlugin } from "@squide/env-vars";
 import { ConsoleLogger, FireflyRuntime, RuntimeContext, bootstrap } from "@squide/firefly";
+import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Remotes } from "../remotes.js";
@@ -13,8 +13,11 @@ import { registerHost } from "./register.tsx";
 const runtime = new FireflyRuntime({
     useMsw: !!process.env.USE_MSW,
     plugins: [x => createI18NextPlugin(x), x => new EnvironmentVariablesPlugin(x)],
-    loggers: [x => new ConsoleLogger(x)],
-    trackers: [x => new HoneycombTracker(x, "endpoints-sample", [/.+/g], { apiKey: "" })]
+    loggers: [x => new ConsoleLogger(x)]
+});
+
+registerHoneycombInstrumentation(runtime, "endpoints-sample", [/http:\/\/localhost:1234\.*/], {
+    apiKey: ""
 });
 
 await bootstrap(runtime, {

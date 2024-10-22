@@ -3,8 +3,6 @@ import {
     SessionManagerContext,
     SubscriptionContext,
     TelemetryServiceContext,
-    UserIdTelemetryAttribute,
-    UserPreferredLanguageTelemetryAttribute,
     fetchJson,
     isApiError,
     type FeatureFlags,
@@ -15,7 +13,8 @@ import {
     type TelemetryService
 } from "@endpoints/shared";
 import { useEnvironmentVariables } from "@squide/env-vars";
-import { AppRouter as FireflyAppRouter, useDeferredRegistrations, useIsBootstrapping, useLogger, useProtectedDataQueries, usePublicDataQueries, useTracker } from "@squide/firefly";
+import { AppRouter as FireflyAppRouter, useDeferredRegistrations, useIsBootstrapping, useLogger, useProtectedDataQueries, usePublicDataQueries } from "@squide/firefly";
+import { setGlobalSpanAttributes } from "@squide/firefly-honeycomb";
 import { useChangeLanguage } from "@squide/i18next";
 import { useEffect, useMemo } from "react";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
@@ -104,7 +103,6 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
         }
     ], error => isApiError(error) && error.status === 401);
 
-    const tracker = useTracker();
     const changeLanguage = useChangeLanguage();
 
     useEffect(() => {
@@ -112,16 +110,16 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
             logger.debug("[shell] %cSession has been fetched%c:", "color: white; background-color: green;", "", session);
 
             // Update telemetry global attributes.
-            tracker.setAttributes({
-                [UserIdTelemetryAttribute]: session.user.id,
-                [UserPreferredLanguageTelemetryAttribute]: session.user.preferredLanguage
+            setGlobalSpanAttributes({
+                "app.user_id": session.user.id,
+                "app.user_prefered_language": session.user.preferredLanguage
             });
 
             // When the session has been retrieved, update the language to match the user
             // preferred language.
             changeLanguage(session.user.preferredLanguage);
         }
-    }, [session, tracker, changeLanguage, logger]);
+    }, [session, changeLanguage, logger]);
 
     useEffect(() => {
         if (subscription) {

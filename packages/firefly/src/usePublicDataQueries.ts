@@ -1,6 +1,6 @@
 import { useEventBus } from "@squide/core";
 import { useQueries, type QueriesOptions, type QueriesResults, type UseQueryResult } from "@tanstack/react-query";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { useAppRouterDispatcher } from "./AppRouterContext.ts";
 import { GlobalDataQueriesError } from "./GlobalDataQueriesError.ts";
 import { useCanFetchPublicData } from "./useCanFetchPublicData.ts";
@@ -18,6 +18,13 @@ export function usePublicDataQueries<T extends Array<any>>(queries: QueriesOptio
     const eventBus = useEventBus();
 
     const dispatch = useAppRouterDispatcher();
+
+    // TODO: Add a comment explaining why useLayoutEffect
+    useLayoutEffect(() => {
+        if (canFetchPublicData) {
+            eventBus.dispatch(PublicDataFetchStartedEvent);
+        }
+    }, [canFetchPublicData, eventBus]);
 
     const combineResults = useCallback((results: UseQueryResult<unknown, Error>[]) => {
         const errors = results.filter(x => x.error).map(x => x.error) as Error[];
@@ -38,11 +45,11 @@ export function usePublicDataQueries<T extends Array<any>>(queries: QueriesOptio
         combine: combineResults
     });
 
-    useEffect(() => {
-        if (canFetchPublicData) {
-            eventBus.dispatch(PublicDataFetchStartedEvent);
-        }
-    }, [canFetchPublicData, eventBus]);
+    // useEffect(() => {
+    //     if (canFetchPublicData) {
+    //         eventBus.dispatch(PublicDataFetchStartedEvent);
+    //     }
+    // }, [canFetchPublicData, eventBus]);
 
     useEffect(() => {
         if (hasErrors) {

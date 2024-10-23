@@ -86,7 +86,7 @@ export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOp
     }, [data, dispatch]);
 
     useEffect(() => {
-        if (isReady) {
+        if (isReady && !isReadyRef.current) {
             isReadyRef.current = true;
 
             dispatch({ type: "protected-data-ready" });

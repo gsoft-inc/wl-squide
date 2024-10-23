@@ -2,7 +2,11 @@
     "extends": "@workleap/typescript-configs/library.json",
     "compilerOptions": {
         "paths": {
-            "@squide/core": ["../core/src/index.ts"]
+            "@squide/core": ["../core/src/index.ts"],
+            "@squide/react-router": ["../react-router/src/index.ts"],
+            "@squide/module-federation": ["../module-federation/src/index.ts"],
+            "@squide/msw": ["../msw/src/index.ts"],
+            "@squide/firefly": ["../firefly/src/index.ts"]
         }
     },
     "exclude": ["dist", "node_modules"]

@@ -75,9 +75,10 @@ export class LocalModuleRegistry implements ModuleRegistry {
             });
         }
 
-        this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "modules-registered" : "ready");
-
+        // Must be dispatched before changing the registration status to ensure bootstrapping events sequencing.
         runtime.eventBus.dispatch(LocalModuleRegistrationCompletedEvent);
+
+        this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "modules-registered" : "ready");
 
         return errors;
     }
@@ -127,9 +128,10 @@ export class LocalModuleRegistry implements ModuleRegistry {
             });
         }
 
-        this.#setRegistrationStatus("ready");
-
+        // Must be dispatched before changing the registration status to ensure bootstrapping events sequencing.
         runtime.eventBus.dispatch(LocalModuleDeferredRegistrationCompletedEvent);
+
+        this.#setRegistrationStatus("ready");
 
         return errors;
     }

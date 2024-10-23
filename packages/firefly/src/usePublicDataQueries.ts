@@ -70,7 +70,7 @@ export function usePublicDataQueries<T extends Array<any>>(queries: QueriesOptio
     }, [data, dispatch]);
 
     useEffect(() => {
-        if (isReady) {
+        if (isReady && !isReadyRef.current) {
             isReadyRef.current = true;
 
             dispatch({ type: "public-data-ready" });

@@ -118,9 +118,10 @@ export class RemoteModuleRegistry {
             });
         }
 
-        this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "modules-registered" : "ready");
-
+        // Must be dispatched before changing the registration status to ensure bootstrapping events sequencing.
         runtime.eventBus.dispatch(RemoteModuleRegistrationCompletedEvent);
+
+        this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "modules-registered" : "ready");
 
         // After introducting the "setRegistrationStatus" method, TypeScript seems to think that the only possible
         // values for registrationStatus is "none" and now complains about the lack of overlapping between "none" and "ready".
@@ -180,10 +181,11 @@ export class RemoteModuleRegistry {
             });
         }
 
+        // Must be dispatched before changing the registration status to ensure bootstrapping events sequencing.
+        runtime.eventBus.dispatch(RemoteModuleDeferredRegistrationCompletedEvent);
+
         this.#setRegistrationStatus("ready");
         this.#logSharedScope(runtime.logger);
-
-        runtime.eventBus.dispatch(RemoteModuleDeferredRegistrationCompletedEvent);
 
         return errors;
     }

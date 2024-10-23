@@ -1,8 +1,9 @@
 import { addLocalModuleRegistrationStatusChangedListener, getLocalModuleRegistrationStatus, removeLocalModuleRegistrationStatusChangedListener, useEventBus, useLogger } from "@squide/core";
 import { addRemoteModuleRegistrationStatusChangedListener, areModulesReady, areModulesRegistered, getRemoteModuleRegistrationStatus, removeRemoteModuleRegistrationStatusChangedListener } from "@squide/module-federation";
 import { addMswStateChangedListener, isMswReady, removeMswStateChangedListener } from "@squide/msw";
-import { useCallback, useEffect, useMemo, useReducer, type Dispatch } from "react";
+import { useCallback, useEffect, useMemo, useReducer, useRef, type Dispatch } from "react";
 import { isApplicationBootstrapping } from "./useIsBootstrapping.ts";
+import { useRunOnce } from "./useRunOnce.ts";
 
 export interface AppRouterState {
     waitForMsw: boolean;
@@ -32,6 +33,8 @@ export type AppRouterActionType =
 | "active-route-is-protected"
 | "is-unauthorized";
 
+// The followings event const are a concatenation of "squide-" with AppRouterActionType.
+// They are dispatched by the useEnhancedReducerDispatch hook.
 export const ModulesRegisteredEvent = "squide-modules-registered";
 export const ModulesReadyEvent = "squide-modules-ready";
 export const MswReadyEvent = "squide-msw-ready";
@@ -229,13 +232,13 @@ export function __clearAppReducerDispatchProxy() {
     dispatchProxyFactory = undefined;
 }
 
-function useDispatchProxy(reactDispatch: AppRouterDispatch) {
+function useReducerDispatchProxy(reactDispatch: AppRouterDispatch) {
     return useMemo(() => {
         return dispatchProxyFactory ? dispatchProxyFactory(reactDispatch) : reactDispatch;
     }, [reactDispatch]);
 }
 
-function useEnhancedDispatch(reducerDispatch: AppRouterDispatch) {
+function useEnhancedReducerDispatch(reducerDispatch: AppRouterDispatch) {
     const logger = useLogger();
     const eventBus = useEventBus();
 
@@ -248,14 +251,44 @@ function useEnhancedDispatch(reducerDispatch: AppRouterDispatch) {
 }
 
 export function useAppRouterReducer(waitForMsw: boolean, waitForPublicData: boolean, waitForProtectedData: boolean): [AppRouterState, AppRouterDispatch] {
+    const areModulesInitiallyRegisteredRef = useRef(getAreModulesRegistered());
+    const areModulesInitiallyReadyRef = useRef(getAreModulesReady());
+    const isMswInitiallyReadyRef = useRef(isMswReady());
+
+    const eventBus = useEventBus();
+
+    // When modules are initially registered, the reducer action will never be dispatched, therefore the event bus event would not be dispatched as well.
+    // To ensure the bootstrapping events sequencing, the event is manually dispatched when the modules are initially registered.
+    useRunOnce(() => {
+        if (areModulesInitiallyRegisteredRef.current) {
+            eventBus.dispatch(ModulesRegisteredEvent);
+        }
+    });
+
+    // When modules are initially ready, the reducer action will never be dispatched, therefore the event bus event would not be dispatched as well.
+    // To ensure the bootstrapping events sequencing, the event is manually dispatched when the modules are initially ready.
+    useRunOnce(() => {
+        if (areModulesInitiallyReadyRef.current) {
+            eventBus.dispatch(ModulesReadyEvent);
+        }
+    });
+
+    // When MSW is initially ready, the reducer action will never be dispatched, therefore the event bus event would not be dispatched as well.
+    // To ensure the bootstrapping events sequencing, the event is manually dispatched when the MSW is initially ready.
+    useRunOnce(() => {
+        if (isMswInitiallyReadyRef.current) {
+            eventBus.dispatch(MswReadyEvent);
+        }
+    });
+
     const [state, reactDispatch] = useReducer(reducer, {
         waitForMsw,
         waitForPublicData,
         waitForProtectedData,
         // When the modules registration functions are awaited, the event listeners are registered after the modules are registered.
-        areModulesRegistered: getAreModulesRegistered(),
-        areModulesReady: getAreModulesReady(),
-        isMswReady: isMswReady(),
+        areModulesRegistered: areModulesInitiallyRegisteredRef.current,
+        areModulesReady: areModulesInitiallyReadyRef.current,
+        isMswReady: isMswInitiallyReadyRef.current,
         isPublicDataReady: false,
         isProtectedDataReady: false,
         isActiveRouteProtected: false,
@@ -270,8 +303,8 @@ export function useAppRouterReducer(waitForMsw: boolean, waitForPublicData: bool
 
     // The dispatch proxy is strictly an utility allowing tests to mock the useReducer dispatch function. It's easier
     // than mocking the import from React.
-    const dispatchProxy = useDispatchProxy(reactDispatch);
-    const dispatch = useEnhancedDispatch(dispatchProxy);
+    const dispatchProxy = useReducerDispatchProxy(reactDispatch);
+    const dispatch = useEnhancedReducerDispatch(dispatchProxy);
 
     useModuleRegistrationStatusDispatcher(areModulesRegisteredValue, areModulesReadyValue, dispatch);
     useMswStatusDispatcher(isMswReadyValue, dispatch);

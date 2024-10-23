@@ -21,8 +21,6 @@ export async function bootstrap<TRuntime extends FireflyRuntime = FireflyRuntime
         startMsw
     } = options;
 
-    // registerTrackingListeners(runtime);
-
     runtime.eventBus.dispatch(ApplicationBootstrappingStartedEvent);
 
     let localModuleErrors: ModuleRegistrationError[] = [];

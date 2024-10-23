@@ -33,12 +33,13 @@
     "peerDependencies": {
         "@honeycombio/opentelemetry-web": "*",
         "@opentelemetry/api": "*",
-        "@opentelemetry/auto-instrumentations-web": "*",
-        "@opentelemetry/instrumentation-fetch": "*"
+        "@opentelemetry/auto-instrumentations-web": "*"
     },
     "devDependencies": {
-        "@opentelemetry/sdk-trace-base": "1.26.0",
-        "@opentelemetry/sdk-trace-web": "1.26.0",
+        "@opentelemetry/instrumentation": "*",
+        "@opentelemetry/instrumentation-fetch": "*",
+        "@opentelemetry/instrumentation-document-load": "*",
+        "@opentelemetry/sdk-trace-web": "*",
         "@swc/core": "1.7.26",
         "@swc/jest": "0.2.36",
         "@testing-library/react": "16.0.1",

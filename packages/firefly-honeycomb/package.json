@@ -2,7 +2,7 @@
     "name": "@squide/firefly-honeycomb",
     "author": "Workleap",
     "version": "0.0.1",
-    "description": "Honeycomb support for the Squide firefly technology stack.",
+    "description": "Honeycomb instrumentation for the Squide firefly technology stack.",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",

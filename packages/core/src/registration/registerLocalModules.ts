@@ -75,7 +75,7 @@ export class LocalModuleRegistry implements ModuleRegistry {
             });
         }
 
-        // Must be dispatched before changing the registration status to ensure bootstrapping events sequencing.
+        // Must be dispatched before updating the registration status to ensure bootstrapping events sequencing.
         runtime.eventBus.dispatch(LocalModuleRegistrationCompletedEvent);
 
         this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "modules-registered" : "ready");
@@ -128,7 +128,7 @@ export class LocalModuleRegistry implements ModuleRegistry {
             });
         }
 
-        // Must be dispatched before changing the registration status to ensure bootstrapping events sequencing.
+        // Must be dispatched before updating the registration status to ensure bootstrapping events sequencing.
         runtime.eventBus.dispatch(LocalModuleDeferredRegistrationCompletedEvent);
 
         this.#setRegistrationStatus("ready");
@@ -186,7 +186,7 @@ export class LocalModuleRegistry implements ModuleRegistry {
     }
 }
 
-let localModuleRegistry: ModuleRegistry | undefined;
+let localModuleRegistry: LocalModuleRegistry | undefined;
 
 function getLocalModuleRegistry() {
     if (!localModuleRegistry) {
@@ -198,7 +198,7 @@ function getLocalModuleRegistry() {
 
 // This function should only be used by tests.
 export function __setLocalModuleRegistry(registry: ModuleRegistry) {
-    localModuleRegistry = registry;
+    localModuleRegistry = registry as LocalModuleRegistry;
 }
 
 // This function should only be used by tests.

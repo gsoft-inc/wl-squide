@@ -17,7 +17,8 @@ export interface ActiveSpan {
     instance: Span;
 }
 
-// https://github.com/open-telemetry/opentelemetry-js/issues/3558
+// Using a stack because we want a Last In First Out implementation for this.
+// https://github.com/open-telemetry/opentelemetry-js/issues/5084
 // https://github.com/open-telemetry/opentelemetry-js/issues/3558#issuecomment-1760680244
 class ActiveSpanStack {
     readonly #stack: ActiveSpan[] = [];

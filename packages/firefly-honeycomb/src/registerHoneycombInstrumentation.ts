@@ -1,16 +1,9 @@
-/*
-TODO:
-
-- Add configuration transformers
-- The protected data ready event is not traced
-
-*/
-
 import { HoneycombWebSDK } from "@honeycombio/opentelemetry-web";
 import type { Span } from "@opentelemetry/api";
 import { getWebAutoInstrumentations } from "@opentelemetry/auto-instrumentations-web";
 import type { Instrumentation } from "@opentelemetry/instrumentation";
-// import type { FetchInstrumentationConfig } from "@opentelemetry/instrumentation-fetch";
+import type { DocumentLoadInstrumentationConfig } from "@opentelemetry/instrumentation-document-load";
+import type { FetchInstrumentationConfig } from "@opentelemetry/instrumentation-fetch";
 import type { PropagateTraceHeaderCorsUrls, SpanProcessor } from "@opentelemetry/sdk-trace-web";
 import {
     ApplicationBoostrappedEvent,
@@ -40,26 +33,24 @@ import {
     type RemoteModuleDeferredRegistrationStartedEventPayload,
     type RemoteModuleRegistrationStartedEventPayload
 } from "@squide/firefly";
-import { globalAttributeSpanProcessor } from "./GlobalAttributeSpanProcessor.ts";
 import { createApplyCustomAttributesOnFetchSpanFunction, registerActiveSpanStack, type ActiveSpan } from "./activeSpan.ts";
+import { applyTransformers, type HoneycombSdkOptionsTransformer } from "./applyTransformers.ts";
+import { globalAttributeSpanProcessor } from "./globalAttributes.ts";
 import { getTracer } from "./tracer.ts";
 import { endActiveSpan, startActiveChildSpan, startChildSpan, startSpan, traceError } from "./utils.ts";
 
 type HoneycombSdkOptions = NonNullable<ConstructorParameters<typeof HoneycombWebSDK>[number]>;
 
-/*
-TODO:
+export type DefineInstrumentationFetchOptionsFunction = (defaultOptions: FetchInstrumentationConfig) => FetchInstrumentationConfig;
+export type DefineInstrumentationDocumentLoadOptionsFunction = (defaultOptions: DocumentLoadInstrumentationConfig) => DocumentLoadInstrumentationConfig;
 
-- Add fetch and document load options
-*/
+const defaultDefineInstrumentationFetchOptions: DefineInstrumentationFetchOptionsFunction = defaultOptions => {
+    return defaultOptions;
+};
 
-// export function defineInstrumentationFetchOptions(options: FetchInstrumentationConfig) {
-
-// }
-
-// export function defineInstrumentationDocumentLoadOptions(options: DocumentLoadInstrumentationConfig) {
-
-// }
+const defaultDefineInstrumentationDocumentLoadOptions: DefineInstrumentationDocumentLoadOptionsFunction = defaultOptions => {
+    return defaultOptions;
+};
 
 export interface RegisterHoneycombInstrumentationOptions {
     endpoint?: HoneycombSdkOptions["endpoint"];
@@ -68,7 +59,16 @@ export interface RegisterHoneycombInstrumentationOptions {
     serviceName?: HoneycombSdkOptions["serviceName"];
     instrumentations?: (Instrumentation | Instrumentation[])[];
     spanProcessors?: SpanProcessor[];
+    defineInstrumentationFetchOptions?: DefineInstrumentationFetchOptionsFunction;
+    defineInstrumentationDocumentLoadOptions?: DefineInstrumentationDocumentLoadOptionsFunction;
+    transformers?: HoneycombSdkOptionsTransformer[];
 }
+
+/*
+
+- Ability to disable document load instrumentation
+- Ability to disable fetch instrumentation
+*/
 
 export function registerHoneycombInstrumentation(runtime: FireflyRuntime, serviceName: NonNullable<HoneycombSdkOptions["serviceName"]>, apiServiceUrls: PropagateTraceHeaderCorsUrls, options: RegisterHoneycombInstrumentationOptions = {}) {
     const {
@@ -76,7 +76,10 @@ export function registerHoneycombInstrumentation(runtime: FireflyRuntime, servic
         apiKey,
         debug: debugValue,
         instrumentations = [],
-        spanProcessors = []
+        spanProcessors = [],
+        defineInstrumentationFetchOptions = defaultDefineInstrumentationFetchOptions,
+        defineInstrumentationDocumentLoadOptions = defaultDefineInstrumentationDocumentLoadOptions,
+        transformers = []
     } = options;
 
     // Defaults to the runtime mode.
@@ -91,25 +94,28 @@ export function registerHoneycombInstrumentation(runtime: FireflyRuntime, servic
         propagateTraceHeaderCorsUrls: apiServiceUrls
     };
 
-    const instance = new HoneycombWebSDK({
+    const sdkOptions = {
         endpoint: endpoint,
         apiKey,
         debug,
         localVisualizations: debug,
         serviceName,
         instrumentations: [getWebAutoInstrumentations({
-            "@opentelemetry/instrumentation-fetch": {
+            "@opentelemetry/instrumentation-fetch": defineInstrumentationFetchOptions({
                 ...instrumentationOptions,
                 applyCustomAttributesOnSpan: createApplyCustomAttributesOnFetchSpanFunction(runtime.logger)
-            },
-            "@opentelemetry/instrumentation-document-load": instrumentationOptions,
+            }),
+            "@opentelemetry/instrumentation-document-load": defineInstrumentationDocumentLoadOptions(instrumentationOptions),
             ...instrumentations
         })],
         spanProcessors: [
             globalAttributeSpanProcessor,
             ...spanProcessors
         ]
-    });
+    } satisfies HoneycombSdkOptions;
+
+    const transformedOptions = applyTransformers(sdkOptions, transformers);
+    const instance = new HoneycombWebSDK(transformedOptions);
 
     instance.start();
 

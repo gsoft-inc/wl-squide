@@ -1,5 +1,5 @@
 import { loadRemote as loadModuleFederationRemote } from "@module-federation/enhanced/runtime";
-import { isFunction, isNil, registerModule, type DeferredRegistrationFunction, type ModuleRegistrationError, type ModuleRegistrationStatus, type ModuleRegistrationStatusChangedListener, type RegisterModulesOptions, type Runtime, type RuntimeLogger } from "@squide/core";
+import { isFunction, isNil, registerModule, type DeferredRegistrationFunction, type ModuleRegistrationError, type ModuleRegistrationStatus, type ModuleRegistrationStatusChangedListener, type ModuleRegistry, type RegisterModulesOptions, type Runtime, type RuntimeLogger } from "@squide/core";
 import type { RemoteDefinition } from "./remoteDefinition.ts";
 
 export const RemoteModuleRegistrationStartedEvent = "squide-remote-module-registration-started";
@@ -36,7 +36,7 @@ export interface RemoteModuleRegistrationError extends ModuleRegistrationError {
     moduleName: string;
 }
 
-export class RemoteModuleRegistry {
+export class RemoteModuleRegistry implements ModuleRegistry {
     #registrationStatus: ModuleRegistrationStatus = "none";
 
     readonly #deferredRegistrations: DeferredRegistration[] = [];
@@ -118,7 +118,7 @@ export class RemoteModuleRegistry {
             });
         }
 
-        // Must be dispatched before changing the registration status to ensure bootstrapping events sequencing.
+        // Must be dispatched before updating the registration status to ensure bootstrapping events sequencing.
         runtime.eventBus.dispatch(RemoteModuleRegistrationCompletedEvent);
 
         this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "modules-registered" : "ready");
@@ -181,7 +181,7 @@ export class RemoteModuleRegistry {
             });
         }
 
-        // Must be dispatched before changing the registration status to ensure bootstrapping events sequencing.
+        // Must be dispatched before updating the registration status to ensure bootstrapping events sequencing.
         runtime.eventBus.dispatch(RemoteModuleDeferredRegistrationCompletedEvent);
 
         this.#setRegistrationStatus("ready");
@@ -253,8 +253,8 @@ function getRemoteModuleRegistry() {
 }
 
 // This function should only be used by tests.
-export function __setRemoteModuleRegistry(registry: RemoteModuleRegistry) {
-    remoteModuleRegistry = registry;
+export function __setRemoteModuleRegistry(registry: ModuleRegistry) {
+    remoteModuleRegistry = registry as RemoteModuleRegistry;
 }
 
 // This function should only be used by tests.

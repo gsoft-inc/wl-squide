@@ -1,7 +1,7 @@
 import type { Attributes, AttributeValue, Span } from "@opentelemetry/api";
 import type { SpanProcessor } from "@opentelemetry/sdk-trace-web";
 
-export class GlobalAttributeSpanProcessor implements SpanProcessor {
+class GlobalAttributeSpanProcessor implements SpanProcessor {
     #attributes: Attributes = {};
 
     onStart(span: Span) {

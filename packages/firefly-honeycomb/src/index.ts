@@ -1,5 +1,6 @@
 export { popActiveSpan, setActiveSpan } from "./activeSpan.ts";
-export { GlobalAttributeSpanProcessor, setGlobalSpanAttribute, setGlobalSpanAttributes } from "./GlobalAttributeSpanProcessor.ts";
+export type { HoneycombSdkOptions, HoneycombSdkOptionsTransformer } from "./applyTransformers.ts";
+export { setGlobalSpanAttribute, setGlobalSpanAttributes } from "./globalAttributes.ts";
 export * from "./registerHoneycombInstrumentation.ts";
 export * from "./utils.ts";
 

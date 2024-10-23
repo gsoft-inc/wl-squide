@@ -108,6 +108,7 @@ function registerEnvironmentVariables(runtime: FireflyRuntime) {
     plugin.registerVariables({
         authenticationApiBaseUrl: "/api/auth/",
         featureFlagsApiBaseUrl: "/api/flags/",
+        otherFeatureFlagsApiUrl: "/api/otherFeatureFlags",
         sessionApiBaseUrl: "/api/session/",
         subscriptionApiBaseUrl: "/api/subscription/"
     });

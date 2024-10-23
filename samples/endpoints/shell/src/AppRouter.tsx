@@ -40,8 +40,7 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
             }
         },
         {
-            // TODO: use an environment variable
-            queryKey: ["otherFeatureFlags"],
+            queryKey: [environmentVariables.otherFeatureFlagsApiUrl],
             queryFn: async () => {
                 let data: OtherFeatureFlags = {
                     otherA: false,
@@ -49,7 +48,7 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
                 };
 
                 try {
-                    data = (await fetchJson("http://localhost:1234/api/otherFeatureFlags")) as OtherFeatureFlags;
+                    data = (await fetchJson(environmentVariables.otherFeatureFlagsApiUrl)) as OtherFeatureFlags;
                 } catch (error: unknown) {
                     if (isApiError(error)) {
                         if (error.status !== 404) {

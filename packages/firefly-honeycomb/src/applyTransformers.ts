@@ -1,6 +1,5 @@
-import type { HoneycombWebSDK } from "@honeycombio/opentelemetry-web";
+import type { HoneycombSdkOptions } from "./honeycombTypes.ts";
 
-export type HoneycombSdkOptions = NonNullable<ConstructorParameters<typeof HoneycombWebSDK>[number]>;
 export type HoneycombSdkOptionsTransformer = (options: HoneycombSdkOptions) => HoneycombSdkOptions;
 
 // Must specify the return type, otherwise we get a TS4058: Return type of exported function has or is using name X from external module "XYZ" but cannot be named.

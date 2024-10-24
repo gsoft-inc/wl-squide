@@ -31,7 +31,9 @@ import {
     type FireflyRuntime,
     type LocalModuleDeferredRegistrationStartedEventPayload,
     type LocalModuleRegistrationStartedEventPayload,
+    type ModuleRegistrationError,
     type RemoteModuleDeferredRegistrationStartedEventPayload,
+    type RemoteModuleRegistrationError,
     type RemoteModuleRegistrationStartedEventPayload
 } from "@squide/firefly";
 import { createApplyCustomAttributesOnFetchSpanFunction, registerActiveSpanStack, type ActiveSpan } from "./activeSpan.ts";
@@ -68,7 +70,8 @@ export interface RegisterHoneycombInstrumentationOptions {
     transformers?: HoneycombSdkOptionsTransformer[];
 }
 
-export function getHoneycombSdkOptions(runtime: FireflyRuntime, serviceName: NonNullable<HoneycombSdkOptions["serviceName"]>, apiServiceUrls: PropagateTraceHeaderCorsUrls, options: RegisterHoneycombInstrumentationOptions = {}) {
+// Must specify the return type, otherwise we get a TS4058: Return type of exported function has or is using name X from external module "XYZ" but cannot be named.
+export function getHoneycombSdkOptions(runtime: FireflyRuntime, serviceName: NonNullable<HoneycombSdkOptions["serviceName"]>, apiServiceUrls: PropagateTraceHeaderCorsUrls, options: RegisterHoneycombInstrumentationOptions = {}): HoneycombSdkOptions {
     const {
         endpoint,
         apiKey,
@@ -137,7 +140,7 @@ export function getHoneycombSdkOptions(runtime: FireflyRuntime, serviceName: Non
         debug,
         localVisualizations: debug,
         serviceName,
-        // Watch out, getWebAutoInstrumentations enables by default all the supported instrumentation.
+        // Watch out, getWebAutoInstrumentations enables by default all the supported instrumentations.
         // It's important to disabled those that we don't want.
         instrumentations: [
             getWebAutoInstrumentations(autoInstrumentations),
@@ -252,8 +255,10 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     });
 
     runtime.eventBus.addListener(LocalModuleRegistrationFailedEvent, (payload: unknown) => {
+        const registrationError = payload as ModuleRegistrationError;
+
         if (localModuleRegistrationSpan) {
-            traceError(localModuleRegistrationSpan, payload as Error);
+            traceError(localModuleRegistrationSpan, registrationError.error);
         }
     });
 
@@ -278,8 +283,10 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     });
 
     runtime.eventBus.addListener(LocalModuleDeferredRegistrationFailedEvent, (payload: unknown) => {
+        const registrationError = payload as ModuleRegistrationError;
+
         if (localModuleDeferredRegistrationSpan) {
-            traceError(localModuleRegistrationSpan, payload as Error);
+            traceError(localModuleRegistrationSpan, registrationError.error);
         }
     });
 
@@ -304,8 +311,10 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     });
 
     runtime.eventBus.addListener(RemoteModuleRegistrationFailedEvent, (payload: unknown) => {
+        const registrationError = payload as RemoteModuleRegistrationError;
+
         if (remoteModuleRegistrationSpan) {
-            traceError(remoteModuleRegistrationSpan, payload as Error);
+            traceError(remoteModuleRegistrationSpan, registrationError.error);
         }
     });
 
@@ -330,8 +339,10 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     });
 
     runtime.eventBus.addListener(RemoteModuleDeferredRegistrationFailedEvent, (payload: unknown) => {
+        const registrationError = payload as RemoteModuleRegistrationError;
+
         if (remoteModuleDeferredRegistrationSpan) {
-            traceError(remoteModuleDeferredRegistrationSpan, payload as Error);
+            traceError(remoteModuleDeferredRegistrationSpan, registrationError.error);
         }
     });
 

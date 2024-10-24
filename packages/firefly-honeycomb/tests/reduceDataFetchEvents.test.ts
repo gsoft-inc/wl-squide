@@ -340,3 +340,45 @@ test("when the state is \"data-ready\" and ProtectedDataReadyEvent is handled, d
     expect(onPublicDataReady).toHaveBeenCalledTimes(1);
     expect(onProtectedDataReady).toHaveBeenCalledTimes(2);
 });
+
+test("events sequencing", () => {
+    const runtime = new FireflyRuntime();
+
+    const onDataFetchingStarted = jest.fn();
+    const onDataReady = jest.fn();
+    const onPublicDataFetchStarted = jest.fn();
+    const onPublicDataReady = jest.fn();
+    const onProtectedDataFetchStarted = jest.fn();
+    const onProtectedDataReady = jest.fn();
+
+    reduceDataFetchEvents(
+        runtime,
+        onDataFetchingStarted,
+        onDataReady,
+        onPublicDataFetchStarted,
+        onPublicDataReady,
+        onProtectedDataFetchStarted,
+        onProtectedDataReady
+    );
+
+    // Expected order is:
+    //    onDataFetchingStarted
+    //    onPublicDataFetchStarted
+    //    onProtectedDataFetchStarted
+    //    onPublicDataReady
+    //    onProtectedDataReady
+    //    onDataReady
+    runtime.eventBus.dispatch(PublicDataFetchStartedEvent);
+    runtime.eventBus.dispatch(ProtectedDataFetchStartedEvent);
+    runtime.eventBus.dispatch(PublicDataReadyEvent);
+    runtime.eventBus.dispatch(ProtectedDataReadyEvent);
+
+    expect(onDataFetchingStarted.mock.invocationCallOrder[0]).toBeLessThan(onPublicDataFetchStarted.mock.invocationCallOrder[0]);
+    expect(onDataFetchingStarted.mock.invocationCallOrder[0]).toBeLessThan(onProtectedDataFetchStarted.mock.invocationCallOrder[0]);
+
+    expect(onPublicDataFetchStarted.mock.invocationCallOrder[0]).toBeLessThan(onPublicDataReady.mock.invocationCallOrder[0]);
+    expect(onProtectedDataFetchStarted.mock.invocationCallOrder[0]).toBeLessThan(onProtectedDataReady.mock.invocationCallOrder[0]);
+
+    expect(onPublicDataReady.mock.invocationCallOrder[0]).toBeLessThan(onDataReady.mock.invocationCallOrder[0]);
+    expect(onProtectedDataReady.mock.invocationCallOrder[0]).toBeLessThan(onDataReady.mock.invocationCallOrder[0]);
+});

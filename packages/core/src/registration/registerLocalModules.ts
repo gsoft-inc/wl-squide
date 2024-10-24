@@ -37,48 +37,50 @@ export class LocalModuleRegistry implements ModuleRegistry {
             throw new Error("[squide] The registerLocalModules function can only be called once.");
         }
 
-        runtime.logger.debug(`[squide] Found ${registrationFunctions.length} local module${registrationFunctions.length !== 1 ? "s" : ""} to register.`);
+        if (registrationFunctions.length > 0) {
+            runtime.logger.debug(`[squide] Found ${registrationFunctions.length} local module${registrationFunctions.length !== 1 ? "s" : ""} to register.`);
 
-        this.#setRegistrationStatus("registering-modules");
+            this.#setRegistrationStatus("registering-modules");
 
-        runtime.eventBus.dispatch(LocalModuleRegistrationStartedEvent, { moduleCount: registrationFunctions.length } satisfies LocalModuleRegistrationStartedEventPayload);
+            runtime.eventBus.dispatch(LocalModuleRegistrationStartedEvent, { moduleCount: registrationFunctions.length } satisfies LocalModuleRegistrationStartedEventPayload);
 
-        await Promise.allSettled(registrationFunctions.map(async (x, index) => {
-            runtime.logger.debug(`[squide] ${index + 1}/${registrationFunctions.length} Registering local module.`);
+            await Promise.allSettled(registrationFunctions.map(async (x, index) => {
+                runtime.logger.debug(`[squide] ${index + 1}/${registrationFunctions.length} Registering local module.`);
 
-            try {
-                const optionalDeferredRegistration = await registerModule(x as ModuleRegisterFunction<Runtime, TContext, TData>, runtime, context);
+                try {
+                    const optionalDeferredRegistration = await registerModule(x as ModuleRegisterFunction<Runtime, TContext, TData>, runtime, context);
 
-                if (isFunction(optionalDeferredRegistration)) {
-                    this.#deferredRegistrations.push({
-                        index: `${index + 1}/${registrationFunctions.length}`,
-                        fct: optionalDeferredRegistration as DeferredRegistrationFunction
+                    if (isFunction(optionalDeferredRegistration)) {
+                        this.#deferredRegistrations.push({
+                            index: `${index + 1}/${registrationFunctions.length}`,
+                            fct: optionalDeferredRegistration as DeferredRegistrationFunction
+                        });
+                    }
+                } catch (error: unknown) {
+                    runtime.logger.error(
+                        `[squide] ${index + 1}/${registrationFunctions.length} An error occured while registering a local module.`,
+                        error
+                    );
+
+                    errors.push({
+                        error: error as Error
                     });
                 }
-            } catch (error: unknown) {
-                runtime.logger.error(
-                    `[squide] ${index + 1}/${registrationFunctions.length} An error occured while registering a local module.`,
-                    error
-                );
 
-                errors.push({
-                    error: error as Error
+                runtime.logger.debug(`[squide] ${index + 1}/${registrationFunctions.length} Local module registration completed.`);
+            }));
+
+            if (errors.length > 0) {
+                errors.forEach(x => {
+                    runtime.eventBus.dispatch(LocalModuleRegistrationFailedEvent, x);
                 });
             }
 
-            runtime.logger.debug(`[squide] ${index + 1}/${registrationFunctions.length} Local module registration completed.`);
-        }));
+            // Must be dispatched before updating the registration status to ensure bootstrapping events sequencing.
+            runtime.eventBus.dispatch(LocalModuleRegistrationCompletedEvent);
 
-        if (errors.length > 0) {
-            errors.forEach(x => {
-                runtime.eventBus.dispatch(LocalModuleRegistrationFailedEvent, x);
-            });
+            this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "modules-registered" : "ready");
         }
-
-        // Must be dispatched before updating the registration status to ensure bootstrapping events sequencing.
-        runtime.eventBus.dispatch(LocalModuleRegistrationCompletedEvent);
-
-        this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "modules-registered" : "ready");
 
         return errors;
     }

@@ -67,68 +67,70 @@ export class RemoteModuleRegistry implements ModuleRegistry {
             throw new Error("[squide] The registerRemoteModules function can only be called once.");
         }
 
-        runtime.logger.debug(`[squide] Found ${remotes.length} remote module${remotes.length !== 1 ? "s" : ""} to register.`);
+        if (remotes.length > 0) {
+            runtime.logger.debug(`[squide] Found ${remotes.length} remote module${remotes.length !== 1 ? "s" : ""} to register.`);
 
-        this.#setRegistrationStatus("registering-modules");
+            this.#setRegistrationStatus("registering-modules");
 
-        runtime.eventBus.dispatch(RemoteModuleRegistrationStartedEvent, { remoteCount: remotes.length } satisfies RemoteModuleRegistrationStartedEventPayload);
+            runtime.eventBus.dispatch(RemoteModuleRegistrationStartedEvent, { remoteCount: remotes.length } satisfies RemoteModuleRegistrationStartedEventPayload);
 
-        await Promise.allSettled(remotes.map(async (x, index) => {
-            const remoteName = x.name;
+            await Promise.allSettled(remotes.map(async (x, index) => {
+                const remoteName = x.name;
 
-            try {
-                runtime.logger.debug(`[squide] ${index + 1}/${remotes.length} Loading module "${RemoteRegisterModuleName}" of remote "${remoteName}".`);
+                try {
+                    runtime.logger.debug(`[squide] ${index + 1}/${remotes.length} Loading module "${RemoteRegisterModuleName}" of remote "${remoteName}".`);
 
-                const module = await this.#loadRemote(remoteName, RemoteRegisterModuleName);
+                    const module = await this.#loadRemote(remoteName, RemoteRegisterModuleName);
 
-                if (isNil(module.register)) {
-                    throw new Error(`[squide] A "register" function is not available for module "${RemoteRegisterModuleName}" of remote "${remoteName}". Make sure your remote "./register.[js,jsx,ts.tsx]" file export a function named "register".`);
-                }
+                    if (isNil(module.register)) {
+                        throw new Error(`[squide] A "register" function is not available for module "${RemoteRegisterModuleName}" of remote "${remoteName}". Make sure your remote "./register.[js,jsx,ts.tsx]" file export a function named "register".`);
+                    }
 
-                runtime.logger.debug(`[squide] ${index + 1}/${remotes.length} Registering module "${RemoteRegisterModuleName}" of remote "${remoteName}".`);
+                    runtime.logger.debug(`[squide] ${index + 1}/${remotes.length} Registering module "${RemoteRegisterModuleName}" of remote "${remoteName}".`);
 
-                const optionalDeferredRegistration = await registerModule<TRuntime, TContext, TData>(module.register, runtime, context);
+                    const optionalDeferredRegistration = await registerModule<TRuntime, TContext, TData>(module.register, runtime, context);
 
-                if (isFunction(optionalDeferredRegistration)) {
-                    this.#deferredRegistrations.push({
-                        remoteName: x.name,
-                        index: `${index + 1}/${remotes.length}`,
-                        fct: optionalDeferredRegistration as DeferredRegistrationFunction<unknown>
+                    if (isFunction(optionalDeferredRegistration)) {
+                        this.#deferredRegistrations.push({
+                            remoteName: x.name,
+                            index: `${index + 1}/${remotes.length}`,
+                            fct: optionalDeferredRegistration as DeferredRegistrationFunction<unknown>
+                        });
+                    }
+
+                    runtime.logger.debug(`[squide] ${index + 1}/${remotes.length} The registration of the remote "${remoteName}" is completed.`);
+                } catch (error: unknown) {
+                    runtime.logger.error(
+                        `[squide] ${index + 1}/${remotes.length} An error occured while registering module "${RemoteRegisterModuleName}" of remote "${remoteName}".`,
+                        error
+                    );
+
+                    errors.push({
+                        remoteName,
+                        moduleName: RemoteRegisterModuleName,
+                        error: error as Error
                     });
                 }
+            }));
 
-                runtime.logger.debug(`[squide] ${index + 1}/${remotes.length} The registration of the remote "${remoteName}" is completed.`);
-            } catch (error: unknown) {
-                runtime.logger.error(
-                    `[squide] ${index + 1}/${remotes.length} An error occured while registering module "${RemoteRegisterModuleName}" of remote "${remoteName}".`,
-                    error
-                );
-
-                errors.push({
-                    remoteName,
-                    moduleName: RemoteRegisterModuleName,
-                    error: error as Error
+            if (errors.length > 0) {
+                errors.forEach(x => {
+                    runtime.eventBus.dispatch(RemoteModuleRegistrationFailedEvent, x);
                 });
             }
-        }));
 
-        if (errors.length > 0) {
-            errors.forEach(x => {
-                runtime.eventBus.dispatch(RemoteModuleRegistrationFailedEvent, x);
-            });
-        }
+            // Must be dispatched before updating the registration status to ensure bootstrapping events sequencing.
+            runtime.eventBus.dispatch(RemoteModuleRegistrationCompletedEvent);
 
-        // Must be dispatched before updating the registration status to ensure bootstrapping events sequencing.
-        runtime.eventBus.dispatch(RemoteModuleRegistrationCompletedEvent);
+            this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "modules-registered" : "ready");
 
-        this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "modules-registered" : "ready");
-
-        // After introducting the "setRegistrationStatus" method, TypeScript seems to think that the only possible
-        // values for registrationStatus is "none" and now complains about the lack of overlapping between "none" and "ready".
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        if (this.#registrationStatus === "ready") {
-            this.#logSharedScope(runtime.logger);
+            // After introducting the "setRegistrationStatus" method, TypeScript seems to think that the only possible
+            // values for registrationStatus is "none" and now complains about the lack of overlapping between "none" and "ready".
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            if (this.#registrationStatus === "ready") {
+                this.#logSharedScope(runtime.logger);
+            }
         }
 
         return errors;

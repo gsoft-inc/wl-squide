@@ -36,7 +36,7 @@ export async function bootstrap<TRuntime extends FireflyRuntime = FireflyRuntime
 
     if (runtime.isMswEnabled) {
         if (!isFunction(startMsw)) {
-            throw new Error("[squide] When MSW is enabled, the \"startMsw\" option must be provided.");
+            throw new Error("[squide] When MSW is enabled, the \"startMsw\" function must be provided.");
         }
 
         startMsw(runtime)

@@ -22,4 +22,3 @@ expanded: true
 - [Override a React context](./override-a-react-context.md)
 - [Add a shared dependency](./add-a-shared-dependency.md)
 - [Implement a custom logger](./implement-a-custom-logger.md)
-- [Migrate to firefly v9](./migrate-to-firefly-v9.md)

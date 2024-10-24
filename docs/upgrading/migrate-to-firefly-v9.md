@@ -1,5 +1,5 @@
 ---
-order: 710
+order: 1000
 label: Migrate to firefly v9
 ---
 
@@ -7,7 +7,7 @@ label: Migrate to firefly v9
 
 This major version of `@squide/firefly` introduces [TanStack Query](https://tanstack.com/query/latest) as the official library for fetching the global data of a Squide's application and features a complete rewrite of the [AppRouter](../reference/routing/appRouter.md) component, which now uses a state machine to manage the application's bootstrapping flow.
 
-Prior to `v9`, Squide applications couldn't use TanStack Query to fetch global data, making it **challenging** for Workleap's applications to **keep** their **global data** in **sync** with the **server state**. With `v9`, applications can now leverage [custom wrappers](./fetch-global-data.md) of the TanStack Query's [useQueries](https://tanstack.com/query/latest/docs/framework/react/reference/useQueries) hook to fetch and keep their global data up-to-date with the server state. Additionally, the new [deferred registrations update](../reference/registration/useDeferredRegistrations.md#register-or-update-deferred-registrations) feature allows applications to even **keep** their conditional **navigation items in sync** with the **server state**.
+Prior to `v9`, Squide applications couldn't use TanStack Query to fetch global data, making it **challenging** for Workleap's applications to **keep** their **global data** in **sync** with the **server state**. With `v9`, applications can now leverage [custom wrappers](../guides/fetch-global-data.md) of the TanStack Query's [useQueries](https://tanstack.com/query/latest/docs/framework/react/reference/useQueries) hook to fetch and keep their global data up-to-date with the server state. Additionally, the new [deferred registrations update](../reference/registration/useDeferredRegistrations.md#register-or-update-deferred-registrations) feature allows applications to even **keep** their conditional **navigation items in sync** with the **server state**.
 
 Finally, with `v9`, Squide's philosophy has evolved. We used to describe Squide as a shell for **federated** applications. Now, we refer to Squide as a shell for **modular** applications. After playing with Squide's [local module](../reference/registration/registerLocalModules.md) feature for a while, we discovered that Squide offers [significant value](../getting-started/default.md#why-squide) even for **non-federated applications**, which triggered this shift in philosophy.
 
@@ -312,10 +312,10 @@ The `v9` release introduces several breaking changes affecting the host applicat
     - `onCompleteRegistrations` becomes [useDeferredRegistrations](../reference/registration/useDeferredRegistrations.md)
     - `fallbackElement` becomes [useIsBootstrapping](../reference/routing/useIsBootstrapping.md)
     - `errorElement` is removed and somewhat replaced by a [root error boundary](#root-error-boundary)
-3. Create a `TanStackSessionManager` class and the `SessionManagerContext`. Replace the session's deprecated hooks by creating the customs `useSession` and `useIsAuthenticated` hooks. [View example](./add-authentication.md#create-a-session-manager)
-4. Remove the `sessionAccessor` option from the `FireflyRuntime` instance. Update the `BootstrappingRoute` component to create a `TanStackSessionManager` instance and share it down the component tree using a `SessionManagedContext` provider. [View example](./add-authentication.md#fetch-the-session)
-5. Add or update the `AuthenticationBoundary` component to use the new `useIsAuthenticated` hook. Global data fetch request shouldn't be throwing 401 error anymore when the user is not authenticated. [View example](./add-authentication.md#add-an-authentication-boundary)
-6. Update the `AuthenticatedLayout` component to use the session manager instance to clear the session. Retrieve the session manager instance from the context defined in the `BootstrappingRoute` component using the `useSessionManager` hook. [View example](./add-authentication.md#define-an-authenticated-layout)
+3. Create a `TanStackSessionManager` class and the `SessionManagerContext`. Replace the session's deprecated hooks by creating the customs `useSession` and `useIsAuthenticated` hooks. [View example](../guides/add-authentication.md#create-a-session-manager)
+4. Remove the `sessionAccessor` option from the `FireflyRuntime` instance. Update the `BootstrappingRoute` component to create a `TanStackSessionManager` instance and share it down the component tree using a `SessionManagedContext` provider. [View example](../guides/add-authentication.md#fetch-the-session)
+5. Add or update the `AuthenticationBoundary` component to use the new `useIsAuthenticated` hook. Global data fetch request shouldn't be throwing 401 error anymore when the user is not authenticated. [View example](../guides/add-authentication.md#add-an-authentication-boundary)
+6. Update the `AuthenticatedLayout` component to use the session manager instance to clear the session. Retrieve the session manager instance from the context defined in the `BootstrappingRoute` component using the `useSessionManager` hook. [View example](../guides/add-authentication.md#define-an-authenticated-layout)
 7. Update the `AuthenticatedLayout` component to use the new `key` argument. [View example](#new-id-option-for-navigation-items)
 8. Replace the `ManagedRoutes` placeholder with the new [PublicRoutes](../reference/routing/publicRoutes.md) and [ProtectedRoutes](../reference/routing/protectedRoutes.md) placeholders. [View example](../getting-started/create-host.md#homepage)
 9. Convert all deferred routes into static routes. [View example](#removed-support-for-deferred-routes)

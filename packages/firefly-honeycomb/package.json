@@ -39,6 +39,8 @@
         "@opentelemetry/instrumentation": "*",
         "@opentelemetry/instrumentation-fetch": "*",
         "@opentelemetry/instrumentation-document-load": "*",
+        "@opentelemetry/instrumentation-user-interaction": "*",
+        "@opentelemetry/instrumentation-xml-http-request": "*",
         "@opentelemetry/sdk-trace-web": "*",
         "@swc/core": "1.7.26",
         "@swc/jest": "0.2.36",

@@ -292,6 +292,12 @@ importers:
       '@opentelemetry/instrumentation-fetch':
         specifier: '*'
         version: 0.54.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-user-interaction':
+        specifier: '*'
+        version: 0.40.0(@opentelemetry/api@1.9.0)(zone.js@0.14.10)
+      '@opentelemetry/instrumentation-xml-http-request':
+        specifier: '*'
+        version: 0.53.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-trace-web':
         specifier: '*'
         version: 1.26.0(@opentelemetry/api@1.9.0)

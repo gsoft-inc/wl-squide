@@ -3,6 +3,8 @@ import type { Span } from "@opentelemetry/api";
 import { getWebAutoInstrumentations, type InstrumentationConfigMap } from "@opentelemetry/auto-instrumentations-web";
 import type { DocumentLoadInstrumentationConfig } from "@opentelemetry/instrumentation-document-load";
 import type { FetchInstrumentationConfig } from "@opentelemetry/instrumentation-fetch";
+import type { UserInteractionInstrumentationConfig } from "@opentelemetry/instrumentation-user-interaction";
+import type { XMLHttpRequestInstrumentationConfig } from "@opentelemetry/instrumentation-xml-http-request";
 import type { PropagateTraceHeaderCorsUrls, SpanProcessor } from "@opentelemetry/sdk-trace-web";
 import {
     ApplicationBoostrappedEvent,
@@ -40,7 +42,9 @@ import { getTracer } from "./tracer.ts";
 import { endActiveSpan, startActiveChildSpan, startChildSpan, startSpan, traceError } from "./utils.ts";
 
 export type DefineFetchInstrumentationOptionsFunction = (defaultOptions: FetchInstrumentationConfig) => FetchInstrumentationConfig;
+export type DefineXmlHttpInstrumentationOptionsFunction = (defaultOptions: XMLHttpRequestInstrumentationConfig) => XMLHttpRequestInstrumentationConfig;
 export type DefineDocumentLoadInstrumentationOptionsFunction = (defaultOptions: DocumentLoadInstrumentationConfig) => DocumentLoadInstrumentationConfig;
+export type DefineUserInteractionInstrumentationOptionsFunction = (defaultOptions: UserInteractionInstrumentationConfig) => UserInteractionInstrumentationConfig;
 
 const defaultDefineFetchInstrumentationOptions: DefineFetchInstrumentationOptionsFunction = defaultOptions => {
     return defaultOptions;
@@ -58,11 +62,13 @@ export interface RegisterHoneycombInstrumentationOptions {
     instrumentations?: HoneycombSdkInstrumentations;
     spanProcessors?: SpanProcessor[];
     fetchInstrumentation?: false | DefineFetchInstrumentationOptionsFunction;
+    xmlHttpInstrumentation?: false | DefineXmlHttpInstrumentationOptionsFunction;
     documentLoadInstrumentation?: false | DefineDocumentLoadInstrumentationOptionsFunction;
+    userInteractionInstrumentation?: false | DefineUserInteractionInstrumentationOptionsFunction;
     transformers?: HoneycombSdkOptionsTransformer[];
 }
 
-export function registerHoneycombInstrumentation(runtime: FireflyRuntime, serviceName: NonNullable<HoneycombSdkOptions["serviceName"]>, apiServiceUrls: PropagateTraceHeaderCorsUrls, options: RegisterHoneycombInstrumentationOptions = {}) {
+export function getHoneycombSdkOptions(runtime: FireflyRuntime, serviceName: NonNullable<HoneycombSdkOptions["serviceName"]>, apiServiceUrls: PropagateTraceHeaderCorsUrls, options: RegisterHoneycombInstrumentationOptions = {}) {
     const {
         endpoint,
         apiKey,
@@ -70,7 +76,9 @@ export function registerHoneycombInstrumentation(runtime: FireflyRuntime, servic
         instrumentations = [],
         spanProcessors = [],
         fetchInstrumentation = defaultDefineFetchInstrumentationOptions,
+        xmlHttpInstrumentation = false,
         documentLoadInstrumentation = defaultDefineDocumentLoadInstrumentationOptions,
+        userInteractionInstrumentation = false,
         transformers = []
     } = options;
 
@@ -93,10 +101,34 @@ export function registerHoneycombInstrumentation(runtime: FireflyRuntime, servic
             ...instrumentationOptions,
             applyCustomAttributesOnSpan: createApplyCustomAttributesOnFetchSpanFunction(runtime.logger)
         });
+    } else {
+        autoInstrumentations["@opentelemetry/instrumentation-fetch"] = {
+            enabled: false
+        };
+    }
+
+    if (xmlHttpInstrumentation) {
+        autoInstrumentations["@opentelemetry/instrumentation-xml-http-request"] = xmlHttpInstrumentation({});
+    } else {
+        autoInstrumentations["@opentelemetry/instrumentation-xml-http-request"] = {
+            enabled: false
+        };
     }
 
     if (documentLoadInstrumentation) {
         autoInstrumentations["@opentelemetry/instrumentation-document-load"] = documentLoadInstrumentation(instrumentationOptions);
+    } else {
+        autoInstrumentations["@opentelemetry/instrumentation-document-load"] = {
+            enabled: false
+        };
+    }
+
+    if (userInteractionInstrumentation) {
+        autoInstrumentations["@opentelemetry/instrumentation-user-interaction"] = userInteractionInstrumentation({});
+    } else {
+        autoInstrumentations["@opentelemetry/instrumentation-user-interaction"] = {
+            enabled: false
+        };
     }
 
     const sdkOptions = {
@@ -105,13 +137,22 @@ export function registerHoneycombInstrumentation(runtime: FireflyRuntime, servic
         debug,
         localVisualizations: debug,
         serviceName,
-        instrumentations: [getWebAutoInstrumentations({ ...autoInstrumentations, ...instrumentations })],
+        // Watch out, getWebAutoInstrumentations enables by default all the supported instrumentation.
+        // It's important to disabled those that we don't want.
+        instrumentations: [
+            getWebAutoInstrumentations(autoInstrumentations),
+            ...instrumentations
+        ],
         spanProcessors: [globalAttributeSpanProcessor, ...spanProcessors]
     } satisfies HoneycombSdkOptions;
 
-    const transformedOptions = applyTransformers(sdkOptions, transformers);
-    const instance = new HoneycombWebSDK(transformedOptions);
+    return applyTransformers(sdkOptions, transformers);
+}
 
+export function registerHoneycombInstrumentation(runtime: FireflyRuntime, serviceName: NonNullable<HoneycombSdkOptions["serviceName"]>, apiServiceUrls: PropagateTraceHeaderCorsUrls, options: RegisterHoneycombInstrumentationOptions) {
+    const sdkOptions = getHoneycombSdkOptions(runtime, serviceName, apiServiceUrls, options);
+
+    const instance = new HoneycombWebSDK(sdkOptions);
     instance.start();
 
     registerTrackingListeners(runtime);
@@ -120,14 +161,14 @@ export function registerHoneycombInstrumentation(runtime: FireflyRuntime, servic
 
 type DataFetchState = "none" | "fetching-data" | "public-data-ready" | "protected-data-ready" | "data-ready";
 
-function reduceDataFetchEvents(
+export function reduceDataFetchEvents(
     runtime: FireflyRuntime,
     onDataFetchingStarted: () => void,
     onDataReady: () => void,
     onPublicDataFetchStarted: () => void,
     onPublicDataReady: () => void,
     onProtectedDataFetchStarted: () => void,
-    onProtedtedDataReady: () => void
+    onProtectedDataReady: () => void
 ) {
     let dataFetchState: DataFetchState = "none";
 
@@ -161,7 +202,7 @@ function reduceDataFetchEvents(
     });
 
     runtime.eventBus.addListener(ProtectedDataReadyEvent, () => {
-        onProtedtedDataReady();
+        onProtectedDataReady();
 
         if (dataFetchState === "fetching-data") {
             dataFetchState = "protected-data-ready";

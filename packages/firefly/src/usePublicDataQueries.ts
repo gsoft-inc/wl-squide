@@ -57,6 +57,7 @@ export function usePublicDataQueries<T extends Array<any>>(queries: QueriesOptio
                 eventBus.dispatch(PublicDataFetchFailedEvent, x);
             });
 
+            // TODO: Also dispatch an event? Do the same for protected data
             throw new GlobalDataQueriesError("[squide] Global public data queries failed.", queriesErrors);
         }
     }, [hasErrors, queriesErrors, eventBus]);

@@ -1,17 +1,3 @@
-/*
-
--> event sequencing
-
-- dispatch ApplicationBootstrappingStartedEvent
-- when local modules are provided, dispatch LocalModuleRegistrationStartedEvent
-- when local modules are provided, dispatch LocalModuleRegistrationCompletedEvent
-- when local modules are provided, dispatch RemoteModuleRegistrationStartedEvent
-- when local modules are provided, dispatch RemoteModuleRegistrationCompletedEvent
-- when MSW is ready, dispatch MswReadyEvent
-- test even sequencing
-
-*/
-
 import { __clearLocalModuleRegistry, __setLocalModuleRegistry, LocalModuleRegistry } from "@squide/core";
 import { __clearRemoteModuleRegistry, __setRemoteModuleRegistry, RemoteModuleRegistry } from "@squide/module-federation";
 import { __clearMswState, __setMswState, MswState } from "@squide/msw";
@@ -27,13 +13,13 @@ afterEach(() => {
 test("dispatch ApplicationBootstrappingStartedEvent", async () => {
     const runtime = new FireflyRuntime();
 
-    const onApplicationBootstrappingStarted = jest.fn();
+    const listener = jest.fn();
 
-    runtime.eventBus.addListener(ApplicationBootstrappingStartedEvent, onApplicationBootstrappingStarted);
+    runtime.eventBus.addListener(ApplicationBootstrappingStartedEvent, listener);
 
     await bootstrap(runtime);
 
-    expect(onApplicationBootstrappingStarted).toHaveBeenCalledTimes(1);
+    expect(listener).toHaveBeenCalledTimes(1);
 });
 
 test("when local modules are provided, register the local modules", async () => {

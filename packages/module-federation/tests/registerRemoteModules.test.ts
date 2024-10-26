@@ -1,5 +1,5 @@
 import { Runtime } from "@squide/core";
-import { RemoteModuleRegistrationCompletedEvent, RemoteModuleRegistrationFailedEvent, RemoteModuleRegistrationStartedEvent, RemoteModuleRegistry } from "../src/registerRemoteModules.ts";
+import { RemoteModuleRegistrationFailedEvent, RemoteModuleRegistry, RemoteModulesRegistrationCompletedEvent, RemoteModulesRegistrationStartedEvent } from "../src/registerRemoteModules.ts";
 
 class DummyRuntime extends Runtime<unknown, unknown> {
     registerRoute() {
@@ -76,12 +76,12 @@ test("when called twice, throw an error", async () => {
     await expect(async () => registry.registerModules([{ name: "Dummy-1" }], runtime)).rejects.toThrow(/The registerRemoteModules function can only be called once/);
 });
 
-test("dispatch RemoteModuleRegistrationStartedEvent", async () => {
+test("dispatch RemoteModulesRegistrationStartedEvent", async () => {
     const runtime = new DummyRuntime();
 
     const listener = jest.fn();
 
-    runtime.eventBus.addListener(RemoteModuleRegistrationStartedEvent, listener);
+    runtime.eventBus.addListener(RemoteModulesRegistrationStartedEvent, listener);
 
     const loadRemote = jest.fn().mockResolvedValue({
         register: () => {}
@@ -92,6 +92,9 @@ test("dispatch RemoteModuleRegistrationStartedEvent", async () => {
     await registry.registerModules([{ name: "Dummy-1" }], runtime);
 
     expect(listener).toHaveBeenCalledTimes(1);
+    expect(listener).toHaveBeenCalledWith(expect.objectContaining({
+        remoteCount: 1
+    }));
 });
 
 test("when there are no deferred registrations, once all the modules are registered, set the status to \"ready\"", async () => {
@@ -111,12 +114,12 @@ test("when there are no deferred registrations, once all the modules are registe
     expect(registry.registrationStatus).toBe("ready");
 });
 
-test("when there are no deferred registrations, once all the modules are registered, RemoteModuleRegistrationCompletedEvent is dispatched", async () => {
+test("when there are no deferred registrations, once all the modules are registered, RemoteModulesRegistrationCompletedEvent is dispatched", async () => {
     const runtime = new DummyRuntime();
 
     const listener = jest.fn();
 
-    runtime.eventBus.addListener(RemoteModuleRegistrationCompletedEvent, listener);
+    runtime.eventBus.addListener(RemoteModulesRegistrationCompletedEvent, listener);
 
     const loadRemote = jest.fn().mockResolvedValue({
         register: () => {}
@@ -130,6 +133,9 @@ test("when there are no deferred registrations, once all the modules are registe
     ], runtime);
 
     expect(listener).toHaveBeenCalledTimes(1);
+    expect(listener).toHaveBeenCalledWith(expect.objectContaining({
+        remoteCount: 2
+    }));
 });
 
 test("when there are deferred registrations, once all the modules are registered, set the status to \"modules-registered\"", async () => {
@@ -149,12 +155,12 @@ test("when there are deferred registrations, once all the modules are registered
     expect(registry.registrationStatus).toBe("modules-registered");
 });
 
-test("when there are deferred registrations, once all the modules are registered, RemoteModuleRegistrationCompletedEvent is dispatched", async () => {
+test("when there are deferred registrations, once all the modules are registered, RemoteModulesRegistrationCompletedEvent is dispatched", async () => {
     const runtime = new DummyRuntime();
 
     const listener = jest.fn();
 
-    runtime.eventBus.addListener(RemoteModuleRegistrationCompletedEvent, listener);
+    runtime.eventBus.addListener(RemoteModulesRegistrationCompletedEvent, listener);
 
     const loadRemote = jest.fn().mockResolvedValue({
         register: () => () => {}
@@ -168,6 +174,9 @@ test("when there are deferred registrations, once all the modules are registered
     ], runtime);
 
     expect(listener).toHaveBeenCalledTimes(1);
+    expect(listener).toHaveBeenCalledWith(expect.objectContaining({
+        remoteCount: 2
+    }));
 });
 
 test("when a module registration fail, register the remaining modules", async () => {
@@ -259,6 +268,40 @@ test("when a module registration fail, RemoteModuleRegistrationFailedEvent is di
     }));
 });
 
+test("when a module registration fail, RemoteModulesRegistrationCompletedEvent is dispatched", async () => {
+    const runtime = new DummyRuntime();
+
+    const listener = jest.fn();
+
+    runtime.eventBus.addListener(RemoteModulesRegistrationCompletedEvent, listener);
+
+    const registrationError = new Error("Module 2 registration failed");
+
+    const loadRemote = jest.fn()
+        .mockResolvedValueOnce({
+            register: () => {}
+        })
+        .mockResolvedValueOnce({
+            register: () => { throw registrationError; }
+        })
+        .mockResolvedValueOnce({
+            register: () => {}
+        });
+
+    const registry = new RemoteModuleRegistry(loadRemote);
+
+    await registry.registerModules([
+        { name: "Dummy-1" },
+        { name: "Dummy-2" },
+        { name: "Dummy-3" }
+    ], runtime);
+
+    expect(listener).toHaveBeenCalledTimes(1);
+    expect(listener).toHaveBeenCalledWith(expect.objectContaining({
+        remoteCount: 2
+    }));
+});
+
 test("when a context is provided, all the register functions receive the provided context", async () => {
     const runtime = new DummyRuntime();
 
@@ -303,12 +346,12 @@ test("when no modules are provided, the status remain \"none\"", async () => {
     expect(registry.registrationStatus).toBe("none");
 });
 
-test("when no modules are provided, do not dispatch RemoteModuleRegistrationStartedEvent", async () => {
+test("when no modules are provided, do not dispatch RemoteModulesRegistrationStartedEvent", async () => {
     const runtime = new DummyRuntime();
 
     const listener = jest.fn();
 
-    runtime.eventBus.addListener(RemoteModuleRegistrationStartedEvent, listener);
+    runtime.eventBus.addListener(RemoteModulesRegistrationStartedEvent, listener);
 
     const registry = new RemoteModuleRegistry(jest.fn());
 
@@ -317,12 +360,12 @@ test("when no modules are provided, do not dispatch RemoteModuleRegistrationStar
     expect(listener).not.toHaveBeenCalled();
 });
 
-test("when no modules are provided, do not dispatch RemoteModuleRegistrationCompletedEvent", async () => {
+test("when no modules are provided, do not dispatch RemoteModulesRegistrationCompletedEvent", async () => {
     const runtime = new DummyRuntime();
 
     const listener = jest.fn();
 
-    runtime.eventBus.addListener(RemoteModuleRegistrationCompletedEvent, listener);
+    runtime.eventBus.addListener(RemoteModulesRegistrationCompletedEvent, listener);
 
     const registry = new RemoteModuleRegistry(jest.fn());
 

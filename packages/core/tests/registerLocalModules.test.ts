@@ -1,4 +1,4 @@
-import { LocalModuleRegistrationCompletedEvent, LocalModuleRegistrationFailedEvent, LocalModuleRegistrationStartedEvent, LocalModuleRegistry } from "../src/registration/registerLocalModules.ts";
+import { LocalModuleRegistrationFailedEvent, LocalModuleRegistry, LocalModulesRegistrationCompletedEvent, LocalModulesRegistrationStartedEvent } from "../src/registration/registerLocalModules.ts";
 import { Runtime } from "../src/runtime/runtime.ts";
 
 function simulateDelay(delay: number) {
@@ -86,12 +86,12 @@ test("when called twice, throw an error", async () => {
     await expect(async () => registry.registerModules([() => {}], runtime)).rejects.toThrow(/The registerLocalModules function can only be called once/);
 });
 
-test("dispatch LocalModuleRegistrationStartedEvent", async () => {
+test("dispatch LocalModulesRegistrationStartedEvent", async () => {
     const runtime = new DummyRuntime();
 
     const listener = jest.fn();
 
-    runtime.eventBus.addListener(LocalModuleRegistrationStartedEvent, listener);
+    runtime.eventBus.addListener(LocalModulesRegistrationStartedEvent, listener);
 
     const registry = new LocalModuleRegistry();
 
@@ -101,6 +101,9 @@ test("dispatch LocalModuleRegistrationStartedEvent", async () => {
     ], runtime);
 
     expect(listener).toHaveBeenCalledTimes(1);
+    expect(listener).toHaveBeenCalledWith(expect.objectContaining({
+        moduleCount: 2
+    }));
 });
 
 test("when there are no deferred registrations, once all the modules are registered, set the status to \"ready\"", async () => {
@@ -115,12 +118,12 @@ test("when there are no deferred registrations, once all the modules are registe
     expect(registry.registrationStatus).toBe("ready");
 });
 
-test("when there are no deferred registrations, once all the modules are registered, LocalModuleRegistrationCompletedEvent is dispatched", async () => {
+test("when there are no deferred registrations, once all the modules are registered, LocalModulesRegistrationCompletedEvent is dispatched", async () => {
     const runtime = new DummyRuntime();
 
     const listener = jest.fn();
 
-    runtime.eventBus.addListener(LocalModuleRegistrationCompletedEvent, listener);
+    runtime.eventBus.addListener(LocalModulesRegistrationCompletedEvent, listener);
 
     const registry = new LocalModuleRegistry();
 
@@ -130,6 +133,9 @@ test("when there are no deferred registrations, once all the modules are registe
     ], runtime);
 
     expect(listener).toHaveBeenCalledTimes(1);
+    expect(listener).toHaveBeenCalledWith(expect.objectContaining({
+        moduleCount: 2
+    }));
 });
 
 test("when there are deferred registrations, once all the modules are registered, set the status to \"modules-registered\"", async () => {
@@ -144,12 +150,12 @@ test("when there are deferred registrations, once all the modules are registered
     expect(registry.registrationStatus).toBe("modules-registered");
 });
 
-test("when there are deferred registrations, once all the modules are registered, LocalModuleRegistrationCompletedEvent is dispatched", async () => {
+test("when there are deferred registrations, once all the modules are registered, LocalModulesRegistrationCompletedEvent is dispatched", async () => {
     const runtime = new DummyRuntime();
 
     const listener = jest.fn();
 
-    runtime.eventBus.addListener(LocalModuleRegistrationCompletedEvent, listener);
+    runtime.eventBus.addListener(LocalModulesRegistrationCompletedEvent, listener);
 
     const registry = new LocalModuleRegistry();
 
@@ -159,6 +165,9 @@ test("when there are deferred registrations, once all the modules are registered
     ], runtime);
 
     expect(listener).toHaveBeenCalledTimes(1);
+    expect(listener).toHaveBeenCalledWith(expect.objectContaining({
+        moduleCount: 2
+    }));
 });
 
 test("when a module registration fail, register the remaining modules", async () => {
@@ -214,6 +223,28 @@ test("when a module registration fail, LocalModuleRegistrationFailedEvent is dis
     }));
 });
 
+test("when a module registration fail, LocalModulesRegistrationCompletedEvent is dispatched", async () => {
+    const runtime = new DummyRuntime();
+
+    const listener = jest.fn();
+
+    runtime.eventBus.addListener(LocalModulesRegistrationCompletedEvent, listener);
+
+    const registry = new LocalModuleRegistry();
+    const registrationError = new Error("Module 2 registration failed");
+
+    await registry.registerModules([
+        () => {},
+        () => { throw registrationError; },
+        () => {}
+    ], runtime);
+
+    expect(listener).toHaveBeenCalledTimes(1);
+    expect(listener).toHaveBeenCalledWith(expect.objectContaining({
+        moduleCount: 2
+    }));
+});
+
 test("when a context is provided, all the register functions receive the provided context", async () => {
     const runtime = new DummyRuntime();
 
@@ -247,12 +278,12 @@ test("when no modules are provided, the status remain \"none\"", async () => {
     expect(registry.registrationStatus).toBe("none");
 });
 
-test("when no modules are provided, do not dispatch LocalModuleRegistrationStartedEvent", async () => {
+test("when no modules are provided, do not dispatch LocalModulesRegistrationStartedEvent", async () => {
     const runtime = new DummyRuntime();
 
     const listener = jest.fn();
 
-    runtime.eventBus.addListener(LocalModuleRegistrationStartedEvent, listener);
+    runtime.eventBus.addListener(LocalModulesRegistrationStartedEvent, listener);
 
     const registry = new LocalModuleRegistry();
 
@@ -261,12 +292,12 @@ test("when no modules are provided, do not dispatch LocalModuleRegistrationStart
     expect(listener).not.toHaveBeenCalled();
 });
 
-test("when no modules are provided, do not dispatch LocalModuleRegistrationCompletedEvent", async () => {
+test("when no modules are provided, do not dispatch LocalModulesRegistrationCompletedEvent", async () => {
     const runtime = new DummyRuntime();
 
     const listener = jest.fn();
 
-    runtime.eventBus.addListener(LocalModuleRegistrationCompletedEvent, listener);
+    runtime.eventBus.addListener(LocalModulesRegistrationCompletedEvent, listener);
 
     const registry = new LocalModuleRegistry();
 

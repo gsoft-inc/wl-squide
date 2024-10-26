@@ -162,18 +162,33 @@ export function getAreModulesReady() {
 }
 
 export function useModuleRegistrationStatusDispatcher(areModulesRegisteredValue: boolean, areModulesReadyValue: boolean, dispatch: AppRouterDispatch) {
+    // HACK: The usage of refs will have to be re-evaluated. The issue is that in tests, both "modules-registered" and "modules-ready" are dispatched twice.
+    // I think it only happens in tests and not in production so this hack might be replaced with better testing setup.
+    const isRegisteredActionDispatchedRef = useRef(false);
+    const isReadyActionDispatchedRef = useRef(false);
+
     const logger = useLogger();
 
     return useEffect(() => {
         const handleModulesRegistrationStatusChange = () => {
             if (!areModulesRegisteredValue && getAreModulesRegistered()) {
-                dispatch({ type: "modules-registered" });
+                if (!isRegisteredActionDispatchedRef.current) {
+                    isRegisteredActionDispatchedRef.current = true;
+
+                    dispatch({ type: "modules-registered" });
+
+                    logger.debug("[squide] %cModules are registered%c.", "color: white; background-color: green;", "");
+                }
             }
 
             if (!areModulesReadyValue && getAreModulesReady()) {
-                dispatch({ type: "modules-ready" });
+                if (!isReadyActionDispatchedRef.current) {
+                    isReadyActionDispatchedRef.current = true;
 
-                logger.debug("[squide] %cModules are ready%c.", "color: white; background-color: green;", "");
+                    dispatch({ type: "modules-ready" });
+
+                    logger.debug("[squide] %cModules are ready%c.", "color: white; background-color: green;", "");
+                }
             }
         };
 

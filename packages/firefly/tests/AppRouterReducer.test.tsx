@@ -1,7 +1,6 @@
-import { __clearLocalModuleRegistry, __setLocalModuleRegistry, RuntimeContext, type ModuleRegistrationError, type ModuleRegistrationStatus, type ModuleRegistrationStatusChangedListener, type ModuleRegistry } from "@squide/core";
+import { __clearLocalModuleRegistry, __setLocalModuleRegistry, RuntimeContext, type ModuleRegistrationError, type ModuleRegistrationStatus, type ModuleRegistrationStatusChangedListener, type ModuleRegistry, type Runtime } from "@squide/core";
 import { __clearRemoteModuleRegistry, __setRemoteModuleRegistry } from "@squide/module-federation";
 import { __clearMswState, __setMswState, MswState, type MswStateChangedListener } from "@squide/msw";
-import type { ReactRouterRuntime } from "@squide/react-router";
 import { act, renderHook, type RenderHookOptions } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { ModulesReadyEvent, ModulesRegisteredEvent, MswReadyEvent, ProtectedDataReadyEvent, PublicDataReadyEvent, useAppRouterReducer, useModuleRegistrationStatusDispatcher, useMswStatusDispatcher, type AppRouterDispatch } from "../src/AppRouterReducer.ts";
@@ -83,7 +82,7 @@ afterEach(() => {
 });
 
 describe("useAppRouterReducer", () => {
-    function renderUseAppRouterReducerHook<TProps>(runtime: ReactRouterRuntime, waitForMsw: boolean, waitForPublicData: boolean, waitForProtectedData: boolean, additionalProps: RenderHookOptions<TProps> = {}) {
+    function renderUseAppRouterReducerHook<TProps>(runtime: Runtime, waitForMsw: boolean, waitForPublicData: boolean, waitForProtectedData: boolean, additionalProps: RenderHookOptions<TProps> = {}) {
         return renderHook(() => useAppRouterReducer(waitForMsw, waitForPublicData, waitForProtectedData), {
             wrapper: ({ children }: { children?: ReactNode }) => (
                 <RuntimeContext.Provider value={runtime}>
@@ -806,6 +805,7 @@ describe("useModuleRegistrationStatusDispatcher", () => {
         localModuleRegistry.invokeEventListeners();
         remoteModuleRegistry.invokeEventListeners();
 
+        expect(dispatch).toHaveBeenCalledTimes(1);
         expect(dispatch).toHaveBeenCalledWith({ type: "modules-registered" });
     });
 
@@ -891,6 +891,7 @@ describe("useModuleRegistrationStatusDispatcher", () => {
         localModuleRegistry.invokeEventListeners();
         remoteModuleRegistry.invokeEventListeners();
 
+        expect(dispatch).toHaveBeenCalledTimes(1);
         expect(dispatch).toHaveBeenCalledWith({ type: "modules-ready" });
     });
 
@@ -951,6 +952,7 @@ describe("useMswStatusDispatcher", () => {
 
         mswState.invokeEventListeners();
 
+        expect(dispatch).toHaveBeenCalledTimes(1);
         expect(dispatch).toHaveBeenCalledWith({ type: "msw-ready" });
     });
 

@@ -363,10 +363,8 @@ test("events sequencing", () => {
 
     // Expected order is:
     //    onDataFetchingStarted
-    //    onPublicDataFetchStarted
-    //    onProtectedDataFetchStarted
-    //    onPublicDataReady
-    //    onProtectedDataReady
+    //    onPublicDataFetchStarted - onProtectedDataFetchStarted
+    //    onPublicDataReady - onProtectedDataReady
     //    onDataReady
     runtime.eventBus.dispatch(PublicDataFetchStartedEvent);
     runtime.eventBus.dispatch(ProtectedDataFetchStartedEvent);

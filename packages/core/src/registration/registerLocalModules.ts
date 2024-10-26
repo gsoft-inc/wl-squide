@@ -3,19 +3,27 @@ import { isFunction } from "../shared/assertions.ts";
 import type { ModuleRegistrationError, ModuleRegistrationStatus, ModuleRegistrationStatusChangedListener, ModuleRegistry, RegisterModulesOptions } from "./moduleRegistry.ts";
 import { registerModule, type DeferredRegistrationFunction, type ModuleRegisterFunction } from "./registerModule.ts";
 
-export const LocalModuleRegistrationStartedEvent = "squide-local-module-registration-started";
-export const LocalModuleRegistrationCompletedEvent = "squide-local-module-registration-completed";
+export const LocalModulesRegistrationStartedEvent = "squide-local-modules-registration-started";
+export const LocalModulesRegistrationCompletedEvent = "squide-local-modules-registration-completed";
 export const LocalModuleRegistrationFailedEvent = "squide-local-module-registration-failed";
 
-export const LocalModuleDeferredRegistrationStartedEvent = "squide-local-module-deferred-registration-started";
-export const LocalModuleDeferredRegistrationCompletedEvent = "squide-local-module-deferred-registration-completed";
+export const LocalModulesDeferredRegistrationStartedEvent = "squide-local-modules-deferred-registration-started";
+export const LocalModulesDeferredRegistrationCompletedEvent = "squide-local-modules-deferred-registration-completed";
 export const LocalModuleDeferredRegistrationFailedEvent = "squide-local-module-deferred-registration-failed";
 
-export interface LocalModuleRegistrationStartedEventPayload {
+export interface LocalModulesRegistrationStartedEventPayload {
     moduleCount: number;
 }
 
-export interface LocalModuleDeferredRegistrationStartedEventPayload {
+export interface LocalModulesRegistrationCompletedEventPayload {
+    moduleCount: number;
+}
+
+export interface LocalModulesDeferredRegistrationStartedEventPayload {
+    registrationCount: number;
+}
+
+export interface LocalModulesDeferredRegistrationCompletedEventPayload {
     registrationCount: number;
 }
 
@@ -42,7 +50,11 @@ export class LocalModuleRegistry implements ModuleRegistry {
 
             this.#setRegistrationStatus("registering-modules");
 
-            runtime.eventBus.dispatch(LocalModuleRegistrationStartedEvent, { moduleCount: registrationFunctions.length } satisfies LocalModuleRegistrationStartedEventPayload);
+            runtime.eventBus.dispatch(LocalModulesRegistrationStartedEvent, {
+                moduleCount: registrationFunctions.length
+            } satisfies LocalModulesRegistrationStartedEventPayload);
+
+            let completedCount = 0;
 
             await Promise.allSettled(registrationFunctions.map(async (x, index) => {
                 runtime.logger.debug(`[squide] ${index + 1}/${registrationFunctions.length} Registering local module.`);
@@ -56,6 +68,8 @@ export class LocalModuleRegistry implements ModuleRegistry {
                             fct: optionalDeferredRegistration as DeferredRegistrationFunction
                         });
                     }
+
+                    completedCount += 1;
                 } catch (error: unknown) {
                     runtime.logger.error(
                         `[squide] ${index + 1}/${registrationFunctions.length} An error occured while registering a local module.`,
@@ -77,7 +91,9 @@ export class LocalModuleRegistry implements ModuleRegistry {
             }
 
             // Must be dispatched before updating the registration status to ensure bootstrapping events sequencing.
-            runtime.eventBus.dispatch(LocalModuleRegistrationCompletedEvent);
+            runtime.eventBus.dispatch(LocalModulesRegistrationCompletedEvent, {
+                moduleCount: completedCount
+            } satisfies LocalModulesRegistrationCompletedEventPayload);
 
             this.#setRegistrationStatus(this.#deferredRegistrations.length > 0 ? "modules-registered" : "ready");
         }
@@ -103,13 +119,19 @@ export class LocalModuleRegistry implements ModuleRegistry {
 
         this.#setRegistrationStatus("registering-deferred-registration");
 
-        runtime.eventBus.dispatch(LocalModuleDeferredRegistrationStartedEvent, { registrationCount: this.#deferredRegistrations.length } satisfies LocalModuleDeferredRegistrationStartedEventPayload);
+        runtime.eventBus.dispatch(LocalModulesDeferredRegistrationStartedEvent, {
+            registrationCount: this.#deferredRegistrations.length
+        } satisfies LocalModulesDeferredRegistrationStartedEventPayload);
+
+        let completedCount = 0;
 
         await Promise.allSettled(this.#deferredRegistrations.map(async ({ index, fct: deferredRegister }) => {
             runtime.logger.debug(`[squide] ${index} Registering local module deferred registration.`, "Data:", data);
 
             try {
                 await deferredRegister(data, "register");
+
+                completedCount += 1;
             } catch (error: unknown) {
                 runtime.logger.error(
                     `[squide] ${index} An error occured while registering the deferred registrations of a local module.`,
@@ -131,7 +153,9 @@ export class LocalModuleRegistry implements ModuleRegistry {
         }
 
         // Must be dispatched before updating the registration status to ensure bootstrapping events sequencing.
-        runtime.eventBus.dispatch(LocalModuleDeferredRegistrationCompletedEvent);
+        runtime.eventBus.dispatch(LocalModulesDeferredRegistrationCompletedEvent, {
+            registrationCount: completedCount
+        } satisfies LocalModulesDeferredRegistrationCompletedEventPayload);
 
         this.#setRegistrationStatus("ready");
 

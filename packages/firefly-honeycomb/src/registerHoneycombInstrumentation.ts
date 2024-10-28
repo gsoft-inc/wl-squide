@@ -9,10 +9,15 @@ import type { PropagateTraceHeaderCorsUrls, SpanProcessor } from "@opentelemetry
 import {
     ApplicationBoostrappedEvent,
     ApplicationBootstrappingStartedEvent,
+    DeferredRegistrationsUpdateCompletedEvent,
+    DeferredRegistrationsUpdateStartedEvent,
     LocalModuleDeferredRegistrationFailedEvent,
+    LocalModuleDeferredRegistrationUpdateFailedEvent,
     LocalModuleRegistrationFailedEvent,
     LocalModulesDeferredRegistrationCompletedEvent,
     LocalModulesDeferredRegistrationStartedEvent,
+    LocalModulesDeferredRegistrationsUpdateCompletedEvent,
+    LocalModulesDeferredRegistrationsUpdateStartedEvent,
     LocalModulesRegistrationCompletedEvent,
     LocalModulesRegistrationStartedEvent,
     ModulesReadyEvent,
@@ -23,20 +28,27 @@ import {
     PublicDataFetchStartedEvent,
     PublicDataReadyEvent,
     RemoteModuleDeferredRegistrationFailedEvent,
+    RemoteModuleDeferredRegistrationUpdateFailedEvent,
     RemoteModuleRegistrationFailedEvent,
     RemoteModulesDeferredRegistrationCompletedEvent,
     RemoteModulesDeferredRegistrationStartedEvent,
+    RemoteModulesDeferredRegistrationsUpdateCompletedEvent,
+    RemoteModulesDeferredRegistrationsUpdateStartedEvent,
     RemoteModulesRegistrationCompletedEvent,
     RemoteModulesRegistrationStartedEvent,
     type FireflyRuntime,
     type LocalModulesDeferredRegistrationCompletedEventPayload,
     type LocalModulesDeferredRegistrationStartedEventPayload,
+    type LocalModulesDeferredRegistrationsUpdateCompletedEventPayload,
+    type LocalModulesDeferredRegistrationsUpdateStartedEventPayload,
     type LocalModulesRegistrationCompletedEventPayload,
     type LocalModulesRegistrationStartedEventPayload,
     type ModuleRegistrationError,
     type RemoteModuleRegistrationError,
     type RemoteModulesDeferredRegistrationCompletedEventPayload,
     type RemoteModulesDeferredRegistrationStartedEventPayload,
+    type RemoteModulesDeferredRegistrationsUpdateCompletedEventPayload,
+    type RemoteModulesDeferredRegistrationsUpdateStartedEventPayload,
     type RemoteModulesRegistrationCompletedEventPayload,
     type RemoteModulesRegistrationStartedEventPayload
 } from "@squide/firefly";
@@ -227,6 +239,9 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     let remoteModuleRegistrationSpan: Span;
     let remoteModuleDeferredRegistrationSpan: Span;
     let dataFetchSpan: ActiveSpan;
+    let deferredRegistrationsUpdateSpan: Span;
+    let localModuleDeferredRegistrationsUpdateSpan: ActiveSpan;
+    let remoteModuleDeferredRegistrationsUpdateSpan: ActiveSpan;
 
     runtime.eventBus.addListener(ApplicationBootstrappingStartedEvent, () => {
         bootstrappingSpan = startSpan((options, context) => getTracer().startSpan("squide-boostrapping", options, context));
@@ -243,7 +258,9 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
             "squide.module_count": (payload as LocalModulesRegistrationStartedEventPayload).moduleCount
         };
 
-        bootstrappingSpan.addEvent("local-module-registration-started", attributes);
+        if (bootstrappingSpan) {
+            bootstrappingSpan.addEvent("local-module-registration-started", attributes);
+        }
 
         localModuleRegistrationSpan = startChildSpan(bootstrappingSpan, (options, context) => {
             return getTracer().startSpan("local-module-registration", { ...options, attributes }, context);
@@ -251,9 +268,11 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     });
 
     runtime.eventBus.addListener(LocalModulesRegistrationCompletedEvent, (payload: unknown) => {
-        bootstrappingSpan.addEvent("local-module-registration-completed", {
-            "squide.module_count": (payload as LocalModulesRegistrationCompletedEventPayload).moduleCount
-        });
+        if (bootstrappingSpan) {
+            bootstrappingSpan.addEvent("local-module-registration-completed", {
+                "squide.module_count": (payload as LocalModulesRegistrationCompletedEventPayload).moduleCount
+            });
+        }
 
         if (localModuleRegistrationSpan) {
             localModuleRegistrationSpan.end();
@@ -273,7 +292,9 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
             "squide.registration_count": (payload as LocalModulesDeferredRegistrationStartedEventPayload).registrationCount
         };
 
-        bootstrappingSpan.addEvent("local-module-deferred-registration-started", attributes);
+        if (bootstrappingSpan) {
+            bootstrappingSpan.addEvent("local-module-deferred-registration-started", attributes);
+        }
 
         localModuleDeferredRegistrationSpan = startChildSpan(bootstrappingSpan, (options, context) => {
             return getTracer().startSpan("local-module-deferred-registration", { ...options, attributes }, context);
@@ -281,9 +302,11 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     });
 
     runtime.eventBus.addListener(LocalModulesDeferredRegistrationCompletedEvent, (payload: unknown) => {
-        bootstrappingSpan.addEvent("local-module-deferred-registration-completed", {
-            "squide.registration_count": (payload as LocalModulesDeferredRegistrationCompletedEventPayload).registrationCount
-        });
+        if (bootstrappingSpan) {
+            bootstrappingSpan.addEvent("local-module-deferred-registration-completed", {
+                "squide.registration_count": (payload as LocalModulesDeferredRegistrationCompletedEventPayload).registrationCount
+            });
+        }
 
         if (localModuleDeferredRegistrationSpan) {
             localModuleDeferredRegistrationSpan.end();
@@ -303,7 +326,9 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
             "squide.remote_count": (payload as RemoteModulesRegistrationStartedEventPayload).remoteCount
         };
 
-        bootstrappingSpan.addEvent("remote-module-registration-started", attributes);
+        if (bootstrappingSpan) {
+            bootstrappingSpan.addEvent("remote-module-registration-started", attributes);
+        }
 
         remoteModuleRegistrationSpan = startChildSpan(bootstrappingSpan, (options, context) => {
             return getTracer().startSpan("remote-module-registration", { ...options, attributes }, context);
@@ -311,9 +336,11 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     });
 
     runtime.eventBus.addListener(RemoteModulesRegistrationCompletedEvent, (payload: unknown) => {
-        bootstrappingSpan.addEvent("remote-module-registration-completed", {
-            "squide.remote_count": (payload as RemoteModulesRegistrationCompletedEventPayload).remoteCount
-        });
+        if (bootstrappingSpan) {
+            bootstrappingSpan.addEvent("remote-module-registration-completed", {
+                "squide.remote_count": (payload as RemoteModulesRegistrationCompletedEventPayload).remoteCount
+            });
+        }
 
         if (remoteModuleRegistrationSpan) {
             remoteModuleRegistrationSpan.end();
@@ -333,7 +360,9 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
             "squide.registration_count": (payload as RemoteModulesDeferredRegistrationStartedEventPayload).registrationCount
         };
 
-        bootstrappingSpan.addEvent("remote-module-deferred-registration-started", attributes);
+        if (bootstrappingSpan) {
+            bootstrappingSpan.addEvent("remote-module-deferred-registration-started", attributes);
+        }
 
         remoteModuleDeferredRegistrationSpan = startChildSpan(bootstrappingSpan, (options, context) => {
             return getTracer().startSpan("remote-module-deferred-registration", { ...options, attributes }, context);
@@ -341,9 +370,11 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     });
 
     runtime.eventBus.addListener(RemoteModulesDeferredRegistrationCompletedEvent, (payload: unknown) => {
-        bootstrappingSpan.addEvent("remote-module-deferred-registration-completed", {
-            "squide.registration_count": (payload as RemoteModulesDeferredRegistrationCompletedEventPayload).registrationCount
-        });
+        if (bootstrappingSpan) {
+            bootstrappingSpan.addEvent("remote-module-deferred-registration-completed", {
+                "squide.registration_count": (payload as RemoteModulesDeferredRegistrationCompletedEventPayload).registrationCount
+            });
+        }
 
         if (remoteModuleDeferredRegistrationSpan) {
             remoteModuleDeferredRegistrationSpan.end();
@@ -411,14 +442,118 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     );
 
     runtime.eventBus.addListener(ModulesRegisteredEvent, () => {
-        bootstrappingSpan.addEvent("modules-registered");
+        if (bootstrappingSpan) {
+            bootstrappingSpan.addEvent("modules-registered");
+        }
     });
 
     runtime.eventBus.addListener(ModulesReadyEvent, () => {
-        bootstrappingSpan.addEvent("modules-ready");
+        if (bootstrappingSpan) {
+            bootstrappingSpan.addEvent("modules-ready");
+        }
     });
 
     runtime.eventBus.addListener(MswReadyEvent, () => {
-        bootstrappingSpan.addEvent("msw-ready");
+        if (bootstrappingSpan) {
+            bootstrappingSpan.addEvent("msw-ready");
+        }
+    });
+
+    runtime.eventBus.addListener(DeferredRegistrationsUpdateStartedEvent, () => {
+        deferredRegistrationsUpdateSpan = startSpan((options, context) => getTracer().startSpan("squide-deferred-registrations-update", options, context));
+    });
+
+    runtime.eventBus.addListener(DeferredRegistrationsUpdateCompletedEvent, () => {
+        if (deferredRegistrationsUpdateSpan) {
+            deferredRegistrationsUpdateSpan.end();
+        }
+    });
+
+    runtime.eventBus.addListener(LocalModulesDeferredRegistrationsUpdateStartedEvent, (payload: unknown) => {
+        const attributes = {
+            "squide.registration_count": (payload as LocalModulesDeferredRegistrationsUpdateStartedEventPayload).registrationCount
+        };
+
+        if (deferredRegistrationsUpdateSpan) {
+            deferredRegistrationsUpdateSpan.addEvent("local-module-deferred-registrations-update-started", attributes);
+        }
+
+        localModuleDeferredRegistrationsUpdateSpan = startActiveChildSpan(deferredRegistrationsUpdateSpan, (options, context) => {
+            const name = "local-module-deferred-registrations-update";
+
+            const span = getTracer().startSpan(name, {
+                attributes,
+                ...options
+            }, context);
+
+            return {
+                name,
+                span
+            };
+        });
+    });
+
+    runtime.eventBus.addListener(LocalModulesDeferredRegistrationsUpdateCompletedEvent, (payload: unknown) => {
+        if (deferredRegistrationsUpdateSpan) {
+            deferredRegistrationsUpdateSpan.addEvent("local-module-deferred-registrations-update-completed", {
+                "squide.registration_count": (payload as LocalModulesDeferredRegistrationsUpdateCompletedEventPayload).registrationCount
+            });
+        }
+
+        if (localModuleDeferredRegistrationsUpdateSpan) {
+            endActiveSpan(localModuleDeferredRegistrationsUpdateSpan);
+        }
+    });
+
+    runtime.eventBus.addListener(LocalModuleDeferredRegistrationUpdateFailedEvent, (payload: unknown) => {
+        const registrationError = payload as ModuleRegistrationError;
+
+        if (localModuleDeferredRegistrationsUpdateSpan) {
+            traceError(localModuleDeferredRegistrationsUpdateSpan.instance, registrationError.error);
+        }
+    });
+
+    runtime.eventBus.addListener(RemoteModulesDeferredRegistrationsUpdateStartedEvent, (payload: unknown) => {
+        const attributes = {
+            "squide.registration_count": (payload as RemoteModulesDeferredRegistrationsUpdateStartedEventPayload).registrationCount
+        };
+
+        if (deferredRegistrationsUpdateSpan) {
+            deferredRegistrationsUpdateSpan.addEvent("remote-module-deferred-registrations-update-started", attributes);
+        }
+
+        remoteModuleDeferredRegistrationsUpdateSpan = startActiveChildSpan(deferredRegistrationsUpdateSpan, (options, context) => {
+            const name = "remote-module-deferred-registrations-update";
+
+            const span = getTracer().startSpan(name, {
+                attributes,
+                ...options
+            }, context);
+
+            return {
+                name,
+                span
+            };
+        });
+    });
+
+    runtime.eventBus.addListener(RemoteModulesDeferredRegistrationsUpdateCompletedEvent, (payload: unknown) => {
+        if (deferredRegistrationsUpdateSpan) {
+            deferredRegistrationsUpdateSpan.addEvent("remote-module-deferred-registrations-update-completed", {
+                "squide.registration_count": (payload as RemoteModulesDeferredRegistrationsUpdateCompletedEventPayload).registrationCount
+            });
+        }
+
+        if (remoteModuleDeferredRegistrationsUpdateSpan) {
+            endActiveSpan(remoteModuleDeferredRegistrationsUpdateSpan);
+        }
+    });
+
+    runtime.eventBus.addListener(RemoteModuleDeferredRegistrationUpdateFailedEvent, (payload: unknown) => {
+        const registrationError = payload as RemoteModuleRegistrationError;
+
+        if (remoteModuleDeferredRegistrationsUpdateSpan) {
+            traceError(remoteModuleDeferredRegistrationsUpdateSpan.instance, registrationError.error);
+        }
     });
 }

@@ -11,6 +11,10 @@ export const LocalModulesDeferredRegistrationStartedEvent = "squide-local-module
 export const LocalModulesDeferredRegistrationCompletedEvent = "squide-local-modules-deferred-registration-completed";
 export const LocalModuleDeferredRegistrationFailedEvent = "squide-local-module-deferred-registration-failed";
 
+export const LocalModulesDeferredRegistrationsUpdateStartedEvent = "squide-local-modules-deferred-registrations-update-started";
+export const LocalModulesDeferredRegistrationsUpdateCompletedEvent = "squide-local-modules-deferred-registrations-update-completed-started";
+export const LocalModuleDeferredRegistrationUpdateFailedEvent = "squide-local-module-deferred-registration-update-failed";
+
 export interface LocalModulesRegistrationStartedEventPayload {
     moduleCount: number;
 }
@@ -24,6 +28,14 @@ export interface LocalModulesDeferredRegistrationStartedEventPayload {
 }
 
 export interface LocalModulesDeferredRegistrationCompletedEventPayload {
+    registrationCount: number;
+}
+
+export interface LocalModulesDeferredRegistrationsUpdateStartedEventPayload {
+    registrationCount: number;
+}
+
+export interface LocalModulesDeferredRegistrationsUpdateCompletedEventPayload {
     registrationCount: number;
 }
 
@@ -169,11 +181,19 @@ export class LocalModuleRegistry implements ModuleRegistry {
             throw new Error("[squide] The updateDeferredRegistrations function can only be called once the local modules are ready.");
         }
 
+        runtime.eventBus.dispatch(LocalModulesDeferredRegistrationsUpdateStartedEvent, {
+            registrationCount: this.#deferredRegistrations.length
+        } satisfies LocalModulesDeferredRegistrationsUpdateStartedEventPayload);
+
+        let completedCount = 0;
+
         await Promise.allSettled(this.#deferredRegistrations.map(async ({ index, fct: deferredRegister }) => {
             runtime.logger.debug(`[squide] ${index} Updating local module deferred registrations.`, "Data:", data);
 
             try {
                 await deferredRegister(data, "update");
+
+                completedCount += 1;
             } catch (error: unknown) {
                 runtime.logger.error(
                     `[squide] ${index} An error occured while updating the deferred registrations of a local module.`,
@@ -187,6 +207,17 @@ export class LocalModuleRegistry implements ModuleRegistry {
 
             runtime.logger.debug(`[squide] ${index} Updated local module deferred registration.`);
         }));
+
+        if (errors.length > 0) {
+            errors.forEach(x => {
+                runtime.eventBus.dispatch(LocalModuleDeferredRegistrationUpdateFailedEvent, x);
+            });
+        }
+
+        // Must be dispatched before updating the registration status to ensure bootstrapping events sequencing.
+        runtime.eventBus.dispatch(LocalModulesDeferredRegistrationsUpdateCompletedEvent, {
+            registrationCount: completedCount
+        } satisfies LocalModulesDeferredRegistrationsUpdateCompletedEventPayload);
 
         return errors;
     }

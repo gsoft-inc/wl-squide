@@ -28,7 +28,6 @@ export function usePublicDataQueries<T extends Array<any>>(queries: QueriesOptio
             data: results.map(x => x.data) as MapUseQueryResultToData<QueriesResults<T>>,
             errors,
             hasErrors,
-            // isReady: results.length === queries.length && results.every(x => x.data)
             isReady: !hasErrors && !results.some(x => x.isPending)
         };
     }, []);

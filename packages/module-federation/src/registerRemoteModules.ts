@@ -10,6 +10,10 @@ export const RemoteModulesDeferredRegistrationStartedEvent = "squide-remote-modu
 export const RemoteModulesDeferredRegistrationCompletedEvent = "squide-remote-modules-deferred-registration-completed";
 export const RemoteModuleDeferredRegistrationFailedEvent = "squide-some-remote-module-deferred-registration-failed";
 
+export const RemoteModulesDeferredRegistrationsUpdateStartedEvent = "squide-remote-modules-deferred-registrations-update-started";
+export const RemoteModulesDeferredRegistrationsUpdateCompletedEvent = "squide-remote-modules-deferred-registrations-update-completed-started";
+export const RemoteModuleDeferredRegistrationUpdateFailedEvent = "squide-remote-module-deferred-registration-update-failed";
+
 export interface RemoteModulesRegistrationStartedEventPayload {
     remoteCount: number;
 }
@@ -23,6 +27,14 @@ export interface RemoteModulesDeferredRegistrationStartedEventPayload {
 }
 
 export interface RemoteModulesDeferredRegistrationCompletedEventPayload {
+    registrationCount: number;
+}
+
+export interface RemoteModulesDeferredRegistrationsUpdateStartedEventPayload {
+    registrationCount: number;
+}
+
+export interface RemoteModulesDeferredRegistrationsUpdateCompletedEventPayload {
     registrationCount: number;
 }
 
@@ -223,11 +235,19 @@ export class RemoteModuleRegistry implements ModuleRegistry {
             throw new Error("[squide] The updateDeferredRegistrations function can only be called once the remote modules are ready.");
         }
 
+        runtime.eventBus.dispatch(RemoteModulesDeferredRegistrationsUpdateStartedEvent, {
+            registrationCount: this.#deferredRegistrations.length
+        } satisfies RemoteModulesDeferredRegistrationsUpdateStartedEventPayload);
+
+        let completedCount = 0;
+
         await Promise.allSettled(this.#deferredRegistrations.map(async ({ remoteName, index, fct: deferredRegister }) => {
             runtime.logger.debug(`[squide] ${index} Updating the deferred registrations for module "${RemoteRegisterModuleName}" of remote "${remoteName}".`);
 
             try {
                 await deferredRegister(data, "update");
+
+                completedCount += 1;
             } catch (error: unknown) {
                 runtime.logger.error(
                     `[squide] ${index} An error occured while updating the deferred registrations for module "${RemoteRegisterModuleName}" of remote "${remoteName}".`,
@@ -243,6 +263,16 @@ export class RemoteModuleRegistry implements ModuleRegistry {
 
             runtime.logger.debug(`[squide] ${index} Updated the deferred registrations for module "${RemoteRegisterModuleName}" of remote "${remoteName}".`);
         }));
+
+        if (errors.length > 0) {
+            errors.forEach(x => {
+                runtime.eventBus.dispatch(RemoteModuleDeferredRegistrationUpdateFailedEvent, x);
+            });
+        }
+
+        runtime.eventBus.dispatch(RemoteModulesDeferredRegistrationsUpdateCompletedEvent, {
+            registrationCount: completedCount
+        } satisfies RemoteModulesDeferredRegistrationsUpdateCompletedEventPayload);
 
         return errors;
     }

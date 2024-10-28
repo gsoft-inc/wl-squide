@@ -42,6 +42,8 @@ import { suppressConsoleErrorMessage } from "./utils.ts";
     LocalModuleDeferredRegistrationFailedEvent
     RemoteModuleRegistrationFailedEvent
     RemoteModuleDeferredRegistrationFailedEvent
+    LocalModuleDeferredRegistrationUpdateFailedEvent
+    RemoteModuleDeferredRegistrationUpdateFailedEvent
 
     Ajouter dans usePublicDataQueries et useProtectedDataQueries
         un dispatch de PublicDataQueriesFailedEvent et ProtectedDataQueriesFailedEvent

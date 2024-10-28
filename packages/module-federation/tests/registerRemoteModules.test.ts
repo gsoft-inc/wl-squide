@@ -57,6 +57,9 @@ test("can register all the modules", async () => {
         { name: "Dummy-3" }
     ], runtime);
 
+    expect(register1).toHaveBeenCalledTimes(1);
+    expect(register2).toHaveBeenCalledTimes(1);
+    expect(register3).toHaveBeenCalledTimes(1);
     expect(register1).toHaveBeenCalled();
     expect(register2).toHaveBeenCalled();
     expect(register3).toHaveBeenCalled();
@@ -204,6 +207,8 @@ test("when a module registration fail, register the remaining modules", async ()
         { name: "Dummy-3" }
     ], runtime);
 
+    expect(register1).toHaveBeenCalledTimes(1);
+    expect(register3).toHaveBeenCalledTimes(1);
     expect(register1).toHaveBeenCalled();
     expect(register3).toHaveBeenCalled();
 });
@@ -332,6 +337,9 @@ test("when a context is provided, all the register functions receive the provide
         { name: "Dummy-3" }
     ], runtime, { context });
 
+    expect(register1).toHaveBeenCalledTimes(1);
+    expect(register2).toHaveBeenCalledTimes(1);
+    expect(register3).toHaveBeenCalledTimes(1);
     expect(register1).toHaveBeenCalledWith(runtime, context);
     expect(register2).toHaveBeenCalledWith(runtime, context);
     expect(register3).toHaveBeenCalledWith(runtime, context);

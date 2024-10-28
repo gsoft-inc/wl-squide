@@ -1,9 +1,9 @@
 import { addLocalModuleRegistrationStatusChangedListener, getLocalModuleRegistrationStatus, removeLocalModuleRegistrationStatusChangedListener, useEventBus, useLogger } from "@squide/core";
 import { addRemoteModuleRegistrationStatusChangedListener, areModulesReady, areModulesRegistered, getRemoteModuleRegistrationStatus, removeRemoteModuleRegistrationStatusChangedListener } from "@squide/module-federation";
 import { addMswStateChangedListener, isMswReady, removeMswStateChangedListener } from "@squide/msw";
-import { useCallback, useEffect, useMemo, useReducer, useRef, type Dispatch } from "react";
+import { useCallback, useEffect, useMemo, useReducer, type Dispatch } from "react";
+import { useExecuteOnce } from "./useExecuteOnce.ts";
 import { isApplicationBootstrapping } from "./useIsBootstrapping.ts";
-import { useRunOnce } from "./useRunOnce.ts";
 
 export interface AppRouterState {
     waitForMsw: boolean;
@@ -162,64 +162,77 @@ export function getAreModulesReady() {
 }
 
 export function useModuleRegistrationStatusDispatcher(areModulesRegisteredValue: boolean, areModulesReadyValue: boolean, dispatch: AppRouterDispatch) {
-    // HACK: The usage of refs will have to be re-evaluated. The issue is that in tests, both "modules-registered" and "modules-ready" are dispatched twice.
-    // I think it only happens in tests and not in production so this hack might be replaced with better testing setup.
-    const isRegisteredActionDispatchedRef = useRef(false);
-    const isReadyActionDispatchedRef = useRef(false);
-
     const logger = useLogger();
 
+    const dispatchModulesRegistered = useExecuteOnce(useCallback(() => {
+        if (getAreModulesRegistered()) {
+            dispatch({ type: "modules-registered" });
+
+            logger.debug("[squide] %cModules are registered%c.", "color: white; background-color: green;", "");
+
+            return true;
+        }
+
+        return false;
+    }, [dispatch, logger]));
+
+    const dispatchModulesReady = useExecuteOnce(useCallback(() => {
+        if (getAreModulesReady()) {
+            dispatch({ type: "modules-ready" });
+
+            logger.debug("[squide] %cModules are ready%c.", "color: white; background-color: green;", "");
+
+            return true;
+        }
+
+        return false;
+    }, [dispatch, logger]));
+
     return useEffect(() => {
-        const handleModulesRegistrationStatusChange = () => {
-            if (!areModulesRegisteredValue && getAreModulesRegistered()) {
-                if (!isRegisteredActionDispatchedRef.current) {
-                    isRegisteredActionDispatchedRef.current = true;
+        if (!areModulesRegisteredValue) {
+            addLocalModuleRegistrationStatusChangedListener(dispatchModulesRegistered);
+            addRemoteModuleRegistrationStatusChangedListener(dispatchModulesRegistered);
+        }
 
-                    dispatch({ type: "modules-registered" });
-
-                    logger.debug("[squide] %cModules are registered%c.", "color: white; background-color: green;", "");
-                }
-            }
-
-            if (!areModulesReadyValue && getAreModulesReady()) {
-                if (!isReadyActionDispatchedRef.current) {
-                    isReadyActionDispatchedRef.current = true;
-
-                    dispatch({ type: "modules-ready" });
-
-                    logger.debug("[squide] %cModules are ready%c.", "color: white; background-color: green;", "");
-                }
-            }
-        };
-
-        addLocalModuleRegistrationStatusChangedListener(handleModulesRegistrationStatusChange);
-        addRemoteModuleRegistrationStatusChangedListener(handleModulesRegistrationStatusChange);
+        if (!areModulesReadyValue) {
+            addLocalModuleRegistrationStatusChangedListener(dispatchModulesReady);
+            addRemoteModuleRegistrationStatusChangedListener(dispatchModulesReady);
+        }
 
         return () => {
-            removeLocalModuleRegistrationStatusChangedListener(handleModulesRegistrationStatusChange);
-            removeRemoteModuleRegistrationStatusChangedListener(handleModulesRegistrationStatusChange);
+            removeLocalModuleRegistrationStatusChangedListener(dispatchModulesRegistered);
+            removeRemoteModuleRegistrationStatusChangedListener(dispatchModulesRegistered);
+
+            removeLocalModuleRegistrationStatusChangedListener(dispatchModulesReady);
+            removeRemoteModuleRegistrationStatusChangedListener(dispatchModulesReady);
         };
-    }, [areModulesRegisteredValue, areModulesReadyValue, dispatch, logger]);
+    }, [areModulesRegisteredValue, areModulesReadyValue, dispatchModulesRegistered, dispatchModulesReady]);
 }
 
 export function useMswStatusDispatcher(isMswReadyValue: boolean, dispatch: AppRouterDispatch) {
     const logger = useLogger();
 
+    const dispatchMswReady = useExecuteOnce(useCallback(() => {
+        if (isMswReady()) {
+            dispatch({ type: "msw-ready" });
+
+            logger.debug("[squide] %cMSW is ready%c.", "color: white; background-color: green;", "");
+
+            return true;
+        }
+
+        return false;
+    }, [dispatch, logger]));
+
     useEffect(() => {
-        const handleMswStateChange = () => {
-            if (!isMswReadyValue && isMswReady()) {
-                dispatch({ type: "msw-ready" });
-
-                logger.debug("[squide] %cMSW is ready%c.", "color: white; background-color: green;", "");
-            }
-        };
-
-        addMswStateChangedListener(handleMswStateChange);
+        if (!isMswReadyValue) {
+            addMswStateChangedListener(dispatchMswReady);
+        }
 
         return () => {
-            removeMswStateChangedListener(handleMswStateChange);
+            removeMswStateChangedListener(dispatchMswReady);
         };
-    }, [isMswReadyValue, dispatch, logger]);
+    }, [isMswReadyValue, dispatchMswReady]);
 }
 
 export function useBootstrappingCompletedDispatcher(state: AppRouterState) {
@@ -228,11 +241,15 @@ export function useBootstrappingCompletedDispatcher(state: AppRouterState) {
     const areModulesRegisteredValue = state.areModulesRegistered;
     const isBoostrapping = isApplicationBootstrapping(state);
 
-    useEffect(() => {
+    useExecuteOnce(useCallback(() => {
         if (areModulesRegisteredValue && !isBoostrapping) {
             eventBus.dispatch(ApplicationBoostrappedEvent);
+
+            return true;
         }
-    }, [areModulesRegisteredValue, isBoostrapping, eventBus]);
+
+        return false;
+    }, [areModulesRegisteredValue, isBoostrapping, eventBus]), true);
 }
 
 let dispatchProxyFactory: ((reactDispatch: AppRouterDispatch) => AppRouterDispatch) | undefined;
@@ -266,47 +283,54 @@ function useEnhancedReducerDispatch(reducerDispatch: AppRouterDispatch) {
 }
 
 export function useAppRouterReducer(waitForMsw: boolean, waitForPublicData: boolean, waitForProtectedData: boolean): [AppRouterState, AppRouterDispatch] {
-    const areModulesInitiallyRegisteredRef = useRef(getAreModulesRegistered());
-    const areModulesInitiallyReadyRef = useRef(getAreModulesReady());
-    const isMswInitiallyReadyRef = useRef(isMswReady());
+    const areModulesInitiallyRegistered = getAreModulesRegistered();
+    const areModulesInitiallyReady = getAreModulesReady();
+    const isMswInitiallyReady = isMswReady();
 
     const eventBus = useEventBus();
 
-    // When modules are initially registered, the reducer action will never be dispatched, therefore the event bus event would not be dispatched as well.
+    // When modules are initially registered, the reducer action will never be dispatched, therefore the event would not be dispatched as well.
     // To ensure the bootstrapping events sequencing, the event is manually dispatched when the modules are initially registered.
-    useRunOnce(() => {
-        if (areModulesInitiallyRegisteredRef.current) {
+    useExecuteOnce(useCallback(() => {
+        if (areModulesInitiallyRegistered) {
             eventBus.dispatch(ModulesRegisteredEvent);
         }
-    });
 
-    // When modules are initially ready, the reducer action will never be dispatched, therefore the event bus event would not be dispatched as well.
-    // To ensure the bootstrapping events sequencing, the event is manually dispatched when the modules are initially ready.
-    useRunOnce(() => {
-        if (areModulesInitiallyReadyRef.current) {
+        return true;
+    }, [areModulesInitiallyRegistered, eventBus]), true);
+
+    // When modules are initially registered, the reducer action will never be dispatched, therefore the event would not be dispatched as well.
+    // To ensure the bootstrapping events sequencing, the event is manually dispatched when the modules are initially registered.
+    useExecuteOnce(useCallback(() => {
+        if (areModulesInitiallyReady) {
             eventBus.dispatch(ModulesReadyEvent);
         }
-    });
 
-    // When MSW is initially ready, the reducer action will never be dispatched, therefore the event bus event would not be dispatched as well.
-    // To ensure the bootstrapping events sequencing, the event is manually dispatched when the MSW is initially ready.
-    useRunOnce(() => {
-        if (isMswInitiallyReadyRef.current) {
+        return true;
+    }, [areModulesInitiallyReady, eventBus]), true);
+
+    // When modules are initially registered, the reducer action will never be dispatched, therefore the event would not be dispatched as well.
+    // To ensure the bootstrapping events sequencing, the event is manually dispatched when the modules are initially registered.
+    useExecuteOnce(useCallback(() => {
+        if (isMswInitiallyReady) {
             eventBus.dispatch(MswReadyEvent);
         }
-    });
+
+        return true;
+    }, [isMswInitiallyReady, eventBus]), true);
 
     const [state, reactDispatch] = useReducer(reducer, {
         waitForMsw,
         waitForPublicData,
         waitForProtectedData,
         // When the modules registration functions are awaited, the event listeners are registered after the modules are registered.
-        areModulesRegistered: areModulesInitiallyRegisteredRef.current,
-        areModulesReady: areModulesInitiallyReadyRef.current,
-        isMswReady: isMswInitiallyReadyRef.current,
+        areModulesRegistered: areModulesInitiallyRegistered,
+        areModulesReady: areModulesInitiallyReady,
+        isMswReady: isMswInitiallyReady,
         isPublicDataReady: false,
         isProtectedDataReady: false,
-        isActiveRouteProtected: false,
+        // Must be initially "true" otherwise the protected data will always be considered as ready.
+        isActiveRouteProtected: true,
         isUnauthorized: false
     });
 

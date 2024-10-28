@@ -1,9 +1,10 @@
 import { useEventBus } from "@squide/core";
 import { useQueries, type QueriesOptions, type QueriesResults, type UseQueryResult } from "@tanstack/react-query";
-import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useAppRouterDispatcher, useAppRouterState } from "./AppRouterContext.ts";
 import { GlobalDataQueriesError } from "./GlobalDataQueriesError.ts";
 import { useCanFetchProtectedData } from "./useCanFetchProtectedData.ts";
+import { useExecuteOnce } from "./useExecuteOnce.ts";
 
 export const ProtectedDataFetchStartedEvent = "squide-protected-data-fetch-started";
 export const ProtectedDataFetchFailedEvent = "squide-protected-data-fetch-failed";
@@ -21,21 +22,15 @@ export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOp
 
     const dispatch = useAppRouterDispatcher();
 
-    // TODO: Add a comment explaining why useLayoutEffect
-    useLayoutEffect(() => {
-        if (canFetchProtectedData) {
-            eventBus.dispatch(ProtectedDataFetchStartedEvent);
-        }
-    }, [canFetchProtectedData, eventBus]);
-
     const combineResults = useCallback((results: UseQueryResult<unknown, Error>[]) => {
         const errors = results.filter(x => x.error).map(x => x.error) as Error[];
+        const hasErrors = errors.length > 0;
 
         return {
             data: results.map(x => x.data) as MapUseQueryResultToData<QueriesResults<T>>,
             errors,
-            hasErrors: errors.length > 0,
-            isReady: !results.some(x => x.isPending)
+            hasErrors,
+            isReady: !hasErrors && !results.some(x => x.isPending)
         };
     }, []);
 
@@ -47,16 +42,43 @@ export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOp
         combine: combineResults
     });
 
-    // useEffect(() => {
-    //     if (canFetchProtectedData) {
-    //         eventBus.dispatch(ProtectedDataFetchStartedEvent);
-    //     }
-    // }, [canFetchProtectedData, eventBus]);
+    const { isProtectedDataReady, isUnauthorized } = useAppRouterState();
 
-    const {
-        isProtectedDataReady,
-        isUnauthorized
-    } = useAppRouterState();
+    useExecuteOnce(useCallback(() => {
+        if (canFetchProtectedData) {
+            eventBus.dispatch(ProtectedDataFetchStartedEvent);
+
+            return true;
+        }
+
+        return false;
+    }, [canFetchProtectedData, eventBus]), true);
+
+    // Using a ref seems to be the only way to prevent starting two deferred registrations scope.
+    const isReadyRef = useRef(false);
+
+    const dispatchReady = useExecuteOnce(useCallback(() => {
+        if (isReady) {
+            dispatch({ type: "protected-data-ready" });
+
+            return true;
+        }
+
+        return false;
+    }, [isReady, dispatch]));
+
+    useEffect(() => {
+        isReadyRef.current = true;
+
+        // State update must be executed in useEffect.
+        dispatchReady();
+    }, [dispatchReady]);
+
+    useEffect(() => {
+        if (isReadyRef.current && data) {
+            dispatch({ type: "protected-data-updated" });
+        }
+    }, [data, dispatch]);
 
     useEffect(() => {
         if (hasErrors) {
@@ -68,30 +90,12 @@ export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOp
 
             // Otherwise, when a user is logged off, a refetch might throws a 401.
             if (!queriesErrors.every(x => isUnauthorizedError(x))) {
-                queriesErrors.forEach(x => {
-                    eventBus.dispatch(ProtectedDataFetchFailedEvent, x);
-                });
+                eventBus.dispatch(ProtectedDataFetchFailedEvent, queriesErrors);
 
                 throw new GlobalDataQueriesError("[squide] Global protected data queries failed.", queriesErrors);
             }
         }
     }, [hasErrors, queriesErrors, isProtectedDataReady, isUnauthorized, isUnauthorizedError, dispatch, eventBus]);
-
-    const isReadyRef = useRef(false);
-
-    useEffect(() => {
-        if (isReadyRef.current && data) {
-            dispatch({ type: "protected-data-updated" });
-        }
-    }, [data, dispatch]);
-
-    useEffect(() => {
-        if (isReady && !isReadyRef.current) {
-            isReadyRef.current = true;
-
-            dispatch({ type: "protected-data-ready" });
-        }
-    }, [isReady, dispatch]);
 
     return data;
 }

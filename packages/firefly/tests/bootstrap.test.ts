@@ -1,10 +1,11 @@
 import { __clearLocalModuleRegistry, __setLocalModuleRegistry, LocalModuleRegistry } from "@squide/core";
 import { __clearRemoteModuleRegistry, __setRemoteModuleRegistry, RemoteModuleRegistry } from "@squide/module-federation";
 import { __clearMswState, __setMswState, MswState } from "@squide/msw";
-import { ApplicationBootstrappingStartedEvent, bootstrap } from "../src/boostrap.ts";
+import { __resetBootstrapGuard, ApplicationBootstrappingStartedEvent, bootstrap } from "../src/boostrap.ts";
 import { FireflyRuntime } from "../src/FireflyRuntime.tsx";
 
 afterEach(() => {
+    __resetBootstrapGuard();
     __clearLocalModuleRegistry();
     __clearRemoteModuleRegistry();
     __clearMswState();

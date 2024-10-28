@@ -126,7 +126,7 @@ export class LocalModuleRegistry implements ModuleRegistry {
         let completedCount = 0;
 
         await Promise.allSettled(this.#deferredRegistrations.map(async ({ index, fct: deferredRegister }) => {
-            runtime.logger.debug(`[squide] ${index} Registering local module deferred registration.`, "Data:", data);
+            runtime.logger.debug(`[squide] ${index} Registering local module deferred registrations.`, "Data:", data);
 
             try {
                 await deferredRegister(data, "register");
@@ -143,7 +143,7 @@ export class LocalModuleRegistry implements ModuleRegistry {
                 });
             }
 
-            runtime.logger.debug(`[squide] ${index} Registered local module deferred registration.`);
+            runtime.logger.debug(`[squide] ${index} Registered local module deferred registrations.`);
         }));
 
         if (errors.length > 0) {
@@ -170,7 +170,7 @@ export class LocalModuleRegistry implements ModuleRegistry {
         }
 
         await Promise.allSettled(this.#deferredRegistrations.map(async ({ index, fct: deferredRegister }) => {
-            runtime.logger.debug(`[squide] ${index} Updating local module deferred registration.`, "Data:", data);
+            runtime.logger.debug(`[squide] ${index} Updating local module deferred registrations.`, "Data:", data);
 
             try {
                 await deferredRegister(data, "update");

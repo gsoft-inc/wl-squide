@@ -1,5 +1,5 @@
 import { useAppRouterState } from "./AppRouterContext.ts";
-import { AppRouterState } from "./AppRouterReducer.ts";
+import type { AppRouterState } from "./AppRouterReducer.ts";
 
 export function useIsBootstrapping() {
     const state = useAppRouterState();

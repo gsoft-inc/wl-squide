@@ -5,6 +5,8 @@ import type { FireflyRuntime } from "./FireflyRuntime.tsx";
 
 export const ApplicationBootstrappingStartedEvent = "squide-app-bootstrapping-started";
 
+let isBootstrapped = false;
+
 export type StartMswFunction<TRuntime = FireflyRuntime> = (runtime: TRuntime) => Promise<void>;
 
 export interface BootstrapAppOptions<TRuntime extends FireflyRuntime = FireflyRuntime, TContext = unknown, TData = unknown> extends RegisterModulesOptions<TContext> {
@@ -20,6 +22,10 @@ export async function bootstrap<TRuntime extends FireflyRuntime = FireflyRuntime
         context,
         startMsw
     } = options;
+
+    if (isBootstrapped) {
+        throw new Error("[squide] A squide application can only be bootstrapped once. Did you call the \"bootstrap\" function twice?");
+    }
 
     runtime.eventBus.dispatch(ApplicationBootstrappingStartedEvent);
 
@@ -39,18 +45,22 @@ export async function bootstrap<TRuntime extends FireflyRuntime = FireflyRuntime
             throw new Error("[squide] When MSW is enabled, the \"startMsw\" function must be provided.");
         }
 
-        startMsw(runtime)
-            .then(() => {
-                // Indicate to resources that are dependent on MSW that the service has been started.
-                setMswAsReady();
-            })
-            .catch((error: unknown) => {
-                runtime.logger.debug("[squide] An error occured while starting MSW.", error);
-            });
+        try {
+            await startMsw(runtime);
+            setMswAsReady();
+        } catch (error: unknown) {
+            runtime.logger.debug("[squide] An error occured while starting MSW.", error);
+        }
     }
+
+    isBootstrapped = true;
 
     return {
         localModuleErrors,
         remoteModuleErrors
     };
+}
+
+export function __resetBootstrapGuard() {
+    isBootstrapped = false;
 }

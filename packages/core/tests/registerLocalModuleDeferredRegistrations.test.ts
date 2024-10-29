@@ -77,7 +77,7 @@ test("when called for the first time but the registration status is already \"re
     expect(registry.registrationStatus).toBe("ready");
 });
 
-test("dispatch LocalModulesDeferredRegistrationStartedEvent", async () => {
+test("should dispatch LocalModulesDeferredRegistrationStartedEvent", async () => {
     const runtime = new DummyRuntime();
 
     const listener = jest.fn();
@@ -99,7 +99,7 @@ test("dispatch LocalModulesDeferredRegistrationStartedEvent", async () => {
     }));
 });
 
-test("can register all the deferred registrations", async () => {
+test("should register all the deferred registrations", async () => {
     const runtime = new DummyRuntime();
     const registry = new LocalModuleRegistry();
 

@@ -55,6 +55,8 @@ export function usePublicDataQueries<T extends Array<any>>(queries: QueriesOptio
 
     const dispatchReady = useExecuteOnce(useCallback(() => {
         if (isReady) {
+            isReadyRef.current = true;
+
             dispatch({ type: "public-data-ready" });
 
             return true;
@@ -64,8 +66,6 @@ export function usePublicDataQueries<T extends Array<any>>(queries: QueriesOptio
     }, [isReady, dispatch]));
 
     useEffect(() => {
-        isReadyRef.current = true;
-
         // State update must be executed in useEffect.
         dispatchReady();
     }, [dispatchReady]);

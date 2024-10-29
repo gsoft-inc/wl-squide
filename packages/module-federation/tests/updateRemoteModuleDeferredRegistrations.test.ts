@@ -65,7 +65,7 @@ test("when called before registerLocalModuleDeferredRegistrations, throw an erro
     await expect(() => registry.updateDeferredRegistrations({}, runtime)).rejects.toThrow(/The updateDeferredRegistrations function can only be called once the remote modules are ready/);
 });
 
-test("dispatch RemoteModulesDeferredRegistrationsUpdateStartedEvent", async () => {
+test("should dispatch RemoteModulesDeferredRegistrationsUpdateStartedEvent", async () => {
     const runtime = new DummyRuntime();
 
     const listener = jest.fn();
@@ -92,7 +92,7 @@ test("dispatch RemoteModulesDeferredRegistrationsUpdateStartedEvent", async () =
     }));
 });
 
-test("can update all the deferred registrations", async () => {
+test("should update all the deferred registrations", async () => {
     const runtime = new DummyRuntime();
 
     const register1 = jest.fn();

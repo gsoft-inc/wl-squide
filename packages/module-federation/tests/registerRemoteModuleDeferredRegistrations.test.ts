@@ -87,7 +87,7 @@ test("when called for the first time but the registration status is already \"re
     expect(registry.registrationStatus).toBe("ready");
 });
 
-test("dispatch RemoteModulesDeferredRegistrationStartedEvent", async () => {
+test("should dispatch RemoteModulesDeferredRegistrationStartedEvent", async () => {
     const runtime = new DummyRuntime();
 
     const listener = jest.fn();
@@ -113,7 +113,7 @@ test("dispatch RemoteModulesDeferredRegistrationStartedEvent", async () => {
     }));
 });
 
-test("can complete all the deferred registrations", async () => {
+test("should complete all the deferred registrations", async () => {
     const runtime = new DummyRuntime();
 
     const register1 = jest.fn();

@@ -39,7 +39,7 @@ class DummyRuntime extends Runtime<unknown, unknown> {
     }
 }
 
-test("can register all the modules", async () => {
+test("should register all the modules", async () => {
     const runtime = new DummyRuntime();
     const registry = new LocalModuleRegistry();
 
@@ -86,7 +86,7 @@ test("when called twice, throw an error", async () => {
     await expect(async () => registry.registerModules([() => {}], runtime)).rejects.toThrow(/The registerLocalModules function can only be called once/);
 });
 
-test("dispatch LocalModulesRegistrationStartedEvent", async () => {
+test("should dispatch LocalModulesRegistrationStartedEvent", async () => {
     const runtime = new DummyRuntime();
 
     const listener = jest.fn();

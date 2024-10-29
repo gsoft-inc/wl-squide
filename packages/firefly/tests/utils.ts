@@ -1,15 +1,20 @@
-export function suppressConsoleErrorMessage(partialMessage: string) {
-    const originalError = console.error;
+import type { AppRouterState } from "../src/AppRouterReducer.ts";
 
-    const mock = jest.spyOn(console, "error").mockImplementation((...args) => {
-        if (typeof args[0] === "string" && args[0].includes(partialMessage)) {
-            return;
-        }
+export function sleep(delay: number) {
+    return new Promise(resolve => setTimeout(resolve, delay));
+}
 
-        return originalError.call(console, args);
-    });
-
-    return () => {
-        mock.mockRestore();
+export function createDefaultAppRouterState(): AppRouterState {
+    return {
+        areModulesReady: false,
+        areModulesRegistered: false,
+        isActiveRouteProtected: false,
+        isMswReady: false,
+        isProtectedDataReady: false,
+        isPublicDataReady: false,
+        isUnauthorized: false,
+        waitForMsw: false,
+        waitForProtectedData: false,
+        waitForPublicData: false
     };
 }

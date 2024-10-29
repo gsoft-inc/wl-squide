@@ -3,21 +3,7 @@ import type { ReactNode } from "react";
 import { AppRouterStateContext } from "../src/AppRouterContext.ts";
 import type { AppRouterState } from "../src/AppRouterReducer.ts";
 import { useCanUpdateDeferredRegistrations } from "../src/useCanUpdateDeferredRegistrations.ts";
-
-function createDefaultAppRouterState(): AppRouterState {
-    return {
-        areModulesReady: false,
-        areModulesRegistered: false,
-        isActiveRouteProtected: false,
-        isMswReady: false,
-        isProtectedDataReady: false,
-        isPublicDataReady: false,
-        isUnauthorized: false,
-        waitForMsw: false,
-        waitForProtectedData: false,
-        waitForPublicData: false
-    };
-}
+import { createDefaultAppRouterState } from "./utils.ts";
 
 function renderUseCanUpdateDeferredRegistrationsHook<TProps>(state: AppRouterState, additionalProps: RenderHookOptions<TProps> = {}) {
     return renderHook(() => useCanUpdateDeferredRegistrations(), {

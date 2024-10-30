@@ -21,8 +21,8 @@ import {
     RemoteModulesRegistrationStartedEvent
 } from "@squide/module-federation";
 import { ProtectedRoutes } from "@squide/react-router";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { render, screen, waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { createMemoryRouter, Outlet, RouterProvider } from "react-router-dom";
 import { AppRouter as FireflyAppRouter } from "../src/AppRouter.tsx";
@@ -33,6 +33,7 @@ import { useDeferredRegistrations } from "../src/useDeferredRegistrations.ts";
 import { useIsBootstrapping } from "../src/useIsBootstrapping.ts";
 import { ProtectedDataFetchStartedEvent, useProtectedDataQueries } from "../src/useProtectedDataQueries.ts";
 import { PublicDataFetchStartedEvent, usePublicDataQueries } from "../src/usePublicDataQueries.ts";
+import { createQueryClient } from "./utils.ts";
 
 interface AppRouterProps {
     waitForMsw: boolean;
@@ -82,15 +83,7 @@ function AppRouter(props: AppRouterProps) {
 }
 
 function renderAppRouter(props: AppRouterProps, runtime: Runtime) {
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: {
-                retry: false,
-                // View: https://tanstack.com/query/latest/docs/framework/react/guides/testing#set-gctime-to-infinity-with-jest.
-                gcTime: Infinity
-            }
-        }
-    });
+    const queryClient = createQueryClient();
 
     return render(<AppRouter {...props} />, {
         wrapper: ({ children }: { children?: ReactNode }) => (
@@ -162,32 +155,30 @@ test("msw + local modules + remote modules + public data + protected data + loca
     __setLocalModuleRegistry(localModuleRegistry);
     __setRemoteModuleRegistry(remoteModuleRegistry);
 
-    await act(async () => {
-        await bootstrap(runtime, {
-            localModules: [
-                x => {
-                    x.registerRoute({
-                        children: [
-                            ProtectedRoutes
-                        ]
-                    }, {
-                        hoist: true
-                    });
+    await bootstrap(runtime, {
+        localModules: [
+            x => {
+                x.registerRoute({
+                    children: [
+                        ProtectedRoutes
+                    ]
+                }, {
+                    hoist: true
+                });
 
-                    x.registerRoute({
-                        path: "/foo",
-                        element: "bar"
-                    });
+                x.registerRoute({
+                    path: "/foo",
+                    element: "bar"
+                });
 
-                    // Deferred registration.
-                    return () => {};
-                }
-            ],
-            remotes: [
-                { name: "Dummy-1" }
-            ],
-            startMsw: jest.fn(() => Promise.resolve())
-        });
+                // Deferred registration.
+                return () => {};
+            }
+        ],
+        remotes: [
+            { name: "Dummy-1" }
+        ],
+        startMsw: jest.fn(() => Promise.resolve())
     });
 
     function BootstrappingRoute() {
@@ -329,29 +320,27 @@ test("msw + local modules + remote modules + public data + protected data", asyn
     __setLocalModuleRegistry(localModuleRegistry);
     __setRemoteModuleRegistry(remoteModuleRegistry);
 
-    await act(async () => {
-        await bootstrap(runtime, {
-            localModules: [
-                x => {
-                    x.registerRoute({
-                        children: [
-                            ProtectedRoutes
-                        ]
-                    }, {
-                        hoist: true
-                    });
+    await bootstrap(runtime, {
+        localModules: [
+            x => {
+                x.registerRoute({
+                    children: [
+                        ProtectedRoutes
+                    ]
+                }, {
+                    hoist: true
+                });
 
-                    x.registerRoute({
-                        path: "/foo",
-                        element: "bar"
-                    });
-                }
-            ],
-            remotes: [
-                { name: "Dummy-1" }
-            ],
-            startMsw: jest.fn(() => Promise.resolve())
-        });
+                x.registerRoute({
+                    path: "/foo",
+                    element: "bar"
+                });
+            }
+        ],
+        remotes: [
+            { name: "Dummy-1" }
+        ],
+        startMsw: jest.fn(() => Promise.resolve())
     });
 
     function BootstrappingRoute() {
@@ -480,32 +469,30 @@ test("msw + local modules + remote modules + public data + local deferred + remo
     __setLocalModuleRegistry(localModuleRegistry);
     __setRemoteModuleRegistry(remoteModuleRegistry);
 
-    await act(async () => {
-        await bootstrap(runtime, {
-            localModules: [
-                x => {
-                    x.registerRoute({
-                        children: [
-                            ProtectedRoutes
-                        ]
-                    }, {
-                        hoist: true
-                    });
+    await bootstrap(runtime, {
+        localModules: [
+            x => {
+                x.registerRoute({
+                    children: [
+                        ProtectedRoutes
+                    ]
+                }, {
+                    hoist: true
+                });
 
-                    x.registerRoute({
-                        path: "/foo",
-                        element: "bar"
-                    });
+                x.registerRoute({
+                    path: "/foo",
+                    element: "bar"
+                });
 
-                    // Deferred registration.
-                    return () => {};
-                }
-            ],
-            remotes: [
-                { name: "Dummy-1" }
-            ],
-            startMsw: jest.fn(() => Promise.resolve())
-        });
+                // Deferred registration.
+                return () => {};
+            }
+        ],
+        remotes: [
+            { name: "Dummy-1" }
+        ],
+        startMsw: jest.fn(() => Promise.resolve())
     });
 
     function BootstrappingRoute() {
@@ -642,32 +629,30 @@ test("msw + local modules + remote modules + protected data + local deferred + r
     __setLocalModuleRegistry(localModuleRegistry);
     __setRemoteModuleRegistry(remoteModuleRegistry);
 
-    await act(async () => {
-        await bootstrap(runtime, {
-            localModules: [
-                x => {
-                    x.registerRoute({
-                        children: [
-                            ProtectedRoutes
-                        ]
-                    }, {
-                        hoist: true
-                    });
+    await bootstrap(runtime, {
+        localModules: [
+            x => {
+                x.registerRoute({
+                    children: [
+                        ProtectedRoutes
+                    ]
+                }, {
+                    hoist: true
+                });
 
-                    x.registerRoute({
-                        path: "/foo",
-                        element: "bar"
-                    });
+                x.registerRoute({
+                    path: "/foo",
+                    element: "bar"
+                });
 
-                    // Deferred registration.
-                    return () => {};
-                }
-            ],
-            remotes: [
-                { name: "Dummy-1" }
-            ],
-            startMsw: jest.fn(() => Promise.resolve())
-        });
+                // Deferred registration.
+                return () => {};
+            }
+        ],
+        remotes: [
+            { name: "Dummy-1" }
+        ],
+        startMsw: jest.fn(() => Promise.resolve())
     });
 
     function BootstrappingRoute() {
@@ -789,29 +774,27 @@ test("msw + local modules + remote modules", async () => {
     __setLocalModuleRegistry(localModuleRegistry);
     __setRemoteModuleRegistry(remoteModuleRegistry);
 
-    await act(async () => {
-        await bootstrap(runtime, {
-            localModules: [
-                x => {
-                    x.registerRoute({
-                        children: [
-                            ProtectedRoutes
-                        ]
-                    }, {
-                        hoist: true
-                    });
+    await bootstrap(runtime, {
+        localModules: [
+            x => {
+                x.registerRoute({
+                    children: [
+                        ProtectedRoutes
+                    ]
+                }, {
+                    hoist: true
+                });
 
-                    x.registerRoute({
-                        path: "/foo",
-                        element: "bar"
-                    });
-                }
-            ],
-            remotes: [
-                { name: "Dummy-1" }
-            ],
-            startMsw: jest.fn(() => Promise.resolve())
-        });
+                x.registerRoute({
+                    path: "/foo",
+                    element: "bar"
+                });
+            }
+        ],
+        remotes: [
+            { name: "Dummy-1" }
+        ],
+        startMsw: jest.fn(() => Promise.resolve())
     });
 
     function BootstrappingRoute() {
@@ -909,32 +892,30 @@ test("msw + local modules + remote modules + public data + protected data + loca
     __setLocalModuleRegistry(localModuleRegistry);
     __setRemoteModuleRegistry(remoteModuleRegistry);
 
-    await act(async () => {
-        await bootstrap(runtime, {
-            localModules: [
-                x => {
-                    x.registerRoute({
-                        children: [
-                            ProtectedRoutes
-                        ]
-                    }, {
-                        hoist: true
-                    });
+    await bootstrap(runtime, {
+        localModules: [
+            x => {
+                x.registerRoute({
+                    children: [
+                        ProtectedRoutes
+                    ]
+                }, {
+                    hoist: true
+                });
 
-                    x.registerRoute({
-                        path: "/foo",
-                        element: "bar"
-                    });
+                x.registerRoute({
+                    path: "/foo",
+                    element: "bar"
+                });
 
-                    // Deferred registration.
-                    return () => {};
-                }
-            ],
-            remotes: [
-                { name: "Dummy-1" }
-            ],
-            startMsw: jest.fn(() => Promise.resolve())
-        });
+                // Deferred registration.
+                return () => {};
+            }
+        ],
+        remotes: [
+            { name: "Dummy-1" }
+        ],
+        startMsw: jest.fn(() => Promise.resolve())
     });
 
     function BootstrappingRoute() {
@@ -1077,29 +1058,27 @@ test("msw + local modules + remote modules + public data + protected data + remo
     __setLocalModuleRegistry(localModuleRegistry);
     __setRemoteModuleRegistry(remoteModuleRegistry);
 
-    await act(async () => {
-        await bootstrap(runtime, {
-            localModules: [
-                x => {
-                    x.registerRoute({
-                        children: [
-                            ProtectedRoutes
-                        ]
-                    }, {
-                        hoist: true
-                    });
+    await bootstrap(runtime, {
+        localModules: [
+            x => {
+                x.registerRoute({
+                    children: [
+                        ProtectedRoutes
+                    ]
+                }, {
+                    hoist: true
+                });
 
-                    x.registerRoute({
-                        path: "/foo",
-                        element: "bar"
-                    });
-                }
-            ],
-            remotes: [
-                { name: "Dummy-1" }
-            ],
-            startMsw: jest.fn(() => Promise.resolve())
-        });
+                x.registerRoute({
+                    path: "/foo",
+                    element: "bar"
+                });
+            }
+        ],
+        remotes: [
+            { name: "Dummy-1" }
+        ],
+        startMsw: jest.fn(() => Promise.resolve())
     });
 
     function BootstrappingRoute() {
@@ -1244,32 +1223,30 @@ test("local modules + remote modules + public data + protected data + local defe
     __setLocalModuleRegistry(localModuleRegistry);
     __setRemoteModuleRegistry(remoteModuleRegistry);
 
-    await act(async () => {
-        await bootstrap(runtime, {
-            localModules: [
-                x => {
-                    x.registerRoute({
-                        children: [
-                            ProtectedRoutes
-                        ]
-                    }, {
-                        hoist: true
-                    });
+    await bootstrap(runtime, {
+        localModules: [
+            x => {
+                x.registerRoute({
+                    children: [
+                        ProtectedRoutes
+                    ]
+                }, {
+                    hoist: true
+                });
 
-                    x.registerRoute({
-                        path: "/foo",
-                        element: "bar"
-                    });
+                x.registerRoute({
+                    path: "/foo",
+                    element: "bar"
+                });
 
-                    // Deferred registration.
-                    return () => {};
-                }
-            ],
-            remotes: [
-                { name: "Dummy-1" }
-            ],
-            startMsw: jest.fn(() => Promise.resolve())
-        });
+                // Deferred registration.
+                return () => {};
+            }
+        ],
+        remotes: [
+            { name: "Dummy-1" }
+        ],
+        startMsw: jest.fn(() => Promise.resolve())
     });
 
     function BootstrappingRoute() {
@@ -1418,35 +1395,33 @@ test("failing local module registration", async () => {
     __setLocalModuleRegistry(localModuleRegistry);
     __setRemoteModuleRegistry(remoteModuleRegistry);
 
-    await act(async () => {
-        await bootstrap(runtime, {
-            localModules: [
-                x => {
-                    x.registerRoute({
-                        children: [
-                            ProtectedRoutes
-                        ]
-                    }, {
-                        hoist: true
-                    });
+    await bootstrap(runtime, {
+        localModules: [
+            x => {
+                x.registerRoute({
+                    children: [
+                        ProtectedRoutes
+                    ]
+                }, {
+                    hoist: true
+                });
 
-                    x.registerRoute({
-                        path: "/foo",
-                        element: "bar"
-                    });
+                x.registerRoute({
+                    path: "/foo",
+                    element: "bar"
+                });
 
-                    // Deferred registration.
-                    return () => {};
-                },
-                () => {
-                    throw new Error("Module 2 registration error.");
-                }
-            ],
-            remotes: [
-                { name: "Dummy-1" }
-            ],
-            startMsw: jest.fn(() => Promise.resolve())
-        });
+                // Deferred registration.
+                return () => {};
+            },
+            () => {
+                throw new Error("Module 2 registration error.");
+            }
+        ],
+        remotes: [
+            { name: "Dummy-1" }
+        ],
+        startMsw: jest.fn(() => Promise.resolve())
     });
 
     function BootstrappingRoute() {
@@ -1608,33 +1583,31 @@ test("failing remote module registration", async () => {
     __setLocalModuleRegistry(localModuleRegistry);
     __setRemoteModuleRegistry(remoteModuleRegistry);
 
-    await act(async () => {
-        await bootstrap(runtime, {
-            localModules: [
-                x => {
-                    x.registerRoute({
-                        children: [
-                            ProtectedRoutes
-                        ]
-                    }, {
-                        hoist: true
-                    });
+    await bootstrap(runtime, {
+        localModules: [
+            x => {
+                x.registerRoute({
+                    children: [
+                        ProtectedRoutes
+                    ]
+                }, {
+                    hoist: true
+                });
 
-                    x.registerRoute({
-                        path: "/foo",
-                        element: "bar"
-                    });
+                x.registerRoute({
+                    path: "/foo",
+                    element: "bar"
+                });
 
-                    // Deferred registration.
-                    return () => {};
-                }
-            ],
-            remotes: [
-                { name: "Dummy-1" },
-                { name: "Dummy-2" }
-            ],
-            startMsw: jest.fn(() => Promise.resolve())
-        });
+                // Deferred registration.
+                return () => {};
+            }
+        ],
+        remotes: [
+            { name: "Dummy-1" },
+            { name: "Dummy-2" }
+        ],
+        startMsw: jest.fn(() => Promise.resolve())
     });
 
     function BootstrappingRoute() {

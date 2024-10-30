@@ -59,6 +59,8 @@ export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOp
 
     const dispatchReady = useExecuteOnce(useCallback(() => {
         if (isReady) {
+            isReadyRef.current = true;
+
             dispatch({ type: "protected-data-ready" });
 
             return true;
@@ -68,8 +70,6 @@ export function useProtectedDataQueries<T extends Array<any>>(queries: QueriesOp
     }, [isReady, dispatch]));
 
     useEffect(() => {
-        isReadyRef.current = true;
-
         // State update must be executed in useEffect.
         dispatchReady();
     }, [dispatchReady]);

@@ -2,7 +2,7 @@ import { type Runtime, RuntimeContext } from "@squide/core";
 import { type QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen, waitFor } from "@testing-library/react";
 import { Component, type PropsWithChildren, type ReactNode } from "react";
-import { AppRouterDispatcherContext, AppRouterStateContext, useAppRouterState } from "../src/AppRouterContext.ts";
+import { AppRouterDispatcherContext, AppRouterStateContext } from "../src/AppRouterContext.ts";
 import type { AppRouterDispatch, AppRouterState } from "../src/AppRouterReducer.ts";
 import { FireflyRuntime } from "../src/FireflyRuntime.tsx";
 import { ProtectedDataFetchFailedEvent, ProtectedDataFetchStartedEvent, useProtectedDataQueries } from "../src/useProtectedDataQueries.ts";
@@ -36,7 +36,8 @@ test("when queries are executed, ProtectedDataFetchStartedEvent is dispatched", 
 
     const state = createDefaultAppRouterState();
     state.areModulesRegistered = true;
-    state.isActiveRouteProtected = true;
+    state.activeRouteVisibility = "protected";
+    state.activeRouteVisibility = "protected";
     state.isMswReady = true;
 
     function AppRouter() {
@@ -62,7 +63,7 @@ test("when data is ready, \"protected-data-ready\" is dispatched", async () => {
 
     const state = createDefaultAppRouterState();
     state.areModulesRegistered = true;
-    state.isActiveRouteProtected = true;
+    state.activeRouteVisibility = "protected";
     state.isMswReady = true;
 
     function AppRouter() {
@@ -96,7 +97,7 @@ test("when data is updated, \"protected-data-updated\" is dispatched", async () 
 
     const state = createDefaultAppRouterState();
     state.areModulesRegistered = true;
-    state.isActiveRouteProtected = true;
+    state.activeRouteVisibility = "protected";
     state.isMswReady = true;
 
     const queryClient = createQueryClient();
@@ -153,7 +154,7 @@ describe("when a query fail", () => {
 
         const state = createDefaultAppRouterState();
         state.areModulesRegistered = true;
-        state.isActiveRouteProtected = true;
+        state.activeRouteVisibility = "protected";
         state.isMswReady = true;
 
         class ErrorBoundary extends Component<PropsWithChildren, { error?: Error }> {
@@ -203,7 +204,7 @@ describe("when a query fail", () => {
 
         const state = createDefaultAppRouterState();
         state.areModulesRegistered = true;
-        state.isActiveRouteProtected = true;
+        state.activeRouteVisibility = "protected";
         state.isMswReady = true;
 
         function AppRouter() {
@@ -241,7 +242,7 @@ describe("when a query fail", () => {
 
         const state = createDefaultAppRouterState();
         state.areModulesRegistered = true;
-        state.isActiveRouteProtected = true;
+        state.activeRouteVisibility = "protected";
         state.isMswReady = true;
 
         class ErrorBoundary extends Component<PropsWithChildren, { error?: Error }> {
@@ -297,7 +298,7 @@ describe("when a query fail", () => {
 
         const state = createDefaultAppRouterState();
         state.areModulesRegistered = true;
-        state.isActiveRouteProtected = true;
+        state.activeRouteVisibility = "protected";
         state.isMswReady = true;
 
         function AppRouter() {

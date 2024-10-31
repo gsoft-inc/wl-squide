@@ -10,10 +10,12 @@ export function RootRoute() {
     const dispatch = useAppRouterDispatcher();
 
     useEffect(() => {
+        // Dispatching the active route visibility must be done in a route because React Router's useLocation
+        // hook throws if it's not called from a child of the router component.
         if (isActiveRouteProtected) {
-            // Dispatching the active route visibility must be done in a route because React Router's useLocation
-            // hook throws if it's not called from a child of the router component.
             dispatch({ type: "active-route-is-protected" });
+        } else {
+            dispatch({ type: "active-route-is-public" });
         }
     }, [isActiveRouteProtected, dispatch]);
 

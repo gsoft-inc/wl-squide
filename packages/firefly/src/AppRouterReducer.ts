@@ -5,6 +5,8 @@ import { useCallback, useEffect, useMemo, useReducer, type Dispatch } from "reac
 import { useExecuteOnce } from "./useExecuteOnce.ts";
 import { isApplicationBootstrapping } from "./useIsBootstrapping.ts";
 
+export type ActiveRouteVisiblity = "unknown" | "public" | "protected";
+
 export interface AppRouterState {
     waitForMsw: boolean;
     waitForPublicData: boolean;
@@ -17,7 +19,7 @@ export interface AppRouterState {
     publicDataUpdatedAt?: number;
     protectedDataUpdatedAt?: number;
     deferredRegistrationsUpdatedAt?: number;
-    isActiveRouteProtected: boolean;
+    activeRouteVisibility: ActiveRouteVisiblity;
     isUnauthorized: boolean;
 }
 
@@ -30,6 +32,7 @@ export type AppRouterActionType =
 | "public-data-updated"
 | "protected-data-updated"
 | "deferred-registrations-updated"
+| "active-route-is-public"
 | "active-route-is-protected"
 | "is-unauthorized";
 
@@ -123,10 +126,18 @@ function reducer(state: AppRouterState, action: AppRouterAction) {
 
             break;
         }
+        case "active-route-is-public": {
+            newState = {
+                ...newState,
+                activeRouteVisibility: "public"
+            };
+
+            break;
+        }
         case "active-route-is-protected": {
             newState = {
                 ...newState,
-                isActiveRouteProtected: true
+                activeRouteVisibility: "protected"
             };
 
             break;
@@ -329,8 +340,7 @@ export function useAppRouterReducer(waitForMsw: boolean, waitForPublicData: bool
         isMswReady: isMswInitiallyReady,
         isPublicDataReady: false,
         isProtectedDataReady: false,
-        // Must be initially "true" otherwise the protected data will always be considered as ready.
-        isActiveRouteProtected: true,
+        activeRouteVisibility: "unknown",
         isUnauthorized: false
     });
 

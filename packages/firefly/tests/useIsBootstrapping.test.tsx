@@ -72,7 +72,7 @@ test("when protected data is not ready but the active route is public, return fa
     state.areModulesReady = true;
     state.isMswReady = true;
     state.isPublicDataReady = true;
-    state.isActiveRouteProtected = false;
+    state.activeRouteVisibility = "public";
     state.isProtectedDataReady = false;
 
     const { result } = renderUseIsBootstrappingHook(state);
@@ -124,7 +124,7 @@ test("when protected data is not ready, return true", () => {
     state.isMswReady = true;
     state.isPublicDataReady = true;
     state.waitForProtectedData = true;
-    state.isActiveRouteProtected = true;
+    state.activeRouteVisibility = "protected";
     state.isProtectedDataReady = false;
 
     const { result } = renderUseIsBootstrappingHook(state);

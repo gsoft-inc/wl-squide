@@ -407,19 +407,49 @@ describe("useAppRouterReducer", () => {
         expect(result.current[0].deferredRegistrationsUpdatedAt).toEqual(Date.parse("2020-02-14"));
     });
 
-    test("when \"active-route-is-protected\" is dispatched, \"isActiveRouteProtected\" is true", () => {
+    // test.only("when \"active-route-is-protected\" is dispatched, \"isActiveRouteProtected\" is true", () => {
+    //     const runtime = new FireflyRuntime();
+
+    //     const { result } = renderUseAppRouterReducerHook(runtime, false, false, false);
+
+    //     expect(result.current[0].isActiveRouteProtected).toBeFalsy();
+
+    //     act(() => {
+    //         // dispatch
+    //         result.current[1]({ type: "active-route-is-protected" });
+    //     });
+
+    //     expect(result.current[0].isActiveRouteProtected).toBeTruthy();
+    // }, 50000);
+
+    test("when \"active-route-is-public\" is dispatched, \"activeRouteVisiblity\" is \"public\"", () => {
         const runtime = new FireflyRuntime();
 
         const { result } = renderUseAppRouterReducerHook(runtime, false, false, false);
 
-        expect(result.current[0].isActiveRouteProtected).toBeFalsy();
+        expect(result.current[0].activeRouteVisibility).toBe("unknown");
+
+        act(() => {
+            // dispatch
+            result.current[1]({ type: "active-route-is-public" });
+        });
+
+        expect(result.current[0].activeRouteVisibility).toBe("public");
+    });
+
+    test("when \"active-route-is-protected\" is dispatched, \"activeRouteVisiblity\" is \"protected\"", () => {
+        const runtime = new FireflyRuntime();
+
+        const { result } = renderUseAppRouterReducerHook(runtime, false, false, false);
+
+        expect(result.current[0].activeRouteVisibility).toBe("unknown");
 
         act(() => {
             // dispatch
             result.current[1]({ type: "active-route-is-protected" });
         });
 
-        expect(result.current[0].isActiveRouteProtected).toBeTruthy();
+        expect(result.current[0].activeRouteVisibility).toBe("protected");
     });
 
     test("when \"is-unauthorized\" is dispatched, \"isUnauthorized\" is true", () => {

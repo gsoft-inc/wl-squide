@@ -16,7 +16,7 @@ export function isApplicationBootstrapping(state: AppRouterState) {
         isMswReady,
         isPublicDataReady,
         isProtectedDataReady,
-        isActiveRouteProtected,
+        activeRouteVisibility,
         isUnauthorized
     } = state;
 
@@ -28,7 +28,7 @@ export function isApplicationBootstrapping(state: AppRouterState) {
         && (!waitForMsw || isMswReady)
         // Wait for the initial data to be ready.
         && (!waitForPublicData || isPublicDataReady)
-        && (!waitForProtectedData || !isActiveRouteProtected || isProtectedDataReady)
+        && (!waitForProtectedData || activeRouteVisibility === "public" || isProtectedDataReady)
     );
 
     // When an API request returns a 401, the bootstrapping should be bypassed to render the login page.

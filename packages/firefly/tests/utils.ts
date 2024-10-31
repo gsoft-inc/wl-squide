@@ -9,7 +9,7 @@ export function createDefaultAppRouterState(): AppRouterState {
     return {
         areModulesReady: false,
         areModulesRegistered: false,
-        isActiveRouteProtected: false,
+        activeRouteVisibility: "unknown",
         isMswReady: false,
         isProtectedDataReady: false,
         isPublicDataReady: false,

@@ -28,7 +28,7 @@ test("when the protected data has already been fetched, return true", () => {
 test("when the modules are registered, the active route is protected, and msw is ready, return true", () => {
     const state = createDefaultAppRouterState();
     state.areModulesRegistered = true;
-    state.isActiveRouteProtected = true;
+    state.activeRouteVisibility = "protected";
     state.isMswReady = true;
 
     const { result } = renderUseCanFetchProtectedDataHook(state);
@@ -39,7 +39,7 @@ test("when the modules are registered, the active route is protected, and msw is
 test("when the modules are ready, and the active route is protected, and msw is ready, return true", () => {
     const state = createDefaultAppRouterState();
     state.areModulesReady = true;
-    state.isActiveRouteProtected = true;
+    state.activeRouteVisibility = "protected";
     state.isMswReady = true;
 
     const { result } = renderUseCanFetchProtectedDataHook(state);
@@ -50,7 +50,7 @@ test("when the modules are ready, and the active route is protected, and msw is 
 test("when the modules are registered or ready, the active route is protected, and msw is not ready but it's not required to wait for msw, return true", () => {
     const state = createDefaultAppRouterState();
     state.areModulesReady = true;
-    state.isActiveRouteProtected = true;
+    state.activeRouteVisibility = "protected";
     state.waitForMsw = false;
 
     const { result } = renderUseCanFetchProtectedDataHook(state);
@@ -61,7 +61,7 @@ test("when the modules are registered or ready, the active route is protected, a
 test("when the modules are not registered, return false", () => {
     const state = createDefaultAppRouterState();
     state.areModulesRegistered = false;
-    state.isActiveRouteProtected = true;
+    state.activeRouteVisibility = "protected";
     state.isMswReady = true;
 
     const { result } = renderUseCanFetchProtectedDataHook(state);
@@ -72,7 +72,7 @@ test("when the modules are not registered, return false", () => {
 test("when the modules are not ready, return false", () => {
     const state = createDefaultAppRouterState();
     state.areModulesReady = false;
-    state.isActiveRouteProtected = true;
+    state.activeRouteVisibility = "protected";
     state.isMswReady = true;
 
     const { result } = renderUseCanFetchProtectedDataHook(state);
@@ -83,7 +83,7 @@ test("when the modules are not ready, return false", () => {
 test("when the active route is not protected, return false", () => {
     const state = createDefaultAppRouterState();
     state.areModulesReady = true;
-    state.isActiveRouteProtected = false;
+    state.activeRouteVisibility = "public";
     state.isMswReady = true;
 
     const { result } = renderUseCanFetchProtectedDataHook(state);
@@ -94,7 +94,7 @@ test("when the active route is not protected, return false", () => {
 test("when it's required to wait for msw and msw is not ready, return false", () => {
     const state = createDefaultAppRouterState();
     state.areModulesReady = true;
-    state.isActiveRouteProtected = true;
+    state.activeRouteVisibility = "protected";
     state.waitForMsw = true;
     state.isMswReady = false;
 

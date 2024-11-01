@@ -1,6 +1,6 @@
 import { registerLayouts } from "@basic/shared";
 import { registerShell } from "@basic/shell";
-import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules } from "@squide/firefly";
+import { ConsoleLogger, FireflyRuntime, RuntimeContext, bootstrap } from "@squide/firefly";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { registerLocalModule } from "../register.tsx";
@@ -13,7 +13,9 @@ const runtime = new FireflyRuntime({
     loggers: [x => new ConsoleLogger(x)]
 });
 
-await registerLocalModules([registerShell(), registerLayouts(), registerDev, registerLocalModule], runtime);
+await bootstrap(runtime, {
+    localModules: [registerShell(), registerLayouts(), registerDev, registerLocalModule]
+});
 
 const root = createRoot(document.getElementById("root")!);
 

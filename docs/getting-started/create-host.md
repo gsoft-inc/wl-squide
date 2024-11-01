@@ -88,11 +88,11 @@ export {};
 
 ### Module registration
 
-Next, to register the modules, instanciate a shell [FireflyRuntime](/reference/runtime/runtime-class.md) instance and register the remote module with the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function (the configuration of the remote module will be covered in the [next section](create-remote-module.md)):
+Next, to register the modules, instanciate a shell [FireflyRuntime](/reference/runtime/runtime-class.md) instance and register the remote module with the [bootstrap](/reference/registration/bootstrap.md) function (the configuration of the remote module will be covered in the [next section](create-remote-module.md)):
 
-```tsx !#11-13,16 host/src/bootstrap.tsx
+```tsx !#11-13,16-18 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
+import { ConsoleLogger, RuntimeContext, FireflyRuntime, bootstrap, type RemoteDefinition } from "@squide/firefly";
 import { App } from "./App.tsx";
 
 // Define the remote modules.
@@ -106,7 +106,9 @@ const runtime = new FireflyRuntime({
 });
 
 // Register the remote module.
-await registerRemoteModules(Remotes, runtime);
+await bootstrap(runtime, {
+    remotes: Remotes
+});
 
 const root = createRoot(document.getElementById("root")!);
 
@@ -265,9 +267,9 @@ The [PublicRoutes](../reference/routing/publicRoutes.md) and [ProtectedRoutes](.
 
 Finally, update the bootstrapping code to [register](../reference/registration/registerLocalModules.md) the newly created local module:
 
-```tsx !#17 host/src/bootstrap.tsx
+```tsx !#18 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerLocalModules, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
+import { ConsoleLogger, RuntimeContext, FireflyRuntime, bootstrap, type RemoteDefinition } from "@squide/firefly";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
 
@@ -281,11 +283,11 @@ const runtime = new FireflyRuntime({
     loggers: [x => new ConsoleLogger(x)]
 });
 
-// Register the newly created local module.
-await registerLocalModules([registerHost], runtime);
-
-// Register the remote module.
-await registerRemoteModules(Remotes, runtime);
+// Register the modules.
+await bootstrap(runtime, {
+    localModules: [registerHost],
+    remotes: Remotes
+});
 
 const root = createRoot(document.getElementById("root")!);
 

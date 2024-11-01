@@ -47,6 +47,7 @@ export async function bootstrap<TRuntime extends FireflyRuntime = FireflyRuntime
 
         try {
             await startMsw(runtime);
+
             setMswAsReady();
         } catch (error: unknown) {
             runtime.logger.debug("[squide] An error occured while starting MSW.", error);

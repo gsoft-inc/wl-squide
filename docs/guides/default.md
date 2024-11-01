@@ -18,6 +18,7 @@ expanded: true
 - [Use feature flags](./use-feature-flags.md)
 - [Use environment variables](./use-environment-variables.md)
 - [Setup i18next](./setup-i18next.md)
+- [Setup Honeycomb](./setup-honeycomb.md)
 - [Develop a module in isolation](./develop-a-module-in-isolation.md)
 - [Override a React context](./override-a-react-context.md)
 - [Add a shared dependency](./add-a-shared-dependency.md)

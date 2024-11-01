@@ -1,5 +1,5 @@
 ---
-order: 740
+order: 720
 ---
 
 # Implement a custom logger

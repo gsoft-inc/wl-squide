@@ -86,7 +86,7 @@ Then, update the host application boostrapping code to register an instance of t
 
 ```tsx !#13 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
+import { ConsoleLogger, RuntimeContext, FireflyRuntime, boostrap, type RemoteDefinition } from "@squide/firefly";
 import { EnvironmentVariablesPlugin } from "@squide/env-vars";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
@@ -101,9 +101,10 @@ const runtime = new FireflyRuntime({
     loggers: [x => new ConsoleLogger(x)]
 });
 
-await registerLocalModules([registerShell, registerHost], runtime);
-
-await registerRemoteModules(Remotes, runtime);
+await bootstrap(runtime, {
+    localModules: [registerShell, registerHost],
+    remotes: Remotes
+})
 
 const root = createRoot(document.getElementById("root")!);
 
@@ -412,7 +413,7 @@ test("an absolute URL including the API base URL is returned", () => {
 
 Components included in [Storybook](https://storybook.js.org/docs) stories often rely on environment variables. The `EnvironmentVariablesPlugin` can be used to mock these variables:
 
-```tsx .storybook/preview.tsx
+```tsx !#6 .storybook/preview.tsx
 import { FireflyRuntime, RuntimeProvider } from "@squide/firefly";
 import { EnvironmentVariablesPlugin, getEnvironmentVariablesPlugin } from "@squide/env-vars";
 import type { Preview } from "@storybook/react";
@@ -581,3 +582,12 @@ Finally, when [tsc](https://www.typescriptlang.org/docs/handbook/compiler-option
     "exclude": ["dist", "node_modules"]
 }
 ```
+
+### Troubleshoot issues
+
+If you are experiencing issues with this guide:
+
+- Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each environment variable registration that occurs and error messages if something went wrong:
+    - `[squide] The following environment variables has been registered: {...}`
+- Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/endpoints).
+- Refer to the [troubleshooting](../troubleshooting.md) page.

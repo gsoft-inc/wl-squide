@@ -91,6 +91,10 @@ To faciliate the debugging of a Squide application bootstrapping flow, a lot of 
 - `[squide] The language has been changed to "fr-CA".`
 - `[squide] Detected "fr-CA" as user language.`
 
+### env-vars registration
+
+- `[squide] The following environment variables has been registered: {...}`
+
 ### Module federation logs
 
 - `[squide] Module Federation shared scope is available: {...}`

@@ -13,6 +13,7 @@
         "updateSessionButtonLabel": "Modifier la session",
         "shuffleFeatureFlagsLabel": "Brasser les feature flags",
         "deactivateFeatureBLabel": "Désactiver la feature B",
+        "failingLabel": "Requête va échouer",
         "disconnectButtonLabel": "Se déconnecter"
     },
     "ModuleErrorBoundary": {

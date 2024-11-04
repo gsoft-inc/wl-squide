@@ -2,15 +2,13 @@ import {
     FeatureFlagsContext,
     SessionManagerContext,
     SubscriptionContext,
-    TelemetryServiceContext,
     fetchJson,
     isApiError,
     type FeatureFlags,
     type OgFeatureFlags,
     type OtherFeatureFlags,
     type Session,
-    type Subscription,
-    type TelemetryService
+    type Subscription
 } from "@endpoints/shared";
 import { useEnvironmentVariables } from "@squide/env-vars";
 import { AppRouter as FireflyAppRouter, useDeferredRegistrations, useIsBootstrapping, useLogger, useProtectedDataQueries, usePublicDataQueries } from "@squide/firefly";
@@ -22,11 +20,7 @@ import { Loading } from "./Loading.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { useSessionManagerInstance } from "./useSessionManagerInstance.ts";
 
-interface BootstrappingRouteProps {
-    telemetryService: TelemetryService;
-}
-
-function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
+function BootstrappingRoute() {
     const logger = useLogger();
     const environmentVariables = useEnvironmentVariables();
 
@@ -141,9 +135,7 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
         <FeatureFlagsContext.Provider value={featureFlags}>
             <SessionManagerContext.Provider value={sessionManager}>
                 <SubscriptionContext.Provider value={subscription}>
-                    <TelemetryServiceContext.Provider value={telemetryService}>
-                        <Outlet />
-                    </TelemetryServiceContext.Provider>
+                    <Outlet />
                 </SubscriptionContext.Provider>
             </SessionManagerContext.Provider>
         </FeatureFlagsContext.Provider>
@@ -152,16 +144,10 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
 
 export interface AppRouterProps {
     waitForMsw: boolean;
-    telemetryService: TelemetryService;
 }
 
-export function AppRouter(props: AppRouterProps) {
+export function AppRouter({ waitForMsw }: AppRouterProps) {
     const logger = useLogger();
-
-    const {
-        waitForMsw,
-        telemetryService
-    } = props;
 
     return (
         <FireflyAppRouter waitForMsw={waitForMsw} waitForPublicData waitForProtectedData>
@@ -176,7 +162,7 @@ export function AppRouter(props: AppRouterProps) {
                                 errorElement: <RootErrorBoundary />,
                                 children: [
                                     {
-                                        element: <BootstrappingRoute telemetryService={telemetryService} />,
+                                        element: <BootstrappingRoute />,
                                         children: registeredRoutes
                                     }
                                 ]

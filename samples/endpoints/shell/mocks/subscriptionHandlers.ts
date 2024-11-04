@@ -18,6 +18,9 @@ export function getSubscriptionHandlers(environmentVariables: EnvironmentVariabl
                 contact: "John Doe",
                 status: "paid"
             });
+        }),
+        http.get(`${environmentVariables.subscriptionApiBaseUrl}failing`, async () => {
+            throw new Error("This is an HTTP error!");
         })
     ];
 }

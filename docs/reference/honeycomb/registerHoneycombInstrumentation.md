@@ -10,7 +10,7 @@ Initializes an instance of [Honeycomb Web SDK](https://docs.honeycomb.io/send-da
 ## Reference
 
 ```ts
-registerHoneycombInstrumentation(runtime, serviceName, apiServiceUrls: string | Regex, options?: {})
+registerHoneycombInstrumentation(runtime, serviceName, apiServiceUrls: [string | Regex], options?: {})
 ```
 
 ### Parameters
@@ -20,7 +20,7 @@ registerHoneycombInstrumentation(runtime, serviceName, apiServiceUrls: string | 
 - `apiServiceUrls`: A `RegExp` or `string` that matches the URLs of the application's backend services. If unsure, use the temporary regex `/.+/g,` to match all URLs.
 - `options`: An optional object literal of options:
     - `endpoint`: An optional URL to an [OpenTelemetry collector](https://docs.honeycomb.io/send-data/opentelemetry/collector/). Either `endpoint` or `apiKey` option must be provided.
-    - `apiKey`: An optional Honeycomb [ingestion API key](https://docs.honeycomb.io/get-started/configure/environments/manage-api-keys/#create-api-key). Either `endpoint` or `apiKey` option must be provided.
+    - `apiKey`: An optional Honeycomb ingestion [API key](https://docs.honeycomb.io/get-started/configure/environments/manage-api-keys/#create-api-key). Either `endpoint` or `apiKey` option must be provided.
     - `debug`: An optional `boolean` value indicating whether or not to log debug information to the console. `true` by default when the [runtime](../runtime/runtime-class.md) mode is set to `development`.
     - `instrumentations`: An optional array of [instrumentation](https://opentelemetry.io/docs/languages/js/instrumentation/) instances.
     - `spanProcessors`: An optional array of [span processor](https://docs.honeycomb.io/send-data/javascript-browser/honeycomb-distribution/#custom-span-processing) instances.
@@ -47,7 +47,7 @@ For more details, refer to the [registerHoneycombInstrumentation.ts](https://git
 
 ### Register instrumentation
 
-```ts bootstrap.tsx
+```ts
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 
 registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
@@ -57,7 +57,11 @@ registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
 
 ### Use an API key
 
-```ts !#4 bootstrap.tsx
+!!!info
+Prefer using an [OpenTelemetry collector](https://docs.honeycomb.io/send-data/opentelemetry/collector/) over an ingestion [API key](https://docs.honeycomb.io/get-started/configure/environments/manage-api-keys/#create-api-key), as API keys can expose Workleap to potential attacks.
+!!!
+
+```ts !#4
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 
 registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
@@ -67,9 +71,9 @@ registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
 
 ### Customize backend URLs
 
-An application shouldn't use `[/.+/g,]` in production as it could leak customers data to third parties. Make sure to provide a value matching your application backend URLs.
+Avoid using `/.+/g,` in production, as it could expose customer data to third parties. Instead, ensure you specify values that accurately matches your application's backend URLs.
 
-```ts !#5 bootstrap.tsx
+```ts !#5
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 
 registerHoneycombInstrumentation(
@@ -81,7 +85,7 @@ registerHoneycombInstrumentation(
 
 ### Register custom instrumentation
 
-```ts !#6-8 bootstrap.tsx
+```ts !#6-8
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 import { LongTaskInstrumentation } from "@opentelemetry/instrumentation-long-task";
 
@@ -115,7 +119,7 @@ export class CustomSpanProcessor implements SpanProcessor {
 }
 ```
 
-```ts !#6-8 bootstrap.tsx
+```ts !#6-8
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 import { CustomSpanProcessor } from "./CustomSpanProcessor.ts";
 
@@ -129,9 +133,9 @@ registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
 
 ### Customize fetch instrumentation
 
-To extend/replace the default [@opentelemetry/instrumentation-fetch](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-instrumentation-fetch) options, provide a function returning an object literal of options. The function will receive as an argument an object literal of default options that can either be extended or ignored.
+To extend or replace the default [@opentelemetry/instrumentation-fetch](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-instrumentation-fetch) options, provide a function that returns an object literal with the desired options. This function will receive an object literal containing the default options, which you can either extend or replace.
 
-```ts !#5-10 bootstrap.tsx
+```ts !#5-10
 import { registerHoneycombInstrumentation, defaultDefineFetchInstrumentationOptions } from "@squide/firefly-honeycomb";
 
 registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
@@ -147,7 +151,7 @@ registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
 
 ### Disable fetch instrumentation
 
-```ts !#5 bootstrap.tsx
+```ts !#5
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 
 registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
@@ -158,9 +162,9 @@ registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
 
 ### Customize DOM instrumentation
 
-To extend/replace the default [@opentelemetry/instrumentation-document-load](https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/web/opentelemetry-instrumentation-document-load#document-load-instrumentation-options) options, provide a function returning an object literal of options. The function will receive as an argument an object literal of default options that can either be extended or ignored.
+To extend or replace the default [@opentelemetry/instrumentation-document-load](https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/web/opentelemetry-instrumentation-document-load#document-load-instrumentation-options) options, provide a function that returns an object literal with the desired options. This function will receive an object literal containing the default options, which you can either extend or replace.
 
-```ts !#5-10 bootstrap.tsx
+```ts !#5-10
 import { registerHoneycombInstrumentation, defaultDefineDocumentLoadInstrumentationOptions } from "@squide/firefly-honeycomb";
 
 registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
@@ -176,7 +180,7 @@ registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
 
 ### Disable DOM instrumentation
 
-```ts !#5 bootstrap.tsx
+```ts !#5
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 
 registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
@@ -187,9 +191,9 @@ registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
 
 ### Enable XHR instrumentation
 
-By default, [@opentelemetry/instrumentation-xml-http-request](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-instrumentation-xml-http-request) is disabled. To enable the instrumentation, provide a function returning an object literal of options. The function will receive as an argument an object literal of default options that can either be extended or ignored.
+By default, [@opentelemetry/instrumentation-xml-http-request](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-instrumentation-xml-http-request) is disabled. To enable this instrumentation, provide a function that returns an object literal with the desired options. This function will receive an object literal of default options, which you can extend or replace as needed.
 
-```ts !#5-10 bootstrap.tsx
+```ts !#5-10
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 
 registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
@@ -205,9 +209,9 @@ registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
 
 ### Enable user interactions instrumentation
 
-By default, [@opentelemetryinstrumentation-user-interaction](https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/web/opentelemetry-instrumentation-user-interaction) is disabled. To enable the instrumentation, provide a function returning an object literal of options. The function will receive as an argument an object literal of default options that can either be extended or ignored.
+By default, [@opentelemetryinstrumentation-user-interaction](https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/web/opentelemetry-instrumentation-user-interaction) is disabled. To enable this instrumentation, provide a function that returns an object literal with the desired options. This function will receive an object literal of default options, which you can extend or replace as needed.
 
-```ts !#5-10 bootstrap.tsx
+```ts !#5-10
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 
 registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
@@ -237,7 +241,7 @@ To view the default configuration of `registerHoneycombInstrumentation`, have a 
 transformer(options: HoneycombSdkOptions, runtime: FireflyRuntime) => HoneycombSdkOptions;
 ```
 
-```tsx !#3-7,11 bootstrap.tsx
+```tsx !#3-7,11
 import { registerHoneycombInstrumentation, type HoneycombSdkOptionsTransformer } from "@squide/firefly-honeycomb";
 
 const skipOptionsValidationTransformer: HoneycombSdkOptionsTransformer = config => {

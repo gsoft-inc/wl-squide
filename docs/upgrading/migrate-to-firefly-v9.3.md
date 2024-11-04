@@ -6,7 +6,7 @@ label: Migrate to firefly v9.3
 # Migrate to firefly v9.3
 
 !!!warning
-Before following this guide, ensure you have migrated to [firefly v9.0](./migrate-to-firefly-v9.0.md).
+Before following this guide, make sure that you migrated to [v9.0](./migrate-to-firefly-v9.0.md).
 !!!
 
 ## Deprecation

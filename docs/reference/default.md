@@ -89,6 +89,7 @@ toc:
 ### Honeycomb
 
 - [registerHoneycombInstrumentation](./honeycomb/registerHoneycombInstrumentation.md)
+- [setGlobalSpanAttributes](./honeycomb/setGlobalSpanAttributes.md)
 
 ### Environment variables
 

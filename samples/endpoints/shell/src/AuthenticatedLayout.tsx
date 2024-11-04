@@ -1,4 +1,4 @@
-import { postJson, toSubscriptionStatusLabel, useSessionManager, useSubscription } from "@endpoints/shared";
+import { fetchJson, postJson, toSubscriptionStatusLabel, useSessionManager, useSubscription } from "@endpoints/shared";
 import { useEnvironmentVariable, useEnvironmentVariables } from "@squide/env-vars";
 import { isNavigationLink, useLogger, useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { useI18nextInstance } from "@squide/i18next";
@@ -53,6 +53,7 @@ export function AuthenticatedLayout() {
     const authenticationApiBaseUrl = useEnvironmentVariable("authenticationApiBaseUrl");
     const sessionApiBaseUrl = useEnvironmentVariable("sessionApiBaseUrl");
     const featureFlagsApiBaseUrl = useEnvironmentVariable("featureFlagsApiBaseUrl");
+    const subscriptionApiBaseUrl = useEnvironmentVariable("subscriptionApiBaseUrl");
 
     const logger = useLogger();
     const sessionManager = useSessionManager();
@@ -119,6 +120,12 @@ export function AuthenticatedLayout() {
         queryClient.refetchQueries({ queryKey: [`${environmentVariables.featureFlagsApiBaseUrl}getAll`] });
     }, [logger, featureFlagsApiBaseUrl, queryClient, environmentVariables]);
 
+    const handleFailing = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+
+        await fetchJson(`${subscriptionApiBaseUrl}failing`);
+    }, [subscriptionApiBaseUrl]);
+
     const navigationItems = useNavigationItems();
     const renderedNavigationItems = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
 
@@ -146,6 +153,11 @@ export function AuthenticatedLayout() {
                 <div>
                     <button type="button" onClick={handleDeactivateFeatureB} style={{ whiteSpace: "nowrap", marginRight: "10px" }}>
                         {t("deactivateFeatureBLabel")}
+                    </button>
+                </div>
+                <div>
+                    <button type="button" onClick={handleFailing} style={{ whiteSpace: "nowrap", marginRight: "10px" }}>
+                        {t("failingLabel")}
                     </button>
                 </div>
                 <div>

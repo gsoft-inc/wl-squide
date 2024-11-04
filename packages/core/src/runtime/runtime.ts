@@ -66,7 +66,7 @@ export abstract class Runtime<TRoute = unknown, TNavigationItem = unknown> {
         const plugin = this._plugins.find(x => x.name === pluginName);
 
         if (!plugin) {
-            throw new Error(`[squide] Cannot find a plugin named "${pluginName}". Did you add an instance of the plugin to the application Runtime instance?`);
+            throw new Error(`[squide] Cannot find a plugin named "${pluginName}". Did you register an instance of the plugin with the application Runtime instance?`);
         }
 
         return plugin;

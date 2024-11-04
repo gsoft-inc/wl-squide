@@ -28,8 +28,8 @@ toc:
 ### Registration
 
 - [bootstrap](./registration/bootstrap.md)
-- [registerLocalModules](./registration/registerLocalModules.md) [!badge variant="warning" size="xs" text="deprecated"]
-- [registerRemoteModules](./registration/registerRemoteModules.md) [!badge variant="warning" size="xs" text="deprecated"]
+- [registerLocalModules](./registration/registerLocalModules.md) [!badge variant="secondary" size="xs" text="deprecated"]
+- [registerRemoteModules](./registration/registerRemoteModules.md) [!badge variant="secondary" size="xs" text="deprecated"]
 - [useDeferredRegistrations](./registration/useDeferredRegistrations.md)
 - [mergeDeferredRegistrations](./registration/mergeDeferredRegistrations.md)
 
@@ -75,7 +75,7 @@ toc:
 
 ### Mock Service Worker
 
-- [setMswAsReady](./msw/setMswAsReady.md) [!badge variant="warning" size="xs" text="deprecated"]
+- [setMswAsReady](./msw/setMswAsReady.md) [!badge variant="secondary" size="xs" text="deprecated"]
 
 ### i18next
 

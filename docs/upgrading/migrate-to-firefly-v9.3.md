@@ -6,26 +6,20 @@ label: Migrate to firefly v9.3
 # Migrate to firefly v9.3
 
 !!!warning
-Before following this guide, ensure you have migrated to [firefly v9](./migrate-to-firefly-v9.md).
+Before following this guide, ensure you have migrated to [firefly v9.0](./migrate-to-firefly-v9.0.md).
 !!!
 
-## Changes
+## Deprecation
 
-### Added
-
-- A new primitive function named [bootstrap](../reference/registration/bootstrap.md) that ease the bootstrapping of a Squide application.
-
-### Deprecated
-
-- The [registerLocalModules](../reference/registration/registerLocalModules.md) function has been deprecated, use the [bootstrap](../reference/registration/bootstrap.md) function instead.
-- The [registerRemoteModules](../reference/registration/registerRemoteModules.md) function has been deprecated, use the [bootstrap](../reference/registration/bootstrap.md) function instead.
-- The [setMswAsReady](../reference/msw/setMswAsReady.md) function has been deprecated, use the [bootstrap](../reference/registration/bootstrap.md) function instead.
+- The [registerLocalModules](../reference/registration/registerLocalModules.md) function has been **deprecated**, use the [bootstrap](../reference/registration/bootstrap.md) function instead.
+- The [registerRemoteModules](../reference/registration/registerRemoteModules.md) function has been **deprecated**, use the [bootstrap](../reference/registration/bootstrap.md) function instead.
+- The [setMswAsReady](../reference/msw/setMswAsReady.md) function has been **deprecated**, use the [bootstrap](../reference/registration/bootstrap.md) function instead.
 
 ## Migrate an host application
 
 The `bootstrap` function is a new primitive that simplifies the bootstrapping of a Squide application. It replaces the [registerLocalModules](../reference/registration/registerLocalModules.md), [registerRemoteModules](../reference/registration/registerRemoteModules.md) and [setMswAsReady](../reference/msw/setMswAsReady.md) functions.
 
-### Migrate the modules registration
+### Modules registration
 
 To update an application's module registration code, replace the `registerLocalModules` and `registerRemoteModules` functions with a call to the `bootstrap` function:
 

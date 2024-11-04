@@ -60,7 +60,7 @@ import { getTracer } from "./tracer.ts";
 import { endActiveSpan, startActiveChildSpan, startChildSpan, startSpan, traceError } from "./utils.ts";
 
 export type DefineFetchInstrumentationOptionsFunction = (defaultOptions: FetchInstrumentationConfig) => FetchInstrumentationConfig;
-export type DefineXmlHttpInstrumentationOptionsFunction = (defaultOptions: XMLHttpRequestInstrumentationConfig) => XMLHttpRequestInstrumentationConfig;
+export type DefineXmlHttpRequestInstrumentationOptionsFunction = (defaultOptions: XMLHttpRequestInstrumentationConfig) => XMLHttpRequestInstrumentationConfig;
 export type DefineDocumentLoadInstrumentationOptionsFunction = (defaultOptions: DocumentLoadInstrumentationConfig) => DocumentLoadInstrumentationConfig;
 export type DefineUserInteractionInstrumentationOptionsFunction = (defaultOptions: UserInteractionInstrumentationConfig) => UserInteractionInstrumentationConfig;
 
@@ -76,11 +76,10 @@ export interface RegisterHoneycombInstrumentationOptions {
     endpoint?: HoneycombSdkOptions["endpoint"];
     apiKey?: HoneycombSdkOptions["apiKey"];
     debug?: HoneycombSdkOptions["debug"];
-    serviceName?: HoneycombSdkOptions["serviceName"];
     instrumentations?: HoneycombSdkInstrumentations;
     spanProcessors?: SpanProcessor[];
     fetchInstrumentation?: false | DefineFetchInstrumentationOptionsFunction;
-    xmlHttpInstrumentation?: false | DefineXmlHttpInstrumentationOptionsFunction;
+    xmlHttpRequestInstrumentation?: false | DefineXmlHttpRequestInstrumentationOptionsFunction;
     documentLoadInstrumentation?: false | DefineDocumentLoadInstrumentationOptionsFunction;
     userInteractionInstrumentation?: false | DefineUserInteractionInstrumentationOptionsFunction;
     transformers?: HoneycombSdkOptionsTransformer[];
@@ -95,7 +94,7 @@ export function getHoneycombSdkOptions(runtime: FireflyRuntime, serviceName: Non
         instrumentations = [],
         spanProcessors = [],
         fetchInstrumentation = defaultDefineFetchInstrumentationOptions,
-        xmlHttpInstrumentation = false,
+        xmlHttpRequestInstrumentation = false,
         documentLoadInstrumentation = defaultDefineDocumentLoadInstrumentationOptions,
         userInteractionInstrumentation = false,
         transformers = []
@@ -126,8 +125,8 @@ export function getHoneycombSdkOptions(runtime: FireflyRuntime, serviceName: Non
         };
     }
 
-    if (xmlHttpInstrumentation) {
-        autoInstrumentations["@opentelemetry/instrumentation-xml-http-request"] = xmlHttpInstrumentation({});
+    if (xmlHttpRequestInstrumentation) {
+        autoInstrumentations["@opentelemetry/instrumentation-xml-http-request"] = xmlHttpRequestInstrumentation({});
     } else {
         autoInstrumentations["@opentelemetry/instrumentation-xml-http-request"] = {
             enabled: false
@@ -165,17 +164,7 @@ export function getHoneycombSdkOptions(runtime: FireflyRuntime, serviceName: Non
         spanProcessors: [globalAttributeSpanProcessor, ...spanProcessors]
     } satisfies HoneycombSdkOptions;
 
-    return applyTransformers(sdkOptions, transformers);
-}
-
-export function registerHoneycombInstrumentation(runtime: FireflyRuntime, serviceName: NonNullable<HoneycombSdkOptions["serviceName"]>, apiServiceUrls: PropagateTraceHeaderCorsUrls, options: RegisterHoneycombInstrumentationOptions) {
-    const sdkOptions = getHoneycombSdkOptions(runtime, serviceName, apiServiceUrls, options);
-
-    const instance = new HoneycombWebSDK(sdkOptions);
-    instance.start();
-
-    registerTrackingListeners(runtime);
-    registerActiveSpanStack();
+    return applyTransformers(sdkOptions, transformers, runtime);
 }
 
 type DataFetchState = "none" | "fetching-data" | "public-data-ready" | "protected-data-ready" | "data-ready";
@@ -255,7 +244,7 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
 
     runtime.eventBus.addListener(LocalModulesRegistrationStartedEvent, (payload: unknown) => {
         const attributes = {
-            "squide.module_count": (payload as LocalModulesRegistrationStartedEventPayload).moduleCount
+            "app.squide.module_count": (payload as LocalModulesRegistrationStartedEventPayload).moduleCount
         };
 
         if (bootstrappingSpan) {
@@ -270,7 +259,7 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     runtime.eventBus.addListener(LocalModulesRegistrationCompletedEvent, (payload: unknown) => {
         if (bootstrappingSpan) {
             bootstrappingSpan.addEvent("local-module-registration-completed", {
-                "squide.module_count": (payload as LocalModulesRegistrationCompletedEventPayload).moduleCount
+                "app.squide.module_count": (payload as LocalModulesRegistrationCompletedEventPayload).moduleCount
             });
         }
 
@@ -289,7 +278,7 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
 
     runtime.eventBus.addListener(LocalModulesDeferredRegistrationStartedEvent, (payload: unknown) => {
         const attributes = {
-            "squide.registration_count": (payload as LocalModulesDeferredRegistrationStartedEventPayload).registrationCount
+            "app.squide.registration_count": (payload as LocalModulesDeferredRegistrationStartedEventPayload).registrationCount
         };
 
         if (bootstrappingSpan) {
@@ -304,7 +293,7 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     runtime.eventBus.addListener(LocalModulesDeferredRegistrationCompletedEvent, (payload: unknown) => {
         if (bootstrappingSpan) {
             bootstrappingSpan.addEvent("local-module-deferred-registration-completed", {
-                "squide.registration_count": (payload as LocalModulesDeferredRegistrationCompletedEventPayload).registrationCount
+                "app.squide.registration_count": (payload as LocalModulesDeferredRegistrationCompletedEventPayload).registrationCount
             });
         }
 
@@ -323,7 +312,7 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
 
     runtime.eventBus.addListener(RemoteModulesRegistrationStartedEvent, (payload: unknown) => {
         const attributes = {
-            "squide.remote_count": (payload as RemoteModulesRegistrationStartedEventPayload).remoteCount
+            "app.squide.remote_count": (payload as RemoteModulesRegistrationStartedEventPayload).remoteCount
         };
 
         if (bootstrappingSpan) {
@@ -338,7 +327,7 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     runtime.eventBus.addListener(RemoteModulesRegistrationCompletedEvent, (payload: unknown) => {
         if (bootstrappingSpan) {
             bootstrappingSpan.addEvent("remote-module-registration-completed", {
-                "squide.remote_count": (payload as RemoteModulesRegistrationCompletedEventPayload).remoteCount
+                "app.squide.remote_count": (payload as RemoteModulesRegistrationCompletedEventPayload).remoteCount
             });
         }
 
@@ -357,7 +346,7 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
 
     runtime.eventBus.addListener(RemoteModulesDeferredRegistrationStartedEvent, (payload: unknown) => {
         const attributes = {
-            "squide.registration_count": (payload as RemoteModulesDeferredRegistrationStartedEventPayload).registrationCount
+            "app.squide.registration_count": (payload as RemoteModulesDeferredRegistrationStartedEventPayload).registrationCount
         };
 
         if (bootstrappingSpan) {
@@ -372,7 +361,7 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     runtime.eventBus.addListener(RemoteModulesDeferredRegistrationCompletedEvent, (payload: unknown) => {
         if (bootstrappingSpan) {
             bootstrappingSpan.addEvent("remote-module-deferred-registration-completed", {
-                "squide.registration_count": (payload as RemoteModulesDeferredRegistrationCompletedEventPayload).registrationCount
+                "app.squide.registration_count": (payload as RemoteModulesDeferredRegistrationCompletedEventPayload).registrationCount
             });
         }
 
@@ -471,7 +460,7 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
 
     runtime.eventBus.addListener(LocalModulesDeferredRegistrationsUpdateStartedEvent, (payload: unknown) => {
         const attributes = {
-            "squide.registration_count": (payload as LocalModulesDeferredRegistrationsUpdateStartedEventPayload).registrationCount
+            "app.squide.registration_count": (payload as LocalModulesDeferredRegistrationsUpdateStartedEventPayload).registrationCount
         };
 
         if (deferredRegistrationsUpdateSpan) {
@@ -496,7 +485,7 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     runtime.eventBus.addListener(LocalModulesDeferredRegistrationsUpdateCompletedEvent, (payload: unknown) => {
         if (deferredRegistrationsUpdateSpan) {
             deferredRegistrationsUpdateSpan.addEvent("local-module-deferred-registrations-update-completed", {
-                "squide.registration_count": (payload as LocalModulesDeferredRegistrationsUpdateCompletedEventPayload).registrationCount
+                "app.squide.registration_count": (payload as LocalModulesDeferredRegistrationsUpdateCompletedEventPayload).registrationCount
             });
         }
 
@@ -515,7 +504,7 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
 
     runtime.eventBus.addListener(RemoteModulesDeferredRegistrationsUpdateStartedEvent, (payload: unknown) => {
         const attributes = {
-            "squide.registration_count": (payload as RemoteModulesDeferredRegistrationsUpdateStartedEventPayload).registrationCount
+            "app.squide.registration_count": (payload as RemoteModulesDeferredRegistrationsUpdateStartedEventPayload).registrationCount
         };
 
         if (deferredRegistrationsUpdateSpan) {
@@ -540,7 +529,7 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
     runtime.eventBus.addListener(RemoteModulesDeferredRegistrationsUpdateCompletedEvent, (payload: unknown) => {
         if (deferredRegistrationsUpdateSpan) {
             deferredRegistrationsUpdateSpan.addEvent("remote-module-deferred-registrations-update-completed", {
-                "squide.registration_count": (payload as RemoteModulesDeferredRegistrationsUpdateCompletedEventPayload).registrationCount
+                "app.squide.registration_count": (payload as RemoteModulesDeferredRegistrationsUpdateCompletedEventPayload).registrationCount
             });
         }
 
@@ -556,4 +545,13 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
             traceError(remoteModuleDeferredRegistrationsUpdateSpan.instance, registrationError.error);
         }
     });
+}
+
+export function registerHoneycombInstrumentation(runtime: FireflyRuntime, serviceName: NonNullable<HoneycombSdkOptions["serviceName"]>, apiServiceUrls: PropagateTraceHeaderCorsUrls, options?: RegisterHoneycombInstrumentationOptions) {
+    const sdkOptions = getHoneycombSdkOptions(runtime, serviceName, apiServiceUrls, options);
+    const instance = new HoneycombWebSDK(sdkOptions);
+    instance.start();
+
+    registerTrackingListeners(runtime);
+    registerActiveSpanStack();
 }

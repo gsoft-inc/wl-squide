@@ -7,7 +7,7 @@ export {
     type DefineDocumentLoadInstrumentationOptionsFunction,
     type DefineFetchInstrumentationOptionsFunction,
     type DefineUserInteractionInstrumentationOptionsFunction,
-    type DefineXmlHttpInstrumentationOptionsFunction,
+    type DefineXhrInstrumentationOptionsFunction,
     type RegisterHoneycombInstrumentationOptions
 } from "./registerHoneycombInstrumentation.ts";
 export * from "./utils.ts";

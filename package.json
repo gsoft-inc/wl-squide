@@ -9,7 +9,7 @@
         "dev": "turbo run dev --filter=./packages/* --concurrency 12",
         "build": "turbo run build --filter=./packages/*",
         "ci-build": "turbo run build --filter=./packages/* --cache-dir=node_modules/.cache/turbo",
-        "no-build-test": "jest",
+        "test-no-build": "jest",
         "pretest": "turbo run build --filter=./packages/*",
         "test": "jest",
         "prelint": "turbo run build --filter=!@getting-started/*",

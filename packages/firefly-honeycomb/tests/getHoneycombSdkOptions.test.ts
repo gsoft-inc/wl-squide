@@ -144,7 +144,7 @@ test("when xml http instrumentation is false", () => {
     const runtime = new FireflyRuntime();
 
     const result = getHoneycombSdkOptions(runtime, "foo", ["/foo"], {
-        xmlHttpInstrumentation: false,
+        xmlHttpRequestInstrumentation: false,
         apiKey: "123"
     });
 
@@ -155,7 +155,7 @@ test("when xml http instrumentation is a custom function", () => {
     const runtime = new FireflyRuntime();
 
     const result = getHoneycombSdkOptions(runtime, "foo", ["/foo"], {
-        xmlHttpInstrumentation: defaultOptions => ({ ...defaultOptions, ignoreNetworkEvents: false }),
+        xmlHttpRequestInstrumentation: defaultOptions => ({ ...defaultOptions, ignoreNetworkEvents: false }),
         apiKey: "123"
     });
 

@@ -1,9 +1,9 @@
 ---
 order: 1000
-label: Migrate to firefly v9
+label: Migrate to firefly v9.0
 ---
 
-# Migrate to firefly v9
+# Migrate to firefly v9.0
 
 This major version of `@squide/firefly` introduces [TanStack Query](https://tanstack.com/query/latest) as the official library for fetching the global data of a Squide's application and features a complete rewrite of the [AppRouter](../reference/routing/appRouter.md) component, which now uses a state machine to manage the application's bootstrapping flow.
 

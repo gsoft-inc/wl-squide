@@ -15,7 +15,7 @@ Register **local** or **remote** modules and optionally start [MSW](https://mswj
 ## Reference
 
 ```ts
-bootstrap(runtime, options?: { localModules?, remotes?, startMsw?, context? })
+const errors = bootstrap(runtime, options?: { localModules?, remotes?, startMsw?, context? })
 ```
 
 ### Parameters

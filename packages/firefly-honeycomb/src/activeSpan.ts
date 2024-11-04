@@ -1,6 +1,6 @@
 import type { Span } from "@opentelemetry/api";
 import type { FetchCustomAttributeFunction } from "@opentelemetry/instrumentation-fetch";
-import type { RuntimeLogger } from "@squide/core";
+import type { RuntimeLogger } from "@squide/firefly";
 import { v4 as uuidv4 } from "uuid";
 
 declare global {

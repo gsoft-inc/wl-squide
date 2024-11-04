@@ -10,7 +10,7 @@ Before going forward with this guide, make sure that you migrated to [v9.3](../u
 
 To monitor application performance, Workleap has adopted [Honeycomb](https://www.honeycomb.io/), a tool that helps teams manage and analyze telemetry data from distributed systems. Built on OpenTelemetry, Honeycomb provides a [robust API](https://open-telemetry.github.io/opentelemetry-js/) for tracking frontend telemetry.
 
-Honeycomb's in-house [HoneycombWebSDK](https://docs.honeycomb.io/send-data/javascript-browser/honeycomb-distribution/) includes great default instrumentation. However, this instrumentation has to be extended to capture traces specific to Squide features. To facilitate this, Squide provides the `registerHoneycombInstrumentation` function from the [@squide/firefly-honeycomb]() package.
+Honeycomb's in-house [HoneycombWebSDK](https://docs.honeycomb.io/send-data/javascript-browser/honeycomb-distribution/) includes great default instrumentation. However, this instrumentation has to be extended to capture traces specific to Squide features. To facilitate this, Squide provides the `registerHoneycombInstrumentation` function.
 
 ## Setup the host application
 

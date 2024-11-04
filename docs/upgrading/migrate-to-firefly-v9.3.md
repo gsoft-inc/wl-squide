@@ -1,20 +1,47 @@
 ---
 order: 950
-label: Migrate to firefly v9.3.0
+label: Migrate to firefly v9.3
 ---
 
-# Migrate to firefly v9.3.0
+# Migrate to firefly v9.3
 
-Before going through this guide, make sure you followed the migration to firefly v9 guide.
+!!!warning
+Before following this guide, ensure you have migrated to [firefly v9](./migrate-to-firefly-v9.md).
+!!!
 
-Introduce a new primitive to ease the bootstrapping of a Squide application and 
+## Changes
+
+### Added
+
+- A new primitive function named [bootstrap](../reference/registration/bootstrap.md) that ease the bootstrapping of a Squide application.
+
+### Deprecated
+
+- The [registerLocalModules](../reference/registration/registerLocalModules.md) function has been deprecated, use the [bootstrap](../reference/registration/bootstrap.md) function instead.
+- The [registerRemoteModules](../reference/registration/registerRemoteModules.md) function has been deprecated, use the [bootstrap](../reference/registration/bootstrap.md) function instead.
+- The [setMswAsReady](../reference/msw/setMswAsReady.md) function has been deprecated, use the [bootstrap](../reference/registration/bootstrap.md) function instead.
+
+## Migrate an host application
+
+The `bootstrap` function is a new primitive that simplifies the bootstrapping of a Squide application. It replaces the [registerLocalModules](../reference/registration/registerLocalModules.md), [registerRemoteModules](../reference/registration/registerRemoteModules.md) and [setMswAsReady](../reference/msw/setMswAsReady.md) functions.
+
+### Migrate the modules registration
+
+To update an application's module registration code, replace the `registerLocalModules` and `registerRemoteModules` functions with a call to the `bootstrap` function:
+
+```ts
+await bootstrap({
+    localModules: [...],
+    remotes: [...]
+})
+```
 
 Before:
 
-```tsx bootstrap.tsx
-import { createRoot } from "react-dom/client";
+```tsx !#18,21 bootstrap.tsx
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, registerLocalModules, type RemoteDefinition } from "@squide/firefly";
 import { register as registerMyLocalModule } from "@getting-started/local-module";
+import { createRoot } from "react-dom/client";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
 
@@ -28,11 +55,11 @@ const runtime = new FireflyRuntime({
     loggers: [x => new ConsoleLogger(x)]
 });
 
-// Register the remote module.
-await registerRemoteModules(Remotes, runtime);
-
 // Register the local module.
 await registerLocalModules([registerHost, registerMyLocalModule], runtime);
+
+// Register the remote module.
+await registerRemoteModules(Remotes, runtime);
 
 const root = createRoot(document.getElementById("root")!);
 
@@ -45,10 +72,10 @@ root.render(
 
 After:
 
-```tsx bootstrap.tsx
-import { createRoot } from "react-dom/client";
+```tsx !#18-21 bootstrap.tsx
 import { ConsoleLogger, RuntimeContext, FireflyRuntime, bootstrap, type RemoteDefinition } from "@squide/firefly";
 import { register as registerMyLocalModule } from "@getting-started/local-module";
+import { createRoot } from "react-dom/client";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
 
@@ -77,13 +104,23 @@ root.render(
 );
 ```
 
-### MSW
+### Mock Service Worker
+
+The MSW bootstrapping logic has been moved from user code to the `bootstrap` function. To update an application, replace the user code with the `startMsw` option of the bootstrap function.
 
 Before:
 
-```tsx bootstrap.tsx
+```tsx !#19,28-42 bootstrap.tsx
+import { 
+    ConsoleLogger,
+    RuntimeContext,
+    FireflyRuntime,
+    registerRemoteModules,
+    registerLocalModules,
+    setMswAsReady,
+    type RemoteDefinition
+} from "@squide/firefly";
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
 
@@ -128,9 +165,9 @@ root.render(
 
 After:
 
-```tsx bootstrap.tsx
+```tsx !#11,18-22 bootstrap.tsx
+import { ConsoleLogger, RuntimeContext, FireflyRuntime, bootstrap, type RemoteDefinition } from "@squide/firefly";
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
 

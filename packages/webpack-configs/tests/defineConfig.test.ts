@@ -812,7 +812,7 @@ describe("defineRemoteModuleFederationPluginOptions", () => {
         expect(result.shared.second).toBeDefined();
     });
 
-    test("can provide additional \"exposes\"", () => {
+    test("should provide additional \"exposes\"", () => {
         const result = defineRemoteModuleFederationPluginOptions("remote1", {
             exposes: {
                 "custom-file.js": "./src/custom-file.js"

@@ -1,6 +1,13 @@
 import { useAppRouterState } from "./AppRouterContext.ts";
+import type { AppRouterState } from "./AppRouterReducer.ts";
 
 export function useIsBootstrapping() {
+    const state = useAppRouterState();
+
+    return isApplicationBootstrapping(state);
+}
+
+export function isApplicationBootstrapping(state: AppRouterState) {
     const {
         waitForMsw,
         waitForPublicData,
@@ -9,9 +16,9 @@ export function useIsBootstrapping() {
         isMswReady,
         isPublicDataReady,
         isProtectedDataReady,
-        isActiveRouteProtected,
+        activeRouteVisibility,
         isUnauthorized
-    } = useAppRouterState();
+    } = state;
 
     const isAppReady = (
         !isUnauthorized
@@ -21,7 +28,7 @@ export function useIsBootstrapping() {
         && (!waitForMsw || isMswReady)
         // Wait for the initial data to be ready.
         && (!waitForPublicData || isPublicDataReady)
-        && (!waitForProtectedData || !isActiveRouteProtected || isProtectedDataReady)
+        && (!waitForProtectedData || activeRouteVisibility === "public" || isProtectedDataReady)
     );
 
     // When an API request returns a 401, the bootstrapping should be bypassed to render the login page.

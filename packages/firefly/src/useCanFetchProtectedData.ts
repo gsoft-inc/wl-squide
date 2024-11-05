@@ -7,7 +7,7 @@ export function useCanFetchProtectedData() {
         areModulesReady,
         isMswReady,
         isProtectedDataReady,
-        isActiveRouteProtected
+        activeRouteVisibility
     } = useAppRouterState();
 
     return (
@@ -18,7 +18,7 @@ export function useCanFetchProtectedData() {
             // depends on the protected data.
             (areModulesRegistered || areModulesReady)
             // Only fetch the protected data for protected routes, aka do not fetch the protected data for public routes.
-            && isActiveRouteProtected
+            && activeRouteVisibility === "protected"
             // Wait for MSW since the endpoints for the protected data might be an MSW endpoint when in development.
             && (!waitForMsw || isMswReady)
         )

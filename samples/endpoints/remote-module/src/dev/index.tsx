@@ -7,14 +7,12 @@ import { register as registerModule } from "../register.tsx";
 import { App } from "./App.tsx";
 import { registerDev } from "./register.tsx";
 
-const consoleLogger = new ConsoleLogger();
-
 // Create the shell runtime.
 // Services and loggers could be reuse through a shared packages or faked when in isolation.
 const runtime = new FireflyRuntime({
     useMsw: !!process.env.USE_MSW,
     plugins: [x => createI18NextPlugin(x)],
-    loggers: [consoleLogger]
+    loggers: [x => new ConsoleLogger(x)]
 });
 
 // Registering the remote module as a static module because the "register" function
@@ -34,7 +32,7 @@ if (runtime.isMswEnabled) {
             setMswAsReady();
         })
         .catch((error: unknown) => {
-            consoleLogger.debug("[host-app] An error occured while starting MSW.", error);
+            runtime.logger.debug("[host-app] An error occured while starting MSW.", error);
         });
 }
 

@@ -9,7 +9,7 @@ declare module "../src/EnvironmentVariablesRegistry.ts" {
 }
 
 describe("add", () => {
-    test("can add a new variable", () => {
+    test("should add a new variable", () => {
         const registry = new EnvironmentVariablesRegistry();
 
         registry.add("foo", "bar");

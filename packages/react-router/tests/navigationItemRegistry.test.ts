@@ -1,7 +1,7 @@
 import { NavigationItemDeferredRegistrationScope, NavigationItemDeferredRegistrationTransactionalScope, NavigationItemRegistry } from "../src/navigationItemRegistry.ts";
 
 describe("add", () => {
-    test("can add a single deferred item", () => {
+    test("should add a single deferred item", () => {
         const registry = new NavigationItemRegistry();
 
         registry.add("foo", "deferred", {
@@ -14,7 +14,7 @@ describe("add", () => {
         expect(registry.getItems("foo")[0].to).toBe("/1");
     });
 
-    test("can add a single static item", () => {
+    test("should add a single static item", () => {
         const registry = new NavigationItemRegistry();
 
         registry.add("foo", "static", {
@@ -27,7 +27,7 @@ describe("add", () => {
         expect(registry.getItems("foo")[0].to).toBe("/1");
     });
 
-    test("can add multiple items", () => {
+    test("should add multiple items", () => {
         const registry = new NavigationItemRegistry();
 
         registry.add("foo", "deferred", {
@@ -43,7 +43,7 @@ describe("add", () => {
         expect(registry.getItems("foo").length).toBe(2);
     });
 
-    test("can add items for different menus", () => {
+    test("should add items for different menus", () => {
         const registry = new NavigationItemRegistry();
 
         registry.add("foo", "deferred", {
@@ -710,7 +710,7 @@ describe("clearDeferredItems", () => {
 });
 
 describe("NavigationItemDeferredRegistrationScope", () => {
-    test("can add a single item", () => {
+    test("should add a single item", () => {
         const registry = new NavigationItemRegistry();
         const scope = new NavigationItemDeferredRegistrationScope(registry);
 
@@ -724,7 +724,7 @@ describe("NavigationItemDeferredRegistrationScope", () => {
         expect(scope.getItems("foo")[0].to).toBe("/bar");
     });
 
-    test("can add multiple items", () => {
+    test("should add multiple items", () => {
         const registry = new NavigationItemRegistry();
         const scope = new NavigationItemDeferredRegistrationScope(registry);
 
@@ -746,7 +746,7 @@ describe("NavigationItemDeferredRegistrationScope", () => {
         expect(scope.getItems("foo").length).toBe(3);
     });
 
-    test("can add items for different menus", () => {
+    test("should add items for different menus", () => {
         const registry = new NavigationItemRegistry();
         const scope = new NavigationItemDeferredRegistrationScope(registry);
 
@@ -877,7 +877,7 @@ describe("NavigationItemDeferredRegistrationScope", () => {
 });
 
 describe("NavigationItemDeferredRegistrationTransactionalScope", () => {
-    test("can add a single item", () => {
+    test("should add a single item", () => {
         const registry = new NavigationItemRegistry();
         const scope = new NavigationItemDeferredRegistrationTransactionalScope(registry);
 
@@ -891,7 +891,7 @@ describe("NavigationItemDeferredRegistrationTransactionalScope", () => {
         expect(scope.getItems("foo")[0].to).toBe("/bar");
     });
 
-    test("can add multiple items", () => {
+    test("should add multiple items", () => {
         const registry = new NavigationItemRegistry();
         const scope = new NavigationItemDeferredRegistrationTransactionalScope(registry);
 
@@ -913,7 +913,7 @@ describe("NavigationItemDeferredRegistrationTransactionalScope", () => {
         expect(scope.getItems("foo").length).toBe(3);
     });
 
-    test("can add items for different menus", () => {
+    test("should add items for different menus", () => {
         const registry = new NavigationItemRegistry();
         const scope = new NavigationItemDeferredRegistrationTransactionalScope(registry);
 

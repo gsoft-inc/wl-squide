@@ -1,7 +1,8 @@
-import { postJson, toSubscriptionStatusLabel, useSessionManager, useSubscription } from "@endpoints/shared";
-import { useEnvironmentVariable } from "@squide/env-vars";
+import { fetchJson, postJson, toSubscriptionStatusLabel, useSessionManager, useSubscription } from "@endpoints/shared";
+import { useEnvironmentVariable, useEnvironmentVariables } from "@squide/env-vars";
 import { isNavigationLink, useLogger, useNavigationItems, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "@squide/firefly";
 import { useI18nextInstance } from "@squide/i18next";
+import { useQueryClient } from "@tanstack/react-query";
 import { Suspense, useCallback, type MouseEvent, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, Outlet, useNavigate } from "react-router-dom";
@@ -52,6 +53,7 @@ export function AuthenticatedLayout() {
     const authenticationApiBaseUrl = useEnvironmentVariable("authenticationApiBaseUrl");
     const sessionApiBaseUrl = useEnvironmentVariable("sessionApiBaseUrl");
     const featureFlagsApiBaseUrl = useEnvironmentVariable("featureFlagsApiBaseUrl");
+    const subscriptionApiBaseUrl = useEnvironmentVariable("subscriptionApiBaseUrl");
 
     const logger = useLogger();
     const sessionManager = useSessionManager();
@@ -63,6 +65,9 @@ export function AuthenticatedLayout() {
         paidLabel: t("paidLabel"),
         notPaidLabel: t("notPaidLabel")
     });
+
+    const queryClient = useQueryClient();
+    const environmentVariables = useEnvironmentVariables();
 
     const navigate = useNavigate();
 
@@ -82,32 +87,44 @@ export function AuthenticatedLayout() {
             });
     }, [logger, navigate, sessionManager, authenticationApiBaseUrl]);
 
-    const handleUpdateSession = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+    const handleUpdateSession = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
-        postJson(`${sessionApiBaseUrl}updateSession`)
+        await postJson(`${sessionApiBaseUrl}updateSession`)
             .then(() => {
                 logger.debug("[shell] Updated the user session.");
             });
-    }, [logger, sessionApiBaseUrl]);
 
-    const handleShuffleFeatureFlags = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+        queryClient.refetchQueries({ queryKey: [`${environmentVariables.sessionApiBaseUrl}getSession`] });
+    }, [logger, sessionApiBaseUrl, queryClient, environmentVariables]);
+
+    const handleShuffleFeatureFlags = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
-        postJson(`${featureFlagsApiBaseUrl}shuffle`)
+        await postJson(`${featureFlagsApiBaseUrl}shuffle`)
             .then(() => {
                 logger.debug("[shell] Shuffled the feature flags.");
             });
-    }, [logger, featureFlagsApiBaseUrl]);
 
-    const handleDeactivateFeatureB = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+        queryClient.refetchQueries({ queryKey: [`${environmentVariables.featureFlagsApiBaseUrl}getAll`] });
+    }, [logger, featureFlagsApiBaseUrl, queryClient, environmentVariables]);
+
+    const handleDeactivateFeatureB = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
-        postJson(`${featureFlagsApiBaseUrl}deactivateFeatureB`)
+        await postJson(`${featureFlagsApiBaseUrl}deactivateFeatureB`)
             .then(() => {
                 logger.debug("[shell] Deactivated feature B.");
             });
-    }, [logger, featureFlagsApiBaseUrl]);
+
+        queryClient.refetchQueries({ queryKey: [`${environmentVariables.featureFlagsApiBaseUrl}getAll`] });
+    }, [logger, featureFlagsApiBaseUrl, queryClient, environmentVariables]);
+
+    const handleFailing = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+
+        await fetchJson(`${subscriptionApiBaseUrl}failing`);
+    }, [subscriptionApiBaseUrl]);
 
     const navigationItems = useNavigationItems();
     const renderedNavigationItems = useRenderedNavigationItems(navigationItems, renderItem, renderSection);
@@ -136,6 +153,11 @@ export function AuthenticatedLayout() {
                 <div>
                     <button type="button" onClick={handleDeactivateFeatureB} style={{ whiteSpace: "nowrap", marginRight: "10px" }}>
                         {t("deactivateFeatureBLabel")}
+                    </button>
+                </div>
+                <div>
+                    <button type="button" onClick={handleFailing} style={{ whiteSpace: "nowrap", marginRight: "10px" }}>
+                        {t("failingLabel")}
                     </button>
                 </div>
                 <div>

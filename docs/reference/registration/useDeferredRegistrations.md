@@ -109,12 +109,12 @@ function BootstrappingRoute() {
 
     const data: DeferredRegistrationData = useMemo(() => ({ featureFlags }), [featureFlags]);
 
-    const handleErrors: DeferredRegistrationsErrorCallback = errors => {
-        errors.localModuleErrors.forEach(x => {
+    const handleErrors: DeferredRegistrationsErrorCallback = ({ localModuleErrors, remoteModuleErrors }) => {
+        localModuleErrors.forEach(x => {
             console.error(x);
         });
 
-        errors.remoteModuleErrors.forEach(x => {
+        remoteModuleErrors.forEach(x => {
             console.error(x);
         });
     };

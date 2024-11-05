@@ -38,7 +38,7 @@ Then, update the host application boostrapping code to register an instance of t
 
 ```tsx !#13-22 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
+import { ConsoleLogger, RuntimeContext, FireflyRuntime, bootstrap, type RemoteDefinition } from "@squide/firefly";
 import { i18nextPlugin } from "@squide/i18next";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
@@ -59,12 +59,13 @@ const runtime = new FireflyRuntime({
         // Always detect the user language early on.
         i18nextPlugin.detectUserLanguage();
     }],
-    loggers: [new ConsoleLogger()]
+    loggers: [x => new ConsoleLogger(x)]
 });
 
-await registerLocalModules([registerShell, registerHost], runtime);
-
-await registerRemoteModules(Remotes, runtime);
+await bootstrap(runtime, {
+    localModules: [registerShell, registerHost],
+    remotes: Remotes
+});
 
 const root = createRoot(document.getElementById("root")!);
 

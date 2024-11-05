@@ -1,7 +1,7 @@
 import { registerLocalModule } from "@basic/local-module";
 import { registerLayouts, type AppContext } from "@basic/shared";
 import { registerShell } from "@basic/shell";
-import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, registerRemoteModules } from "@squide/firefly";
+import { ConsoleLogger, FireflyRuntime, RuntimeContext, bootstrap } from "@squide/firefly";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Remotes } from "../remotes.js";
@@ -15,16 +15,18 @@ import { version } from "useless-lib";
 console.log("[basic-sample] host:", version);
 
 const runtime = new FireflyRuntime({
-    loggers: [new ConsoleLogger()]
+    loggers: [x => new ConsoleLogger(x)]
 });
 
 const context: AppContext = {
     name: "Test app"
 };
 
-await registerLocalModules([registerShell({ host: "@basic/host" }), registerLayouts({ host: "@basic/host" }), registerHost, registerLocalModule], runtime, { context });
-
-await registerRemoteModules(Remotes, runtime, { context });
+await bootstrap(runtime, {
+    localModules: [registerShell({ host: "@basic/host" }), registerLayouts({ host: "@basic/host" }), registerHost, registerLocalModule],
+    remotes: Remotes,
+    context
+});
 
 const root = createRoot(document.getElementById("root")!);
 

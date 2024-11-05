@@ -6,6 +6,10 @@ order: 90
 
 # registerRemoteModules
 
+!!!warning
+This function is **deprecated**, use the [bootstrap](../registration/bootstrap.md) function instead.
+!!!
+
 Register one or many remote module(s). During the registration process, the module `register` function will be invoked with a `FireflyRuntime` instance and an optional `context` object. To **defer the registration** of navigation items, a registration function can return an anonymous function.
 
 > A remote module is a module that is not part of the current build but is **loaded at runtime** from a remote server.

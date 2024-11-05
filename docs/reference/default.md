@@ -1,5 +1,5 @@
 ---
-order: 70
+order: 60
 icon: gear
 expanded: true
 toc:
@@ -27,8 +27,9 @@ toc:
 
 ### Registration
 
-- [registerLocalModules](./registration/registerLocalModules.md)
-- [registerRemoteModules](./registration/registerRemoteModules.md)
+- [bootstrap](./registration/bootstrap.md)
+- [registerLocalModules](./registration/registerLocalModules.md) [!badge variant="secondary" size="xs" text="deprecated"]
+- [registerRemoteModules](./registration/registerRemoteModules.md) [!badge variant="secondary" size="xs" text="deprecated"]
 - [useDeferredRegistrations](./registration/useDeferredRegistrations.md)
 - [mergeDeferredRegistrations](./registration/mergeDeferredRegistrations.md)
 
@@ -74,7 +75,7 @@ toc:
 
 ### Mock Service Worker
 
-- [setMswAsReady](./msw/setMswAsReady.md)
+- [setMswAsReady](./msw/setMswAsReady.md) [!badge variant="secondary" size="xs" text="deprecated"]
 
 ### i18next
 
@@ -84,6 +85,11 @@ toc:
 - [useCurrentLanguage](./i18next/useCurrentLanguage.md)
 - [useI18nextInstance](./i18next/useI18nextInstance.md)
 - [I18nextNavigationItemLabel](./i18next/I18nextNavigationItemLabel.md)
+
+### Honeycomb
+
+- [registerHoneycombInstrumentation](./honeycomb/registerHoneycombInstrumentation.md)
+- [setGlobalSpanAttributes](./honeycomb/setGlobalSpanAttributes.md)
 
 ### Environment variables
 

@@ -105,11 +105,11 @@ export function startMsw(moduleRequestHandlers: RequestHandler[]) {
 }
 ```
 
-Then, update the bootstrapping code to [start the service](https://mswjs.io/docs/integrations/browser#setup) and [set MSW as ready](../reference/msw/setMswAsReady.md) if MSW is enabled:
+Then, update the bootstrapping code to [start MSW](https://mswjs.io/docs/integrations/browser#setup) when it's enabled:
 
-```tsx !#20-34 host/src/bootstrap.tsx
+```tsx !#18-22 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
+import { ConsoleLogger, RuntimeContext, FireflyRuntime, boostrap, type RemoteDefinition } from "@squide/firefly";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
 
@@ -119,29 +119,18 @@ const Remotes: RemoteDefinition[] = [
 
 const runtime = new FireflyRuntime({
     useMsw: !!process.env.USE_MSW,
-    loggers: [new ConsoleLogger()]
+    loggers: [x => new ConsoleLogger(x)]
 });
 
-await registerLocalModules([registerHost], runtime);
-
-await registerRemoteModules(Remotes, runtime);
-
-// Once both register functions are done, we can safely assume that all the request handlers has been registered.
-if (runtime.isMswEnabled) {
-    // Files that includes an import to the "msw" package are included dynamically to prevent adding
-    // unused MSW stuff to the application bundles.
-    const startMsw = (await import("../mocks/browser.ts")).startMsw;
-
-    // Will start MSW with the modules request handlers.
-    startMsw(runtime.requestHandlers)
-        .then(() => {
-            // Indicate that MSW is ready and the routes can now be safely rendered.
-            setMswAsReady();
-        })
-        .catch((error: unknown) => {
-            consoleLogger.debug("[host-app] An error occured while starting MSW.", error);
-        });
-}
+await bootstrap(runtime, {
+    localModules: [registerHost],
+    remote: Remotes,
+    startMsw: async () => {
+        // Files that includes an import to the "msw" package are included dynamically to prevent adding
+        // unused MSW stuff to the code bundles.
+        (await import("../mocks/browser.ts")).startMsw(runtime.requestHandlers);
+    }
+});
 
 const root = createRoot(document.getElementById("root")!);
 
@@ -151,10 +140,6 @@ root.render(
     </RuntimeContext.Provider>
 );
 ```
-
-!!!info
-Be sure to `await` the `registerLocalModules` and `registerRemoteModules` functions; otherwise, MSW could be set as ready before all modules registered their request handlers.
-!!!
 
 ### Delay routes rendering until the service is started
 

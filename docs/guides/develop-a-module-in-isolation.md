@@ -1,5 +1,5 @@
 ---
-order: 800
+order: 780
 ---
 
 # Develop a module in isolation
@@ -136,9 +136,9 @@ export function App() {
 
 And finally include the `registerShell` function to setup the `RootLayout` and `RootErrorBoundary` components as well as any other shell assets:
 
-```tsx !#16 host/src/bootstrap.tsx
+```tsx !#17 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
+import { ConsoleLogger, RuntimeContext, FireflyRuntime, bootstrap, type RemoteDefinition } from "@squide/firefly";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
 import { registerShell } from "@sample/shell";
@@ -148,13 +148,14 @@ const Remotes: RemoteDefinition[] = [
 ];
 
 const runtime = new FireflyRuntime({
-    loggers: [new ConsoleLogger()]
+    loggers: [x => new ConsoleLogger(x)]
 });
 
-// Register the newly created shell module.
-await registerLocalModules([registerShell, registerHost], runtime);
-
-await registerRemoteModules(Remotes, runtime);
+await bootstrap(runtime, {
+    // Register the newly created shell module.
+    localModules: [registerShell, registerHost],
+    remotes: Remotes
+});
 
 const root = createRoot(document.getElementById("root")!);
 
@@ -199,25 +200,27 @@ remote-module
 
 ### index.tsx
 
-The `index.tsx` file is similar to the `bootstrap.tsx` file of an host application but, tailored for an isolated module. The key distinctions are that the module is registered with the [registerLocalModules](/reference/registration/registerLocalModules.md) function instead of the [registerRemoteModules](/reference/registration/registerRemoteModules.md) function, and a new `registerDev` function is introduced to register the development homepage (which will be covered in an upcoming section):
+The `index.tsx` file is similar to the `bootstrap.tsx` file of an host application but, tailored for an isolated module. The key distinctions are that all the modules are registered as local modules, and a new `registerDev` function is introduced to register the development homepage (which will be covered in an upcoming section):
 
-```tsx !#10-12,16 remote-module/src/index.tsx
+```tsx !#10-12,17 remote-module/src/index.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerLocalModules } from "@squide/firefly";
+import { ConsoleLogger, RuntimeContext, FireflyRuntime, bootstrap } from "@squide/firefly";
 import { App } from "./App.tsx";
 import { register as registerModule } from "./register.tsx";
 import { registerDev } from "./dev/register.tsx";
 import { registerShell } from "@sample/shell";
 
-// Services, loggers, etc... could be reuse through a
+// Loggers, etc... could be reuse through a
 // shared packages or faked when in isolation.
 const runtime = new FireflyRuntime({
-    loggers: [new ConsoleLogger()]
+    loggers: [x => new ConsoleLogger(x)]
 });
 
-// Registering the remote module as a static module because the "register" function 
-// is local when developing in isolation.
-await registerLocalModules([registerModule, registerDev, registerShell], runtime);
+await bootstrap(runtime, {
+    // Registering the remote module as a local module because the "register" function 
+    // is local when developing in isolation.
+    localModules: [registerModule, registerDev, registerShell]
+});
 
 const root = createRoot(document.getElementById("root")!);
 

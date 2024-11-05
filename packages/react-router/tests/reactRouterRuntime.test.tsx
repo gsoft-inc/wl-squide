@@ -25,7 +25,7 @@ describe("registerRoute", () => {
                 }
             }
 
-            test("can register an index route", () => {
+            test("should register an index route", () => {
                 const runtime = new ReactRouterRuntime();
 
                 registerPublicRoutesOutlet(runtime);
@@ -42,7 +42,7 @@ describe("registerRoute", () => {
                 expect(routes[0].index).toBeTruthy();
             });
 
-            test("can register a pathless route", () => {
+            test("should register a pathless route", () => {
                 const runtime = new ReactRouterRuntime();
 
                 registerPublicRoutesOutlet(runtime);
@@ -59,7 +59,7 @@ describe("registerRoute", () => {
                 expect(routes[0].path).toBeUndefined();
             });
 
-            test("can register multiple pathless routes", () => {
+            test("should register multiple pathless routes", () => {
                 const runtime = new ReactRouterRuntime();
 
                 registerPublicRoutesOutlet(runtime);
@@ -160,7 +160,7 @@ describe("registerRoute", () => {
                 }
             }
 
-            test("can register an index route", () => {
+            test("should register an index route", () => {
                 const runtime = new ReactRouterRuntime();
 
                 registerProtectedRoutesOutlet(runtime);
@@ -176,7 +176,7 @@ describe("registerRoute", () => {
                 expect(routes[0].index).toBeTruthy();
             });
 
-            test("can register a pathless route", () => {
+            test("should register a pathless route", () => {
                 const runtime = new ReactRouterRuntime();
 
                 registerProtectedRoutesOutlet(runtime);
@@ -192,7 +192,7 @@ describe("registerRoute", () => {
                 expect(routes[0].path).toBeUndefined();
             });
 
-            test("can register multiple pathless routes", () => {
+            test("should register multiple pathless routes", () => {
                 const runtime = new ReactRouterRuntime();
 
                 registerProtectedRoutesOutlet(runtime);
@@ -269,7 +269,7 @@ describe("registerRoute", () => {
     });
 
     describe("hoisted", () => {
-        test("can register an index route", () => {
+        test("should register an index route", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -283,7 +283,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].index).toBeTruthy();
         });
 
-        test("can register a pathless route", () => {
+        test("should register a pathless route", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -297,7 +297,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].path).toBeUndefined();
         });
 
-        test("can register multiple pathless routes", () => {
+        test("should register multiple pathless routes", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -327,7 +327,7 @@ describe("registerRoute", () => {
             expect(runtime.routes.length).toBe(4);
         });
 
-        test("can register a deeply nested route with pathless parent routes", () => {
+        test("should register a deeply nested route with pathless parent routes", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -351,7 +351,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].children![0].children![0].path).toBe("/deeply-nested-route");
         });
 
-        test("can register a deeply nested index route with pathless parent routes", () => {
+        test("should register a deeply nested index route with pathless parent routes", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -375,7 +375,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].children![0].children![0].index).toBeTruthy();
         });
 
-        test("can register a root route with a \"public\" visibility", () => {
+        test("should register a root route with a \"public\" visibility", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -390,7 +390,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].$visibility).toBe("public");
         });
 
-        test("can register a root route with a \"protected\" visibility", () => {
+        test("should register a root route with a \"protected\" visibility", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -419,7 +419,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].$visibility).toBe("protected");
         });
 
-        test("can register a nested route with a \"public\" visibility", () => {
+        test("should register a nested route with a \"public\" visibility", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -440,7 +440,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].children![0].$visibility).toBe("public");
         });
 
-        test("can register a nested route with a \"protected\" visibility", () => {
+        test("should register a nested route with a \"protected\" visibility", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -481,7 +481,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].children![0].$visibility).toBe("protected");
         });
 
-        test("can register a root route with a name", () => {
+        test("should register a root route with a name", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -495,7 +495,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].$id).toBe("foo");
         });
 
-        test("can register a nested route with a name", () => {
+        test("should register a nested route with a name", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -626,7 +626,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].children![0].children![0].children![0].path).toBe("/layout/nested");
         });
 
-        test("can register a route under a deeply nested layout", () => {
+        test("should register a route under a deeply nested layout", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -654,7 +654,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].children![0].children![0].path).toBe("/layout/nested/another-level");
         });
 
-        test("can register a route under a deeply nested layout that has been registered in a single block", () => {
+        test("should register a route under a deeply nested layout that has been registered in a single block", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -858,7 +858,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].children![0].children![0].children![0].path).toBe("/layout/nested");
         });
 
-        test("can register a route under a deeply nested layout", () => {
+        test("should register a route under a deeply nested layout", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -887,7 +887,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].children![0].children![0].path).toBe("/layout/nested/another-level");
         });
 
-        test("can register a route under a deeply nested layout that has been registered in a single block", () => {
+        test("should register a route under a deeply nested layout that has been registered in a single block", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -941,7 +941,7 @@ describe("registerRoute", () => {
     });
 
     describe("nested routes", () => {
-        test("can register a deeply nested route with pathless parent routes", () => {
+        test("should register a deeply nested route with pathless parent routes", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -965,7 +965,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].children![0].children![0].path).toBe("/deeply-nested-route");
         });
 
-        test("can register a deeply nested index route with pathless parent routes", () => {
+        test("should register a deeply nested index route with pathless parent routes", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -989,7 +989,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].children![0].children![0].index).toBeTruthy();
         });
 
-        test("can register a nested route with a visibility hint", () => {
+        test("should register a nested route with a visibility hint", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -1030,7 +1030,7 @@ describe("registerRoute", () => {
             expect(runtime.routes[0].children![0].$visibility).toBe("protected");
         });
 
-        test("can register a nested route with a name", () => {
+        test("should register a nested route with a name", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerRoute({
@@ -1050,7 +1050,7 @@ describe("registerRoute", () => {
         });
     });
 
-    test("can register a route with a visibility hint", () => {
+    test("should register a route with a visibility hint", () => {
         const runtime = new ReactRouterRuntime();
 
         runtime.registerRoute({
@@ -1081,7 +1081,7 @@ describe("registerRoute", () => {
         expect(runtime.routes[0].$visibility).toBe("protected");
     });
 
-    test("can register a route with a name", () => {
+    test("should register a route with a name", () => {
         const runtime = new ReactRouterRuntime();
 
         runtime.registerRoute({
@@ -1097,7 +1097,7 @@ describe("registerRoute", () => {
 });
 
 describe("registerNavigationItem", () => {
-    test("can register a root navigation link", () => {
+    test("should register a root navigation link", () => {
         const runtime = new ReactRouterRuntime();
 
         runtime.registerNavigationItem({
@@ -1108,7 +1108,7 @@ describe("registerNavigationItem", () => {
         expect(runtime.getNavigationItems()[0].to).toBe("/root");
     });
 
-    test("can register a root navigation section", () => {
+    test("should register a root navigation section", () => {
         const runtime = new ReactRouterRuntime();
 
         runtime.registerNavigationItem({
@@ -1124,7 +1124,7 @@ describe("registerNavigationItem", () => {
         expect(runtime.getNavigationItems()[0].$label).toBe("Section");
     });
 
-    test("can register a navigation link for a specific menu id", () => {
+    test("should register a navigation link for a specific menu id", () => {
         const runtime = new ReactRouterRuntime();
 
         runtime.registerNavigationItem({
@@ -1137,7 +1137,7 @@ describe("registerNavigationItem", () => {
         expect(runtime.getNavigationItems("link-menu")[0].to).toBe("/link");
     });
 
-    test("can register a navigation section for a specific menu id", () => {
+    test("should register a navigation section for a specific menu id", () => {
         const runtime = new ReactRouterRuntime();
 
         runtime.registerNavigationItem({
@@ -1155,7 +1155,7 @@ describe("registerNavigationItem", () => {
         expect(runtime.getNavigationItems("section-menu")[0].$label).toBe("Section");
     });
 
-    test("can register a navitation link with a key", () => {
+    test("should register a navitation link with a key", () => {
         const runtime = new ReactRouterRuntime();
 
         runtime.registerNavigationItem({
@@ -1167,7 +1167,7 @@ describe("registerNavigationItem", () => {
         expect(runtime.getNavigationItems()[0].$id).toBe("link");
     });
 
-    test("can register a navitation section with a key", () => {
+    test("should register a navitation section with a key", () => {
         const runtime = new ReactRouterRuntime();
 
         runtime.registerNavigationItem({
@@ -1235,7 +1235,7 @@ describe("registerNavigationItem", () => {
             expect(runtime.getNavigationItems()[0].children![0].$label).toBe("Link");
         });
 
-        test("can register an item under a deeply nested section", () => {
+        test("should register an item under a deeply nested section", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerNavigationItem({
@@ -1264,7 +1264,7 @@ describe("registerNavigationItem", () => {
             expect(runtime.getNavigationItems()[0].children![0].children![0].children![0].$label).toBe("Link");
         });
 
-        test("can register a nested link under a section in a specific menu", () => {
+        test("should register a nested link under a section in a specific menu", () => {
             const runtime = new ReactRouterRuntime();
 
             runtime.registerNavigationItem({
@@ -1393,7 +1393,7 @@ describe("getNavigationItems", () => {
 });
 
 describe("startDeferredRegistrationScope & completeDeferredRegistrationScope", () => {
-    test("can start and complete a scope", () => {
+    test("should start and complete a scope", () => {
         const runtime = new ReactRouterRuntime();
 
         expect(() => {

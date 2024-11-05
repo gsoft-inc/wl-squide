@@ -1,5 +1,5 @@
 ---
-order: 740
+order: 720
 ---
 
 # Implement a custom logger
@@ -11,12 +11,14 @@ Many applications must integrate with specific remote logging solutions such as 
 First, let's define a custom logger:
 
 ```ts host/src/customerLogger.ts
-import { LogLevel, type Logger } from "@squide/firefly";
+import { Logger, type LogLevel, type Runtime } from "@squide/firefly";
 
 export class CustomLogger implements Logger {
-    readonly #logLevel: LogLevel;
+    readonly #logLovel: LogLevel
 
-    constructor(logLevel: LogLevel = LogLevel.debug) {
+    constructor(runtime: Runtime, logLevel: LogLevel = LogLevel.debug) {
+        super(CustomLogger.name, logLevel);
+
         this.#logLevel = logLevel;
     }
 
@@ -69,9 +71,7 @@ import { FireflyRuntime } from "@squide/firefly";
 import { CustomLogger } from "./customLogger.ts";
 
 const runtime = new FireflyRuntime({
-    loggers: [
-        new CustomLogger()
-    ],
+    loggers: [x => new CustomLogger(x)],
 });
 ```
 

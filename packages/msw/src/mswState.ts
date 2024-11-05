@@ -28,7 +28,7 @@ export class MswState {
     }
 }
 
-let mswState: MswState;
+let mswState: MswState | undefined;
 
 function getMswState() {
     if (!mswState) {
@@ -41,6 +41,11 @@ function getMswState() {
 // This function should only be used by tests.
 export function __setMswState(state: MswState) {
     mswState = state;
+}
+
+// This function should only be used by tests.
+export function __clearMswState() {
+    mswState = undefined;
 }
 
 export function setMswAsReady() {

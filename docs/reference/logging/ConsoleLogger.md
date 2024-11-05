@@ -10,7 +10,7 @@ A basic console logger.
 ## Reference
 
 ```ts
-const logger = new ConsoleLogger(logLevel?)
+const logger = new ConsoleLogger(runtime, logLevel?)
 ```
 
 ### Parameters
@@ -22,9 +22,9 @@ const logger = new ConsoleLogger(logLevel?)
 ### Log everything
 
 ```ts
-import { ConsoleLogger, type LogLevel } from "@squide/firefly";
+import { FireflyRuntime, ConsoleLogger, type LogLevel } from "@squide/firefly";
 
-const logger = new ConsoleLogger();
+const logger = new ConsoleLogger(new FireflyRuntime());
 
 logger.debug("Debug log", { foo: "bar" });
 logger.information("Info log");
@@ -38,9 +38,9 @@ logger.critical("Critical log");
 To restrict the logs to `error` or `critical`, change the minimum log level to `error`:
 
 ```ts
-import { ConsoleLogger, type LogLevel } from "@squide/firefly";
+import { FireflyRuntime, ConsoleLogger, type LogLevel } from "@squide/firefly";
 
-const logger = new ConsoleLogger(LogLevel.error);
+const logger = new ConsoleLogger(new FireflyRuntime(), LogLevel.error);
 
 logger.error("Error log");
 logger.critical("Critical log");

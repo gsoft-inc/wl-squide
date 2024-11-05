@@ -71,7 +71,7 @@ function renderItems(items: NavigationItem[], renderItem: RenderItemFunction, re
         return itemElement;
     });
 
-    // Filter out elements that are null or undefined because of the "canRender" prop.
+    // Filter out elements that are null or undefined because of the "shouldRender" prop.
     const renderedElements = itemElements.filter(x => x);
 
     if (renderedElements.length > 0) {

@@ -1,8 +1,7 @@
-import { fetchJson, useTelemetryService } from "@endpoints/shared";
+import { fetchJson } from "@endpoints/shared";
 import { useEnvironmentVariable } from "@squide/env-vars";
 import { useI18nextInstance } from "@squide/i18next";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { i18NextInstanceKey } from "./i18next.ts";
 
@@ -17,11 +16,6 @@ export function LocationsTab() {
     const { t } = useTranslation("LocationsTab", { i18n: i18nextInstance });
 
     const rickAndMortyApiBaseUrl = useEnvironmentVariable("rickAndMortyApiBaseUrl");
-    const telemetryService = useTelemetryService();
-
-    useEffect(() => {
-        telemetryService?.track("Mounting LocationsTab from remote-1.");
-    }, [telemetryService]);
 
     const { data: locations } = useSuspenseQuery({ queryKey: [`${rickAndMortyApiBaseUrl}location/1,2,3`], queryFn: () => {
         return fetchJson(`${rickAndMortyApiBaseUrl}location/1,2,3`);

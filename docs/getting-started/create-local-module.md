@@ -130,11 +130,11 @@ Go back to the `host` application and add a dependency to the `@getting-started/
 If your project is set up as a monorepo, use `workspace:*` for the version instead of `0.0.1`.
 !!!
 
-Then, register the local module with the [registerLocalModules](/reference/registration/registerLocalModules.md) function:
+Then, register the local module with the [bootstrapping](/reference/registration/bootstrapping.md) function:
 
-```tsx !#3,21 host/src/bootstrap.tsx
+```tsx !#3,19 host/src/bootstrap.tsx
 import { createRoot } from "react-dom/client";
-import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, registerLocalModules, type RemoteDefinition } from "@squide/firefly";
+import { ConsoleLogger, RuntimeContext, FireflyRuntime, bootstrap, type RemoteDefinition } from "@squide/firefly";
 import { register as registerMyLocalModule } from "@getting-started/local-module";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
@@ -146,14 +146,14 @@ const Remotes: RemoteDefinition[] = [
 
 // Create the shell runtime.
 const runtime = new FireflyRuntime({
-    loggers: [new ConsoleLogger()]
+    loggers: [x => new ConsoleLogger(x)]
 });
 
-// Register the remote module.
-await registerRemoteModules(Remotes, runtime);
-
-// Register the local module.
-await registerLocalModules([registerHost, registerMyLocalModule], runtime);
+// Register the modules.
+await bootstrap(runtime, {
+    localModules: [registerHost, registerMyLocalModule],
+    remotes: Remotes
+})
 
 const root = createRoot(document.getElementById("root")!);
 

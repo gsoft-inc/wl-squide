@@ -3,21 +3,7 @@ import type { ReactNode } from "react";
 import { AppRouterStateContext } from "../src/AppRouterContext.ts";
 import type { AppRouterState } from "../src/AppRouterReducer.ts";
 import { useIsBootstrapping } from "../src/useIsBootstrapping.ts";
-
-function createDefaultAppRouterState(): AppRouterState {
-    return {
-        areModulesReady: false,
-        areModulesRegistered: false,
-        isActiveRouteProtected: false,
-        isMswReady: false,
-        isProtectedDataReady: false,
-        isPublicDataReady: false,
-        isUnauthorized: false,
-        waitForMsw: false,
-        waitForProtectedData: false,
-        waitForPublicData: false
-    };
-}
+import { createDefaultAppRouterState } from "./utils.ts";
 
 function renderUseIsBootstrappingHook<TProps>(state: AppRouterState, additionalProps: RenderHookOptions<TProps> = {}) {
     return renderHook(() => useIsBootstrapping(), {
@@ -86,7 +72,7 @@ test("when protected data is not ready but the active route is public, return fa
     state.areModulesReady = true;
     state.isMswReady = true;
     state.isPublicDataReady = true;
-    state.isActiveRouteProtected = false;
+    state.activeRouteVisibility = "public";
     state.isProtectedDataReady = false;
 
     const { result } = renderUseIsBootstrappingHook(state);
@@ -138,7 +124,7 @@ test("when protected data is not ready, return true", () => {
     state.isMswReady = true;
     state.isPublicDataReady = true;
     state.waitForProtectedData = true;
-    state.isActiveRouteProtected = true;
+    state.activeRouteVisibility = "protected";
     state.isProtectedDataReady = false;
 
     const { result } = renderUseIsBootstrappingHook(state);

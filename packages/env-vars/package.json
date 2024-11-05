@@ -34,7 +34,7 @@
         "@swc/core": "1.7.26",
         "@swc/jest": "0.2.36",
         "@types/jest": "29.5.13",
-        "@types/react": "18.3.8",
+        "@types/react": "18.3.11",
         "@types/react-dom": "18.3.0",
         "@workleap/eslint-plugin": "3.2.2",
         "@workleap/swc-configs": "2.2.3",

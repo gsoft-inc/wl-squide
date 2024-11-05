@@ -5,11 +5,12 @@ import { RuntimeLogger } from "./RuntimeLogger.ts";
 
 export type RuntimeMode = "development" | "production";
 
+export type LoggerFactory = (runtime: Runtime) => Logger;
 export type PluginFactory = (runtime: Runtime) => Plugin;
 
 export interface RuntimeOptions {
     mode?: RuntimeMode;
-    loggers?: Logger[];
+    loggers?: LoggerFactory[];
     plugins?: PluginFactory[];
 }
 
@@ -34,10 +35,8 @@ export abstract class Runtime<TRoute = unknown, TNavigationItem = unknown> {
 
     constructor({ mode = "development", loggers, plugins = [] }: RuntimeOptions = {}) {
         this._mode = mode;
-        this._logger = new RuntimeLogger(loggers);
+        this._logger = new RuntimeLogger(loggers?.map(x => x(this)));
         this._eventBus = new EventBus({ logger: this._logger });
-
-        // It's important to instanciate the plugins once all the properties are set.
         this._plugins = plugins.map(x => x(this));
     }
 
@@ -67,7 +66,7 @@ export abstract class Runtime<TRoute = unknown, TNavigationItem = unknown> {
         const plugin = this._plugins.find(x => x.name === pluginName);
 
         if (!plugin) {
-            throw new Error(`[squide] Cannot find a plugin named "${pluginName}". Did you add an instance of the plugin to the application Runtime instance?`);
+            throw new Error(`[squide] Cannot find a plugin named "${pluginName}". Did you register an instance of the plugin with the application Runtime instance?`);
         }
 
         return plugin;

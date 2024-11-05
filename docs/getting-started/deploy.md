@@ -69,6 +69,6 @@ Remove the [ConsoleLogger](../reference/logging/ConsoleLogger.md) from the produ
 import { ConsoleLogger, FireflyRuntime } from "@squide/firefly";
 
 const runtime = new FireflyRuntime({
-    loggers: process.env.isNetlify ? [] : [new ConsoleLogger()]
+    loggers: process.env.isNetlify ? [] : [x => new ConsoleLogger(x)]
 });
 ```

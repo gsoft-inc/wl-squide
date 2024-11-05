@@ -1,16 +1,25 @@
 import { LocalStorageAccessor, LocalStorageManager } from "@squide/fakes";
 import { createContext, useContext } from "react";
 
-export interface FeatureFlags {
+export interface OgFeatureFlags {
     featureA: boolean;
     featureB: boolean;
     featureC: boolean;
 }
 
+export interface OtherFeatureFlags {
+    otherA: boolean;
+    otherB: boolean;
+}
+
+export type FeatureFlags = OgFeatureFlags & OtherFeatureFlags;
+
 const DefaultFeatureFlags = {
     featureA: true,
     featureB: true,
-    featureC: false
+    featureC: false,
+    otherA: false,
+    otherB: false
 };
 
 export class LocalStorageFeatureFlagsManager {

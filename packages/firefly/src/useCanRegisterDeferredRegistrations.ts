@@ -8,7 +8,7 @@ export function useCanRegisterDeferredRegistrations() {
         areModulesRegistered,
         isPublicDataReady,
         isProtectedDataReady,
-        isActiveRouteProtected,
+        activeRouteVisibility,
         isUnauthorized
     } = useAppRouterState();
 
@@ -19,6 +19,6 @@ export function useCanRegisterDeferredRegistrations() {
         // && (!waitForMsw || isMswReady)
         // Wait for the initial data to be ready since the deferred registrations will probably need that data.
         && (!waitForPublicData || isPublicDataReady)
-        && (!waitForProtectedData || !isActiveRouteProtected || isProtectedDataReady)
+        && (!waitForProtectedData || activeRouteVisibility === "public" || isProtectedDataReady)
     );
 }

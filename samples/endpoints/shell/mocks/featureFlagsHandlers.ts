@@ -14,11 +14,15 @@ export function getFeatureFlagsHandlers(environmentVariables: EnvironmentVariabl
 
             return HttpResponse.json(featureFlags);
         }),
+
         http.post(`${environmentVariables.featureFlagsApiBaseUrl}shuffle`, async () => {
             const newFeatureFlags = {
                 featureA: Math.random() < 0.5,
                 featureB: true,
-                featureC: Math.random() < 0.5
+                featureC: Math.random() < 0.5,
+                // Not ideal but fine for now as now mocks are currently depending on these 2 feature flags.
+                otherA: false,
+                otherB: false
             };
 
             featureFlagsManager.setFeatureFlags(newFeatureFlags);
@@ -29,11 +33,15 @@ export function getFeatureFlagsHandlers(environmentVariables: EnvironmentVariabl
                 status: 200
             });
         }),
+
         http.post(`${environmentVariables.featureFlagsApiBaseUrl}deactivateFeatureB`, async () => {
             featureFlagsManager.setFeatureFlags({
                 featureA: true,
                 featureB: false,
-                featureC: true
+                featureC: true,
+                // Not ideal but fine for now as now mocks are currently depending on these 2 feature flags.
+                otherA: false,
+                otherB: false
             });
 
             return new HttpResponse(null, {

@@ -3,21 +3,7 @@ import type { ReactNode } from "react";
 import { AppRouterStateContext } from "../src/AppRouterContext.ts";
 import type { AppRouterState } from "../src/AppRouterReducer.ts";
 import { useCanRegisterDeferredRegistrations } from "../src/useCanRegisterDeferredRegistrations.ts";
-
-function createDefaultAppRouterState(): AppRouterState {
-    return {
-        areModulesReady: false,
-        areModulesRegistered: false,
-        isActiveRouteProtected: false,
-        isMswReady: false,
-        isProtectedDataReady: false,
-        isPublicDataReady: false,
-        isUnauthorized: false,
-        waitForMsw: false,
-        waitForProtectedData: false,
-        waitForPublicData: false
-    };
-}
+import { createDefaultAppRouterState } from "./utils.ts";
 
 function renderUseCanRegisterDeferredRegistrationsHook<TProps>(state: AppRouterState, additionalProps: RenderHookOptions<TProps> = {}) {
     return renderHook(() => useCanRegisterDeferredRegistrations(), {
@@ -61,7 +47,7 @@ test("when protected data is not ready but it's not required to wait for protect
     state.areModulesReady = false;
     state.isPublicDataReady = true;
     state.waitForProtectedData = false;
-    state.isActiveRouteProtected = true;
+    state.activeRouteVisibility = "protected";
     state.isProtectedDataReady = false;
 
     const { result } = renderUseCanRegisterDeferredRegistrationsHook(state);
@@ -74,7 +60,7 @@ test("when protected data is not ready but the route is public, return true", ()
     state.areModulesRegistered = true;
     state.areModulesReady = false;
     state.isPublicDataReady = true;
-    state.isActiveRouteProtected = false;
+    state.activeRouteVisibility = "public";
     state.isProtectedDataReady = false;
 
     const { result } = renderUseCanRegisterDeferredRegistrationsHook(state);
@@ -125,7 +111,7 @@ test("when it's required to wait for protected data and the protected data is no
     state.areModulesRegistered = true;
     state.areModulesReady = false;
     state.isPublicDataReady = true;
-    state.isActiveRouteProtected = true;
+    state.activeRouteVisibility = "protected";
     state.waitForProtectedData = true;
     state.isProtectedDataReady = false;
 

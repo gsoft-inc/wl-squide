@@ -1,5 +1,5 @@
 import { register as registerMyLocalModule } from "@getting-started/local-module";
-import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, registerRemoteModules, type RemoteDefinition } from "@squide/firefly";
+import { ConsoleLogger, FireflyRuntime, RuntimeContext, bootstrap, type RemoteDefinition } from "@squide/firefly";
 import { createRoot } from "react-dom/client";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
@@ -11,14 +11,14 @@ const Remotes: RemoteDefinition[] = [
 
 // Create the shell runtime.
 const runtime = new FireflyRuntime({
-    loggers: [new ConsoleLogger()]
+    loggers: [x => new ConsoleLogger(x)]
 });
 
-// Register the remote module.
-await registerRemoteModules(Remotes, runtime);
-
-// Register the local module.
-await registerLocalModules([registerHost, registerMyLocalModule], runtime);
+// Register the modules.
+await bootstrap(runtime, {
+    localModules: [registerHost, registerMyLocalModule],
+    remotes: Remotes
+});
 
 const root = createRoot(document.getElementById("root")!);
 

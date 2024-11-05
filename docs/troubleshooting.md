@@ -1,5 +1,5 @@
 ---
-order: 60
+order: 50
 icon: question
 ---
 
@@ -90,6 +90,10 @@ To faciliate the debugging of a Squide application bootstrapping flow, a lot of 
 - `[squide] Registered a new i18next instance with key "shell": {...}`
 - `[squide] The language has been changed to "fr-CA".`
 - `[squide] Detected "fr-CA" as user language.`
+
+### env-vars registration
+
+- `[squide] The following environment variables has been registered: {...}`
 
 ### Module federation logs
 

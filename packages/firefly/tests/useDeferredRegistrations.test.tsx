@@ -6,25 +6,7 @@ import { AppRouterDispatcherContext, AppRouterStateContext } from "../src/AppRou
 import { __clearAppReducerDispatchProxy, __setAppReducerDispatchProxyFactory, useAppRouterReducer, type AppRouterDispatch, type AppRouterState } from "../src/AppRouterReducer.ts";
 import { FireflyRuntime } from "../src/FireflyRuntime.tsx";
 import { useDeferredRegistrations, type DeferredRegistrationsErrorCallback } from "../src/useDeferredRegistrations.ts";
-
-function sleep(delay: number) {
-    return new Promise(resolve => setTimeout(resolve, delay));
-}
-
-function createDefaultAppRouterState(): AppRouterState {
-    return {
-        areModulesReady: false,
-        areModulesRegistered: false,
-        isActiveRouteProtected: false,
-        isMswReady: false,
-        isProtectedDataReady: false,
-        isPublicDataReady: false,
-        isUnauthorized: false,
-        waitForMsw: false,
-        waitForProtectedData: false,
-        waitForPublicData: false
-    };
-}
+import { createDefaultAppRouterState, sleep } from "./utils.ts";
 
 function renderUseAppReducerHook<TProps>(runtime: Runtime, additionalProps: RenderHookOptions<TProps> = {}) {
     return renderHook(() => useAppRouterReducer(true, true, true), {

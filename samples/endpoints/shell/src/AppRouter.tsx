@@ -1,6 +1,18 @@
-import { FeatureFlagsContext, SessionManagerContext, SubscriptionContext, TelemetryServiceContext, fetchJson, isApiError, type FeatureFlags, type Session, type Subscription, type TelemetryService } from "@endpoints/shared";
+import {
+    FeatureFlagsContext,
+    SessionManagerContext,
+    SubscriptionContext,
+    fetchJson,
+    isApiError,
+    type FeatureFlags,
+    type OgFeatureFlags,
+    type OtherFeatureFlags,
+    type Session,
+    type Subscription
+} from "@endpoints/shared";
 import { useEnvironmentVariables } from "@squide/env-vars";
 import { AppRouter as FireflyAppRouter, useDeferredRegistrations, useIsBootstrapping, useLogger, useProtectedDataQueries, usePublicDataQueries } from "@squide/firefly";
+import { setGlobalSpanAttributes } from "@squide/firefly-honeycomb";
 import { useChangeLanguage } from "@squide/i18next";
 import { useEffect, useMemo } from "react";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
@@ -8,24 +20,48 @@ import { Loading } from "./Loading.tsx";
 import { RootErrorBoundary } from "./RootErrorBoundary.tsx";
 import { useSessionManagerInstance } from "./useSessionManagerInstance.ts";
 
-interface BootstrappingRouteProps {
-    telemetryService: TelemetryService;
-}
-
-function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
+function BootstrappingRoute() {
     const logger = useLogger();
     const environmentVariables = useEnvironmentVariables();
 
-    const [featureFlags] = usePublicDataQueries([
+    const [ogFeatureFlags, otherFeatureFlags] = usePublicDataQueries([
         {
             queryKey: [`${environmentVariables.featureFlagsApiBaseUrl}getAll`],
             queryFn: async () => {
                 const data = await fetchJson(`${environmentVariables.featureFlagsApiBaseUrl}getAll`);
 
-                return data as FeatureFlags;
+                return data as OgFeatureFlags;
+            }
+        },
+        {
+            queryKey: [environmentVariables.otherFeatureFlagsApiUrl],
+            queryFn: async () => {
+                let data: OtherFeatureFlags = {
+                    otherA: false,
+                    otherB: false
+                };
+
+                try {
+                    data = (await fetchJson(environmentVariables.otherFeatureFlagsApiUrl)) as OtherFeatureFlags;
+                } catch (error: unknown) {
+                    if (isApiError(error)) {
+                        if (error.status !== 404) {
+                            throw error;
+                        }
+                    }
+                }
+
+                return data;
             }
         }
     ]);
+
+    const featureFlags = useMemo(() => {
+        return {
+            ...ogFeatureFlags,
+            ...otherFeatureFlags
+        } satisfies FeatureFlags;
+    }, [ogFeatureFlags, otherFeatureFlags]);
 
     useEffect(() => {
         if (featureFlags) {
@@ -66,6 +102,12 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
         if (session) {
             logger.debug("[shell] %cSession has been fetched%c:", "color: white; background-color: green;", "", session);
 
+            // Update telemetry global attributes.
+            setGlobalSpanAttributes({
+                "app.user_id": session.user.id,
+                "app.user_prefered_language": session.user.preferredLanguage
+            });
+
             // When the session has been retrieved, update the language to match the user
             // preferred language.
             changeLanguage(session.user.preferredLanguage);
@@ -93,9 +135,7 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
         <FeatureFlagsContext.Provider value={featureFlags}>
             <SessionManagerContext.Provider value={sessionManager}>
                 <SubscriptionContext.Provider value={subscription}>
-                    <TelemetryServiceContext.Provider value={telemetryService}>
-                        <Outlet />
-                    </TelemetryServiceContext.Provider>
+                    <Outlet />
                 </SubscriptionContext.Provider>
             </SessionManagerContext.Provider>
         </FeatureFlagsContext.Provider>
@@ -104,16 +144,10 @@ function BootstrappingRoute({ telemetryService }: BootstrappingRouteProps) {
 
 export interface AppRouterProps {
     waitForMsw: boolean;
-    telemetryService: TelemetryService;
 }
 
-export function AppRouter(props: AppRouterProps) {
+export function AppRouter({ waitForMsw }: AppRouterProps) {
     const logger = useLogger();
-
-    const {
-        waitForMsw,
-        telemetryService
-    } = props;
 
     return (
         <FireflyAppRouter waitForMsw={waitForMsw} waitForPublicData waitForProtectedData>
@@ -128,7 +162,7 @@ export function AppRouter(props: AppRouterProps) {
                                 errorElement: <RootErrorBoundary />,
                                 children: [
                                     {
-                                        element: <BootstrappingRoute telemetryService={telemetryService} />,
+                                        element: <BootstrappingRoute />,
                                         children: registeredRoutes
                                     }
                                 ]

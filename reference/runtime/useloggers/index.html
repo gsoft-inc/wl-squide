@@ -4,40 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.783462896344">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.784081215712">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.6.0">
 
     <!-- Primary Meta Tags -->
-    <title>Migrate to firefly v9</title>
-    <meta name="title" content="Migrate to firefly v9">
-    <meta name="description" content="This major version of @squide/firefly introduces TanStack Query as the official library for fetching the global data of a Squide's application and...">
+    <title>useLoggers</title>
+    <meta name="title" content="useLoggers">
+    <meta name="description" content="Retrieve a RuntimeLogger instance from the FireflyRuntime instance. The returned instance will log messages to the ">
 
     <!-- Canonical -->
-    <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/guides/migrate-to-firefly-v9/">
+    <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/reference/runtime/useloggers/">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/guides/migrate-to-firefly-v9/">
-    <meta property="og:title" content="Migrate to firefly v9">
-    <meta property="og:description" content="This major version of @squide/firefly introduces TanStack Query as the official library for fetching the global data of a Squide's application and...">
+    <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/reference/runtime/useloggers/">
+    <meta property="og:title" content="useLoggers">
+    <meta property="og:description" content="Retrieve a RuntimeLogger instance from the FireflyRuntime instance. The returned instance will log messages to the ">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/guides/migrate-to-firefly-v9/">
-    <meta property="twitter:title" content="Migrate to firefly v9">
-    <meta property="twitter:description" content="This major version of @squide/firefly introduces TanStack Query as the official library for fetching the global data of a Squide's application and...">
+    <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/reference/runtime/useloggers/">
+    <meta property="twitter:title" content="useLoggers">
+    <meta property="twitter:description" content="Retrieve a RuntimeLogger instance from the FireflyRuntime instance. The returned instance will log messages to the ">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.6.0.783462896344" rel="stylesheet">
+    <link href="../../../static/favicon.png" rel="icon">
+    <link href="../../../resources/css/retype.css?v=3.6.0.784081215712" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.6.0.783462896344" data-turbo-eval="false" defer></script>
-    <script data-cfasync="false" src="../../resources/js/retype.js?v=3.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.6.0.783462896344" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.6.0.783462896344" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.6.0.784081215712" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.6.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.6.0.784081215712" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.6.0.784081215712" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -60,10 +60,10 @@
                                 <path d="M10.6763 23.0822C10.4303 23.328 10.0967 23.4661 9.74885 23.4661C9.40103 23.4661 9.06744 23.328 8.82135 23.0822L1.38384 15.6447C1.13806 15.3986 1 15.065 1 14.7172C1 14.3694 1.13806 14.0358 1.38384 13.7897L8.82135 6.35222C9.0703 6.1205 9.39939 5.99432 9.73945 6.0002C10.0795 6.00607 10.404 6.14354 10.6448 6.38372C10.885 6.62452 11.0225 6.94906 11.0284 7.28912C11.0342 7.62917 10.9081 7.95826 10.6763 8.20722L4.16635 14.7172L10.6763 21.2272C10.9221 21.4733 11.0602 21.8069 11.0602 22.1547C11.0602 22.5025 10.9221 22.8361 10.6763 23.0822Z" />
                             </svg>
                         </a>
-                        <a id="docs-site-logo" href="../../" class="flex items-center leading-snug text-2xl">
+                        <a id="docs-site-logo" href="../../../" class="flex items-center leading-snug text-2xl">
                             <span class="w-10 mr-2 grow-0 shrink-0 overflow-hidden">
-                                <img class="max-h-10 dark:hidden md:inline-block" src="../../static/logo.png">
-                                <img class="max-h-10 hidden dark:inline-block" src="../../static/logo.png">
+                                <img class="max-h-10 dark:hidden md:inline-block" src="../../../static/logo.png">
+                                <img class="max-h-10 hidden dark:inline-block" src="../../../static/logo.png">
                             </span>
                             <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">Squide</span>
                         </a>
@@ -77,7 +77,7 @@
                     <nav class="hidden md:flex">
                         <ul class="flex flex-col mb-4 md:pl-16 md:mb-0 md:flex-row md:items-center">
                             <li class="mr-6">
-                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../getting-started/">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../../getting-started/">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="mb-px mr-1" width="18" height="18" viewBox="0 0 24 24" role="presentation">
                                         <g fill="currentColor">
                                             <path d="M11.03 2.59a1.501 1.501 0 0 1 1.94 0l7.5 6.363a1.5 1.5 0 0 1 .53 1.144V19.5a1.5 1.5 0 0 1-1.5 1.5h-5.75a.75.75 0 0 1-.75-.75V14h-2v6.25a.75.75 0 0 1-.75.75H4.5A1.5 1.5 0 0 1 3 19.5v-9.403c0-.44.194-.859.53-1.144ZM12 3.734l-7.5 6.363V19.5h5v-6.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v6.25h5v-9.403Z"/>
@@ -205,7 +205,7 @@
                             <nav>
                                 <ul class="flex flex-wrap justify-center items-center">
                                     <li class="mr-6">
-                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../getting-started/">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../../getting-started/">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mb-px mr-1" width="18" height="18" viewBox="0 0 24 24" role="presentation">
                                                 <g fill="currentColor">
                                                     <path d="M11.03 2.59a1.501 1.501 0 0 1 1.94 0l7.5 6.363a1.5 1.5 0 0 1 .53 1.144V19.5a1.5 1.5 0 0 1-1.5 1.5h-5.75a.75.75 0 0 1-.75-.75V14h-2v6.25a.75.75 0 0 1-.75.75H4.5A1.5 1.5 0 0 1 3 19.5v-9.403c0-.44.194-.859.53-1.144ZM12 3.734l-7.5 6.363V19.5h5v-6.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v6.25h5v-9.403Z"/>
@@ -283,471 +283,75 @@
                                 <nav class="breadcrumb" aria-label="Breadcrumb">
                                     <ol role="list">
                                         <li class="pr-4">
-                                            <a href="../../guides/" class="pr-4">
-                                                Guides
+                                            <a href="../../../reference/" class="pr-4">
+                                                Reference
                                             </a>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
                                                 <path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"/>
                                             </svg>
                                         </li>
                                         <li class="pr-4">
-                                            <a href="../../guides/migrate-to-firefly-v9/" class="pr-4">
-                                                Migrate to firefly v​9
+                                            <span class="pr-4">
+                                                Runtime
+                                            </span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"/>
+                                            </svg>
+                                        </li>
+                                        <li class="pr-4">
+                                            <a href="../../../reference/runtime/useloggers/" class="pr-4">
+                                                use​Loggers
                                             </a>
                                         </li>
                                     </ol>
                                 </nav>
                 
                                 <!-- Page content  -->
-<doc-anchor-target id="migrate-to-firefly-v9" class="break-words">
+<doc-anchor-target id="useloggers" class="break-words">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#migrate-to-firefly-v9">#</doc-anchor-trigger>
-        <span>Migrate to firefly v9</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#useloggers">#</doc-anchor-trigger>
+        <span>useLoggers</span>
     </h1>
 </doc-anchor-target>
-<p>This major version of <code v-pre>@squide/firefly</code> introduces <a href="https://tanstack.com/query/latest" class="outbound" target="_blank">TanStack Query</a> as the official library for fetching the global data of a Squide&#x27;s application and features a complete rewrite of the <a href="../../reference/routing/approuter/">AppRouter</a> component, which now uses a state machine to manage the application&#x27;s bootstrapping flow.</p>
-<p>Prior to <code v-pre>v9</code>, Squide applications couldn&#x27;t use TanStack Query to fetch global data, making it <strong>challenging</strong> for Workleap&#x27;s applications to <strong>keep</strong> their <strong>global data</strong> in <strong>sync</strong> with the <strong>server state</strong>. With <code v-pre>v9</code>, applications can now leverage <a href="../fetch-global-data/">custom wrappers</a> of the TanStack Query&#x27;s <a href="https://tanstack.com/query/latest/docs/framework/react/reference/useQueries" class="outbound" target="_blank">useQueries</a> hook to fetch and keep their global data up-to-date with the server state. Additionally, the new <a href="../../reference/registration/usedeferredregistrations/#register-or-update-deferred-registrations">deferred registrations update</a> feature allows applications to even <strong>keep</strong> their conditional <strong>navigation items in sync</strong> with the <strong>server state</strong>.</p>
-<p>Finally, with <code v-pre>v9</code>, Squide&#x27;s philosophy has evolved. We used to describe Squide as a shell for <strong>federated</strong> applications. Now, we refer to Squide as a shell for <strong>modular</strong> applications. After playing with Squide&#x27;s <a href="../../reference/registration/registerlocalmodules/">local module</a> feature for a while, we discovered that Squide offers <a href="../../getting-started/#why-squide">significant value</a> even for <strong>non-federated applications</strong>, which triggered this shift in philosophy.</p>
-<doc-anchor-target id="breaking-changes">
+<p>Retrieve a <code v-pre>RuntimeLogger</code> instance from the <code v-pre>FireflyRuntime</code> instance. The returned instance will log messages to the <em>specified</em> <a href="../../logging/logger/">Logger</a> instances.</p>
+<doc-anchor-target id="reference">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#breaking-changes">#</doc-anchor-trigger>
-        <span>Breaking changes</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#reference">#</doc-anchor-trigger>
+        <span>Reference</span>
     </h2>
 </doc-anchor-target>
-<doc-anchor-target id="removed">
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-typescript"><code v-pre class="language-typescript">const logger = useLoggers(names)</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="parameters">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#removed">#</doc-anchor-trigger>
-        <span>Removed</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#parameters">#</doc-anchor-trigger>
+        <span>Parameters</span>
     </h3>
 </doc-anchor-target>
 <ul>
-<li>The <code v-pre>useAreModulesRegistered</code> hook has been removed, use the <a href="../../reference/routing/useisbootstrapping/">useIsBootstrapping</a> hook instead.</li>
-<li>The <code v-pre>useAreModulesReady</code> hook has been removed, use the <a href="../../reference/routing/useisbootstrapping/">useIsBootstrapping</a> hook instead.</li>
-<li>The <code v-pre>useIsMswStarted</code> hook has been removed, use the <a href="../../reference/routing/useisbootstrapping/">useIsBootstrapping</a> hook instead.</li>
-<li>The <code v-pre>completeModuleRegistrations</code> function as been removed use the <a href="../../reference/registration/usedeferredregistrations/">useDeferredRegistrations</a> hook instead.</li>
-<li>The <code v-pre>completeLocalModulesRegistrations</code> function has been removed use the <a href="../../reference/registration/usedeferredregistrations/">useDeferredRegistrations</a> hook instead.</li>
-<li>The <code v-pre>completeRemoteModuleRegistrations</code> function has been removed use the <a href="../../reference/registration/usedeferredregistrations/">useDeferredRegistrations</a> hook instead.</li>
-<li>The <code v-pre>useSession</code> hook has been removed, define your own React context instead.</li>
-<li>The <code v-pre>useIsAuthenticated</code> hook has been removed, define your own React context instead.</li>
-<li>The <code v-pre>sessionAccessor</code> option has been removed from the <a href="../../reference/runtime/runtime-class/">FireflyRuntime</a> options, define your own React context instead.</li>
-<li>The <code v-pre>ManagedRoutes</code>placeholder has been removed, use <a href="../../reference/routing/publicroutes/">PublicRoutes</a> and <a href="../../reference/routing/protectedroutes/">ProtectedRoutes</a> instead.</li>
+<li><code v-pre>names</code>: The name of the logger instances to log messages to.</li>
 </ul>
-<doc-anchor-target id="renamed">
+<doc-anchor-target id="returns">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#renamed">#</doc-anchor-trigger>
-        <span>Renamed</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#returns">#</doc-anchor-trigger>
+        <span>Returns</span>
     </h3>
 </doc-anchor-target>
-<ul>
-<li>The <code v-pre>setMswAsStarted</code> function has been renamed to <a href="../../reference/msw/setmswasready/">setMswIsReady</a>.</li>
-<li>A route definition <code v-pre>$name</code> option has been renamed to <a href="../../reference/runtime/runtime-class/#register-a-route-with-an-id">$id</a>.</li>
-<li>The <a href="../../reference/runtime/runtime-class/#register-routes">registerRoute</a> <code v-pre>parentName</code> option has been renamed to <a href="../../reference/runtime/runtime-class/#register-nested-routes">parentId</a>.</li>
-</ul>
-<doc-anchor-target id="others">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#others">#</doc-anchor-trigger>
-        <span>Others</span>
-    </h3>
-</doc-anchor-target>
-<ul>
-<li>The <code v-pre>@squide/firefly</code> package now takes a peerDependency on <code v-pre>@tanstack/react-query</code>.</li>
-<li>The <code v-pre>@squide/firefly</code> package doesn&#x27;t takes a peerDependency on <code v-pre>react-error-boundary</code> anymore.</li>
-</ul>
-<doc-anchor-target id="removed-support-for-deferred-routes">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#removed-support-for-deferred-routes">#</doc-anchor-trigger>
-        <span>Removed support for deferred routes</span>
-    </h3>
-</doc-anchor-target>
-<p><a href="../../reference/registration/registerlocalmodules/#defer-the-registration-of-navigation-items">Deferred registration</a> functions no longer support route registration; they are now <strong>exclusively</strong> used for <strong>registering navigation items</strong>. Since deferred registration functions can now be re-executed whenever the global data changes, registering routes in deferred registration functions no longer makes sense as updating the routes registry after the application has bootstrapped could lead to issues.</p>
-<p>This change is a significant improvement for Squide&#x27;s internals, allowing us to eliminate quirks like:</p>
-<ul>
-<li><p>Treating unknown routes as <code v-pre>protected</code>: When a user initially requested a deferred route, Squide couldn&#x27;t determine if the route was <code v-pre>public</code> or <code v-pre>protected</code> because it wasn&#x27;t registered yet. As a result, for that initial request, the route was considered <code v-pre>protected</code>, even if the deferred registration later registered it as <code v-pre>public</code>.</p>
-</li>
-<li><p>Mandatory wildcard <code v-pre>*</code> route registration: Previously, Squide&#x27;s bootstrapping would fail if the application didn&#x27;t include a wildcard route.</p>
-</li>
-</ul>
-<p>Before:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-tsx" data-line="4-7"><code v-pre class="language-tsx">export const register: ModuleRegisterFunction&lt;FireflyRuntime, unknown, DeferredRegistrationData&gt; = runtime =&gt; {
-    return ({ featureFlags }) =&gt; {
-        if (featureFlags?.featureB) {
-            runtime.registerRoute({
-                path: &quot;/page&quot;,
-                element: &lt;Page /&gt;
-            });
-
-            runtime.registerNavigationItem({
-                $id: &quot;page&quot;,
-                $label: &quot;Page&quot;,
-                to: &quot;/page&quot;
-            });
-        }
-    };
-}</code></pre>
-</doc-codeblock></div>
-<p>Now:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-tsx" data-line="2-5"><code v-pre class="language-tsx">export const register: ModuleRegisterFunction&lt;FireflyRuntime, unknown, DeferredRegistrationData&gt; = runtime =&gt; {
-    runtime.registerRoute({
-        path: &quot;/page&quot;,
-        element: &lt;Page /&gt;
-    });
-
-    return ({ featureFlags }) =&gt; {
-        if (featureFlags?.featureB) {
-            runtime.registerNavigationItem({
-                $id: &quot;page&quot;,
-                $label: &quot;Page&quot;,
-                to: &quot;/page&quot;
-            });
-        }
-    };
-}</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="conditional-routes">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#conditional-routes">#</doc-anchor-trigger>
-        <span>Conditional routes</span>
-    </h4>
-</doc-anchor-target>
-<p>To handle direct access to a conditional route, each conditional route&#x27;s endpoint should return a <code v-pre>403</code> status code if the user is not authorized to view the route. Those <code v-pre>403</code> errors should then be handled by the nearest error boundary.</p>
-<doc-anchor-target id="plugins-constructors-now-requires-a-runtime-instance">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#plugins-constructors-now-requires-a-runtime-instance">#</doc-anchor-trigger>
-        <span>Plugin&#x27;s constructors now requires a runtime instance</span>
-    </h3>
-</doc-anchor-target>
-<p>Prior to this release, plugin instances received the current runtime instance through a <code v-pre>_setRuntime</code> function. This approach caused issues because some plugins required a reference to the runtime at instantiation. To address this, plugins now receive the <strong>runtime instance</strong> directly as a <strong>constructor</strong> argument.</p>
-<p>Before:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-tsx" data-line="8-10"><code v-pre class="language-tsx">export class MyPlugin extends Plugin {
-    readonly #runtime: Runtime;
-
-    constructor() {
-        super(MyPlugin.name);
-    }
-
-    _setRuntime(runtime: Runtime) {
-        this.#runtime = runtime;
-    }
-}</code></pre>
-</doc-codeblock></div>
-<p>Now:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-tsx" data-line="2"><code v-pre class="language-tsx">export class MyPlugin extends Plugin {
-    constructor(runtime: Runtime) {
-        super(MyPlugin.name, runtime);
-    }
-}</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="plugins-now-registers-with-a-factory-function">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#plugins-now-registers-with-a-factory-function">#</doc-anchor-trigger>
-        <span>Plugins now registers with a factory function</span>
-    </h3>
-</doc-anchor-target>
-<p>Prior to this release, the <a href="../../reference/runtime/runtime-class/">FireflyRuntime</a> accepted plugin instances as options. Now, <code v-pre>FireflyRuntime</code> accepts <strong>factory functions</strong> instead of plugin instances. This change allows plugins to receive the runtime instance as a constructor argument.</p>
-<p>Before:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-tsx"><code v-pre class="language-tsx">const runtime = new FireflyRuntime({
-    plugins: [new MyPlugin()]
-});</code></pre>
-</doc-codeblock></div>
-<p>Now:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-tsx"><code v-pre class="language-tsx">const runtime = new FireflyRuntime({
-    plugins: [x =&gt; new MyPlugin(x)]
-});</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="rewrite-of-the-approuter-component">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#rewrite-of-the-approuter-component">#</doc-anchor-trigger>
-        <span>Rewrite of the <code v-pre>AppRouter</code> component</span>
-    </h3>
-</doc-anchor-target>
-<p>This release features a full rewrite of the <a href="../../reference/routing/approuter/">AppRouter</a> component. The <code v-pre>AppRouter</code> component used to handle many concerns like global data fetching, deferred registrations, error handling and a loading state. Those concerns have been delegated to the consumer code, supported by the new <a href="../../reference/routing/useisbootstrapping/">useIsBootstrapping</a>, <a href="../../reference/tanstack-query/usepublicdataqueries/">usePublicDataQueries</a>, <a href="../../reference/tanstack-query/useprotecteddataqueries/">useProtectedDataQueries</a> and <a href="../../reference/registration/usedeferredregistrations/">useDeferredRegistrations</a> hooks.</p>
-<p>Before:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-tsx"><code v-pre class="language-tsx">export function App() {
-    const [featureFlags, setFeatureFlags] = useState&lt;FeatureFlags&gt;();
-    const [subscription, setSubscription] = useState&lt;FeatureFlags&gt;();
-
-    const handleLoadPublicData = useCallback((signal: AbortSignal) =&gt; {
-        return fetchPublicData(setFeatureFlags, signal);
-    }, []);
-
-    const handleLoadProtectedData = useCallback((signal: AbortController) =&gt; {
-        return fetchProtectedData(setSubscription, signal);
-    }, []);
-
-    const handleCompleteRegistrations = useCallback(() =&gt; {
-        return completeModuleRegistrations(runtime, {
-            featureFlags,
-            subscription
-        });
-    }, [runtime, featureFlags, subscription]);
-
-    return (
-        &lt;AppRouter
-            fallbackElement={&lt;div&gt;Loading...&lt;/div&gt;}
-            errorElement={&lt;RootErrorBoundary /&gt;}
-            waitForMsw
-            onLoadPublicData={handleLoadPublicData}
-            onLoadProtectedData={handleLoadProtectedData}
-            isPublicDataLoaded={!!featureFlags}
-            isPublicDataLoaded={!!subscription}
-            onCompleteRegistrations={handleCompleteRegistrations}
-        &gt;
-            {(routes, providerProps) =&gt; (
-                &lt;RouterProvider router={createBrowserRouter(routes)} {...providerProps} /&gt;
-            )}
-        &lt;/AppRouter&gt;
-    );
-}</code></pre>
-</doc-codeblock></div>
-<p>Now:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-tsx"><code v-pre class="language-tsx">function BootstrappingRoute() {
-    const [featureFlags] = usePublicDataQueries([getFeatureFlagsQuery]);
-    const [subscription] = useProtectedDataQueries([getSubscriptionQuery]);
-
-    const data: DeferredRegistrationData = useMemo(() =&gt; ({ 
-        featureFlags,
-        subscription
-    }), [featureFlags, subscription]);
-
-    useDeferredRegistrations(data);
-
-    if (useIsBootstrapping()) {
-        return &lt;div&gt;Loading...&lt;/div&gt;;
-    }
-
-    return &lt;Outlet /&gt;;
-}
-
-export function App() {
-    return (
-        &lt;AppRouter waitForMsw waitForPublicData&gt;
-            {({ rootRoute, registeredRoutes, routerProviderProps }) =&gt; {
-                return (
-                    &lt;RouterProvider
-                        router={createBrowserRouter([
-                            {
-                                element: rootRoute,
-                                errorElement: &lt;RootErrorBoundary /&gt;,
-                                children: [
-                                    {
-                                        element: &lt;BootstrappingRoute /&gt;,
-                                        children: registeredRoutes
-                                    }
-                                ]
-                            }
-                        ])}
-                        {...routerProviderProps}
-                    /&gt;
-                );
-            }}
-        &lt;/AppRouter&gt;
-    );
-}</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="new-hooks-and-functions">
+<p>A <code v-pre>RuntimeLogger</code> instance.</p>
+<doc-anchor-target id="usage">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#new-hooks-and-functions">#</doc-anchor-trigger>
-        <span>New hooks and functions</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#usage">#</doc-anchor-trigger>
+        <span>Usage</span>
     </h2>
 </doc-anchor-target>
-<ul>
-<li>A new <a href="../../reference/routing/useisbootstrapping/">useIsBoostrapping</a> hook is now available.</li>
-<li>A new <a href="../../reference/registration/usedeferredregistrations/">useDeferredRegistrations</a> hook is now available.</li>
-<li>A new <a href="../../reference/tanstack-query/usepublicdataqueries/">usePublicDataQueries</a> hook is now available.</li>
-<li>A new <a href="../../reference/tanstack-query/useprotecteddataqueries/">useProtectedDataQueries</a> hook is now available.</li>
-<li>A new <a href="../../reference/tanstack-query/isglobaldataquerieserror/">isGlobalDataQueriesError</a> function is now available.</li>
-<li>A new <a href="../../reference/runtime/runtime-class/#register-a-public-route">registerPublicRoute</a> function is now available.</li>
-</ul>
-<doc-anchor-target id="improvements">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#improvements">#</doc-anchor-trigger>
-        <span>Improvements</span>
-    </h2>
-</doc-anchor-target>
-<ul>
-<li>Deferred registration functions now always receive a <code v-pre>data</code> argument.</li>
-<li>Deferred registration functions now receives a new <a href="../../reference/registration/registerlocalmodules/#use-the-deferred-registration-operation-argument">operations</a> argument.</li>
-<li>Navigation items now include a <a href="../../reference/runtime/runtime-class/#conditionally-render-a-navigation-item">$canRender</a> option, enabling modules to control whether a navigation item should be rendered.</li>
-</ul>
-<doc-anchor-target id="new-id-option-for-navigation-items">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#new-id-option-for-navigation-items">#</doc-anchor-trigger>
-        <span>New <code v-pre>$id</code> option for navigation items</span>
-    </h3>
-</doc-anchor-target>
-<p>Navigation items now supports a new <code v-pre>$id</code> option. Previously, most navigation item React elements used a <code v-pre>key</code> property generated by concatenating the item&#x27;s <code v-pre>level</code> and <code v-pre>index</code>, which goes against React&#x27;s best practices:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-tsx"><code v-pre class="language-tsx">&lt;li key={`${level}-${index}`}&gt;</code></pre>
-</doc-codeblock></div>
-<p>It wasn&#x27;t that much of a big deal since navigation items never changed once the application was bootstrapped. Now, with the deferred registration functions re-executing when the global data changes, the registered navigation items can be updated post-bootstrapping. The new <code v-pre>$id</code> option allows the navigation item to be configured with a unique key at registration, preventing UI shifts.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-tsx" data-line="2"><code v-pre class="language-tsx">runtime.registerNavigationItem({
-    $id: &quot;page-1&quot;,
-    $label: &quot;Page 1&quot;,
-    to: &quot;/page-1&quot;
-});</code></pre>
-</doc-codeblock></div>
-<p>The configured <code v-pre>$id</code> option is then passed as a <code v-pre>key</code> argument to the <a href="../../reference/routing/userenderednavigationitems/">useRenderedNavigationItems</a> rendering functions:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-tsx" data-line="1,5,13,15"><code v-pre class="language-tsx">const renderItem: RenderItemFunction = (item, key) =&gt; {
-    const { label, linkProps, additionalProps } = item;
+<pre class="language-typescript"><code v-pre class="language-typescript">import { useLoggers, ConsoleLogger } from &quot;@squide/firefly&quot;;
 
-    return (
-        &lt;li key={key}&gt;
-            &lt;Link {...linkProps} {...additionalProps}&gt;
-                {label}
-            &lt;/Link&gt;
-        &lt;/li&gt;
-    );
-};
+const logger = useLoggers([ConsoleLogger.name]);
 
-const renderSection: RenderSectionFunction = (elements, key) =&gt; {
-    return (
-        &lt;ul key={key}&gt;
-            {elements}
-        &lt;/ul&gt;
-    );
-};
-
-const navigationElements = useRenderedNavigationItems(navigationItems, renderItem, renderSection);</code></pre>
+logger.debug(&quot;Hello&quot;, { world: &quot;!&quot; });</code></pre>
 </doc-codeblock></div>
-<blockquote>
-<p>If no <code v-pre>$id</code> is configured for a navigation item, the <code v-pre>key</code> argument will be a concatenation of the <code v-pre>level</code> and <code v-pre>index</code> argument.</p>
-</blockquote>
-<doc-anchor-target id="migrate-an-host-application">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#migrate-an-host-application">#</doc-anchor-trigger>
-        <span>Migrate an host application</span>
-    </h2>
-</doc-anchor-target>
-<div class="flex mb-6">
-    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
-    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
-        <div class="flex items-center ml-4 h-7">
-            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
-                <g fill="currentColor"><g>
-                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
-                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                </g></g>
-            </svg>
-        </div>
-        <div class="pr-5 ml-3 w-full">
-<p>A migration example from v8 to v9 is available for the <a href="https://github.com/gsoft-inc/wl-squide-monorepo-template/commit/87489f0541cc959f437133f2afd8c0a9db160efe" class="outbound" target="_blank">wl-squide-monorepo-template</a>.</p>
-        </div>
-    </div>
-</div>
-<p>The <code v-pre>v9</code> release introduces several breaking changes affecting the host application code. Follow these steps to migrate an existing host application:</p>
-<ol>
-<li>Add a dependency to <code v-pre>@tanstack/react-query</code>. <a href="https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file" class="outbound" target="_blank">View example</a></li>
-<li>Transition to the new <code v-pre>AppRouter</code> component. <doc-anchor-trigger to="#rewrite-of-the-approuter-component">View example</doc-anchor-trigger>
-<ul>
-<li><code v-pre>onLoadPublicData</code> + <code v-pre>isPublicDataLoaded</code> becomes <a href="../../reference/tanstack-query/usepublicdataqueries/">usePublicDataQueries</a></li>
-<li><code v-pre>onLoadProtectedData</code> + <code v-pre>isProtectedDataLoaded</code> becomes <a href="../../reference/tanstack-query/useprotecteddataqueries/">useProtectedDataQueries</a></li>
-<li><code v-pre>onCompleteRegistrations</code> becomes <a href="../../reference/registration/usedeferredregistrations/">useDeferredRegistrations</a></li>
-<li><code v-pre>fallbackElement</code> becomes <a href="../../reference/routing/useisbootstrapping/">useIsBootstrapping</a></li>
-<li><code v-pre>errorElement</code> is removed and somewhat replaced by a <doc-anchor-trigger to="#root-error-boundary">root error boundary</doc-anchor-trigger></li>
-</ul>
-</li>
-<li>Create a <code v-pre>TanStackSessionManager</code> class and the <code v-pre>SessionManagerContext</code>. Replace the session&#x27;s deprecated hooks by creating the customs <code v-pre>useSession</code> and <code v-pre>useIsAuthenticated</code> hooks. <a href="../add-authentication/#create-a-session-manager">View example</a></li>
-<li>Remove the <code v-pre>sessionAccessor</code> option from the <code v-pre>FireflyRuntime</code> instance. Update the <code v-pre>BootstrappingRoute</code> component to create a <code v-pre>TanStackSessionManager</code> instance and share it down the component tree using a <code v-pre>SessionManagedContext</code> provider. <a href="../add-authentication/#fetch-the-session">View example</a></li>
-<li>Add or update the <code v-pre>AuthenticationBoundary</code> component to use the new <code v-pre>useIsAuthenticated</code> hook. Global data fetch request shouldn&#x27;t be throwing 401 error anymore when the user is not authenticated. <a href="../add-authentication/#add-an-authentication-boundary">View example</a></li>
-<li>Update the <code v-pre>AuthenticatedLayout</code> component to use the session manager instance to clear the session. Retrieve the session manager instance from the context defined in the <code v-pre>BootstrappingRoute</code> component using the <code v-pre>useSessionManager</code> hook. <a href="../add-authentication/#define-an-authenticated-layout">View example</a></li>
-<li>Update the <code v-pre>AuthenticatedLayout</code> component to use the new <code v-pre>key</code> argument. <doc-anchor-trigger to="#new-id-option-for-navigation-items">View example</doc-anchor-trigger></li>
-<li>Replace the <code v-pre>ManagedRoutes</code> placeholder with the new <a href="../../reference/routing/publicroutes/">PublicRoutes</a> and <a href="../../reference/routing/protectedroutes/">ProtectedRoutes</a> placeholders. <a href="../../getting-started/create-host/#homepage">View example</a></li>
-<li>Convert all deferred routes into static routes. <doc-anchor-trigger to="#removed-support-for-deferred-routes">View example</doc-anchor-trigger></li>
-<li>Add an <code v-pre>$id</code> option to the navigation item registrations. <doc-anchor-trigger to="#new-id-option-for-navigation-items">View example</doc-anchor-trigger></li>
-</ol>
-<doc-anchor-target id="root-error-boundary">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#root-error-boundary">#</doc-anchor-trigger>
-        <span>Root error boundary</span>
-    </h3>
-</doc-anchor-target>
-<p>When transitioning to the new <code v-pre>AppRouter</code> component, make sure to nest the <code v-pre>RootErrorBoundary</code> component within the <code v-pre>AppRouter</code> component&#x27;s render function.</p>
-<p>Before:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-tsx" data-line="6-7"><code v-pre class="language-tsx">export const registerHost: ModuleRegisterFunction&lt;FireflyRuntime&gt; = runtime =&gt; {
-    runtime.registerRoute({
-        element: &lt;RootLayout /&gt;,
-        children: [
-            {
-                $id: &quot;root-error-boundary&quot;,
-                errorElement: &lt;RootErrorBoundary /&gt;,
-                children: [
-                    ManagedRoutes
-                ]
-            }
-        ]
-    });
-});</code></pre>
-</doc-codeblock></div>
-<p>Now:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-tsx" data-line="10"><code v-pre class="language-tsx">export function App() {
-    return (
-        &lt;AppRouter waitForMsw&gt;
-            {({ rootRoute, registeredRoutes, routerProviderProps }) =&gt; {
-                return (
-                    &lt;RouterProvider
-                        router={createBrowserRouter([
-                            {
-                                element: rootRoute,
-                                errorElement: &lt;RootErrorBoundary /&gt;,
-                                children: registeredRoutes
-                            }
-                        ])}
-                        {...routerProviderProps}
-                    /&gt;
-                );
-            }}
-        &lt;/AppRouter&gt;
-    );
-}</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="migrate-a-module">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#migrate-a-module">#</doc-anchor-trigger>
-        <span>Migrate a module</span>
-    </h2>
-</doc-anchor-target>
-<div class="flex mb-6">
-    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
-    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
-        <div class="flex items-center ml-4 h-7">
-            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
-                <g fill="currentColor"><g>
-                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
-                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                </g></g>
-            </svg>
-        </div>
-        <div class="pr-5 ml-3 w-full">
-<p>A migration example from v8 to v9 is available for the <a href="https://github.com/gsoft-inc/wl-squide-monorepo-template/commit/87489f0541cc959f437133f2afd8c0a9db160efe" class="outbound" target="_blank">wl-squide-monorepo-template</a>.</p>
-        </div>
-    </div>
-</div>
-<p>The changes in <code v-pre>v9</code> have minimal impact on module code. To migrate an existing module, follow these steps:</p>
-<ol>
-<li>Convert all deferred routes into static routes. <doc-anchor-trigger to="#removed-support-for-deferred-routes">View example</doc-anchor-trigger></li>
-<li>Add a <code v-pre>$id</code> option to the navigation item registrations. <doc-anchor-trigger to="#new-id-option-for-navigation-items">View example</doc-anchor-trigger></li>
-</ol>
-<doc-anchor-target id="isolated-development">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#isolated-development">#</doc-anchor-trigger>
-        <span>Isolated development</span>
-    </h3>
-</doc-anchor-target>
-<p>If your module is set up for <a href="../develop-a-module-in-isolation/">isolated development</a>, ensure that you also apply the <doc-anchor-trigger to="#migrate-an-host-application">host application migration steps</doc-anchor-trigger> to your isolated setup.</p>
 
                                 
                                 <!-- Required only on API pages -->
@@ -755,7 +359,7 @@ const navigationElements = useRenderedNavigationItems(navigationItems, renderIte
                             </div>
                             <footer class="clear-both">
                                 <div class="flex flex-wrap items-center justify-between mt-14">
-                                    <a class="my-2.5 inline-flex items-center text-sm whitespace-nowrap text-blue-500 dark:text-blue-400 hover:text-blue-700 hover:underline" href="https://github.com/gsoft-inc/wl-squide/blob/main/docs/guides/migrate-to-firefly-v9.md" target="_blank" rel="noopener">
+                                    <a class="my-2.5 inline-flex items-center text-sm whitespace-nowrap text-blue-500 dark:text-blue-400 hover:text-blue-700 hover:underline" href="https://github.com/gsoft-inc/wl-squide/blob/main/docs/reference/runtime/useLoggers.md" target="_blank" rel="noopener">
                                         <svg class="mr-1.5" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M20 12c-.55 0-1 .45-1 1v7c0 .55-.45 1-1 1H4c-.55 0-1-.45-1-1V6c0-.55.45-1 1-1h7c.55 0 1-.45 1-1s-.45-1-1-1H4C2.35 3 1 4.35 1 6v14c0 1.65 1.35 3 3 3h14c1.65 0 3-1.35 3-3v-7c0-.55-.45-1-1-1z" /><path d="M22.21 1.79c-1.18-1.18-3.24-1.18-4.41 0l-9.5 9.5c-.13.13-.22.29-.26.46l-1 4c-.08.34.01.7.26.95.18.2.44.3.7.3.08 0 .16-.01.24-.03l4-1c.18-.04.34-.13.46-.26l9.5-9.5c1.22-1.22 1.22-3.2.01-4.42zm-1.42 3l-9.3 9.3-2.11.53.53-2.11 9.3-9.3c.42-.42 1.16-.42 1.59 0 .43.43.43 1.15-.01 1.58z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                         <span>Edit this page</span>
                                     </a>
@@ -763,20 +367,20 @@ const navigationElements = useRenderedNavigationItems(navigationItems, renderIte
                             
                                 <nav class="flex mt-14">
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../guides/implement-a-custom-logger/">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../reference/runtime/uselogger/">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                             <span>
                                                 <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
-                                                <span class="block mt-1">Implement a custom logger</span>
+                                                <span class="block mt-1">use​Logger</span>
                                             </span>
                                         </a>
                                     </div>
                             
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../reference/">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../../reference/runtime/useplugin/">
                                             <span>
                                                 <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                                                <span class="block mt-1">Reference</span>
+                                                <span class="block mt-1">use​Plugin</span>
                                             </span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                         </a>
@@ -790,7 +394,7 @@ const navigationElements = useRenderedNavigationItems(navigationItems, renderIte
                                 <div>
                                     <ul class="flex flex-wrap items-center text-sm">
                                         <li>
-                                            <a class="inline-flex items-center mr-4 py-2 text-sm whitespace-nowrap transition-colors duration-200 ease-linear text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 md:mb-0" href="../../about/">
+                                            <a class="inline-flex items-center mr-4 py-2 text-sm whitespace-nowrap transition-colors duration-200 ease-linear text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 md:mb-0" href="../../../about/">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="mb-px mr-1" width="18" height="18" viewBox="0 0 24 24" role="presentation">
                                                     <g fill="currentColor">
                                                         <path d="M10.97 8.265a1.45 1.45 0 0 0-.487.57.75.75 0 0 1-1.341-.67c.2-.402.513-.826.997-1.148C10.627 6.69 11.244 6.5 12 6.5c.658 0 1.369.195 1.934.619a2.45 2.45 0 0 1 1.004 2.006c0 1.033-.513 1.72-1.027 2.215-.19.183-.399.358-.579.508l-.147.123a4.329 4.329 0 0 0-.435.409v1.37a.75.75 0 1 1-1.5 0v-1.473c0-.237.067-.504.247-.736.22-.28.486-.517.718-.714l.183-.153.001-.001c.172-.143.324-.27.47-.412.368-.355.569-.676.569-1.136a.953.953 0 0 0-.404-.806C12.766 8.118 12.384 8 12 8c-.494 0-.814.121-1.03.265ZM13 17a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/><path d="M12 1c6.075 0 11 4.925 11 11s-4.925 11-11 11S1 18.075 1 12 5.925 1 12 1ZM2.5 12a9.5 9.5 0 0 0 9.5 9.5 9.5 9.5 0 0 0 9.5-9.5A9.5 9.5 0 0 0 12 2.5 9.5 9.5 0 0 0 2.5 12Z"/>
@@ -840,6 +444,6 @@ const navigationElements = useRenderedNavigationItems(navigationItems, renderIte
 
     <div id="docs-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "Migrate to firefly v9", level: 2, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 2 }</script>
+    <script data-cfasync="false">window.__DOCS__ = { "title": "useLoggers", level: 3, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
 </body>
 </html>

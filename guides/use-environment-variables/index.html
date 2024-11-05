@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.783462896344">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.784081215712">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.6.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.6.0.783462896344" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.6.0.784081215712" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.6.0.783462896344" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.6.0.784081215712" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.6.0.783462896344" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.6.0.783462896344" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.6.0.784081215712" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.6.0.784081215712" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -416,7 +416,7 @@ export function Page() {
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/src/bootstrap.tsx</div>
 <pre class="language-tsx" data-line="13"><code v-pre class="language-tsx">import { createRoot } from &quot;react-dom/client&quot;;
-import { ConsoleLogger, RuntimeContext, FireflyRuntime, registerRemoteModules, type RemoteDefinition } from &quot;@squide/firefly&quot;;
+import { ConsoleLogger, RuntimeContext, FireflyRuntime, boostrap, type RemoteDefinition } from &quot;@squide/firefly&quot;;
 import { EnvironmentVariablesPlugin } from &quot;@squide/env-vars&quot;;
 import { App } from &quot;./App.tsx&quot;;
 import { registerHost } from &quot;./register.tsx&quot;;
@@ -428,12 +428,13 @@ const Remotes: RemoteDefinition[] = [
 
 const runtime = new FireflyRuntime({
     plugins: [x =&gt; new EnvironmentVariablesPlugin(x)],
-    loggers: [new ConsoleLogger()]
+    loggers: [x =&gt; new ConsoleLogger(x)]
 });
 
-await registerLocalModules([registerShell, registerHost], runtime);
-
-await registerRemoteModules(Remotes, runtime);
+await bootstrap(runtime, {
+    localModules: [registerShell, registerHost],
+    remotes: Remotes
+})
 
 const root = createRoot(document.getElementById(&quot;root&quot;)!);
 
@@ -773,7 +774,7 @@ test(&quot;an absolute URL including the API base URL is returned&quot;, () =&gt
 <p>Components included in <a href="https://storybook.js.org/docs" class="outbound" target="_blank">Storybook</a> stories often rely on environment variables. The <code v-pre>EnvironmentVariablesPlugin</code> can be used to mock these variables:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">.storybook/preview.tsx</div>
-<pre class="language-tsx"><code v-pre class="language-tsx">import { FireflyRuntime, RuntimeProvider } from &quot;@squide/firefly&quot;;
+<pre class="language-tsx" data-line="6"><code v-pre class="language-tsx">import { FireflyRuntime, RuntimeProvider } from &quot;@squide/firefly&quot;;
 import { EnvironmentVariablesPlugin, getEnvironmentVariablesPlugin } from &quot;@squide/env-vars&quot;;
 import type { Preview } from &quot;@storybook/react&quot;;
 
@@ -944,6 +945,22 @@ declare module &quot;@squide/env-vars&quot; {
     &quot;exclude&quot;: [&quot;dist&quot;, &quot;node_modules&quot;]
 }</code></pre>
 </doc-codeblock></div>
+<doc-anchor-target id="troubleshoot-issues-1">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#troubleshoot-issues-1">#</doc-anchor-trigger>
+        <span>Troubleshoot issues</span>
+    </h3>
+</doc-anchor-target>
+<p>If you are experiencing issues with this guide:</p>
+<ul>
+<li>Open the <a href="https://developer.chrome.com/docs/devtools/" class="outbound" target="_blank">DevTools</a> console. You&#x27;ll find a log entry for each environment variable registration that occurs and error messages if something went wrong:
+<ul>
+<li><code v-pre>[squide] The following environment variables has been registered: {...}</code></li>
+</ul>
+</li>
+<li>Refer to a working example on <a href="https://github.com/gsoft-inc/wl-squide/tree/main/samples/endpoints" class="outbound" target="_blank">GitHub</a>.</li>
+<li>Refer to the <a href="../../troubleshooting/">troubleshooting</a> page.</li>
+</ul>
 
                                 
                                 <!-- Required only on API pages -->

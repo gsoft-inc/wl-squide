@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.783462896344">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.784081215712">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.6.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.6.0.783462896344" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.6.0.784081215712" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.6.0.783462896344" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.6.0.784081215712" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.6.0.783462896344" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.6.0.783462896344" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.6.0.784081215712" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.6.0.784081215712" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -383,7 +383,7 @@
 <pre class="language-typescript"><code v-pre class="language-typescript">import { ConsoleLogger, FireflyRuntime } from &quot;@squide/firefly&quot;;
 
 const runtime = new FireflyRuntime({
-    loggers: [new ConsoleLogger()]
+    loggers: [x =&gt; new ConsoleLogger(x)]
 });</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="change-the-runtime-mode">
@@ -983,16 +983,28 @@ runtime.registerRequestHandlers(requestHandlers);</code></pre>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-tsx"><code v-pre class="language-tsx">const requestHandlers = runtime.requestHandlers;</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="use-the-logger">
+<doc-anchor-target id="log-a-message">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#use-the-logger">#</doc-anchor-trigger>
-        <span>Use the logger</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#log-a-message">#</doc-anchor-trigger>
+        <span>Log a message</span>
     </h3>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript"><code v-pre class="language-typescript">// Write a debug log entry.
 // If the runtime has been instanciated with multiple logger instances, every logger instance will be invoked.
 runtime.logger.debug(&quot;Hello!&quot;);</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="log-a-message-to-specific-logger-instances">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#log-a-message-to-specific-logger-instances">#</doc-anchor-trigger>
+        <span>Log a message to specific logger instances</span>
+    </h3>
+</doc-anchor-target>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-typescript"><code v-pre class="language-typescript">// Write a debug log entry to the specified loggers.
+const logger = runtime.logger.use([ConsoleLogger.name]);
+
+logger.debug(&quot;Hello!&quot;);</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="use-the-event-bus">
     <h3>

@@ -17,7 +17,7 @@ const runtime = new FireflyRuntime({
 });
 
 registerHoneycombInstrumentation(runtime, "endpoints-sample", [/http:\/\/localhost:1234\.*/], {
-    apiKey: ""
+    apiKey: "123"
 });
 
 await bootstrap(runtime, {

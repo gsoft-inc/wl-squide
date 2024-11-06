@@ -11,11 +11,11 @@ const sdk = new NodeSDK({
     traceExporter: new OTLPTraceExporter({
         url: "https://api.honeycomb.io/v1/traces",
         headers: {
-            "x-honeycomb-team": ""
+            "x-honeycomb-team": "123"
         }
     }),
     instrumentations: [
-        getNodeAutoInstrumentations({
+        ...getNodeAutoInstrumentations({
             "@opentelemetry/instrumentation-fs": {
                 enabled: false
             }

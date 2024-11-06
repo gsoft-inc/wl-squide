@@ -4,6 +4,8 @@ import type { i18n } from "i18next";
 import LanguageDetector, { type DetectorOptions } from "i18next-browser-languagedetector";
 import { i18nextInstanceRegistry } from "./i18nextInstanceRegistry.ts";
 
+export const i18nextPluginName = "i18-next-plugin";
+
 export interface i18nextPluginOptions {
     detection?: Omit<DetectorOptions, "lookupQuerystring">;
 }
@@ -39,7 +41,7 @@ export class i18nextPlugin<T extends string = string> extends Plugin {
     readonly #registry = new i18nextInstanceRegistry();
 
     constructor(supportedLanguages: T[], fallbackLanguage: T, queryStringKey: string, { detection }: i18nextPluginOptions = {}, runtime: Runtime) {
-        super(i18nextPlugin.name, runtime);
+        super(i18nextPluginName, runtime);
 
         this.#supportedLanguages = supportedLanguages;
         this.#fallbackLanguage = fallbackLanguage;
@@ -121,7 +123,7 @@ export class i18nextPlugin<T extends string = string> extends Plugin {
 }
 
 export function getI18nextPlugin(runtime: Runtime) {
-    const plugin = runtime.getPlugin(i18nextPlugin.name);
+    const plugin = runtime.getPlugin(i18nextPluginName);
 
     if (isNil(plugin)) {
         throw new Error("[squide] The getI18nextPlugin function is called but no i18nextPlugin instance has been registered with the runtime.");

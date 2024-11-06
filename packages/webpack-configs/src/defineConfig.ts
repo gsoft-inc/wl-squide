@@ -57,6 +57,8 @@ export interface Features {
     router?: Router;
     msw?: boolean;
     i18next?: boolean;
+    environmentVariables?: boolean;
+    honeycomb?: boolean;
 }
 
 // Generally, only the host application should have eager dependencies.
@@ -106,11 +108,39 @@ function getI18nextSharedDependency(isHost: boolean): ModuleFederationShared {
     };
 }
 
-function getFeaturesDependencies({ router, msw, i18next }: Features, isHost: boolean) {
+function getEnvironmentVariablesSharedDependencies(isHost: boolean): ModuleFederationShared {
+    return {
+        "@squide/env-vars": {
+            singleton: true,
+            eager: isHost ? true : undefined
+        }
+    };
+}
+
+function getHoneycombSharedDependencies(isHost: boolean): ModuleFederationShared {
+    return {
+        "@squide/firefly-honeycomb": {
+            singleton: true,
+            eager: isHost ? true : undefined
+        }
+    };
+}
+
+function getFeaturesDependencies(features: Features, isHost: boolean) {
+    const {
+        router,
+        msw,
+        i18next,
+        environmentVariables,
+        honeycomb
+    } = features;
+
     return {
         ...(router === "react-router" ? getReactRouterSharedDependencies(isHost) : {}),
         ...(msw ? getMswSharedDependency(isHost) : {}),
-        ...(i18next ? getI18nextSharedDependency(isHost) : {})
+        ...(i18next ? getI18nextSharedDependency(isHost) : {}),
+        ...(environmentVariables ? getEnvironmentVariablesSharedDependencies(isHost) : {}),
+        ...(honeycomb ? getHoneycombSharedDependencies(isHost) : {})
     };
 }
 

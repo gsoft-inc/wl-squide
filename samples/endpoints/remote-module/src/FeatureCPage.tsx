@@ -10,6 +10,7 @@ export function FeatureCPage() {
     const { t } = useTranslation("FeatureCPage", { i18n: i18nextInstance });
 
     const featureApiBaseUrl = useEnvironmentVariable("featureApiBaseUrl");
+
     const { data } = useSuspenseQuery({ queryKey: [`${featureApiBaseUrl}getFeatureC`], queryFn: () => {
         return fetchJson(`${featureApiBaseUrl}getFeatureC`);
     } });

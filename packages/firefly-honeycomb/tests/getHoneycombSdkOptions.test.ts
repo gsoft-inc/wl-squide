@@ -50,6 +50,33 @@ class DummySpanProcessor implements SpanProcessor {
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function removeInstrumentationVersionsForSnapshot(options: any) {
+    if (Array.isArray(options.instrumentations)) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        options.instrumentations.forEach(x => {
+            if (x["instrumentationVersion"]) {
+                delete x["instrumentationVersion"];
+            }
+
+            if (x["version"]) {
+                delete x["version"];
+            }
+
+            if (x["_logger"] && x["_logger"]["version"]) {
+                delete x["_logger"]["version"];
+            }
+
+            if (x["_tracer"] && x["_tracer"]["version"]) {
+                delete x["_tracer"]["version"];
+            }
+        });
+    }
+
+    return options;
+}
+
 test("when debug is true", () => {
     const runtime = new FireflyRuntime();
 
@@ -58,7 +85,9 @@ test("when debug is true", () => {
         apiKey: "123"
     });
 
-    expect(result).toMatchSnapshot();
+    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+
+    expect(cleanedResult).toMatchSnapshot();
 });
 
 test("when debug is false", () => {
@@ -69,7 +98,9 @@ test("when debug is false", () => {
         apiKey: "123"
     });
 
-    expect(result).toMatchSnapshot();
+    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+
+    expect(cleanedResult).toMatchSnapshot();
 });
 
 test("when the runtime mode is \"development\"", () => {
@@ -81,7 +112,9 @@ test("when the runtime mode is \"development\"", () => {
         apiKey: "123"
     });
 
-    expect(result).toMatchSnapshot();
+    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+
+    expect(cleanedResult).toMatchSnapshot();
 });
 
 test("when the runtime mode is \"production\"", () => {
@@ -93,7 +126,9 @@ test("when the runtime mode is \"production\"", () => {
         apiKey: "123"
     });
 
-    expect(result).toMatchSnapshot();
+    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+
+    expect(cleanedResult).toMatchSnapshot();
 });
 
 test("with custom instrumentations", () => {
@@ -104,7 +139,9 @@ test("with custom instrumentations", () => {
         apiKey: "123"
     });
 
-    expect(result).toMatchSnapshot();
+    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+
+    expect(cleanedResult).toMatchSnapshot();
 });
 
 test("with custom span processors", () => {
@@ -115,7 +152,9 @@ test("with custom span processors", () => {
         apiKey: "123"
     });
 
-    expect(result).toMatchSnapshot();
+    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+
+    expect(cleanedResult).toMatchSnapshot();
 });
 
 test("when fetch instrumentation is false", () => {
@@ -126,7 +165,9 @@ test("when fetch instrumentation is false", () => {
         apiKey: "123"
     });
 
-    expect(result).toMatchSnapshot();
+    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+
+    expect(cleanedResult).toMatchSnapshot();
 });
 
 test("when fetch instrumentation is a custom function", () => {
@@ -137,7 +178,9 @@ test("when fetch instrumentation is a custom function", () => {
         apiKey: "123"
     });
 
-    expect(result).toMatchSnapshot();
+    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+
+    expect(cleanedResult).toMatchSnapshot();
 });
 
 test("when xml http instrumentation is false", () => {
@@ -148,7 +191,9 @@ test("when xml http instrumentation is false", () => {
         apiKey: "123"
     });
 
-    expect(result).toMatchSnapshot();
+    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+
+    expect(cleanedResult).toMatchSnapshot();
 });
 
 test("when xml http instrumentation is a custom function", () => {
@@ -159,7 +204,9 @@ test("when xml http instrumentation is a custom function", () => {
         apiKey: "123"
     });
 
-    expect(result).toMatchSnapshot();
+    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+
+    expect(cleanedResult).toMatchSnapshot();
 });
 
 test("when document load instrumentation is false", () => {
@@ -170,7 +217,9 @@ test("when document load instrumentation is false", () => {
         apiKey: "123"
     });
 
-    expect(result).toMatchSnapshot();
+    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+
+    expect(cleanedResult).toMatchSnapshot();
 });
 
 test("when document load instrumentation is a custom function", () => {
@@ -181,7 +230,9 @@ test("when document load instrumentation is a custom function", () => {
         apiKey: "123"
     });
 
-    expect(result).toMatchSnapshot();
+    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+
+    expect(cleanedResult).toMatchSnapshot();
 });
 
 test("when user interaction instrumentation is false", () => {
@@ -192,7 +243,9 @@ test("when user interaction instrumentation is false", () => {
         apiKey: "123"
     });
 
-    expect(result).toMatchSnapshot();
+    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+
+    expect(cleanedResult).toMatchSnapshot();
 });
 
 test("when user interaction instrumentation is a custom function", () => {
@@ -203,7 +256,9 @@ test("when user interaction instrumentation is a custom function", () => {
         apiKey: "123"
     });
 
-    expect(result).toMatchSnapshot();
+    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+
+    expect(cleanedResult).toMatchSnapshot();
 });
 
 test("with a single transformer", () => {
@@ -220,7 +275,9 @@ test("with a single transformer", () => {
         apiKey: "123"
     });
 
-    expect(result).toMatchSnapshot();
+    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+
+    expect(cleanedResult).toMatchSnapshot();
 });
 
 test("with multiple transformers", () => {
@@ -242,5 +299,7 @@ test("with multiple transformers", () => {
         apiKey: "123"
     });
 
-    expect(result).toMatchSnapshot();
+    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+
+    expect(cleanedResult).toMatchSnapshot();
 });

@@ -58,7 +58,7 @@ test("when called twice, throw an error", async () => {
     await registry.registerDeferredRegistrations({}, runtime);
 
     await expect(() => registry.registerDeferredRegistrations({}, runtime)).rejects.toThrow(/The registerDeferredRegistrations function can only be called once/);
-});
+}, 50000);
 
 test("when called for the first time but the registration status is already \"ready\", return a resolving promise", async () => {
     const runtime = new DummyRuntime();

@@ -17,6 +17,11 @@ export function getSharedDependencies(isHost) {
     };
 }
 
+/**
+ * @type {import("@squide/firefly-webpack-configs").FireflyFeatures}
+ */
 export const features = {
-    i18next: true
+    i18next: true,
+    environmentVariables: true,
+    honeycomb: true
 };

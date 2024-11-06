@@ -1,11 +1,13 @@
 import { isNil, Plugin, type Runtime } from "@squide/core";
 import { type EnvironmentVariables, EnvironmentVariablesRegistry, type EnvironmentVariablesRegistryKey, type EnvironmentVariablesRegistryValue } from "./EnvironmentVariablesRegistry.ts";
 
+export const EnvironmentVariablesPluginName = "env-vars-plugin";
+
 export class EnvironmentVariablesPlugin extends Plugin {
     readonly #environmentVariablesRegistry = new EnvironmentVariablesRegistry();
 
     constructor(runtime: Runtime) {
-        super(EnvironmentVariablesPlugin.name, runtime);
+        super(EnvironmentVariablesPluginName, runtime);
     }
 
     registerVariable(key: EnvironmentVariablesRegistryKey, value: EnvironmentVariablesRegistryValue) {
@@ -30,7 +32,7 @@ export class EnvironmentVariablesPlugin extends Plugin {
 }
 
 export function getEnvironmentVariablesPlugin(runtime: Runtime) {
-    const plugin = runtime.getPlugin(EnvironmentVariablesPlugin.name);
+    const plugin = runtime.getPlugin(EnvironmentVariablesPluginName);
 
     if (isNil(plugin)) {
         throw new Error("[squide] The getEnvironmentVariablesPlugin function is called but no EnvironmentVariablesPlugin instance has been registered with the runtime.");

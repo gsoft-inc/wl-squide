@@ -159,6 +159,9 @@ export class RemoteModuleRegistry implements ModuleRegistry {
             if (this.#registrationStatus === "ready") {
                 this.#logSharedScope(runtime.logger);
             }
+        } else {
+            // There's no modules to register, it can be considered as ready.
+            this.#setRegistrationStatus("ready");
         }
 
         return errors;
@@ -167,17 +170,17 @@ export class RemoteModuleRegistry implements ModuleRegistry {
     async registerDeferredRegistrations<TData = unknown, TRuntime extends Runtime = Runtime>(data: TData, runtime: TRuntime) {
         const errors: RemoteModuleRegistrationError[] = [];
 
+        if (this.#registrationStatus === "ready" && this.#deferredRegistrations.length === 0) {
+            // No deferred registrations were returned by the remote modules, skip this phase.
+            return errors;
+        }
+
         if (this.#registrationStatus === "none" || this.#registrationStatus === "registering-modules") {
             throw new Error("[squide] The registerDeferredRegistrations function can only be called once the remote modules are registered.");
         }
 
-        if (this.#registrationStatus !== "modules-registered" && this.#deferredRegistrations.length > 0) {
+        if (this.#registrationStatus !== "modules-registered") {
             throw new Error("[squide] The registerDeferredRegistrations function can only be called once.");
-        }
-
-        if (this.#registrationStatus === "ready") {
-            // No deferred registrations were returned by the remote modules, skip the completion process.
-            return errors;
         }
 
         this.#setRegistrationStatus("registering-deferred-registration");

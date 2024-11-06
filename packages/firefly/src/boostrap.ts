@@ -17,8 +17,8 @@ export interface BootstrapAppOptions<TRuntime extends FireflyRuntime = FireflyRu
 
 export async function bootstrap<TRuntime extends FireflyRuntime = FireflyRuntime, TContext = unknown, TData = unknown>(runtime: TRuntime, options: BootstrapAppOptions<TRuntime, TContext, TData> = {}) {
     const {
-        localModules,
-        remotes,
+        localModules = [],
+        remotes = [],
         context,
         startMsw
     } = options;
@@ -32,13 +32,8 @@ export async function bootstrap<TRuntime extends FireflyRuntime = FireflyRuntime
     let localModuleErrors: ModuleRegistrationError[] = [];
     let remoteModuleErrors: RemoteModuleRegistrationError[] = [];
 
-    if (localModules) {
-        localModuleErrors = await registerLocalModules<TRuntime, TContext, TData>(localModules, runtime, { context });
-    }
-
-    if (remotes) {
-        remoteModuleErrors = await registerRemoteModules(remotes, runtime, { context });
-    }
+    localModuleErrors = await registerLocalModules<TRuntime, TContext, TData>(localModules, runtime, { context });
+    remoteModuleErrors = await registerRemoteModules(remotes, runtime, { context });
 
     if (runtime.isMswEnabled) {
         if (!isFunction(startMsw)) {

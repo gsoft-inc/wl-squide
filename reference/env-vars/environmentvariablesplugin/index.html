@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.784087120938">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.784174242602">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.6.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.6.0.784087120938" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.6.0.784174242602" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.6.0.784087120938" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.6.0.784174242602" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.6.0.784087120938" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.6.0.784087120938" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.6.0.784174242602" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.6.0.784174242602" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -374,9 +374,9 @@ const runtime = new FireflyRuntime({
     </h3>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript"><code v-pre class="language-typescript">import { EnvironmentVariablesPlugin } from &quot;@squide/i18next&quot;;
+<pre class="language-typescript"><code v-pre class="language-typescript">import { EnvironmentVariablesPlugin, EnvironmentVariablesPluginName } from &quot;@squide/i18next&quot;;
 
-const plugin = runtime.getPlugin(EnvironmentVariablesPlugin.name) as EnvironmentVariablesPlugin;</code></pre>
+const plugin = runtime.getPlugin(EnvironmentVariablesPluginName) as EnvironmentVariablesPlugin;</code></pre>
 </doc-codeblock></div>
 <p>
 <div class="mb-6 px-5 py-4 flex justify-between relative border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded transition-colors duration-150">
@@ -399,9 +399,9 @@ const plugin = runtime.getPlugin(EnvironmentVariablesPlugin.name) as Environment
     </h3>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript" data-line="5"><code v-pre class="language-typescript">import { EnvironmentVariablesPlugin } from &quot;@squide/i18next&quot;;
+<pre class="language-typescript" data-line="5"><code v-pre class="language-typescript">import { EnvironmentVariablesPlugin, EnvironmentVariablesPluginName } from &quot;@squide/i18next&quot;;
 
-const plugin = runtime.getPlugin(EnvironmentVariablesPlugin.name) as EnvironmentVariablesPlugin;
+const plugin = runtime.getPlugin(EnvironmentVariablesPluginName) as EnvironmentVariablesPlugin;
 
 plugin.registerVariable(&quot;apiBaseUrl&quot;, &quot;https://my-api.com&quot;);</code></pre>
 </doc-codeblock></div>
@@ -415,9 +415,9 @@ plugin.registerVariable(&quot;apiBaseUrl&quot;, &quot;https://my-api.com&quot;);
     </h3>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript" data-line="5-8"><code v-pre class="language-typescript">import { EnvironmentVariablesPlugin } from &quot;@squide/i18next&quot;;
+<pre class="language-typescript" data-line="5-8"><code v-pre class="language-typescript">import { EnvironmentVariablesPlugin, EnvironmentVariablesPluginName } from &quot;@squide/i18next&quot;;
 
-const plugin = runtime.getPlugin(EnvironmentVariablesPlugin.name) as EnvironmentVariablesPlugin;
+const plugin = runtime.getPlugin(EnvironmentVariablesPluginName) as EnvironmentVariablesPlugin;
 
 plugin.registerVariables({
     apiBaseUrl: &quot;https://my-api.com&quot;,
@@ -431,9 +431,9 @@ plugin.registerVariables({
     </h3>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript" data-line="5"><code v-pre class="language-typescript">import { EnvironmentVariablesPlugin } from &quot;@squide/i18next&quot;;
+<pre class="language-typescript" data-line="5"><code v-pre class="language-typescript">import { EnvironmentVariablesPlugin, EnvironmentVariablesPluginName } from &quot;@squide/i18next&quot;;
 
-const plugin = runtime.getPlugin(EnvironmentVariablesPlugin.name) as EnvironmentVariablesPlugin;
+const plugin = runtime.getPlugin(EnvironmentVariablesPluginName) as EnvironmentVariablesPlugin;
 
 const apiBaseUrl = plugin.getVariable(&quot;apiBaseUrl&quot;);</code></pre>
 </doc-codeblock></div>
@@ -444,9 +444,9 @@ const apiBaseUrl = plugin.getVariable(&quot;apiBaseUrl&quot;);</code></pre>
     </h3>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript" data-line="5"><code v-pre class="language-typescript">import { EnvironmentVariablesPlugin } from &quot;@squide/i18next&quot;;
+<pre class="language-typescript" data-line="5"><code v-pre class="language-typescript">import { EnvironmentVariablesPlugin, EnvironmentVariablesPluginName } from &quot;@squide/i18next&quot;;
 
-const plugin = runtime.getPlugin(EnvironmentVariablesPlugin.name) as EnvironmentVariablesPlugin;
+const plugin = runtime.getPlugin(EnvironmentVariablesPluginName) as EnvironmentVariablesPlugin;
 
 const variables = plugin.getVariables();</code></pre>
 </doc-codeblock></div>

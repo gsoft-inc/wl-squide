@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.784087120938">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.784174242602">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.6.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.6.0.784087120938" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.6.0.784174242602" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.6.0.784087120938" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.6.0.784174242602" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.6.0.784087120938" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.6.0.784087120938" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.6.0.784174242602" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.6.0.784174242602" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -366,9 +366,9 @@ const runtime = new FireflyRuntime({
     </h3>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript"><code v-pre class="language-typescript">import { i18nextPlugin } from &quot;@squide/i18next&quot;;
+<pre class="language-typescript"><code v-pre class="language-typescript">import { i18nextPlugin, i18nextPluginName } from &quot;@squide/i18next&quot;;
 
-const plugin = runtime.getPlugin(i18nextPlugin.name) as i18nextPlugin;</code></pre>
+const plugin = runtime.getPlugin(i18nextPluginName) as i18nextPlugin;</code></pre>
 </doc-codeblock></div>
 <p>
 <div class="mb-6 px-5 py-4 flex justify-between relative border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded transition-colors duration-150">
@@ -391,7 +391,7 @@ const plugin = runtime.getPlugin(i18nextPlugin.name) as i18nextPlugin;</code></p
     </h3>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript" data-line="15"><code v-pre class="language-typescript">import { i18nextPlugin } from &quot;@squide/i18next&quot;;
+<pre class="language-typescript" data-line="15"><code v-pre class="language-typescript">import { i18nextPlugin, i18nextPluginName } from &quot;@squide/i18next&quot;;
 import i18n from &quot;./i18next&quot;;
 import resourcesEn from &quot;./locales/en.json&quot;;
 import resourcesFr from &quot;./locales/fr.json&quot;;
@@ -403,7 +403,7 @@ const instance = i18n.createInstance({
     }
 });
 
-const plugin = runtime.getPlugin(i18nextPlugin.name) as i18nextPlugin;
+const plugin = runtime.getPlugin(i18nextPluginName) as i18nextPlugin;
 
 plugin.registerInstance(&quot;an-instance-key&quot;, instance);</code></pre>
 </doc-codeblock></div>
@@ -414,9 +414,9 @@ plugin.registerInstance(&quot;an-instance-key&quot;, instance);</code></pre>
     </h3>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript" data-line="6"><code v-pre class="language-typescript">import { i18nextPlugin } from &quot;@squide/i18next&quot;;
+<pre class="language-typescript" data-line="6"><code v-pre class="language-typescript">import { i18nextPlugin, i18nextPluginName } from &quot;@squide/i18next&quot;;
 
-const plugin = runtime.getPlugin(i18nextPlugin.name) as i18nextPlugin;
+const plugin = runtime.getPlugin(i18nextPluginName) as i18nextPlugin;
 
 // If no instance match the specified key, an error will be thrown.
 const instance = plugin.getInstance(&quot;an-instance-key&quot;);</code></pre>
@@ -448,9 +448,9 @@ const runtime = new FireflyRuntime({
     </h3>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript" data-line="6"><code v-pre class="language-typescript">import { i18nextPlugin } from &quot;@squide/i18next&quot;;
+<pre class="language-typescript" data-line="6"><code v-pre class="language-typescript">import { i18nextPlugin, i18nextPluginName } from &quot;@squide/i18next&quot;;
 
-const plugin = runtime.getPlugin(i18nextPlugin.name) as i18nextPlugin;
+const plugin = runtime.getPlugin(i18nextPluginName) as i18nextPlugin;
 
 // If the language hasn't been changed nor detected before getting the current language, an error will be thrown.
 const language = plugin.currentLanguage;</code></pre>
@@ -464,7 +464,7 @@ const language = plugin.currentLanguage;</code></pre>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-typescript" data-line="6"><code v-pre class="language-typescript">import { i18nextPlugin } from &quot;@squide/i18next&quot;;
 
-const plugin = runtime.getPlugin(i18nextPlugin.name) as i18nextPlugin;
+const plugin = runtime.getPlugin(i18nextPluginName) as i18nextPlugin;
 
 // If the language isn't included in the &quot;supportedLanguages&quot; array, an error will be thrown.
 plugin.changeLanguage(&quot;fr-CA&quot;);</code></pre>

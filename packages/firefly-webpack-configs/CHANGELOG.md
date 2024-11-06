@@ -1,5 +1,14 @@
 # @squide/firefly-webpack-configs
 
+## 4.2.1
+
+### Patch Changes
+
+- [#221](https://github.com/gsoft-inc/wl-squide/pull/221) [`8411080`](https://github.com/gsoft-inc/wl-squide/commit/8411080dfd0df6d0eafb01888298154fa5e5d925) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Fix deferred registrations.
+
+- Updated dependencies [[`8411080`](https://github.com/gsoft-inc/wl-squide/commit/8411080dfd0df6d0eafb01888298154fa5e5d925)]:
+  - @squide/webpack-configs@4.3.1
+
 ## 4.2.0
 
 ### Minor Changes

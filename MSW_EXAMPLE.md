@@ -2,6 +2,8 @@
 
 This repository include samples using a Module Federation setup. Those samples could be of help to the MSW maintainers to troubleshoot issues that are specific to federated applications.
 
+Note for Squide maintainers: This file is referenced in the MSW example repository [here](https://github.com/mswjs/examples/issues/123).
+
 ## Installation
 
 To install the sample and start the application with a developer server, follow these steps.

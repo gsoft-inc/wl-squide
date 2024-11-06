@@ -38,9 +38,9 @@ const runtime = new FireflyRuntime({
 ### Retrieve the plugin instance
 
 ```ts
-import { i18nextPlugin } from "@squide/i18next";
+import { i18nextPlugin, i18nextPluginName } from "@squide/i18next";
 
-const plugin = runtime.getPlugin(i18nextPlugin.name) as i18nextPlugin;
+const plugin = runtime.getPlugin(i18nextPluginName) as i18nextPlugin;
 ```
 
 [!ref Prefer using `getI18nextPlugin` when possible](./getI18nextPlugin.md)
@@ -48,7 +48,7 @@ const plugin = runtime.getPlugin(i18nextPlugin.name) as i18nextPlugin;
 ### Register a i18next instance
 
 ```ts !#15
-import { i18nextPlugin } from "@squide/i18next";
+import { i18nextPlugin, i18nextPluginName } from "@squide/i18next";
 import i18n from "./i18next";
 import resourcesEn from "./locales/en.json";
 import resourcesFr from "./locales/fr.json";
@@ -60,7 +60,7 @@ const instance = i18n.createInstance({
     }
 });
 
-const plugin = runtime.getPlugin(i18nextPlugin.name) as i18nextPlugin;
+const plugin = runtime.getPlugin(i18nextPluginName) as i18nextPlugin;
 
 plugin.registerInstance("an-instance-key", instance);
 ```
@@ -68,9 +68,9 @@ plugin.registerInstance("an-instance-key", instance);
 ### Retrieve a i18next instance
 
 ```ts !#6
-import { i18nextPlugin } from "@squide/i18next";
+import { i18nextPlugin, i18nextPluginName } from "@squide/i18next";
 
-const plugin = runtime.getPlugin(i18nextPlugin.name) as i18nextPlugin;
+const plugin = runtime.getPlugin(i18nextPluginName) as i18nextPlugin;
 
 // If no instance match the specified key, an error will be thrown.
 const instance = plugin.getInstance("an-instance-key");
@@ -97,9 +97,9 @@ const runtime = new FireflyRuntime({
 ### Retrieve the current language
 
 ```ts !#6
-import { i18nextPlugin } from "@squide/i18next";
+import { i18nextPlugin, i18nextPluginName } from "@squide/i18next";
 
-const plugin = runtime.getPlugin(i18nextPlugin.name) as i18nextPlugin;
+const plugin = runtime.getPlugin(i18nextPluginName) as i18nextPlugin;
 
 // If the language hasn't been changed nor detected before getting the current language, an error will be thrown.
 const language = plugin.currentLanguage;
@@ -110,7 +110,7 @@ const language = plugin.currentLanguage;
 ```ts !#6
 import { i18nextPlugin } from "@squide/i18next";
 
-const plugin = runtime.getPlugin(i18nextPlugin.name) as i18nextPlugin;
+const plugin = runtime.getPlugin(i18nextPluginName) as i18nextPlugin;
 
 // If the language isn't included in the "supportedLanguages" array, an error will be thrown.
 plugin.changeLanguage("fr-CA");

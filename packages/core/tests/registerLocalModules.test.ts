@@ -269,13 +269,13 @@ test("when a context is provided, all the register functions receive the provide
     expect(register3).toHaveBeenCalledWith(runtime, context);
 });
 
-test("when no modules are provided, the status remain \"none\"", async () => {
+test("when no modules are provided, the status is \"ready\"", async () => {
     const runtime = new DummyRuntime();
     const registry = new LocalModuleRegistry();
 
     await registry.registerModules([], runtime);
 
-    expect(registry.registrationStatus).toBe("none");
+    expect(registry.registrationStatus).toBe("ready");
 });
 
 test("when no modules are provided, do not dispatch LocalModulesRegistrationStartedEvent", async () => {

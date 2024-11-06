@@ -1,6 +1,7 @@
 import { createI18NextPlugin } from "@endpoints/i18next";
 import { registerShell } from "@endpoints/shell";
-import { ConsoleLogger, FireflyRuntime, RuntimeContext, registerLocalModules, setMswAsReady } from "@squide/firefly";
+import { EnvironmentVariablesPlugin } from "@squide/env-vars";
+import { ConsoleLogger, FireflyRuntime, RuntimeContext, bootstrap } from "@squide/firefly";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { registerLocalModule } from "../register.tsx";
@@ -11,28 +12,18 @@ import { registerDev } from "./register.tsx";
 // Services and loggers could be reuse through a shared packages or faked when in isolation.
 const runtime = new FireflyRuntime({
     useMsw: !!process.env.USE_MSW,
-    plugins: [x => createI18NextPlugin(x)],
+    plugins: [x => createI18NextPlugin(x), x => new EnvironmentVariablesPlugin(x)],
     loggers: [x => new ConsoleLogger(x)]
 });
 
-await registerLocalModules([registerShell(), registerDev, registerLocalModule], runtime);
-
-// Register MSW after the local modules has been registered since the request handlers
-// will be registered by the modules.
-if (runtime.isMswEnabled) {
-    // Files including an import to the "msw" package are included dynamically to prevent adding
-    // MSW stuff to the bundled when it's not used.
-    const startMsw = (await import("../../mocks/browser.ts")).startMsw;
-
-    startMsw(runtime.requestHandlers)
-        .then(() => {
-            // Indicate to resources that are dependent on MSW that the service has been started.
-            setMswAsReady();
-        })
-        .catch((error: unknown) => {
-            runtime.logger.debug("[host-app] An error occured while starting MSW.", error);
-        });
-}
+await bootstrap(runtime, {
+    localModules: [registerShell(), registerDev, registerLocalModule],
+    startMsw: async () => {
+        // Files that includes an import to the "msw" package are included dynamically to prevent adding
+        // unused MSW stuff to the code bundles.
+        (await import("../../mocks/browser.ts")).startMsw(runtime.requestHandlers);
+    }
+});
 
 const root = createRoot(document.getElementById("root")!);
 

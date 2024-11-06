@@ -1,5 +1,5 @@
 import type { RegisterRouteOptions, RuntimeOptions } from "@squide/core";
-import { MswPlugin } from "@squide/msw";
+import { MswPlugin, MswPluginName } from "@squide/msw";
 import { ReactRouterRuntime, type Route } from "@squide/react-router";
 import type { RequestHandler } from "msw";
 import { getAreModulesRegistered } from "./AppRouterReducer.ts";
@@ -33,7 +33,7 @@ export class FireflyRuntime extends ReactRouterRuntime {
     }
 
     registerRequestHandlers(handlers: RequestHandler[]) {
-        const mswPlugin = this.getPlugin(MswPlugin.name) as MswPlugin;
+        const mswPlugin = this.getPlugin(MswPluginName) as MswPlugin;
 
         if (!mswPlugin) {
             throw new Error("[squide] Cannot register the provided MSW request handlers because the runtime hasn't been initialized with MSW. Did you instanciate the FireflyRuntime with the \"useMsw\" option?");
@@ -48,7 +48,7 @@ export class FireflyRuntime extends ReactRouterRuntime {
 
     // Must define a return type otherwise we get an "error TS2742: The inferred type of 'requestHandlers' cannot be named" error.
     get requestHandlers(): RequestHandler[] {
-        const mswPlugin = this.getPlugin(MswPlugin.name) as MswPlugin;
+        const mswPlugin = this.getPlugin(MswPluginName) as MswPlugin;
 
         if (!mswPlugin) {
             throw new Error("[squide] Cannot retrieve MSW request handlers because the runtime hasn't been initialized with MSW. Did you instanciate the FireflyRuntime with the \"useMsw\" option?");

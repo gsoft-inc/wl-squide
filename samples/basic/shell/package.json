@@ -32,14 +32,14 @@
         "@basic/shared": "workspace:*",
         "@squide/fakes": "workspace:*",
         "@squide/firefly": "workspace:*",
-        "@types/react": "18.3.11",
-        "@types/react-dom": "18.3.0",
-        "@workleap/eslint-plugin": "3.2.2",
+        "@types/react": "18.3.12",
+        "@types/react-dom": "18.3.1",
+        "@workleap/eslint-plugin": "3.2.3",
         "@workleap/tsup-configs": "3.0.6",
         "@workleap/typescript-configs": "3.0.2",
         "eslint": "8.57.0",
         "nodemon": "3.1.7",
-        "tsup": "8.3.0",
+        "tsup": "8.3.5",
         "typescript": "5.5.4"
     },
     "engines": {

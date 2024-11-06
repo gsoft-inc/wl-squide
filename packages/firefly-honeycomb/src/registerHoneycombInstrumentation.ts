@@ -158,7 +158,7 @@ export function getHoneycombSdkOptions(runtime: FireflyRuntime, serviceName: Non
         // Watch out, getWebAutoInstrumentations enables by default all the supported instrumentations.
         // It's important to disabled those that we don't want.
         instrumentations: [
-            getWebAutoInstrumentations(autoInstrumentations),
+            ...getWebAutoInstrumentations(autoInstrumentations),
             ...instrumentations
         ],
         spanProcessors: [globalAttributeSpanProcessor, ...spanProcessors]

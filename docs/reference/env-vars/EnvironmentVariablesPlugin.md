@@ -38,9 +38,9 @@ const runtime = new FireflyRuntime({
 ### Retrieve the plugin instance
 
 ```ts
-import { EnvironmentVariablesPlugin } from "@squide/i18next";
+import { EnvironmentVariablesPlugin, EnvironmentVariablesPluginName } from "@squide/i18next";
 
-const plugin = runtime.getPlugin(EnvironmentVariablesPlugin.name) as EnvironmentVariablesPlugin;
+const plugin = runtime.getPlugin(EnvironmentVariablesPluginName) as EnvironmentVariablesPlugin;
 ```
 
 [!ref Prefer using `getEnvironmentVariablesPlugin` when possible](./getEnvironmentVariablesPlugin.md)
@@ -48,9 +48,9 @@ const plugin = runtime.getPlugin(EnvironmentVariablesPlugin.name) as Environment
 ### Register an environment variable
 
 ```ts !#5
-import { EnvironmentVariablesPlugin } from "@squide/i18next";
+import { EnvironmentVariablesPlugin, EnvironmentVariablesPluginName } from "@squide/i18next";
 
-const plugin = runtime.getPlugin(EnvironmentVariablesPlugin.name) as EnvironmentVariablesPlugin;
+const plugin = runtime.getPlugin(EnvironmentVariablesPluginName) as EnvironmentVariablesPlugin;
 
 plugin.registerVariable("apiBaseUrl", "https://my-api.com");
 ```
@@ -60,9 +60,9 @@ plugin.registerVariable("apiBaseUrl", "https://my-api.com");
 ### Register multiple environment variables at once
 
 ```ts !#5-8
-import { EnvironmentVariablesPlugin } from "@squide/i18next";
+import { EnvironmentVariablesPlugin, EnvironmentVariablesPluginName } from "@squide/i18next";
 
-const plugin = runtime.getPlugin(EnvironmentVariablesPlugin.name) as EnvironmentVariablesPlugin;
+const plugin = runtime.getPlugin(EnvironmentVariablesPluginName) as EnvironmentVariablesPlugin;
 
 plugin.registerVariables({
     apiBaseUrl: "https://my-api.com",
@@ -73,9 +73,9 @@ plugin.registerVariables({
 ### Retrieve a single environment variable
 
 ```ts !#5
-import { EnvironmentVariablesPlugin } from "@squide/i18next";
+import { EnvironmentVariablesPlugin, EnvironmentVariablesPluginName } from "@squide/i18next";
 
-const plugin = runtime.getPlugin(EnvironmentVariablesPlugin.name) as EnvironmentVariablesPlugin;
+const plugin = runtime.getPlugin(EnvironmentVariablesPluginName) as EnvironmentVariablesPlugin;
 
 const apiBaseUrl = plugin.getVariable("apiBaseUrl");
 ```
@@ -83,9 +83,9 @@ const apiBaseUrl = plugin.getVariable("apiBaseUrl");
 ### Retrieve all the environment variables
 
 ```ts !#5
-import { EnvironmentVariablesPlugin } from "@squide/i18next";
+import { EnvironmentVariablesPlugin, EnvironmentVariablesPluginName } from "@squide/i18next";
 
-const plugin = runtime.getPlugin(EnvironmentVariablesPlugin.name) as EnvironmentVariablesPlugin;
+const plugin = runtime.getPlugin(EnvironmentVariablesPluginName) as EnvironmentVariablesPlugin;
 
 const variables = plugin.getVariables();
 ```

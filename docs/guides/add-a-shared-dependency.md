@@ -12,7 +12,7 @@ This guide only applies to federated applications (applications including [remot
 
 Squide aims to **simplify** the configuration of shared dependencies by abstracting the shared dependencies necessary for building an application with React, React Router, and optionally MSW and i18next. Nevertheless, every federated application will inevitably have to configure additional custom shared dependencies.
 
-For a more comprehensive documentation of the Module Federation APIs, their functionality, and their benefits, please refer to this [article](https://www.infoxicator.com/en/module-federation-shared-api).
+For a comprehensive documentation of the Module Federation APIs, their functionality, and their benefits, please refer to this [article](https://www.infoxicator.com/en/module-federation-shared-api).
 
 ## Understanding singleton dependencies
 

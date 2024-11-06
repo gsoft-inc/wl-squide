@@ -50,8 +50,10 @@ class DummySpanProcessor implements SpanProcessor {
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function removeInstrumentationVersionsForSnapshot(options: any) {
     if (Array.isArray(options.instrumentations)) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         options.instrumentations.forEach(x => {
             if (x["instrumentationVersion"]) {

@@ -30,11 +30,11 @@
 
 ## How to fix the issue
 
-- You can fix the issue by adding `msw` as a singleton dependency. As mentionned, this is not ideal though. To add `msw` as a singleton dependency, "uncomment" the following block: https://github.com/gsoft-inc/wl-squide/blob/troubleshoot-msw-2.6.0/packages/webpack-configs/src/defineConfig.ts#L81-L84
+- You can fix the issue by adding `msw` as a singleton dependency. As mentionned, this is not ideal though. To add `msw` as a singleton dependency, "uncomment" the following [block](https://github.com/gsoft-inc/wl-squide/blob/troubleshoot-msw-2.6.0/packages/webpack-configs/src/defineConfig.ts#L81-L84).
 
 ## Sample application topology
 
-- The sample application code is located here: https://github.com/gsoft-inc/wl-squide/tree/troubleshoot-msw-2.6.0/samples/endpoints
+- The sample application code is located [here](https://github.com/gsoft-inc/wl-squide/tree/troubleshoot-msw-2.6.0/samples/endpoints)
 
 - (Do not mind the express server, it's a recent addition to test end to end tracing with Honeycomb. It's not configured in a way that should mangle with MSW, at least, to my understanding)
 

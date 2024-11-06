@@ -1,5 +1,9 @@
 # How to reproduce the issue
 
+- Clone the repo: `git clone https://github.com/gsoft-inc/wl-squide.git`
+
+- Checkout the repro branch: `git checkout troubleshoot-msw-2.6.0`
+
 - Install the codebase with PNPM, execute at the root of the monorepo: `pnpm install`
 
 - Compile the core packages of the monorepo by executing at the root of the monorepo: `pnpm dev`

@@ -78,10 +78,10 @@ function getReactRouterSharedDependencies(isHost: boolean): ModuleFederationShar
 
 function getMswSharedDependency(isHost: boolean): ModuleFederationShared {
     return {
-        "msw": {
-            singleton: true,
-            eager: isHost ? true : undefined
-        },
+        // "msw": {
+        //     singleton: true,
+        //     eager: isHost ? true : undefined
+        // },
         "@squide/msw": {
             singleton: true,
             eager: isHost ? true : undefined

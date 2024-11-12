@@ -235,7 +235,7 @@ The [predefined options](#parameters) are useful to quickly customize the [defau
 
 To view the default configuration of `registerHoneycombInstrumentation`, have a look at the [registerHoneycombInstrumentation.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/firefly-honeycomb/src/registerHoneycombInstrumentation.ts) file on GitHub.
 
-### `transformers`
+### Transformers
 
 ```ts
 transformer(options: HoneycombSdkOptions, runtime: FireflyRuntime) => HoneycombSdkOptions;

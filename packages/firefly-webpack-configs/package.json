@@ -61,6 +61,6 @@
         "@workleap/webpack-configs": "1.5.1"
     },
     "engines": {
-        "node": ">=20.0.0"
+        "node": ">=21.1.0"
     }
 }

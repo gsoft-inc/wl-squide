@@ -139,7 +139,7 @@ To deploy the sample application, open a terminal at the root of the repository 
 deploy-basic
 ```
 
-A prompt with a few questions will appear and then the sits will automatically be deployed to production.
+A prompt with a few questions will appear and then the site will automatically be deployed to production.
 
 ### The sample application with "endpoints"
 

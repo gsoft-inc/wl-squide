@@ -123,6 +123,20 @@ When an unmanaged error occurs, it's automatically recorded:
 ![Recorded error](../static/honeycomb-failing-http-request.png)
 :::
 
+### Real User Monitoring (RUM)
+
+The default instrumentation will automatically track the appropriate metrics to display RUM information:
+
+:::align-image-left
+![Largest Contentful Paint](../static/honeycomb-lcp.png){width=536 height=378}
+:::
+:::align-image-left
+![Cumulative Layout Shift](../static/honeycomb-cls.png){width=536 height=378}
+:::
+:::align-image-left
+![Interaction to Next Paint](../static/honeycomb-inp.png){width=532 height=358}
+:::
+
 ## Set custom user attributes
 
 Most application needs to set custom attributes on traces about the current user environment. To help with that, Squide expose the [setGlobalSpanAttributes](../reference/honeycomb/setGlobalSpanAttributes.md) function.

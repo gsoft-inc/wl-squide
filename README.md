@@ -5,6 +5,8 @@ A  modular web application shell built on top of [Module Federation](https://mod
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
 [![CI](https://github.com/gsoft-inc/wl-squide/actions/workflows/ci.yml/badge.svg)](https://github.com/gsoft-inc/wl-squide/actions/workflows/ci.yml)
 
+### Packages
+
 | Name | NPM |
 | --- | --- |
 | [@squide/core](packages/core/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/core)](https://www.npmjs.com/package/@squide/core) |

@@ -53,6 +53,6 @@
     },
     "sideEffects": false,
     "engines": {
-        "node": ">=20.0.0"
+        "node": ">=21.1.0"
     }
 }

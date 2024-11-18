@@ -1,5 +1,11 @@
 # @squide/firefly-honeycomb
 
+## 1.0.2
+
+### Patch Changes
+
+- [#223](https://github.com/gsoft-inc/wl-squide/pull/223) [`8cd47f4`](https://github.com/gsoft-inc/wl-squide/commit/8cd47f4eafe7e9ee83fdeaf8cc4a87b1361c0551) Thanks [@patricklafrance](https://github.com/patricklafrance)! - This package is now a wrapper around `@workleap/honeycomb`.
+
 ## 1.0.1
 
 ### Patch Changes

@@ -60,8 +60,8 @@ await bootstrap(runtime, {
 });
 
 // Register Honeycomb instrumentation.
-registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
-    endpoint: "https://my-collector"
+registerHoneycombInstrumentation(runtime, "squide-sample", [/.+/g,], {
+    endpoint: "https://squide-collector"
 });
 
 const root = createRoot(document.getElementById("root")!);

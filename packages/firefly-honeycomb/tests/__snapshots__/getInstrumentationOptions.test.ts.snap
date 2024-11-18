@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`when debug is false 1`] = `
+{
+  "apiKey": "123",
+  "debug": false,
+  "fetchInstrumentation": [Function],
+}
+`;
+
+exports[`when debug is true 1`] = `
+{
+  "apiKey": "123",
+  "debug": true,
+  "fetchInstrumentation": [Function],
+}
+`;
+
+exports[`when the runtime mode is "development" 1`] = `
+{
+  "apiKey": "123",
+  "debug": true,
+  "fetchInstrumentation": [Function],
+}
+`;
+
+exports[`when the runtime mode is "production" 1`] = `
+{
+  "apiKey": "123",
+  "debug": false,
+  "fetchInstrumentation": [Function],
+}
+`;

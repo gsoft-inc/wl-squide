@@ -17,7 +17,7 @@ const runtime = new FireflyRuntime({
 });
 
 registerHoneycombInstrumentation(runtime, "squide-endpoints-sample", [/http:\/\/localhost:1234\.*/], {
-    apiKey: "123"
+    apiKey: "Twfeq1Fp3t6Xti0goZexZY"
 });
 
 await bootstrap(runtime, {

@@ -5,7 +5,11 @@ toc:
 
 # registerHoneycombInstrumentation
 
-Initializes an instance of [Honeycomb Web SDK](https://docs.honeycomb.io/send-data/javascript-browser/honeycomb-distribution) and registers custom instrumentation to monitor the performance of a Squide application.
+Initialize an instance of [Honeycomb Web SDK](https://docs.honeycomb.io/send-data/javascript-browser/honeycomb-distribution) and registers custom instrumentation to monitor the performance of a Squide application.
+
+!!!info
+This function serves as a wrapper around the [@workleap/honeycomb](https://www.npmjs.com/package/@workleap/honeycomb) library. Before using it, read the documentation for the [registerHoneycombInstrumentation](https://gsoft-inc.github.io/wl-honeycomb-web/reference/registerhoneycombinstrumentation) function provided by `@workleap/honeycomb`.
+!!!
 
 ## Reference
 
@@ -19,39 +23,25 @@ registerHoneycombInstrumentation(runtime, serviceName, apiServiceUrls: [string |
 - `serviceName`: Honeycomb application service name.
 - `apiServiceUrls`: A `RegExp` or `string` that matches the URLs of the application's backend services. If unsure, use the temporary regex `/.+/g,` to match all URLs.
 - `options`: An optional object literal of options:
-    - `endpoint`: An optional URL to an [OpenTelemetry collector](https://docs.honeycomb.io/send-data/opentelemetry/collector/). Either `endpoint` or `apiKey` option must be provided.
-    - `apiKey`: An optional Honeycomb ingestion [API key](https://docs.honeycomb.io/get-started/configure/environments/manage-api-keys/#create-api-key). Either `endpoint` or `apiKey` option must be provided.
-    - `instrumentations`: An optional array of [instrumentation](https://opentelemetry.io/docs/languages/js/instrumentation/) instances.
-    - `spanProcessors`: An optional array of [span processor](https://docs.honeycomb.io/send-data/javascript-browser/honeycomb-distribution/#custom-span-processing) instances.
-    - `fetchInstrumentation`: An optional object literal accepting any [@opentelemetry/instrumentation-fetch](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-instrumentation-fetch#fetch-instrumentation-options) options or `false` to disable instrumentation for [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).
-    - `xmlHttpRequestInstrumentation`: An optional object literal accepting any [@opentelemetry/instrumentation-xml-http-request](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-instrumentation-xml-http-request#xhr-instrumentation-options) options. [XHR](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) instrumentation is disabled by default.
-    - `documentLoadInstrumentation`: An optional object literal accepting any [@opentelemetry/instrumentation-document-load](https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/web/opentelemetry-instrumentation-document-load#document-load-instrumentation-options) options or `false` to disable instrumentation for [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).
-    - `userInteractionInstrumentation`: An optional object literal accepting any [@opentelemetry/instrumentation-user-interaction](https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/web/opentelemetry-instrumentation-user-interaction) options. User interactions instrumentation is disabled by default.
-    - `transformers`: An optional array of [configuration transformers](#configuration-transformers).
+    - Accepts most of the predefined options of the [registerHoneycombInstrumentation](https://gsoft-inc.github.io/wl-honeycomb-web/reference/registerhoneycombinstrumentation) function provided by `@workleap/honeycomb`.
     - `debug`: An optional `boolean` value indicating whether or not to log debug information to the console. `true` by default when the [runtime](../runtime/runtime-class.md) mode is set to `development`.
 
 ### Returns
 
 Nothing
 
-### Default instrumentation
-
-The `registerHoneycombInstrumentation` function registers the following OpenTelemetry instrumentations by default:
-
-- [@opentelemetry/instrumentation-fetch](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-instrumentation-fetch)
-- [@opentelemetry/instrumentation-document-load](https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/web/opentelemetry-instrumentation-document-load)
-
-For more details, refer to the [registerHoneycombInstrumentation.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/firefly-honeycomb/src/registerHoneycombInstrumentation.ts) file on GitHub.
-
 ## Usage
 
 ### Register instrumentation
 
-```ts
+```ts !#6-8
+import { FireflyRuntime } from "@squide/firefly";
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 
-registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
-    endpoint: "https://my-collector"
+const runtime = new FireflyRuntime();
+
+registerHoneycombInstrumentation(runtime, "squide-sample", [/.+/g,], {
+    endpoint: "https://squide-collector"
 });
 ```
 
@@ -64,7 +54,7 @@ Prefer using an [OpenTelemetry collector](https://docs.honeycomb.io/send-data/op
 ```ts !#4
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 
-registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
+registerHoneycombInstrumentation(runtime, "squide-sample", [/.+/g,], {
     apiKey: "xyz123"
 });
 ```
@@ -81,9 +71,51 @@ Specify values for the `apiServiceUrls` argument that matches your application's
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 
 registerHoneycombInstrumentation(
-    runtime, "endpoints-sample", 
+    runtime, "squide-sample", 
     [/https:\/\/workleap.com\/api\.*/], 
-    { endpoint: "https://my-collector" }
+    { endpoint: "https://squide-collector" }
+);
+```
+
+<!-- ### Register instrumentation
+
+```ts
+import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
+
+registerHoneycombInstrumentation(runtime, "squide-sample", [/.+/g,], {
+    endpoint: "https://squide-collector"
+});
+```
+
+### Use an API key
+
+!!!warning
+Prefer using an [OpenTelemetry collector](https://docs.honeycomb.io/send-data/opentelemetry/collector/) over an ingestion [API key](https://docs.honeycomb.io/get-started/configure/environments/manage-api-keys/#create-api-key), as API keys can expose Workleap to potential attacks.
+!!!
+
+```ts !#4
+import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
+
+registerHoneycombInstrumentation(runtime, "squide-sample", [/.+/g,], {
+    apiKey: "xyz123"
+});
+``` -->
+
+<!-- ### Customize backend URLs
+
+!!!warning
+Avoid using `/.+/g,` in production as it could expose customer data to third parties.
+!!!
+
+Specify values for the `apiServiceUrls` argument that matches your application's backend URLs. For example, if your backend services are hosted at `https://workleap.com/api`:
+
+```ts !#5
+import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
+
+registerHoneycombInstrumentation(
+    runtime, "squide-sample", 
+    [/https:\/\/workleap.com\/api\.*/], 
+    { endpoint: "https://squide-collector" }
 );
 ```
 
@@ -93,8 +125,8 @@ registerHoneycombInstrumentation(
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 import { LongTaskInstrumentation } from "@opentelemetry/instrumentation-long-task";
 
-registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
-    endpoint: "https://my-collector",
+registerHoneycombInstrumentation(runtime, "squide-sample", [/.+/g,], {
+    endpoint: "https://squide-collector",
     instrumentations: [
         new LongTaskInstrumentation()
     ]
@@ -127,8 +159,8 @@ export class CustomSpanProcessor implements SpanProcessor {
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 import { CustomSpanProcessor } from "./CustomSpanProcessor.ts";
 
-registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
-    endpoint: "https://my-collector",
+registerHoneycombInstrumentation(runtime, "squide-sample", [/.+/g,], {
+    endpoint: "https://squide-collector",
     spanProcessors: [
         new CustomSpanProcessor()
     ]
@@ -142,8 +174,8 @@ To extend or replace the default [@opentelemetry/instrumentation-fetch](https://
 ```ts !#5-10
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 
-registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
-    endpoint: "https://my-collector",
+registerHoneycombInstrumentation(runtime, "squide-sample", [/.+/g,], {
+    endpoint: "https://squide-collector",
     fetchInstrumentation: (defaultOptions) => {
         return {
             ...defaultOptions,
@@ -158,8 +190,8 @@ registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
 ```ts !#5
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 
-registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
-    endpoint: "https://my-collector",
+registerHoneycombInstrumentation(runtime, "squide-sample", [/.+/g,], {
+    endpoint: "https://squide-collector",
     fetchInstrumentation: false
 });
 ```
@@ -171,8 +203,8 @@ To extend or replace the default [@opentelemetry/instrumentation-document-load](
 ```ts !#5-10
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 
-registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
-    endpoint: "https://my-collector",
+registerHoneycombInstrumentation(runtime, "squide-sample", [/.+/g,], {
+    endpoint: "https://squide-collector",
     documentLoadInstrumentation: (defaultOptions) => {
         return {
             ...defaultOptions,
@@ -187,8 +219,8 @@ registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
 ```ts !#5
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 
-registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
-    endpoint: "https://my-collector",
+registerHoneycombInstrumentation(runtime, "squide-sample", [/.+/g,], {
+    endpoint: "https://squide-collector",
     documentLoadInstrumentation: false
 });
 ```
@@ -200,8 +232,8 @@ By default, [@opentelemetry/instrumentation-xml-http-request](https://github.com
 ```ts !#5-10
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 
-registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
-    endpoint: "https://my-collector",
+registerHoneycombInstrumentation(runtime, "squide-sample", [/.+/g,], {
+    endpoint: "https://squide-collector",
     xmlHttpRequestInstrumentation: (defaultOptions) => {
         return {
             ...defaultOptions,
@@ -218,8 +250,8 @@ By default, [@opentelemetryinstrumentation-user-interaction](https://github.com/
 ```ts !#5-10
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 
-registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
-    endpoint: "https://my-collector",
+registerHoneycombInstrumentation(runtime, "squide-sample", [/.+/g,], {
+    endpoint: "https://squide-collector",
     userInteractionInstrumentation: (defaultOptions) => {
         return {
             ...defaultOptions,
@@ -254,8 +286,8 @@ const skipOptionsValidationTransformer: HoneycombSdkOptionsTransformer = config 
     return config;
 }
 
-registerHoneycombInstrumentation(runtime, "endpoints-sample", [/.+/g,], {
-    endpoint: "https://my-collector",
+registerHoneycombInstrumentation(runtime, "squide-sample", [/.+/g,], {
+    endpoint: "https://squide-collector",
     transformers: [skipOptionsValidationTransformer]
 });
 ```
@@ -274,5 +306,5 @@ const skipOptionsValidationTransformer: HoneycombSdkOptionsTransformer = (config
 
     return config;
 }
-```
+``` -->
 

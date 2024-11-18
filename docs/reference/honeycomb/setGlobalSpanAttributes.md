@@ -7,6 +7,10 @@ toc:
 
 Set global attributes to be included in all Honeycomb Web traces.
 
+!!!info
+This function serves as a wrapper around the [@workleap/honeycomb](https://www.npmjs.com/package/@workleap/honeycomb) library. Before using it, read the documentation for the [setGlobalSpanAttributes](https://gsoft-inc.github.io/wl-honeycomb-web/reference/setglobalspanattributes/) function provided by `@workleap/honeycomb`.
+!!!
+
 ## Reference
 
 ```ts

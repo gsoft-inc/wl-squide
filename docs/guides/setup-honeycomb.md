@@ -226,10 +226,10 @@ export function App() {
 }
 ```
 
-Now, every trace recorded after the session initialization will include the custom attribute `app.user_id`:
+Now, every trace recorded after the session initialization will include the custom attributes `app.user_id`:
 
 :::align-image-left
-![](../static/honeycomb-custom-attributes.png){width=204 height=161}
+![Custom attributes](../static/honeycomb-custom-attributes.png){width=204 height=161}
 :::
 
 ## Custom traces

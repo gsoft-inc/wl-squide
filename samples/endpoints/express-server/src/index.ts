@@ -7,7 +7,7 @@ import cors from "cors";
 import express, { type Request, type Response } from "express";
 
 const sdk = new NodeSDK({
-    serviceName: "endpoints-sample",
+    serviceName: "squide-endpoints-sample",
     traceExporter: new OTLPTraceExporter({
         url: "https://api.honeycomb.io/v1/traces",
         headers: {

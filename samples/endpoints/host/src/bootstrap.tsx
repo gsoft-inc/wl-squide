@@ -16,7 +16,7 @@ const runtime = new FireflyRuntime({
     loggers: [x => new ConsoleLogger(x)]
 });
 
-registerHoneycombInstrumentation(runtime, "endpoints-sample", [/http:\/\/localhost:1234\.*/], {
+registerHoneycombInstrumentation(runtime, "squide-endpoints-sample", [/http:\/\/localhost:1234\.*/], {
     apiKey: "123"
 });
 

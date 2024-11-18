@@ -36,11 +36,7 @@
         "@opentelemetry/auto-instrumentations-web": "*"
     },
     "devDependencies": {
-        "@opentelemetry/instrumentation": "*",
-        "@opentelemetry/instrumentation-document-load": "*",
         "@opentelemetry/instrumentation-fetch": "*",
-        "@opentelemetry/instrumentation-user-interaction": "*",
-        "@opentelemetry/instrumentation-xml-http-request": "*",
         "@opentelemetry/sdk-trace-web": "*",
         "@swc/core": "1.8.0",
         "@swc/jest": "0.2.37",
@@ -59,6 +55,7 @@
     },
     "dependencies": {
         "@squide/firefly": "workspace:*",
+        "@workleap/honeycomb": "1.0.0",
         "uuid": "11.0.2"
     },
     "sideEffects": false,

@@ -6,7 +6,7 @@ import { compilerOptions } from "./tsconfig.json";
 const config: Config = {
     testEnvironment: "jsdom",
     transformIgnorePatterns: [
-        "node_modules/(?!.pnpm|memoize|mimic-function)"
+        "node_modules/(?!.pnpm|memoize|mimic-function|@workleap/honeycomb)"
     ],
     transform: {
         "^.+\\.(js|ts|tsx)$": ["@swc/jest", swcConfig as Record<string, unknown>]

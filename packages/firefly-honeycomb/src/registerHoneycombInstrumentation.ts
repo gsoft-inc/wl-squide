@@ -1,11 +1,6 @@
-import { HoneycombWebSDK } from "@honeycombio/opentelemetry-web";
 import type { Span } from "@opentelemetry/api";
-import { getWebAutoInstrumentations, type InstrumentationConfigMap } from "@opentelemetry/auto-instrumentations-web";
-import type { DocumentLoadInstrumentationConfig } from "@opentelemetry/instrumentation-document-load";
-import type { FetchInstrumentationConfig } from "@opentelemetry/instrumentation-fetch";
-import type { UserInteractionInstrumentationConfig } from "@opentelemetry/instrumentation-user-interaction";
-import type { XMLHttpRequestInstrumentationConfig } from "@opentelemetry/instrumentation-xml-http-request";
-import type { PropagateTraceHeaderCorsUrls, SpanProcessor } from "@opentelemetry/sdk-trace-web";
+import type { FetchCustomAttributeFunction } from "@opentelemetry/instrumentation-fetch";
+import type { PropagateTraceHeaderCorsUrls } from "@opentelemetry/sdk-trace-web";
 import {
     ApplicationBoostrappedEvent,
     ApplicationBootstrappingStartedEvent,
@@ -52,119 +47,65 @@ import {
     type RemoteModulesRegistrationCompletedEventPayload,
     type RemoteModulesRegistrationStartedEventPayload
 } from "@squide/firefly";
+import {
+    registerHoneycombInstrumentation as workleapRegisterHoneycombInstrumentation,
+    type HoneycombSdkOptions,
+    type RegisterHoneycombInstrumentationOptions as WorkleapRegisterHoneycombInstrumentationOptions
+} from "@workleap/honeycomb";
 import { createApplyCustomAttributesOnFetchSpanFunction, registerActiveSpanStack, type ActiveSpan } from "./activeSpan.ts";
-import { applyTransformers, type HoneycombSdkOptionsTransformer } from "./applyTransformers.ts";
-import { globalAttributeSpanProcessor } from "./globalAttributes.ts";
-import type { HoneycombSdkInstrumentations, HoneycombSdkOptions } from "./honeycombTypes.ts";
 import { getTracer } from "./tracer.ts";
 import { endActiveSpan, startActiveChildSpan, startChildSpan, startSpan, traceError } from "./utils.ts";
 
-export type DefineFetchInstrumentationOptionsFunction = (defaultOptions: FetchInstrumentationConfig) => FetchInstrumentationConfig;
-export type DefineXmlHttpRequestInstrumentationOptionsFunction = (defaultOptions: XMLHttpRequestInstrumentationConfig) => XMLHttpRequestInstrumentationConfig;
-export type DefineDocumentLoadInstrumentationOptionsFunction = (defaultOptions: DocumentLoadInstrumentationConfig) => DocumentLoadInstrumentationConfig;
-export type DefineUserInteractionInstrumentationOptionsFunction = (defaultOptions: UserInteractionInstrumentationConfig) => UserInteractionInstrumentationConfig;
+export interface RegisterHoneycombInstrumentationOptions extends WorkleapRegisterHoneycombInstrumentationOptions {}
 
-const defaultDefineFetchInstrumentationOptions: DefineFetchInstrumentationOptionsFunction = defaultOptions => {
-    return defaultOptions;
-};
+function getApplyCustomAttributesOnSpanFunction(activeSpanFunction: FetchCustomAttributeFunction, baseApplyCustomAttributesOnSpanFunction?: FetchCustomAttributeFunction) {
+    let applyCustomAttributesOnSpan: FetchCustomAttributeFunction;
 
-const defaultDefineDocumentLoadInstrumentationOptions: DefineDocumentLoadInstrumentationOptionsFunction = defaultOptions => {
-    return defaultOptions;
-};
+    if (baseApplyCustomAttributesOnSpanFunction) {
+        // If "@workleap/honeycomb" already provides a function, merge both functions.
+        applyCustomAttributesOnSpan = (...args) => {
+            baseApplyCustomAttributesOnSpanFunction(...args);
+            activeSpanFunction(...args);
+        };
+    } else {
+        applyCustomAttributesOnSpan = activeSpanFunction;
+    }
 
-export interface RegisterHoneycombInstrumentationOptions {
-    endpoint?: HoneycombSdkOptions["endpoint"];
-    apiKey?: HoneycombSdkOptions["apiKey"];
-    debug?: HoneycombSdkOptions["debug"];
-    instrumentations?: HoneycombSdkInstrumentations;
-    spanProcessors?: SpanProcessor[];
-    fetchInstrumentation?: false | DefineFetchInstrumentationOptionsFunction;
-    xmlHttpRequestInstrumentation?: false | DefineXmlHttpRequestInstrumentationOptionsFunction;
-    documentLoadInstrumentation?: false | DefineDocumentLoadInstrumentationOptionsFunction;
-    userInteractionInstrumentation?: false | DefineUserInteractionInstrumentationOptionsFunction;
-    transformers?: HoneycombSdkOptionsTransformer[];
+    return applyCustomAttributesOnSpan;
 }
 
-// Must specify the return type, otherwise we get a TS4058: Return type of exported function has or is using name X from external module "XYZ" but cannot be named.
-export function getHoneycombSdkOptions(runtime: FireflyRuntime, serviceName: NonNullable<HoneycombSdkOptions["serviceName"]>, apiServiceUrls: PropagateTraceHeaderCorsUrls, options: RegisterHoneycombInstrumentationOptions = {}): HoneycombSdkOptions {
+export function getInstrumentationOptions(runtime: FireflyRuntime, options: RegisterHoneycombInstrumentationOptions = {}) {
     const {
-        endpoint,
-        apiKey,
-        debug: debugValue,
-        instrumentations = [],
-        spanProcessors = [],
-        fetchInstrumentation = defaultDefineFetchInstrumentationOptions,
-        xmlHttpRequestInstrumentation = false,
-        documentLoadInstrumentation = defaultDefineDocumentLoadInstrumentationOptions,
-        userInteractionInstrumentation = false,
-        transformers = []
+        debug,
+        fetchInstrumentation,
+        ...otherOptions
     } = options;
 
-    // Defaults to the runtime mode.
-    const debug = debugValue ?? runtime.mode === "development";
-
-    if (!endpoint && !apiKey) {
-        throw new Error("[honeycomb] Instrumentation must be initialized with either an \"endpoint\" or \"apiKey\" option.");
-    }
-
-    const instrumentationOptions = {
-        ignoreNetworkEvents: true,
-        propagateTraceHeaderCorsUrls: apiServiceUrls
+    const instrumentationOptions: WorkleapRegisterHoneycombInstrumentationOptions = {
+        ...otherOptions,
+        // Defaults to the runtime mode.
+        debug: debug ?? runtime.mode === "development"
     };
 
-    const autoInstrumentations: InstrumentationConfigMap = {};
+    if (fetchInstrumentation !== false) {
+        instrumentationOptions.fetchInstrumentation = defaultOptions => {
+            const activeSpanFunction = createApplyCustomAttributesOnFetchSpanFunction(runtime.logger);
+            const applyCustomAttributesOnSpan = getApplyCustomAttributesOnSpanFunction(activeSpanFunction, defaultOptions.applyCustomAttributesOnSpan);
 
-    if (fetchInstrumentation) {
-        autoInstrumentations["@opentelemetry/instrumentation-fetch"] = fetchInstrumentation({
-            ...instrumentationOptions,
-            applyCustomAttributesOnSpan: createApplyCustomAttributesOnFetchSpanFunction(runtime.logger)
-        });
-    } else {
-        autoInstrumentations["@opentelemetry/instrumentation-fetch"] = {
-            enabled: false
+            const augmentedDefaultOptions = {
+                ...defaultOptions,
+                applyCustomAttributesOnSpan
+            };
+
+            // If the consumer provides additional options for the fetch instrumentation,
+            // call the consumer function with the augmented options.
+            return fetchInstrumentation ? fetchInstrumentation(augmentedDefaultOptions) : augmentedDefaultOptions;
         };
+    } else {
+        instrumentationOptions.fetchInstrumentation = false;
     }
 
-    if (xmlHttpRequestInstrumentation) {
-        autoInstrumentations["@opentelemetry/instrumentation-xml-http-request"] = xmlHttpRequestInstrumentation({});
-    } else {
-        autoInstrumentations["@opentelemetry/instrumentation-xml-http-request"] = {
-            enabled: false
-        };
-    }
-
-    if (documentLoadInstrumentation) {
-        autoInstrumentations["@opentelemetry/instrumentation-document-load"] = documentLoadInstrumentation(instrumentationOptions);
-    } else {
-        autoInstrumentations["@opentelemetry/instrumentation-document-load"] = {
-            enabled: false
-        };
-    }
-
-    if (userInteractionInstrumentation) {
-        autoInstrumentations["@opentelemetry/instrumentation-user-interaction"] = userInteractionInstrumentation({});
-    } else {
-        autoInstrumentations["@opentelemetry/instrumentation-user-interaction"] = {
-            enabled: false
-        };
-    }
-
-    const sdkOptions = {
-        endpoint: endpoint,
-        apiKey,
-        debug,
-        localVisualizations: debug,
-        serviceName,
-        // Watch out, getWebAutoInstrumentations enables by default all the supported instrumentations.
-        // It's important to disabled those that we don't want.
-        instrumentations: [
-            ...getWebAutoInstrumentations(autoInstrumentations),
-            ...instrumentations
-        ],
-        spanProcessors: [globalAttributeSpanProcessor, ...spanProcessors]
-    } satisfies HoneycombSdkOptions;
-
-    return applyTransformers(sdkOptions, transformers, runtime);
+    return instrumentationOptions;
 }
 
 type DataFetchState = "none" | "fetching-data" | "public-data-ready" | "protected-data-ready" | "data-ready";
@@ -548,9 +489,8 @@ function registerTrackingListeners(runtime: FireflyRuntime) {
 }
 
 export function registerHoneycombInstrumentation(runtime: FireflyRuntime, serviceName: NonNullable<HoneycombSdkOptions["serviceName"]>, apiServiceUrls: PropagateTraceHeaderCorsUrls, options?: RegisterHoneycombInstrumentationOptions) {
-    const sdkOptions = getHoneycombSdkOptions(runtime, serviceName, apiServiceUrls, options);
-    const instance = new HoneycombWebSDK(sdkOptions);
-    instance.start();
+    const augmentedOptions = getInstrumentationOptions(runtime, options);
+    workleapRegisterHoneycombInstrumentation(serviceName, apiServiceUrls, augmentedOptions);
 
     registerTrackingListeners(runtime);
     registerActiveSpanStack();

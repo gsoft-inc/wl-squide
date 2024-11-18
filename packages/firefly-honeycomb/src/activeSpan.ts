@@ -94,7 +94,33 @@ export function popActiveSpan(span: ActiveSpan) {
     }
 }
 
+// // This function should only be used by tests.
+// export function __setLocalModuleRegistry(registry: ModuleRegistry) {
+//     localModuleRegistry = registry as LocalModuleRegistry;
+// }
+
+// // This function should only be used by tests.
+// export function __clearLocalModuleRegistry() {
+//     localModuleRegistry = undefined;
+// }
+
+let mock: FetchCustomAttributeFunction | undefined;
+
+// This function should only be used by tests.
+export function __setActiveSpanMock(fct: FetchCustomAttributeFunction) {
+    mock = fct;
+}
+
+// This function should only be used by tests.
+export function __clearActiveSpanMock() {
+    mock = undefined;
+}
+
 export function createApplyCustomAttributesOnFetchSpanFunction(logger: RuntimeLogger) {
+    if (mock) {
+        return mock;
+    }
+
     const fct: FetchCustomAttributeFunction = (span, request, result) => {
         const activeSpan = getActiveSpan();
 
@@ -102,7 +128,7 @@ export function createApplyCustomAttributesOnFetchSpanFunction(logger: RuntimeLo
             const context = activeSpan.instance.spanContext();
 
             if (context) {
-                logger.debug("[honeycomb] Found a context to apply to the following fetch request: ", context, request, result);
+                logger.debug("[squide] Found a Honeycomb context to apply to the following fetch request: ", context, request, result);
 
                 span.setAttribute("trace.trace_id", context.traceId);
                 span.setAttribute("trace.parent_id", context.spanId);

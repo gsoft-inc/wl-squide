@@ -150,7 +150,7 @@ importers:
         version: 29.7.0
       ts-jest:
         specifier: 29.2.5
-        version: 29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(jest@29.7.0(@types/node@22.9.0)(ts-node@10.9.2(@swc/core@1.8.0)(@types/node@22.9.0)(typescript@5.5.4)))(typescript@5.5.4)
+        version: 29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(esbuild@0.24.0)(jest@29.7.0(@types/node@22.9.0)(ts-node@10.9.2(@swc/core@1.8.0)(@types/node@22.9.0)(typescript@5.5.4)))(typescript@5.5.4)
       tsup:
         specifier: 8.3.5
         version: 8.3.5(@swc/core@1.8.0)(jiti@2.4.0)(postcss@8.4.47)(tsx@4.19.2)(typescript@5.5.4)(yaml@2.6.0)
@@ -257,7 +257,7 @@ importers:
         version: 6.27.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       ts-jest:
         specifier: 29.2.5
-        version: 29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(jest@29.7.0(@types/node@22.9.0)(ts-node@10.9.2(@swc/core@1.8.0)(@types/node@22.9.0)(typescript@5.5.4)))(typescript@5.5.4)
+        version: 29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(esbuild@0.24.0)(jest@29.7.0(@types/node@22.9.0)(ts-node@10.9.2(@swc/core@1.8.0)(@types/node@22.9.0)(typescript@5.5.4)))(typescript@5.5.4)
       tsup:
         specifier: 8.3.5
         version: 8.3.5(@swc/core@1.8.0)(jiti@2.4.0)(postcss@8.4.47)(tsx@4.19.2)(typescript@5.5.4)(yaml@2.6.0)
@@ -279,6 +279,9 @@ importers:
       '@squide/firefly':
         specifier: workspace:*
         version: link:../firefly
+      '@workleap/honeycomb':
+        specifier: 1.0.0
+        version: 1.0.0(@honeycombio/opentelemetry-web@0.8.1(zone.js@0.14.10))(@opentelemetry/api@1.9.0)(@opentelemetry/auto-instrumentations-web@0.42.0(@opentelemetry/api@1.9.0)(zone.js@0.14.10))
       uuid:
         specifier: 11.0.2
         version: 11.0.2
@@ -336,7 +339,7 @@ importers:
         version: 29.7.0
       ts-jest:
         specifier: 29.2.5
-        version: 29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(jest@29.7.0(@types/node@22.9.0)(ts-node@10.9.2(@swc/core@1.8.0)(@types/node@22.9.0)(typescript@5.5.4)))(typescript@5.5.4)
+        version: 29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(esbuild@0.24.0)(jest@29.7.0(@types/node@22.9.0)(ts-node@10.9.2(@swc/core@1.8.0)(@types/node@22.9.0)(typescript@5.5.4)))(typescript@5.5.4)
       tsup:
         specifier: 8.3.5
         version: 8.3.5(@swc/core@1.8.0)(jiti@2.4.0)(postcss@8.4.47)(tsx@4.19.2)(typescript@5.5.4)(yaml@2.6.0)
@@ -400,7 +403,7 @@ importers:
         version: 29.7.0
       ts-jest:
         specifier: 29.2.5
-        version: 29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(jest@29.7.0(@types/node@22.9.0)(ts-node@10.9.2(@swc/core@1.8.0)(@types/node@22.9.0)(typescript@5.5.4)))(typescript@5.5.4)
+        version: 29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(esbuild@0.24.0)(jest@29.7.0(@types/node@22.9.0)(ts-node@10.9.2(@swc/core@1.8.0)(@types/node@22.9.0)(typescript@5.5.4)))(typescript@5.5.4)
       tsup:
         specifier: 8.3.5
         version: 8.3.5(@swc/core@1.8.0)(jiti@2.4.0)(postcss@8.4.47)(tsx@4.19.2)(typescript@5.5.4)(yaml@2.6.0)
@@ -473,7 +476,7 @@ importers:
         version: 15.1.0(i18next@23.16.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       ts-jest:
         specifier: 29.2.5
-        version: 29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(jest@29.7.0(@types/node@22.9.0)(ts-node@10.9.2(@swc/core@1.8.0)(@types/node@22.9.0)(typescript@5.5.4)))(typescript@5.5.4)
+        version: 29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(esbuild@0.24.0)(jest@29.7.0(@types/node@22.9.0)(ts-node@10.9.2(@swc/core@1.8.0)(@types/node@22.9.0)(typescript@5.5.4)))(typescript@5.5.4)
       tsup:
         specifier: 8.3.5
         version: 8.3.5(@swc/core@1.8.0)(jiti@2.4.0)(postcss@8.4.47)(tsx@4.19.2)(typescript@5.5.4)(yaml@2.6.0)
@@ -537,7 +540,7 @@ importers:
         version: 18.3.1(react@18.3.1)
       ts-jest:
         specifier: 29.2.5
-        version: 29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(jest@29.7.0(@types/node@22.9.0)(ts-node@10.9.2(@swc/core@1.8.0)(@types/node@22.9.0)(typescript@5.5.4)))(typescript@5.5.4)
+        version: 29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(esbuild@0.24.0)(jest@29.7.0(@types/node@22.9.0)(ts-node@10.9.2(@swc/core@1.8.0)(@types/node@22.9.0)(typescript@5.5.4)))(typescript@5.5.4)
       tsup:
         specifier: 8.3.5
         version: 8.3.5(@swc/core@1.8.0)(jiti@2.4.0)(postcss@8.4.47)(tsx@4.19.2)(typescript@5.5.4)(yaml@2.6.0)
@@ -650,7 +653,7 @@ importers:
         version: 18.3.1(react@18.3.1)
       ts-jest:
         specifier: 29.2.5
-        version: 29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(jest@29.7.0(@types/node@22.9.0)(ts-node@10.9.2(@swc/core@1.8.0)(@types/node@22.9.0)(typescript@5.5.4)))(typescript@5.5.4)
+        version: 29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(esbuild@0.24.0)(jest@29.7.0(@types/node@22.9.0)(ts-node@10.9.2(@swc/core@1.8.0)(@types/node@22.9.0)(typescript@5.5.4)))(typescript@5.5.4)
       tsup:
         specifier: 8.3.5
         version: 8.3.5(@swc/core@1.8.0)(jiti@2.4.0)(postcss@8.4.47)(tsx@4.19.2)(typescript@5.5.4)(yaml@2.6.0)
@@ -5410,6 +5413,14 @@ packages:
         optional: true
       typescript:
         optional: true
+
+  '@workleap/honeycomb@1.0.0':
+    resolution: {integrity: sha512-gxMNPWuhUrLuKFOLrAiwI8rXCFHsohtTQC/zJUXsHBoBmjRwmnxzMflowjZkocTb0FwPMNq1dEy/tiAef+NjYg==}
+    engines: {node: '>=21.1.0'}
+    peerDependencies:
+      '@honeycombio/opentelemetry-web': '*'
+      '@opentelemetry/api': '*'
+      '@opentelemetry/auto-instrumentations-web': '*'
 
   '@workleap/swc-configs@2.2.3':
     resolution: {integrity: sha512-zrDsorHKxZY4/DlahkWucNm7kH9xAWxsq0WAWAKcCeFiYUX2TqZT+FNKn3Rl2a//MJgEQJlcYD0VaUIZP3J17A==}
@@ -16380,6 +16391,12 @@ snapshots:
       - jest
       - supports-color
 
+  '@workleap/honeycomb@1.0.0(@honeycombio/opentelemetry-web@0.8.1(zone.js@0.14.10))(@opentelemetry/api@1.9.0)(@opentelemetry/auto-instrumentations-web@0.42.0(@opentelemetry/api@1.9.0)(zone.js@0.14.10))':
+    dependencies:
+      '@honeycombio/opentelemetry-web': 0.8.1(zone.js@0.14.10)
+      '@opentelemetry/api': 1.9.0
+      '@opentelemetry/auto-instrumentations-web': 0.42.0(@opentelemetry/api@1.9.0)(zone.js@0.14.10)
+
   '@workleap/swc-configs@2.2.3(@swc/core@1.8.0(@swc/helpers@0.5.13))(@swc/helpers@0.5.13)(@swc/jest@0.2.37(@swc/core@1.8.0(@swc/helpers@0.5.13)))(browserslist@4.24.2)':
     dependencies:
       '@swc/core': 1.8.0(@swc/helpers@0.5.13)
@@ -23353,7 +23370,7 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  ts-jest@29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(jest@29.7.0(@types/node@22.9.0)(ts-node@10.9.2(@swc/core@1.8.0)(@types/node@22.9.0)(typescript@5.5.4)))(typescript@5.5.4):
+  ts-jest@29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(esbuild@0.24.0)(jest@29.7.0(@types/node@22.9.0)(ts-node@10.9.2(@swc/core@1.8.0)(@types/node@22.9.0)(typescript@5.5.4)))(typescript@5.5.4):
     dependencies:
       bs-logger: 0.2.6
       ejs: 3.1.10
@@ -23371,6 +23388,7 @@ snapshots:
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
       babel-jest: 29.7.0(@babel/core@7.26.0)
+      esbuild: 0.24.0
 
   ts-node@10.9.2(@swc/core@1.8.0(@swc/helpers@0.5.13))(@types/node@22.9.0)(typescript@5.5.4):
     dependencies:

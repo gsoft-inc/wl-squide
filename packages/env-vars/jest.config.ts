@@ -1,7 +1,7 @@
 import type { Config } from "jest";
-import { pathsToModuleNameMapper } from "ts-jest";
+// import { pathsToModuleNameMapper } from "ts-jest";
 import { swcConfig } from "./swc.jest.ts";
-import { compilerOptions } from "./tsconfig.json";
+// import { compilerOptions } from "./tsconfig.json";
 
 const config: Config = {
     testEnvironment: "jsdom",
@@ -11,11 +11,11 @@ const config: Config = {
     transform: {
         "^.+\\.(js|ts|tsx)$": ["@swc/jest", swcConfig as Record<string, unknown>]
     },
-    moduleNameMapper: {
-        ...pathsToModuleNameMapper(compilerOptions.paths, {
-            prefix: "<rootDir>"
-        })
-    },
+    // moduleNameMapper: {
+    //     ...pathsToModuleNameMapper(compilerOptions.paths, {
+    //         prefix: "<rootDir>"
+    //     })
+    // },
     cacheDirectory: "./node_modules/.cache/jest"
 };
 

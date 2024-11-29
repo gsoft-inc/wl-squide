@@ -20,7 +20,7 @@
         "lint:types": "pnpm -r --parallel --include-workspace-root exec tsc",
         "changeset": "changeset",
         "publish-pkg": "changeset publish",
-        "clean": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf dist .turbo .netlify node_modules/.cache",
+        "clean": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf dist .turbo .rslib .netlify node_modules/.cache",
         "reset": "pnpm clean && pnpm reset:modules",
         "reset:modules": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf node_modules pnpm-lock.yaml",
         "dev-basic": "turbo run dev --filter=./samples/basic/*",

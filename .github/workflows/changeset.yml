@@ -38,17 +38,25 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Cache turborepo
-        uses: actions/cache@v4
+      - name: Restore Turborepo cache
+        id: cache-turborepo-restore
+        uses: actions/cache/restore@v4
         with:
-          path: node_modules/.cache/turbo
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          key: ${{ runner.os }}-turborepo-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-turbo-
-          save-always: true
+            ${{ runner.os }}-turborepo-
+          path: .turbo
 
       - name: Build packages
         run: pnpm ci-build
+
+      - name: Save Turborepo cache
+        id: cache-turborepo-save
+        if: always() && steps.cache-turborepo-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          key: ${{ steps.cache-turborepo-restore.outputs.cache-primary-key }}
+          path: .turbo
 
       - name: Create release Pull Request or publish to NPM
         uses: changesets/action@v1

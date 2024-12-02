@@ -8,6 +8,12 @@
             "persistent": true,
             "outputMode": "new-only"
         },
+        "dev2": {
+            "dependsOn": ["^dev2"],
+            "cache": false,
+            "persistent": true,
+            "outputMode": "new-only"
+        },
         "build": {
             "dependsOn": ["^build"],
             "outputs": ["dist/**"],

@@ -9,37 +9,36 @@
         "url": "git+https://github.com/gsoft-inc/wl-squide.git",
         "directory": "packages/fakes"
     },
+    "type": "module",
     "publishConfig": {
         "access": "public",
-        "provenance": true
-    },
-    "type": "module",
-    "exports": {
-        ".": {
-            "types": "./dist/index.d.ts",
-            "import": "./dist/index.js",
-            "default": "./dist/index.js"
+        "provenance": true,
+        "exports": {
+            ".": {
+                "types": "./dist/index.d.ts",
+                "import": "./dist/index.js",
+                "default": "./dist/index.js"
+            }
         }
     },
+    "exports": "./src/index.ts",
     "files": [
         "/dist",
         "CHANGELOG.md",
         "README.md"
     ],
     "scripts": {
-        "dev": "tsup --config ./tsup.dev.ts",
-        "build": "tsup --config ./tsup.build.ts"
-    },
-    "devDependencies": {
-        "@workleap/eslint-plugin": "3.2.3",
-        "@workleap/tsup-configs": "3.0.6",
-        "@workleap/typescript-configs": "3.0.2",
-        "eslint": "8.57.0",
-        "tsup": "8.3.5",
-        "typescript": "5.5.4"
+        "build": "rslib build --config ./rslib.build.ts"
     },
     "dependencies": {
         "@squide/core": "workspace:*"
+    },
+    "devDependencies": {
+        "@rslib/core": "0.1.2",
+        "@workleap/eslint-plugin": "3.2.3",
+        "@workleap/typescript-configs": "3.0.2",
+        "eslint": "8.57.0",
+        "typescript": "5.5.4"
     },
     "sideEffects": false,
     "engines": {

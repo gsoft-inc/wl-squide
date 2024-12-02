@@ -14,7 +14,7 @@ export default defineConfig({
         tsconfigPath: "./tsconfig.build.json"
     },
     output: {
-        target: "web",
+        target: "node",
         distPath: {
             root: "./dist"
         },

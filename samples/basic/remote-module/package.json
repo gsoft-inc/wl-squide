@@ -13,6 +13,18 @@
         "serve-build": "pnpm http-server dist -p 8081 -P http://localhost:8081? -c-1",
         "deploy": "netlify deploy --dir=samples/basic/remote-module/dist --site=43234f6e-a884-410e-9b4d-f290459f841f --prod"
     },
+    "dependencies": {
+        "@basic/shared": "workspace:*",
+        "@basic/shell": "workspace:*",
+        "@react-aria/toast": "3.0.0-beta.17",
+        "@react-stately/toast": "3.0.0-beta.6",
+        "@squide/fakes": "workspace:*",
+        "@squide/firefly": "workspace:*",
+        "react": "18.3.1",
+        "react-dom": "18.3.1",
+        "react-router-dom": "6.27.0",
+        "useless-lib": "^2.1.0"
+    },
     "devDependencies": {
         "@squide/firefly-webpack-configs": "workspace:*",
         "@swc/core": "1.8.0",
@@ -33,18 +45,6 @@
         "webpack": "5.96.1",
         "webpack-cli": "5.1.4",
         "webpack-dev-server": "5.1.0"
-    },
-    "dependencies": {
-        "@basic/shared": "workspace:*",
-        "@basic/shell": "workspace:*",
-        "@react-aria/toast": "3.0.0-beta.17",
-        "@react-stately/toast": "3.0.0-beta.6",
-        "@squide/fakes": "workspace:*",
-        "@squide/firefly": "workspace:*",
-        "react": "18.3.1",
-        "react-dom": "18.3.1",
-        "react-router-dom": "6.27.0",
-        "useless-lib": "^2.1.0"
     },
     "engines": {
         "node": ">=21.1.0"

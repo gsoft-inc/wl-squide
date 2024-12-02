@@ -1,9 +1,4 @@
 {
     "extends": "@workleap/typescript-configs/library.json",
-    "compilerOptions": {
-        "paths": {
-            "@squide/webpack-configs": ["../webpack-configs/src/index.ts"]
-        }
-    },
     "exclude": ["dist", "node_modules"]
 }

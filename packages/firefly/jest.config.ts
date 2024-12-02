@@ -1,7 +1,5 @@
 import type { Config } from "jest";
-import { pathsToModuleNameMapper } from "ts-jest";
 import { swcConfig } from "./swc.jest.ts";
-import { compilerOptions } from "./tsconfig.json";
 
 const config: Config = {
     testEnvironment: "jsdom",
@@ -11,11 +9,6 @@ const config: Config = {
     transformIgnorePatterns: [
         "node_modules/(?!.pnpm|memoize|mimic-function)"
     ],
-    moduleNameMapper: {
-        ...pathsToModuleNameMapper(compilerOptions.paths, {
-            prefix: "<rootDir>"
-        })
-    },
     globals: {
         __webpack_share_scopes__: {
             default: {}

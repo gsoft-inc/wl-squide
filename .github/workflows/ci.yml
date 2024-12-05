@@ -1,84 +1,5 @@
 name: CI
 
-# Pnpm setup based on https://github.com/pnpm/action-setup#use-cache-to-reduce-installation-time
-
-on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
-
-env:
-  CI: true
-
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 9
-          run_install: false
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-            node-version: ">=21.1.0"
-            check-latest: true
-            cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Cache Turborepo
-        uses: actions/cache@v4
-        with:
-          path: node_modules/.cache/turbo
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-turbo-
-          save-always: true
-
-      - name: Cache ESLint
-        uses: actions/cache@v4
-        with:
-          path: node_modules/.cache/eslint
-          key: ${{ runner.os }}-eslint-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-eslint-
-          save-always: true
-
-      - name: Cache Knip
-        uses: actions/cache@v4
-        with:
-          path: node_modules/.cache/knip
-          key: ${{ runner.os }}-knip-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-knip-
-          save-always: true
-
-      - name: Cache Jest
-        uses: actions/cache@v4
-        with:
-          path: packages/**/node_modules/.cache/jest
-          key: ${{ runner.os }}-jest-${{ hashFiles('packages/**/node_modules/.cache/jest') }}
-          save-always: true
-
-
-
-
-
-name: CI
-
 # PNPM setup based on https://github.com/pnpm/action-setup#use-cache-to-reduce-installation-time
 
 on:
@@ -135,6 +56,9 @@ jobs:
 
       - name: Build endpoints sample
         run: pnpm ci-build-endpoints
+
+      - name: Build basic webpack sample
+        run: pnpm ci-build-basic-webpack
 
       - name: Lint packages & samples
         run: pnpm lint

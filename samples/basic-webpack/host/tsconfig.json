@@ -1,0 +1,9 @@
+{
+    "extends": "@workleap/typescript-configs/web-application.json",
+    "compilerOptions": {
+        "paths": {
+            "@squide/firefly-webpack-configs": ["../../../packages/firefly-webpack-configs/src/index.ts"]
+        }
+    },
+    "exclude": ["dist", "node_modules"]
+}

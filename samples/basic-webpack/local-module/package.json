@@ -20,29 +20,34 @@
         "react-dom": "*",
         "react-router-dom": "*"
     },
+    "devDependencies": {
+        "@react-aria/toast": "3.0.0-beta.17",
+        "@react-stately/toast": "3.0.0-beta.6",
+        "@squide/firefly-webpack-configs": "workspace:*",
+        "@swc/core": "1.8.0",
+        "@swc/helpers": "0.5.13",
+        "@types/react": "18.3.12",
+        "@types/react-dom": "18.3.1",
+        "@workleap/browserslist-config": "2.0.1",
+        "@workleap/eslint-plugin": "3.2.3",
+        "@workleap/swc-configs": "2.2.3",
+        "@workleap/typescript-configs": "3.0.2",
+        "browserslist": "4.24.2",
+        "eslint": "8.57.0",
+        "nodemon": "3.1.7",
+        "typescript": "5.5.4",
+        "webpack": "5.96.1",
+        "webpack-cli": "5.1.4",
+        "webpack-dev-server": "5.1.0"
+    },
     "dependencies": {
         "@basic/shared": "workspace:*",
         "@basic/shell": "workspace:*",
         "@squide/fakes": "workspace:*",
         "@squide/firefly": "workspace:*",
-        "@types/react": "18.3.12",
-        "@types/react-dom": "18.3.1",
         "react": "18.3.1",
         "react-dom": "18.3.1",
         "react-router-dom": "6.27.0"
-    },
-    "devDependencies": {
-        "@react-aria/toast": "3.0.0-beta.17",
-        "@react-stately/toast": "3.0.0-beta.6",
-        "@rsbuild/core": "1.1.8",
-        "@squide/firefly-rsbuild-configs": "workspace:*",
-        "@workleap/browserslist-config": "2.0.1",
-        "@workleap/eslint-plugin": "3.2.3",
-        "@workleap/typescript-configs": "3.0.2",
-        "browserslist": "4.24.2",
-        "eslint": "8.57.0",
-        "nodemon": "3.1.7",
-        "typescript": "5.5.4"
     },
     "engines": {
         "node": ">=21.1.0"

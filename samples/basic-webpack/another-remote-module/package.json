@@ -1,0 +1,52 @@
+{
+    "name": "@basic-webpack/another-remote-module",
+    "author": "Workleap",
+    "version": "0.0.0",
+    "description": "Another remote module to showcase Squide.",
+    "private": true,
+    "license": "Apache-2.0",
+    "type": "module",
+    "scripts": {
+        "dev": "nodemon",
+        "dev-isolated": "cross-env ISOLATED=true pnpm dev",
+        "build": "webpack --config webpack.build.js",
+        "serve-build": "pnpm http-server dist -p 8082 -P http://localhost:8082? -c-1",
+        "deploy": "netlify deploy --dir=samples/basic/another-remote-module/dist --site=2673b626-74aa-4c03-8a8f-8c794e90fd07 --prod"
+    },
+    "devDependencies": {
+        "@squide/firefly-webpack-configs": "workspace:*",
+        "@swc/core": "1.8.0",
+        "@swc/helpers": "0.5.13",
+        "@types/react": "18.3.12",
+        "@types/react-dom": "18.3.1",
+        "@workleap/browserslist-config": "2.0.1",
+        "@workleap/eslint-plugin": "3.2.3",
+        "@workleap/swc-configs": "2.2.3",
+        "@workleap/typescript-configs": "3.0.2",
+        "browserslist": "4.24.2",
+        "cross-env": "7.0.3",
+        "eslint": "8.57.0",
+        "http-server": "14.1.1",
+        "netlify-cli": "17.37.2",
+        "nodemon": "3.1.7",
+        "typescript": "5.5.4",
+        "webpack": "5.96.1",
+        "webpack-cli": "5.1.4",
+        "webpack-dev-server": "5.1.0"
+    },
+    "dependencies": {
+        "@basic/shared": "workspace:*",
+        "@basic/shell": "workspace:*",
+        "@react-aria/toast": "3.0.0-beta.17",
+        "@react-stately/toast": "3.0.0-beta.6",
+        "@squide/fakes": "workspace:*",
+        "@squide/firefly": "workspace:*",
+        "react": "18.3.1",
+        "react-dom": "18.3.1",
+        "react-router-dom": "6.27.0",
+        "useless-lib": "3.0.0"
+    },
+    "engines": {
+        "node": ">=21.1.0"
+    }
+}

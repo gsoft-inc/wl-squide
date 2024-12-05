@@ -1,4 +1,4 @@
-import type { AppContext } from "@basic/shared";
+import type { AppContext } from "@basic-webpack/shared";
 import type { FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
 
 function registerRoutes(runtime: FireflyRuntime) {

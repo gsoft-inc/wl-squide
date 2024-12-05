@@ -1,5 +1,5 @@
 {
-    "name": "@basic/shell",
+    "name": "@basic-webpack/shell",
     "author": "Workleap",
     "version": "0.0.0",
     "description": "Application shell package to showcase Squide.",
@@ -8,7 +8,7 @@
     "type": "module",
     "exports": "./src/index.ts",
     "peerDependencies": {
-        "@basic/shared": "*",
+        "@basic-webpack/shared": "*",
         "@react-aria/toast": "*",
         "@react-stately/toast": "*",
         "@squide/fakes": "*",
@@ -18,7 +18,7 @@
         "react-router-dom": "*"
     },
     "devDependencies": {
-        "@basic/shared": "workspace:*",
+        "@basic-webpack/shared": "workspace:*",
         "@squide/fakes": "workspace:*",
         "@squide/firefly": "workspace:*",
         "@types/react": "18.3.12",

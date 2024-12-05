@@ -1,6 +1,6 @@
-import { registerLocalModule } from "@basic/local-module";
-import { registerLayouts, type AppContext } from "@basic/shared";
-import { registerShell } from "@basic/shell";
+import { registerLocalModule } from "@basic-webpack/local-module";
+import { registerLayouts, type AppContext } from "@basic-webpack/shared";
+import { registerShell } from "@basic-webpack/shell";
 import { ConsoleLogger, FireflyRuntime, RuntimeContext, bootstrap } from "@squide/firefly";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";

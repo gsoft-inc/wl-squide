@@ -1,4 +1,4 @@
-import { useBackgroundColor } from "@basic/shared";
+import { useBackgroundColor } from "@basic-webpack/shared";
 import { Link } from "react-router-dom";
 
 export function ColoredPage() {

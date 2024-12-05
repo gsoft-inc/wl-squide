@@ -1,4 +1,4 @@
-import { BackgroundColorContext } from "@basic/shared";
+import { BackgroundColorContext } from "@basic-webpack/shared";
 import type { FireflyRuntime, ModuleRegisterFunction } from "@squide/firefly";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

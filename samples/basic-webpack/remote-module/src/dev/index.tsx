@@ -1,5 +1,5 @@
-import { registerLayouts } from "@basic/shared";
-import { registerShell } from "@basic/shell";
+import { registerLayouts } from "@basic-webpack/shared";
+import { registerShell } from "@basic-webpack/shell";
 import { ConsoleLogger, FireflyRuntime, RuntimeContext, bootstrap } from "@squide/firefly";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";

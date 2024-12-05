@@ -1,0 +1,5 @@
+{
+    "watch": ["rsbuild.config.ts"],
+    "exec": "rsbuild dev --config rsbuild.config.ts",
+    "verbose": true
+}

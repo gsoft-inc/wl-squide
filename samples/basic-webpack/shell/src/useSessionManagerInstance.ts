@@ -1,4 +1,4 @@
-import type { Session, SessionManager } from "@basic/shared";
+import type { Session, SessionManager } from "@basic-webpack/shared";
 import { LocalStorageSessionManager } from "@squide/fakes";
 import { useMemo } from "react";
 

@@ -1,4 +1,4 @@
-import { AppRouter } from "@basic/shell";
+import { AppRouter } from "@basic-webpack/shell";
 
 export function App() {
     return <AppRouter />;

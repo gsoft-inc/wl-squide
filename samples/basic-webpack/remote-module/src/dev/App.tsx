@@ -1,5 +1,5 @@
-import { BackgroundColorContext } from "@basic/shared";
-import { AppRouter } from "@basic/shell";
+import { BackgroundColorContext } from "@basic-webpack/shared";
+import { AppRouter } from "@basic-webpack/shell";
 
 export function App() {
     return (

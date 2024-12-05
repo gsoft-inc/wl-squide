@@ -1,4 +1,4 @@
-import { SessionManagerContext, useToastListener } from "@basic/shared";
+import { SessionManagerContext, useToastListener } from "@basic-webpack/shared";
 import { AppRouter as FireflyAppRouter, useIsBootstrapping, useLogger } from "@squide/firefly";
 import { useCallback } from "react";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";

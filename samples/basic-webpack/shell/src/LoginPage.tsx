@@ -1,4 +1,4 @@
-import { useIsAuthenticated, useSessionManager } from "@basic/shared";
+import { useIsAuthenticated, useSessionManager } from "@basic-webpack/shared";
 import { useCallback, useState, type ChangeEvent, type MouseEvent } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 

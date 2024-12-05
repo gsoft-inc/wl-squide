@@ -1,4 +1,4 @@
-import { useIsAuthenticated } from "@basic/shared";
+import { useIsAuthenticated } from "@basic-webpack/shared";
 import { useLogger } from "@squide/firefly";
 import { Navigate, Outlet } from "react-router-dom";
 

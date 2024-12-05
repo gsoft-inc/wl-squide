@@ -1,5 +1,5 @@
 {
-    "name": "@basic/shared",
+    "name": "@basic-webpack/shared",
     "author": "Workleap",
     "version": "0.0.0",
     "description": "Shared package to showcase Squide.",

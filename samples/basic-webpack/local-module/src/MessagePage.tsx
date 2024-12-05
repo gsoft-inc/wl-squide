@@ -1,4 +1,4 @@
-import { useApplicationEventBusDispatcher, useToast } from "@basic/shared";
+import { useApplicationEventBusDispatcher, useToast } from "@basic-webpack/shared";
 import { useCallback, useState, type ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 

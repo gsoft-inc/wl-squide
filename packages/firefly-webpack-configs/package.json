@@ -7,7 +7,7 @@
     "repository": {
         "type": "git",
         "url": "git+https://github.com/gsoft-inc/wl-squide.git",
-        "directory": "packages/firefly-configs"
+        "directory": "packages/firefly-webpack-configs"
     },
     "type": "module",
     "publishConfig": {
@@ -41,7 +41,6 @@
     },
     "dependencies": {
         "@module-federation/enhanced": "0.6.16",
-        "@rslib/core": "0.1.2",
         "@types/node": "22.9.0",
         "@types/semver": "7.5.8",
         "@workleap/webpack-configs": "1.5.1",
@@ -50,6 +49,7 @@
         "semver": "7.6.3"
     },
     "devDependencies": {
+        "@rslib/core": "0.1.2",
         "@swc/core": "1.8.0",
         "@swc/jest": "0.2.37",
         "@types/jest": "29.5.14",

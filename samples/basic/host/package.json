@@ -8,8 +8,8 @@
     "type": "module",
     "scripts": {
         "dev": "nodemon",
-        "build": "pnpm build:webpack && pnpm build:copy-redirects",
-        "build:webpack": "webpack --config webpack.build.js",
+        "build": "pnpm build:rsbuild && pnpm build:copy-redirects",
+        "build:rsbuild": "rsbuild build --config rsbuild.build.ts",
         "build:copy-redirects": "copyfiles _redirects dist",
         "build:copy-public-files": "copyfiles -u 1 public/favicon.png dist",
         "serve-build": "pnpm http-server dist -p 8080 -P http://localhost:8080? -c-1",
@@ -30,14 +30,12 @@
         "useless-lib": "^2.0.0"
     },
     "devDependencies": {
-        "@squide/firefly-webpack-configs": "workspace:*",
-        "@swc/core": "1.8.0",
-        "@swc/helpers": "0.5.13",
+        "@rsbuild/core": "1.1.8",
+        "@squide/firefly-rsbuild-configs": "workspace:*",
         "@types/react": "18.3.12",
         "@types/react-dom": "18.3.1",
         "@workleap/browserslist-config": "2.0.1",
         "@workleap/eslint-plugin": "3.2.3",
-        "@workleap/swc-configs": "2.2.3",
         "@workleap/typescript-configs": "3.0.2",
         "browserslist": "4.24.2",
         "copyfiles": "2.4.1",
@@ -45,10 +43,7 @@
         "http-server": "14.1.1",
         "netlify-cli": "17.37.2",
         "nodemon": "3.1.7",
-        "typescript": "5.5.4",
-        "webpack": "5.96.1",
-        "webpack-cli": "5.1.4",
-        "webpack-dev-server": "5.1.0"
+        "typescript": "5.5.4"
     },
     "engines": {
         "node": ">=21.1.0"

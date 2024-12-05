@@ -1,4 +1,9 @@
 {
     "extends": "@workleap/typescript-configs/library.json",
+    "compilerOptions": {
+        "paths": {
+            "@squide/firefly-rsbuild-configs": ["../../../packages/firefly-rsbuild-configs/src/index.ts"]
+        }
+    },
     "exclude": ["dist", "node_modules"]
 }

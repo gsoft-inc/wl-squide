@@ -13,6 +13,9 @@
         "react": "*",
         "react-dom": "*"
     },
+    "dependencies": {
+        "uuid": "11.0.2"
+    },
     "devDependencies": {
         "@squide/fakes": "workspace:*",
         "@squide/firefly": "workspace:*",
@@ -23,9 +26,6 @@
         "@workleap/typescript-configs": "3.0.2",
         "eslint": "8.57.0",
         "typescript": "5.5.4"
-    },
-    "dependencies": {
-        "uuid": "11.0.2"
     },
     "engines": {
         "node": ">=21.1.0"

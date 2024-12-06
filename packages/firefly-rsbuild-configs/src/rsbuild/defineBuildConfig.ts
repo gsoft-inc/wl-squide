@@ -59,7 +59,7 @@ export function getOptimizationConfig(optimize: OptimizeOption): Optimization {
             ],
             chunkIds: "named",
             moduleIds: "named",
-            mangleExports: false,
+            mangleExports: false
         };
     } else if (optimize) {
         return {

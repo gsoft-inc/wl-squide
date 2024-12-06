@@ -1,4 +1,4 @@
-import { RemoteDefinition } from "@squide/firefly-rsbuild-configs";
+import type { RemoteDefinition } from "@squide/firefly-rsbuild-configs";
 
 export const Remotes: RemoteDefinition[] = [
     {

@@ -14,7 +14,7 @@ if (!process.env.ISOLATED) {
 } else {
     config = defineDevHostConfig(8080, [], {
         entry: {
-            index: path.resolve("./src/dev/index.tsx"),
+            index: path.resolve("./src/dev/index.tsx")
         },
         overlay: false,
         sharedDependencies: getSharedDependencies(true),

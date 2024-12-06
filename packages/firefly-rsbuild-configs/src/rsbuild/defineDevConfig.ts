@@ -1,4 +1,4 @@
-import { defineConfig, type HtmlConfig, type Polyfill, type RsbuildConfig, type RsbuildEntry, type RsbuildPlugins, type ServerConfig, type SourceMap } from "@rsbuild/core";
+import { defineConfig, type HtmlConfig, type RsbuildConfig, type RsbuildEntry, type RsbuildPlugins, type ServerConfig, type SourceMap } from "@rsbuild/core";
 import { pluginBasicSsl } from "@rsbuild/plugin-basic-ssl";
 import { pluginReact, type PluginReactOptions } from "@rsbuild/plugin-react";
 import { pluginSvgr, type PluginSvgrOptions } from "@rsbuild/plugin-svgr";
@@ -22,7 +22,6 @@ export interface DefineDevConfigOptions {
     hmr?: boolean;
     fastRefresh?: boolean;
     sourceMap?: boolean | SourceMap;
-    polyfill?: Polyfill;
     overlay?: false;
     react?: false | DefineDevDefineReactPluginConfigFunction;
     svgr? : false | DefineDevSvgrPluginConfigFunction;
@@ -61,7 +60,6 @@ export function defineDevConfig(options: DefineDevConfigOptions = {}) {
             js: "cheap-module-source-map",
             css: true
         },
-        polyfill = "entry",
         overlay,
         react = defaultDefineReactPluginConfig,
         svgr = defineSvgrPluginConfig,
@@ -105,8 +103,7 @@ export function defineDevConfig(options: DefineDevConfigOptions = {}) {
             // The trailing / is very important, otherwise paths will not be resolved correctly.
             assetPrefix: assetPrefix ?? `${https ? "https" : "http"}://${host}:${port}/`,
             minify: false,
-            sourceMap,
-            polyfill
+            sourceMap
         },
         html: html
             ? html({ template: path.resolve("./public/index.html") })

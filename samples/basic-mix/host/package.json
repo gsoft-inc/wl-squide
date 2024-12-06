@@ -12,7 +12,7 @@
         "build:rsbuild": "rsbuild build --config rsbuild.build.ts",
         "build:copy-redirects": "copyfiles _redirects dist",
         "build:copy-public-files": "copyfiles -u 1 public/favicon.png dist",
-        "serve-build": "pnpm http-server dist -p 8080 -P http://localhost:8080? -c-1"
+        "serve-build": "pnpm http-server dist -p 8083 -P http://localhost:8083? -c-1"
     },
     "dependencies": {
         "@basic-mix/local-module": "workspace:*",

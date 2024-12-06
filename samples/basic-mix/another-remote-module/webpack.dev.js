@@ -8,7 +8,7 @@ import { getSharedDependencies } from "./webpack.common.js";
 let config;
 
 if (!process.env.ISOLATED) {
-    config = defineDevRemoteModuleConfig(swcConfig, "remote2", 8082, {
+    config = defineDevRemoteModuleConfig(swcConfig, "remote2", 8085, {
         sharedDependencies: getSharedDependencies(false),
         environmentVariables: {
             "NETLIFY": process.env.NETLIFY === "true"

@@ -31,7 +31,6 @@
         "serve-basic": "turbo run serve-build --filter=./samples/basic/*",
         "serve-basic2": "pnpm -r --parallel --filter=./samples/basic/* run serve-build",
         "deploy-basic": "cross-env NETLIFY=true turbo run deploy --filter=./samples/basic/*",
-
         "dev-basic-webpack": "turbo run dev --filter=./samples/basic-webpack/*",
         "dev-basic-webpack2": "pnpm -r --parallel --filter=./samples/basic-webpack/* run dev",
         "build-basic-webpack": "turbo run build --filter=./samples/basic-webpack/*",

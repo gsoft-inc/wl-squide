@@ -10,7 +10,7 @@
         "dev": "nodemon",
         "dev-isolated": "cross-env ISOLATED=true pnpm dev",
         "build": "webpack --config webpack.build.js",
-        "serve-build": "pnpm http-server dist -p 8082 -P http://localhost:8082? -c-1"
+        "serve-build": "pnpm http-server dist -p 8088 -P http://localhost:8088? -c-1"
     },
     "dependencies": {
         "@basic-webpack/shared": "workspace:*",

@@ -1,4 +1,4 @@
-import { defineConfig, type DistPathConfig, type HtmlConfig, type Minify, type Polyfill, type RsbuildConfig, type RsbuildEntry, type RsbuildPlugins, type SourceMap } from "@rsbuild/core";
+import { defineConfig, type DistPathConfig, type HtmlConfig, type Minify, type RsbuildConfig, type RsbuildEntry, type RsbuildPlugins, type SourceMap } from "@rsbuild/core";
 import { pluginReact, type PluginReactOptions } from "@rsbuild/plugin-react";
 import { pluginSvgr, type PluginSvgrOptions } from "@rsbuild/plugin-svgr";
 import { SwcJsMinimizerRspackPlugin, type Optimization } from "@rspack/core";
@@ -21,7 +21,6 @@ export interface DefineBuildConfigOptions {
     html?: false | DefineBuildHtmlPluginConfigFunction;
     minify?: Minify;
     sourceMap?: boolean | SourceMap;
-    polyfill?: Polyfill;
     optimize?: OptimizeOption;
     react?: false | DefineBuildDefineReactPluginConfigFunction;
     svgr? : false | DefineBuildSvgrPluginConfigFunction;
@@ -96,7 +95,6 @@ export function defineBuildConfig(options: DefineBuildConfigOptions = {}) {
             js: "source-map",
             css: true
         },
-        polyfill = "entry",
         react = defaultDefineReactPluginConfig,
         optimize = true,
         svgr = defineSvgrPluginConfig,
@@ -138,8 +136,7 @@ export function defineBuildConfig(options: DefineBuildConfigOptions = {}) {
                 assets: "[name].[contenthash:8][ext]"
             },
             minify,
-            sourceMap,
-            polyfill
+            sourceMap
         },
         html: html
             ? html({ template: path.resolve("./public/index.html") })

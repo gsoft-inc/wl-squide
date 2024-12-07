@@ -220,6 +220,11 @@ export function defineHostModuleFederationPluginOptions(remotes: RemoteDefinitio
             path.resolve(packageDirectory, "./nonCacheableRemoteEntryPlugin.js"),
             ...runtimePlugins
         ],
+        // Commented because it doesn't seems to work, the runtime is still embedded into remotes.
+        // experiments: {
+        //     // The runtime is 100kb minified.
+        //     federationRuntime: "hoisted"
+        // },
         ...rest
     };
 }
@@ -342,6 +347,11 @@ export function defineRemoteModuleFederationPluginOptions(applicationName: strin
             path.resolve(packageDirectory, "./nonCacheableRemoteEntryPlugin.js"),
             ...runtimePlugins
         ],
+        // Commented because it doesn't seems to work, the runtime is still embedded into remotes.
+        // experiments: {
+        //     // The runtime is 100kb minified.
+        //     federationRuntime: "hoisted"
+        // },
         ...rest
     };
 }

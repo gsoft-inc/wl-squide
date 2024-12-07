@@ -8,7 +8,9 @@
     "type": "module",
     "exports": "./src/register.tsx",
     "scripts": {
-        "dev-isolated": "nodemon"
+        "dev-isolated": "nodemon",
+        "eslint": "eslint . --max-warnings=-0 --cache --cache-location node_modules/.cache/eslint",
+        "typecheck": "tsc"
     },
     "peerDependencies": {
         "@basic-webpack/shared": "*",

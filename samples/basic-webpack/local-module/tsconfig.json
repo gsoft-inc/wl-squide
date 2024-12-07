@@ -1,6 +1,8 @@
 {
     "extends": "@workleap/typescript-configs/library.json",
     "compilerOptions": {
+        "incremental": true,
+        "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
         "paths": {
             "@squide/firefly-webpack-configs": ["../../../packages/firefly-webpack-configs/src/index.ts"]
         }

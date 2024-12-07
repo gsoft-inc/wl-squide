@@ -1,5 +1,9 @@
 {
     "extends": "@workleap/typescript-configs/library.json",
+    "compilerOptions": {
+        "incremental": true,
+        "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
+    },
     "include": ["src", "types"],
     "exclude": ["dist", "node_modules"]
 }

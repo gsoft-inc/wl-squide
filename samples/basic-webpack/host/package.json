@@ -12,7 +12,9 @@
         "build:webpack": "webpack --config webpack.build.js",
         "build:copy-redirects": "copyfiles _redirects dist",
         "build:copy-public-files": "copyfiles -u 1 public/favicon.png dist",
-        "serve-build": "pnpm http-server dist -p 8086 -P http://localhost:8086? -c-1"
+        "serve-build": "pnpm http-server dist -p 8086 -P http://localhost:8086? -c-1",
+        "eslint": "eslint . --max-warnings=-0 --cache --cache-location node_modules/.cache/eslint",
+        "typecheck": "tsc"
     },
     "dependencies": {
         "@basic-webpack/local-module": "workspace:*",

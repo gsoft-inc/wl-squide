@@ -3,6 +3,8 @@ import path from "node:path";
 import { swcConfig } from "./swc.jest.ts";
 
 const config: Config = {
+    testRegex: "/tests/*/.*\\.test\\.(ts|tsx)$",
+    testPathIgnorePatterns: ["/node_modules/", "/dist/"],
     testEnvironment: "jsdom",
     transformIgnorePatterns: [
         // Must exclude @workleap/webpack-configs from the transform ignore files
@@ -18,7 +20,8 @@ const config: Config = {
     transform: {
         "^.+\\.(js|ts)$": ["@swc/jest", swcConfig as Record<string, unknown>]
     },
-    cacheDirectory: "./node_modules/.cache/jest"
+    cacheDirectory: "./node_modules/.cache/jest",
+    verbose: true
 };
 
 export default config;

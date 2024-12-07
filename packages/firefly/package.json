@@ -28,7 +28,10 @@
         "README.md"
     ],
     "scripts": {
-        "build": "rslib build --config ./rslib.build.ts"
+        "build": "rslib build --config ./rslib.build.ts",
+        "eslint": "eslint . --max-warnings=-0 --cache --cache-location node_modules/.cache/eslint",
+        "typecheck": "tsc",
+        "test": "jest"
     },
     "peerDependencies": {
         "@tanstack/react-query": "*",
@@ -63,6 +66,7 @@
         "react": "18.3.1",
         "react-dom": "18.3.1",
         "react-router-dom": "6.27.0",
+        "ts-node": "10.9.2",
         "typescript": "5.5.4"
     },
     "sideEffects": false,

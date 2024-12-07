@@ -2,6 +2,8 @@ import type { Config } from "jest";
 import { swcConfig } from "./swc.jest.ts";
 
 const config: Config = {
+    testRegex: "/tests/*/.*\\.test\\.(ts|tsx)$",
+    testPathIgnorePatterns: ["/node_modules/", "/dist/"],
     testEnvironment: "jsdom",
     transform: {
         "^.+\\.(js|ts|tsx)$": ["@swc/jest", swcConfig as Record<string, unknown>]
@@ -15,7 +17,8 @@ const config: Config = {
         }
     },
     setupFilesAfterEnv: ["<rootDir>/jest-setup.js"],
-    cacheDirectory: "./node_modules/.cache/jest"
+    cacheDirectory: "./node_modules/.cache/jest",
+    verbose: true
 };
 
 export default config;

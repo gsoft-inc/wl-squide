@@ -7,7 +7,9 @@
     "license": "Apache-2.0",
     "type": "module",
     "scripts": {
-        "dev": "nodemon"
+        "dev": "nodemon",
+        "eslint": "eslint . --max-warnings=-0 --cache --cache-location node_modules/.cache/eslint",
+        "typecheck": "tsc"
     },
     "dependencies": {
         "@opentelemetry/api": "1.9.0",

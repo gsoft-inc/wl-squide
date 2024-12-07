@@ -49,16 +49,19 @@ jobs:
           path: .turbo
 
       - name: Build packages
-        run: pnpm ci-build
+        run: pnpm build-pkg
 
       - name: Build basic sample
-        run: pnpm ci-build-basic
-
-      - name: Build endpoints sample
-        run: pnpm ci-build-endpoints
+        run: pnpm build-basic
 
       - name: Build basic webpack sample
-        run: pnpm ci-build-basic-webpack
+        run: pnpm build-basic-webpack
+
+      - name: Build basic mix sample
+        run: pnpm build-basic-mix
+
+      - name: Build endpoints sample
+        run: pnpm build-endpoints
 
       - name: Lint packages & samples
         run: pnpm lint

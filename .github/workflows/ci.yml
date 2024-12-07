@@ -48,6 +48,9 @@ jobs:
             ${{ runner.os }}-turborepo-
           path: .turbo
 
+      - name: Lint packages & samples
+        run: pnpm lint
+
       - name: Build packages
         run: pnpm build-pkg
 
@@ -62,9 +65,6 @@ jobs:
 
       - name: Build endpoints sample
         run: pnpm build-endpoints
-
-      - name: Lint packages & samples
-        run: pnpm lint
 
       - name: Test packages
         run: pnpm test

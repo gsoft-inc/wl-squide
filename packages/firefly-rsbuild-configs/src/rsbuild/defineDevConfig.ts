@@ -73,6 +73,8 @@ export function defineDevConfig(options: DefineDevConfigOptions = {}) {
     const config: RsbuildConfig = {
         mode: "development",
         dev: {
+            // The trailing / is very important, otherwise paths will not be resolved correctly.
+            assetPrefix: assetPrefix ?? `${https ? "https" : "http"}://${host}:${port}/`,
             lazyCompilation,
             hmr,
             client: (overlay === false || fastRefresh) ? {
@@ -100,8 +102,8 @@ export function defineDevConfig(options: DefineDevConfigOptions = {}) {
         },
         output: {
             target: "web",
-            // The trailing / is very important, otherwise paths will not be resolved correctly.
-            assetPrefix: assetPrefix ?? `${https ? "https" : "http"}://${host}:${port}/`,
+            // // The trailing / is very important, otherwise paths will not be resolved correctly.
+            // assetPrefix: assetPrefix ?? `${https ? "https" : "http"}://${host}:${port}/`,
             minify: false,
             sourceMap
         },

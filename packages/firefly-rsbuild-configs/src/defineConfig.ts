@@ -16,7 +16,7 @@ const packageDirectory = url.fileURLToPath(new URL(".", import.meta.url));
 const RemoteRegisterModuleName = "./register";
 const RemoteEntryPoint = "remoteEntry.js";
 
-// Webpack doesn't export ModuleFederationPlugin typings.
+// Rsbuild doesn't export ModuleFederationPlugin typings.
 export type ModuleFederationPluginOptions = Parameters<typeof pluginModuleFederation>[0];
 export type ModuleFederationRemotesOption = ModuleFederationPluginOptions["remotes"];
 
@@ -150,6 +150,12 @@ function resolveDefaultSharedDependencies(features: Features, isHost: boolean) {
     };
 }
 
+export type DefineModuleFederationPluginOptions = (defaultOptions: ModuleFederationPluginOptions) => ModuleFederationPluginOptions;
+
+function defaultDefineModuleFederationPluginOptions(defaultOptions: ModuleFederationPluginOptions) {
+    return defaultOptions;
+}
+
 const forceNamedChunkIdsTransformer: RsbuildConfigTransformer = (config: RsbuildConfig) => {
     config.tools = config.tools ?? {};
     config.tools.rspack = config.tools.rspack ?? {};
@@ -177,12 +183,11 @@ export interface RemoteDefinition {
     url: string;
 }
 
-export interface DefineHostModuleFederationPluginOptions extends ModuleFederationPluginOptions {
+interface GetDefaultHostModuleFederationPluginOptions extends ModuleFederationPluginOptions {
     features?: Features;
 }
 
-// The function return type is mandatory, otherwise we got an error TS4058.
-export function defineHostModuleFederationPluginOptions(remotes: RemoteDefinition[], options: DefineHostModuleFederationPluginOptions): ModuleFederationPluginOptions {
+function getDefaultHostModuleFederationPluginOptions(remotes: RemoteDefinition[], options: GetDefaultHostModuleFederationPluginOptions) {
     const {
         features = {},
         shared = {},
@@ -229,11 +234,11 @@ export function defineHostModuleFederationPluginOptions(remotes: RemoteDefinitio
     };
 }
 
-export interface DefineDevHostConfigOptions extends Omit<DefineDevConfigOptions, "htmlWebpackPlugin" | "port"> {
+export interface DefineDevHostConfigOptions extends Omit<DefineDevConfigOptions, "port"> {
     features?: Features;
     sharedDependencies?: ModuleFederationShared;
     runtimePlugins?: ModuleFederationRuntimePlugins;
-    moduleFederationPluginOptions?: ModuleFederationPluginOptions;
+    moduleFederationPluginOptions?: DefineModuleFederationPluginOptions;
 }
 
 // The function return type is mandatory, otherwise we got an error TS4058.
@@ -249,7 +254,7 @@ export function defineDevHostConfig(port: number, remotes: RemoteDefinition[], o
         features,
         sharedDependencies,
         runtimePlugins,
-        moduleFederationPluginOptions = defineHostModuleFederationPluginOptions(remotes, { features, shared: sharedDependencies, runtimePlugins }),
+        moduleFederationPluginOptions = defaultDefineModuleFederationPluginOptions,
         ...rsbuildOptions
     } = options;
 
@@ -259,7 +264,9 @@ export function defineDevHostConfig(port: number, remotes: RemoteDefinition[], o
         assetPrefix,
         plugins: [
             ...plugins,
-            pluginModuleFederation(moduleFederationPluginOptions)
+            pluginModuleFederation(
+                moduleFederationPluginOptions(
+                    getDefaultHostModuleFederationPluginOptions(remotes, { features, shared: sharedDependencies, runtimePlugins })))
         ],
         lazyCompilation,
         ...rsbuildOptions
@@ -270,7 +277,7 @@ export interface DefineBuildHostConfigOptions extends DefineBuildConfigOptions {
     features?: Features;
     sharedDependencies?: ModuleFederationShared;
     runtimePlugins?: ModuleFederationRuntimePlugins;
-    moduleFederationPluginOptions?: ModuleFederationPluginOptions;
+    moduleFederationPluginOptions?: DefineModuleFederationPluginOptions;
 }
 
 // The function return type is mandatory, otherwise we got an error TS4058.
@@ -284,7 +291,7 @@ export function defineBuildHostConfig(remotes: RemoteDefinition[], options: Defi
         features,
         sharedDependencies,
         runtimePlugins,
-        moduleFederationPluginOptions = defineHostModuleFederationPluginOptions(remotes, { features, shared: sharedDependencies, runtimePlugins }),
+        moduleFederationPluginOptions = defaultDefineModuleFederationPluginOptions,
         transformers = [],
         ...webpackOptions
     } = options;
@@ -294,7 +301,9 @@ export function defineBuildHostConfig(remotes: RemoteDefinition[], options: Defi
         assetPrefix,
         plugins: [
             ...plugins,
-            pluginModuleFederation(moduleFederationPluginOptions)
+            pluginModuleFederation(
+                moduleFederationPluginOptions(
+                    getDefaultHostModuleFederationPluginOptions(remotes, { features, shared: sharedDependencies, runtimePlugins })))
         ],
         transformers: [
             forceNamedChunkIdsTransformer,
@@ -306,12 +315,11 @@ export function defineBuildHostConfig(remotes: RemoteDefinition[], options: Defi
 
 ////////////////////////////  Remote  /////////////////////////////
 
-export interface DefineRemoteModuleFederationPluginOptions extends ModuleFederationPluginOptions {
+interface GetDefaultRemoteModuleFederationPluginOptions extends ModuleFederationPluginOptions {
     features?: Features;
 }
 
-// The function return type is mandatory, otherwise we got an error TS4058.
-export function defineRemoteModuleFederationPluginOptions(applicationName: string, options: DefineRemoteModuleFederationPluginOptions): ModuleFederationPluginOptions {
+function getDefaultRemoteModuleFederationPluginOptions(applicationName: string, options: GetDefaultRemoteModuleFederationPluginOptions) {
     const {
         features = {},
         exposes = {},
@@ -360,7 +368,7 @@ export interface DefineDevRemoteModuleConfigOptions extends Omit<DefineDevConfig
     features?: Features;
     sharedDependencies?: ModuleFederationShared;
     runtimePlugins?: ModuleFederationRuntimePlugins;
-    moduleFederationPluginOptions?: ModuleFederationPluginOptions;
+    moduleFederationPluginOptions?: DefineModuleFederationPluginOptions;
 }
 
 // The function return type is mandatory, otherwise we got an error TS4058.
@@ -377,7 +385,7 @@ export function defineDevRemoteModuleConfig(applicationName: string, port: numbe
         features,
         sharedDependencies,
         runtimePlugins,
-        moduleFederationPluginOptions = defineRemoteModuleFederationPluginOptions(applicationName, { features, shared: sharedDependencies, runtimePlugins }),
+        moduleFederationPluginOptions = defaultDefineModuleFederationPluginOptions,
         ...rsbuildOptions
     } = options;
 
@@ -390,7 +398,9 @@ export function defineDevRemoteModuleConfig(applicationName: string, port: numbe
         overlay: false,
         plugins: [
             ...plugins,
-            pluginModuleFederation(moduleFederationPluginOptions)
+            pluginModuleFederation(
+                moduleFederationPluginOptions(
+                    getDefaultRemoteModuleFederationPluginOptions(applicationName, { features, shared: sharedDependencies, runtimePlugins })))
         ],
         lazyCompilation,
         html,
@@ -402,7 +412,7 @@ export interface DefineBuildRemoteModuleConfigOptions extends DefineBuildConfigO
     features?: Features;
     sharedDependencies?: ModuleFederationShared;
     runtimePlugins?: ModuleFederationRuntimePlugins;
-    moduleFederationPluginOptions?: ModuleFederationPluginOptions;
+    moduleFederationPluginOptions?: DefineModuleFederationPluginOptions;
 }
 
 // The function return type is mandatory, otherwise we got an error TS4058.
@@ -417,7 +427,7 @@ export function defineBuildRemoteModuleConfig(applicationName: string, options: 
         features,
         sharedDependencies,
         runtimePlugins,
-        moduleFederationPluginOptions = defineRemoteModuleFederationPluginOptions(applicationName, { features, shared: sharedDependencies, runtimePlugins }),
+        moduleFederationPluginOptions = defaultDefineModuleFederationPluginOptions,
         transformers = [],
         ...rsbuildOptions
     } = options;
@@ -427,7 +437,9 @@ export function defineBuildRemoteModuleConfig(applicationName: string, options: 
         assetPrefix,
         plugins: [
             ...plugins,
-            pluginModuleFederation(moduleFederationPluginOptions)
+            pluginModuleFederation(
+                moduleFederationPluginOptions(
+                    getDefaultRemoteModuleFederationPluginOptions(applicationName, { features, shared: sharedDependencies, runtimePlugins })))
         ],
         html,
         transformers: [

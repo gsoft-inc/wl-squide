@@ -401,6 +401,10 @@ export default defineDevHostConfig(swcConfig, 8080, Remotes);
 
 > If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) documentation.
 
+!!!warning
+If your application _**does not**_ not include any remote modules, use the [defineDevConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) function instead of [defineDevHostConfig](../reference/webpack/defineDevHostConfig.md).
+!!!
+
 ### Build configuration
 
 To configure webpack for a **build** environment, first open the `swc.build.js` file and copy/paste the following code:
@@ -434,6 +438,10 @@ export default defineBuildHostConfig(swcConfig, Remotes);
 ```
 
 > If you are having issues with the wepack configuration that are not related to module federation, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/) documentation.
+
+!!!warning
+If your application _**does not**_ not include any remote modules, use the [defineBuildConfig](https://gsoft-inc.github.io/wl-web-configs/rsbuild/configure-build/) function instead of [defineBuildHostConfig](../reference/webpack/defineBuildHostConfig.md).
+!!!
 
 ## Add CLI scripts
 

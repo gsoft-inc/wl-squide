@@ -9,11 +9,11 @@ toc:
 Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a Squide host application in **development** mode.
 
 !!!warning
-If your application _**does not**_ not include any remote modules, use the [defineDevConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) function instead of `defineDevHostConfig`.
+If your application _**does not**_ not include any remote modules, use the [defineDevConfig](https://gsoft-inc.github.io/wl-web-configs/rsbuild/configure-dev/) function instead of `defineDevHostConfig`.
 !!!
 
 !!!info
-This function is a wrapper built on top of [@workleap/webpack-configs](https://www.npmjs.com/package/@workleap/webpack-configs). Make sure to read the [defineDevConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) documentation first.
+This function is a wrapper built on top of [@workleap/rsbuild-configs](https://www.npmjs.com/package/@workleap/webpack-configs). Make sure to read the [defineDevConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/) documentation first.
 !!!
 
 ## Reference
@@ -53,7 +53,7 @@ The `defineDevHostConfig` function will add the following shared dependencies as
 - [@squide/module-federation](https://www.npmjs.com/package/@squide/module-federation)
 - [@squide/msw](https://www.npmjs.com/package/@squide/msw)
 
-For the full shared dependencies configuration, have a look at the [defineConfig.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/firefly-webpack-configs/src/defineConfig.ts) file on Github.
+For the full shared dependencies configuration, have a look at the [defineConfig.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/firefly-rsbuild-configs/src/defineConfig.ts) file on Github.
 
 ## Usage
 
@@ -233,7 +233,7 @@ export default defineDevHostConfig(swcConfig, 8080, Remotes, {
 
 The `name` option of a remote definition **must match** the `name` option defined in the remote module [ModuleFederationPlugin](https://module-federation.io/configure/index.html) configuration.
 
-If you are relying on the Squide [defineDevRemoteModuleConfig](./defineDevRemoteModuleConfig.md) function to add the `ModuleFederationPlugin` to the remote module webpack [configuration object](https://webpack.js.org/concepts/configuration/), then the remote module `name` is the second argument of the function.
+If you are relying on the Squide [defineDevRemoteModuleConfig](../webpack/defineDevRemoteModuleConfig.md) function to add the `ModuleFederationPlugin` to the remote module webpack [configuration object](https://module-federation.io/), then the remote module `name` is the second argument of the function.
 
 In the following exemple, the remote module `name` is `remote1`.
 

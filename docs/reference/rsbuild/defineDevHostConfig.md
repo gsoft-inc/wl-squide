@@ -9,7 +9,7 @@ toc:
 Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a Squide host application in **development** mode.
 
 !!!warning
-If your application _**does not**_ not include any remote modules, use the [defineDevConfig](https://gsoft-inc.github.io/wl-web-configs/rsbuild/configure-dev/) function instead of `defineDevHostConfig`.
+If the application _**does not**_ not include any remote modules, use the [defineDevConfig](https://gsoft-inc.github.io/wl-web-configs/rsbuild/configure-dev/) function instead of `defineDevHostConfig`.
 !!!
 
 !!!info

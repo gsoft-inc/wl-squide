@@ -9,7 +9,7 @@ toc:
 Creates an Rsbuild [configuration object](https://rsbuild.dev/config/index) that is adapted for a Squide host application in **build** mode.
 
 !!!warning
-If your application _**does not**_ not include any remote modules, use the [defineBuildConfig](https://gsoft-inc.github.io/wl-web-configs/rsbuild/configure-build/) function instead of `defineBuildHostConfig`.
+If the application _**does not**_ not include any remote modules, use the [defineBuildConfig](https://gsoft-inc.github.io/wl-web-configs/rsbuild/configure-build/) function instead of `defineBuildHostConfig`.
 !!!
 
 !!!info

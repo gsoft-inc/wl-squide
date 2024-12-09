@@ -250,6 +250,10 @@ After:
 }
 ```
 
+### Try it :rocket:
+
+Start the application in a development environment using the `dev` script. Everything should run smoothly and you should see the homepage of your application. Even if the remote modules of your application are still bundled with webpack, they should be available.
+
 ## Remote module
 
 ### Update packages
@@ -297,7 +301,7 @@ While you can use any package manager to develop an application with Squide, it 
 ### Update files
 
 ```
-host
+remote-module
 ├── public
 ├── src
 ├── webpack.dev.js     -->  rsbuild.dev.ts
@@ -477,6 +481,10 @@ After:
 }
 ```
 
+### Try it :rocket:
+
+Start the host application and the migrated remote module in development mode using the `dev` script. Everything should run smoothly and you should see the homepage of your application. Even if the host application is still bundled with webpack, the application should be available.
+
 ## Local module
 
 ### Update packages
@@ -524,7 +532,7 @@ While you can use any package manager to develop an application with Squide, it 
 ### Update files
 
 ```
-host
+local-module
 ├── public
 ├── src
 ├── webpack.config.js  -->  rsbuild.config.ts
@@ -595,6 +603,10 @@ After:
     "dev-isolated": "rsbuild dev --config rsbuild.config.ts"
 }
 ```
+
+### Try it :rocket:
+
+Start the host application and the migrated local module in development mode using the `dev` script. Everything should run smoothly and you should see the homepage of your application. Even if the host application is still bundled with webpack, the application should be available.
 
 ## Sample applications
 

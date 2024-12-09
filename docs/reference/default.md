@@ -67,6 +67,13 @@ toc:
 - [defineBuildHostConfig](./webpack/defineBuildHostConfig.md)
 - [defineBuildRemoteModuleConfig](./webpack/defineBuildRemoteModuleConfig.md)
 
+### Rsbuild
+
+- [defineDevHostConfig](./rsbuild/defineDevHostConfig.md) [!badge variant="danger" size="xs" text="experimental"]
+- [defineDevRemoteModuleConfig](./rsbuild/defineDevRemoteModuleConfig.md) [!badge variant="danger" size="xs" text="experimental"]
+- [defineBuildHostConfig](./rsbuild/defineBuildHostConfig.md) [!badge variant="danger" size="xs" text="experimental"]
+- [defineBuildRemoteModuleConfig](./rsbuild/defineBuildRemoteModuleConfig.md) [!badge variant="danger" size="xs" text="experimental"]
+
 ### TanStack Query
 
 - [usePublicDataQueries](./tanstack-query/usePublicDataQueries.md)

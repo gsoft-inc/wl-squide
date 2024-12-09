@@ -204,7 +204,7 @@ const Remotes: RemoteDefinition[] = [
 ];
 ```
 
-```ts !#3 remote-module/rsbuild.build.ts
+```ts remote-module/rsbuild.build.ts
 import { defineBuildRemoteModuleConfig } from "@squide/firefly-rsbuild-configs";
 
 export default defineBuildRemoteModuleConfig("remote1");

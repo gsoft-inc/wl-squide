@@ -204,7 +204,7 @@ const Remotes: RemoteDefinition[] = [
 ];
 ```
 
-```ts !#3 remote-module/rsbuild.dev.ts
+```ts remote-module/rsbuild.dev.ts
 import { defineDevRemoteModuleConfig } from "@squide/firefly-rsbuild-configs";
 
 export default defineDevRemoteModuleConfig("remote1", 8081);
@@ -216,7 +216,7 @@ The `url` option of a remote definition **must match** the [assetPrefix](https:/
 
 In the following exemple, the remote module `assetPrefix` is `http://localhost:8081`.
 
-```ts !#5 host/rsbuild.dev.ts
+```ts !#4 host/rsbuild.dev.ts
 import type { RemoteDefinition } from "@squide/firefly-rsbuild-configs";
 
 const Remotes: RemoteDefinition[] = [
@@ -226,7 +226,7 @@ const Remotes: RemoteDefinition[] = [
 
 The `assetPrefix` is built from the provided `host` and `port` values. Therefore, if the port value is `8081`, then the generated `assetPrefix` would be `http://localhost:8081`:
 
-```ts !#6-8 remote-module/rsbuild.dev.ts
+```ts remote-module/rsbuild.dev.ts
 import { defineDevRemoteModuleConfig } from "@squide/firefly-rsbuild-configs";
 
 export default defineDevRemoteModuleConfig("remote1", 8081, {

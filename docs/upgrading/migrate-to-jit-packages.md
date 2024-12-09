@@ -11,7 +11,7 @@ Using [Just-in-Time packages](https://www.shew.dev/monorepos/packaging/jit) is a
 
 To migrate your library projects (e.g., utility packages, shared packages, local modules, etc.) to JIT packages, based on your project type, execute the following steps :point_down:
 
-## Internal project
+## Internal package
 
 ### Remove packages
 
@@ -65,32 +65,35 @@ After:
 "exports": "./src/index.ts"
 ```
 
-<!-- If the library project is intended to be published to a package registry like [NPM](https://www.npmjs.com/), move the original value of the `export` field to the [publishConfig](https://pnpm.io/package_json#publishconfig) field.
+#### `tsconfig.json`
+
+Open the `tsconfig.json` file and remove the `compilerOptions.paths` entries for library projects that enabled are Just-In-Time.
 
 Before:
 
-```json package.json
-"publishConfig": {
-    "access": "public",
-    "provenance": true
+```json !#4-9 tsconfig.json
+{
+    "extends": "@workleap/typescript-configs/library.json",
+    "compilerOptions": {
+        "paths": {
+            "@squide/core": ["../core/src/index.ts"],
+            "@squide/react-router": ["../react-router/src/index.ts"],
+            "@squide/module-federation": ["../module-federation/src/index.ts"],
+            "@squide/msw": ["../msw/src/index.ts"]
+        }
+    },
+    "exclude": ["dist", "node_modules"]
 }
 ```
 
 After:
 
-```json package.json
-"publishConfig": {
-    "access": "public",
-    "provenance": true,
-    "exports": {
-        ".": {
-            "import": "./dist/index.js",
-            "types": "./dist/index.d.ts",
-            "default": "./dist/index.js"
-        }
-    }
+```json tsconfig.json
+{
+    "extends": "@workleap/typescript-configs/library.json",
+    "exclude": ["dist", "node_modules"]
 }
-``` -->
+```
 
 #### `tsup.build.ts`
 
@@ -187,6 +190,36 @@ After:
 
 ```json package.json
 "exports": "./src/index.ts"
+```
+
+#### `tsconfig.json`
+
+Open the `tsconfig.json` file and remove the `compilerOptions.paths` entries for library projects that enabled are Just-In-Time.
+
+Before:
+
+```json !#4-9 tsconfig.json
+{
+    "extends": "@workleap/typescript-configs/library.json",
+    "compilerOptions": {
+        "paths": {
+            "@squide/core": ["../core/src/index.ts"],
+            "@squide/react-router": ["../react-router/src/index.ts"],
+            "@squide/module-federation": ["../module-federation/src/index.ts"],
+            "@squide/msw": ["../msw/src/index.ts"]
+        }
+    },
+    "exclude": ["dist", "node_modules"]
+}
+```
+
+After:
+
+```json tsconfig.json
+{
+    "extends": "@workleap/typescript-configs/library.json",
+    "exclude": ["dist", "node_modules"]
+}
 ```
 
 #### `tsup.dev.ts`

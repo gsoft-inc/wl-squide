@@ -5,7 +5,6 @@ import { swcConfig } from "./swc.jest.ts";
 const config: Config = {
     testRegex: "/tests/*/.*\\.test\\.(ts|tsx)$",
     testPathIgnorePatterns: ["/node_modules/", "/dist/"],
-    testEnvironment: "jsdom",
     transformIgnorePatterns: [
         // Must exclude @workleap/webpack-configs from the transform ignore files
         // because it's an ESM only project which must be processed by SWC.

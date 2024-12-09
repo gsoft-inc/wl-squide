@@ -1,5 +1,5 @@
 import { pluginModuleFederation } from "@module-federation/rsbuild-plugin";
-import type { RsbuildConfig } from "@rsbuild/core";
+import type { RsbuildConfig, RsbuildPlugin } from "@rsbuild/core";
 import merge from "deepmerge";
 import path from "node:path";
 import url from "node:url";
@@ -22,6 +22,28 @@ export type ModuleFederationRemotesOption = ModuleFederationPluginOptions["remot
 
 export type ModuleFederationRuntimePlugins = NonNullable<ModuleFederationPluginOptions["runtimePlugins"]>;
 export type ModuleFederationShared = NonNullable<ModuleFederationPluginOptions["shared"]>;
+
+export type ModuleFederationPluginFactory = (moduleFederationOptions: ModuleFederationPluginOptions) => RsbuildPlugin;
+
+let moduleFederationPluginFactory: ModuleFederationPluginFactory | undefined;
+
+function createModuleFederationPlugin(moduleFederationOptions: ModuleFederationPluginOptions) {
+    if (!moduleFederationPluginFactory) {
+        return pluginModuleFederation(moduleFederationOptions);
+    }
+
+    return moduleFederationPluginFactory(moduleFederationOptions);
+}
+
+// This function should only be used by tests.
+export function __setModuleFederationPluginFactory(factory: ModuleFederationPluginFactory) {
+    moduleFederationPluginFactory = factory;
+}
+
+// This function should only be used by tests.
+export function __clearModuleFederationPluginFactory() {
+    moduleFederationPluginFactory = undefined;
+}
 
 // Generally, only the host application should have eager dependencies.
 // For more informations about shared dependencies refer to: https://github.com/patricklafrance/wmf-versioning
@@ -264,7 +286,7 @@ export function defineDevHostConfig(port: number, remotes: RemoteDefinition[], o
         assetPrefix,
         plugins: [
             ...plugins,
-            pluginModuleFederation(
+            createModuleFederationPlugin(
                 moduleFederationPluginOptions(
                     getDefaultHostModuleFederationPluginOptions(remotes, { features, shared: sharedDependencies, runtimePlugins })))
         ],
@@ -301,7 +323,7 @@ export function defineBuildHostConfig(remotes: RemoteDefinition[], options: Defi
         assetPrefix,
         plugins: [
             ...plugins,
-            pluginModuleFederation(
+            createModuleFederationPlugin(
                 moduleFederationPluginOptions(
                     getDefaultHostModuleFederationPluginOptions(remotes, { features, shared: sharedDependencies, runtimePlugins })))
         ],
@@ -398,7 +420,7 @@ export function defineDevRemoteModuleConfig(applicationName: string, port: numbe
         overlay: false,
         plugins: [
             ...plugins,
-            pluginModuleFederation(
+            createModuleFederationPlugin(
                 moduleFederationPluginOptions(
                     getDefaultRemoteModuleFederationPluginOptions(applicationName, { features, shared: sharedDependencies, runtimePlugins })))
         ],
@@ -437,7 +459,7 @@ export function defineBuildRemoteModuleConfig(applicationName: string, options: 
         assetPrefix,
         plugins: [
             ...plugins,
-            pluginModuleFederation(
+            createModuleFederationPlugin(
                 moduleFederationPluginOptions(
                     getDefaultRemoteModuleFederationPluginOptions(applicationName, { features, shared: sharedDependencies, runtimePlugins })))
         ],

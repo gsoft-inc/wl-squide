@@ -154,6 +154,30 @@ describe("defineDevHostConfig", () => {
         expect(prepareModuleFederationPluginForSnapshot(result.plugin as WebpackPluginInstance)).toMatchSnapshot();
     });
 
+    test("when honeycomb is activated, add honeycomb shared dependency and requiredVersion: false to the react shared dependency definition", () => {
+        const config = defineDevHostConfig(SwcConfig, 8080, [], {
+            features: {
+                honeycomb: true
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(ModuleFederationPlugin.name));
+
+        expect(prepareModuleFederationPluginForSnapshot(result.plugin as WebpackPluginInstance)).toMatchSnapshot();
+    });
+
+    test("when environmentVariables is activated, add env-vars shared dependency and requiredVersion: false to the react shared dependency definition", () => {
+        const config = defineDevHostConfig(SwcConfig, 8080, [], {
+            features: {
+                environmentVariables: true
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(ModuleFederationPlugin.name));
+
+        expect(prepareModuleFederationPluginForSnapshot(result.plugin as WebpackPluginInstance)).toMatchSnapshot();
+    });
+
     test("when additional plugins are provided, the plugins are added to the configuration", () => {
         const config = defineDevHostConfig(SwcConfig, 8080, [], {
             plugins: [new DummyPlugin({})]
@@ -326,6 +350,30 @@ describe("defineBuildHostConfig", () => {
         const config = defineBuildHostConfig(SwcConfig, [], {
             features: {
                 i18next: true
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(ModuleFederationPlugin.name));
+
+        expect(prepareModuleFederationPluginForSnapshot(result.plugin as WebpackPluginInstance)).toMatchSnapshot();
+    });
+
+    test("when honeycomb is activated, add honeycomb shared dependency and requiredVersion: false to the react shared dependency definition", () => {
+        const config = defineBuildHostConfig(SwcConfig, [], {
+            features: {
+                honeycomb: true
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(ModuleFederationPlugin.name));
+
+        expect(prepareModuleFederationPluginForSnapshot(result.plugin as WebpackPluginInstance)).toMatchSnapshot();
+    });
+
+    test("when environmentVariables is env-vars, add env-vars shared dependency and requiredVersion: false to the react shared dependency definition", () => {
+        const config = defineBuildHostConfig(SwcConfig, [], {
+            features: {
+                environmentVariables: true
             }
         });
 
@@ -514,6 +562,30 @@ describe("defineDevRemoteModuleConfig", () => {
         expect(prepareModuleFederationPluginForSnapshot(result.plugin as WebpackPluginInstance)).toMatchSnapshot();
     });
 
+    test("when honeycomb is activated, add honeycomb shared dependency and requiredVersion: false to the react shared dependency definition", () => {
+        const config = defineBuildHostConfig(SwcConfig, [], {
+            features: {
+                honeycomb: true
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(ModuleFederationPlugin.name));
+
+        expect(prepareModuleFederationPluginForSnapshot(result.plugin as WebpackPluginInstance)).toMatchSnapshot();
+    });
+
+    test("when environmentVariables is activated, add env-vars shared dependency and requiredVersion: false to the react shared dependency definition", () => {
+        const config = defineBuildHostConfig(SwcConfig, [], {
+            features: {
+                environmentVariables: true
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(ModuleFederationPlugin.name));
+
+        expect(prepareModuleFederationPluginForSnapshot(result.plugin as WebpackPluginInstance)).toMatchSnapshot();
+    });
+
     test("access control headers are added to the dev server configuration", () => {
         const result = defineDevRemoteModuleConfig(SwcConfig, "remote1", 8081);
 
@@ -644,6 +716,30 @@ describe("defineBuildRemoteModuleConfig", () => {
         const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", {
             features: {
                 i18next: true
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(ModuleFederationPlugin.name));
+
+        expect(prepareModuleFederationPluginForSnapshot(result.plugin as WebpackPluginInstance)).toMatchSnapshot();
+    });
+
+    test("when honeycomb is activated, add honeycomb shared dependency and requiredVersion: false to the react shared dependency definition", () => {
+        const config = defineDevRemoteModuleConfig(SwcConfig, "remote1", 8081, {
+            features: {
+                honeycomb: true
+            }
+        });
+
+        const result = findPlugin(config, matchConstructorName(ModuleFederationPlugin.name));
+
+        expect(prepareModuleFederationPluginForSnapshot(result.plugin as WebpackPluginInstance)).toMatchSnapshot();
+    });
+
+    test("when environmentVariables is activated, add env-vars shared dependency and requiredVersion: false to the react shared dependency definition", () => {
+        const config = defineDevRemoteModuleConfig(SwcConfig, "remote1", 8081, {
+            features: {
+                environmentVariables: true
             }
         });
 

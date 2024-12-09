@@ -31,10 +31,11 @@
         "build": "rslib build --config ./rslib.build.ts",
         "eslint": "eslint . --max-warnings=-0 --cache --cache-location node_modules/.cache/eslint",
         "typecheck": "tsc",
-        "test": "jest"
+        "test": "jest -u"
     },
     "peerDependencies": {
-        "@rsbuild/core": "*"
+        "@rsbuild/core": "*",
+        "@rspack/core": "*"
     },
     "dependencies": {
         "@module-federation/enhanced": "0.8.1",
@@ -59,7 +60,6 @@
         "@workleap/typescript-configs": "3.0.2",
         "eslint": "8.57.0",
         "jest": "29.7.0",
-        "jest-environment-jsdom": "29.7.0",
         "ts-node": "10.9.2",
         "typescript": "5.5.4"
     },

@@ -26,7 +26,7 @@ const rsbuildConfig = defineBuildHostConfig(remotes: [], options?: {})
 
 - `remotes`: An array of `RemoteDefinition` (view the [Remote definition](#remote-definition) section).
 - `options`: An optional object literal of options:
-    - Accepts most of rsbuild `definedBuildConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/rsbuild/configure-build/#3-set-predefined-options).
+    - Accepts most of Rsbuild `definedBuildConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/rsbuild/configure-build/#3-set-predefined-options).
     - `features`: An optional object literal of feature switches to define additional shared dependencies.
         - `i18next`: Whether or not to add `@squide/i18next` as a shared dependency.
         - `environmentVariables`: Whether or not to add `@squide/env-vars` as a shared dependency.

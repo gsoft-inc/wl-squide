@@ -27,7 +27,7 @@ const rsbuildConfig = defineDevHostConfig(port, remotes: [], options?: {})
 - `port`: The host application port.
 - `remotes`: An array of `RemoteDefinition` (view the [Remote definition](#remote-definition) section).
 - `options`: An optional object literal of options:
-    - Accepts most of rsbuild `definedDevConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/rsbuild/configure-dev/#3-set-predefined-options).
+    - Accepts most of Rsbuild `definedDevConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/rsbuild/configure-dev/#3-set-predefined-options).
     - `features`: An optional object literal of feature switches to define additional shared dependencies.
         - `i18next`: Whether or not to add `@squide/i18next` as a shared dependency.
         - `environmentVariables`: Whether or not to add `@squide/env-vars` as a shared dependency.
@@ -55,7 +55,7 @@ For the full shared dependencies configuration, have a look at the [defineConfig
 
 ## Usage
 
-### Define an rsbuild config
+### Define an Rsbuild config
 
 ```ts !#7 host/rsbuild.dev.ts
 import { defineDevHostConfig, type RemoteDefinition } from "@squide/firefly-rsbuild-configs";
@@ -64,7 +64,7 @@ const Remotes: RemoteDefinition[] = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
-export default defineDevHostConfig(swcConfig, 8080, Remotes);
+export default defineDevHostConfig(8080, Remotes);
 ```
 
 ### Activate optional features

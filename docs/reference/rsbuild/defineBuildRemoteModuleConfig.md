@@ -10,20 +10,19 @@ toc:
 This is an experimental feature.
 !!!
 
-Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a Squide remote module application in **build** mode. This function is a wrapper built on top of [@workleap/rsbuild-configs](https://www.npmjs.com/package/@workleap/webpack-configs). Make sure to read the [defineBuildConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/) documentation first.
+Creates an Rsbuild [configuration object](https://rsbuild.dev/config/index) that is adapted for a Squide remote module application in **build** mode. This function is a wrapper built on top of [@workleap/rsbuild-configs](https://www.npmjs.com/package/@workleap/rsbuild-configs). Make sure to read the [defineBuildConfig](https://gsoft-inc.github.io/wl-web-configs/rsbuild/configure-build/) documentation first.
 
 ## Reference
 
 ```ts
-const webpackConfig = defineBuildRemoteModuleConfig(swcConfig: {}, applicationName, options?: {})
+const rsbuildConfig = defineBuildRemoteModuleConfig(applicationName, options?: {})
 ```
 
 ## Parameters
 
-- `swcConfig`: An SWC [configuration object](https://swc.rs/docs/configuration/swcrc).
 - `applicationName`: The remote module application name.
 - `options`: An optional object literal of options:
-    - Accepts most of webpack `definedDevConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/#3-set-predefined-options).
+    - Accepts most of Rsbuild `definedDevConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/rsbuild/configure-dev/#3-set-predefined-options).
     - `features`: An optional object literal of feature switches to define additional shared dependencies.
         - `i18next`: Whether or not to add `@squide/i18next` as a shared dependency.
         - `environmentVariables`: Whether or not to add `@squide/env-vars` as a shared dependency.
@@ -34,13 +33,13 @@ const webpackConfig = defineBuildRemoteModuleConfig(swcConfig: {}, applicationNa
 
 ## Returns
 
-A webpack [configuration object](https://webpack.js.org/concepts/configuration/) tailored for a Squide remote module application in build mode.
+An Rsbuild [configuration object](https://rsbuild.dev/config/index) tailored for a Squide remote module application in build mode.
 
 ## Conventions
 
 To fulfill Squide remote module requirements, the `defineBuildRemoteModuleConfig` function will pre-configure the [ModuleFederationPlugin](https://module-federation.io/configure/index.html) with the following `filename` and `exposes` properties.
 
-```js
+```ts
 {
     filename: "/remoteEntry.js",
     exposes: {
@@ -50,7 +49,7 @@ To fulfill Squide remote module requirements, the `defineBuildRemoteModuleConfig
 ```
 
 !!!info
-If the remote module `publicPath` is `http://localhost/8081`, the remote module bundle is available at `http://localhost:8081/remoteEntry.js`.
+If the remote module `assetsPrefix` is `http://localhost/8081`, the remote module bundle is available at `http://localhost:8081/remoteEntry.js`.
 !!!
 
 ## Default shared dependencies
@@ -68,26 +67,20 @@ For the full shared dependencies configuration, have a look at the [defineConfig
 
 ## Usage
 
-### Define a webpack config
+### Define an Rsbuild config
 
-```js !#6 remote-module/webpack.build.js
-// @ts-check
+```ts !#3 remote-module/rsbuild.build.ts
+import { defineBuildRemoteModuleConfig } from "@squide/firefly-rsbuild-configs";
 
-import { defineBuildRemoteModuleConfig } from "@squide/firefly-webpack-configs";
-import { swcConfig } from "./swc.build.js";
-
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1");
+export default defineBuildRemoteModuleConfig("remote1");
 ```
 
 ### Activate additional features
 
-```js !#7-9 remote-module/webpack.build.js
-// @ts-check
+```ts !#4-6 remote-module/rsbuild.build.ts
+import { defineBuildRemoteModuleConfig } from "@squide/firefly-rsbuild-configs";
 
-import { defineBuildRemoteModuleConfig } from "@squide/firefly-webpack-configs";
-import { swcConfig } from "./swc.build.js";
-
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
+export default defineBuildRemoteModuleConfig("remote1", {
     features: {
         i18next: true
     }
@@ -100,13 +93,10 @@ Features must be activated on the host application as well as every remote modul
 
 ### Specify additional shared dependencies
 
-```js !#7-11 remote-module/webpack.build.js
-// @ts-check
+```ts !#4-8 remote-module/rsbuild.build.ts
+import { defineBuildRemoteModuleConfig } from "@squide/firefly-rsbuild-configs";
 
-import { defineBuildRemoteModuleConfig } from "@squide/firefly-webpack-configs";
-import { swcConfig } from "./swc.build.js";
-
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
+export default defineBuildRemoteModuleConfig("remote1", {
     sharedDependencies: {
         "@sample/shared": {
             singleton: true
@@ -121,13 +111,10 @@ Additional shared dependencies must be configured on the host application as wel
 
 ### Extend a default shared dependency
 
-```js !#7-11 remote-module/webpack.build.js
-// @ts-check
+```ts !#4-8 remote-module/rsbuild.build.ts
+import { defineBuildRemoteModuleConfig } from "@squide/firefly-rsbuild-configs";
 
-import { defineBuildRemoteModuleConfig } from "@squide/firefly-webpack-configs";
-import { swcConfig } from "./swc.build.js";
-
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
+export default defineBuildRemoteModuleConfig("remote1", {
     sharedDependencies: {
         "react": {
             requiredVersion: "18.2.0"
@@ -138,7 +125,7 @@ export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
 
 In the previous code sample, the `react` shared dependency will be **augmented** with the newly provided `strictVersion` option. The resulting shared dependency will be:
 
-```js !#5
+```ts !#5
 {
     "react": {
         eager: true,
@@ -150,13 +137,10 @@ In the previous code sample, the `react` shared dependency will be **augmented**
 
 ### Override a default shared dependency
 
-```js !#7-11 remote-module/webpack.build.js
-// @ts-check
+```ts !#4-8 remote-module/rsbuild.build.ts
+import { defineBuildRemoteModuleConfig } from "@squide/firefly-rsbuild-configs";
 
-import { defineBuildRemoteModuleConfig } from "@squide/firefly-webpack-configs";
-import { swcConfig } from "./swc.build.js";
-
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
+export default defineBuildRemoteModuleConfig("remote1", {
     sharedDependencies: {
         "react": {
             singleton: false
@@ -167,7 +151,7 @@ export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
 
 In the previous code sample, the `react` shared dependency `singleton` option will be **overrided** by the newly provided value. The resulting shared dependency will be:
 
-```js !#4
+```ts !#4
 {
     "react": {
         eager: true,
@@ -178,37 +162,31 @@ In the previous code sample, the `react` shared dependency `singleton` option wi
 
 ### Customize module federation configuration
 
-While you could customize the [ModuleFederationPlugin](https://module-federation.io/configure/index.html) configuration by providing your own object literal through the `moduleFederationPluginOptions` option, we recommend using the `defineRemoteModuleFederationPluginOptions(applicationName, options)` function as it will take care of **merging** the custom options with the default plugin options.
+```ts !#4-8 remote-module/rsbuild.build.ts
+import { defineBuildRemoteModuleConfig } from "@squide/firefly-rsbuild-configs";
 
-```js !#7-9 remote-module/webpack.build.js
-// @ts-check
+export default defineBuildRemoteModuleConfig("remote1", {
+    moduleFederationPluginOptions: defaultOptions => {
+        defaultOptions.name = "my-application";
 
-import { defineBuildRemoteModuleConfig, defineRemoteModuleFederationPluginOptions } from "@squide/firefly-webpack-configs";
-import { swcConfig } from "./swc.build.js";
-
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
-    moduleFederationPluginOptions: defineRemoteModuleFederationPluginOptions("remote1", {
-        runtime: "my-runtime-name"
-    })
+        return defaultOptions;
+    }
 });
 ```
 
-- `applicationName`: The host application name.
-- `moduleFederationPluginOptions`: An object literal of [ModuleFederationPlugin](https://module-federation.io/configure/index.html) options.
-
 ### Expose an additional module
 
-```js !#7-11 remote-module/webpack.build.js
-// @ts-check
+```ts !#4-11 remote-module/rsbuild.build.ts
+import { defineBuildRemoteModuleConfig } from "@squide/firefly-rsbuild-configs";
 
-import { defineBuildRemoteModuleConfig, defineRemoteModuleFederationPluginOptions } from "@squide/firefly-webpack-configs";
-import { swcConfig } from "./swc.build.js";
+export default defineBuildRemoteModuleConfig("remote1", {
+    moduleFederationPluginOptions: defaultOptions => {
+        defaultOptions.exposes = {
+            ...(defaultOptions.exposes ?? {}),
+            "./foo": "./src/bar"
+        }
 
-export default defineBuildRemoteModuleConfig(swcConfig, "remote1", {
-        moduleFederationPluginOptions: defineRemoteModuleFederationPluginOptions("remote1", {
-            exposes: {
-                "./foo": "./src/bar"
-            }
-        })
+        return defaultOptions;
+    }
 });
 ```

@@ -63,9 +63,13 @@ While you can use any package manager to develop an application with Squide, it 
 host
 ├── public
 ├── src
-├── webpack.dev.js    --> rsbuild.dev.ts
-├── webpack.build.js  --> rsbuild.build.ts
-├── webpack.common.js --> rsbuild.common.ts
+├──── index.ts         -->  X
+├──── bootstrap.tsx    -->  index.tsx
+├── webpack.dev.js     -->  rsbuild.dev.ts
+├── webpack.build.js   -->  rsbuild.build.ts
+├── webpack.common.js  -->  rsbuild.common.ts
+├── swc.build.js       -->  X
+├── swc.dev.js         -->  X
 ├── package.json
 ```
 
@@ -292,6 +296,18 @@ While you can use any package manager to develop an application with Squide, it 
 
 ### Update files
 
+```
+host
+├── public
+├── src
+├── webpack.dev.js     -->  rsbuild.dev.ts
+├── webpack.build.js   -->  rsbuild.build.ts
+├── webpack.common.js  -->  rsbuild.common.ts
+├── swc.build.js       -->  X
+├── swc.dev.js         -->  X
+├── package.json
+```
+
 #### `webpack.build.js`
 
 Rename the file from `webpack.build.js` to `rsbuild.build.ts`.
@@ -507,6 +523,15 @@ While you can use any package manager to develop an application with Squide, it 
 
 ### Update files
 
+```
+host
+├── public
+├── src
+├── webpack.config.js  -->  rsbuild.config.ts
+├── swc.config.js      -->  X
+├── package.json
+```
+
 #### `webpack.config.js`
 
 Rename the file from `webpack.config.js` to `rsbuild.config.ts`.
@@ -571,9 +596,9 @@ After:
 }
 ```
 
-## Sample projects
+## Sample applications
 
-For additional examples, have a look at Squide sample projects:
+For additional examples, have a look at Squide's sample applications:
 
 - :icon-mark-github: [basic](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic)
 - :icon-mark-github: [endpoints](https://github.com/gsoft-inc/wl-squide/tree/main/samples/endpoints)

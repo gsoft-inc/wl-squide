@@ -10,14 +10,10 @@ toc:
 This is an experimental feature.
 !!!
 
-Creates an Rsbuild [configuration object](https://rsbuild.dev/config/index) that is adapted for a Squide host application in **build** mode.
+Creates an Rsbuild [configuration object](https://rsbuild.dev/config/index) that is adapted for a Squide host application in **build** mode. This function is a wrapper built on top of [@workleap/rsbuild-configs](https://www.npmjs.com/package/@workleap/rsbuild-configs). Make sure to read the [defineBuildConfig](https://gsoft-inc.github.io/wl-web-configs/rsbuild/configure-build/) documentation first.
 
 !!!info
 If the application _**does not**_ not include any remote modules, use the [defineBuildConfig](https://gsoft-inc.github.io/wl-web-configs/rsbuild/configure-build/) function instead of `defineBuildHostConfig`.
-!!!
-
-!!!info
-This function is a wrapper built on top of [@workleap/rsbuild-configs](https://www.npmjs.com/package/@workleap/rsbuild-configs). Make sure to read the [defineBuildConfig](https://gsoft-inc.github.io/wl-web-configs/rsbuild/configure-build/) documentation first.
 !!!
 
 ## Reference
@@ -62,9 +58,9 @@ For the full shared dependencies configuration, have a look at the [defineConfig
 ### Define an Rsbuild config
 
 ```ts !#7 host/rsbuild.build.ts
-import { defineBuildHostConfig } from "@squide/firefly-rsbuild-configs";
+import { defineBuildHostConfig, type RemoteDefinition } from "@squide/firefly-rsbuild-configs";
 
-const Remotes = [
+const Remotes: RemoteDefinition[] = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
@@ -74,9 +70,9 @@ export default defineBuildHostConfig(Remotes);
 ### Activate additional features
 
 ```ts !#8-10 host/rsbuild.build.ts
-import { defineBuildHostConfig } from "@squide/firefly-rsbuild-configs";
+import { defineBuildHostConfig, type RemoteDefinition } from "@squide/firefly-rsbuild-configs";
 
-const Remotes = [
+const Remotes: RemoteDefinition[] = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
@@ -94,9 +90,9 @@ Features must be activated on the host application as well as every remote modul
 ### Specify additional shared dependencies
 
 ```ts !#8-12 host/rsbuild.build.ts
-import { defineBuildHostConfig } from "@squide/firefly-rsbuild-configs";
+import { defineBuildHostConfig, type RemoteDefinition } from "@squide/firefly-rsbuild-configs";
 
-const Remotes = [
+const Remotes: RemoteDefinition[] = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
@@ -116,9 +112,9 @@ Additional shared dependencies must be configured on the host application as wel
 ### Extend a default shared dependency
 
 ```ts !#8-12 host/rsbuild.build.ts
-import { defineBuildHostConfig } from "@squide/firefly-rsbuild-configs";
+import { defineBuildHostConfig, type RemoteDefinition } from "@squide/firefly-rsbuild-configs";
 
-const Remotes = [
+const Remotes: RemoteDefinition[] = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
@@ -146,9 +142,9 @@ In the previous code sample, the `react` shared dependency will be **augmented**
 ### Override a default shared dependency
 
 ```ts !#8-12 host/rsbuild.build.ts
-import { defineBuildHostConfig } from "@squide/firefly-rsbuild-configs";
+import { defineBuildHostConfig, type RemoteDefinition } from "@squide/firefly-rsbuild-configs";
 
-const Remotes = [
+const Remotes: RemoteDefinition[] = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
@@ -175,9 +171,9 @@ In the previous code sample, the `react` shared dependency `singleton` option wi
 ### Customize module federation configuration
 
 ```ts !#8-12 host/rsbuild.build.ts
-import { defineBuildHostConfig } from "@squide/firefly-rsbuild-configs";
+import { defineBuildHostConfig, type RemoteDefinition } from "@squide/firefly-rsbuild-configs";
 
-const Remotes = [
+const Remotes: RemoteDefinition[] = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 
@@ -216,14 +212,14 @@ export default defineBuildRemoteModuleConfig("remote1");
 
 ### `url`
 
-The `url` option of a remote definition **must match** the [assetPrefix](https://rsbuild.dev/config/output/asset-prefix) of the remote module webpack [configuration object](https://webpack.js.org/concepts/configuration/).
+The `url` option of a remote definition **must match** the [assetPrefix](https://rsbuild.dev/config/output/asset-prefix) of the remote module Rsbuild [configuration object](https://rsbuild.dev/config/index).
 
 In the following exemple, the remote module `assetPrefix` is `http://localhost:8081`.
 
 ```ts !#4 host/rsbuild.build.ts
 import type { RemoteDefinition } from "@squide/firefly-rsbuild-configs";
 
-const Remotes = [
+const Remotes: RemoteDefinition[] = [
     { name: "remote1", url: "http://localhost:8081" }
 ];
 ```

@@ -1,4 +1,4 @@
-name: CI
+name: Publish PR packages
 
 # PNPM setup based on https://github.com/pnpm/action-setup#use-cache-to-reduce-installation-time
 
@@ -48,26 +48,8 @@ jobs:
             ${{ runner.os }}-turborepo-
           path: .turbo
 
-      - name: Lint packages & samples
-        run: pnpm lint
-
       - name: Build packages
         run: pnpm build-pkg
-
-      - name: Build basic sample
-        run: pnpm build-basic
-
-      - name: Build basic webpack sample
-        run: pnpm build-basic-webpack
-
-      - name: Build basic mix sample
-        run: pnpm build-basic-mix
-
-      - name: Build endpoints sample
-        run: pnpm build-endpoints
-
-      - name: Test packages
-        run: pnpm test
 
       - name: Save Turborepo cache
         id: cache-turborepo-save
@@ -76,3 +58,6 @@ jobs:
         with:
           key: ${{ steps.cache-turborepo-restore.outputs.cache-primary-key }}
           path: .turbo
+
+      - name: Publish PR packages
+        run: pnpm publish-pr-pkg

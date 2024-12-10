@@ -32,7 +32,7 @@
         "test": "turbo run test --continue",
         "changeset": "changeset",
         "publish-pkg": "changeset publish",
-        "publish-pr-pkg": "pkg-pr-new publish ./packages/*",
+        "publish-pr-pkg": "pkg-pr-new publish ./packages/* --packageManager=pnpm --pnpm",
         "clean": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf dist .turbo .rslib .netlify node_modules/.cache",
         "reset": "pnpm clean && pnpm reset:modules",
         "reset:modules": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf node_modules pnpm-lock.yaml",

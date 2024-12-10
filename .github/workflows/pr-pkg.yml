@@ -12,7 +12,7 @@ env:
   CI: true
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: pr-pkg-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:

@@ -8,8 +8,8 @@
     "scripts": {
         "dev-pkg": "turbo dev --filter=./packages/*",
         "dev-basic": "turbo dev --filter=./samples/basic/*",
-        "dev-basic-webpack": "turbo dev-webpack --filter=./samples/basic-webpack/*",
-        "dev-basic-mix": "turbo dev-webpack --filter=./samples/basic-mix/*",
+        "dev-basic-webpack": "turbo dev --filter=./samples/basic-webpack/*",
+        "dev-basic-mix": "turbo dev --filter=./samples/basic-mix/*",
         "dev-endpoints": "turbo dev --filter=./samples/endpoints/*",
         "dev-docs": "retype start",
         "build-pkg": "turbo run build --filter=./packages/*",

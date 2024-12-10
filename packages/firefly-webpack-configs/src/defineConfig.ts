@@ -119,6 +119,18 @@ function getEnvironmentVariablesSharedDependencies(isHost: boolean): ModuleFeder
 
 function getHoneycombSharedDependencies(isHost: boolean): ModuleFederationShared {
     return {
+        "@honeycombio/opentelemetry-web": {
+            singleton: true,
+            eager: isHost ? true : undefined
+        },
+        "@opentelemetry/api": {
+            singleton: true,
+            eager: isHost ? true : undefined
+        },
+        "@opentelemetry/auto-instrumentations-web": {
+            singleton: true,
+            eager: isHost ? true : undefined
+        },
         "@squide/firefly-honeycomb": {
             singleton: true,
             eager: isHost ? true : undefined

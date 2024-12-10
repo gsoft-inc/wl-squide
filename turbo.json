@@ -4,11 +4,6 @@
     "ui": "tui",
     "tasks": {
         "dev": {
-            "dependsOn": ["@squide/firefly-rsbuild-configs#build"],
-            "cache": false,
-            "persistent": true
-        },
-        "dev-webpack": {
             "dependsOn": ["@squide/firefly-rsbuild-configs#build", "@squide/firefly-webpack-configs#build"],
             "cache": false,
             "persistent": true

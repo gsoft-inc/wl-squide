@@ -67,8 +67,8 @@ const configurePackage: KnipTransformer = config => {
     return {
         ...config,
         eslint: true,
-        tsup: {
-            config: ["tsup.*.ts"]
+        rsbuild: {
+            config: ["rsbuild.*.ts"]
         }
     };
 };

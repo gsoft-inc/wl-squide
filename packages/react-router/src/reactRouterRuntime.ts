@@ -211,7 +211,7 @@ export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
 
             message += `If you are certain that the navigation section${pendingSectionIds.length !== 1 ? "s" : ""} has been registered, make sure that the following conditions are met:\r\n`;
             message += "- The missing navigation section \"$id\" and \"menuId\" properties perfectly match the provided \"sectionId\" and \"menuId\".\r\n";
-            message += "For more information about nested navigation items, refers to [TODO: ADD LINK].\r\n";
+            message += "For more information about nested navigation items, refers to: https://gsoft-inc.github.io/wl-squide/reference/runtime/runtime-class/#register-nested-navigation-items.\r\n";
 
             if (this._mode === "development") {
                 throw new Error(message);

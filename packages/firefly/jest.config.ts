@@ -1,9 +1,9 @@
 import type { Config } from "jest";
-import { pathsToModuleNameMapper } from "ts-jest";
 import { swcConfig } from "./swc.jest.ts";
-import { compilerOptions } from "./tsconfig.json";
 
 const config: Config = {
+    testRegex: "/tests/*/.*\\.test\\.(ts|tsx)$",
+    testPathIgnorePatterns: ["/node_modules/", "/dist/"],
     testEnvironment: "jsdom",
     transform: {
         "^.+\\.(js|ts|tsx)$": ["@swc/jest", swcConfig as Record<string, unknown>]
@@ -11,18 +11,14 @@ const config: Config = {
     transformIgnorePatterns: [
         "node_modules/(?!.pnpm|memoize|mimic-function)"
     ],
-    moduleNameMapper: {
-        ...pathsToModuleNameMapper(compilerOptions.paths, {
-            prefix: "<rootDir>"
-        })
-    },
     globals: {
         __webpack_share_scopes__: {
             default: {}
         }
     },
     setupFilesAfterEnv: ["<rootDir>/jest-setup.js"],
-    cacheDirectory: "./node_modules/.cache/jest"
+    cacheDirectory: "./node_modules/.cache/jest",
+    verbose: true
 };
 
 export default config;

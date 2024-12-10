@@ -25,17 +25,17 @@ Create a new application (we'll refer to ours as `local-module`), then open a te
 
 +++ pnpm
 ```bash
-pnpm add -D @workleap/tsup-configs tsup typescript @types/react @types/react-dom
+pnpm add -D typescript @types/react @types/react-dom
 pnpm add @squide/firefly react react-dom react-router-dom @tanstack/react-query
 ```
 +++ yarn
 ```bash
-yarn add -D @workleap/tsup-configs tsup typescript @types/react @types/react-dom
+yarn add -D typescript @types/react @types/react-dom
 yarn add @squide/firefly react @squide/firefly react-dom react-router-dom @tanstack/react-query
 ```
 +++ npm
 ```bash
-npm add -D @workleap/tsup-configs tsup typescript @types/react @types/react-dom
+npm add -D typescript @types/react @types/react-dom
 npm install @squide/firefly react react-dom react-router-dom @tanstack/react-query
 ```
 +++
@@ -53,8 +53,6 @@ local-modules
 ├── src
 ├──── register.tsx
 ├──── Page.tsx
-├── tsup.dev.ts
-├── tsup.build.ts
 ├── package.json
 ```
 
@@ -72,15 +70,11 @@ Finally, configure the package to be shareable by adding the `name`, `version`, 
 {
     "name": "@getting-started/local-module",
     "version": "0.0.1",
-    "exports": {
-        ".": {
-            "types": "./dist/register.d.ts",
-            "import": "./dist/register.js",
-            "default": "./dist/register.js"
-        }
-    }
+    "exports": "./src/register.tsx"
 }
 ```
+
+> For more information about the `exports` field, refer to this resource on [Just-In-Time Packages](https://www.shew.dev/monorepos/packaging/jit).
 
 ### Routes registration
 
@@ -164,53 +158,9 @@ root.render(
 );
 ```
 
-## Configure tsup
-
-!!!info
-If you are having issues with the tsup configuration, refer to the [@workleap/tsup-configs](https://gsoft-inc.github.io/wl-web-configs/tsup) documentation.
-!!!
-
-### Development configuration
-
-To configure tsup for a **development** environment, open the `tsup.dev.ts` file and copy/paste the following code:
-
-```ts local-module/tsup.dev.ts
-import { defineDevConfig } from "@workleap/tsup-configs";
-
-export default defineDevConfig();
-```
-
-### Build configuration
-
-To configure tsup for a **build** environment, open the `tsup.build.ts` file and copy/paste the following code:
-
-```ts local-module/tsup.build.ts
-import { defineBuildConfig } from "@workleap/tsup-configs";
-
-export default defineBuildConfig();
-```
-
-## Add CLI scripts
-
-To initiate the development server, add the following script to the application `package.json` file:
-
-```json local-module/package.json
-{
-    "dev": "tsup --config ./tsup.dev.ts"
-}
-```
-
-To build the module, add the following script to the application `package.json` file:
-
-```json local-module/package.json
-{
-    "build": "tsup --config ./tsup.build.ts"
-}
-```
-
 ## Try it :rocket:
 
-Start the `host`, `remote-module` and `local-module` applications in development mode using the `dev` script. You should notice an additional link labelled `Local/Page` in the navigation menu. Click on the link to navigate to the page of your new **local** module!
+Start the `host` and `remote-module` applications in development mode using the `dev` script. You should notice an additional link labelled `Local/Page` in the navigation menu. Click on the link to navigate to the page of your new **local** module!
 
 ### Troubleshoot issues
 

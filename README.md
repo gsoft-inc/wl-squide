@@ -12,12 +12,12 @@ A  modular web application shell built on top of [Module Federation](https://mod
 | [@squide/core](packages/core/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/core)](https://www.npmjs.com/package/@squide/core) |
 | [@squide/react-router](packages/react-router/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/react-router)](https://www.npmjs.com/package/@squide/react-router) |
 | [@squide/module-federation](packages/module-federation/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/module-federation)](https://www.npmjs.com/package/@squide/module-federation) |
-| [@squide/webpack-configs](packages/webpack-configs/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/webpack-configs)](https://www.npmjs.com/package/@squide/webpack-configs) |
 | [@squide/msw](packages/msw/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/msw)](https://www.npmjs.com/package/@squide/msw) |
 | [@squide/i18next](packages/i18next/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/i18next)](https://www.npmjs.com/package/@squide/i18next) |
 | [@squide/env-vars](packages/env-vars/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/env-vars)](https://www.npmjs.com/package/@squide/env-vars) |
 | [@squide/firefly](packages/firefly/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/firefly)](https://www.npmjs.com/package/@squide/firefly) |
 | [@squide/firefly-webpack-configs](packages/firefly-webpack-configs/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/firefly-webpack-configs)](https://www.npmjs.com/package/@squide/firefly-webpack-configs) |
+| [@squide/firefly-rsbuild-configs](packages/firefly-rsbuild-configs/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/firefly-rsbuild-configs)](https://www.npmjs.com/package/@squide/firefly-rsbuild-configs) |
 | [@squide/firefly-honeycomb](packages/firefly-honeycomb/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/firefly-honeycomb)](https://www.npmjs.com/package/@squide/firefly-honeycomb) |
 | [@squide/fakes](packages/fakes/README.md) | [![npm version](https://img.shields.io/npm/v/@squide/fakes)](https://www.npmjs.com/package/@squide/fakes) |
 

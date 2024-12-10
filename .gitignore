@@ -3,6 +3,7 @@ dist
 .pnpm-debug.log*
 .netlify
 .turbo
+.rslib
 .retype
 
 # Mac

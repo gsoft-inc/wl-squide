@@ -1,5 +1,4 @@
 **/dist/*
-**/__snapshots__/*
 node_modules
 *.md
 *.yml

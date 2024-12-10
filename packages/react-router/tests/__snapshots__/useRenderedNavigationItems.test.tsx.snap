@@ -1,494 +1,498 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`highest priority goes first 1`] = `
-<ul
-  data-index="0"
-  data-key="root"
-  data-level="0"
->
-  <li
+<DocumentFragment>
+  <ul
     data-index="0"
-    data-key="0-0"
+    data-key="root"
     data-level="0"
   >
-    <div
-      to="/toto"
+    <li
+      data-index="0"
+      data-key="0-0"
+      data-level="0"
     >
-      Toto
-    </div>
-  </li>
-  <li
-    data-index="1"
-    data-key="1-0"
-    data-level="0"
-  >
-    <div
-      to="/bar"
+      <div
+        to="/toto"
+      >
+        Toto
+      </div>
+    </li>
+    <li
+      data-index="1"
+      data-key="1-0"
+      data-level="0"
     >
-      Bar
-    </div>
-  </li>
-  <li
-    data-index="2"
-    data-key="2-0"
-    data-level="0"
-  >
-    <div
-      to="/foo"
+      <div
+        to="/bar"
+      >
+        Bar
+      </div>
+    </li>
+    <li
+      data-index="2"
+      data-key="2-0"
+      data-level="0"
     >
-      Foo
-    </div>
-  </li>
-  <li
-    data-index="3"
-    data-key="3-0"
-    data-level="0"
-  >
-    <div
-      to="/tutu"
+      <div
+        to="/foo"
+      >
+        Foo
+      </div>
+    </li>
+    <li
+      data-index="3"
+      data-key="3-0"
+      data-level="0"
     >
-      Tutu
-    </div>
-  </li>
-</ul>
+      <div
+        to="/tutu"
+      >
+        Tutu
+      </div>
+    </li>
+  </ul>
+</DocumentFragment>
 `;
 
 exports[`link item additionalProps are rendered 1`] = `
-<ul
-  data-index="0"
-  data-key="root"
-  data-level="0"
->
-  <li
+<DocumentFragment>
+  <ul
     data-index="0"
-    data-key="0-0"
-    data-level="0"
-    style={
-      {
-        "color": "red",
-      }
-    }
-  >
-    <div
-      to="/foo"
-    >
-      Foo
-    </div>
-  </li>
-  <li
-    data-index="1"
-    data-key="1-0"
+    data-key="root"
     data-level="0"
   >
-    <div
-      to="/bar"
+    <li
+      data-index="0"
+      data-key="0-0"
+      data-level="0"
+      style="color: red;"
     >
-      Bar
-    </div>
-  </li>
-</ul>
+      <div
+        to="/foo"
+      >
+        Foo
+      </div>
+    </li>
+    <li
+      data-index="1"
+      data-key="1-0"
+      data-level="0"
+    >
+      <div
+        to="/bar"
+      >
+        Bar
+      </div>
+    </li>
+  </ul>
+</DocumentFragment>
 `;
 
 exports[`link item custom keys are rendered 1`] = `
-<ul
-  data-index="0"
-  data-key="root"
-  data-level="0"
->
-  <li
+<DocumentFragment>
+  <ul
     data-index="0"
-    data-key="foo"
-    data-level="0"
-    style={
-      {
-        "color": "red",
-      }
-    }
-  >
-    <div
-      to="/foo"
-    >
-      Foo
-    </div>
-  </li>
-  <li
-    data-index="1"
-    data-key="bar"
+    data-key="root"
     data-level="0"
   >
-    <div
-      to="/bar"
+    <li
+      data-index="0"
+      data-key="foo"
+      data-level="0"
+      style="color: red;"
     >
-      Bar
-    </div>
-  </li>
-</ul>
+      <div
+        to="/foo"
+      >
+        Foo
+      </div>
+    </li>
+    <li
+      data-index="1"
+      data-key="bar"
+      data-level="0"
+    >
+      <div
+        to="/bar"
+      >
+        Bar
+      </div>
+    </li>
+  </ul>
+</DocumentFragment>
 `;
 
 exports[`negative priority goes last 1`] = `
-<ul
-  data-index="0"
-  data-key="root"
-  data-level="0"
->
-  <li
+<DocumentFragment>
+  <ul
     data-index="0"
-    data-key="0-0"
+    data-key="root"
     data-level="0"
   >
-    <div
-      to="/foo"
+    <li
+      data-index="0"
+      data-key="0-0"
+      data-level="0"
     >
-      Foo
-    </div>
-  </li>
-  <li
-    data-index="1"
-    data-key="1-0"
-    data-level="0"
-  >
-    <div
-      to="/bar"
+      <div
+        to="/foo"
+      >
+        Foo
+      </div>
+    </li>
+    <li
+      data-index="1"
+      data-key="1-0"
+      data-level="0"
     >
-      Bar
-    </div>
-  </li>
-  <li
-    data-index="2"
-    data-key="2-0"
-    data-level="0"
-  >
-    <div
-      to="/tutu"
+      <div
+        to="/bar"
+      >
+        Bar
+      </div>
+    </li>
+    <li
+      data-index="2"
+      data-key="2-0"
+      data-level="0"
     >
-      Tutu
-    </div>
-  </li>
-  <li
-    data-index="3"
-    data-key="3-0"
-    data-level="0"
-  >
-    <div
-      to="/toto"
+      <div
+        to="/tutu"
+      >
+        Tutu
+      </div>
+    </li>
+    <li
+      data-index="3"
+      data-key="3-0"
+      data-level="0"
     >
-      Toto
-    </div>
-  </li>
-</ul>
+      <div
+        to="/toto"
+      >
+        Toto
+      </div>
+    </li>
+  </ul>
+</DocumentFragment>
 `;
 
 exports[`nested item custom keys are rendered 1`] = `
-<ul
-  data-index="0"
-  data-key="root"
-  data-level="0"
->
-  <li
+<DocumentFragment>
+  <ul
     data-index="0"
-    data-key="0-0"
+    data-key="root"
     data-level="0"
-    style={
-      {
-        "color": "red",
-      }
-    }
   >
-    Foo
-    <ul
+    <li
       data-index="0"
-      data-key="0-1"
-      data-level="1"
+      data-key="0-0"
+      data-level="0"
+      style="color: red;"
     >
-      <li
+      Foo
+      <ul
         data-index="0"
-        data-key="bar"
+        data-key="0-1"
         data-level="1"
       >
-        <div
-          to="/bar"
+        <li
+          data-index="0"
+          data-key="bar"
+          data-level="1"
         >
-          Bar
-        </div>
-      </li>
-    </ul>
-  </li>
-</ul>
+          <div
+            to="/bar"
+          >
+            Bar
+          </div>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</DocumentFragment>
 `;
 
 exports[`section item additionalProps are rendered 1`] = `
-<ul
-  data-index="0"
-  data-key="root"
-  data-level="0"
->
-  <li
+<DocumentFragment>
+  <ul
     data-index="0"
-    data-key="0-0"
+    data-key="root"
     data-level="0"
-    style={
-      {
-        "color": "red",
-      }
-    }
   >
-    Foo
-    <ul
+    <li
       data-index="0"
-      data-key="0-1"
-      data-level="1"
+      data-key="0-0"
+      data-level="0"
+      style="color: red;"
     >
-      <li
+      Foo
+      <ul
         data-index="0"
         data-key="0-1"
         data-level="1"
       >
-        <div
-          to="/bar"
+        <li
+          data-index="0"
+          data-key="0-1"
+          data-level="1"
         >
-          Bar
-        </div>
-      </li>
-    </ul>
-  </li>
-</ul>
+          <div
+            to="/bar"
+          >
+            Bar
+          </div>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</DocumentFragment>
 `;
 
 exports[`section item custom keys are rendered 1`] = `
-<ul
-  data-index="0"
-  data-key="root"
-  data-level="0"
->
-  <li
+<DocumentFragment>
+  <ul
     data-index="0"
-    data-key="foo"
+    data-key="root"
     data-level="0"
-    style={
-      {
-        "color": "red",
-      }
-    }
   >
-    Foo
-    <ul
+    <li
       data-index="0"
       data-key="foo"
-      data-level="1"
+      data-level="0"
+      style="color: red;"
     >
-      <li
+      Foo
+      <ul
         data-index="0"
-        data-key="0-1"
+        data-key="foo"
         data-level="1"
       >
-        <div
-          to="/bar"
+        <li
+          data-index="0"
+          data-key="0-1"
+          data-level="1"
         >
-          Bar
-        </div>
-      </li>
-    </ul>
-  </li>
-</ul>
+          <div
+            to="/bar"
+          >
+            Bar
+          </div>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</DocumentFragment>
 `;
 
 exports[`support 2 section levels 1`] = `
-<ul
-  data-index="0"
-  data-key="root"
-  data-level="0"
->
-  <li
+<DocumentFragment>
+  <ul
     data-index="0"
-    data-key="0-0"
+    data-key="root"
     data-level="0"
   >
-    <div
-      to="/foo"
-    >
-      Foo
-    </div>
-  </li>
-  <li
-    data-index="1"
-    data-key="1-0"
-    data-level="0"
-  >
-    Bar
-    <ul
+    <li
       data-index="0"
-      data-key="0-1"
-      data-level="1"
+      data-key="0-0"
+      data-level="0"
     >
-      <li
+      <div
+        to="/foo"
+      >
+        Foo
+      </div>
+    </li>
+    <li
+      data-index="1"
+      data-key="1-0"
+      data-level="0"
+    >
+      Bar
+      <ul
         data-index="0"
         data-key="0-1"
         data-level="1"
       >
-        <div
-          to="/toto"
+        <li
+          data-index="0"
+          data-key="0-1"
+          data-level="1"
         >
-          Toto
-        </div>
-      </li>
-      <li
-        data-index="1"
-        data-key="1-1"
-        data-level="1"
-      >
-        <div
-          to="/tutu"
+          <div
+            to="/toto"
+          >
+            Toto
+          </div>
+        </li>
+        <li
+          data-index="1"
+          data-key="1-1"
+          data-level="1"
         >
-          Tutu
-        </div>
-      </li>
-    </ul>
-  </li>
-</ul>
+          <div
+            to="/tutu"
+          >
+            Tutu
+          </div>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</DocumentFragment>
 `;
 
 exports[`support 3 section levels 1`] = `
-<ul
-  data-index="0"
-  data-key="root"
-  data-level="0"
->
-  <li
+<DocumentFragment>
+  <ul
     data-index="0"
-    data-key="0-0"
+    data-key="root"
     data-level="0"
   >
-    <div
-      to="/foo"
-    >
-      Foo
-    </div>
-  </li>
-  <li
-    data-index="1"
-    data-key="1-0"
-    data-level="0"
-  >
-    Bar
-    <ul
+    <li
       data-index="0"
-      data-key="0-1"
-      data-level="1"
+      data-key="0-0"
+      data-level="0"
     >
-      <li
+      <div
+        to="/foo"
+      >
+        Foo
+      </div>
+    </li>
+    <li
+      data-index="1"
+      data-key="1-0"
+      data-level="0"
+    >
+      Bar
+      <ul
         data-index="0"
         data-key="0-1"
         data-level="1"
       >
-        <div
-          to="/toto"
-        >
-          Toto
-        </div>
-      </li>
-      <li
-        data-index="1"
-        data-key="1-1"
-        data-level="1"
-      >
-        Tutu
-        <ul
+        <li
           data-index="0"
-          data-key="0-2"
-          data-level="2"
+          data-key="0-1"
+          data-level="1"
         >
-          <li
+          <div
+            to="/toto"
+          >
+            Toto
+          </div>
+        </li>
+        <li
+          data-index="1"
+          data-key="1-1"
+          data-level="1"
+        >
+          Tutu
+          <ul
             data-index="0"
             data-key="0-2"
             data-level="2"
           >
-            <div
-              to="/titi"
+            <li
+              data-index="0"
+              data-key="0-2"
+              data-level="2"
             >
-              Titi
-            </div>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-</ul>
+              <div
+                to="/titi"
+              >
+                Titi
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</DocumentFragment>
 `;
 
 exports[`when a link item canRender prop return false, the item is not rendered 1`] = `
-<ul
-  data-index="0"
-  data-key="root"
-  data-level="0"
->
-  <li
-    data-index="1"
-    data-key="1-0"
+<DocumentFragment>
+  <ul
+    data-index="0"
+    data-key="root"
     data-level="0"
   >
-    <div
-      to="/bar"
+    <li
+      data-index="1"
+      data-key="1-0"
+      data-level="0"
     >
-      Bar
-    </div>
-  </li>
-</ul>
+      <div
+        to="/bar"
+      >
+        Bar
+      </div>
+    </li>
+  </ul>
+</DocumentFragment>
 `;
 
 exports[`when a section item canRender prop return false, the item is not rendered 1`] = `
-<ul
-  data-index="0"
-  data-key="root"
-  data-level="0"
->
-  <li
-    data-index="1"
-    data-key="1-0"
+<DocumentFragment>
+  <ul
+    data-index="0"
+    data-key="root"
     data-level="0"
   >
-    <div
-      to="/acme"
+    <li
+      data-index="1"
+      data-key="1-0"
+      data-level="0"
     >
-      acme
-    </div>
-  </li>
-</ul>
+      <div
+        to="/acme"
+      >
+        acme
+      </div>
+    </li>
+  </ul>
+</DocumentFragment>
 `;
 
 exports[`when the canRender prop of all the items of a nested section return false, do not render the section 1`] = `
-<ul
-  data-index="0"
-  data-key="root"
-  data-level="0"
->
-  <li
+<DocumentFragment>
+  <ul
     data-index="0"
-    data-key="0-0"
+    data-key="root"
     data-level="0"
   >
-    Foo
-  </li>
-  <li
-    data-index="1"
-    data-key="1-0"
-    data-level="0"
-  >
-    John
-    <ul
+    <li
       data-index="0"
-      data-key="0-1"
-      data-level="1"
+      data-key="0-0"
+      data-level="0"
     >
-      <li
+      Foo
+    </li>
+    <li
+      data-index="1"
+      data-key="1-0"
+      data-level="0"
+    >
+      John
+      <ul
         data-index="0"
         data-key="0-1"
         data-level="1"
       >
-        Doe
-      </li>
-    </ul>
-  </li>
-</ul>
+        <li
+          data-index="0"
+          data-key="0-1"
+          data-level="1"
+        >
+          Doe
+        </li>
+      </ul>
+    </li>
+  </ul>
+</DocumentFragment>
 `;
 
-exports[`when the canRender prop of all the root items return false, do not render the root section 1`] = `null`;
+exports[`when the canRender prop of all the root items return false, do not render the root section 1`] = `<DocumentFragment />`;

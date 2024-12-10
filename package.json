@@ -8,8 +8,8 @@
     "scripts": {
         "dev-pkg": "turbo dev --filter=./packages/*",
         "dev-basic": "turbo dev --filter=./samples/basic/*",
-        "dev-basic-webpack": "turbo dev --filter=./samples/basic-webpack/*",
-        "dev-basic-mix": "turbo dev --filter=./samples/basic-mix/*",
+        "dev-basic-webpack": "turbo dev-webpack --filter=./samples/basic-webpack/*",
+        "dev-basic-mix": "turbo dev-webpack --filter=./samples/basic-mix/*",
         "dev-endpoints": "turbo dev --filter=./samples/endpoints/*",
         "dev-docs": "retype start",
         "build-pkg": "turbo run build --filter=./packages/*",
@@ -36,20 +36,20 @@
         "clean": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf dist .turbo .rslib .netlify node_modules/.cache",
         "reset": "pnpm clean && pnpm reset:modules",
         "reset:modules": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf node_modules pnpm-lock.yaml",
-        "list-outdated-deps": "pnpm outdated -r --format list !eslint !useless-lib !typescript",
-        "update-outdated-deps": "pnpm update -r --latest !eslint !useless-lib !typescript"
+        "list-outdated-deps": "pnpm outdated -r --format list !eslint !useless-lib !typescript !react-router-dom",
+        "update-outdated-deps": "pnpm update -r --latest !eslint !useless-lib !typescript !react-router-dom"
     },
     "devDependencies": {
         "@changesets/changelog-github": "0.5.0",
-        "@changesets/cli": "2.27.9",
-        "@types/node": "22.9.0",
-        "@typescript-eslint/parser": "8.13.0",
+        "@changesets/cli": "2.27.10",
+        "@types/node": "22.10.1",
+        "@typescript-eslint/parser": "8.18.0",
         "@workleap/eslint-plugin": "3.2.3",
         "@workleap/typescript-configs": "3.0.2",
         "cross-env": "7.0.3",
         "eslint": "8.57.0",
         "installed-check": "9.3.0",
-        "knip": "5.36.2",
+        "knip": "5.39.2",
         "pkg-pr-new": "0.0.35",
         "retypeapp": "3.6.0",
         "syncpack": "13.0.0",
@@ -57,7 +57,7 @@
         "typescript": "5.5.4"
     },
     "engines": {
-        "node": ">=21.1.0",
+        "node": ">=22.0.0",
         "pnpm": ">=9"
     },
     "packageManager": "pnpm@9.5.0+sha512.140036830124618d624a2187b50d04289d5a087f326c9edfc0ccd733d76c4f52c3a313d4fc148794a2a9d81553016004e6742e8cf850670268a7387fc220c903"

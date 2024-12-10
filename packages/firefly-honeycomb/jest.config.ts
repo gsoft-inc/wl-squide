@@ -4,7 +4,6 @@ import { swcConfig } from "./swc.jest.ts";
 const config: Config = {
     testRegex: "/tests/*/.*\\.test\\.(ts|tsx)$",
     testPathIgnorePatterns: ["/node_modules/", "/dist/"],
-    testEnvironment: "jsdom",
     transformIgnorePatterns: [
         "node_modules/(?!.pnpm|memoize|mimic-function|@workleap/honeycomb)"
     ],

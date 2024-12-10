@@ -256,7 +256,7 @@ ModuleFederationPlugin {
 }
 `;
 
-exports[`defineBuildHostConfig when environmentVariables is env-vars, add honeycomb shared dependency and requiredVersion: false to the react shared dependency definition 1`] = `
+exports[`defineBuildHostConfig when environmentVariables is env-vars, add env-vars shared dependency and requiredVersion: false to the react shared dependency definition 1`] = `
 ModuleFederationPlugin {
   "_options": {
     "dts": false,

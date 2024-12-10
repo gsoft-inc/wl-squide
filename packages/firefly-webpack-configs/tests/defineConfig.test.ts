@@ -39,10 +39,10 @@ describe("defineDevHostConfig", () => {
     test("the application name is set as the output unique name", () => {
         const result = defineDevHostConfig(SwcConfig, 8080, []);
 
-        expect(result.output?.uniqueName).toBe("host");
+        expect(result.output!.uniqueName).toBe("host");
     });
 
-    test("the port number is set as the dev server port and the public path port", () => {
+    test("the port number is set as the dev server port", () => {
         const result = defineDevHostConfig(SwcConfig, 8080, []);
 
         // "devServer" does exist but webpack types are a messed.
@@ -54,7 +54,7 @@ describe("defineDevHostConfig", () => {
     test("when no public path is provided, the default public path is \"auto\"", () => {
         const config = defineDevHostConfig(SwcConfig, 8080, []);
 
-        expect(config.output?.publicPath).toBe("auto");
+        expect(config.output!.publicPath).toBe("auto");
     });
 
     test("when a public path is provided, use the provided public path", () => {
@@ -62,7 +62,7 @@ describe("defineDevHostConfig", () => {
             publicPath: "http://localhost:8080/"
         });
 
-        expect(config.output?.publicPath).toBe("http://localhost:8080/");
+        expect(config.output!.publicPath).toBe("http://localhost:8080/");
     });
 
     test("the module federation plugin configuration includes the remotes", () => {
@@ -258,7 +258,7 @@ describe("defineBuildHostConfig", () => {
     test("when no public path is provided, the default public path is \"auto\"", () => {
         const config = defineBuildHostConfig(SwcConfig, []);
 
-        expect(config.output?.publicPath).toBe("auto");
+        expect(config.output!.publicPath).toBe("auto");
     });
 
     test("when a public path is provided, use the provided public path", () => {
@@ -266,7 +266,7 @@ describe("defineBuildHostConfig", () => {
             publicPath: "http://localhost:8080/"
         });
 
-        expect(config.output?.publicPath).toBe("http://localhost:8080/");
+        expect(config.output!.publicPath).toBe("http://localhost:8080/");
     });
 
     test("the module federation plugin configuration includes the remotes", () => {
@@ -442,7 +442,6 @@ describe("defineBuildHostConfig", () => {
     });
 });
 
-
 describe("defineDevRemoteModuleConfig", () => {
     const SwcConfig = defineSwcDevConfig({
         chrome: "116"
@@ -458,7 +457,7 @@ describe("defineDevRemoteModuleConfig", () => {
     test("the application name is set as the output unique name", () => {
         const config = defineDevRemoteModuleConfig(SwcConfig, "remote1", 8081);
 
-        expect(config.output?.uniqueName).toBe("remote1");
+        expect(config.output!.uniqueName).toBe("remote1");
     });
 
     test("the port number is set as the dev server port", () => {
@@ -471,17 +470,17 @@ describe("defineDevRemoteModuleConfig", () => {
     });
 
     test("when no public path is provided, the default public path is \"auto\"", () => {
-        const config = defineDevRemoteModuleConfig(SwcConfig, "host", 8081);
+        const config = defineDevRemoteModuleConfig(SwcConfig, "remote1", 8081);
 
-        expect(config.output?.publicPath).toBe("auto");
+        expect(config.output!.publicPath).toBe("auto");
     });
 
     test("when a public path is provided, use the provided public path", () => {
-        const config = defineDevRemoteModuleConfig(SwcConfig, "host", 8081, {
+        const config = defineDevRemoteModuleConfig(SwcConfig, "remote1", 8081, {
             publicPath: "http://localhost:8081/"
         });
 
-        expect(config.output?.publicPath).toBe("http://localhost:8081/");
+        expect(config.output!.publicPath).toBe("http://localhost:8081/");
     });
 
     test("the module federation plugin configuration includes the default shared dependencies", () => {
@@ -633,17 +632,17 @@ describe("defineBuildRemoteModuleConfig", () => {
     });
 
     test("when no public path is provided, the default public path is \"auto\"", () => {
-        const config = defineBuildRemoteModuleConfig(SwcConfig, "host");
+        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1");
 
-        expect(config.output?.publicPath).toBe("auto");
+        expect(config.output!.publicPath).toBe("auto");
     });
 
     test("when a public path is provided, use the provided public path", () => {
-        const config = defineBuildRemoteModuleConfig(SwcConfig, "host", {
+        const config = defineBuildRemoteModuleConfig(SwcConfig, "remote1", {
             publicPath: "http://localhost:8080/"
         });
 
-        expect(config.output?.publicPath).toBe("http://localhost:8080/");
+        expect(config.output!.publicPath).toBe("http://localhost:8080/");
     });
 
     test("the module federation plugin configuration includes the default shared dependencies", () => {

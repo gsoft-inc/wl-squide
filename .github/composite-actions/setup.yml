@@ -1,0 +1,43 @@
+name: Setup
+
+inputs:
+  turbo-repo-restore-action-id:
+    description: Restore Turborepo cache action id
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        run_install: false
+
+    - name: Install Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ">=21.1.0"
+        check-latest: true
+        cache: pnpm
+        cache-dependency-path: pnpm-lock.yaml
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+
+    - name: Restore Turborepo cache
+      id: ${{ inputs.turbo-repo-restore-action-id }}
+      uses: actions/cache/restore@v4
+      with:
+        key: ${{ runner.os }}-turborepo-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-turborepo-
+          path: .turbo
+
+    # - name: Restore Turborepo cache
+    #   id: cache-turborepo-restore
+    #   uses: actions/cache/restore@v4
+    #   with:
+    #     key: ${{ runner.os }}-turborepo-${{ github.sha }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-turborepo-
+    #       path: .turbo

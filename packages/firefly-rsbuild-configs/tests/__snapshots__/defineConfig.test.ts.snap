@@ -302,6 +302,18 @@ exports[`defineBuildHostConfig when honeycomb is activated, add honeycomb shared
   "name": "host",
   "remotes": {},
   "shared": {
+    "@honeycombio/opentelemetry-web": {
+      "eager": true,
+      "singleton": true,
+    },
+    "@opentelemetry/api": {
+      "eager": true,
+      "singleton": true,
+    },
+    "@opentelemetry/auto-instrumentations-web": {
+      "eager": true,
+      "singleton": true,
+    },
     "@squide/core": {
       "eager": true,
       "singleton": true,
@@ -782,6 +794,18 @@ exports[`defineBuildRemoteModuleConfig when honeycomb is activated, add honeycom
   "manifest": false,
   "name": "remote1",
   "shared": {
+    "@honeycombio/opentelemetry-web": {
+      "eager": undefined,
+      "singleton": true,
+    },
+    "@opentelemetry/api": {
+      "eager": undefined,
+      "singleton": true,
+    },
+    "@opentelemetry/auto-instrumentations-web": {
+      "eager": undefined,
+      "singleton": true,
+    },
     "@squide/core": {
       "eager": undefined,
       "singleton": true,
@@ -1254,6 +1278,18 @@ exports[`defineDevHostConfig when honeycomb is activated, add honeycomb shared d
   "name": "host",
   "remotes": {},
   "shared": {
+    "@honeycombio/opentelemetry-web": {
+      "eager": true,
+      "singleton": true,
+    },
+    "@opentelemetry/api": {
+      "eager": true,
+      "singleton": true,
+    },
+    "@opentelemetry/auto-instrumentations-web": {
+      "eager": true,
+      "singleton": true,
+    },
     "@squide/core": {
       "eager": true,
       "singleton": true,
@@ -1688,6 +1724,18 @@ exports[`defineDevRemoteModuleConfig when honeycomb is activated, add honeycomb 
   "name": "host",
   "remotes": {},
   "shared": {
+    "@honeycombio/opentelemetry-web": {
+      "eager": true,
+      "singleton": true,
+    },
+    "@opentelemetry/api": {
+      "eager": true,
+      "singleton": true,
+    },
+    "@opentelemetry/auto-instrumentations-web": {
+      "eager": true,
+      "singleton": true,
+    },
     "@squide/core": {
       "eager": true,
       "singleton": true,

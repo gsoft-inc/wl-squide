@@ -311,6 +311,18 @@ ModuleFederationPlugin {
     "name": "host",
     "remotes": {},
     "shared": {
+      "@honeycombio/opentelemetry-web": {
+        "eager": true,
+        "singleton": true,
+      },
+      "@opentelemetry/api": {
+        "eager": true,
+        "singleton": true,
+      },
+      "@opentelemetry/auto-instrumentations-web": {
+        "eager": true,
+        "singleton": true,
+      },
       "@squide/core": {
         "eager": true,
         "singleton": true,
@@ -805,6 +817,18 @@ ModuleFederationPlugin {
     "manifest": false,
     "name": "remote1",
     "shared": {
+      "@honeycombio/opentelemetry-web": {
+        "eager": undefined,
+        "singleton": true,
+      },
+      "@opentelemetry/api": {
+        "eager": undefined,
+        "singleton": true,
+      },
+      "@opentelemetry/auto-instrumentations-web": {
+        "eager": undefined,
+        "singleton": true,
+      },
       "@squide/core": {
         "eager": undefined,
         "singleton": true,
@@ -1305,6 +1329,18 @@ ModuleFederationPlugin {
     "name": "host",
     "remotes": {},
     "shared": {
+      "@honeycombio/opentelemetry-web": {
+        "eager": true,
+        "singleton": true,
+      },
+      "@opentelemetry/api": {
+        "eager": true,
+        "singleton": true,
+      },
+      "@opentelemetry/auto-instrumentations-web": {
+        "eager": true,
+        "singleton": true,
+      },
       "@squide/core": {
         "eager": true,
         "singleton": true,
@@ -1793,6 +1829,18 @@ ModuleFederationPlugin {
     "name": "host",
     "remotes": {},
     "shared": {
+      "@honeycombio/opentelemetry-web": {
+        "eager": true,
+        "singleton": true,
+      },
+      "@opentelemetry/api": {
+        "eager": true,
+        "singleton": true,
+      },
+      "@opentelemetry/auto-instrumentations-web": {
+        "eager": true,
+        "singleton": true,
+      },
       "@squide/core": {
         "eager": true,
         "singleton": true,

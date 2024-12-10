@@ -55,7 +55,7 @@ export type Router = "react-router";
 
 export interface Features {
     router?: Router;
-    // msw?: boolean;
+    msw?: boolean;
     i18next?: boolean;
     environmentVariables?: boolean;
     honeycomb?: boolean;
@@ -141,8 +141,7 @@ function getHoneycombSharedDependencies(isHost: boolean): ModuleFederationShared
 function getFeaturesDependencies(features: Features, isHost: boolean) {
     const {
         router = "react-router",
-        // router,
-        // msw,
+        msw = true,
         i18next,
         environmentVariables,
         honeycomb
@@ -150,8 +149,7 @@ function getFeaturesDependencies(features: Features, isHost: boolean) {
 
     return {
         ...(router === "react-router" ? getReactRouterSharedDependencies(isHost) : {}),
-        ...getMswSharedDependency(isHost),
-        // ...(msw ? getMswSharedDependency(isHost) : {}),
+        ...(msw ? getMswSharedDependency(isHost) : {}),
         ...(i18next ? getI18nextSharedDependency(isHost) : {}),
         ...(environmentVariables ? getEnvironmentVariablesSharedDependencies(isHost) : {}),
         ...(honeycomb ? getHoneycombSharedDependencies(isHost) : {})

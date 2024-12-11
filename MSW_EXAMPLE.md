@@ -12,11 +12,7 @@ To install the sample and start the application with a developer server, follow 
 
 - Install the codebase with PNPM, execute the following command at the root of the monorepo: `pnpm install`.
 
-- Compile the core packages of the monorepo by executing the following command at the root of the monorepo: `pnpm dev`.
-
-- In **a distinct terminal**, start the sample application by executing the following command at the root of the monorepo: `pnpm dev-endpoints`.
-
-- You should now have two terminals running distinct scripts.
+- Start the sample application by executing the following command at the root of the monorepo: `pnpm dev-endpoints`.
 
 - Once the sample application is started, open a browser and navigate to `http://localhost:8080`.
 

@@ -1,5 +1,0 @@
-{
-    "watch": ["tsup.dev.ts"],
-    "exec": "tsup --config ./tsup.dev.ts",
-    "verbose": true
-}

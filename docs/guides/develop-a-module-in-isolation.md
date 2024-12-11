@@ -20,8 +20,6 @@ monorepo
 ├─────────── register.tsx
 ├─────────── index.ts
 ├───────── package.json
-├───────── tsup.dev.ts
-├───────── tsup.build.ts
 ├── modules
 ├───────── local-module
 ├───────── remote-module
@@ -40,19 +38,11 @@ First, create a new package (we'll refer to ours as `shell`) and add the followi
     "name": "@sample/shell",
     "version": "0.0.1",
     "type": "module",
-    "exports": {
-        ".": {
-            "import": "./dist/index.js",
-            "types": "./dist/index.d.ts",
-            "default": "./dist/index.js"
-        }
-    }
+    "exports": "./src/index.ts"
 }
 ```
 
-Then, install the package dependencies and configure the new package with [tsup](https://gsoft-inc.github.io/wl-web-configs/tsup/).
-
-Then, create an `AppRouter` component in the shell package to provide a **reusable router configuration** that can be shared between the host application and the isolated modules. This new `AppRouter` component should wrap the `@squide/firefly` [AppRouter](../reference/routing/appRouter.md) component:
+Then, install the package dependencies and create an `AppRouter` component in the shell package to provide a **reusable router configuration** that can be shared between the host application and the isolated modules. This new `AppRouter` component should wrap the `@squide/firefly` [AppRouter](../reference/routing/appRouter.md) component:
 
 ```tsx shell/src/AppRouter.tsx
 import { AppRouter as FireflyAppRouter } from "@squide/firefly";

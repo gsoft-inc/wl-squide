@@ -1,38 +1,50 @@
 {
-    "$schema": "https://turbo.build/schema.v1.json",
+    "$schema": "https://turbo.build/schema.json",
     "globalEnv": ["USE_MSW", "ISOLATED", "NETLIFY"],
-    "pipeline": {
+    "ui": "tui",
+    "tasks": {
         "dev": {
-            "dependsOn": ["build"],
-            "outputs": ["dist/**"],
-            "persistent": true,
-            "outputMode": "new-only"
+            "dependsOn": ["@squide/firefly-rsbuild-configs#build", "@squide/firefly-webpack-configs#build"],
+            "cache": false,
+            "persistent": true
         },
         "build": {
             "dependsOn": ["^build"],
-            "outputs": ["dist/**"],
-            "outputMode": "new-only"
+            "outputs": ["dist/**"]
+        },
+        "build-isolated": {
+            "dependsOn": ["@squide/firefly-rsbuild-configs#build", "@squide/firefly-webpack-configs#build"],
+            "outputs": ["dist/**"]
         },
         "serve-build": {
             "dependsOn": ["build"],
             "cache": false,
-            "persistent": true,
-            "outputMode": "new-only"
-        },
-        "build-isolated": {
-            "dependsOn": ["build"],
-            "outputs": ["dist/**"],
-            "outputMode": "new-only"
+            "persistent": true
         },
         "deploy": {
-            "dependsOn": ["build"],
-            "outputs": ["dist/**"],
-            "outputMode": "new-only"
+            "dependsOn": ["build"]
         },
         "deploy-isolated": {
-            "dependsOn": ["build-isolated"],
-            "outputs": ["dist/**"],
-            "outputMode": "new-only"
+            "dependsOn": ["build-isolated"]
+        },
+        "lint": {
+            "dependsOn": ["eslint", "typecheck", "//#syncpack"]
+        },
+        "//#eslint": {
+            "outputs": ["node_modules/.cache/eslint"]
+        },
+        "eslint": {
+            "outputs": ["node_modules/.cache/eslint"]
+        },
+        "//#typecheck": {
+            "outputs": ["node_modules/.cache/tsbuildinfo.json"]
+        },
+        "typecheck": {
+            "outputs": ["node_modules/.cache/tsbuildinfo.json"]
+        },
+        "//#syncpack": {},
+        "test": {
+            "outputs": ["node_modules/.cache/jest/**"]
         }
     }
 }

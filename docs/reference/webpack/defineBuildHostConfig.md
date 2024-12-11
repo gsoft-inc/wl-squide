@@ -6,10 +6,10 @@ toc:
 
 # defineBuildHostConfig
 
-Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a Squide host application in **build** mode.
+Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a Squide host application in **build** mode. This function is a wrapper built on top of [@workleap/webpack-configs](https://www.npmjs.com/package/@workleap/webpack-configs). Make sure to read the [defineBuildConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/) documentation first.
 
 !!!info
-This function is a wrapper built on top of [@workleap/web-configs](https://www.npmjs.com/package/@workleap/webpack-configs). Make sure to read the [defineBuildConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/) documentation first.
+If the application _**does not**_ not include any remote modules, use the [defineBuildConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/) function instead of `defineBuildHostConfig`.
 !!!
 
 ## Reference
@@ -27,6 +27,10 @@ const webpackConfig = defineBuildHostConfig(swcConfig: {}, remotes: [], options?
     - `htmlWebpackPluginOptions`: An optional object literal accepting any options of the [HtmlWebpackPlugin](https://github.com/jantimon/html-webpack-plugin#options).
     - `features`: An optional object literal of feature switches to define additional shared dependencies.
         - `i18next`: Whether or not to add `@squide/i18next` as a shared dependency.
+        - `environmentVariables`: Whether or not to add `@squide/env-vars` as a shared dependency.
+        - `honeycomb`: Whether or not to add `@squide/firefly-honeycomb` as a shared dependency.
+        - `msw`: `false` to remove `@squide/msw` from shared dependencies.
+    - `runtimePlugins`: An optional array of module federation [runtime plugins](https://module-federation.io/plugin/dev/).
     - `sharedDependencies`: An optional object literal of additional (or updated) module federation shared dependencies.
     - `moduleFederationPluginOptions`: An optional object literal of [ModuleFederationPlugin](https://module-federation.io/configure/index.html) options.
 
@@ -45,7 +49,7 @@ The `defineBuildHostConfig` function will add the following shared dependencies 
 - [@squide/module-federation](https://www.npmjs.com/package/@squide/module-federation)
 - [@squide/msw](https://www.npmjs.com/package/@squide/msw)
 
-For the full shared dependencies configuration, have a look at the [defineConfig.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/firefly/src/defineConfig.ts) file on GitHub.
+For the full shared dependencies configuration, have a look at the [defineConfig.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/firefly-webpack-configs/src/defineConfig.ts) file on GitHub.
 
 ## Usage
 
@@ -225,7 +229,7 @@ export default defineBuildHostConfig(swcConfig, Remotes, {
 
 The `name` option of a remote definition **must match** the `name` option defined in the remote module [ModuleFederationPlugin](https://module-federation.io/configure/index.html) configuration.
 
-If you are relying on the Squide [defineBuildRemoteModuleConfig](../webpack/defineBuildRemoteModuleConfig.md) function to add the `ModuleFederationPlugin` to the remote module webpack [configuration object](https://module-federation.io/), then the remote module `name` is the second argument of the function.
+If you are relying on the Squide [defineBuildRemoteModuleConfig](./defineBuildRemoteModuleConfig.md) function to add the `ModuleFederationPlugin` to the remote module webpack [configuration object](https://webpack.js.org/concepts/configuration/), then the remote module `name` is the second argument of the function.
 
 In the following exemple, the remote module `name` is `remote1`.
 

@@ -20,21 +20,33 @@ It's important to note that PNPM workspace doesn't hoist the npm dependencies at
 
 The main difference to account for is that the `devDependencies` must now be installed locally in every package `package.json` file rather than in the root `package.json` file.
 
+### Turborepo
+
+This repository use [Turborepo](https://turbo.build/repo/docs) to execute it's commands. Turborepo help saving time with it's built-in cache but also ensure the packages topological order is respected when executing commands.
+
+To be understand the relationships between the commands, have a look at this repository [turbo.json](./turbo.json) configuration file.
+
+### JIT packages
+
+When possible, the packages and the sample applications' projects are configured for [JIT packages](https://www.shew.dev/monorepos/packaging/jit).
+
 ## Project overview
 
-This project is split into two major sections, [packages/](packages/) and [samples/](samples/).
+This project is split into three major sections, [packages/](packages/), [samples/](samples/) and [templates/](templates/).
 
 ### Packages
 
-Under [packages/](packages/) are the actual packages composing the federated application shell.
+Under [packages/](packages/) are the actual packages composing the modular application shell.
 
 ### Samples
 
 Under [samples/](samples/) are applications to test the Squide functionalities while developing.
 
-You'll find two samples:
+You'll find four samples:
 
-- `basic`: A sample application showcasing the basic features or Squide.
+- `basic`: A sample application showcasing the basic features of Squide.
+- `basic-wenpack`: A sample application showcasing the basic features of Squide using webpack as a bundle.
+- `basic-mix`: A sample application showcasing the basic features of Squide using an rsbuild host application and webpack remote modules.
 - `endpoints`: A more complexe sample application showcasing the different usecases related to data fetching and localization.
 
 ## Installation
@@ -45,7 +57,7 @@ This project uses PNPM, therefore, you must install [PNPM](https://pnpm.io/insta
 npm install -g pnpm
 ```
 
-To install the Squide project, open a terminal at the root of the workspace and execute the following command:
+To install the dependencies of this repository, open a terminal at the root of the workspace and execute the following command:
 
 ```bash
 pnpm install
@@ -67,18 +79,22 @@ npx retype wallet --add <your-license-key-here>
 
 ## Develop the packages
 
-We recommend opening two [VSCode terminals](https://code.visualstudio.com/docs/terminal/basics#_managing-multiple-terminals) to develop the packages.
-
-With the first terminal, execute the following script:
-
-```bash
-pnpm dev
-```
-
-With the second terminal, start one of the sample application with either the following script:
+Open a [VSCode terminals](https://code.visualstudio.com/docs/terminal/basics#_managing-multiple-terminals) and start one of the sample application with one of the following scripts:
 
 ```bash
 pnpm dev-basic
+```
+
+or
+
+```bash
+pnpm dev-basic-webpack
+```
+
+or
+
+```bash
+pnpm dev-basic-mix
 ```
 
 or
@@ -91,9 +107,16 @@ You can then open your favorite browser and navigate to `http://localhost:8080/`
 
 > To test that a remote module is working correctly, navigate to the remote module entry file. For a remote module hosted on the port `8081`, the URL should be `http://localhost:8081/remoteEntry.js`.
 
+If you prefer to develop without a sample application, use the `dev-pkg` script instead:
+
+```bash
+pnpm dev-pkg
+```
+
 ## Release the packages
 
 When you are ready to release the packages, you must follow the following steps:
+
 1. Run `pnpm changeset` and follow the prompt. For versioning, always follow the [SemVer standard](https://semver.org/).
 2. Commit the newly generated file in your branch and submit a new Pull Request (PR). Changesets will automatically detect the changes and post a message in your pull request telling you that once the PR closes, the versions will be released.
 3. Find someone to review your PR.
@@ -114,7 +137,7 @@ Make sure GitHub Action has **write access** to the selected npm packages.
 If the packages failed to compile, it's easier to debug without executing the full release flow every time. To do so, instead, execute the following command:
 
 ```bash
-pnpm build
+pnpm build-pkg
 ```
 
 By default, packages compilation output will be in their respective *dist* directory.
@@ -136,7 +159,7 @@ The sites for this sample application are hosted on [Netlify](https://www.netlif
 To deploy the sample application, open a terminal at the root of the repository and execute the following script:
 
 ```bash
-deploy-basic
+pnpm deploy-basic
 ```
 
 A prompt with a few questions will appear and then the site will automatically be deployed to production.
@@ -152,7 +175,7 @@ The sites for this sample application are hosted on [Netlify](https://www.netlif
 To deploy the sample application, open a terminal at the root of the repository and execute the following script:
 
 ```bash
-deploy-endpoints
+pnpm deploy-endpoints
 ```
 
 A prompt with a few questions will appear and then the sites will automatically be deployed to production.
@@ -160,7 +183,7 @@ A prompt with a few questions will appear and then the sites will automatically 
 Then, execute the following script:
 
 ```bash
-deploy-endpoints-isolated
+pnpm deploy-endpoints-isolated
 ```
 
 Another prompt with a few questions will appear and then the sites will automatically be deployed to production.
@@ -169,25 +192,41 @@ Another prompt with a few questions will appear and then the sites will automati
 
 From the project root, you have access to many commands. The most important ones are:
 
-### dev
+### dev-pkg
 
-Build the shell packages for development and start the watch processes.
+Start a watch process for the packages.
 
 ```bash
-pnpm dev
+pnpm dev-pkg
 ```
 
 ### dev-basic
 
-Build the sample "basic" application for development and start the dev servers.
+Start a watch process for the "basic" sample application.
 
 ```bash
 pnpm dev-basic
 ```
 
+### dev-basic-webpack
+
+Start a watch process for the "basic" sample application using a webpack bundler.
+
+```bash
+pnpm dev-basic-webpack
+```
+
+### dev-basic-mix
+
+Start a watch process for the "basic" sample application with an host application using rsbuild and remote modules using webpack.
+
+```bash
+pnpm dev-basic-mix
+```
+
 ### dev-endpoints
 
-Build the sample "application with "endpoints" for development and start the dev servers.
+Start a watch process for the "endpoints" sample application.
 
 ```bash
 pnpm dev-endpoints
@@ -195,39 +234,47 @@ pnpm dev-endpoints
 
 ### dev-docs
 
-Build the [Retype](https://retype.com/) documentation for development and start the Retype dev server. If you are experiencing issue with the license, refer to the [setup Retype section](#setup-retype).
+Start the [Retype](https://retype.com/) dev server. If you are experiencing issue with the license, refer to the [setup Retype section](#setup-retype).
 
 ```bash
 pnpm dev-docs
 ```
 
-### build
+### build-pkg
 
 Build the packages for release.
 
 ```bash
-pnpm build
+pnpm build-pkg
 ```
 
 ### build-basic
 
-Build the sample "basic" application for release.
+Build the "basic" sample application for release.
 
 ```bash
 pnpm build-basic
 ```
 
-### build-endpoints
+### build-basic-webpack
 
-Build the sample application with "endpoints" for release.
+Build for release the "basic" sample application using webpack bundler.
 
 ```bash
-pnpm build-endpoints
+pnpm build-basic-webpack
 ```
 
-### build-endpoints-isolated
+### build-basic-mix
 
-Build for an isolated setup the sample application with "endpoints" for release.
+Build for release the "basic" sample with an host application using rsbuild and remote modules using webpack.
+
+```bash
+pnpm build-basic-webpack
+```
+
+### build-endpoints
+
+Build the "endpoints" sample application for release.
 
 ```bash
 pnpm build-endpoints
@@ -241,9 +288,25 @@ Build the sample "basic" application for deployment and start a local web server
 pnpm serve-basic
 ```
 
+### serve-basic-webpack
+
+Build the sample "basic" application using webpack bundler for deployment and start a local web server to serve the application.
+
+```bash
+pnpm serve-basic-webpack
+```
+
+### serve-basic-mix
+
+Build the sample "basic" application with an rsbuild host application and remote modules using webpack for deployment and start a local web server to serve the application.
+
+```bash
+pnpm serve-basic-mix
+```
+
 ### serve-endpoints
 
-Build the sample application with "endpoints" for deployment and start a local web server to serve the application.
+Build the sample "endpoints" application for deployment and start a local web server to serve the application.
 
 ```bash
 pnpm serve-endpoints
@@ -319,7 +382,7 @@ This action runs on a push on the `main` branch. If there is a file present in t
 
 ### CI
 
-This action will trigger when a commit is done in a PR to `main` or after a push to `main` and will run `build`, `lint-ci` and `test` commands on the source code.
+This action will trigger when a commit is done in a PR to `main` or after a push to `main` and will run `build-pkg`, `build-basic`, `build-basic-webpack`, `build-basic-mix`, `build-endpoints`, `lint` and `test` commands on the source code.
 
 ### Retype
 

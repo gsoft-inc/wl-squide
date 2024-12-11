@@ -10,11 +10,10 @@
         },
         "build": {
             "dependsOn": ["^build"],
-            "outputs": ["dist/**"],
-            "outputLogs": "new-only"
+            "outputs": ["dist/**"]
         },
         "build-isolated": {
-            "dependsOn": ["build"],
+            "dependsOn": ["@squide/firefly-rsbuild-configs#build", "@squide/firefly-webpack-configs#build"],
             "outputs": ["dist/**"]
         },
         "serve-build": {
@@ -35,14 +34,12 @@
             "outputs": ["node_modules/.cache/eslint"]
         },
         "eslint": {
-            "dependsOn": ["^eslint", "//#eslint"],
             "outputs": ["node_modules/.cache/eslint"]
         },
         "//#typecheck": {
             "outputs": ["node_modules/.cache/tsbuildinfo.json"]
         },
         "typecheck": {
-            "dependsOn": ["^typecheck", "//#typecheck"],
             "outputs": ["node_modules/.cache/tsbuildinfo.json"]
         },
         "//#syncpack": {},

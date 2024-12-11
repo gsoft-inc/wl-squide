@@ -56,6 +56,7 @@
         "@testing-library/jest-dom": "6.6.3",
         "@testing-library/react": "16.1.0",
         "@types/jest": "29.5.14",
+        "@typescript-eslint/parser": "8.18.0",
         "@workleap/eslint-plugin": "3.2.3",
         "@workleap/swc-configs": "2.2.3",
         "@workleap/typescript-configs": "3.0.2",

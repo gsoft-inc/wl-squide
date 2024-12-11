@@ -48,7 +48,7 @@ jobs:
           path: .turbo
 
       - name: Build packages
-        run: pnpm ci-build
+        run: pnpm build-pkg
 
       - name: Save Turborepo cache
         id: cache-turborepo-save

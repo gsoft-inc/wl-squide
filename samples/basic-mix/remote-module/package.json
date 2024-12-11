@@ -32,6 +32,7 @@
         "@swc/helpers": "0.5.15",
         "@types/react": "19.0.1",
         "@types/react-dom": "19.0.2",
+        "@typescript-eslint/parser": "8.18.0",
         "@workleap/browserslist-config": "2.0.1",
         "@workleap/eslint-plugin": "3.2.3",
         "@workleap/swc-configs": "2.2.3",

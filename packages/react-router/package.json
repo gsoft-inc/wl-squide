@@ -31,7 +31,7 @@
         "build": "rslib build --config ./rslib.build.ts",
         "eslint": "eslint . --max-warnings=-0 --cache --cache-location node_modules/.cache/eslint",
         "typecheck": "tsc",
-        "test": "jest -u"
+        "test": "jest"
     },
     "peerDependencies": {
         "react": "*",
@@ -51,7 +51,7 @@
         "@swc/jest": "0.2.37",
         "@testing-library/react": "16.1.0",
         "@types/jest": "29.5.14",
-        "@types/react-test-renderer": "19.0.0",
+        "@typescript-eslint/parser": "8.18.0",
         "@workleap/eslint-plugin": "3.2.3",
         "@workleap/swc-configs": "2.2.3",
         "@workleap/typescript-configs": "3.0.2",

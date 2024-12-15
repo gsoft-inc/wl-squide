@@ -9,7 +9,7 @@ label: Migrate to Rsbuild
 This is an experimental feature.
 !!!
 
-To enhance it's developer experience with modern web development tooling, Squide firefly introduces a new [@squide/firefly-rsbuild-configs](https://www.npmjs.com/package/@squide/firefly-rsbuild-configs) package. This package provides ready-to-use [Rsbuild](https://lib.rsbuild.dev/index) configurations specifically tailored for Squide applications. Rsbuild is a high-performance build tool powered by [Rspack](https://rspack.dev/), a Rust-based port of [webpack](https://webpack.js.org/) designed for efficiency and speed.
+[Rsbuild](https://lib.rsbuild.dev/index) is a high-performance build tool powered by [Rspack](https://rspack.dev/), a Rust-based port of [webpack](https://webpack.js.org/) designed for efficiency and speed. Squide firefly introduces a new [@squide/firefly-rsbuild-configs](https://www.npmjs.com/package/@squide/firefly-rsbuild-configs) package to improve it's developer experience with modern web development tooling. This package provides ready-to-use Rsbuild configurations specifically tailored for Squide applications.
 
 To migrate from [@squide/firefly-webpack-configs](https://www.npmjs.com/package/@squide/firefly-webpack-configs) to `@squide/firefly-rsbuild-configs`, based on your project type, execute the following steps :point_down:
 
@@ -21,15 +21,15 @@ Open a terminal at the root of the host application project and install the foll
 
 +++ pnpm
 ```bash
-pnpm add -D @squide/firefly-rsbuild-configs @rsbuild/core
+pnpm add -D @squide/firefly-rsbuild-configs @rsbuild/core @rspack/core
 ```
 +++ yarn
 ```bash
-yarn add -D @squide/firefly-rsbuild-configs @rsbuild/core
+yarn add -D @squide/firefly-rsbuild-configs @rsbuild/core @rspack/core
 ```
 +++ npm
 ```bash
-npm install -D @squide/firefly-rsbuild-configs @rsbuild/core
+npm install -D @squide/firefly-rsbuild-configs @rsbuild/core @rspack/core
 ```
 +++
 
@@ -49,12 +49,8 @@ npm uninstall @squide/firefly-webpack-configs @swc/core @swc/helpers @workleap/s
 ```
 +++
 
-!!!info
-If your host application project uses SWC for tests, you may want to keep the `@swc/core` and `@workleap/swc-configs` packages.
-!!!
-
 !!!warning
-While you can use any package manager to develop an application with Squide, it is highly recommended that you use [PNPM](https://pnpm.io/) as the guides has been developed and tested with PNPM.
+If your host application project uses SWC for tests, you may want to keep the `@swc/core` and `@workleap/swc-configs` packages.
 !!!
 
 ### Update files
@@ -290,12 +286,8 @@ npm uninstall @squide/firefly-webpack-configs @swc/core @swc/helpers @workleap/s
 ```
 +++
 
-!!!info
-If your remote module project uses SWC for tests, you may want to keep the `@swc/core` and `@workleap/swc-configs` packages.
-!!!
-
 !!!warning
-While you can use any package manager to develop an application with Squide, it is highly recommended that you use [PNPM](https://pnpm.io/) as the guides has been developed and tested with PNPM.
+If your remote module project uses SWC for tests, you may want to keep the `@swc/core` and `@workleap/swc-configs` packages.
 !!!
 
 ### Update files

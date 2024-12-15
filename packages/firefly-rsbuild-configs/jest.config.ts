@@ -14,7 +14,7 @@ const config: Config = {
         `${path.join(
             __dirname,
             "../.."
-        )}/node_modules/.pnpm/(?!(@workleap\\+webpack-configs)@)`
+        )}/node_modules/.pnpm/(?!(@workleap\\+rsbuild-configs)@)`
     ],
     transform: {
         "^.+\\.(js|ts)$": ["@swc/jest", swcConfig as Record<string, unknown>]

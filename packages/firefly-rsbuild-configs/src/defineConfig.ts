@@ -1,11 +1,9 @@
 import { pluginModuleFederation } from "@module-federation/rsbuild-plugin";
 import type { RsbuildConfig, RsbuildPlugin } from "@rsbuild/core";
+import { defineBuildConfig, defineDevConfig, type DefineBuildConfigOptions, type DefineDevConfigOptions, type RsbuildConfigTransformer } from "@workleap/rsbuild-configs";
 import merge from "deepmerge";
 import path from "node:path";
 import url from "node:url";
-import type { RsbuildConfigTransformer } from "./rsbuild/applyTransformers.ts";
-import { defineBuildConfig, type DefineBuildConfigOptions } from "./rsbuild/defineBuildConfig.ts";
-import { defineDevConfig, type DefineDevConfigOptions } from "./rsbuild/defineDevConfig.ts";
 import { HostApplicationName } from "./shared.ts";
 
 // Using import.meta.url instead of import.meta.dirname because Jest is throwing the following error:

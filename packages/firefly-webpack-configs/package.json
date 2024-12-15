@@ -43,21 +43,21 @@
         "webpack-dev-server": ">=5.0.0"
     },
     "dependencies": {
-        "@module-federation/enhanced": "0.8.1",
-        "@types/node": "22.10.1",
-        "@types/semver": "7.5.8",
-        "@workleap/webpack-configs": "1.5.1",
-        "deepmerge": "4.3.1",
-        "html-webpack-plugin": "5.6.3",
-        "semver": "7.6.3"
+        "@module-federation/enhanced": "^0.8.4",
+        "@types/node": "^22.10.2",
+        "@types/semver": "^7.5.8",
+        "@workleap/webpack-configs": "^1.5.2",
+        "deepmerge": "^4.3.1",
+        "html-webpack-plugin": "^5.6.3",
+        "semver": "^7.6.3"
     },
     "devDependencies": {
-        "@rslib/core": "0.1.3",
+        "@rslib/core": "0.1.4",
         "@swc/core": "1.10.1",
         "@swc/jest": "0.2.37",
         "@types/jest": "29.5.14",
         "@typescript-eslint/parser": "8.18.0",
-        "@workleap/eslint-plugin": "3.2.3",
+        "@workleap/eslint-plugin": "3.2.4",
         "@workleap/swc-configs": "2.2.3",
         "@workleap/typescript-configs": "3.0.2",
         "eslint": "8.57.0",
@@ -66,7 +66,7 @@
         "ts-node": "10.9.2",
         "typescript": "5.5.4",
         "webpack": "5.97.1",
-        "webpack-dev-server": "5.1.0"
+        "webpack-dev-server": "5.2.0"
     },
     "engines": {
         "node": ">=21.1.0"

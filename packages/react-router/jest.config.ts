@@ -1,9 +1,9 @@
 import type { Config } from "jest";
-import { pathsToModuleNameMapper } from "ts-jest";
 import { swcConfig } from "./swc.jest.ts";
-import { compilerOptions } from "./tsconfig.json";
 
 const config: Config = {
+    testRegex: "/tests/*/.*\\.test\\.(ts|tsx)$",
+    testPathIgnorePatterns: ["/node_modules/", "/dist/"],
     testEnvironment: "jsdom",
     transformIgnorePatterns: [
         "node_modules/(?!.pnpm|memoize|mimic-function)"
@@ -11,12 +11,8 @@ const config: Config = {
     transform: {
         "^.+\\.(js|ts|tsx)$": ["@swc/jest", swcConfig as Record<string, unknown>]
     },
-    moduleNameMapper: {
-        ...pathsToModuleNameMapper(compilerOptions.paths, {
-            prefix: "<rootDir>"
-        })
-    },
-    cacheDirectory: "./node_modules/.cache/jest"
+    cacheDirectory: "./node_modules/.cache/jest",
+    verbose: true
 };
 
 export default config;

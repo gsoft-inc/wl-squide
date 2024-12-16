@@ -1,6 +1,6 @@
 name: CI
 
-# Pnpm setup based on https://github.com/pnpm/action-setup#use-cache-to-reduce-installation-time
+# PNPM setup based on https://github.com/pnpm/action-setup#use-cache-to-reduce-installation-time
 
 on:
   push:
@@ -24,66 +24,55 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v4
         with:
-          version: 9
           run_install: false
 
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-            node-version: ">=21.1.0"
+            node-version: ">=22.0.0"
             check-latest: true
             cache: pnpm
+            cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Cache Turborepo
-        uses: actions/cache@v4
+      - name: Restore Turborepo cache
+        id: cache-turborepo-restore
+        uses: actions/cache/restore@v4
         with:
-          path: node_modules/.cache/turbo
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          key: ${{ runner.os }}-turborepo-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-turbo-
-          save-always: true
-
-      - name: Cache ESLint
-        uses: actions/cache@v4
-        with:
-          path: node_modules/.cache/eslint
-          key: ${{ runner.os }}-eslint-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-eslint-
-          save-always: true
-
-      - name: Cache Knip
-        uses: actions/cache@v4
-        with:
-          path: node_modules/.cache/knip
-          key: ${{ runner.os }}-knip-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-knip-
-          save-always: true
-
-      - name: Cache Jest
-        uses: actions/cache@v4
-        with:
-          path: packages/**/node_modules/.cache/jest
-          key: ${{ runner.os }}-jest-${{ hashFiles('packages/**/node_modules/.cache/jest') }}
-          save-always: true
-
-      - name: Build packages
-        run: pnpm ci-build
-
-      - name: Build basic sample
-        run: pnpm ci-build-basic
-
-      - name: Build endpoints sample
-        run: pnpm ci-build-endpoints
+            ${{ runner.os }}-turborepo-
+          path: .turbo
 
       - name: Lint packages & samples
         run: pnpm lint
 
+      - name: Build packages
+        run: pnpm build-pkg
+
+      - name: Build basic sample
+        run: pnpm build-basic
+
+      - name: Build basic webpack sample
+        run: pnpm build-basic-webpack
+
+      - name: Build basic mix sample
+        run: pnpm build-basic-mix
+
+      - name: Build endpoints sample
+        run: pnpm build-endpoints
+
       - name: Test packages
         run: pnpm test
+
+      - name: Save Turborepo cache
+        id: cache-turborepo-save
+        if: always() && steps.cache-turborepo-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          key: ${{ steps.cache-turborepo-restore.outputs.cache-primary-key }}
+          path: .turbo

@@ -155,6 +155,16 @@ Finally, update the module `tsconfig.json` to include the `types` folder:
 }
 ```
 
+If the project contains Typescript files at its root that need to be linted (such as tooling configuration files), consider including all project files instead of specific directories:
+
+```json !#3 host/tsconfig.json
+{
+    "extends": "@workleap/typescript-configs/web-application.json",
+    "include": ["."],
+    "exclude": ["dist", "node_modules"]
+}
+```
+
 ### Register variables
 
 Now, let's register our first variable. We recommend registering environment variables in the module's [register function](../reference/registration/registerLocalModules.md#register-a-local-module) as it's the most logical place to access the runtime instance:

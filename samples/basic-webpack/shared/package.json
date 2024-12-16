@@ -1,0 +1,33 @@
+{
+    "name": "@basic-webpack/shared",
+    "author": "Workleap",
+    "version": "0.0.0",
+    "description": "Shared package to showcase Squide.",
+    "private": true,
+    "license": "Apache-2.0",
+    "type": "module",
+    "exports": "./src/index.ts",
+    "scripts": {
+        "eslint": "eslint . --max-warnings=-0 --cache --cache-location node_modules/.cache/eslint",
+        "typecheck": "tsc"
+    },
+    "peerDependencies": {
+        "@squide/firefly": "*",
+        "react": "*",
+        "react-dom": "*",
+        "react-router-dom": "*"
+    },
+    "devDependencies": {
+        "@squide/firefly": "workspace:*",
+        "@types/react": "19.0.1",
+        "@types/react-dom": "19.0.2",
+        "@typescript-eslint/parser": "8.18.0",
+        "@workleap/eslint-plugin": "3.2.5",
+        "@workleap/typescript-configs": "3.0.2",
+        "eslint": "8.57.0",
+        "typescript": "5.5.4"
+    },
+    "engines": {
+        "node": ">=21.1.0"
+    }
+}

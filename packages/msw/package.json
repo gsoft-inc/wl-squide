@@ -9,52 +9,48 @@
         "url": "git+https://github.com/gsoft-inc/wl-squide.git",
         "directory": "packages/msw"
     },
+    "type": "module",
     "publishConfig": {
         "access": "public",
-        "provenance": true
-    },
-    "type": "module",
-    "exports": {
-        ".": {
-            "types": "./dist/index.d.ts",
-            "import": "./dist/index.js",
-            "default": "./dist/index.js"
+        "provenance": true,
+        "exports": {
+            ".": {
+                "types": "./dist/index.d.ts",
+                "import": "./dist/index.js",
+                "default": "./dist/index.js"
+            }
         }
     },
+    "exports": "./src/index.ts",
     "files": [
         "/dist",
         "CHANGELOG.md",
         "README.md"
     ],
     "scripts": {
-        "dev": "tsup --config ./tsup.dev.ts",
-        "build": "tsup --config ./tsup.build.ts"
+        "build": "rslib build --config ./rslib.build.ts",
+        "eslint": "eslint . --max-warnings=-0 --cache --cache-location node_modules/.cache/eslint",
+        "typecheck": "tsc"
     },
     "peerDependencies": {
-        "msw": "*",
-        "react": "*",
-        "react-dom": "*"
+        "msw": "*"
     },
     "peerDependenciesMeta": {
         "msw": {
             "optional": true
         }
     },
-    "devDependencies": {
-        "@types/react": "18.3.12",
-        "@types/react-dom": "18.3.1",
-        "@workleap/eslint-plugin": "3.2.3",
-        "@workleap/tsup-configs": "3.0.6",
-        "@workleap/typescript-configs": "3.0.2",
-        "eslint": "8.57.0",
-        "msw": "2.6.1",
-        "react": "18.3.1",
-        "react-dom": "18.3.1",
-        "tsup": "8.3.5",
-        "typescript": "5.5.4"
-    },
     "dependencies": {
         "@squide/core": "workspace:*"
+    },
+    "devDependencies": {
+        "@rslib/core": "0.1.4",
+        "@typescript-eslint/parser": "8.18.0",
+        "@workleap/eslint-plugin": "3.2.5",
+        "@workleap/typescript-configs": "3.0.2",
+        "eslint": "8.57.0",
+        "msw": "2.6.9",
+        "typescript": "5.5.4"
     },
     "sideEffects": false,
     "engines": {

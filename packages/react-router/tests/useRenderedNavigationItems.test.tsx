@@ -1,6 +1,5 @@
-import { renderHook } from "@testing-library/react";
+import { render, renderHook } from "@testing-library/react";
 import { useCallback, type ReactNode } from "react";
-import renderer from "react-test-renderer";
 import type { NavigationItem, RootNavigationItem } from "../src/navigationItemRegistry.ts";
 import { isNavigationLink, useRenderedNavigationItems, type NavigationLinkRenderProps, type NavigationSectionRenderProps, type RenderItemFunction, type RenderSectionFunction } from "../src/useRenderedNavigationItems.tsx";
 
@@ -84,9 +83,7 @@ test("highest priority goes first", () => {
         }
     ];
 
-    const tree = renderer
-        .create(<TestComponent navigationItems={navigationItems} />)
-        .toJSON();
+    const tree = render(<TestComponent navigationItems={navigationItems} />).asFragment();
 
     expect(tree).toMatchSnapshot();
 });
@@ -112,9 +109,7 @@ test("negative priority goes last", () => {
         }
     ];
 
-    const tree = renderer
-        .create(<TestComponent navigationItems={navigationItems} />)
-        .toJSON();
+    const tree = render(<TestComponent navigationItems={navigationItems} />).asFragment();
 
     expect(tree).toMatchSnapshot();
 });
@@ -140,9 +135,7 @@ test("support 2 section levels", () => {
         }
     ];
 
-    const tree = renderer
-        .create(<TestComponent navigationItems={navigationItems} />)
-        .toJSON();
+    const tree = render(<TestComponent navigationItems={navigationItems} />).asFragment();
 
     expect(tree).toMatchSnapshot();
 });
@@ -173,9 +166,7 @@ test("support 3 section levels", () => {
         }
     ];
 
-    const tree = renderer
-        .create(<TestComponent navigationItems={navigationItems} />)
-        .toJSON();
+    const tree = render(<TestComponent navigationItems={navigationItems} />).asFragment();
 
     expect(tree).toMatchSnapshot();
 });
@@ -195,9 +186,7 @@ test("link item additionalProps are rendered", () => {
         }
     ];
 
-    const tree = renderer
-        .create(<TestComponent navigationItems={navigationItems} />)
-        .toJSON();
+    const tree = render(<TestComponent navigationItems={navigationItems} />).asFragment();
 
     expect(tree).toMatchSnapshot();
 });
@@ -218,9 +207,7 @@ test("section item additionalProps are rendered", () => {
         }
     ];
 
-    const tree = renderer
-        .create(<TestComponent navigationItems={navigationItems} />)
-        .toJSON();
+    const tree = render(<TestComponent navigationItems={navigationItems} />).asFragment();
 
     expect(tree).toMatchSnapshot();
 });
@@ -242,9 +229,7 @@ test("link item custom keys are rendered", () => {
         }
     ];
 
-    const tree = renderer
-        .create(<TestComponent navigationItems={navigationItems} />)
-        .toJSON();
+    const tree = render(<TestComponent navigationItems={navigationItems} />).asFragment();
 
     expect(tree).toMatchSnapshot();
 });
@@ -266,9 +251,7 @@ test("section item custom keys are rendered", () => {
         }
     ];
 
-    const tree = renderer
-        .create(<TestComponent navigationItems={navigationItems} />)
-        .toJSON();
+    const tree = render(<TestComponent navigationItems={navigationItems} />).asFragment();
 
     expect(tree).toMatchSnapshot();
 });
@@ -290,9 +273,7 @@ test("nested item custom keys are rendered", () => {
         }
     ];
 
-    const tree = renderer
-        .create(<TestComponent navigationItems={navigationItems} />)
-        .toJSON();
+    const tree = render(<TestComponent navigationItems={navigationItems} />).asFragment();
 
     expect(tree).toMatchSnapshot();
 });
@@ -310,9 +291,7 @@ test("when a link item canRender prop return false, the item is not rendered", (
         }
     ];
 
-    const tree = renderer
-        .create(<TestComponent navigationItems={navigationItems} />)
-        .toJSON();
+    const tree = render(<TestComponent navigationItems={navigationItems} />).asFragment();
 
     expect(tree).toMatchSnapshot();
 });
@@ -335,9 +314,7 @@ test("when a section item canRender prop return false, the item is not rendered"
         }
     ];
 
-    const tree = renderer
-        .create(<TestComponent navigationItems={navigationItems} />)
-        .toJSON();
+    const tree = render(<TestComponent navigationItems={navigationItems} />).asFragment();
 
     expect(tree).toMatchSnapshot();
 });
@@ -356,9 +333,7 @@ test("when the canRender prop of all the root items return false, do not render 
         }
     ];
 
-    const tree = renderer
-        .create(<TestComponent navigationItems={navigationItems} />)
-        .toJSON();
+    const tree = render(<TestComponent navigationItems={navigationItems} />).asFragment();
 
     expect(tree).toMatchSnapshot();
 });
@@ -392,9 +367,7 @@ test("when the canRender prop of all the items of a nested section return false,
         }
     ];
 
-    const tree = renderer
-        .create(<TestComponent navigationItems={navigationItems} />)
-        .toJSON();
+    const tree = render(<TestComponent navigationItems={navigationItems} />).asFragment();
 
     expect(tree).toMatchSnapshot();
 });

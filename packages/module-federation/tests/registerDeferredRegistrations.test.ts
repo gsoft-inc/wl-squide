@@ -138,6 +138,7 @@ test("when an unmanaged error is thrown, complete the deferred registration scop
     // Oddly, I can't get it to work with expect(() => {}).toThrow();
     try {
         await registerDeferredRegistrations(data, runtime);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error: unknown) {
         // ....
     }

@@ -36,7 +36,9 @@
     "peerDependencies": {
         "@honeycombio/opentelemetry-web": "*",
         "@opentelemetry/api": "*",
-        "@opentelemetry/auto-instrumentations-web": "*"
+        "@opentelemetry/auto-instrumentations-web": "*",
+        "@opentelemetry/instrumentation-fetch": "*",
+        "@opentelemetry/sdk-trace-web": "*"
     },
     "dependencies": {
         "@squide/firefly": "workspace:*",
@@ -45,8 +47,6 @@
         "uuid": "11.0.3"
     },
     "devDependencies": {
-        "@opentelemetry/instrumentation-fetch": "0.56.0",
-        "@opentelemetry/sdk-trace-web": "1.29.0",
         "@rslib/core": "0.1.4",
         "@swc/core": "1.10.1",
         "@swc/jest": "0.2.37",

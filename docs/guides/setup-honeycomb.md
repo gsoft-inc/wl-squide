@@ -18,15 +18,15 @@ Let's start by configuring the host application. First, open a terminal at the r
 
 +++ pnpm
 ```bash
-pnpm add @squide/firefly-honeycomb @honeycombio/opentelemetry-web @opentelemetry/api @opentelemetry/auto-instrumentations-web
+pnpm add @squide/firefly-honeycomb @honeycombio/opentelemetry-web @opentelemetry/api @opentelemetry/auto-instrumentations-web @opentelemetry/instrumentation-fetch @opentelemetry/sdk-trace-web
 ```
 +++ yarn
 ```bash
-yarn add @squide/firefly-honeycomb @honeycombio/opentelemetry-web @opentelemetry/api @opentelemetry/auto-instrumentations-web
+yarn add @squide/firefly-honeycomb @honeycombio/opentelemetry-web @opentelemetry/api @opentelemetry/auto-instrumentations-web @opentelemetry/instrumentation-fetch @opentelemetry/sdk-trace-web
 ```
 +++ npm
 ```bash
-npm install @squide/firefly-honeycomb @honeycombio/opentelemetry-web @opentelemetry/api @opentelemetry/auto-instrumentations-web
+npm install @squide/firefly-honeycomb @honeycombio/opentelemetry-web @opentelemetry/api @opentelemetry/auto-instrumentations-web @opentelemetry/instrumentation-fetch @opentelemetry/sdk-trace-web
 ```
 +++
 

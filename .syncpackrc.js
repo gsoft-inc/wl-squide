@@ -11,6 +11,13 @@ export default {
             "isIgnored": true
         },
         {
+            "range": "^",
+            "dependencyTypes": ["prod"],
+            "dependencies": ["**"],
+            "packages": ["@squide/firefly-rsbuild-configs", "@squide/firefly-webpack-configs"],
+            "label": "config packages dependencies version should be ranged"
+        },
+        {
             "range": "",
             "dependencyTypes": ["prod", "dev"],
             "dependencies": ["**"],

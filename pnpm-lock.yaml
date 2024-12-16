@@ -282,6 +282,12 @@ importers:
       '@opentelemetry/auto-instrumentations-web':
         specifier: '*'
         version: 0.44.0(@opentelemetry/api@1.9.0)(zone.js@0.14.10)
+      '@opentelemetry/instrumentation-fetch':
+        specifier: '*'
+        version: 0.56.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/sdk-trace-web':
+        specifier: '*'
+        version: 1.29.0(@opentelemetry/api@1.9.0)
       '@squide/firefly':
         specifier: workspace:*
         version: link:../firefly
@@ -295,12 +301,6 @@ importers:
         specifier: 11.0.3
         version: 11.0.3
     devDependencies:
-      '@opentelemetry/instrumentation-fetch':
-        specifier: 0.56.0
-        version: 0.56.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/sdk-trace-web':
-        specifier: 1.29.0
-        version: 1.29.0(@opentelemetry/api@1.9.0)
       '@rslib/core':
         specifier: 0.1.4
         version: 0.1.4(typescript@5.5.4)
@@ -2048,6 +2048,9 @@ importers:
       '@opentelemetry/auto-instrumentations-web':
         specifier: 0.44.0
         version: 0.44.0(@opentelemetry/api@1.9.0)(zone.js@0.14.10)
+      '@opentelemetry/instrumentation-fetch':
+        specifier: 0.56.0
+        version: 0.56.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-trace-web':
         specifier: 1.29.0
         version: 1.29.0(@opentelemetry/api@1.9.0)
@@ -15396,7 +15399,7 @@ snapshots:
   '@opentelemetry/instrumentation-document-load@0.42.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
-      '@opentelemetry/core': 1.28.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/core': 1.29.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/instrumentation': 0.55.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-trace-web': 1.29.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.28.0
@@ -15686,7 +15689,7 @@ snapshots:
   '@opentelemetry/instrumentation-user-interaction@0.42.0(@opentelemetry/api@1.9.0)(zone.js@0.14.10)':
     dependencies:
       '@opentelemetry/api': 1.9.0
-      '@opentelemetry/core': 1.28.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/core': 1.29.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/instrumentation': 0.55.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-trace-web': 1.29.0(@opentelemetry/api@1.9.0)
       zone.js: 0.14.10
@@ -16884,7 +16887,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 5.62.0
       '@typescript-eslint/visitor-keys': 5.62.0
-      debug: 4.3.7(supports-color@9.4.0)
+      debug: 4.4.0(supports-color@9.4.0)
       globby: 11.1.0
       is-glob: 4.0.3
       semver: 7.6.3

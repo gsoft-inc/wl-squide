@@ -1,5 +1,16 @@
 # @squide/firefly-honeycomb
 
+## 2.0.0
+
+### Major Changes
+
+- [#225](https://github.com/gsoft-inc/wl-squide/pull/225) [`4eb46d6`](https://github.com/gsoft-inc/wl-squide/commit/4eb46d69283804a5809494f7275f9d447022a97d) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Added "@opentelemetry/instrumentation-fetch" and "@opentelemetry/sdk-trace-web" as peerDependencies.
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @squide/firefly@9.3.2
+
 ## 1.0.2
 
 ### Patch Changes

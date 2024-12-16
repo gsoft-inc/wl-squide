@@ -1,5 +1,11 @@
 # @squide/firefly-webpack-configs
 
+## 4.2.2
+
+### Patch Changes
+
+- [#225](https://github.com/gsoft-inc/wl-squide/pull/225) [`4eb46d6`](https://github.com/gsoft-inc/wl-squide/commit/4eb46d69283804a5809494f7275f9d447022a97d) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Added additional shared dependencies for Honeycomb.
+
 ## 4.2.1
 
 ### Patch Changes

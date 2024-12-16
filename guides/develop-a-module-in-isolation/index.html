@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.785560631529">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.787639052301">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.6.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.6.0.785560631529" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.6.0.787639052301" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.6.0.785560631529" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.6.0.787639052301" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.6.0.785560631529" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.6.0.785560631529" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.6.0.787639052301" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.6.0.787639052301" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -319,8 +319,6 @@
 ├─────────── register.tsx
 ├─────────── index.ts
 ├───────── package.json
-├───────── tsup.dev.ts
-├───────── tsup.build.ts
 ├── modules
 ├───────── local-module
 ├───────── remote-module</code></pre>
@@ -355,17 +353,10 @@
     &quot;name&quot;: &quot;@sample/shell&quot;,
     &quot;version&quot;: &quot;0.0.1&quot;,
     &quot;type&quot;: &quot;module&quot;,
-    &quot;exports&quot;: {
-        &quot;.&quot;: {
-            &quot;import&quot;: &quot;./dist/index.js&quot;,
-            &quot;types&quot;: &quot;./dist/index.d.ts&quot;,
-            &quot;default&quot;: &quot;./dist/index.js&quot;
-        }
-    }
+    &quot;exports&quot;: &quot;./src/index.ts&quot;
 }</code></pre>
 </doc-codeblock></div>
-<p>Then, install the package dependencies and configure the new package with <a href="https://gsoft-inc.github.io/wl-web-configs/tsup/" class="outbound" target="_blank">tsup</a>.</p>
-<p>Then, create an <code v-pre>AppRouter</code> component in the shell package to provide a <strong>reusable router configuration</strong> that can be shared between the host application and the isolated modules. This new <code v-pre>AppRouter</code> component should wrap the <code v-pre>@squide/firefly</code> <a href="../../reference/routing/approuter/">AppRouter</a> component:</p>
+<p>Then, install the package dependencies and create an <code v-pre>AppRouter</code> component in the shell package to provide a <strong>reusable router configuration</strong> that can be shared between the host application and the isolated modules. This new <code v-pre>AppRouter</code> component should wrap the <code v-pre>@squide/firefly</code> <a href="../../reference/routing/approuter/">AppRouter</a> component:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">shell/src/AppRouter.tsx</div>
 <pre class="language-tsx"><code v-pre class="language-tsx">import { AppRouter as FireflyAppRouter } from &quot;@squide/firefly&quot;;

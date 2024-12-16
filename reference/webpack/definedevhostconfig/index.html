@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.785560631529">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.787639052301">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.6.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>defineDevHostConfig</title>
     <meta name="title" content="defineDevHostConfig">
-    <meta name="description" content="Creates a webpack configuration object that is adapted for a Squide host application in development mode.">
+    <meta name="description" content="Creates a webpack configuration object that is adapted for a Squide host application in development mode. This function is a wrapper built on top of ">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://gsoft-inc.github.io/wl-squide/reference/webpack/definedevhostconfig/">
@@ -21,23 +21,23 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gsoft-inc.github.io/wl-squide/reference/webpack/definedevhostconfig/">
     <meta property="og:title" content="defineDevHostConfig">
-    <meta property="og:description" content="Creates a webpack configuration object that is adapted for a Squide host application in development mode.">
+    <meta property="og:description" content="Creates a webpack configuration object that is adapted for a Squide host application in development mode. This function is a wrapper built on top of ">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gsoft-inc.github.io/wl-squide/reference/webpack/definedevhostconfig/">
     <meta property="twitter:title" content="defineDevHostConfig">
-    <meta property="twitter:description" content="Creates a webpack configuration object that is adapted for a Squide host application in development mode.">
+    <meta property="twitter:description" content="Creates a webpack configuration object that is adapted for a Squide host application in development mode. This function is a wrapper built on top of ">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../../static/favicon.png" rel="icon">
-    <link href="../../../resources/css/retype.css?v=3.6.0.785560631529" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.6.0.787639052301" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.6.0.785560631529" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.6.0.787639052301" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.6.0.785560631529" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.6.0.785560631529" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.6.0.787639052301" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.6.0.787639052301" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -313,7 +313,7 @@
         <span>defineDevHostConfig</span>
     </h1>
 </doc-anchor-target>
-<p>Creates a webpack <a href="https://webpack.js.org/concepts/configuration/" class="outbound" target="_blank">configuration object</a> that is adapted for a Squide host application in <strong>development</strong> mode.</p>
+<p>Creates a webpack <a href="https://webpack.js.org/concepts/configuration/" class="outbound" target="_blank">configuration object</a> that is adapted for a Squide host application in <strong>development</strong> mode. This function is a wrapper built on top of <a href="https://www.npmjs.com/package/@workleap/webpack-configs" class="outbound" target="_blank">@workleap/webpack-configs</a>. Make sure to read the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/" class="outbound" target="_blank">defineDevConfig</a> documentation first.</p>
 <div class="flex mb-6">
     <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
     <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
@@ -327,7 +327,7 @@
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>This function is a wrapper built on top of <a href="https://www.npmjs.com/package/@workleap/webpack-configs" class="outbound" target="_blank">@workleap/web-configs</a>. Make sure to read the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/" class="outbound" target="_blank">defineDevConfig</a> documentation first.</p>
+<p>If the application <em><strong>does not</strong></em> not include any remote modules, use the <a href="https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/" class="outbound" target="_blank">defineDevConfig</a> function instead of <code v-pre>defineDevHostConfig</code>.</p>
         </div>
     </div>
 </div>
@@ -357,6 +357,9 @@
 <li><code v-pre>features</code>: An optional object literal of feature switches to define additional shared dependencies.
 <ul>
 <li><code v-pre>i18next</code>: Whether or not to add <code v-pre>@squide/i18next</code> as a shared dependency.</li>
+<li><code v-pre>environmentVariables</code>: Whether or not to add <code v-pre>@squide/env-vars</code> as a shared dependency.</li>
+<li><code v-pre>honeycomb</code>: Whether or not to add <code v-pre>@squide/firefly-honeycomb</code> as a shared dependency.</li>
+<li><code v-pre>msw</code>: <code v-pre>false</code> to remove <code v-pre>@squide/msw</code> from shared dependencies.</li>
 </ul>
 </li>
 <li><code v-pre>sharedDependencies</code>: An optional object literal of additional (or updated) module federation shared dependencies.</li>
@@ -387,7 +390,7 @@
 <li><a href="https://www.npmjs.com/package/@squide/module-federation" class="outbound" target="_blank">@squide/module-federation</a></li>
 <li><a href="https://www.npmjs.com/package/@squide/msw" class="outbound" target="_blank">@squide/msw</a></li>
 </ul>
-<p>For the full shared dependencies configuration, have a look at the <a href="https://github.com/gsoft-inc/wl-squide/blob/main/packages/firefly/src/defineConfig.ts" class="outbound" target="_blank">defineConfig.ts</a> file on Github.</p>
+<p>For the full shared dependencies configuration, have a look at the <a href="https://github.com/gsoft-inc/wl-squide/blob/main/packages/firefly-webpack-configs/src/defineConfig.ts" class="outbound" target="_blank">defineConfig.ts</a> file on Github.</p>
 <doc-anchor-target id="usage">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#usage">#</doc-anchor-trigger>
@@ -623,7 +626,7 @@ export default defineDevHostConfig(swcConfig, 8080, Remotes, {
     </h3>
 </doc-anchor-target>
 <p>The <code v-pre>name</code> option of a remote definition <strong>must match</strong> the <code v-pre>name</code> option defined in the remote module <a href="https://module-federation.io/configure/index.html" class="outbound" target="_blank">ModuleFederationPlugin</a> configuration.</p>
-<p>If you are relying on the Squide <a href="../definedevremotemoduleconfig/">defineDevRemoteModuleConfig</a> function to add the <code v-pre>ModuleFederationPlugin</code> to the remote module webpack <a href="https://module-federation.io/" class="outbound" target="_blank">configuration object</a>, then the remote module <code v-pre>name</code> is the second argument of the function.</p>
+<p>If you are relying on the Squide <a href="../definedevremotemoduleconfig/">defineDevRemoteModuleConfig</a> function to add the <code v-pre>ModuleFederationPlugin</code> to the remote module webpack <a href="https://webpack.js.org/concepts/configuration/" class="outbound" target="_blank">configuration object</a>, then the remote module <code v-pre>name</code> is the second argument of the function.</p>
 <p>In the following exemple, the remote module <code v-pre>name</code> is <code v-pre>remote1</code>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">host/webpack.dev.js</div>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-squide">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.785560631529">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.787639052301">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.6.0">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../../static/favicon.png" rel="icon">
-    <link href="../../resources/css/retype.css?v=3.6.0.785560631529" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.6.0.787639052301" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.6.0.785560631529" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.6.0.787639052301" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.6.0.785560631529" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.6.0.785560631529" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.6.0.787639052301" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.6.0.787639052301" defer></script>
 
     <link href="https://gsoft-inc.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -340,21 +340,21 @@
 <doc-tab v-cloak id="pnpm">
 <template #title>pnpm</template>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">pnpm add -D @workleap/tsup-configs tsup typescript @types/react @types/react-dom
+<pre class="language-bash"><code v-pre class="language-bash">pnpm add -D typescript @types/react @types/react-dom
 pnpm add @squide/firefly react react-dom react-router-dom @tanstack/react-query</code></pre>
 </doc-codeblock></div>
 </doc-tab>
 <doc-tab v-cloak id="yarn">
 <template #title>yarn</template>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">yarn add -D @workleap/tsup-configs tsup typescript @types/react @types/react-dom
+<pre class="language-bash"><code v-pre class="language-bash">yarn add -D typescript @types/react @types/react-dom
 yarn add @squide/firefly react @squide/firefly react-dom react-router-dom @tanstack/react-query</code></pre>
 </doc-codeblock></div>
 </doc-tab>
 <doc-tab v-cloak id="npm">
 <template #title>npm</template>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">npm add -D @workleap/tsup-configs tsup typescript @types/react @types/react-dom
+<pre class="language-bash"><code v-pre class="language-bash">npm add -D typescript @types/react @types/react-dom
 npm install @squide/firefly react react-dom react-router-dom @tanstack/react-query</code></pre>
 </doc-codeblock></div>
 </doc-tab>
@@ -387,8 +387,6 @@ npm install @squide/firefly react react-dom react-router-dom @tanstack/react-que
 ├── src
 ├──── register.tsx
 ├──── Page.tsx
-├── tsup.dev.ts
-├── tsup.build.ts
 ├── package.json</code></pre>
 </doc-codeblock></div>
 <p>Then, ensure that you are developing your module using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules" class="outbound" target="_blank">ESM syntax</a> by specifying <code v-pre>type: module</code> in your <code v-pre>package.json</code> file:</p>
@@ -404,15 +402,12 @@ npm install @squide/firefly react react-dom react-router-dom @tanstack/react-que
 <pre class="language-json"><code v-pre class="language-json">{
     &quot;name&quot;: &quot;@getting-started/local-module&quot;,
     &quot;version&quot;: &quot;0.0.1&quot;,
-    &quot;exports&quot;: {
-        &quot;.&quot;: {
-            &quot;types&quot;: &quot;./dist/register.d.ts&quot;,
-            &quot;import&quot;: &quot;./dist/register.js&quot;,
-            &quot;default&quot;: &quot;./dist/register.js&quot;
-        }
-    }
+    &quot;exports&quot;: &quot;./src/register.tsx&quot;
 }</code></pre>
 </doc-codeblock></div>
+<blockquote>
+<p>For more information about the <code v-pre>exports</code> field, refer to this resource on <a href="https://www.shew.dev/monorepos/packaging/jit" class="outbound" target="_blank">Just-In-Time Packages</a>.</p>
+</blockquote>
 <doc-anchor-target id="routes-registration">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#routes-registration">#</doc-anchor-trigger>
@@ -512,82 +507,13 @@ root.render(
     &lt;/RuntimeContext.Provider&gt;
 );</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="configure-tsup">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#configure-tsup">#</doc-anchor-trigger>
-        <span>Configure tsup</span>
-    </h2>
-</doc-anchor-target>
-<div class="flex mb-6">
-    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
-    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
-        <div class="flex items-center ml-4 h-7">
-            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
-                <g fill="currentColor"><g>
-                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
-                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                </g></g>
-            </svg>
-        </div>
-        <div class="pr-5 ml-3 w-full">
-<p>If you are having issues with the tsup configuration, refer to the <a href="https://gsoft-inc.github.io/wl-web-configs/tsup" class="outbound" target="_blank">@workleap/tsup-configs</a> documentation.</p>
-        </div>
-    </div>
-</div>
-<doc-anchor-target id="development-configuration">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#development-configuration">#</doc-anchor-trigger>
-        <span>Development configuration</span>
-    </h3>
-</doc-anchor-target>
-<p>To configure tsup for a <strong>development</strong> environment, open the <code v-pre>tsup.dev.ts</code> file and copy/paste the following code:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">local-module/tsup.dev.ts</div>
-<pre class="language-typescript"><code v-pre class="language-typescript">import { defineDevConfig } from &quot;@workleap/tsup-configs&quot;;
-
-export default defineDevConfig();</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="build-configuration">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#build-configuration">#</doc-anchor-trigger>
-        <span>Build configuration</span>
-    </h3>
-</doc-anchor-target>
-<p>To configure tsup for a <strong>build</strong> environment, open the <code v-pre>tsup.build.ts</code> file and copy/paste the following code:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">local-module/tsup.build.ts</div>
-<pre class="language-typescript"><code v-pre class="language-typescript">import { defineBuildConfig } from &quot;@workleap/tsup-configs&quot;;
-
-export default defineBuildConfig();</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="add-cli-scripts">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#add-cli-scripts">#</doc-anchor-trigger>
-        <span>Add CLI scripts</span>
-    </h2>
-</doc-anchor-target>
-<p>To initiate the development server, add the following script to the application <code v-pre>package.json</code> file:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">local-module/package.json</div>
-<pre class="language-json"><code v-pre class="language-json">{
-    &quot;dev&quot;: &quot;tsup --config ./tsup.dev.ts&quot;
-}</code></pre>
-</doc-codeblock></div>
-<p>To build the module, add the following script to the application <code v-pre>package.json</code> file:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">local-module/package.json</div>
-<pre class="language-json"><code v-pre class="language-json">{
-    &quot;build&quot;: &quot;tsup --config ./tsup.build.ts&quot;
-}</code></pre>
-</doc-codeblock></div>
 <doc-anchor-target id="try-it">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#try-it">#</doc-anchor-trigger>
         <span>Try it <span class="docs-emoji">&#x1F680;</span></span>
     </h2>
 </doc-anchor-target>
-<p>Start the <code v-pre>host</code>, <code v-pre>remote-module</code> and <code v-pre>local-module</code> applications in development mode using the <code v-pre>dev</code> script. You should notice an additional link labelled <code v-pre>Local/Page</code> in the navigation menu. Click on the link to navigate to the page of your new <strong>local</strong> module!</p>
+<p>Start the <code v-pre>host</code> and <code v-pre>remote-module</code> applications in development mode using the <code v-pre>dev</code> script. You should notice an additional link labelled <code v-pre>Local/Page</code> in the navigation menu. Click on the link to navigate to the page of your new <strong>local</strong> module!</p>
 <doc-anchor-target id="troubleshoot-issues">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#troubleshoot-issues">#</doc-anchor-trigger>

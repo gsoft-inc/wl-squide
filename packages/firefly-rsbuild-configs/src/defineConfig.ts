@@ -187,6 +187,19 @@ function defaultDefineModuleFederationPluginOptions(defaultOptions: ModuleFedera
     return defaultOptions;
 }
 
+// There seems to be issues with cache and ModuleFederation, it's better to disable it for now.
+const disableCacheTransformer: RsbuildConfigTransformer = (config: RsbuildConfig) => {
+    config.tools = config.tools ?? {};
+    config.tools.rspack = config.tools.rspack ?? {};
+
+    // The typings are broken because "rspack" also accepts a function.
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    config.tools.rspack.cache = false;
+
+    return config;
+};
+
 const forceNamedChunkIdsTransformer: RsbuildConfigTransformer = (config: RsbuildConfig) => {
     config.tools = config.tools ?? {};
     config.tools.rspack = config.tools.rspack ?? {};
@@ -286,6 +299,7 @@ export function defineDevHostConfig(port: number, remotes: RemoteDefinition[], o
         sharedDependencies,
         runtimePlugins,
         moduleFederationPluginOptions = defaultDefineModuleFederationPluginOptions,
+        transformers = [],
         ...rsbuildOptions
     } = options;
 
@@ -300,6 +314,10 @@ export function defineDevHostConfig(port: number, remotes: RemoteDefinition[], o
                     getDefaultHostModuleFederationPluginOptions(remotes, { features, shared: sharedDependencies, runtimePlugins })))
         ],
         lazyCompilation,
+        transformers: [
+            ...transformers,
+            disableCacheTransformer
+        ],
         ...rsbuildOptions
     });
 }
@@ -338,6 +356,7 @@ export function defineBuildHostConfig(remotes: RemoteDefinition[], options: Defi
         ],
         transformers: [
             forceNamedChunkIdsTransformer,
+            disableCacheTransformer,
             ...transformers
         ],
         ...webpackOptions
@@ -417,6 +436,7 @@ export function defineDevRemoteModuleConfig(applicationName: string, port: numbe
         sharedDependencies,
         runtimePlugins,
         moduleFederationPluginOptions = defaultDefineModuleFederationPluginOptions,
+        transformers = [],
         ...rsbuildOptions
     } = options;
 
@@ -435,6 +455,10 @@ export function defineDevRemoteModuleConfig(applicationName: string, port: numbe
         ],
         lazyCompilation,
         html,
+        transformers: [
+            ...transformers,
+            disableCacheTransformer
+        ],
         ...rsbuildOptions
     });
 }
@@ -475,6 +499,7 @@ export function defineBuildRemoteModuleConfig(applicationName: string, options: 
         html,
         transformers: [
             forceNamedChunkIdsTransformer,
+            disableCacheTransformer,
             ...transformers
         ],
         ...rsbuildOptions

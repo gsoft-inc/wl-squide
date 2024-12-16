@@ -202,7 +202,7 @@ importers:
         version: link:../react-router
       '@tanstack/react-query':
         specifier: '*'
-        version: 5.62.3(react@19.0.0)
+        version: 5.62.7(react@19.0.0)
       '@types/react':
         specifier: 19.0.1
         version: 19.0.1
@@ -253,8 +253,8 @@ importers:
         specifier: 29.7.0
         version: 29.7.0
       msw:
-        specifier: 2.6.8
-        version: 2.6.8(@types/node@22.10.2)(typescript@5.5.4)
+        specifier: 2.6.9
+        version: 2.6.9(@types/node@22.10.2)(typescript@5.5.4)
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -275,13 +275,13 @@ importers:
     dependencies:
       '@honeycombio/opentelemetry-web':
         specifier: '*'
-        version: 0.10.0(zone.js@0.15.0)
+        version: 0.10.0(zone.js@0.14.10)
       '@opentelemetry/api':
         specifier: '*'
         version: 1.9.0
       '@opentelemetry/auto-instrumentations-web':
         specifier: '*'
-        version: 0.44.0(@opentelemetry/api@1.9.0)(zone.js@0.15.0)
+        version: 0.44.0(@opentelemetry/api@1.9.0)(zone.js@0.14.10)
       '@squide/firefly':
         specifier: workspace:*
         version: link:../firefly
@@ -290,7 +290,7 @@ importers:
         version: 10.0.0
       '@workleap/honeycomb':
         specifier: 1.0.0
-        version: 1.0.0(@honeycombio/opentelemetry-web@0.10.0(zone.js@0.15.0))(@opentelemetry/api@1.9.0)(@opentelemetry/auto-instrumentations-web@0.44.0(@opentelemetry/api@1.9.0)(zone.js@0.15.0))
+        version: 1.0.0(@honeycombio/opentelemetry-web@0.10.0(zone.js@0.14.10))(@opentelemetry/api@1.9.0)(@opentelemetry/auto-instrumentations-web@0.44.0(@opentelemetry/api@1.9.0)(zone.js@0.14.10))
       uuid:
         specifier: 11.0.3
         version: 11.0.3
@@ -622,8 +622,8 @@ importers:
         specifier: 8.57.0
         version: 8.57.0
       msw:
-        specifier: 2.6.8
-        version: 2.6.8(@types/node@22.10.2)(typescript@5.5.4)
+        specifier: 2.6.9
+        version: 2.6.9(@types/node@22.10.2)(typescript@5.5.4)
       typescript:
         specifier: 5.5.4
         version: 5.5.4
@@ -2041,13 +2041,13 @@ importers:
         version: link:../shell
       '@honeycombio/opentelemetry-web':
         specifier: 0.10.0
-        version: 0.10.0(zone.js@0.15.0)
+        version: 0.10.0(zone.js@0.14.10)
       '@opentelemetry/api':
         specifier: 1.9.0
         version: 1.9.0
       '@opentelemetry/auto-instrumentations-web':
         specifier: 0.44.0
-        version: 0.44.0(@opentelemetry/api@1.9.0)(zone.js@0.15.0)
+        version: 0.44.0(@opentelemetry/api@1.9.0)(zone.js@0.14.10)
       '@opentelemetry/sdk-trace-web':
         specifier: 1.29.0
         version: 1.29.0(@opentelemetry/api@1.9.0)
@@ -2076,8 +2076,8 @@ importers:
         specifier: 8.0.2
         version: 8.0.2
       msw:
-        specifier: 2.6.8
-        version: 2.6.8(@types/node@22.10.2)(typescript@5.5.4)
+        specifier: 2.6.9
+        version: 2.6.9(@types/node@22.10.2)(typescript@5.5.4)
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -2147,7 +2147,7 @@ importers:
     dependencies:
       i18next:
         specifier: '*'
-        version: 24.0.5(typescript@5.5.4)
+        version: 24.1.0(typescript@5.5.4)
       i18next-browser-languagedetector:
         specifier: '*'
         version: 8.0.2
@@ -2159,7 +2159,7 @@ importers:
         version: 19.0.0(react@19.0.0)
       react-i18next:
         specifier: '*'
-        version: 15.1.4(i18next@24.0.5(typescript@5.5.4))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 15.2.0(i18next@24.1.0(typescript@5.5.4))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
     devDependencies:
       '@endpoints/shared':
         specifier: workspace:*
@@ -2190,7 +2190,7 @@ importers:
     dependencies:
       i18next:
         specifier: '*'
-        version: 24.0.5(typescript@5.5.4)
+        version: 24.1.0(typescript@5.5.4)
       i18next-browser-languagedetector:
         specifier: '*'
         version: 8.0.2
@@ -2205,7 +2205,7 @@ importers:
         version: 4.1.2(react@19.0.0)
       react-i18next:
         specifier: '*'
-        version: 15.1.4(i18next@24.0.5(typescript@5.5.4))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 15.2.0(i18next@24.1.0(typescript@5.5.4))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react-router-dom:
         specifier: '*'
         version: 6.27.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -2280,8 +2280,8 @@ importers:
         specifier: 8.0.2
         version: 8.0.2
       msw:
-        specifier: 2.6.8
-        version: 2.6.8(@types/node@22.10.2)(typescript@5.5.4)
+        specifier: 2.6.9
+        version: 2.6.9(@types/node@22.10.2)(typescript@5.5.4)
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -2380,8 +2380,8 @@ importers:
         specifier: 8.0.2
         version: 8.0.2
       msw:
-        specifier: 2.6.8
-        version: 2.6.8(@types/node@22.10.2)(typescript@5.5.4)
+        specifier: 2.6.9
+        version: 2.6.9(@types/node@22.10.2)(typescript@5.5.4)
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -2497,16 +2497,16 @@ importers:
     dependencies:
       '@tanstack/react-query':
         specifier: '*'
-        version: 5.62.3(react@19.0.0)
+        version: 5.62.7(react@19.0.0)
       i18next:
         specifier: '*'
-        version: 24.0.5(typescript@5.5.4)
+        version: 24.1.0(typescript@5.5.4)
       i18next-browser-languagedetector:
         specifier: '*'
         version: 8.0.2
       msw:
         specifier: '*'
-        version: 2.6.8(@types/node@22.10.2)(typescript@5.5.4)
+        version: 2.6.9(@types/node@22.10.2)(typescript@5.5.4)
       react:
         specifier: '*'
         version: 19.0.0
@@ -2518,7 +2518,7 @@ importers:
         version: 4.1.2(react@19.0.0)
       react-i18next:
         specifier: '*'
-        version: 15.1.4(i18next@24.0.5(typescript@5.5.4))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 15.2.0(i18next@24.1.0(typescript@5.5.4))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react-router-dom:
         specifier: '*'
         version: 6.27.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -5624,9 +5624,6 @@ packages:
     resolution: {integrity: sha512-+PmQX0PiAYPMeVYe237LJAYvOMYW1j2rH5YROyS3b4CTVJum34HfRvKvAzozHAQG0TnHNdUfY9nCeUyRAs//cw==}
     engines: {node: '>=14.16'}
 
-  '@tanstack/query-core@5.62.3':
-    resolution: {integrity: sha512-Jp/nYoz8cnO7kqhOlSv8ke/0MJRJVGuZ0P/JO9KQ+f45mpN90hrerzavyTKeSoT/pOzeoOUkv1Xd0wPsxAWXfg==}
-
   '@tanstack/query-core@5.62.7':
     resolution: {integrity: sha512-fgpfmwatsrUal6V+8EC2cxZIQVl9xvL7qYa03gsdsCy985UTUlS4N+/3hCzwR0PclYDqisca2AqR1BVgJGpUDA==}
 
@@ -5637,11 +5634,6 @@ packages:
     resolution: {integrity: sha512-wxXsdTZJRs//hMtJMU5aNlUaTclRFPqLvDNeWbRj8YpGD3aoo4zyu53W55W2DY16+ycg3fti21uCW4N9oyj91w==}
     peerDependencies:
       '@tanstack/react-query': ^5.62.7
-      react: ^18 || ^19
-
-  '@tanstack/react-query@5.62.3':
-    resolution: {integrity: sha512-y2zDNKuhgiuMgsKkqd4AcsLIBiCfEO8U11AdrtAUihmLbRNztPrlcZqx2lH1GacZsx+y1qRRbCcJLYTtF1vKsw==}
-    peerDependencies:
       react: ^18 || ^19
 
   '@tanstack/react-query@5.62.7':
@@ -6427,20 +6419,20 @@ packages:
     resolution: {integrity: sha512-zfETvRFA8o7EiNn++N5f/kaCw221hrpGsDmcpndVupkPzEc1Wuf3VgC0qby1BbHs7f5DVYjgtEU2LLh5bqeGfQ==}
     engines: {node: '>= 0.4'}
 
-  array.prototype.flat@1.3.2:
-    resolution: {integrity: sha512-djYB+Zx2vLewY8RWlNCUdHjDXs2XOgm602S9E7P/UpHgfeHL00cRiIF+IN/G/aUJ7kGPb6yO/ErDI5V2s8iycA==}
+  array.prototype.flat@1.3.3:
+    resolution: {integrity: sha512-rwG/ja1neyLqCuGZ5YYrznA62D4mZXg0i1cIskIUKSiqF3Cje9/wXAls9B9s1Wa2fomMsIv8czB8jZcPmxCXFg==}
     engines: {node: '>= 0.4'}
 
-  array.prototype.flatmap@1.3.2:
-    resolution: {integrity: sha512-Ewyx0c9PmpcsByhSW4r+9zDU7sGjFc86qf/kKtuSCRdhfbk0SNLLkaT5qvcHnRGgc5NP/ly/y+qkXkqONX54CQ==}
+  array.prototype.flatmap@1.3.3:
+    resolution: {integrity: sha512-Y7Wt51eKJSyi80hFrJCePGGNo5ktJCslFuboqJsbf57CCPcm5zztluPlc4/aD8sWsKvlwatezpV4U1efk8kpjg==}
     engines: {node: '>= 0.4'}
 
   array.prototype.tosorted@1.1.4:
     resolution: {integrity: sha512-p6Fx8B7b7ZhL/gmUsAy0D15WhvDccw3mnGNbZpi3pmeJdxtWsj2jEaI4Y6oo3XiHfzuSgPwKc04MYt6KgvC/wA==}
     engines: {node: '>= 0.4'}
 
-  arraybuffer.prototype.slice@1.0.3:
-    resolution: {integrity: sha512-bMxMKAjg13EBSVscxTaYA4mRc5t1UAXa2kXiGTNfZ079HIWXEkKmkgFrh/nJqamaLSrXO5H4WFFkPEaLJWbs3A==}
+  arraybuffer.prototype.slice@1.0.4:
+    resolution: {integrity: sha512-BNoCY6SXXPQ7gF2opIP4GBE+Xw7U+pHMYKuzjgCN3GwiaIR09UUeKfheyIry77QtrCBlC0KK0q5/TER/tYh3PQ==}
     engines: {node: '>= 0.4'}
 
   arrify@3.0.0:
@@ -6722,8 +6714,8 @@ packages:
     resolution: {integrity: sha512-oKlSFMcMwpUg2ednkhQ454wfWiU/ul3CkJe/PEHcTKuiX6RpbehUiFMXu13HalGZxfUwCQzZG747YXBn1im9ww==}
     engines: {node: '>= 0.4'}
 
-  call-bound@1.0.2:
-    resolution: {integrity: sha512-0lk0PHFe/uz0vl527fG9CgdE9WdafjDbCXvBbs+LUv000TVt2Jjhqbs4Jwm8gz070w8xXyEAxrPOMullsxXeGg==}
+  call-bound@1.0.3:
+    resolution: {integrity: sha512-YTd+6wGlNlPxSuri7Y6X8tY2dmm12UMH66RpKMhiX6rsk5wXXnYgbUcOt8kiS31/AjfoTOvCsE+w8nZQLQnzHA==}
     engines: {node: '>= 0.4'}
 
   call-me-maybe@1.0.2:
@@ -8657,14 +8649,6 @@ packages:
   i18next-browser-languagedetector@8.0.2:
     resolution: {integrity: sha512-shBvPmnIyZeD2VU5jVGIOWP7u9qNG3Lj7mpaiPFpbJ3LVfHZJvVzKR4v1Cb91wAOFpNw442N+LGPzHOHsten2g==}
 
-  i18next@24.0.5:
-    resolution: {integrity: sha512-1jSdEzgFPGLZRsQwydoMFCBBaV+PmrVEO5WhANllZPX4y2JSGTxUjJ+xVklHIsiS95uR8gYc/y0hYZWevucNjg==}
-    peerDependencies:
-      typescript: ^5
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-
   i18next@24.1.0:
     resolution: {integrity: sha512-suKlX82AlptkMUO5YRfaAeH4FQyyKvR66jNaubTMiyPPMx7INU6PXAiy3PGULc0q6K+t9nxmDf/TRj9KjAivmw==}
     peerDependencies:
@@ -8960,8 +8944,8 @@ packages:
     resolution: {integrity: sha512-JEjxbSmtPSt1c8XTkVrlujcXdKV1/tvuQ7GwKcAlyiVLeYFQ2VHat8xfrDJsIkhCdF/tZ7CiIR3sy141c6+gPQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
-  is-number-object@1.1.0:
-    resolution: {integrity: sha512-KVSZV0Dunv9DTPkhXwcZ3Q+tUc9TsaE1ZwX5J2WMvsSGS6Md8TFPun5uwh0yRdrNerI6vf/tbJxqSx4c1ZI1Lw==}
+  is-number-object@1.1.1:
+    resolution: {integrity: sha512-lZhclumE1G6VYD8VHe35wFaIif+CTy5SJIi5+3y4psDgWu4wPDoBhF8NxUOinEc7pHgiTsT6MaBb92rKhhD+Xw==}
     engines: {node: '>= 0.4'}
 
   is-number@7.0.0:
@@ -9027,8 +9011,8 @@ packages:
     resolution: {integrity: sha512-Dnz92NInDqYckGEUJv689RbRiTSEHCQ7wOVeALbkOz999YpqT46yMRIGtSNl2iCL1waAZSx40+h59NV/EwzV/A==}
     engines: {node: '>=18'}
 
-  is-string@1.1.0:
-    resolution: {integrity: sha512-PlfzajuF9vSo5wErv3MJAKD/nqf9ngAs1NFQYm16nUYFO2IzxJ2hcm+IOCg+EEopdykNNUhVq5cz35cAUxU8+g==}
+  is-string@1.1.1:
+    resolution: {integrity: sha512-BtEeSsoaQjlSPBemMQIrY1MY0uM6vnS1g5fmufYOtnxLGUZM2178PKbhsk7Ffv58IX+ZtcvoGwccYsh0PglkAA==}
     engines: {node: '>= 0.4'}
 
   is-subdir@1.2.0:
@@ -9999,8 +9983,8 @@ packages:
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
-  msw@2.6.8:
-    resolution: {integrity: sha512-nxXxnH6WALZ9a7rsQp4HU2AaD4iGAiouMmE/MY4al7pXTibgA6OZOuKhmN2WBIM6w9qMKwRtX8p2iOb45B2M/Q==}
+  msw@2.6.9:
+    resolution: {integrity: sha512-b2z9MvsEOYG5G7jtJasXO3ucHDcqCjf046e9wELIixBbYCRZCEmB4gqcb+C7ASyXBafNBR0D2u31YtG01OdX3A==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
@@ -10907,19 +10891,6 @@ packages:
     resolution: {integrity: sha512-GQDxZ5Jd+Aq/qUxbCm1UtzmL/s++V7zKgE8yMktJiCQXCCFZnMZh9ng+6/Ne6PjNSXH0L9CjeOEREfRnq6Duag==}
     peerDependencies:
       react: '>=16.13.1'
-
-  react-i18next@15.1.4:
-    resolution: {integrity: sha512-2tai71gmehbvl9ZIqPMqlCCkm/cbeV1G4STpmM3C8Uzo6T2l8jDvZxEVSsQKt8blP9X34iRFP/k1ROqG2296MQ==}
-    peerDependencies:
-      i18next: '>= 23.2.3'
-      react: '>= 16.8.0'
-      react-dom: '*'
-      react-native: '*'
-    peerDependenciesMeta:
-      react-dom:
-        optional: true
-      react-native:
-        optional: true
 
   react-i18next@15.2.0:
     resolution: {integrity: sha512-iJNc8111EaDtVTVMKigvBtPHyrJV+KblWG73cUxqp+WmJCcwkzhWNFXmkAD5pwP2Z4woeDj/oXDdbjDsb3Gutg==}
@@ -12705,8 +12676,8 @@ packages:
   zod@3.24.1:
     resolution: {integrity: sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==}
 
-  zone.js@0.15.0:
-    resolution: {integrity: sha512-9oxn0IIjbCZkJ67L+LkhYWRyAy7axphb3VgE2MBDlOqnmHMPWGYMxJxBYFueFq/JGY2GMwS0rU+UCLunEmy5UA==}
+  zone.js@0.14.10:
+    resolution: {integrity: sha512-YGAhaO7J5ywOXW6InXNlLmfU194F8lVgu7bRntUF3TiG8Y3nBK0x1UJJuHUP/e8IyihkjCYqhCScpSwnlaSRkQ==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -14063,11 +14034,11 @@ snapshots:
       protobufjs: 7.4.0
       yargs: 17.7.2
 
-  '@honeycombio/opentelemetry-web@0.10.0(zone.js@0.15.0)':
+  '@honeycombio/opentelemetry-web@0.10.0(zone.js@0.14.10)':
     dependencies:
       '@babel/runtime': 7.26.0
       '@opentelemetry/api': 1.9.0
-      '@opentelemetry/auto-instrumentations-web': 0.43.0(@opentelemetry/api@1.9.0)(zone.js@0.15.0)
+      '@opentelemetry/auto-instrumentations-web': 0.43.0(@opentelemetry/api@1.9.0)(zone.js@0.14.10)
       '@opentelemetry/core': 1.28.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/exporter-trace-otlp-http': 0.55.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/instrumentation': 0.55.0(@opentelemetry/api@1.9.0)
@@ -15233,27 +15204,27 @@ snapshots:
       - encoding
       - supports-color
 
-  '@opentelemetry/auto-instrumentations-web@0.43.0(@opentelemetry/api@1.9.0)(zone.js@0.15.0)':
+  '@opentelemetry/auto-instrumentations-web@0.43.0(@opentelemetry/api@1.9.0)(zone.js@0.14.10)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/instrumentation': 0.55.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/instrumentation-document-load': 0.42.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/instrumentation-fetch': 0.55.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-user-interaction': 0.42.0(@opentelemetry/api@1.9.0)(zone.js@0.15.0)
+      '@opentelemetry/instrumentation-user-interaction': 0.42.0(@opentelemetry/api@1.9.0)(zone.js@0.14.10)
       '@opentelemetry/instrumentation-xml-http-request': 0.55.0(@opentelemetry/api@1.9.0)
-      zone.js: 0.15.0
+      zone.js: 0.14.10
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/auto-instrumentations-web@0.44.0(@opentelemetry/api@1.9.0)(zone.js@0.15.0)':
+  '@opentelemetry/auto-instrumentations-web@0.44.0(@opentelemetry/api@1.9.0)(zone.js@0.14.10)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/instrumentation': 0.56.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/instrumentation-document-load': 0.43.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/instrumentation-fetch': 0.56.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-user-interaction': 0.43.0(@opentelemetry/api@1.9.0)(zone.js@0.15.0)
+      '@opentelemetry/instrumentation-user-interaction': 0.43.0(@opentelemetry/api@1.9.0)(zone.js@0.14.10)
       '@opentelemetry/instrumentation-xml-http-request': 0.56.0(@opentelemetry/api@1.9.0)
-      zone.js: 0.15.0
+      zone.js: 0.14.10
     transitivePeerDependencies:
       - supports-color
 
@@ -15712,23 +15683,23 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-user-interaction@0.42.0(@opentelemetry/api@1.9.0)(zone.js@0.15.0)':
+  '@opentelemetry/instrumentation-user-interaction@0.42.0(@opentelemetry/api@1.9.0)(zone.js@0.14.10)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 1.28.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/instrumentation': 0.55.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-trace-web': 1.29.0(@opentelemetry/api@1.9.0)
-      zone.js: 0.15.0
+      zone.js: 0.14.10
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-user-interaction@0.43.0(@opentelemetry/api@1.9.0)(zone.js@0.15.0)':
+  '@opentelemetry/instrumentation-user-interaction@0.43.0(@opentelemetry/api@1.9.0)(zone.js@0.14.10)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 1.29.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/instrumentation': 0.56.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-trace-web': 1.29.0(@opentelemetry/api@1.9.0)
-      zone.js: 0.15.0
+      zone.js: 0.14.10
     transitivePeerDependencies:
       - supports-color
 
@@ -16517,8 +16488,6 @@ snapshots:
     dependencies:
       defer-to-connect: 2.0.1
 
-  '@tanstack/query-core@5.62.3': {}
-
   '@tanstack/query-core@5.62.7': {}
 
   '@tanstack/query-devtools@5.61.4': {}
@@ -16527,11 +16496,6 @@ snapshots:
     dependencies:
       '@tanstack/query-devtools': 5.61.4
       '@tanstack/react-query': 5.62.7(react@19.0.0)
-      react: 19.0.0
-
-  '@tanstack/react-query@5.62.3(react@19.0.0)':
-    dependencies:
-      '@tanstack/query-core': 5.62.3
       react: 19.0.0
 
   '@tanstack/react-query@5.62.7(react@19.0.0)':
@@ -16814,7 +16778,7 @@ snapshots:
 
   '@types/serve-index@1.9.4':
     dependencies:
-      '@types/express': 4.17.21
+      '@types/express': 5.0.0
 
   '@types/serve-static@1.15.7':
     dependencies:
@@ -17137,11 +17101,11 @@ snapshots:
       - jest
       - supports-color
 
-  '@workleap/honeycomb@1.0.0(@honeycombio/opentelemetry-web@0.10.0(zone.js@0.15.0))(@opentelemetry/api@1.9.0)(@opentelemetry/auto-instrumentations-web@0.44.0(@opentelemetry/api@1.9.0)(zone.js@0.15.0))':
+  '@workleap/honeycomb@1.0.0(@honeycombio/opentelemetry-web@0.10.0(zone.js@0.14.10))(@opentelemetry/api@1.9.0)(@opentelemetry/auto-instrumentations-web@0.44.0(@opentelemetry/api@1.9.0)(zone.js@0.14.10))':
     dependencies:
-      '@honeycombio/opentelemetry-web': 0.10.0(zone.js@0.15.0)
+      '@honeycombio/opentelemetry-web': 0.10.0(zone.js@0.14.10)
       '@opentelemetry/api': 1.9.0
-      '@opentelemetry/auto-instrumentations-web': 0.44.0(@opentelemetry/api@1.9.0)(zone.js@0.15.0)
+      '@opentelemetry/auto-instrumentations-web': 0.44.0(@opentelemetry/api@1.9.0)(zone.js@0.14.10)
 
   '@workleap/rsbuild-configs@1.0.1(@rsbuild/core@1.1.10)(@rspack/core@1.1.6(@swc/helpers@0.5.15))(typescript@5.5.4)':
     dependencies:
@@ -17467,7 +17431,7 @@ snapshots:
       es-abstract: 1.23.5
       es-object-atoms: 1.0.0
       get-intrinsic: 1.2.6
-      is-string: 1.1.0
+      is-string: 1.1.1
 
   array-timsort@1.0.3: {}
 
@@ -17491,14 +17455,14 @@ snapshots:
       es-object-atoms: 1.0.0
       es-shim-unscopables: 1.0.2
 
-  array.prototype.flat@1.3.2:
+  array.prototype.flat@1.3.3:
     dependencies:
       call-bind: 1.0.8
       define-properties: 1.2.1
       es-abstract: 1.23.5
       es-shim-unscopables: 1.0.2
 
-  array.prototype.flatmap@1.3.2:
+  array.prototype.flatmap@1.3.3:
     dependencies:
       call-bind: 1.0.8
       define-properties: 1.2.1
@@ -17513,7 +17477,7 @@ snapshots:
       es-errors: 1.3.0
       es-shim-unscopables: 1.0.2
 
-  arraybuffer.prototype.slice@1.0.3:
+  arraybuffer.prototype.slice@1.0.4:
     dependencies:
       array-buffer-byte-length: 1.0.1
       call-bind: 1.0.8
@@ -17522,7 +17486,6 @@ snapshots:
       es-errors: 1.3.0
       get-intrinsic: 1.2.6
       is-array-buffer: 3.0.4
-      is-shared-array-buffer: 1.0.3
 
   arrify@3.0.0: {}
 
@@ -17868,9 +17831,9 @@ snapshots:
       get-intrinsic: 1.2.6
       set-function-length: 1.2.2
 
-  call-bound@1.0.2:
+  call-bound@1.0.3:
     dependencies:
-      call-bind: 1.0.8
+      call-bind-apply-helpers: 1.0.1
       get-intrinsic: 1.2.6
 
   call-me-maybe@1.0.2: {}
@@ -18759,7 +18722,7 @@ snapshots:
   es-abstract@1.23.5:
     dependencies:
       array-buffer-byte-length: 1.0.1
-      arraybuffer.prototype.slice: 1.0.3
+      arraybuffer.prototype.slice: 1.0.4
       available-typed-arrays: 1.0.7
       call-bind: 1.0.8
       data-view-buffer: 1.0.1
@@ -18786,7 +18749,7 @@ snapshots:
       is-negative-zero: 2.0.3
       is-regex: 1.2.1
       is-shared-array-buffer: 1.0.3
-      is-string: 1.1.0
+      is-string: 1.1.1
       is-typed-array: 1.1.13
       is-weakref: 1.1.0
       object-inspect: 1.13.3
@@ -19001,8 +18964,8 @@ snapshots:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
       array.prototype.findlastindex: 1.2.5
-      array.prototype.flat: 1.3.2
-      array.prototype.flatmap: 1.3.2
+      array.prototype.flat: 1.3.3
+      array.prototype.flatmap: 1.3.3
       debug: 3.2.7
       doctrine: 2.1.0
       eslint: 8.57.0
@@ -19040,7 +19003,7 @@ snapshots:
     dependencies:
       aria-query: 5.3.2
       array-includes: 3.1.8
-      array.prototype.flatmap: 1.3.2
+      array.prototype.flatmap: 1.3.3
       ast-types-flow: 0.0.8
       axe-core: 4.10.2
       axobject-query: 4.1.0
@@ -19098,7 +19061,7 @@ snapshots:
     dependencies:
       array-includes: 3.1.8
       array.prototype.findlast: 1.2.5
-      array.prototype.flatmap: 1.3.2
+      array.prototype.flatmap: 1.3.3
       array.prototype.tosorted: 1.1.4
       doctrine: 2.1.0
       es-iterator-helpers: 1.2.0
@@ -20182,12 +20145,6 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.26.0
 
-  i18next@24.0.5(typescript@5.5.4):
-    dependencies:
-      '@babel/runtime': 7.26.0
-    optionalDependencies:
-      typescript: 5.5.4
-
   i18next@24.1.0(typescript@5.5.4):
     dependencies:
       '@babel/runtime': 7.26.0
@@ -20395,7 +20352,7 @@ snapshots:
 
   is-boolean-object@1.2.1:
     dependencies:
-      call-bound: 1.0.2
+      call-bound: 1.0.3
       has-tostringtag: 1.0.2
 
   is-builtin-module@3.2.1:
@@ -20410,13 +20367,13 @@ snapshots:
 
   is-data-view@1.0.2:
     dependencies:
-      call-bound: 1.0.2
+      call-bound: 1.0.3
       get-intrinsic: 1.2.6
       is-typed-array: 1.1.13
 
   is-date-object@1.1.0:
     dependencies:
-      call-bound: 1.0.2
+      call-bound: 1.0.3
       has-tostringtag: 1.0.2
 
   is-decimal@1.0.4: {}
@@ -20482,9 +20439,9 @@ snapshots:
 
   is-npm@6.0.0: {}
 
-  is-number-object@1.1.0:
+  is-number-object@1.1.1:
     dependencies:
-      call-bind: 1.0.8
+      call-bound: 1.0.3
       has-tostringtag: 1.0.2
 
   is-number@7.0.0: {}
@@ -20511,7 +20468,7 @@ snapshots:
 
   is-regex@1.2.1:
     dependencies:
-      call-bound: 1.0.2
+      call-bound: 1.0.3
       gopd: 1.2.0
       has-tostringtag: 1.0.2
       hasown: 2.0.2
@@ -20528,9 +20485,9 @@ snapshots:
 
   is-stream@4.0.1: {}
 
-  is-string@1.1.0:
+  is-string@1.1.1:
     dependencies:
-      call-bind: 1.0.8
+      call-bound: 1.0.3
       has-tostringtag: 1.0.2
 
   is-subdir@1.2.0:
@@ -20539,7 +20496,7 @@ snapshots:
 
   is-symbol@1.1.1:
     dependencies:
-      call-bound: 1.0.2
+      call-bound: 1.0.3
       has-symbols: 1.1.0
       safe-regex-test: 1.1.0
 
@@ -20561,7 +20518,7 @@ snapshots:
 
   is-weakref@1.1.0:
     dependencies:
-      call-bound: 1.0.2
+      call-bound: 1.0.3
 
   is-weakset@2.0.3:
     dependencies:
@@ -21118,7 +21075,7 @@ snapshots:
   jsx-ast-utils@3.3.5:
     dependencies:
       array-includes: 3.1.8
-      array.prototype.flat: 1.3.2
+      array.prototype.flat: 1.3.3
       object.assign: 4.1.5
       object.values: 1.2.0
 
@@ -21923,7 +21880,7 @@ snapshots:
 
   ms@2.1.3: {}
 
-  msw@2.6.8(@types/node@22.10.2)(typescript@5.5.4):
+  msw@2.6.9(@types/node@22.10.2)(typescript@5.5.4):
     dependencies:
       '@bundled-es-modules/cookie': 2.0.1
       '@bundled-es-modules/statuses': 1.0.1
@@ -23027,15 +22984,6 @@ snapshots:
       '@babel/runtime': 7.26.0
       react: 19.0.0
 
-  react-i18next@15.1.4(i18next@24.0.5(typescript@5.5.4))(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
-    dependencies:
-      '@babel/runtime': 7.26.0
-      html-parse-stringify: 3.0.1
-      i18next: 24.0.5(typescript@5.5.4)
-      react: 19.0.0
-    optionalDependencies:
-      react-dom: 19.0.0(react@19.0.0)
-
   react-i18next@15.2.0(i18next@24.1.0(typescript@5.5.4))(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       '@babel/runtime': 7.26.0
@@ -23374,7 +23322,7 @@ snapshots:
   safe-array-concat@1.1.3:
     dependencies:
       call-bind: 1.0.8
-      call-bound: 1.0.2
+      call-bound: 1.0.3
       get-intrinsic: 1.2.6
       has-symbols: 1.1.0
       isarray: 2.0.5
@@ -23387,7 +23335,7 @@ snapshots:
 
   safe-regex-test@1.1.0:
     dependencies:
-      call-bound: 1.0.2
+      call-bound: 1.0.3
       es-errors: 1.3.0
       is-regex: 1.2.1
 
@@ -23536,14 +23484,14 @@ snapshots:
 
   side-channel-map@1.0.1:
     dependencies:
-      call-bound: 1.0.2
+      call-bound: 1.0.3
       es-errors: 1.3.0
       get-intrinsic: 1.2.6
       object-inspect: 1.13.3
 
   side-channel-weakmap@1.0.2:
     dependencies:
-      call-bound: 1.0.2
+      call-bound: 1.0.3
       es-errors: 1.3.0
       get-intrinsic: 1.2.6
       object-inspect: 1.13.3
@@ -23804,7 +23752,7 @@ snapshots:
   string.prototype.trim@1.2.10:
     dependencies:
       call-bind: 1.0.8
-      call-bound: 1.0.2
+      call-bound: 1.0.3
       define-data-property: 1.1.4
       define-properties: 1.2.1
       es-abstract: 1.23.5
@@ -23814,7 +23762,7 @@ snapshots:
   string.prototype.trimend@1.0.9:
     dependencies:
       call-bind: 1.0.8
-      call-bound: 1.0.2
+      call-bound: 1.0.3
       define-properties: 1.2.1
       es-object-atoms: 1.0.0
 
@@ -24888,13 +24836,13 @@ snapshots:
     dependencies:
       is-bigint: 1.1.0
       is-boolean-object: 1.2.1
-      is-number-object: 1.1.0
-      is-string: 1.1.0
+      is-number-object: 1.1.1
+      is-string: 1.1.1
       is-symbol: 1.1.1
 
   which-builtin-type@1.2.1:
     dependencies:
-      call-bound: 1.0.2
+      call-bound: 1.0.3
       function.prototype.name: 1.1.7
       has-tostringtag: 1.0.2
       is-async-function: 2.0.0
@@ -25106,6 +25054,6 @@ snapshots:
 
   zod@3.24.1: {}
 
-  zone.js@0.15.0: {}
+  zone.js@0.14.10: {}
 
   zwitch@2.0.4: {}

@@ -49,7 +49,7 @@
         "@workleap/eslint-plugin": "3.2.4",
         "@workleap/typescript-configs": "3.0.2",
         "eslint": "8.57.0",
-        "msw": "2.6.8",
+        "msw": "2.6.9",
         "typescript": "5.5.4"
     },
     "sideEffects": false,

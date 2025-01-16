@@ -16,8 +16,10 @@ const runtime = new FireflyRuntime({
     loggers: [x => new ConsoleLogger(x)]
 });
 
+console.log("TOTO!!!");
+
 registerHoneycombInstrumentation(runtime, "squide-endpoints-sample", [/http:\/\/localhost:1234\.*/], {
-    apiKey: "Twfeq1Fp3t6Xti0goZexZY"
+    apiKey: "xSffNa6OhKeROIg9aG6uAB"
 });
 
 await bootstrap(runtime, {

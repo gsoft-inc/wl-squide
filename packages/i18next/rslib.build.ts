@@ -1,26 +1,7 @@
-import { pluginReact } from "@rsbuild/plugin-react";
-import { defineConfig } from "@rslib/core";
+import { defineBuildConfig } from "@workleap/rslib-configs";
+import path from "node:path";
 
-export default defineConfig({
-    lib: [{
-        format: "esm",
-        syntax: "esnext",
-        bundle: false,
-        dts: true
-    }],
-    source: {
-        entry: {
-            index: "./src/**"
-        },
-        tsconfigPath: "./tsconfig.build.json"
-    },
-    output: {
-        target: "web",
-        distPath: {
-            root: "./dist"
-        },
-        cleanDistPath: true,
-        minify: false
-    },
-    plugins: [pluginReact()]
+export default defineBuildConfig({
+    react: true,
+    tsconfigPath: path.resolve("./tsconfig.build.json")
 });

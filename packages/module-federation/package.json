@@ -23,7 +23,8 @@
     },
     "exports": "./src/index.ts",
     "files": [
-        "/dist",
+        "src",
+        "dist",
         "CHANGELOG.md",
         "README.md"
     ],
@@ -34,17 +35,19 @@
         "test": "jest"
     },
     "dependencies": {
-        "@module-federation/enhanced": "0.8.4",
+        "@module-federation/enhanced": "0.8.9",
         "@squide/core": "workspace:*"
     },
     "devDependencies": {
-        "@rslib/core": "0.1.4",
-        "@swc/core": "1.10.1",
+        "@rsbuild/core": "1.1.13",
+        "@rslib/core": "0.3.1",
+        "@swc/core": "1.10.7",
         "@swc/jest": "0.2.37",
         "@types/jest": "29.5.14",
-        "@typescript-eslint/parser": "8.18.0",
-        "@workleap/eslint-plugin": "3.2.5",
-        "@workleap/swc-configs": "2.2.3",
+        "@typescript-eslint/parser": "8.20.0",
+        "@workleap/eslint-plugin": "3.2.6",
+        "@workleap/rslib-configs": "1.0.2",
+        "@workleap/swc-configs": "2.2.4",
         "@workleap/typescript-configs": "3.0.2",
         "eslint": "8.57.0",
         "jest": "29.7.0",

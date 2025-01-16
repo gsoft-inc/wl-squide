@@ -23,7 +23,8 @@
     },
     "exports": "./src/index.ts",
     "files": [
-        "/dist",
+        "src",
+        "dist",
         "CHANGELOG.md",
         "README.md"
     ],
@@ -36,9 +37,11 @@
         "@squide/core": "workspace:*"
     },
     "devDependencies": {
-        "@rslib/core": "0.1.4",
-        "@typescript-eslint/parser": "8.18.0",
-        "@workleap/eslint-plugin": "3.2.5",
+        "@rsbuild/core": "1.1.13",
+        "@rslib/core": "0.3.1",
+        "@typescript-eslint/parser": "8.20.0",
+        "@workleap/eslint-plugin": "3.2.6",
+        "@workleap/rslib-configs": "1.0.2",
         "@workleap/typescript-configs": "3.0.2",
         "eslint": "8.57.0",
         "typescript": "5.5.4"

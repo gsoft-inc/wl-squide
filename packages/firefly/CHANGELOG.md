@@ -1,5 +1,17 @@
 # @squide/firefly
 
+## 9.3.3
+
+### Patch Changes
+
+- [#231](https://github.com/gsoft-inc/wl-squide/pull/231) [`3c6bce0`](https://github.com/gsoft-inc/wl-squide/commit/3c6bce0cd559d0b8517d644661b6fb2b818ab2f6) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Packages now includes source code and sourcemap.
+
+- Updated dependencies [[`3c6bce0`](https://github.com/gsoft-inc/wl-squide/commit/3c6bce0cd559d0b8517d644661b6fb2b818ab2f6)]:
+  - @squide/module-federation@6.2.2
+  - @squide/react-router@6.4.3
+  - @squide/core@5.4.2
+  - @squide/msw@3.2.2
+
 ## 9.3.2
 
 ### Patch Changes

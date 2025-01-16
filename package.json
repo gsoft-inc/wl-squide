@@ -44,7 +44,7 @@
         "@changesets/cli": "2.27.11",
         "@types/node": "22.10.7",
         "@typescript-eslint/parser": "8.20.0",
-        "@workleap/eslint-plugin": "3.2.5",
+        "@workleap/eslint-plugin": "3.2.6",
         "@workleap/typescript-configs": "3.0.2",
         "cross-env": "7.0.3",
         "eslint": "8.57.0",

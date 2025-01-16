@@ -1,24 +1,6 @@
-import { defineConfig } from "@rslib/core";
+import { defineDevConfig } from "@workleap/rslib-configs";
+import path from "node:path";
 
-export default defineConfig({
-    lib: [{
-        format: "esm",
-        syntax: "esnext",
-        bundle: false,
-        dts: false
-    }],
-    source: {
-        entry: {
-            index: "./src/**"
-        },
-        tsconfigPath: "./tsconfig.build.json"
-    },
-    output: {
-        target: "node",
-        distPath: {
-            root: "./dist"
-        },
-        cleanDistPath: true,
-        minify: false
-    }
+export default defineDevConfig({
+    tsconfigPath: path.resolve("./tsconfig.build.json")
 });

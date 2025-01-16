@@ -11,7 +11,7 @@ const sdk = new NodeSDK({
     traceExporter: new OTLPTraceExporter({
         url: "https://api.honeycomb.io/v1/traces",
         headers: {
-            "x-honeycomb-team": "Twfeq1Fp3t6Xti0goZexZY"
+            "x-honeycomb-team": "xSffNa6OhKeROIg9aG6uAB"
         }
     }),
     instrumentations: [

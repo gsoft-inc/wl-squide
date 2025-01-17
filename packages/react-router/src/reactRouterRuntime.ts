@@ -219,7 +219,7 @@ export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
             pendingSectionIds.forEach((x, index) => {
                 const [menuId, sectionId] = parseSectionIndexKey(x);
 
-                message += `${index}/${pendingSectionIds.length} Missing navigation section "${sectionId}" of the "${menuId}" menu.\r\n`;
+                message += `${index + 1}/${pendingSectionIds.length} Missing navigation section "${sectionId}" of the "${menuId}" menu.\r\n`;
                 message += indent("Pending registrations:\r\n", 1);
 
                 const pendingItems = pendingRegistrations.getPendingRegistrationsForSection(x);

@@ -1,5 +1,11 @@
 # @squide/react-router
 
+## 6.4.4
+
+### Patch Changes
+
+- [#233](https://github.com/gsoft-inc/wl-squide/pull/233) [`84cf5d0`](https://github.com/gsoft-inc/wl-squide/commit/84cf5d071164465cfc8e8e1d15369d781eea8f3f) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Improve logging when pending routes are detected. The registered routes are now logged, as well as the pending routes.
+
 ## 6.4.3
 
 ### Patch Changes

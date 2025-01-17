@@ -1,5 +1,12 @@
 # @squide/firefly
 
+## 9.3.4
+
+### Patch Changes
+
+- Updated dependencies [[`84cf5d0`](https://github.com/gsoft-inc/wl-squide/commit/84cf5d071164465cfc8e8e1d15369d781eea8f3f)]:
+  - @squide/react-router@6.4.4
+
 ## 9.3.3
 
 ### Patch Changes

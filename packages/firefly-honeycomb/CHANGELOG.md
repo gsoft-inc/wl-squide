@@ -1,5 +1,12 @@
 # @squide/firefly-honeycomb
 
+## 2.0.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @squide/firefly@9.3.4
+
 ## 2.0.1
 
 ### Patch Changes

@@ -5,6 +5,12 @@ label: Migrate to firefly v9.0
 
 # Migrate to firefly v9.0
 
+!!!warning
+Although this migration guide is labeled for version `9.0.0`, it is actually intended for migrating from version `8.*` to version `9.2.1`. Therefore, please ensure you upgrade to `@squide/firefly` version `9.2.1` instead of `9.0.0`.
+
+We apologize for the confusion.
+!!!
+
 This major version of `@squide/firefly` introduces [TanStack Query](https://tanstack.com/query/latest) as the official library for fetching the global data of a Squide's application and features a complete rewrite of the [AppRouter](../reference/routing/appRouter.md) component, which now uses a state machine to manage the application's bootstrapping flow.
 
 Prior to `v9.0`, Squide applications couldn't use TanStack Query to fetch global data, making it **challenging** for Workleap's applications to **keep** their **global data** in **sync** with the **server state**. With `v9.0`, applications can now leverage [custom wrappers](../guides/fetch-global-data.md) of the TanStack Query's [useQueries](https://tanstack.com/query/latest/docs/framework/react/reference/useQueries) hook to fetch and keep their global data up-to-date with the server state. Additionally, the new [deferred registrations update](../reference/registration/useDeferredRegistrations.md#register-or-update-deferred-registrations) feature allows applications to even **keep** their conditional **navigation items in sync** with the **server state**.
@@ -321,7 +327,7 @@ The `v9.0` release introduces several breaking changes affecting the host applic
 9. Convert all deferred routes into static routes. [View example](#removed-support-for-deferred-routes)
 10. Add an `$id` option to the navigation item registrations. [View example](#new-id-option-for-navigation-items)
 
-### `waitForMsw`, `waitForPublicData` and `waitForProtectedData`
+### `waitForMsw`, `waitForPublicData`, `waitForProtectedData`
 
 The `AppRouter` component accepts the `waitForMsw`, `waitForPublicData`, and `waitForProtectedData` properties. These properties are forwarded directly to the Squide bootstrapping flow state machine, where they are used to determine its initial state.
 

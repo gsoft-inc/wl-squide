@@ -305,9 +305,7 @@ const navigationElements = useRenderedNavigationItems(navigationItems, renderIte
 
 ## Migrate an host application
 
-!!!info
-A migration example from v8 to v9 is available for the [wl-squide-monorepo-template](https://github.com/gsoft-inc/wl-squide-monorepo-template/commit/87489f0541cc959f437133f2afd8c0a9db160efe).
-!!!
+> A migration example from `v8` to `v9` is available for the [wl-squide-monorepo-template](https://github.com/gsoft-inc/wl-squide-monorepo-template/commit/87489f0541cc959f437133f2afd8c0a9db160efe).
 
 The `v9.0` release introduces several breaking changes affecting the host application code. Follow these steps to migrate an existing host application:
 
@@ -407,14 +405,16 @@ export function App() {
 
 ## Migrate a module
 
-!!!info
-A migration example from v8 to v9 is available for the [wl-squide-monorepo-template](https://github.com/gsoft-inc/wl-squide-monorepo-template/commit/87489f0541cc959f437133f2afd8c0a9db160efe).
-!!!
+> A migration example from `v8` to `v9` is available for the [wl-squide-monorepo-template](https://github.com/gsoft-inc/wl-squide-monorepo-template/commit/87489f0541cc959f437133f2afd8c0a9db160efe).
 
 The changes in `v9.0` have minimal impact on module code. To migrate an existing module, follow these steps:
 
 1. Convert all deferred routes into static routes. [View example](#removed-support-for-deferred-routes)
 2. Add a `$id` option to the navigation item registrations. [View example](#new-id-option-for-navigation-items)
+
+!!!warning
+Ensure that modules registering deferred routes are updated to convert those routes into static routes and are deployed before the host application. **Failure to do so may lead to runtime errors in the production environment**.
+!!!
 
 ### Isolated development
 

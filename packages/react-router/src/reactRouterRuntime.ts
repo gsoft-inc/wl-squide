@@ -3,6 +3,10 @@ import { NavigationItemDeferredRegistrationScope, NavigationItemDeferredRegistra
 import { ProtectedRoutesOutletId, PublicRoutesOutletId } from "./outlets.ts";
 import { RouteRegistry, type Route } from "./routeRegistry.ts";
 
+function indent(text: string, depth: number) {
+    return `${" ".repeat(depth * 4)}${text}`;
+}
+
 function translateOutletsParentId(parentId?: string) {
     if (parentId === PublicRoutesOutletId) {
         return "PublicRoutes";
@@ -13,6 +17,20 @@ function translateOutletsParentId(parentId?: string) {
     }
 
     return parentId;
+}
+
+function logRoutesTree(routes: Route[], depth: number = 0) {
+    let log = "";
+
+    routes.forEach(x => {
+        log += indent(`- ${x.path ?? x.$id ?? (x.index ? "(index route)" : undefined) ?? "(no identifier)"}\r\n`, depth);
+
+        if (x.children) {
+            log += logRoutesTree(x.children, depth + 1);
+        }
+    });
+
+    return log;
 }
 
 export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
@@ -161,22 +179,26 @@ export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
             let message = `[squide] ${pendingRoutes.length} route${pendingRoutes.length !== 1 ? "s were" : " is"} expected to be registered but ${pendingRoutes.length !== 1 ? "are" : "is"} missing:\r\n\r\n`;
 
             pendingRoutes.forEach((x, index) => {
-                message += `${index}/${pendingRoutes.length} Missing route with the following path or name: "${x}"\r\n`;
-                message += "    Pending registrations:\r\n";
+                message += `${index + 1}/${pendingRoutes.length} Missing route with the following path or id: "${x}"\r\n`;
+                message += indent("Pending registrations:\r\n", 1);
 
                 const pendingRegistrationsForRoute = pendingRegistrations.getPendingRegistrationsForRoute(x);
 
                 pendingRegistrationsForRoute.forEach(y => {
-                    message += `        - "${y.path ?? y.$id ?? "(no identifier)"}"\r\n`;
+                    message += indent(`- "${y.path ?? y.$id ?? "(no identifier)"}"\r\n`, 2);
                 });
 
                 message += "\r\n";
             });
 
+            message += "Registered routes:\r\n";
+            message += logRoutesTree(this.#routeRegistry.routes, 1);
+            message += "\r\n";
+
             message += `If you are certain that the route${pendingRoutes.length !== 1 ? "s" : ""} has been registered, make sure that the following conditions are met:\r\n`;
             message += "- The missing routes \"path\" or \"$id\" option perfectly match the provided \"parentPath\" or \"parentId\" (make sure that there's no leading or trailing \"/\" that differs).\r\n";
-            message += "- The missing routes has been registered with the runtime.registerRoute function. A route cannot be registered under a parent route that has not be registered with the runtime.registerRoute function.\r\n";
-            message += "For more information about nested routes, refers to https://gsoft-inc.github.io/wl-squide/reference/runtime/runtime-class/#register-nested-routes-under-an-existing-route.\r\n";
+            message += "- The missing routes has been registered with the runtime.registerRoute function. A route cannot be registered under a parent route that has not be registered with the runtime.registerRoute function.\r\n\r\n";
+            message += "For more information about nested routes, refers to https://gsoft-inc.github.io/wl-squide/reference/runtime/runtime-class/#register-nested-routes-under-an-existing-route.\r\n\r\n";
             message += "For more information about the PublicRoutes and ProtectedRoutes outlets, refers to https://gsoft-inc.github.io/wl-squide/reference/#routing.";
 
             if (this._mode === "development") {
@@ -198,19 +220,19 @@ export class ReactRouterRuntime extends Runtime<Route, RootNavigationItem> {
                 const [menuId, sectionId] = parseSectionIndexKey(x);
 
                 message += `${index}/${pendingSectionIds.length} Missing navigation section "${sectionId}" of the "${menuId}" menu.\r\n`;
-                message += "    Pending registrations:\r\n";
+                message += indent("Pending registrations:\r\n", 1);
 
                 const pendingItems = pendingRegistrations.getPendingRegistrationsForSection(x);
 
                 pendingItems.forEach(y => {
-                    message += `        - "${y.item.$id ?? y.item.$label ?? y.item.to ?? "(no identifier)"}"\r\n`;
+                    message += indent(`- "${y.item.$id ?? y.item.$label ?? y.item.to ?? "(no identifier)"}"\r\n`, 2);
                 });
 
                 message += "\r\n";
             });
 
             message += `If you are certain that the navigation section${pendingSectionIds.length !== 1 ? "s" : ""} has been registered, make sure that the following conditions are met:\r\n`;
-            message += "- The missing navigation section \"$id\" and \"menuId\" properties perfectly match the provided \"sectionId\" and \"menuId\".\r\n";
+            message += "- The missing navigation section \"$id\" and \"menuId\" properties perfectly match the provided \"sectionId\" and \"menuId\".\r\n\r\n";
             message += "For more information about nested navigation items, refers to: https://gsoft-inc.github.io/wl-squide/reference/runtime/runtime-class/#register-nested-navigation-items.\r\n";
 
             if (this._mode === "development") {

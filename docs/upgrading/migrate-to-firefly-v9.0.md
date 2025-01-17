@@ -321,6 +321,36 @@ The `v9.0` release introduces several breaking changes affecting the host applic
 9. Convert all deferred routes into static routes. [View example](#removed-support-for-deferred-routes)
 10. Add an `$id` option to the navigation item registrations. [View example](#new-id-option-for-navigation-items)
 
+### `waitForMsw`, `waitForPublicData` and `waitForProtectedData`
+
+The `AppRouter` component accepts the `waitForMsw`, `waitForPublicData`, and `waitForProtectedData` properties. These properties are forwarded directly to the Squide bootstrapping flow state machine, where they are used to determine its initial state.
+
+If the application register MSW [request handlers](https://mswjs.io/docs/concepts/request-handler/) with the [runtime.registerRequestHandlers](../reference/runtime/runtime-class.md#register-request-handlers) function, add the `waitForMsw` property to the `AppRouter` component:
+
+```tsx
+<AppRouter waitForMsw>
+    ...
+</AppRouter>
+```
+
+If the application uses the [usePublicDataQueries](../reference/tanstack-query/usePublicDataQueries.md), add the `waitForPublicData` property to the `AppRouter` component:
+
+```tsx
+<AppRouter waitForPublicData>
+    ...
+</AppRouter>
+```
+
+If the application uses the [useProtectedDataQueries](../reference/tanstack-query/useProtectedDataQueries.md), add the `waitForProtectedData` property to the `AppRouter` component:
+
+```tsx
+<AppRouter waitForProtectedData>
+    ...
+</AppRouter>
+```
+
+Otherwise, don't define any of those three properties on the `AppRouter` component.
+
 ### Root error boundary
 
 When transitioning to the new `AppRouter` component, make sure to nest the `RootErrorBoundary` component within the `AppRouter` component's render function.

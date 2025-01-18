@@ -5,13 +5,14 @@ import { ExpressInstrumentation } from "@opentelemetry/instrumentation-express";
 import { NodeSDK } from "@opentelemetry/sdk-node";
 import cors from "cors";
 import express, { type Request, type Response } from "express";
+import { HoneycombApiKey } from "../../apiKeys.js";
 
 const sdk = new NodeSDK({
     serviceName: "squide-endpoints-sample",
     traceExporter: new OTLPTraceExporter({
         url: "https://api.honeycomb.io/v1/traces",
         headers: {
-            "x-honeycomb-team": "xSffNa6OhKeROIg9aG6uAB"
+            "x-honeycomb-team": HoneycombApiKey
         }
     }),
     instrumentations: [

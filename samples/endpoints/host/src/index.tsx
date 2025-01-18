@@ -6,6 +6,7 @@ import { ConsoleLogger, FireflyRuntime, RuntimeContext, bootstrap } from "@squid
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { HoneycombApiKey } from "../../apiKeys.js";
 import { Remotes } from "../remotes.ts";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
@@ -16,10 +17,8 @@ const runtime = new FireflyRuntime({
     loggers: [x => new ConsoleLogger(x)]
 });
 
-console.log("TOTO!!!");
-
 registerHoneycombInstrumentation(runtime, "squide-endpoints-sample", [/http:\/\/localhost:1234\.*/], {
-    apiKey: "xSffNa6OhKeROIg9aG6uAB"
+    apiKey: HoneycombApiKey
 });
 
 await bootstrap(runtime, {

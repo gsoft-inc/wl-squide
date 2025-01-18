@@ -75,7 +75,7 @@ workspace
 ├──── apiKeys.js
 ```
 
-Then, retrieve a valid [Honeycomb API Key](https://docs.honeycomb.io/get-started/configure/environments/manage-api-keys/) from your Vault (or ask IT).
+Then, retrieve a valid [Honeycomb API Key](https://docs.honeycomb.io/get-started/configure/environments/manage-api-keys/) from your Vault (or ask IT a key for Honeycomb's "frontend-platform-team-dev" environment).
 
 Finally, open the newly created `apiKeys.js` file and export an `HoneycombApiKey` constant with the API key as value.
 

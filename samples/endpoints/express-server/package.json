@@ -8,6 +8,7 @@
     "type": "module",
     "scripts": {
         "dev": "nodemon",
+        "serve-build": "tsx src/index.ts",
         "eslint": "eslint . --max-warnings=-0 --cache --cache-location node_modules/.cache/eslint",
         "typecheck": "tsc"
     },
@@ -19,6 +20,7 @@
         "@opentelemetry/instrumentation-http": "0.57.1",
         "@opentelemetry/sdk-node": "0.57.1",
         "cors": "2.8.5",
+        "dotenv": "16.4.7",
         "express": "4.21.2"
     },
     "devDependencies": {

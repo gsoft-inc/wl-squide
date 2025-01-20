@@ -6,6 +6,7 @@ apiKeys.js
 .turbo
 .rslib
 .retype
+*.env.local
 
 # Mac
 .DS_Store

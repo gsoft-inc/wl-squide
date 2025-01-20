@@ -6,7 +6,6 @@ import { ConsoleLogger, FireflyRuntime, RuntimeContext, bootstrap } from "@squid
 import { registerHoneycombInstrumentation } from "@squide/firefly-honeycomb";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { HoneycombApiKey } from "../../apiKeys.js";
 import { Remotes } from "../remotes.ts";
 import { App } from "./App.tsx";
 import { registerHost } from "./register.tsx";
@@ -18,7 +17,8 @@ const runtime = new FireflyRuntime({
 });
 
 registerHoneycombInstrumentation(runtime, "squide-endpoints-sample", [/http:\/\/localhost:1234\.*/], {
-    apiKey: HoneycombApiKey
+    // Default to a space so it doesn't throw at runtime.
+    apiKey: process.env.HONEYCOMB_API_KEY ?? " "
 });
 
 await bootstrap(runtime, {

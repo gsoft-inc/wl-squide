@@ -90,7 +90,7 @@ export const HoneycombApiKey = " ";
 ```
 
 > [!NOTE]
-> The `samples/endpoints/apiKeys.js` is ignored by Git and will not be pushed to the remote repository.
+> The `samples/endpoints/apiKeys.js` file is ignored by Git and will not be pushed to the remote repository.
 
 ### Setup Retype
 

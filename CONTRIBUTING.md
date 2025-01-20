@@ -65,32 +65,26 @@ pnpm install
 
 ### Setup Honeycomb
 
-[Honeycomb](https://www.honeycomb.io/) is one of the monitoring platforms used at Workleap. The [endpoints](./samples/endpoints/) sample application of this repository is already configured to send traces to Honeycomb but needs a valid Honeycomb API key.
+[Honeycomb](https://www.honeycomb.io/) is one of the monitoring platforms used at Workleap. The [endpoints](./samples/endpoints/) sample of this repository is already configured to send traces to Honeycomb but needs a valid Honeycomb API key.
 
-First, create a file named `apikeys` at the root of [samples](./samples/endpoints/) folder.
+First, create a file named `.env.local` at the root of the workspace.
 
 ``` !#3
 workspace
-├── samples
-├──── apiKeys.js
+├── package.json
+├── .env.local
 ```
 
 Then, retrieve a valid [Honeycomb API Key](https://docs.honeycomb.io/get-started/configure/environments/manage-api-keys/) from your Vault (or ask IT a key for Honeycomb's "frontend-platform-team-dev" environment).
 
-Finally, open the newly created `apiKeys.js` file and export an `HoneycombApiKey` constant with the API key as value.
+Finally, open the newly created `.env.local` file add a value named `HONEYCOMB_API_KEY`.
 
-```js samples/apiKeys.js
-export const HoneycombApiKey = "YOUR_API_KEY";
-```
-
-If you don't have access to a Honeycomb API Key but still want to run the [endpoints](./samples/endpoints/) sample, create the `apiKeys.js` file as described above and set the `HoneycombApiKey` to an empty string.
-
-```js samples/apiKeys.js
-export const HoneycombApiKey = " ";
+```bash .env.local
+HONEYCOMB_API_KEY="YOUR_API_KEY";
 ```
 
 > [!NOTE]
-> The `samples/endpoints/apiKeys.js` file is ignored by Git and will not be pushed to the remote repository.
+> The `.env.local` file is configured to be ignored by Git and will not be pushed to the remote repository.
 
 ### Setup Retype
 
@@ -170,10 +164,6 @@ pnpm build-pkg
 ```
 
 By default, packages compilation output will be in their respective *dist* directory.
-
-#### Linting errors
-
-If you got linting error, most of the time, they can be fixed automatically using `eslint . --fix`, if not, follow the report provided by `pnpm lint`.
 
 ## Deploy the sample applications
 

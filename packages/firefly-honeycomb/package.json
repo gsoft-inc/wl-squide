@@ -38,7 +38,10 @@
         "@honeycombio/opentelemetry-web": "*",
         "@opentelemetry/api": "*",
         "@opentelemetry/auto-instrumentations-web": "*",
+        "@opentelemetry/instrumentation-document-load": "*",
         "@opentelemetry/instrumentation-fetch": "*",
+        "@opentelemetry/instrumentation-user-interaction": "*",
+        "@opentelemetry/instrumentation-xml-http-request": "*",
         "@opentelemetry/sdk-trace-web": "*"
     },
     "dependencies": {

@@ -38,7 +38,10 @@ test("when debug is true", () => {
         apiKey: "123"
     });
 
-    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+    const cleanedResult = removeInstrumentationVersionsForSnapshot({
+        ...result,
+        fetchInstrumentation: result.fetchInstrumentation ? result.fetchInstrumentation({}) : undefined
+    });
 
     expect(cleanedResult).toMatchSnapshot();
 });
@@ -51,7 +54,10 @@ test("when debug is false", () => {
         apiKey: "123"
     });
 
-    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+    const cleanedResult = removeInstrumentationVersionsForSnapshot({
+        ...result,
+        fetchInstrumentation: result.fetchInstrumentation ? result.fetchInstrumentation({}) : undefined
+    });
 
     expect(cleanedResult).toMatchSnapshot();
 });
@@ -65,7 +71,10 @@ test("when the runtime mode is \"development\"", () => {
         apiKey: "123"
     });
 
-    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+    const cleanedResult = removeInstrumentationVersionsForSnapshot({
+        ...result,
+        fetchInstrumentation: result.fetchInstrumentation ? result.fetchInstrumentation({}) : undefined
+    });
 
     expect(cleanedResult).toMatchSnapshot();
 });
@@ -79,7 +88,10 @@ test("when the runtime mode is \"production\"", () => {
         apiKey: "123"
     });
 
-    const cleanedResult = removeInstrumentationVersionsForSnapshot(result);
+    const cleanedResult = removeInstrumentationVersionsForSnapshot({
+        ...result,
+        fetchInstrumentation: result.fetchInstrumentation ? result.fetchInstrumentation({}) : undefined
+    });
 
     expect(cleanedResult).toMatchSnapshot();
 });

@@ -1,6 +1,6 @@
 import type { FetchInstrumentationConfig } from "@opentelemetry/instrumentation-fetch";
 import { FireflyRuntime } from "@squide/firefly";
-import { __clearActiveSpanMock, __setActiveSpanMock } from "../src/activeSpan.ts";
+import { __clearOverrideFetchRequestSpanWithActiveSpanContextMock, __setOverrideFetchRequestSpanWithActiveSpanContextMock } from "../src/activeSpan.ts";
 import { getInstrumentationOptions } from "../src/registerHoneycombInstrumentation.ts";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -113,11 +113,11 @@ describe("fetchInstrumentation", () => {
 
         expect(mock).toHaveBeenCalledTimes(1);
         expect(mock).toHaveBeenCalledWith(expect.objectContaining({
-            applyCustomAttributesOnSpan: expect.any(Function)
+            requestHook: expect.any(Function)
         }));
     });
 
-    test("when fetchInstrumentation is not provided, applyCustomAttributesOnSpan is the active span function", () => {
+    test("when fetchInstrumentation is not provided, requestHook is the active span override function", () => {
         const runtime = new FireflyRuntime();
 
         const result = getInstrumentationOptions(runtime, {
@@ -131,16 +131,16 @@ describe("fetchInstrumentation", () => {
         // @ts-ignore
         const fetchOptions = result.fetchInstrumentation({}) as FetchInstrumentationConfig;
 
-        expect(fetchOptions.applyCustomAttributesOnSpan).toBeDefined();
+        expect(fetchOptions.requestHook).toBeDefined();
     });
 
-    test("when the base honeycomb instrumentation library configure a default applyCustomAttributesOnSpan, merge the base function with the active span function", () => {
+    test("when the base honeycomb instrumentation library configure a default requestHook, merge the base function with the active span override function", () => {
         const runtime = new FireflyRuntime();
 
         const baseConfigMock = jest.fn();
         const activeSpanMock = jest.fn();
 
-        __setActiveSpanMock(activeSpanMock);
+        __setOverrideFetchRequestSpanWithActiveSpanContextMock(activeSpanMock);
 
         const result = getInstrumentationOptions(runtime, {
             apiKey: "123"
@@ -149,15 +149,15 @@ describe("fetchInstrumentation", () => {
         // Simulate calling the "registerHoneycombInstrumentation" function.
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const { applyCustomAttributesOnSpan } = result.fetchInstrumentation({
-            applyCustomAttributesOnSpan: baseConfigMock
+        const { requestHook } = result.fetchInstrumentation({
+            requestHook: baseConfigMock
         });
 
-        applyCustomAttributesOnSpan();
+        requestHook();
 
         expect(baseConfigMock).toHaveBeenCalledTimes(1);
         expect(activeSpanMock).toHaveBeenCalledTimes(1);
 
-        __clearActiveSpanMock();
+        __clearOverrideFetchRequestSpanWithActiveSpanContextMock();
     });
 });

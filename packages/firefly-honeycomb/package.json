@@ -45,6 +45,7 @@
         "@opentelemetry/sdk-trace-web": "*"
     },
     "dependencies": {
+        "@squide/core": "workspace:*",
         "@squide/firefly": "workspace:*",
         "@types/uuid": "10.0.0",
         "@workleap/honeycomb": "1.0.0",

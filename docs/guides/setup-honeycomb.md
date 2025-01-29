@@ -61,7 +61,7 @@ await bootstrap(runtime, {
 
 // Register Honeycomb instrumentation.
 registerHoneycombInstrumentation(runtime, "squide-sample", [/.+/g,], {
-    endpoint: "https://squide-collector"
+    proxy: "https://my-proxy.com"
 });
 
 const root = createRoot(document.getElementById("root")!);
@@ -78,7 +78,7 @@ Avoid using `/.+/g,` in production, as it could expose customer data to third pa
 !!!
 
 !!!warning
-We recommend using an [OpenTelemetry collector](https://docs.honeycomb.io/send-data/opentelemetry/collector/) over an ingestion [API key](https://docs.honeycomb.io/get-started/configure/environments/manage-api-keys/#create-api-key), as API keys can expose Workleap to potential attacks.
+We recommend using an [OpenTelemetry collector](https://docs.honeycomb.io/send-data/opentelemetry/collector/) over an ingestion [API key](https://docs.honeycomb.io/get-started/configure/environments/manage-api-keys/#create-api-key), as API keys can expose Workleap to potential attacks. To use a collector, set the `proxy` option with your collector's proxy address.
 !!!
 
 With instrumentation in place, a few traces are now available :point_down:

@@ -28,7 +28,7 @@
         "react-dom": "*",
         "react-error-boundary": "*",
         "react-i18next": "*",
-        "react-router-dom": "*"
+        "react-router": "*"
     },
     "devDependencies": {
         "@endpoints/i18next": "workspace:*",

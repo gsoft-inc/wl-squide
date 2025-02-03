@@ -15,7 +15,7 @@
         "@squide/firefly": "*",
         "react": "*",
         "react-dom": "*",
-        "react-router-dom": "*"
+        "react-router": "*"
     },
     "devDependencies": {
         "@squide/firefly": "workspace:*",

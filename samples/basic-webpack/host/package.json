@@ -27,7 +27,7 @@
         "@tanstack/react-query": "5.65.1",
         "react": "19.0.0",
         "react-dom": "19.0.0",
-        "react-router-dom": "6.27.0",
+        "react-router": "7.1.5",
         "useless-lib": "^2.0.0"
     },
     "devDependencies": {

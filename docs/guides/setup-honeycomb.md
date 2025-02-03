@@ -143,11 +143,12 @@ Most application needs to set custom attributes on traces about the current user
 
 Update your host application to include the `setGlobalSpanAttributes` function:
 
-```tsx !#32-39 host/src/App.tsx
+```tsx !#33-40 host/src/App.tsx
 import { AppRouter, useProtectedDataQueries, useIsBootstrapping } from "@squide/firefly";
 import { setGlobalSpanAttributes } from "@squide/firefly-honeycomb";
 import { useEffect } from "react";
-import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
+import { createBrowserRouter, Outlet } from "react-router";
+import { RouterProvider } from "react-router/dom";
 import { SessionManagerContext, ApiError, isApiError, type Session } from "@sample/shared";
 import { useSessionManagerInstance } from "./sessionManager.ts";
 

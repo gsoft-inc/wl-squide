@@ -131,8 +131,12 @@ export function createOverrideFetchRequestSpanWithActiveSpanContext(logger: Runt
                 span.setAttribute("trace.trace_id", activeSpanContext.traceId);
                 span.setAttribute("trace.parent_id", activeSpanContext.spanId);
 
-                if (isPlainObject(request.headers)) {
-                    request.headers["traceparent"] = createTraceContextId(activeSpanContext.traceId, requestSpanContext.spanId, requestSpanContext.traceFlags);
+                const traceParent = createTraceContextId(activeSpanContext.traceId, requestSpanContext.spanId, requestSpanContext.traceFlags);
+
+                if (request instanceof Request) {
+                    request.headers.set("traceparent", traceParent);
+                } else if (isPlainObject(request.headers)) {
+                    request.headers["traceparent"] = traceParent;
                 }
             }
         }

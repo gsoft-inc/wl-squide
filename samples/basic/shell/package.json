@@ -19,7 +19,7 @@
         "@squide/firefly": "*",
         "react": "*",
         "react-dom": "*",
-        "react-router-dom": "*"
+        "react-router": "*"
     },
     "dependencies": {
         "@types/react": "19.0.8",

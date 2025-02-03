@@ -20,25 +20,22 @@
         "@squide/firefly": "*",
         "react": "*",
         "react-dom": "*",
-        "react-router-dom": "*"
+        "react-router": "*"
     },
     "dependencies": {
-        "@basic-webpack/shared": "workspace:*",
-        "@basic-webpack/shell": "workspace:*",
         "@squide/fakes": "workspace:*",
-        "@squide/firefly": "workspace:*",
-        "react": "19.0.0",
-        "react-dom": "19.0.0",
-        "react-router-dom": "6.27.0"
+        "@types/react": "19.0.8",
+        "@types/react-dom": "19.0.3"
     },
     "devDependencies": {
+        "@basic-webpack/shared": "workspace:*",
+        "@basic-webpack/shell": "workspace:*",
         "@react-aria/toast": "3.0.0-beta.19",
         "@react-stately/toast": "3.0.0-beta.7",
+        "@squide/firefly": "workspace:*",
         "@squide/firefly-webpack-configs": "workspace:*",
         "@swc/core": "1.10.11",
         "@swc/helpers": "0.5.15",
-        "@types/react": "19.0.8",
-        "@types/react-dom": "19.0.3",
         "@typescript-eslint/parser": "8.22.0",
         "@workleap/browserslist-config": "2.0.2",
         "@workleap/eslint-plugin": "3.2.6",
@@ -47,6 +44,9 @@
         "browserslist": "4.24.4",
         "eslint": "8.57.0",
         "nodemon": "3.1.9",
+        "react": "19.0.0",
+        "react-dom": "19.0.0",
+        "react-router": "7.1.5",
         "typescript": "5.5.4",
         "webpack": "5.97.1",
         "webpack-cli": "6.0.1",

@@ -19,7 +19,7 @@
         "@squide/firefly": "*",
         "react": "*",
         "react-dom": "*",
-        "react-router-dom": "*"
+        "react-router": "*"
     },
     "devDependencies": {
         "@basic-webpack/shared": "workspace:*",

@@ -172,13 +172,10 @@ export function AppRouter({ waitForMsw }: AppRouterProps) {
                             future: {
                                 v7_relativeSplatPath: false,
                                 v7_startTransition: false,
-                                v7_fetcherPersist: false,
-                                v7_normalizeFormMethod: false,
-                                v7_partialHydration: false,
-                                v7_skipActionErrorRevalidation: false
-                            },
-                            ...routerProviderProps
+                                v7_partialHydration: false
+                            }
                         })}
+                        {...routerProviderProps}
                     />
                 );
             }}

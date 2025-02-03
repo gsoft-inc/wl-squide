@@ -53,7 +53,13 @@ export function AppRouter() {
                                     }
                                 ]
                             }
-                        ])}
+                        ], {
+                            future: {
+                                v7_relativeSplatPath: false,
+                                v7_startTransition: false,
+                                v7_partialHydration: false
+                            }
+                        })}
                         {...routerProviderProps}
                     />
                 );

@@ -1,4 +1,6 @@
 ---
+"@squide/firefly-rsbuild-configs": major
+"@squide/firefly-webpack-configs": major
 "@squide/react-router": major
 "@squide/firefly": major
 ---

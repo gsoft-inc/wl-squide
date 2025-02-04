@@ -36,8 +36,8 @@
         "clean": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf dist .turbo .rslib .netlify public/mockServiceWorker.js node_modules/.cache",
         "reset": "pnpm clean && pnpm reset:modules",
         "reset:modules": "pnpm -r --parallel --include-workspace-root exec pnpm dlx rimraf node_modules pnpm-lock.yaml",
-        "list-outdated-deps": "pnpm outdated -r --format list !eslint !useless-lib !typescript !react-router-dom",
-        "update-outdated-deps": "pnpm update -r --latest !eslint !useless-lib !typescript !react-router-dom"
+        "list-outdated-deps": "pnpm outdated -r --format list !eslint !useless-lib !typescript",
+        "update-outdated-deps": "pnpm update -r --latest !eslint !useless-lib !typescript"
     },
     "devDependencies": {
         "@changesets/changelog-github": "0.5.0",

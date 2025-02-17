@@ -10,7 +10,7 @@ label: Create an host app
 We highly recommend going through the entire getting started guide. However, if you prefer to scaffold the application we'll be building, a template is available with [degit](https://github.com/Rich-Harris/degit):
 
 ```bash
-corepack pnpm dlx degit https://github.com/gsoft-inc/wl-squide/templates/getting-started
+corepack pnpm dlx degit https://github.com/workleap/wl-squide/templates/getting-started
 ```
 !!!
 
@@ -477,6 +477,6 @@ If you are experiencing issues with this guide:
     - `[squide] 1/1 Loading module "register" of "remote1".`
     - `[squide] 1/1 Registering module "register" of remote "remote1".`
     - `[squide] 1/1 The registration of the remote "remote1" is completed.`
-- Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/host).
+- Refer to a working example on [GitHub](https://github.com/workleap/wl-squide/tree/main/samples/basic/host).
 - Refer to the [troubleshooting](../troubleshooting.md) page.
 

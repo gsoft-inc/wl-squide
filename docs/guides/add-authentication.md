@@ -539,7 +539,7 @@ import { useSessionManager } from "@sample/shared";
 const renderItem: RenderItemFunction = (item, key) => {
     // To keep things simple, this sample doesn't support nested navigation items.
     // For an example including support for nested navigation items, have a look at
-    // https://gsoft-inc.github.io/wl-squide/reference/routing/userenderednavigationitems/
+    // https://workleap.github.io/wl-squide/reference/routing/userenderednavigationitems/
     if (!isNavigationLink(item)) {
         return null;
     }

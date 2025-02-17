@@ -63,7 +63,7 @@ The `defineBuildRemoteModuleConfig` function will add the following shared depen
 - [@squide/module-federation](https://www.npmjs.com/package/@squide/module-federation)
 - [@squide/msw](https://www.npmjs.com/package/@squide/msw)
 
-For the full shared dependencies configuration, have a look at the [defineConfig.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/firefly-rsbuild-configs/src/defineConfig.ts) file on Github.
+For the full shared dependencies configuration, have a look at the [defineConfig.ts](https://github.com/workleap/wl-squide/blob/main/packages/firefly-rsbuild-configs/src/defineConfig.ts) file on Github.
 
 ## Usage
 

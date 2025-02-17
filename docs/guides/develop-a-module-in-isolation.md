@@ -324,7 +324,7 @@ export default config;
 ```
 
 !!!info
-If you encounter issues configuring webpack, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/) documentation.
+If you encounter issues configuring webpack, refer to the [@workleap/webpack-configs](https://workleap.github.io/wl-web-configs/webpack/) documentation.
 !!!
 
 ### Try it :rocket:
@@ -453,7 +453,7 @@ export default defineDevHostConfig(swcConfig, "local1", 8080, []);
 ```
 
 !!!info
-If you encounter issues configuring webpack, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/) documentation.
+If you encounter issues configuring webpack, refer to the [@workleap/webpack-configs](https://workleap.github.io/wl-web-configs/webpack/) documentation.
 !!!
 
 ### Add a new CLI script

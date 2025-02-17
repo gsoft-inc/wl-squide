@@ -50,10 +50,10 @@
 
   This packages includes:
 
-  - [registerHoneycombInstrumentation](https://gsoft-inc.github.io/wl-squide/reference/honeycomb/registerhoneycombinstrumentation/)
-  - [setGlobalSpanAttributes](https://gsoft-inc.github.io/wl-squide/reference/honeycomb/setglobalspanattributes/)
+  - [registerHoneycombInstrumentation](https://workleap.github.io/wl-squide/reference/honeycomb/registerhoneycombinstrumentation/)
+  - [setGlobalSpanAttributes](https://workleap.github.io/wl-squide/reference/honeycomb/setglobalspanattributes/)
 
-  A [migration guide](https://gsoft-inc.github.io/wl-squide/upgrading/migrate-to-firefly-v9.3) is available to update a Squide application to v9.3 and use Honeycomb observability.
+  A [migration guide](https://workleap.github.io/wl-squide/upgrading/migrate-to-firefly-v9.3) is available to update a Squide application to v9.3 and use Honeycomb observability.
 
 ### Patch Changes
 

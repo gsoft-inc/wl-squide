@@ -16,7 +16,7 @@ toc:
     depth: 2
 
 hub:
-    link: https://gsoft-inc.github.io/wl-idp-docs-hub/
+    link: https://workleap.github.io/wl-idp-docs-hub/
     alt: Workleap's IDP homepage
 
 start:
@@ -29,7 +29,7 @@ start:
 input: ./docs
 output: .retype
 
-url: https://gsoft-inc.github.io/wl-squide/
+url: https://workleap.github.io/wl-squide/
 
 branding:
     title: "Squide"

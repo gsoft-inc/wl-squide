@@ -324,7 +324,7 @@ export default config;
 ```
 
 !!!info
-If you encounter issues configuring webpack, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/) documentation.
+If you encounter issues configuring webpack, refer to the [@workleap/webpack-configs](https://workleap.github.io/wl-web-configs/webpack/) documentation.
 !!!
 
 ### Try it :rocket:
@@ -336,7 +336,7 @@ Start the remote module in isolation by running the `dev-isolated` script. The a
 If you are experiencing issues with this section of the guide:
 
 - Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
-- Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/remote-module).
+- Refer to a working example on [GitHub](https://github.com/workleap/wl-squide/tree/main/samples/basic/remote-module).
 - Refer to the [troubleshooting](../troubleshooting.md) page.
 
 ## Setup a local module
@@ -453,7 +453,7 @@ export default defineDevHostConfig(swcConfig, "local1", 8080, []);
 ```
 
 !!!info
-If you encounter issues configuring webpack, refer to the [@workleap/webpack-configs](https://gsoft-inc.github.io/wl-web-configs/webpack/) documentation.
+If you encounter issues configuring webpack, refer to the [@workleap/webpack-configs](https://workleap.github.io/wl-web-configs/webpack/) documentation.
 !!!
 
 ### Add a new CLI script
@@ -475,5 +475,5 @@ Start the remote module in isolation by running the `dev-isolated` script. The a
 If you are experiencing issues with this section of the guide:
 
 - Open the [DevTools](https://developer.chrome.com/docs/devtools/) console. You'll find a log entry for each registration that occurs and error messages if something went wrong.
-- Refer to a working example on [GitHub](https://github.com/gsoft-inc/wl-squide/tree/main/samples/basic/local-module).
+- Refer to a working example on [GitHub](https://github.com/workleap/wl-squide/tree/main/samples/basic/local-module).
 - Refer to the [troubleshooting](../troubleshooting.md) page.

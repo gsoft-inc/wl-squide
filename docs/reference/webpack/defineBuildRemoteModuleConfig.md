@@ -6,7 +6,7 @@ toc:
 
 # defineBuildRemoteModuleConfig
 
-Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a Squide remote module application in **build** mode. This function is a wrapper built on top of [@workleap/webpack-configs](https://www.npmjs.com/package/@workleap/webpack-configs). Make sure to read the [defineBuildConfig](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-build/) documentation first.
+Creates a webpack [configuration object](https://webpack.js.org/concepts/configuration/) that is adapted for a Squide remote module application in **build** mode. This function is a wrapper built on top of [@workleap/webpack-configs](https://www.npmjs.com/package/@workleap/webpack-configs). Make sure to read the [defineBuildConfig](https://workleap.github.io/wl-web-configs/webpack/configure-build/) documentation first.
 
 ## Reference
 
@@ -19,7 +19,7 @@ const webpackConfig = defineBuildRemoteModuleConfig(swcConfig: {}, applicationNa
 - `swcConfig`: An SWC [configuration object](https://swc.rs/docs/configuration/swcrc).
 - `applicationName`: The remote module application name.
 - `options`: An optional object literal of options:
-    - Accepts most of webpack `definedDevConfig` [predefined options](https://gsoft-inc.github.io/wl-web-configs/webpack/configure-dev/#3-set-predefined-options).
+    - Accepts most of webpack `definedDevConfig` [predefined options](https://workleap.github.io/wl-web-configs/webpack/configure-dev/#3-set-predefined-options).
     - `features`: An optional object literal of feature switches to define additional shared dependencies.
         - `i18next`: Whether or not to add `@squide/i18next` as a shared dependency.
         - `environmentVariables`: Whether or not to add `@squide/env-vars` as a shared dependency.

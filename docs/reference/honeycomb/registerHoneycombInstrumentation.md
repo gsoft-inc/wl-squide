@@ -269,7 +269,7 @@ We do not guarantee that your configuration transformers won't break after an up
 
 The [predefined options](#parameters) are useful to quickly customize the default configuration of the [Honeycomb Web SDK](https://docs.honeycomb.io/send-data/javascript-browser/honeycomb-distribution), but only covers a subset of the [options](https://docs.honeycomb.io/send-data/javascript-browser/honeycomb-distribution/#advanced-configuration). If you need full control over the configuration, you can provide configuration transformer functions through the `transformers` option of the `registerHoneycombInstrumentation` function. Remember, **no locked in** :heart::v:.
 
-To view the default configuration of `registerHoneycombInstrumentation`, have a look at the [registerHoneycombInstrumentation.ts](https://github.com/gsoft-inc/wl-squide/blob/main/packages/firefly-honeycomb/src/registerHoneycombInstrumentation.ts) file on GitHub.
+To view the default configuration of `registerHoneycombInstrumentation`, have a look at the [registerHoneycombInstrumentation.ts](https://github.com/workleap/wl-squide/blob/main/packages/firefly-honeycomb/src/registerHoneycombInstrumentation.ts) file on GitHub.
 
 ### Transformers
 
